@@ -329,7 +329,7 @@ function frl_task_candidate_markup(WP_User $candidate, $mode = 1) {
 $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 ?>
 <div class="c-img">
-	<?php tst_temp_avatar();?>
+	<?php tst_temp_avatar($candidate);?>
 </div>
 <div class="c-name">
 	<a href="<?php echo $member_url;?>"><?php echo $candidate->first_name.' '.$candidate->last_name;?></a>
@@ -413,9 +413,17 @@ function frl_current_url() {
 }
 }
 
-function tst_temp_avatar(){
+function tst_temp_avatar($user = null){
+	if($user == null) {
+		global $tst_member;
+		$user = $tst_member;
+	}
+	
+	$default = get_template_directory_uri() . '/img/temp-avatar.png';
+	$size = 180;
+	$grav_url = $user ? "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
 ?>
-	<img src="<?php echo get_template_directory_uri();?>/img/temp-avatar.png" alt="<? _e('Member', 'tst');?>">
+	<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 <?php
 }
 
