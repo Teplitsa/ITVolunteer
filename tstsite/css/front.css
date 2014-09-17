@@ -237,14 +237,18 @@ body.admin-bar .navbar-fixed-top {
 .task-params .reward-name,
 .task-params .deadline-date {
   font-weight: bold; }
-.task-params .reward-name {
+  
+.reward.task-param {
     display: inline-block;
-    font-weight: bold;
-    height: 16px;
-    max-width: 220px;
     overflow: hidden;
     text-overflow: ellipsis;}
-  
+	
+.task-summary-content  .reward.task-param  {
+    max-width: 280px;}
+
+.status-block-task .reward.task-param {
+    max-width: none;}
+	
 .fixed-member-meta,
 .task-meta {
   color: #777777;
