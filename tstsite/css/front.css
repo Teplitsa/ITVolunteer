@@ -67,6 +67,7 @@ body.admin-bar .navbar-fixed-top {
 
 /* header */
 .site-branding {
+	position:relative;
   width: 200px; }
 
 .site-branding .navbar-brand {
@@ -236,7 +237,14 @@ body.admin-bar .navbar-fixed-top {
 .task-params .reward-name,
 .task-params .deadline-date {
   font-weight: bold; }
-
+.task-params .reward-name {
+    display: inline-block;
+    font-weight: bold;
+    height: 16px;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;}
+  
 .fixed-member-meta,
 .task-meta {
   color: #777777;
@@ -973,4 +981,14 @@ div[class|="status-block"] .row-top {
 
 .home-text-buttons .pull-left .video_description a {
 	margin-left:0px;
+}
+
+.beta-label {
+    background-color: #FF0000;
+    bottom: -7px;
+    color: #FFFFFF;
+    font-size: 12px;
+    left: 48px;
+    padding: 1px 3px;
+    position: absolute;
 }

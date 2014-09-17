@@ -515,6 +515,7 @@ function tst_task_params(){
 	<?php
 		$deadline = get_field('field_533bef200fe90', get_the_ID());
 		$interval = tst_get_days_until_deadline($deadline); 
+		$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');
 	?>
 		<span class="<?php echo tst_get_deadline_class($interval);?> deadline task-param btn btn-default">
 			<span class="deadline-icon glyphicon glyphicon-time"></span>
@@ -523,10 +524,9 @@ function tst_task_params(){
 	</div>
 
 	<div class="col-md-8">
-		<span class="reward task-param btn btn-default">
+		<span class="reward task-param btn btn-default" <?if(!is_wp_error($reward)):?>title="<?=$reward->name?>"<?endif?>>
 			<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
 			<span class="reward-name"><?php
-				$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');
 				echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name;
 			?>
 			</span>
