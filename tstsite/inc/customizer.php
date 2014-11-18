@@ -9,16 +9,18 @@ function tst_main_query_mods(WP_Query $query) {
 
     // exclude account_deleted's tasks:
     if( !is_admin() && $query->is_main_query() ) {
-        if(is_tag()) {
-            wp_redirect(home_url('/tasks/'));
-            die();
+        if(is_tag() && !$query->get('post_type')) {
+
+            $query->set('post_type', 'tasks');
         }
 
         $query->set('author', '-'.ACCOUNT_DELETED_ID);
     }
 
-    if($query->is_main_query() && $query->is_archive()) {
-
+    if(($query->is_main_query() && $query->is_archive())
+       || ($query->get('post_type') == 'tasks')
+    ) {
+        
         if( !empty($_GET['st']) ) {
             $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
         }
@@ -62,7 +64,7 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('meta_query', $metas);
         }
         if( !empty($_GET['tt']) ) {
-            $query->set('tag__in', (array)$_GET['tt']);
+            $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
 };
@@ -78,8 +80,27 @@ add_action('pre_user_query', function(WP_User_Query $query){
 //    }
 }, 100);
 
+add_action('post_updated', function($id, WP_Post $after_update, WP_Post $pre_update){
+
+    if($after_update->post_type != 'tasks')
+        return;
+
+    if(current_user_can('edit_post') && $pre_update->post_author != $after_update->post_author) {
+        global $wpdb;
+
+        $wpdb->update($wpdb->prefix.'posts', array(
+            'post_author' => $pre_update->post_author,
+            'post_date' => $pre_update->post_date,
+        ), array('ID' => $id,));
+    }
+//        wp_update_post(array('ID' => $id, 'post_author' => $pre_update->post_author)); // Infinite loop danger
+}, 10, 3);
+
 add_filter('wp_mail_from_name', function($original_email_from){
     return __('ITVounteer', 'tst');
+});
+add_filter('wp_mail_from', function($email){
+    return 'support@te-st.ru';
 });
 add_filter('wp_mail_content_type', function(){
     return 'text/html';
@@ -275,6 +296,8 @@ function ajax_add_edit_task(){
         'post_content' => htmlentities(trim($_POST['descr']), ENT_COMPAT, 'UTF-8'),
         'tags_input' => $_POST['tags'],
     );
+	
+	$is_new_task = false;
     if($_POST['id']) { // Updating a task
         $params['ID'] = $_POST['id'];
 
@@ -289,8 +312,12 @@ function ajax_add_edit_task(){
         } else
             $params['post_status'] = $_POST['status'];
 
-    } else // New task
+    }
+    // New task
+    else {
+        $is_new_task = true;
         $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';
+    }
 
     $_POST['id'] = wp_insert_post($params);
     if($_POST['id']) {
@@ -300,6 +327,10 @@ function ajax_add_edit_task(){
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bef200fe90', $_POST['deadline'], $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
+		
+        if($is_new_task) {
+            tst_send_admin_notif_new_task($_POST['id']);
+        }
 
         if($params['post_status'] == 'draft') {
             die(json_encode(array(
@@ -775,6 +806,7 @@ function ajax_update_profile() {
             // Update another fields...
             update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'user_workplace', htmlentities(@$_POST['user_workplace'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_professional', htmlentities($_POST['pro'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
@@ -783,6 +815,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'facebook', htmlentities($_POST['facebook'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
 
             die(json_encode(array(
                 'status' => 'ok',
@@ -997,4 +1030,35 @@ function tst_is_user_candidate($user_id = false, $task_id = false) {
     if($p2p_id) // connection exists
         return (int)p2p_get_meta($p2p_id, 'is_approved', true) ? 2 : 1;
     return 0;
+}
+
+function tst_send_admin_notif_new_task($post_id) {
+    # disabled function
+    return;
+	global $ITV_ADMIN_EMAILS, $ITV_EMAIL_FROM;
+	$task = get_post($post_id);
+	
+	if($task && count($ITV_ADMIN_EMAILS) > 0) {
+		$to = $ITV_ADMIN_EMAILS[0];
+		$other_emails = array_slice($ITV_ADMIN_EMAILS, 1);
+		$message = __('itv_email_new_task_added_message', 'tst');
+		$data = array(
+			'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+			'{{task_title}}' => get_the_title($post_id),
+			'{{task_content}}' => $task->post_content
+		);
+		$message = str_replace(array_keys($data), $data, $message);
+		$message = str_replace("\\", "", $message);
+		$message = nl2br($message);
+		
+		$subject = __('itv_email_new_task_added_subject', 'tst');
+		
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+		if(count($other_emails) > 0) {
+			$headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+		}
+		wp_mail($to, $subject, $message, $headers);
+	}
 }

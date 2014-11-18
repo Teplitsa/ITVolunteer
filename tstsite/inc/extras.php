@@ -274,9 +274,13 @@ function tst_task_fixed_meta($task = null){
 	
 	if( !$task )
 		$task = $post;
+
+        $author = get_user_by('id', $task->post_author);
+        $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author)));
 ?>
     <span class="status-meta">
 		<span class="created-by-label"><?php _e('Created by', 'tst');?>:</span> <?php echo tst_get_task_author_link($task);?>,
+		<?if($user_workplace):?><?=$user_workplace?>, <?endif?>
 	</span>
 	<?php //echo frl_get_sep();?>
 	<span class="time-label"></span>
@@ -432,7 +436,8 @@ function tst_get_member_field($field, $member = null){
 		'user_contacts',
 		'user_website',
 		'user_socials',
-		'user_email'
+		'user_email',
+		'user_workplace'
 	);
 	
 	if( !in_array($field, $fields) )
@@ -477,6 +482,10 @@ function tst_get_member_field($field, $member = null){
 		case 'user_date':
             $date = get_userdata($member->ID)->user_registered;
             $value = date_i18n(get_option('date_format'), strtotime($date));
+            break;
+			
+		case 'user_workplace':
+            $value = get_user_meta($member->ID, 'user_workplace', true);
             break;
 
         default:

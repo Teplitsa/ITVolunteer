@@ -1,0 +1,200 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Blank v1.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-02-09 00:39+0400\n"
+"PO-Revision-Date: 2014-02-09 00:39+0400\n"
+"Last-Translator: Anna <nordworldofann@gmail.com>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-Basepath: ../\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+# @ tst
+#: 404.php:20
+msgid "Page is not found"
+msgstr "Страница не найдена"
+
+# @ tst
+#: 404.php:37
+msgid ""
+"<p>We're sorry, but there is no such page on our website.</p>\n"
+"\t\t\t\t\t<p>Let's try to find an information you needed.</p>"
+msgstr ""
+"<p>К сожалению, запрошенная страница не найдена на нашем сайте. Возможно, "
+"она была перемещена.</p>\n"
+"<p>Давайте попробуем найти нужную вам информацию.</p>"
+
+# @ tst
+#: content-single.php:62 inc/related.php:166
+msgid "Related posts"
+msgstr "Материалы по теме"
+
+# @ tst
+#: content-single.php:74 content-single_event.php:36
+#, php-format
+msgid "Tags: %1$s"
+msgstr "Метки: %1$s"
+
+# @ tst
+#: footer.php:11
+msgid ""
+"Teplitsa of social technologies - crowdsourcing, technologies for the charity"
+msgstr ""
+"Теплица социальных технологий — краудсорсинг и технологии для "
+"благотворительности"
+
+# @ tst
+#: footer.php:28
+#, php-format
+msgid "All materials of the site are avaliabe under license %s"
+msgstr "Все материалы сайта доступны под лицензией %s"
+
+# @ tst
+#: inc/events.php:23
+msgid "Event date"
+msgstr "Дата события"
+
+# @ tst
+#: inc/events.php:29
+msgid "Event time"
+msgstr "Время события"
+
+# @ tst
+#: inc/events.php:35
+msgid "Event address"
+msgstr "Место проведения события"
+
+# @ tst
+#: inc/events.php:135
+msgid "Contacts"
+msgstr "Контакты"
+
+# @ tst
+#: inc/events.php:149
+msgid "All events"
+msgstr "Все события"
+
+# @ tst
+#: inc/events.php:265
+msgid "Upcoming events list"
+msgstr "Список предстоящих событий"
+
+# @ tst
+#: inc/events.php:267
+msgid "Upcoming events"
+msgstr "Предстоящие события"
+
+# @ tst
+#: inc/events.php:339 inc/related.php:236
+msgid "Title"
+msgstr "Заголовок"
+
+# @ tst
+#: inc/events.php:343 inc/related.php:240
+msgid "Num."
+msgstr "Числ."
+
+# @ tst
+#: inc/events.php:352
+msgid "Display Excerpt?"
+msgstr "Отображать цитату?"
+
+# @ la-rpw
+#: inc/events.php:356
+msgid "Excerpt Length:"
+msgstr "Длина аннотации"
+
+# @ tst
+#: inc/events.php:361 inc/related.php:259
+msgid "Display Metas?"
+msgstr "Отображать метаданные?"
+
+# @ tst
+#: inc/events.php:368 inc/related.php:266
+msgid "Display Thumbnail?"
+msgstr "Отображать миниатюру?"
+
+# @ tst
+#: inc/events.php:373 inc/related.php:271
+msgid "Thumbnail size"
+msgstr "Размер миниатюры"
+
+# @ tst
+#: inc/events.php:375 inc/related.php:273
+msgid "Specify thumbnail size. Leave blank to apply size defined by theme."
+msgstr ""
+"Укажите размер миниатюры. Пустое значение приведёт к использованию размера "
+"по умолчанию для данной темы."
+
+# @ tst
+#: inc/extras.php:170 inc/extras.php:285
+msgid "&laquo; prev."
+msgstr "&laquo; пред."
+
+# @ tst
+#: inc/extras.php:171 inc/extras.php:286
+msgid "next. &raquo;"
+msgstr "след. &raquo;"
+
+#: inc/extras.php:238
+msgid "Top"
+msgstr "К началу"
+
+#: inc/home.php:61
+msgid "Participate"
+msgstr "Участвовать"
+
+# @ tst
+#: inc/related.php:84 inc/related.php:120
+msgid "No related posts found."
+msgstr "К сожалению, материалы не найдены"
+
+# @ tst
+#: inc/related.php:164
+msgid "Related items selected by some taxonomy terms"
+msgstr "Материалы по теме, выбранные по совпадению некоторых таксономий"
+
+# @ tst
+#: inc/related.php:249
+msgid "Choose the Taxonomy: "
+msgstr "Выберите таксономию: "
+
+# @ tst
+#: inc/related.php:252
+msgid "Select taxonomy"
+msgstr "Выберите таксономию"
+
+# @ tst
+#: no-results.php:10
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+# @ tst
+#: no-results.php:16
+msgid "Unfortunately, no materials were found under your request"
+msgstr "К сожалению, по вашему запросу материалы не найдены"
+
+# @ tst
+#: search.php:19
+msgid "Search results"
+msgstr "Результаты поиска"
+
+# @ tst
+#: title-archive.php:20
+msgid "All news"
+msgstr "Все новости"
+
+# @ tst
+#: title-archive.php:23
+msgid "Archive"
+msgstr "Архив"

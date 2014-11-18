@@ -13,6 +13,13 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 <div id="bottombar" class="widget-area page-bottom small">
 
 	<div class="row">
+	
+		<div class="col-md-4">
+			<div class="fb-widget">
+			<?php dynamic_sidebar('footer_one-sidebar');?>
+			</div>
+		</div>		
+	
 		<div class="col-md-4">
 
             <?php
@@ -25,8 +32,6 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 			?>
 				
 		</div><!-- col-md-4 -->
-		
-		<div class="col-md-4">&nbsp;</div>		
 		
 		<div class="col-md-4">
 			<div class="te-st"><a href="http://te-st.ru" target="_blank">
@@ -43,12 +48,20 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 
 <footer id="colophon" class="site-footer" role="contentinfo">
 	<div class="container">
-		
-		<div class="copy">
-			<!-- <a href="<?php home_url();?>"><?php bloginfo('name');?></a>-->
-			<?php printf(__('All materials of the site are avaliabe under license %s', 'tst'), $cc_link);?>
-		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="copy">
+					<!-- <a href="<?php home_url();?>"><?php bloginfo('name');?></a>-->
+					<?php printf(__('All materials of the site are avaliabe under license %s', 'tst'), $cc_link);?>
+				</div>
+			</div>
 			
+			<div class="col-md-6">
+				<div class="rss-link pull-right footer-rss"><a href="<?php echo site_url('/feed/')?>" target="_blank" title="RSS">
+				<img src="<?php echo get_template_directory_uri().'/img/rss.png';?>" alt="RSS" width="16">
+				</a></div>
+			</div>
+		</div>
 	</div>
 </footer>
 

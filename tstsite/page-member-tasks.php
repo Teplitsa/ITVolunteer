@@ -85,7 +85,7 @@ get_header();?>
 								<div class="col-md-2"><b><?php _e('Published:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>
 								<div class="col-md-2"><b><?php _e('Deadline:', 'tst');?></b> <?php echo get_field('field_533bef200fe90', $task->ID);?></div>
 								<div class="col-md-2"><b><?php _e('Status:', 'tst');?></b> <?php echo tst_get_task_status_label($task->post_status);?></div>
-								<div class="col-md-2"><b><?php _e('Candidates:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
+								<div class="col-md-2"><b><?php _e('Volunteers:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
 							
 							<div class="col-md-4">
 								<a href="<?php echo tst_get_edit_task_url($task);?>" class="btn btn-primary btn-xs"><?php _e('Edit', 'tst');?></a>
@@ -113,7 +113,7 @@ get_header();?>
                             <div class="col-md-2"><b><?php _e('Published:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>
                             <div class="col-md-2"><b><?php _e('Deadline:', 'tst');?></b> <?php echo get_field('field_533bef200fe90', $task->ID);?></div>
                             <div class="col-md-2"><b><?php _e('Status:', 'tst');?></b> <?php echo tst_get_task_status_label($task->post_status);?></div>
-                            <div class="col-md-2"><b><?php _e('Candidates:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
+                            <div class="col-md-2"><b><?php _e('Volunteers:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
 							
 
                             <div class="col-md-4">

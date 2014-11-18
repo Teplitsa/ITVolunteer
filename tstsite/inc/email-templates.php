@@ -17,16 +17,17 @@ $email_templates = array(
         'text' => __("Hello, %s.\n\nYou have been disapproved to participate in task: %s.\n\nHave a nice day!", 'tst'),
     ),
     'refuse_candidate_author_notice' => array(
-        'title' => __('IT-Volunteer: a candidate for your task removed himself!', 'tst'),
-        'text' => __("Hello, %s.\n\nSome volunteer has been removed himself from a candidate for your task: %s.\n\nHis message is:\n%s\n\nHave a nice day!", 'tst'),
+        'title' => __('IT-Volunteer: a volunteer for your task removed himself!', 'tst'),
+        'text' => __("Hello, %s.\n\nSomeone has been removed himself from a volunteers for your task: %s.\n\nHis message is:\n%s\n\nHave a nice day!", 'tst'),
     ),
     'add_candidate_author_notice' => array(
-        'title' => __('IT-Volunteer: a candidate for your task appeared!', 'tst'),
-        'text' => __("Hello, %s.\n\nSome volunteer is wishing to participate in your task: %s.\nThis candidate is writing to you this: %s.\n\nYou can approve him if you wish on the task page: %s.\n\nHave a nice day!", 'tst'),
+        'title' => __('IT-Volunteer: a volunteer for your task appeared!', 'tst'),
+        'text' => __("Hello, %s.\n\nSomeone is wishing to participate in your task: %s.\nThis volunteer is writing to you this: %s.\n\nYou can approve him if you wish on the task page: %s.\n\nHave a nice day!", 'tst'),
     ),
     'activate_account_notice' => array(
         'title' => __('ITVolunteer - activate your account', 'tst'),
-        'text' => __("Greetings!\n\nYour registration is almost done. To complete it, please <a href='%s'>click here</a>.\n\nBest,\nITVolunteer", 'tst'),
+        'text' => __("Greerings!\n\nYour registration is almost done. To complete it, please <a href='%s'>click here</a>.\n\nBest,\nITVolunteer", 'tst'),
+        'test' => __('denisch_test_localization', 'tst'),
     ),
     'account_activated_notice' => array(
         'title' => __('it-volunteer - welcome!', 'tst'),

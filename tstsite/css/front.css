@@ -1,4 +1,5 @@
 /* project styles */
+
 /** Presets **/
 /* temp */
 #menu-center .dropdown-menu {
@@ -995,4 +996,78 @@ div[class|="status-block"] .row-top {
     left: 48px;
     padding: 1px 3px;
     position: absolute;
+}
+
+.footer-rss {
+	margin-right:30px;
+}
+
+.fb-widget {
+	padding-top:20px;
+	width:300px;
+	margin: 0px auto;
+}
+
+#site-navigation .container {
+  width: 1170px !important;
+}
+
+@media all and (max-width: 1200px)  {
+  
+  .in-loop .task-summary .task-params div[class *='col'] {
+	float: none;
+	width: 100%;	
+	margin-bottom: 5px; 
+  }
+  
+  .in-loop .task-summary .task-params .deadline {
+	width: auto;
+  }
+  
+  .task-summary-content .reward.task-param {
+	max-width: 100%;
+  }
+}
+.itv-user-workplace {
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+
+#upload_user_company_logo input {
+	cursor:pointer;
+}
+
+a.itv-company-logo-action, a.itv-company-logo-action:hover {
+	margin-bottom: 5px;
+	text-decoration: none;
+	vertical-align: middle;  
+	text-decoration:none;
+}
+
+.itv-about-reward-bubble {
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+.itv-about-reward-bubble {
+	margin-top:5px;
+	margin-bottom:5px;
+	width:70%;
+}
+
+.itv-test-employee {
+	width:20px;
+	margin-left:5px;
+}
+
+.itv-test-employee-big {
+	width:50px;
+}
+
+.skills_list .form-group {
+	width:30%;
+	float:left;
+	height: 50px;
+	overflow: hidden;
 }
