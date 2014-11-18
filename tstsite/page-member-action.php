@@ -37,6 +37,7 @@ $member_data = array(
     'user_professional' => tst_get_member_field('user_professional', $member),
     'user_contacts' => tst_get_member_field('user_contacts', $member),
     'user_website' => tst_get_member_field('user_website', $member),
+    'user_workplace' => tst_get_member_field('user_workplace', $member),
 );
 
 $social = array();
@@ -147,6 +148,22 @@ get_header();?>
 			<input type="text" class="form-control" name="user_city" id="user_city" value="<?php echo esc_attr(tst_print_member_field('user_city', $member_data));?>">
 			<small class="help-block"><?php _e('Please specify the city where you live', 'tst');?></small>
 		</div>
+
+		<div class="form-group">
+			<label for="user_workplace"><?php _e('Place of work', 'tst');?></label>
+			<input type="text" class="form-control" name="user_workplace" id="user_workplace" value="<?php echo esc_attr(tst_print_member_field('user_workplace', $member_data));?>">
+		</div>
+		
+		<div class="form-group">
+			<?$user_company_logo = tst_get_member_user_company_logo($member_data['member_id'])?>
+			
+			<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>
+			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-company-logo-action" title="<?php _e('Upload company logo', 'tst');?>"></a>
+			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
+			
+			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>
+			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
+		</div>
 		
 		<div class="form-group">
 			<label for="user_speciality"><?php _e('Speciality', 'tst');?></label>
@@ -160,10 +177,14 @@ get_header();?>
 			<small class="help-block"><?php _e('Please provide a brief information about yourself', 'tst');?>.</small>
 		</div>
 		
-		<div class="form-group">
-			<label for="user_professional"><?php _e('Professional skills', 'tst');?></label>
-			<textarea name="user_professional" id="user_professional" class="form-control" rows="6"><?php echo esc_textarea(tst_print_member_field('user_professional', $member_data));?></textarea>
-			<small class="help-block"><?php _e('Please describe your professional skills', 'tst');?>.</small>
+		<div>
+			<label for="skills_list"><?php _e('Skills list', 'tst');?></label>
+			<div class="skills_list clearfix">
+			<?
+				$skills = tst_get_user_skills($member_data['member_id']);
+				tst_show_user_skills($skills);
+			?>
+			</div>
 		</div>
 		
 		<h4><?php _e('Contact details', 'tst');?></h4>		

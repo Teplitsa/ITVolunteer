@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-07-23 12:22+0400\n"
-"PO-Revision-Date: 2014-08-12 20:08:52+0000\n"
+"PO-Revision-Date: 2014-11-13 20:27:29+0000\n"
 "Last-Translator: Anna <nordworldofann@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgid "Please, enter your name here"
 msgstr "Пожалуйста, введите ваше имя"
 
 #: contact-form.php:16
-#: page-member-action.php:100
+#: page-member-action.php:101
 #: page-registration.php:69
 #@ tst
 msgid "Email"
@@ -99,33 +99,33 @@ msgstr "Отправить"
 #: inc/admin.php:240
 #: inc/admin.php:300
 #: inc/admin.php:405
-#: sidebar-task.php:155
-#: sidebar-task.php:195
+#: sidebar-task.php:157
+#: sidebar-task.php:197
 #@ tst
 #@ default
 msgid "Cancel"
 msgstr "Отменить"
 
-#: content-member.php:34
-#: inc/template-tags.php:336
-#: page-members.php:113
+#: content-member.php:42
+#: inc/template-tags.php:331
+#: page-members.php:139
 #@ tst
 msgid "Rating"
 msgstr "«Пирожковый» рейтинг"
 
-#: content-member.php:35
-#: inc/customizer.php:168
+#: content-member.php:43
+#: inc/customizer.php:187
 #: navbar.php:30
 #@ tst
 msgid "Tasks"
 msgstr "Задачи"
 
-#: content-member.php:36
+#: content-member.php:44
 #@ tst
 msgid "Created tasks / completed tasks"
 msgstr "Созданных задач / завершенных задач"
 
-#: content-member.php:38
+#: content-member.php:46
 #@ tst
 msgid "Participating in tasks / completed tasks"
 msgstr "Участие в задачах / завершенных задач"
@@ -148,11 +148,6 @@ msgstr "Материалы по теме"
 msgid "Tags: %1$s"
 msgstr "Теги: %1$s"
 
-#: content.php:41
-#@ tst
-msgid "Candidates"
-msgstr "Кандидатов"
-
 #: content.php:48
 #@ tst
 msgid "Tags"
@@ -168,136 +163,138 @@ msgstr "Узнать подробности"
 msgid "Teplitsa of social technologies - crowdsourcing, technologies for the charity"
 msgstr "Теплица социальных технологий — краудсорсинг и технологии для благотворительности"
 
-#: footer.php:49
+#: footer.php:55
 #, php-format
 #@ tst
 msgid "All materials of the site are avaliabe under license %s"
 msgstr "Материалы сайта доступны по лицензии %s"
 
-#: functions.php:169
+#: functions.php:174
 #@ tst
 msgid "No such tags found..."
 msgstr "Нам очень жаль, но мы не нашли таких тегов :("
 
-#: functions.php:170
+#: functions.php:175
 #@ tst
 msgid "User login must have 4 or more symbols."
 msgstr "Логин должен содержать не менее 4-х символов."
 
-#: functions.php:171
+#: functions.php:176
 #@ tst
 msgid "User login contains incorrect symbols."
 msgstr "Логин содержит некорректные символы."
 
-#: functions.php:172
+#: functions.php:177
 #@ tst
 msgid "Email is required."
 msgstr "Пожалуйста, укажите ваш email. Он нам очень нужен! :)"
 
-#: functions.php:173
+#: functions.php:178
 #@ tst
 msgid "Email is incorrect."
 msgstr "Некорректный email."
 
-#: functions.php:174
+#: functions.php:179
 #@ tst
 msgid "Passwords are inconsistent."
 msgstr "Пароли не совпадают."
 
-#: functions.php:175
+#: functions.php:180
 #@ tst
 msgid "Password is required."
 msgstr "Обязательно укажите пароль"
 
-#: functions.php:176
+#: functions.php:181
 #@ tst
 msgid "First name must be at least 3 symbols long."
 msgstr "Имя должно содержать не менее 3-х символов."
 
-#: functions.php:177
+#: functions.php:182
 #@ tst
 msgid "Last name must be at least 3 symbols long."
 msgstr "Фамилия дожна содержать не менее 3-х символов."
 
-#: functions.php:178
+#: functions.php:183
 #@ tst
 msgid "This task will be deleted. Are you sure?"
 msgstr "Задача будет удалена. Вы уверены?"
 
-#: functions.php:179
+#: functions.php:184
 #@ tst
 msgid "Your profile will be deleted. Are you sure?"
 msgstr "Ваш профиль будет удален. Вы уверены?"
 
-#: functions.php:180
+#: functions.php:185
 #@ tst
 msgid "Please, set a title for the task."
 msgstr "Как называется ваша задача? Нам правда важно это знать :)"
 
-#: functions.php:181
+#: functions.php:186
 #@ tst
 msgid "Please, set a deadline date for the task."
 msgstr "Когда вы планируете завершить задачу? Это важная информация."
 
-#: functions.php:182
+#: functions.php:187
 #@ tst
 msgid "Please, set a small description for the task."
 msgstr "Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, пожалуйста, краткое, но исчерпывающее описание."
 
-#: functions.php:183
+#: functions.php:188
 #@ tst
 msgid "Please, give a few words about what you are expecting from a task doer."
 msgstr "Что вы ожидаете от исполнителя задачи?"
 
-#: functions.php:184
+#: functions.php:189
 #@ tst
 msgid "Please, note a few words about a reward that you are willing to give for a task."
 msgstr "Как вы хотите отблагодарить исполнителя?"
 
-#: functions.php:185
+#: functions.php:190
 #@ tst
 msgid "Please, tell something about your project, initiative or an organization."
 msgstr "Пожалуйста, расскажите немного о проекте, гражданской инициативе или организации, которую вы представляете."
 
-#: functions.php:186
+#: functions.php:191
 #@ tst
 msgid "Please, set at least one thematic tag for your task."
 msgstr "Пожалуйста, добавьте хотя бы один тематический тег для вашей задачи."
 
-#: functions.php:187
+#: functions.php:192
 #@ tst
 msgid "Please, select your reward for a task doer."
 msgstr "Пожалуйста, выберите награду для исполнителя вашей задачи."
 
-#: functions.php:188
+#: functions.php:193
 #@ tst
 msgid "Your name is required."
 msgstr "Обязательно укажите ваше имя."
 
-#: functions.php:189
+#: functions.php:194
 #@ tst
 msgid "Your message is required."
 msgstr "Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
 
-#: home-well.php:22
+#: home-well.php:25
 #@ tst
 msgid "Watch the video"
 msgstr "Смотреть видео"
 
-#: home-well.php:31
+#: home-well.php:34
 #@ tst
 msgid "About IT-Volunteer"
 msgstr "Об it-волонтёре"
 
 #: home-well.php:47
+#: navbar.php:49
 #@ tst
 msgid "Your profile"
 msgstr "Ваш профиль"
 
 #: home-well.php:49
-#: navbar.php:63
+#: navbar.php:51
+#: navbar.php:68
 #: page-registration.php:101
-#: sidebar-task.php:21
+#: sidebar-task.php:23
 #@ tst
 msgid "Register"
 msgstr "Зарегистрироваться"
@@ -310,7 +307,7 @@ msgstr "Ваш профиль успешно удален"
 #: homepage.php:21
 #@ tst
 msgid "Recent tasks"
-msgstr "Последние задачи"
+msgstr "Текущие задачи"
 
 #: homepage.php:51
 #@ tst
@@ -336,7 +333,7 @@ msgstr ""
 #: inc/admin.php:113
 #: inc/admin.php:114
 #: page-task-action.php:207
-#: sidebar-task.php:29
+#: sidebar-task.php:31
 #@ default
 #@ tst
 msgid "Publish"
@@ -368,7 +365,7 @@ msgstr "Статус:"
 
 #: inc/admin.php:208
 #: inc/admin.php:233
-#: inc/customizer.php:232
+#: inc/customizer.php:251
 #: page-task-action.php:92
 #@ tst
 #@ default
@@ -383,19 +380,19 @@ msgstr "Опубликовано"
 
 #: inc/admin.php:214
 #: inc/admin.php:235
-#: inc/customizer.php:112
-#: inc/customizer.php:234
+#: inc/customizer.php:131
+#: inc/customizer.php:253
 #@ tst
 msgid "In work"
 msgstr "В работе"
 
 #: inc/admin.php:217
 #: inc/admin.php:236
-#: inc/customizer.php:120
-#: inc/customizer.php:235
+#: inc/customizer.php:139
+#: inc/customizer.php:254
 #@ tst
 msgid "Closed"
-msgstr "Закрыто"
+msgstr "Решено"
 
 #: inc/admin.php:226
 #: inc/admin.php:280
@@ -476,12 +473,13 @@ msgstr ""
 msgid "Task status"
 msgstr "Статус задачи"
 
-#: inc/customizer.php:82
+#: inc/customizer.php:98
+#: inc/customizer.php:1056
 #@ tst
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
-#: inc/customizer.php:117
+#: inc/customizer.php:136
 #, php-format
 #@ tst
 msgid "In work <span class=\"count\">(%s)</span>"
@@ -489,7 +487,7 @@ msgid_plural "In work <span class=\"count\">(%s)</span>"
 msgstr[0] "В работе <span class=\"count\">(%s)</span>"
 msgstr[1] "В работе <span class=\"count\">(%s)</span>"
 
-#: inc/customizer.php:125
+#: inc/customizer.php:144
 #, php-format
 #@ tst
 msgid "Closed <span class=\"count\">(%s)</span>"
@@ -497,134 +495,134 @@ msgid_plural "Closed <span class=\"count\">(%s)</span>"
 msgstr[0] "Закрыто <span class=\"count\">(%s)</span>"
 msgstr[1] "Закрыто <span class=\"count\">(%s)</span>"
 
-#: inc/customizer.php:161
+#: inc/customizer.php:180
 #@ tst
 msgid "Doer approved"
 msgstr "Исполнитель утвержден"
 
-#: inc/customizer.php:167
+#: inc/customizer.php:186
 #@ tst
 msgid "Task doers"
 msgstr "Исполнители задачи"
 
-#: inc/customizer.php:171
+#: inc/customizer.php:190
 #@ tst
 msgid "Task"
 msgstr "Задача"
 
-#: inc/customizer.php:172
+#: inc/customizer.php:191
 #@ tst
 msgid "Search tasks"
 msgstr "Поиск задач"
 
-#: inc/customizer.php:173
+#: inc/customizer.php:192
 #@ tst
 msgid "No tasks found."
 msgstr "Задачи не найдены."
 
-#: inc/customizer.php:174
-#: inc/customizer.php:180
+#: inc/customizer.php:193
+#: inc/customizer.php:199
 #@ tst
 msgid "Create connections"
 msgstr "Создать взаимосвязь"
 
-#: inc/customizer.php:177
+#: inc/customizer.php:196
 #@ tst
 msgid "Doer"
 msgstr "Исполнитель"
 
-#: inc/customizer.php:178
+#: inc/customizer.php:197
 #@ tst
 msgid "Search doers"
 msgstr "Поиск исполнителей"
 
-#: inc/customizer.php:179
-#: sidebar-task.php:110
+#: inc/customizer.php:198
+#: sidebar-task.php:112
 #@ tst
 #@ default
 msgid "No doers found."
 msgstr "Исполнители не найдены."
 
-#: inc/customizer.php:233
+#: inc/customizer.php:252
 #@ tst
 msgid "Opened"
 msgstr "Открыто"
 
-#: inc/customizer.php:287
+#: inc/customizer.php:308
 #@ tst
 msgid "The task was successfully deleted."
 msgstr "Задача успешно удалена."
 
-#: inc/customizer.php:327
+#: inc/customizer.php:356
 #@ tst
 msgid "<strong>Error:</strong> something occured due to the task addition."
 msgstr "Во время добавления задачи произошли ошибки."
 
-#: inc/customizer.php:328
+#: inc/customizer.php:357
 #@ tst
 msgid "<strong>Error:</strong> something occured due to task edition."
 msgstr "Во время редактирования задачи произошли ошибки"
 
-#: inc/customizer.php:346
-#: inc/customizer.php:372
-#: inc/customizer.php:396
-#: inc/customizer.php:422
-#: inc/customizer.php:450
-#: inc/customizer.php:514
-#: inc/customizer.php:557
-#: inc/customizer.php:602
-#: inc/customizer.php:655
-#: inc/customizer.php:689
-#: inc/customizer.php:750
-#: inc/customizer.php:804
-#: inc/customizer.php:827
+#: inc/customizer.php:375
+#: inc/customizer.php:401
+#: inc/customizer.php:425
+#: inc/customizer.php:451
+#: inc/customizer.php:479
+#: inc/customizer.php:543
+#: inc/customizer.php:586
+#: inc/customizer.php:631
+#: inc/customizer.php:684
+#: inc/customizer.php:718
+#: inc/customizer.php:779
+#: inc/customizer.php:835
+#: inc/customizer.php:858
 #@ tst
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные."
 
-#: inc/customizer.php:638
+#: inc/customizer.php:667
 #@ tst
 msgid "Your account is not active yet! Please check out your email."
 msgstr "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
 
-#: inc/customizer.php:694
+#: inc/customizer.php:723
 #@ tst
 msgid "Username already exists!"
 msgstr "Такой логин уже существует."
 
-#: inc/customizer.php:699
-#: inc/customizer.php:755
+#: inc/customizer.php:728
+#: inc/customizer.php:784
 #@ tst
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
-#: inc/customizer.php:713
+#: inc/customizer.php:742
 #@ tst
 msgid "We are very sorry :( Some error occured while registering your account."
 msgstr "К сожалению, во время регистрации произошла ошибка. Пробуйте повторить регистрацию позже."
 
-#: inc/customizer.php:733
+#: inc/customizer.php:762
 #@ tst
 msgid "Your registration is complete! Please check out the email you gave us for our activation message."
 msgstr "Да! Вы почти сделали это! Ваша регистрация практически завершена – осталось только активировать вашу учетную запись! Пожалуйста, сделайте это, следуя инструкциям в отправленном вам письме."
 
-#: inc/customizer.php:771
+#: inc/customizer.php:800
 #@ tst
 msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
-#: inc/customizer.php:789
+#: inc/customizer.php:820
 #, php-format
 #@ tst
 msgid "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link\">View it</a>"
 msgstr "Ваш профиль успешно обновлен <a href=\"%s\" class=\"alert-link\">Просмотреть</a>."
 
-#: inc/customizer.php:815
+#: inc/customizer.php:846
 #@ tst
 msgid "<strong>Error:</strong> something wrong happens when we deleted your account. We are already looking to it."
 msgstr "Упс! Что-то пошло не так во время удаления вашего аккаунта. Мы уже решаем эту проблему."
 
-#: inc/customizer.php:845
+#: inc/customizer.php:876
 #@ tst
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
@@ -659,75 +657,38 @@ msgstr ""
 "Вы были исключены из исполнителей задачи: %s.\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
-
-#: inc/email-templates.php:20
-#@ tst
-msgid "IT-Volunteer: a candidate for your task removed himself!"
-msgstr "it-волонтёр: кто-то удалился из списка кандидатов в исполнители вашей задачи!"
-
-#: inc/email-templates.php:21
-#, php-format
-#@ tst
-msgid ""
-"Hello, %s.\n"
-"\n"
-"Some volunteer has been removed himself from a candidate for your task: %s.\n"
-"\n"
-"His message is:\n"
-"%s\n"
-"\n"
-"Have a nice day!"
-msgstr ""
-"Добрый день, %s.\n"
-"\n"
-"Один из волонтёров передумал участвовать в вашей задаче: %s.\n"
-"\n"
-"Этот волонтёр передаёт вам следующее:\n"
-"%s\n"
-"\n"
-"С уважением,\n"
-"команда it-волонтёра"
-
-#: inc/email-templates.php:24
-#@ tst
-msgid "IT-Volunteer: a candidate for your task appeared!"
-msgstr "it-волонтёр: новый кандидат в исполнители вашей задачи!"
-
-#: inc/email-templates.php:25
-#, php-format
-#@ tst
-msgid ""
-"Hello, %s.\n"
-"\n"
-"Some volunteer is wishing to participate in your task: %s.\n"
-"This candidate is writing to you this: %s.\n"
-"\n"
-"You can approve him if you wish on the task page: %s.\n"
-"\n"
-"Have a nice day!"
-msgstr ""
-"Добрый день, %s.\n"
-"\n"
-"Один из волонтёров хочет участвовать в выполнении вашей задачи: %s.\n"
-"Этот кандидат пишет вам следующее: %s.\n"
-"\n"
-"Вы можете подтвердить его участие на странице задачи: %s.\n"
-"\n"
-"С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
 #: inc/email-templates.php:28
 #@ tst
 msgid "ITVolunteer - activate your account"
 msgstr "it-волонтёр - активация учетной записи"
 
-#: inc/email-templates.php:32
+#: inc/email-templates.php:29
+#, php-format
+#@ tst
+msgid ""
+"Greerings!\n"
+"\n"
+"Your registration is almost done. To complete it, please <a href='%s'>click here</a>.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Здравствуйте!\n"
+"\n"
+"Ваша регистрация в it-волонтёре почти завершена. Осталось только активировать ваш аккаунт. Для этого, пожалуйста, пройдите по следующей <a href='%s'>ссылке</a>.\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра."
+
+#: inc/email-templates.php:33
 #@ tst
 msgid "it-volunteer - welcome!"
 msgstr "it-волонтёр - добро пожаловать!"
 
-#: inc/email-templates.php:33
+#: inc/email-templates.php:34
 #, php-format
 #@ tst
 msgid ""
@@ -751,14 +712,15 @@ msgstr ""
 "Вы можете войти на сайт здесь: %s\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/email-templates.php:36
+#: inc/email-templates.php:37
 #@ tst
 msgid "ITVolunteer - new comment on your task!"
 msgstr "it-волонтёр - новый комментарий к вашей задаче!"
 
-#: inc/email-templates.php:37
+#: inc/email-templates.php:38
 #, php-format
 #@ tst
 msgid ""
@@ -778,12 +740,12 @@ msgstr ""
 "С уважением,\n"
 "команда it-волонтёра"
 
-#: inc/email-templates.php:40
+#: inc/email-templates.php:41
 #@ tst
 msgid "ITVolunteer - your task in coming to its deadline!"
 msgstr "it-волонтёр - ваша задача близится к своему дэдлайну!"
 
-#: inc/email-templates.php:41
+#: inc/email-templates.php:42
 #, php-format
 #@ tst
 msgid ""
@@ -799,14 +761,15 @@ msgstr ""
 "Дэдлайн вашей задачи наступит уже послезавтра. Вы можете увидеть активность по этой задаче на её странице: %s.\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/email-templates.php:44
+#: inc/email-templates.php:45
 #@ tst
 msgid "ITVolunteer - task deadline is near!"
 msgstr "it-волонтёр - дэдлайн вашей задачи совсем близко!"
 
-#: inc/email-templates.php:45
+#: inc/email-templates.php:46
 #, php-format
 #@ tst
 msgid ""
@@ -822,9 +785,10 @@ msgstr ""
 "Уже послезавтра наступит дэдлайн задачи, в которой вы заняты: %s.\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/email-templates.php:49
+#: inc/email-templates.php:50
 #, php-format
 #@ tst
 msgid ""
@@ -844,14 +808,15 @@ msgstr ""
 "Если это была ошибка, просто проигнорируйте это письмо, пожалуйста. Чтобы сбросить ваш пароль, пройдите по следующей ссылке: %s\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/email-templates.php:52
+#: inc/email-templates.php:53
 #@ tst
 msgid "it-volunteer - new message from contact form"
 msgstr "it-волонтёр- новое сообщение с формы обратной связи"
 
-#: inc/email-templates.php:53
+#: inc/email-templates.php:54
 #, php-format
 #@ tst
 msgid ""
@@ -877,7 +842,8 @@ msgstr ""
 "%s\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
 #: inc/extras.php:66
 #@ tst
@@ -885,19 +851,19 @@ msgid "Top"
 msgstr "К началу"
 
 #: inc/extras.php:249
-#: inc/extras.php:650
+#: inc/extras.php:659
 #@ tst
 msgid "Client"
 msgstr "Бенефициар"
 
 #: inc/extras.php:250
-#: inc/extras.php:654
+#: inc/extras.php:663
 #@ tst
 msgid "Volunteer"
 msgstr "Супергерой"
 
 #: inc/extras.php:251
-#: inc/extras.php:658
+#: inc/extras.php:667
 #@ tst
 msgid "Participator"
 msgstr "Активист"
@@ -907,124 +873,124 @@ msgstr "Активист"
 msgid "Unknown role"
 msgstr "Неизвестная роль"
 
-#: inc/extras.php:279
-#: inc/extras.php:297
-#: page-members.php:152
+#: inc/extras.php:282
+#: inc/extras.php:301
 #: page-members.php:178
+#: page-members.php:204
 #@ tst
 msgid "Created by"
 msgstr "Поставлено"
 
-#: inc/extras.php:301
+#: inc/extras.php:305
 #@ tst
 msgid "Created at"
 msgstr "Создано"
 
-#: inc/extras.php:314
-#: inc/template-tags.php:522
+#: inc/extras.php:318
+#: inc/template-tags.php:532
 #@ tst
 msgid "No reward setted yet"
 msgstr "Награда не объявлена"
 
-#: inc/extras.php:356
+#: inc/extras.php:360
 #@ tst
 msgid "Twitter (username without @)"
 msgstr "Twitter (имя пользователя без @)"
 
-#: inc/extras.php:357
+#: inc/extras.php:361
 #@ tst
 msgid "Facebook profile (link)"
 msgstr "Профиль Facebook (ссылка)"
 
-#: inc/extras.php:358
+#: inc/extras.php:362
 #@ tst
 msgid "VKontakte profile (link)"
 msgstr "Профиль ВКонтакте (ссылка)"
 
-#: inc/extras.php:359
+#: inc/extras.php:363
 #@ tst
 msgid "Google+ (link)"
 msgstr "Google+ (ссылка)"
 
-#: inc/extras.php:392
+#: inc/extras.php:396
 #@ tst
 msgid "More"
 msgstr "Подробнее"
 
-#: inc/extras.php:500
-#: page-member-action.php:171
+#: inc/extras.php:509
+#: page-member-action.php:192
 #@ tst
 msgid "Website"
 msgstr "Вебсайт"
 
-#: inc/extras.php:510
+#: inc/extras.php:519
 #@ tst
 msgid "Twitter"
 msgstr "Twitter"
 
-#: inc/extras.php:519
+#: inc/extras.php:528
 #@ tst
 msgid "Facebook"
 msgstr "Facebook"
 
-#: inc/extras.php:528
+#: inc/extras.php:537
 #@ tst
 msgid "VKontakte"
 msgstr "ВКонтакте"
 
-#: inc/extras.php:537
+#: inc/extras.php:546
 #@ tst
 msgid "Google+"
 msgstr "Google+"
 
-#: inc/extras.php:566
+#: inc/extras.php:575
 #@ tst
 msgid "Location"
 msgstr "Местоположение"
 
-#: inc/extras.php:570
-#: inc/extras.php:583
+#: inc/extras.php:579
+#: inc/extras.php:592
 #@ tst
 msgid "Joined at"
 msgstr "Участвует с"
 
-#: inc/extras.php:617
-#: navbar.php:62
+#: inc/extras.php:626
+#: navbar.php:67
 #: page-login.php:81
-#: sidebar-task.php:21
+#: sidebar-task.php:23
 #@ tst
 #@ default
 msgid "Log In"
 msgstr "Войти"
 
-#: inc/extras.php:621
+#: inc/extras.php:630
 #@ tst
 msgid "New Member"
 msgstr "Новый участник"
 
-#: inc/extras.php:625
+#: inc/extras.php:634
 #@ tst
 msgid "Edit profile"
 msgstr "Редактировать профиль"
 
-#: inc/extras.php:633
-#: page-members.php:163
+#: inc/extras.php:642
 #: page-members.php:189
+#: page-members.php:215
 #@ tst
 msgid "All tasks"
 msgstr "Все задачи"
 
-#: inc/extras.php:652
+#: inc/extras.php:661
 #@ tst
 msgid "A Client is a blah-blah-blah."
 msgstr "«Бенефициар» – это пользователь системы, который чаще ставить задачи сам."
 
-#: inc/extras.php:656
+#: inc/extras.php:665
 #@ tst
 msgid "A Volunteer is a mimimi."
 msgstr "«Супергерой» – это пользователь, который самоотверженно проявляет себя на ниве it-волонтёрства. Если количество задач, закрытых при вашем участии, превышает количество задач, поставленных вами, то ваш аккаунт имеет тип «Супергерой»."
 
-#: inc/extras.php:660
+#: inc/extras.php:669
 #@ tst
 msgid "A Participator is a nyan-nyan."
 msgstr "«Активист» – это пользователь, который любит и брать, и давать. Если вы выставили столько же задач, сколько было закрыто при вашем участии, то ваш аккаунт имеет тип «Активист»."
@@ -1091,76 +1057,77 @@ msgstr "Укажите размер миниатюры. Пустое значе�
 msgid "All Tasks"
 msgstr "Все задачи"
 
-#: inc/template-tags.php:107
-#: navbar.php:48
+#: home-well.php:45
+#: inc/template-tags.php:110
+#: navbar.php:53
 #@ tst
 msgid "New task"
 msgstr "Новая задача"
 
-#: inc/template-tags.php:111
+#: inc/template-tags.php:113
 #, php-format
 #@ tst
 msgid "Edit task #%s"
 msgstr "Редактировать задачу #%s"
 
-#: inc/template-tags.php:127
+#: inc/template-tags.php:124
 #@ tst
 msgid "Search results"
 msgstr "Результаты поиска"
 
-#: inc/template-tags.php:131
+#: inc/template-tags.php:127
 #@ tst
 msgid "Page not found"
 msgstr "Страница не найдена"
 
-#: inc/template-tags.php:135
+#: inc/template-tags.php:130
 #@ tst
 msgid "Some title"
 msgstr "Заголовок"
 
-#: inc/template-tags.php:161
+#: inc/template-tags.php:156
 #@ tst
 msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
-#: inc/template-tags.php:166
+#: inc/template-tags.php:161
 #@ tst
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
-#: inc/template-tags.php:221
-#: inc/template-tags.php:272
+#: inc/template-tags.php:216
+#: inc/template-tags.php:267
 #@ tst
 msgid "&laquo; prev."
 msgstr "&laquo; пред."
 
-#: inc/template-tags.php:222
-#: inc/template-tags.php:273
+#: inc/template-tags.php:217
+#: inc/template-tags.php:268
 #@ tst
 msgid "next. &raquo;"
 msgstr "след. &raquo;"
 
-#: inc/template-tags.php:348
+#: inc/template-tags.php:343
 #@ tst
 msgid "Disapprove"
 msgstr "Отклонить"
 
-#: inc/template-tags.php:362
+#: inc/template-tags.php:357
 #@ tst
 msgid "Approve"
 msgstr "Одобрить"
 
-#: inc/template-tags.php:418
+#: inc/template-tags.php:421
 #@ tst
 msgid "Member"
 msgstr "Участник"
 
-#: inc/template-tags.php:424
+#: inc/template-tags.php:427
 #@ tst
 msgid "LogIn"
 msgstr "Войти"
 
-#: inc/template-tags.php:471
+#: inc/template-tags.php:474
 #, php-format
 #@ _tk
 msgctxt "1: date, 2: time"
@@ -1200,17 +1167,17 @@ msgstr "Поиск"
 msgid "Go"
 msgstr "Искать"
 
-#: navbar.php:56
+#: navbar.php:61
 #@ tst
 msgid "My tasks"
 msgstr "Мои задачи"
 
-#: navbar.php:57
+#: navbar.php:62
 #@ tst
 msgid "My profile"
 msgstr "Мой профиль"
 
-#: navbar.php:58
+#: navbar.php:63
 #@ tst
 msgid "Log out"
 msgstr "Выйти"
@@ -1253,7 +1220,7 @@ msgid "You have been successfully logged out. Hope you'll come back soon"
 msgstr "Вы успешно вышли из системы. Будем рады видеть вас снова!"
 
 #: page-login.php:66
-#: page-member-action.php:94
+#: page-member-action.php:95
 #@ tst
 msgid "Username"
 msgstr "Логин"
@@ -1285,129 +1252,118 @@ msgstr "Зарегистрируйтесь."
 msgid "No problem. %s It will take just a few minutes."
 msgstr "Нет проблем. %s Это займет несколько минут."
 
-#: page-member-action.php:69
+#: page-member-action.php:70
 #@ tst
 msgid "Back to Preview mode"
 msgstr "Вернуться в режим просмотра"
 
-#: page-member-action.php:90
+#: page-member-action.php:91
 #@ tst
 msgid "Settings"
 msgstr "Настройки"
 
-#: page-member-action.php:96
+#: page-member-action.php:97
 #@ tst
 msgid "Username can't be changed"
 msgstr "Логин не может быть изменён"
 
-#: page-member-action.php:106
+#: page-member-action.php:107
 #@ tst
 msgid "New password"
 msgstr "Новый пароль"
 
-#: page-member-action.php:109
+#: page-member-action.php:110
 #@ tst
 msgid "If you would like to change the password type a new one. Otherwise leave this blank."
 msgstr "Если вы хотите изменить пароль, укажите здесь новое значение. В противном случае оставьте пустым."
 
-#: page-member-action.php:113
+#: page-member-action.php:114
 #: page-registration.php:81
 #@ tst
 msgid "Repeat password"
 msgstr "Введите пароль еще раз"
 
-#: page-member-action.php:124
+#: page-member-action.php:125
 #@ tst
 msgid "Delete profile"
 msgstr "Удалить профиль"
 
-#: page-member-action.php:129
+#: page-member-action.php:130
 #@ tst
 msgid "Profile data"
 msgstr "Данные профиля"
 
-#: page-member-action.php:132
+#: page-member-action.php:133
 #: page-registration.php:87
 #@ tst
 msgid "First name"
 msgstr "Имя"
 
-#: page-member-action.php:134
+#: page-member-action.php:135
 #: page-registration.php:89
 #@ tst
 msgid "Please provide your first name"
 msgstr "Пожалуйста, укажите ваше имя"
 
-#: page-member-action.php:139
+#: page-member-action.php:140
 #: page-registration.php:94
 #@ tst
 msgid "Last name"
 msgstr "Фамилия"
 
-#: page-member-action.php:141
+#: page-member-action.php:142
 #: page-registration.php:96
 #@ tst
 msgid "Please provide your last name"
 msgstr "Пожалуйста, укажите вашу фамилию"
 
-#: page-member-action.php:146
+#: page-member-action.php:147
 #@ tst
 msgid "City"
 msgstr "Город"
 
-#: page-member-action.php:148
+#: page-member-action.php:149
 #@ tst
 msgid "Please specify the city where you live"
 msgstr "Пожалуйста, укажите город, в котором вы живете"
 
-#: page-member-action.php:152
+#: page-member-action.php:169
 #@ tst
 msgid "Speciality"
 msgstr "Специализация"
 
-#: page-member-action.php:154
+#: page-member-action.php:171
 #@ tst
 msgid "Describe your speciality in a few words"
 msgstr "Опишите в нескольких словах вашу специализацию"
 
-#: page-member-action.php:158
+#: page-member-action.php:175
 #@ tst
 msgid "Bio"
 msgstr "Биография"
 
-#: page-member-action.php:160
+#: page-member-action.php:177
 #@ tst
 msgid "Please provide a brief information about yourself"
 msgstr "Пожалуйста, укажите краткую информацию о себе"
 
-#: page-member-action.php:164
-#: page-members.php:78
-#@ tst
-msgid "Professional skills"
-msgstr "Профессиональные навыки"
-
-#: page-member-action.php:166
-#@ tst
-msgid "Please describe your professional skills"
-msgstr "Пожалуйста, опишите ваши профессиональные навыки"
-
-#: page-member-action.php:169
-#: page-members.php:95
+#: page-member-action.php:190
+#: page-members.php:121
 #@ tst
 msgid "Contact details"
 msgstr "Контактная информация"
 
-#: page-member-action.php:182
+#: page-member-action.php:203
 #@ tst
 msgid "Additional contact info"
 msgstr "Дополнительные контактные данные"
 
-#: page-member-action.php:184
+#: page-member-action.php:205
 #@ tst
 msgid "Please provide some additional ways to contact you"
 msgstr "Пожалуйста, укажите дополнительные способы связи с вами"
 
-#: page-member-action.php:190
+#: page-member-action.php:211
 #@ tst
 msgid "Save data"
 msgstr "Сохранить данные"
@@ -1423,13 +1379,13 @@ msgid "Your task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 #: page-member-tasks.php:74
-#: page-members.php:117
+#: page-members.php:143
 #@ tst
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
 #: page-member-tasks.php:75
-#: page-members.php:131
+#: page-members.php:157
 #@ tst
 msgid "Tasks in progress"
 msgstr "Задачи в работе"
@@ -1445,12 +1401,6 @@ msgstr "Опубликовано:"
 #@ tst
 msgid "Deadline:"
 msgstr "Дэдлайн:"
-
-#: page-member-tasks.php:88
-#: page-member-tasks.php:116
-#@ tst
-msgid "Candidates:"
-msgstr "Кандидатов:"
 
 #: page-member-tasks.php:92
 #: page-member-tasks.php:120
@@ -1468,77 +1418,75 @@ msgstr "У вас пока нет созданных задач."
 msgid "You still have to join some tasks."
 msgstr "Вы еще не присоединились ни к одной задаче."
 
-#: page-members.php:70
+#: page-members.php:80
 #@ tst
 msgid "About me"
 msgstr "Обо мне"
 
-#: page-members.php:73
-#: page-members.php:81
-#: page-members.php:89
+#: page-members.php:83
 #@ tst
 msgid "No data."
 msgstr "Не указано."
 
-#: page-members.php:86
+#: page-members.php:114
 #@ tst
 msgid "In the web"
 msgstr "В сети"
 
-#: page-members.php:99
+#: page-members.php:125
 #@ tst
 msgid "Additional"
 msgstr "Еще"
 
-#: page-members.php:118
-#: page-members.php:122
+#: page-members.php:144
+#: page-members.php:148
 #@ tst
 msgid "Closed from them"
-msgstr "Из них закрыто"
+msgstr "Из них решено"
 
-#: page-members.php:121
+#: page-members.php:147
 #@ tst
 msgid "Tasks joined"
 msgstr "Участие в задачах"
 
-#: page-members.php:132
+#: page-members.php:158
 #@ tst
 msgid "Created tasks"
 msgstr "Созданные задачи"
 
-#: page-members.php:137
+#: page-members.php:163
 #@ tst
 msgid "No tasks in progress"
 msgstr "Нет задач в работе"
 
-#: page-members.php:152
+#: page-members.php:178
 #@ tst
 msgid "Author deleted his account"
 msgstr "Автор удалил свой профиль"
 
 #  Оставить дедлайн? или назвать иначе?
-#: page-members.php:154
-#: page-members.php:179
+#: page-members.php:180
+#: page-members.php:205
 #: page-task-action.php:161
 #: tasks-filter.php:25
 #@ tst
 msgid "Deadline"
 msgstr "Дэдлайн"
 
-#: page-members.php:155
-#: page-members.php:180
+#: page-members.php:181
+#: page-members.php:206
 #: page-task-action.php:168
 #: tasks-filter.php:38
 #@ tst
 msgid "Reward"
 msgstr "Награда"
 
-#: page-members.php:171
+#: page-members.php:197
 #@ tst
 msgid "No tasks created"
 msgstr "Нет созданных задач"
 
-#: page-members.php:178
+#: page-members.php:204
 #@ tst
 msgid "Me"
 msgstr "Мной"
@@ -1579,12 +1527,6 @@ msgstr "Пожалуйста, %s."
 msgid "Task title"
 msgstr "Заголовок задачи"
 
-#: page-task-action.php:125
-#, php-format
-#@ tst
-msgid "Your task was successfully published! Now it's open for a new candidates to do it. <a href='%s'>Check it out</a>"
-msgstr "Ваша задача была опубликована! Теперь it-волонтёры могут присоединиться к ней. <a href='%s'>Перейти на страницу задачи</a>"
-
 #: page-task-action.php:126
 #, php-format
 #@ tst
@@ -1600,11 +1542,6 @@ msgstr "Описание задачи"
 #@ tst
 msgid "What we are expecting from you"
 msgstr "Что ожидаем от исполнителя"
-
-#: page-task-action.php:145
-#@ tst
-msgid "A couple of words about a reward for completing the task"
-msgstr "Пожалуйста, укажите награду за выполнение задачи."
 
 #: page-task-action.php:151
 #@ tst
@@ -1644,16 +1581,16 @@ msgid "The task is open for help offers"
 msgstr "Задача открыта для предложений помощи"
 
 #: page-task-action.php:220
-#: sidebar-task.php:84
+#: sidebar-task.php:86
 #@ tst
 msgid "The task is in work"
 msgstr "Задача в работе"
 
 #: page-task-action.php:221
-#: sidebar-task.php:118
+#: sidebar-task.php:120
 #@ tst
 msgid "The task is closed"
-msgstr "Задача закрыта"
+msgstr "Задача решена"
 
 #: page-task-action.php:222
 #@ tst
@@ -1680,136 +1617,124 @@ msgstr "Удалить задачу"
 msgid "Results"
 msgstr "Результатов"
 
-#: sidebar-task.php:16
-#: sidebar-task.php:137
+#: sidebar-task.php:17
+#: sidebar-task.php:139
 #@ tst
 msgid "Offer help"
 msgstr "Предложить помощь"
 
-#: sidebar-task.php:19
+#: sidebar-task.php:21
 #@ tst
 msgid "You have not offered your help yet"
 msgstr "Вы еще не предложили помощь"
 
-#: sidebar-task.php:21
+#: sidebar-task.php:23
 #@ tst
 msgid "You must log in to offer help to somebody!"
 msgstr "Вы должны авторизоваться, чтобы предложить помощь."
 
-#: sidebar-task.php:21
+#: sidebar-task.php:23
 #@ tst
 msgid "or"
 msgstr "или"
 
-#: sidebar-task.php:31
+#: sidebar-task.php:33
 #@ tst
 msgid "Task is in draft stage"
 msgstr "Задача является черновиком"
 
-#: sidebar-task.php:43
+#: sidebar-task.php:45
 #@ tst
 msgid "Stop publication"
 msgstr "Остановить публикацию"
 
-#: sidebar-task.php:46
-#@ tst
-msgid "The task is open. No candidates found"
-msgstr "Задача открыта. Кандидаты не найдены"
-
-#: sidebar-task.php:59
+#: sidebar-task.php:61
 #@ tst
 msgid "In work!"
 msgstr "В работе"
 
-#: sidebar-task.php:61
+#: sidebar-task.php:63
 #@ tst
 msgid "The task is open"
 msgstr "Задача открыта"
 
-#: sidebar-task.php:69
-#: sidebar-task.php:163
-#: sidebar-task.php:202
-#@ tst
-msgid "Candidates offered their help"
-msgstr "Кандидаты, предложившие помощь"
-
-#: sidebar-task.php:81
+#: sidebar-task.php:83
 #@ tst
 msgid "Close the task"
 msgstr "Закрыть задачу"
 
-#: sidebar-task.php:84
+#: sidebar-task.php:86
 #@ tst
 msgid "Re-open the task?"
 msgstr "Продолжить набор кандидатов?"
 
-#: sidebar-task.php:102
+#: sidebar-task.php:104
 #@ tst
 msgid "Doers and candidates to help"
 msgstr "Исполнители и кандидаты"
 
-#: sidebar-task.php:116
+#: sidebar-task.php:118
 #@ tst
 msgid "Return to work"
 msgstr "Вернуться к работе"
 
-#: sidebar-task.php:126
+#: sidebar-task.php:128
 #@ tst
 msgid "Doers participated"
 msgstr "Участвовало исполнителей "
 
-#: sidebar-task.php:140
+#: sidebar-task.php:142
 #@ tst
 msgid "You are not offered your help yet"
 msgstr "Вы еще не предложили помощь"
 
-#: sidebar-task.php:141
+#: sidebar-task.php:143
 #@ tst
 msgid "The task are already in work! Please try offering your help on another one"
 msgstr "Задача уже в работе! Помогите кому-нибудь еще :)"
 
-#: sidebar-task.php:142
+#: sidebar-task.php:144
 #@ tst
 msgid "The task was closed for help offers"
 msgstr "Задача закрыта для предложений помощи"
 
-#: sidebar-task.php:144
+#: sidebar-task.php:146
 #@ tst
 msgid "The task is not open yet, so you cannot offer your help for now"
 msgstr "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
-#: sidebar-task.php:148
+#: sidebar-task.php:150
 #@ tst
 msgid "Send a little message to the task author about what you can do to help."
 msgstr "Напишите автору задачи, чем вы хотите помочь."
 
-#: sidebar-task.php:156
-#: sidebar-task.php:196
+#: sidebar-task.php:158
+#: sidebar-task.php:198
 #@ tst
 msgid "Send"
 msgstr "Отправить"
 
-#: sidebar-task.php:176
+#: sidebar-task.php:178
 #@ tst
 msgid "Refuse helping"
 msgstr "Отказаться помогать"
 
-#: sidebar-task.php:180
+#: sidebar-task.php:182
 #@ tst
 msgid "You have offered your help, wait for the task author to approve it"
 msgstr "Вы предложили помощь, ожидайте утверждения автором задачи"
 
-#: sidebar-task.php:182
+#: sidebar-task.php:184
 #@ tst
 msgid "You have offered your help, but task author did not approved it"
 msgstr "Вы предложили помощь, но пока она еще не принята автором задачи"
 
-#: sidebar-task.php:184
+#: sidebar-task.php:186
 #@ tst
 msgid "The task is not open yet, so your help offering is impossible for now"
 msgstr "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
-#: sidebar-task.php:188
+#: sidebar-task.php:190
 #@ tst
 msgid "Send a little message to the task author about why you wish to refuse your help."
 msgstr "Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
@@ -1832,54 +1757,34 @@ msgstr "Задача успешно передана в работу!"
 #: single.php:59
 #@ tst
 msgid "Task was successfully closed!"
-msgstr "Задача успешно закрыта!"
+msgstr "Задача успешно решена!"
 
-#: single.php:60
-#@ tst
-msgid "The candidate was successfully approved!"
-msgstr "Исполнитель утвержден!"
-
-#: single.php:61
-#@ tst
-msgid "The candidate was successfully refused."
-msgstr "Кандидат отклонен."
-
-#: single.php:62
-#@ tst
-msgid "<strong>You have been added to the task as a candidate to help with it!</strong> A task author is already noted."
-msgstr "<strong>Вы были добавлены в эту задачу в качестве кандидата!</strong> Мы уже написали автору задачи о вашем желании помочь."
-
-#: single.php:63
-#@ tst
-msgid "You have been removed from the candidates list for this task."
-msgstr "Вы были удалены из списка кандидатов для данной задачи."
-
-#: single.php:84
+#: single.php:82
 #@ tst
 msgid "Details"
 msgstr "Подробности"
 
-#: single.php:86
+#: single.php:105
 #@ tst
 msgid "Discussion"
 msgstr "Обсуждение"
 
-#: single.php:95
+#: single.php:87
 #@ tst
 msgid "What we are expecting"
 msgstr "Что ожидаем от исполнителя"
 
-#: single.php:99
+#: single.php:91
 #@ tst
 msgid "A little about reward"
 msgstr "Немного о награде"
 
-#: single.php:103
+#: single.php:99
 #@ tst
 msgid "About organization/project"
 msgstr "Об организации / проекте"
 
-#: single.php:132
+#: single.php:128
 #@ tst
 msgid "Share with friends"
 msgstr "Поделиться  с друзьями"
@@ -1964,11 +1869,12 @@ msgstr ""
 "Вы были утверждены как участник задачи: %s.\n"
 "\n"
 "\n"
-"            Вы можете связаться с автором задачи по email: <a href='mailto:%s'>%s</a> или другим удобным для вас способом (посмотреть <a href='%s'>профиль автора</a>).\n"
-"            \n"
+"Вы можете связаться с автором задачи по email: <a href='mailto:%s'>%s</a> или другим удобным для вас способом (посмотреть <a href='%s'>профиль автора</a>).\n"
+"\n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
 #: inc/email-templates.php:11
 #, php-format
@@ -1993,28 +1899,184 @@ msgstr ""
 " \n"
 "\n"
 "С уважением,\n"
-"команда it-волонтёра"
+"команда it-волонтёра,\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/email-templates.php:29
+#: inc/email-templates.php:30
+#@ tst
+msgid "denisch_test_localization"
+msgstr "тест локализации"
+
+#: navbar.php:13
+#@ tst
+msgid "beta-version"
+msgstr "beta-версия"
+
+#: content.php:41
+#@ tst
+msgid "Volunteers"
+msgstr "Волонтёры"
+
+#: inc/email-templates.php:20
+#@ tst
+msgid "IT-Volunteer: a volunteer for your task removed himself!"
+msgstr "it-волонтёр: один из волонтёров, желающих выполнить ваше задание, отказался от этого!"
+
+#: inc/email-templates.php:21
 #, php-format
 #@ tst
 msgid ""
-"Greetings!\n"
+"Hello, %s.\n"
 "\n"
-"Your registration is almost done. To complete it, please <a href='%s'>click here</a>.\n"
+"Someone has been removed himself from a volunteers for your task: %s.\n"
 "\n"
-"Best,\n"
-"ITVolunteer"
+"His message is:\n"
+"%s\n"
+"\n"
+"Have a nice day!"
 msgstr ""
-"Поздравляем!\n"
+"Добрый день, %s.\n"
 "\n"
-"Ваша регистрация почти закончена. Чтобы завершить ее, пожалуйста, перейдите <a href='%s'>по ссылке</a>.\n"
+"Один из волонтёров отказался от выполнения вашего задания: %s.\n"
 "\n"
-"С уважением,\n"
-"команда it-волонтёра"
+"Он пишет вам следующее:\n"
+"%s\n"
+"\n"
+"Всего вам доброго!\n"
+"\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: home-well.php:38
+#: inc/email-templates.php:24
 #@ tst
-msgid "it-volunteer - a platform for the exchange of tasks to provide digital services for non-profit organizations and community initiatives. Here you can either ask for help for your project or organization, and to offer it. <a href=\"http://help.te-st.ru/about/\">Read more.</a>"
-msgstr "it-волонтёр – это платформа для обмена задачами по оказанию цифровых услуг для некоммерческих организаций и общественных инициатив. Здесь вы можете как попросить о помощи для вашего проекта или организации, так и предложить ее. <a href='http://ngo2.ru/itv/about/'>Подробнее.</a>"
+msgid "IT-Volunteer: a volunteer for your task appeared!"
+msgstr "it-волонтёр: новый волонтёр для вашего задания!"
+
+#: inc/email-templates.php:25
+#, php-format
+#@ tst
+msgid ""
+"Hello, %s.\n"
+"\n"
+"Someone is wishing to participate in your task: %s.\n"
+"This volunteer is writing to you this: %s.\n"
+"\n"
+"You can approve him if you wish on the task page: %s.\n"
+"\n"
+"Have a nice day!"
+msgstr ""
+"Добрый день, %s.\n"
+"\n"
+"Один из волонтёров желает присоединиться к выполнению вашего задания: %s.\n"
+"Он пишет вам: %s.\n"
+"\n"
+"Вы можете утвердить его на странице задания: %s.\n"
+"\n"
+"Have a nice day!\n"
+"\n"
+"<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
+
+#: page-member-tasks.php:88
+#: page-member-tasks.php:116
+#@ tst
+msgid "Volunteers:"
+msgstr "Волонтёры:"
+
+#: page-task-action.php:125
+#, php-format
+#@ tst
+msgid "Your task was successfully published! Now it's open for a new volunteers to do it. <a href='%s'>Check it out</a>"
+msgstr "Ваше задание было успешно опубликовано! Теперь оно открыто для новых волонтёров, <a href='%s'>взгляните сами</a>."
+
+#: sidebar-task.php:48
+#@ tst
+msgid "The task is open. No volunteers found"
+msgstr "Задание открыто. Волонтёров пока нет"
+
+#: sidebar-task.php:71
+#: sidebar-task.php:165
+#: sidebar-task.php:204
+#@ tst
+msgid "Volunteers offered their help"
+msgstr "Волонтёры, предложившие помощь"
+
+#: single.php:60
+#@ tst
+msgid "The volunteer was successfully approved!"
+msgstr "Волонтёр был успешно утверждён!"
+
+#: single.php:61
+#@ tst
+msgid "The volunteer was successfully refused."
+msgstr "Волонтёру было отказано."
+
+#: single.php:62
+#@ tst
+msgid "<strong>You have been added to the task as a volunteer to help with it!</strong> A task author is already noted."
+msgstr "<strong>Вы были добавлены в качестве возможного исполнителя этого задания!</strong> Автор задания уже уведомлён."
+
+#: single.php:63
+#@ tst
+msgid "You have been removed from the volunteers list for this task."
+msgstr "Вы были удалены из списка волонтёров для выполнения этого задания."
+
+#: content-member.php:32
+#: page-members.php:72
+#@ tst
+msgid "Te-st employee"
+msgstr "Сотрудник Теплицы социальных технологий"
+
+#: content-member.php:40
+#: page-member-action.php:153
+#: page-members.php:91
+#@ tst
+msgid "Place of work"
+msgstr "Место работы"
+
+#: functions.php:195
+#@ tst
+msgid "Company logo upload failed"
+msgstr "При загрузке логотипа произошла ошибка."
+
+#: functions.php:196
+#@ tst
+msgid "Company logo delete failed"
+msgstr "При удалении логотипа произошла ошибка."
+
+#: inc/customizer.php:1042
+#@ tst
+msgid "itv_email_new_task_added_message"
+msgstr ""
+"Создана новая задача: \n"
+"\n"
+"Ссылка: {{task_url}}\n"
+"\n"
+"Название: {{task_title}}\n"
+"\n"
+"Описание: {{task_content}}"
+
+#: inc/customizer.php:1052
+#@ tst
+msgid "itv_email_new_task_added_subject"
+msgstr "Создана новая задача"
+
+#: page-member-action.php:160
+#@ tst
+msgid "Company logo"
+msgstr "Логотип организации"
+
+#: page-member-action.php:161
+#@ tst
+msgid "Upload company logo"
+msgstr "Загрузить логотип организации"
+
+#: page-member-action.php:162
+#@ tst
+msgid "Delete company logo"
+msgstr "Удалить логотип организации"
+
+#: page-member-action.php:181
+#: page-members.php:106
+#@ tst
+msgid "Skills list"
+msgstr "Я умею делать"
 

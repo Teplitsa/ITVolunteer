@@ -4,6 +4,10 @@
  *
  * @package Blank
  */
+ 
+global $ITV_ADMIN_EMAILS;
+$ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
+$ITV_EMAIL_FROM = 'info@itv.te-st.ru';
 
 /**
  * Initials
@@ -86,11 +90,11 @@ function tst_widgets_init() {
 						'name' => 'Участник: Боковая колонка',
 						'description' => 'Боковая колонка на страницах участников'
 					),				
-		/*'footer_one' => array(
+		'footer_one' => array(
 						'name' => 'Футер - 1/3',
 						'description' => 'Динамическая нижняя область - 1 колонка'
 					),
-		'footer_two' => array(
+		/*'footer_two' => array(
 						'name' => 'Футер - 2/3',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
@@ -161,6 +165,7 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('jquery-masonry');
+    wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
     wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen'), '1.0', true);
 
     wp_localize_script('front', 'frontend', array(
@@ -187,6 +192,8 @@ add_action('wp_enqueue_scripts', function(){
         'reward_is_required' => __('Please, select your reward for a task doer.', 'tst'),
         'contactor_name_empty' => __('Your name is required.', 'tst'),
         'contactor_message_empty' => __('Your message is required.', 'tst'),
+        'user_company_logo_upload_error' => __('Company logo upload failed', 'tst'),
+        'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
 //        '' => __('.', 'tst'),
     ));
 
@@ -225,3 +232,4 @@ require get_template_directory().'/inc/template-tags.php';
 require get_template_directory().'/inc/extras.php';
 require get_template_directory().'/inc/related.php';
 require get_template_directory().'/inc/home.php';
+require get_template_directory().'/inc/user_profile.php';

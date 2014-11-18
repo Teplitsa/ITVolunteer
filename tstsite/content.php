@@ -38,7 +38,7 @@
 			
 			<div class="task-activity">
 				<b><?php echo tst_get_task_doers_count();?></b>
-				<span class="task-log"><?php _e('Candidates', 'tst');?></span>
+				<span class="task-log"><?php _e('Volunteers', 'tst');?></span>
 			</div>
 			
 			<div class="task-summary-content">
@@ -49,7 +49,7 @@
 					echo ": ";
                     $tags = wp_get_post_terms(get_the_ID(), 'post_tag');
                     foreach($tags as $i => $tag) { if($i != 0) echo ', ';
-				?><a href="<?php echo home_url('/tasks/?tt[]='.$tag->term_id);?>"><?php echo $tag->name;?></a><?php } ?>
+				?><a href="<?php echo home_url('/tag/'.$tag->slug);?>"><?php echo $tag->name;?></a><?php } ?>
                 </div>			
 				<div class="read-more"><a href="<?php the_permalink(); ?>" class="btn btn-default btn-sm"><?php _e('Get the details', 'tst');?></a></div>
 			</div>

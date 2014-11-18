@@ -55,8 +55,8 @@
 			<select name="tt[]" id="task-tags" multiple="10" data-placeholder="<?php _e('Choose a tags for the task', 'tst');?>">
 				<?php $tags_selected = isset($_GET['tt']) ? (array)$_GET['tt'] : array();
 
-				foreach(get_terms('post_tag', array()) as $tag) {?>
-					<option value="<?php echo $tag->term_id;?>" <?php echo in_array($tag->term_id, $tags_selected) ? 'selected="selected"' : '';?>><?php echo $tag->name;?></option>
+				foreach(get_terms('post_tag', array('hide_empty' => false)) as $tag) {?>
+					<option value="<?php echo $tag->slug;?>" <?php echo in_array($tag->slug, $tags_selected) ? 'selected="selected"' : '';?>><?php echo $tag->name;?></option>
 				<?php }?>
 			</select>
 			</div>

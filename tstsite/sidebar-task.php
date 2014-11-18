@@ -13,7 +13,9 @@ $doers = tst_get_task_doers(false, true);
 if( !$cur_user_id ) {?>
 
     <div id="">
-        <a href="#" id="guest-help" class="btn btn-success btn-lg widefat"><?php _e('Offer help', 'tst');?></a>
+        <a href="#" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>>
+            <?php _e('Offer help', 'tst');?>
+        </a>
         <br />
         <div id="guest-help-message" class="text-center help-block">
             <div id="default"><em>(<?php _e('You have not offered your help yet', 'tst');?>)</em></div>
@@ -23,7 +25,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } elseif($is_curr_users_task && $post->post_status == 'draft') {?>
+<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'draft') {?>
 
     <div id="">
         <a href="#" id="author-publish" class="btn btn-success btn-lg widefat"><?php _e('Publish', 'tst');?></a>
@@ -37,13 +39,13 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif($is_curr_users_task && $post->post_status == 'publish' && !$candidates) {?>
+<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
 
     <div id="">
         <a href="#" id="author-unpublish" class="btn btn-danger btn-lg widefat"><?php _e('Stop publication', 'tst');?></a>
         <br />
         <div id="task-status" class="text-center help-block"><em>
-            (<?php _e('The task is open. No candidates found', 'tst');?>)
+            (<?php _e('The task is open. No volunteers found', 'tst');?>)
         </em></div>
         <form id="task-unpublish">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
@@ -53,7 +55,7 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif($is_curr_users_task && $post->post_status == 'publish' && $candidates) {?>
+<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
 
     <div id="">
         <a href="#" id="task-send-to-work" class="btn btn-success btn-lg widefat"><?php _e('In work!', 'tst');?></a>
@@ -66,7 +68,7 @@ if( !$cur_user_id ) {?>
             <div id="task-message"></div>
         </form>
         <div class="connected-users">
-            <h5><?php _e('Candidates offered their help', 'tst');?>:</h5>
+            <h5><?php _e('Volunteers offered their help', 'tst');?>:</h5>
             <ul>
             <?php foreach($candidates as $candidate) {?>
                 <li><?php frl_task_candidate_markup($candidate, 1);?></li>
@@ -75,7 +77,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if($is_curr_users_task && $post->post_status == 'in_work') {?>
+<?php } else if((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'in_work') {?>
 
     <div id="">
         <a href="#" id="author-close" class="btn btn-danger btn-lg widefat"><?php _e('Close the task', 'tst');?></a>        
@@ -111,7 +113,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if($is_curr_users_task && $post->post_status == 'closed') {?>
+<?php } else if((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'closed') {?>
 
     <a href="#" id="task-send-to-work" class="btn btn-danger btn-lg widefat"><?php _e('Return to work', 'tst');?></a>
     <br />
@@ -160,7 +162,7 @@ if( !$cur_user_id ) {?>
         </form>
         <?php if($post->post_status != 'draft' && $candidates) {?>
         <div class="connected-users">
-            <h5><?php _e('Candidates offered their help', 'tst');?>:</h5>
+            <h5><?php _e('Volunteers offered their help', 'tst');?>:</h5>
             <ul>
             <?php foreach($candidates as $candidate) {?>
                 <li><?php frl_task_candidate_markup($candidate, 4);?></li>
@@ -199,7 +201,7 @@ if( !$cur_user_id ) {?>
             <div id="task-message"></div>
         </form>
         <div class="connected-users">
-            <h5><?php _e('Candidates offered their help', 'tst');?>:</h5>
+            <h5><?php _e('Volunteers offered their help', 'tst');?>:</h5>
             <ul>
                 <?php foreach($candidates as $candidate) {?>
                     <li><?php frl_task_candidate_markup($candidate, 5);?></li>

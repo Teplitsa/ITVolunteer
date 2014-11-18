@@ -122,7 +122,7 @@ get_header();?>
         <?php if(isset($_GET['t'])) {
 
             switch((int)$_GET['t']) {
-                case 1: $message = '<div class="alert alert-success">'.sprintf(__("Your task was successfully published! Now it's open for a new candidates to do it. <a href='%s'>Check it out</a>", 'tst'), get_permalink($_GET['task'])).'</div>'; break;
+                case 1: $message = '<div class="alert alert-success">'.sprintf(__("Your task was successfully published! Now it's open for a new volunteers to do it. <a href='%s'>Check it out</a>", 'tst'), get_permalink($_GET['task'])).'</div>'; break;
                 case 2: $message = '<div class="alert alert-success">'.sprintf(__('Your data was successfully saved. <a href="%s">Check it out</a>', 'tst'), get_permalink($_GET['task'])).'</div>'; break;
                     default: $message = '';
             }
@@ -141,11 +141,11 @@ get_header();?>
             <div id="expecting-vm" class="validation-message" style="display: none;"></div>
 		</div>
 
-		<div class="form-group">
-			<label for="about-reward"><?php _e('A couple of words about a reward for completing the task', 'tst');?></label>
-			<textarea id="about-reward" class="form-control" rows="6"><?php echo empty($task_data['about_reward']) ? '' : htmlspecialchars_decode($task_data['about_reward'], ENT_QUOTES);?></textarea>
-            <div id="about-reward-vm" class="validation-message" style="display: none;"></div>
-		</div>
+<!--		<div class="form-group">-->
+<!--			<label for="about-reward">--><?php //_e('A couple of words about a reward for completing the task', 'tst');?><!--</label>-->
+<!--			<textarea id="about-reward" class="form-control" rows="6">--><?php //echo empty($task_data['about_reward']) ? '' : htmlspecialchars_decode($task_data['about_reward'], ENT_QUOTES);?><!--</textarea>-->
+<!--            <div id="about-reward-vm" class="validation-message" style="display: none;"></div>-->
+<!--		</div>-->
 
 		<div class="form-group">
 			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
@@ -169,7 +169,7 @@ get_header();?>
 			<select id="reward" class="form-control">
 				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
 	
-				<?php foreach(get_terms('reward', array()) as $reward) {?>
+				<?php foreach(get_terms('reward', array('hide_empty' => false)) as $reward) {?>
 					<option value="<?php echo $reward->term_id;?>" <?php selected($reward->term_id, $task_data['reward_id']); ?>>
 						<?php echo $reward->name;?>
 					</option>
@@ -193,7 +193,7 @@ get_header();?>
                     }
                 }
 
-                foreach(get_terms('post_tag', array()) as $tag) {?>
+                foreach(get_terms('post_tag', array('hide_empty' => false)) as $tag) {?>
                 <option value="<?php echo $tag->name;?>" <?php echo (!$new_task && tag_in_array($tag, $task_tags)) ? 'selected="selected"' : '';?>><?php echo $tag->name;?></option>
             <?php }?>
             </select>

@@ -66,29 +66,55 @@ get_header();?>
 					</span>
 				</div>
 				<div class="col-md-9">
+					
+					<?if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
+					<section class="data-section-member">
+						<h4><?php _e('Te-st employee', 'tst');?></h4>
+						<img class="itv-test-employee-big" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
+					</section>
+					<?endif?>
+					
+
+					<?if($user_bio = trim(tst_get_member_field('user_bio'))):?>
 					<section class="data-section-member">
 						<h4><?php _e('About me', 'tst');?></h4>
 						<?php
-                        $text = apply_filters('frl_the_content', tst_get_member_field('user_bio'));
-                        echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
-                        ?>
+							$text = apply_filters('frl_the_content', $user_bio);
+							echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
+						?>
 					</section>
+					<?endif?>
 
+
+					<?if($text = tst_get_member_field('user_workplace')):?>
 					<section class="data-section-member">
-						<h4><?php _e('Professional skills', 'tst');?></h4>
-						<?php
-                        $text = apply_filters('frl_the_content', tst_get_member_field('user_professional'));
-                        echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
-                        ?>
+						<h4><?php _e('Place of work', 'tst');?></h4>
+						<?=$text?>
 					</section>
+					<?endif?>
 
+					
+					<?if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
+					<section class="data-section-member">
+						<?=$user_company_logo?>
+					</section>
+					<?endif?>
+
+
+					<?if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
+					<section class="data-section-member">
+						<h4><?php _e('Skills list', 'tst');?></h4>
+						<?=$user_skills_string?>
+					</section>
+					<?endif?>
+
+					
+					<?if($text = tst_get_member_field('user_socials')):?>
 					<section class="data-section-member">
 						<h4><?php _e('In the web', 'tst');?></h4>
-						<?php
-                        $text = tst_get_member_field('user_socials');
-                        echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
-                        ?>
+						<?=$text?>
 					</section>
+					<?endif?>
 
 					<?php if(is_user_logged_in()):?>
 					<section class="data-section-member">

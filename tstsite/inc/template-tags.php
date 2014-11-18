@@ -89,49 +89,44 @@ function frl_breadcrumbs(){
 function frl_page_title(){	
 	global $post, $tst_member;
 	
-	$title = '';
-	if(is_post_type_archive('tasks')){		
-		$title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
-	}
-	elseif(is_singular('tasks')){
+//	$title = '';
+	if(is_post_type_archive('tasks'))
+        $title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
+
+    elseif(is_tag())
+        $title = apply_filters('tag_archive_title', single_tag_title('', false));
+
+	elseif(is_singular('tasks')) {
+
 		$id = intval($post->ID); 
 		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
-	}
-	elseif(is_single_member()){
-				
-		$title = apply_filters('the_title', tst_get_member_name());
-	}
+
+	} elseif(is_single_member())
+        $title = apply_filters('the_title', tst_get_member_name());
+
 	elseif(is_page('task-actions')) {
 		
-		if(empty($_GET['task'])){
+		if(empty($_GET['task']))
 			$title = __('New task', 'tst');
-		}
 		else {
 			$id = intval($_GET['task']);
 			$title = sprintf(__('Edit task #%s', 'tst'), $id);
 		}
-	}
-	elseif(is_page('member-actions')) {
-		$title = apply_filters('the_title', tst_get_member_action_title());
-		
-	}
-    elseif(is_page('member-tasks')) {
+	} elseif(is_page('member-actions'))
+        $title = apply_filters('the_title', tst_get_member_action_title());
+
+    elseif(is_page('member-tasks'))
         $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
-		
-    }
-	elseif(is_page()) {		
-		$title = apply_filters('the_title', $post->post_title);
-		
-	}
-	elseif(is_search()){
-		$title = __('Search results', 'tst');
-		
-	}
-	elseif(is_404()){
+
+	elseif(is_page())
+        $title = apply_filters('the_title', $post->post_title);
+    elseif(is_search())
+        $title = __('Search results', 'tst');
+
+    elseif(is_404())
 		$title = __('Page not found', 'tst');
-		
-	}
-	else { //@to_do make reeal titles here
+
+    else { //@to_do make reeal titles here
 		$title = __('Some title', 'tst');
 	}
 	
@@ -446,7 +441,7 @@ function tst_comments_on_tasks($open, $post_id){
 
 function tst_get_comment_author_link($comment_id = 0){
 		
-	$comment = get_comment( $comment_ID );
+	$comment = get_comment($comment_id);
 	
 	if(!$comment->user_id)
 		return '';
@@ -523,6 +518,13 @@ function tst_task_params(){
 		</span>
 	</div>
 
+	<?php tst_task_reward($reward)?>
+</div><!-- .row -->	
+<?php
+}
+
+function tst_task_reward($reward) {
+?>
 	<div class="col-md-8">
 		<span class="reward task-param btn btn-default" <?if(!is_wp_error($reward)):?>title="<?=$reward->name?>"<?endif?>>
 			<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
@@ -532,6 +534,5 @@ function tst_task_params(){
 			</span>
 		</span>
 	</div>
-</div><!-- .row -->	
-<?php
+<?	
 }

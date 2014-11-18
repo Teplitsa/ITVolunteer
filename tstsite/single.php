@@ -10,7 +10,7 @@ get_header(); ?>
 <header class="page-heading">
 
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
 			<h1 class="page-title task-title">
 				<div class="status-wrap"><?php
@@ -33,7 +33,7 @@ get_header(); ?>
 				<?php endif; ?>
 			</h1>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<div class="status-block-task">
 				<div class="row-top task-meta"><?php tst_task_fixed_meta();?></div>
 				<div class="row-main">
@@ -57,10 +57,10 @@ get_header(); ?>
                 case 2: echo '<div class="alert alert-success">'.__('Task was successfully unpublished.', 'tst').'</div>'; break;
                 case 3: echo '<div class="alert alert-success">'.__('Task was successfully sent to work!', 'tst').'</div>'; break;
                 case 4: echo '<div class="alert alert-success">'.__('Task was successfully closed!', 'tst').'</div>'; break;
-                case 5: echo '<div class="alert alert-success">'.__('The candidate was successfully approved!', 'tst').'</div>'; break;
-                case 6: echo '<div class="alert alert-success">'.__('The candidate was successfully refused.', 'tst').'</div>'; break;
-                case 7: echo '<div class="alert alert-success">'.__('<strong>You have been added to the task as a candidate to help with it!</strong> A task author is already noted.', 'tst').'</div>'; break;
-                case 8: echo '<div class="alert alert-success">'.__('You have been removed from the candidates list for this task.', 'tst').'</div>'; break;
+                case 5: echo '<div class="alert alert-success">'.__('The volunteer was successfully approved!', 'tst').'</div>'; break;
+                case 6: echo '<div class="alert alert-success">'.__('The volunteer was successfully refused.', 'tst').'</div>'; break;
+                case 7: echo '<div class="alert alert-success">'.__('<strong>You have been added to the task as a volunteer to help with it!</strong> A task author is already noted.', 'tst').'</div>'; break;
+                case 8: echo '<div class="alert alert-success">'.__('You have been removed from the volunteers list for this task.', 'tst').'</div>'; break;
 //                case : echo '<div class="alert alert-success">'.__('', 'tst').'</div>'; break;
                 default:
             }
@@ -72,47 +72,43 @@ get_header(); ?>
                 <div class="tags">
                     <?php $tags = wp_get_post_terms(get_the_ID(), 'post_tag');
                     foreach($tags as $tag) {?>
-                        <a href="<?php echo home_url('/tasks/?tt[]='.$tag->term_id);?>"><?php echo $tag->name;?></a>
+                        <a href="<?php echo home_url('/tag/'.$tag->slug);?>"><?php echo $tag->name;?></a>
                     <?php } //echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="tags">', ' ', '</div>'); ?>
                 </div>
 			</div>
-			
+
 			<div class="task-details">
 
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs grey-tabs">
-				  <li class="active"><a href="#t-details" data-toggle="tab"><?php _e('Details', 'tst');?></a></li>
-				<?php if(is_user_logged_in()):?> 
-					<li><a href="#t-comments" data-toggle="tab"><?php _e('Discussion', 'tst');?></a></li>
-				<?php endif;?>
-				</ul>
+                <h3><?php _e('Details', 'tst');?></h3>
 				
 				<!-- Tab panes -->
-				<div class="tab-content">
-					<div class="tab-pane active" id="t-details">
-						<div class="tab-pane-body">							
-							<section class="data-section-task">
-								<h4><?php _e('What we are expecting', 'tst');?></h4>
-								<?php echo htmlspecialchars_decode(get_field('field_533bebda0fe8d'), ENT_QUOTES);?>
-							</section>
-							<section class="data-section-task">
-								<h4><?php _e('A little about reward', 'tst');?></h4>
-								<?php echo htmlspecialchars_decode(get_field('field_533bec930fe8e'), ENT_QUOTES);?>
-							</section>
-							<section class="data-section-task">
-								<h4><?php _e('About organization/project', 'tst');?></h4>
-								<?php echo htmlspecialchars_decode(get_field('field_533beee40fe8f'), ENT_QUOTES);?>
-							</section>
-						</div>
-					</div>
-					<?php if(is_user_logged_in()):?> 
-					<div class="tab-pane fade" id="t-comments">
-						<div class="tab-pane-body">
-						<?php comments_template(); ?>
-						</div>
-					</div>
-					<?php endif;?>
-				</div><!-- .tab-content -->
+				<div class="">
+                    <section class="data-section-task">
+                        <h4><?php _e('What we are expecting', 'tst');?></h4>
+                        <?php echo htmlspecialchars_decode(get_field('field_533bebda0fe8d'), ENT_QUOTES);?>
+                    </section>
+                    <section class="data-section-task">
+                        <h4><?php _e('A little about reward', 'tst');?></h4>
+			<div class="row task-params itv-about-reward-bubble">
+				<?$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');?>
+				<?php tst_task_reward($reward)?>
+			</div>
+                        <?php echo htmlspecialchars_decode(get_field('field_533bec930fe8e'), ENT_QUOTES);?>
+                    </section>
+                    <section class="data-section-task">
+                        <h4><?php _e('About organization/project', 'tst');?></h4>
+                        <?php echo htmlspecialchars_decode(get_field('field_533beee40fe8f'), ENT_QUOTES);?>
+                    </section>
+
+<!--					--><?php //if(is_user_logged_in()) {?>
+
+                    <h3><?php _e('Discussion', 'tst');?></h3>
+                    <div class="">
+                        <?php comments_template();?>
+                    </div>
+<!--					--><?php //}?>
+
+				</div>
 
 			</div>
 		</div>
