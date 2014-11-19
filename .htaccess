@@ -1,0 +1,22 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteBase /
+#RewriteBase /sitefolder/
+
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule . /index.php [L]
+#RewriteRule . /sitefolder/index.php [L]
+
+#Hide Apache version
+ServerSignature Off
+# Stop wordpress username enumeration vulnerability
+RewriteCond %{REQUEST_URI}  ^/$
+RewriteCond %{QUERY_STRING} ^/?author=([0-9]*)
+RewriteRule ^(.*)$ /? [L,R=301]
+</IfModule>
+Options All -Indexes
+

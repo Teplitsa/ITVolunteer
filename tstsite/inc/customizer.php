@@ -323,7 +323,7 @@ function ajax_add_edit_task(){
     if($_POST['id']) {
 
         update_field('field_533bebda0fe8d', htmlentities(trim($_POST['expecting']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
-        update_field('field_533bec930fe8e', htmlentities(trim($_POST['about-reward']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
+        update_field('field_533bec930fe8e', htmlentities(trim(@$_POST['about-reward']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bef200fe90', $_POST['deadline'], $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
