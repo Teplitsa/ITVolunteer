@@ -25,7 +25,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'draft') {?>
+<?php } elseif((current_user_can('edit_posts') || $is_curr_users_task) && $post->post_status == 'draft') {?>
 
     <div id="">
         <a href="#" id="author-publish" class="btn btn-success btn-lg widefat"><?php _e('Publish', 'tst');?></a>
@@ -39,7 +39,7 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
+<?php } elseif((current_user_can('edit_posts') || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
 
     <div id="">
         <a href="#" id="author-unpublish" class="btn btn-danger btn-lg widefat"><?php _e('Stop publication', 'tst');?></a>
@@ -55,7 +55,7 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
+<?php } elseif((current_user_can('edit_posts') || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
 
     <div id="">
         <a href="#" id="task-send-to-work" class="btn btn-success btn-lg widefat"><?php _e('In work!', 'tst');?></a>
@@ -77,7 +77,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'in_work') {?>
+<?php } else if((current_user_can('edit_posts') || $is_curr_users_task) && $post->post_status == 'in_work') {?>
 
     <div id="">
         <a href="#" id="author-close" class="btn btn-danger btn-lg widefat"><?php _e('Close the task', 'tst');?></a>        
@@ -113,7 +113,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if((current_user_can('edit_post') || $is_curr_users_task) && $post->post_status == 'closed') {?>
+<?php } else if((current_user_can('edit_posts') || $is_curr_users_task) && $post->post_status == 'closed') {?>
 
     <a href="#" id="task-send-to-work" class="btn btn-danger btn-lg widefat"><?php _e('Return to work', 'tst');?></a>
     <br />
