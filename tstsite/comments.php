@@ -10,10 +10,10 @@
 	
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // are there comments to navigate through ?>
 <nav id="comment-nav-above" class="comment-navigation" role="navigation">
-	<h5 class="screen-reader-text"><?php _e( 'Comment navigation', '_tk' ); ?></h5>
+	<h5 class="screen-reader-text"><?php _e( 'Comment navigation', 'tst' ); ?></h5>
 	<ul class="pager">
-		<li class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', '_tk' ) ); ?></li>
-		<li class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', '_tk' ) ); ?></li>
+		<li class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'tst' ) ); ?></li>
+		<li class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'tst' ) ); ?></li>
 	</ul>
 </nav>
 <?php endif; ?>
@@ -24,9 +24,9 @@
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // are there comments to navigate through ?>
 <nav id="comment-nav-below" class="comment-navigation" role="navigation">
-	<h1 class="screen-reader-text"><?php _e( 'Comment navigation', '_tk' ); ?></h1>
-	<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', '_tk' ) ); ?></div>
-	<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', '_tk' ) ); ?></div>
+	<h1 class="screen-reader-text"><?php _e( 'Comment navigation', 'tst' ); ?></h1>
+	<div class="nav-previous"><?php previous_comments_link( __( '&larr; Older Comments', 'tst' ) ); ?></div>
+	<div class="nav-next"><?php next_comments_link( __( 'Newer Comments &rarr;', 'tst' ) ); ?></div>
 </nav>
 <?php endif; ?>
 
