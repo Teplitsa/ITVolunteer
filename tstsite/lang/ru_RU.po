@@ -1810,7 +1810,7 @@ msgid "Any date"
 msgstr "Любая дата"
 
 #: tasks-filter.php:29
-#@ default
+#@ tst
 msgid "Less than 10 days"
 msgstr "Менее 10 дней"
 
@@ -2079,4 +2079,3 @@ msgstr "Удалить логотип организации"
 #@ tst
 msgid "Skills list"
 msgstr "Я умею делать"
-

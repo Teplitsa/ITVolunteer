@@ -26,7 +26,7 @@
 			<div class="col-sm-9">
 			<select name="dl" id="filter-task-deadline" class="form-control">
 				<option value="" <?php echo isset($_GET['dl']) && $_GET['dl'] == '' ? 'selected="selected"' : '';?>><?php _e('Any date', 'tst');?></option>
-				<option value="10" <?php echo isset($_GET['dl']) && $_GET['dl'] == '10' ? 'selected="selected"' : '';?>><?php _e('Less than 10 days');?></option>
+				<option value="10" <?php echo isset($_GET['dl']) && $_GET['dl'] == '10' ? 'selected="selected"' : '';?>><?php _e('Less than 10 days', 'tst');?></option>
 				<option value="lm" <?php echo isset($_GET['dl']) && $_GET['dl'] == 'lm' ? 'selected="selected"' : '';?>><?php _e('Less than a month', 'tst');?></option>
 				<option value="mm" <?php echo isset($_GET['dl']) && $_GET['dl'] == 'mm' ? 'selected="selected"' : '';?>><?php _e('More than a month', 'tst');?></option>
 			</select>
