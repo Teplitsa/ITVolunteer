@@ -170,38 +170,38 @@ add_action('init', function(){
 
 
 add_action('init', function(){
-    p2p_register_connection_type(array(
-        'name' => 'task-doers',
-        'from' => 'tasks',
-        'to' => 'user',
-        'cardinality' => 'many-to-many',
-//        'admin_column' => true,
-        'admin_dropdown' => 'any',
-        'fields' => array(
-            'is_approved' => array(
-                'title' => __('Doer approved', 'tst'),
-                'type' => 'checkbox',
-                'default' => false,
+    if ( function_exists('p2p_register_connection_type') ) {
+        p2p_register_connection_type(array(
+            'name' => 'task-doers',
+            'from' => 'tasks',
+            'to' => 'user',
+            'cardinality' => 'many-to-many',
+            'admin_dropdown' => 'any',
+            'fields' => array(
+                'is_approved' => array(
+                    'title' => __('Doer approved', 'tst'),
+                    'type' => 'checkbox',
+                    'default' => false,
+                ),
             ),
-        ),
-        'title' => array(
-            'from' => __('Task doers', 'tst'),
-            'to' => __('Tasks', 'tst'),
-        ),
-        'from_labels' => array(
-            'singular_name' => __('Task', 'tst'),
-            'search_items' => __('Search tasks', 'tst'),
-            'not_found' => __('No tasks found.', 'tst'),
-            'create' => __('Create connections', 'tst'),
-        ),
-        'to_labels' => array(
-            'singular_name' => __('Doer', 'tst'),
-            'search_items' => __('Search doers', 'tst'),
-            'not_found' => __('No doers found.', 'tst'),
-            'create' => __('Create connections', 'tst'),
-        ),
-//        'to_query_vars' => array(/*'role' => 'editor'*/)
-    ));
+            'title' => array(
+                'from' => __('Task doers', 'tst'),
+                'to' => __('Tasks', 'tst'),
+            ),
+            'from_labels' => array(
+                'singular_name' => __('Task', 'tst'),
+                'search_items' => __('Search tasks', 'tst'),
+                'not_found' => __('No tasks found.', 'tst'),
+                'create' => __('Create connections', 'tst'),
+            ),
+            'to_labels' => array(
+                'singular_name' => __('Doer', 'tst'),
+                'search_items' => __('Search doers', 'tst'),
+                'not_found' => __('No doers found.', 'tst'),
+                'create' => __('Create connections', 'tst'),
+            ),
+        ));
+    }
 });
 
 if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
