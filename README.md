@@ -31,11 +31,11 @@ https://www.youtube.com/watch?v=D32OZIhoC6E
 * Действующий сайт на базе CMS WordPress версии не ниже 3.5, не содержащий актуального контента или чистая установка CMS WordPress версии не ниже 3.5.
 * Доступ к этому сайту по FTP, а также к его БД (для инсталляции базовых данных системы).
 * Установленные и активированные плагины актуальных версий: 
-  * Advanced Custom Fields, 
-  * Cyr to Lat Enhanced,
-  * GD Custom Posts And Taxonomies Tools, 
-  * Posts 2 Posts.
-  * Post Views Counter
+  * [Advanced Custom Fields](https://wordpress.org/plugins/advanced-custom-fields/), 
+  * [Cyr to Lat Enhanced](https://wordpress.org/plugins/cyr3lat/),
+  * [GD Custom Posts And Taxonomies Tools](https://wordpress.org/plugins/gd-taxonomies-tools/), 
+  * [Posts 2 Posts](https://wordpress.org/plugins/posts-to-posts/),
+  * [Post Views Counter](https://wordpress.org/plugins/post-views-counter/).
 
 **Ход установки**
 
