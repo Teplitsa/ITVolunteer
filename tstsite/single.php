@@ -39,6 +39,11 @@ get_header(); ?>
 				<div class="row-main">
                     <?php tst_task_params();?>
 				</div>
+				<div class="row-main itv-task-view-row">
+					<span class="task-param btn btn-default">
+						<?=do_shortcode('[post-views]')?>
+					</span>
+				</div>
 			</div>
 		</div><!-- .col-md-4-->
 	</div>

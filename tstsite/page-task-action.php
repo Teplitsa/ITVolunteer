@@ -38,7 +38,7 @@ if( !empty($_GET['task']) ){
 			'task_descr' => $task->post_content,
             'task_status' => $task->post_status,
 			// 'field_533bebda0fe8d' - it's unreliable and bad practice use real meta_key instead
-			'expecting' => get_field('field_533bebda0fe8d', $task->ID), 
+			'expecting' => get_field('field_533bebda0fe8d', $task->ID),
 			'about_reward' => get_field('field_533bec930fe8e', $task->ID),
 			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
 			'deadline' => get_field('field_533bef200fe90', $task->ID),
@@ -137,19 +137,19 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="expecting"><?php _e('What we are expecting from you', 'tst');?></label>
-			<textarea id="expecting" class="form-control" rows="6"><?php echo empty($task_data['expecting']) ? '' : htmlspecialchars_decode($task_data['expecting'], ENT_QUOTES);?></textarea>
+			<textarea id="expecting" class="form-control" rows="6"><?php echo empty($task_data['expecting']) ? '' : strip_tags(htmlspecialchars_decode($task_data['expecting'], ENT_QUOTES));?></textarea>
             <div id="expecting-vm" class="validation-message" style="display: none;"></div>
 		</div>
 
 <!--		<div class="form-group">-->
 <!--			<label for="about-reward">--><?php //_e('A couple of words about a reward for completing the task', 'tst');?><!--</label>-->
-<!--			<textarea id="about-reward" class="form-control" rows="6">--><?php //echo empty($task_data['about_reward']) ? '' : htmlspecialchars_decode($task_data['about_reward'], ENT_QUOTES);?><!--</textarea>-->
+<!--			<textarea id="about-reward" class="form-control" rows="6">--><?php //echo empty($task_data['about_reward']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_reward'], ENT_QUOTES));?><!--</textarea>-->
 <!--            <div id="about-reward-vm" class="validation-message" style="display: none;"></div>-->
 <!--		</div>-->
 
 		<div class="form-group">
 			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
-			<textarea id="about-author-org" class="form-control" rows="6"><?php echo empty($task_data['about_author_org']) ? '' : htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES);?></textarea>
+			<textarea id="about-author-org" class="form-control" rows="6"><?php echo empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));?></textarea>
             <div id="about-author-org-vm" class="validation-message" style="display: none;"></div>
 		</div>
 

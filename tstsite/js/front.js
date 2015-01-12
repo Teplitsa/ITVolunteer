@@ -132,9 +132,15 @@ jQuery(function($){
 
         $submit.attr('disabled', 'disabled');
         $form.find('#result-message').html('').hide();
+		
+		var page_url;
+		try {
+			page_url = window.location.href;
+		} catch(ex){}
 
         $.post(frontend.ajaxurl, {
             'action': 'add-message',
+			'page_url': page_url,
             'nonce': $form.find('#nonce').val(),
             'name': $form.find('#name-field').val(),
             'email': $form.find('#email-field').val(),
@@ -848,4 +854,9 @@ jQuery(function($){
 	$('.home-watch-video-button').click(function(){
 		ga('send', 'event', 'button', 'video');
 	});	
+});
+
+// customize comments subscriptions
+jQuery(function($){
+	$('#subscribe-reloaded').prop('checked', 'checked');
 });

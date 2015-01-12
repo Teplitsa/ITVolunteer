@@ -51,7 +51,7 @@ $email_templates = array(
     ),
     'message_added_notification' => array(
         'title' => __('it-volunteer - new message from contact form', 'tst'),
-        'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\nName: %s\nEmail: %s\nMessage:\n%s\n\nBest,\nit-volunteer", 'tst'),
+        'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: %s\nName: %s\nEmail: %s\nMessage:\n%s\n\nBest,\nit-volunteer", 'tst'),
     ),
 //    '' => array(
 //        'title' => ,
