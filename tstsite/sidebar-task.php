@@ -109,7 +109,7 @@ if( !$cur_user_id ) {?>
             </ul>
 
             <?php } else
-                _e('No doers found.');?>
+                _e('No doers found.', 'tst');?>
         </div>
     </div>
 
