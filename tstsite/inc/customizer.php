@@ -567,6 +567,9 @@ function ajax_refuse_candidate() {
         ))
     );
 
+    // Task is automatically switched "publish":
+    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+	
     die(json_encode(array(
         'status' => 'ok',
     )));
@@ -656,6 +659,9 @@ function ajax_remove_candidate() {
         ))
     );
 
+    // Task is automatically switched "publish":
+    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+	
     die(json_encode(array(
         'status' => 'ok',
     )));
@@ -868,7 +874,7 @@ function ajax_add_message() {
         $email_templates['message_added_notification']['title'],
         nl2br(sprintf(
             $email_templates['message_added_notification']['text'],
-            $_POST['name'], $_POST['email'], $_POST['message']
+            @$_POST['page_url'], $_POST['name'], $_POST['email'], $_POST['message']
         ))
     );
 
@@ -963,8 +969,18 @@ function tst_get_task_doers_count($task_id = false, $only_approved = false) {
 }
 
 function tst_get_user_created_tasks($user, $status = array()) {
+    if(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+            $user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+    $user = $user ? $user->ID : $user;
+#    $user = (int)$user <= 0 ? get_user_by('login', $user)->ID : $user;
 
-    $user = (int)$user <= 0 ? get_user_by('login', $user)->ID : $user;
     if( !$status )
         $status = array('publish', 'in_work', 'closed',);
 
@@ -984,7 +1000,18 @@ function tst_get_user_created_tasks($user, $status = array()) {
 
 function tst_get_user_working_tasks($user, $status = array()) {
 
-    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
+    if(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+            $user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+
+#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
+	
     if( !$status )
         $status = array('publish', 'in_work', 'closed',);
 
@@ -1003,8 +1030,18 @@ function tst_get_user_working_tasks($user, $status = array()) {
 
 function tst_get_user_rating($user) {
 
-    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
-
+    if(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+            $user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+    
+#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
+	
     return count(get_posts(array(
         'connected_type' => 'task-doers',
         'connected_items' => $user->ID,

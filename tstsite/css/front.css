@@ -1071,3 +1071,23 @@ a.itv-company-logo-action, a.itv-company-logo-action:hover {
 	height: 50px;
 	overflow: hidden;
 }
+
+.itv-task-view-row {
+    margin-top: 10px;
+}
+
+.itv-task-view-row .btn {
+	cursor: default;
+	border: none;
+	background:none;
+}
+
+.itv-task-view-row .task-param.btn,
+.itv-task-view-row .task-param.btn:hover {
+  background: none;
+}
+
+/* customize comments subscriptions */
+.comment-form-subscriptions {
+	display:none !important;
+}
