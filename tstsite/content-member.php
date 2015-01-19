@@ -29,6 +29,8 @@ global $tst_member;?>
                     }?>
 				<div class="member-status">
 					<span class="label <?php echo $class;?>"><?php echo tst_get_member_role_label($role);?></span>
+					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
+					
 					<?if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" /><?endif?>
 				</div>
 				<h4 class="member-title"><a href="<?php echo tst_get_member_url();?>"><?php echo tst_get_member_name();?></a></h4>

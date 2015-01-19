@@ -14,3 +14,11 @@
 div[aria-describedby="csp-credentials"] {
 	z-index: 2000000000000;
 }
+
+.itv-admin-test-consult-needed {
+  color:#ff0000;
+}
+
+.itv-admin-test-consult-done {
+  color:#00bb00;
+}
