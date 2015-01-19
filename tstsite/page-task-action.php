@@ -17,7 +17,6 @@ if( !is_user_logged_in() ) {
 }
 
 if( !empty($_GET['task']) ){
-
 	$new_task = false;
 	
 	// Read some ID to the editable task from URL, get a task post obj, fill an array with it's params.
@@ -36,13 +35,14 @@ if( !empty($_GET['task']) ){
 			'task_id' => $task->ID,
 			'task_title' => $task->post_title,
 			'task_descr' => $task->post_content,
-            'task_status' => $task->post_status,
+			'task_status' => $task->post_status,
 			// 'field_533bebda0fe8d' - it's unreliable and bad practice use real meta_key instead
 			'expecting' => get_field('field_533bebda0fe8d', $task->ID),
 			'about_reward' => get_field('field_533bec930fe8e', $task->ID),
 			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
 			'deadline' => get_field('field_533bef200fe90', $task->ID),
 			'reward_id' => get_field('field_533bef600fe91', $task->ID),
+			'is_tst_consult_needed' => get_field(ITV_ACF_TASK_is_tst_consult_needed, $task->ID),
 		);
 	}
 } else {
@@ -131,12 +131,14 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="task-descr"><?php _e('Task description', 'tst');?></label>
+			<div class="itv-task-form-sublabel"><?php _e('itv_task_description_more_info', 'tst')?></div>
 			<textarea id="task-descr" class="form-control" rows="6"><?php echo empty($task_data['task_descr']) ? '' : htmlspecialchars_decode($task_data['task_descr'], ENT_QUOTES);?></textarea>
             <div id="task-descr-vm" class="validation-message" style="display: none;"></div>
 		</div>
 
 		<div class="form-group">
 			<label for="expecting"><?php _e('What we are expecting from you', 'tst');?></label>
+			<div class="itv-task-form-sublabel"><?php _e('itv_task_expecting_more_info', 'tst')?></div>
 			<textarea id="expecting" class="form-control" rows="6"><?php echo empty($task_data['expecting']) ? '' : strip_tags(htmlspecialchars_decode($task_data['expecting'], ENT_QUOTES));?></textarea>
             <div id="expecting-vm" class="validation-message" style="display: none;"></div>
 		</div>
@@ -149,6 +151,7 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
+			<div class="itv-task-form-sublabel"><?php _e('itv_task_about_author_org_more_info', 'tst')?></div>
 			<textarea id="about-author-org" class="form-control" rows="6"><?php echo empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));?></textarea>
             <div id="about-author-org-vm" class="validation-message" style="display: none;"></div>
 		</div>
@@ -199,6 +202,15 @@ get_header();?>
             </select>
             <div id="task-tags-vm" class="validation-message" style="display: none;"></div>
         </div>
+	
+	<div class="form-group">
+		<label for="task-descr"><?php _e('itv_task_consult_needed_label', 'tst')?></label>
+		<div class="itv-task-form-sublabel">
+			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?if($task_data['is_tst_consult_needed']):?>checked="checked"<?endif?>/>
+			<?php _e('itv_task_consult_needed_more_info', 'tst')?>
+		</div>			
+	</div>
+	
 
 		<div class="form-group">
 			<!-- we should have several types of buttons -->

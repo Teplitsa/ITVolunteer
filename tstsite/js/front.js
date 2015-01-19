@@ -249,6 +249,11 @@ jQuery(function($){
 
         if(tags_list)
             tags_list = tags_list.join(',');
+	    
+	var is_tst_consult_needed = 0;
+	if($form.find('#is_tst_consult_needed').prop('checked')) {
+		is_tst_consult_needed = 1;
+	}
 
         $.post(frontend.ajaxurl, {
             'action': 'add-edit-task',
@@ -257,6 +262,7 @@ jQuery(function($){
             'id': $form.find('#task_id').val(),
             'title': $form.find('#task-title').val(),
             'descr': $form.find('#task-descr').val(),
+	    'is_tst_consult_needed': is_tst_consult_needed,
             'expecting': $form.find('#expecting').val(),
             'about-reward': $form.find('#about-reward').val(),
             'about-author-org': $form.find('#about-author-org').val(),
@@ -789,6 +795,12 @@ jQuery(function($){
         $('#tasks-filters').toggle();
     });
 	
+    $('#members-filters-trigger').click(function(e){
+        e.preventDefault();
+
+        $('#members-filters').toggle();
+    });
+
 	$("#upload_user_company_logo").ajaxUpload({
 		url: frontend.ajaxurl,
 		name: "user_company_logo",

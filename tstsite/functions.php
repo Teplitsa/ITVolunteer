@@ -1,13 +1,16 @@
 <?php
 @error_reporting(E_ALL & ~E_NOTICE);
+require get_template_directory().'/inc/acf_keys.php';
+
 /**
  * Blank functions and definitions
  *
  * @package Blank
  */
  
-global $ITV_ADMIN_EMAILS;
+global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM;
 $ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
+$ITV_CONSULT_EMAILS = array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com');
 $ITV_EMAIL_FROM = 'info@itv.te-st.ru';
 
 /**
@@ -153,9 +156,9 @@ add_action('wp_enqueue_scripts', function(){
 
    // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
-	wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.2');
+    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.4');
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -167,7 +170,7 @@ add_action('wp_enqueue_scripts', function(){
 	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('jquery-masonry');
     wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen'), '1.1', true);
+    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen'), '1.2', true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -210,7 +213,27 @@ add_action('admin_enqueue_scripts', function(){
 
     wp_enqueue_style('tst-admin', $url.'/css/admin.css', array());
     wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'));
+    
+    wp_localize_script('tst-admin', 'adminend', array(
+		'ajaxurl' => admin_url('admin-ajax.php'),
+		'site_url' => site_url('/'),
+	));    
 
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_styles;
+		foreach ((array) $wp_styles->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
+		}
+	}
+	
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_scripts;
+		foreach ((array) $wp_scripts->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
+		}
+	}
 });
 
 /* login style */
@@ -221,6 +244,32 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
+add_action('wp_print_scripts', 'enqueue_scripts_fix', 100);
+add_action('wp_print_styles', 'enqueue_styles_fix', 100);
+ 
+function enqueue_scripts_fix() {
+	if(!is_admin()) {
+		if (!empty($_SERVER['HTTPS'])) {
+			global $wp_scripts;
+			foreach ((array) $wp_scripts->registered as $script) {
+				if (stripos($script->src, 'http://', 0) !== FALSE)
+					$script->src = str_replace('http://', 'https://', $script->src);
+			}
+		}
+	}
+}
+ 
+function enqueue_styles_fix() {
+	if(!is_admin()) {
+		if (!empty($_SERVER['HTTPS'])) {
+			global $wp_styles;
+			foreach ((array) $wp_styles->registered as $script) {
+				if (stripos($script->src, 'http://', 0) !== FALSE)
+					$script->src = str_replace('http://', 'https://', $script->src);
+			}
+		}
+	}
+}
 
 /**
  * Custom additions.

@@ -940,32 +940,39 @@ div[class|="status-block"] .row-top {
   width: 680px; }
 
 /* tasks filters */
-.tasks-filters-frame {
+.tasks-filters-frame,
+.members-filters-frame {
   position: relative;
   z-index: 10;
   font-size: 12px; }
-  .tasks-filters-frame #tasks-filters-trigger {
+  .tasks-filters-frame #tasks-filters-trigger,
+  .members-filters-frame #members-filters-trigger {
     border: 1px solid #aaa;
     background: #fff;
     width: 200px;
     color: #999;
     cursor: pointer; }
-    .tasks-filters-frame #tasks-filters-trigger:hover {
+    .tasks-filters-frame #tasks-filters-trigger:hover,
+    .members-filters-frame #members-filters-trigger:hover {
       color: #666; }
-    .tasks-filters-frame #tasks-filters-trigger .txt {
+    .tasks-filters-frame #tasks-filters-trigger .txt,
+    .members-filters-frame #members-filters-trigger .txt {
       display: inline-block;
       padding: 5px 0 5px 5px; }
-    .tasks-filters-frame #tasks-filters-trigger .icon {
+    .tasks-filters-frame #tasks-filters-trigger .icon,
+    .members-filters-frame #members-filters-trigger .icon {
       cursor: pointer;
       width: 28px;
       border-left: 1px solid #aaa;
       background: #f9f9f9;
       text-align: center;
       height: 28px; }
-      .tasks-filters-frame #tasks-filters-trigger .icon span {
+      .tasks-filters-frame #tasks-filters-trigger .icon span,
+      .members-filters-frame #members-filters-trigger .icon span {
         font-size: 18px;
         margin-top: 3px; }
-  .tasks-filters-frame #tasks-filters {
+  .tasks-filters-frame #tasks-filters,
+  .members-filters-frame #members-filters {
     position: absolute;
     top: 28px;
     right: 0;
@@ -976,7 +983,9 @@ div[class|="status-block"] .row-top {
     -webkit-box-shadow: 1px 1px 3px 1px rgba(200, 200, 200, 0.7);
     box-shadow: 1px 1px 3px 1px rgba(200, 200, 200, 0.7); }
     .tasks-filters-frame #tasks-filters #task_tags_chosen,
-    .tasks-filters-frame #tasks-filters .form-control {
+    .tasks-filters-frame #tasks-filters .form-control,
+    .members-filters-frame #members-filters #member_tags_chosen,
+    .members-filters-frame #members-filters .form-control {
       font-size: 13px; }
 
 /* additions styles */
@@ -1090,4 +1099,20 @@ a.itv-company-logo-action, a.itv-company-logo-action:hover {
 /* customize comments subscriptions */
 .comment-form-subscriptions {
 	display:none !important;
+}
+
+.label-from {
+  font-size: 0.8em;
+}
+
+/* task form sub label */
+.itv-task-form-sublabel {
+  font-size:0.9em;
+  font-style: italic;
+  margin:0px 0px 10px 0px;
+}
+
+#is_tst_consult_needed {
+  margin-right:5px;
+  vertical-align: top;
 }
