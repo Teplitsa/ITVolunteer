@@ -239,10 +239,14 @@ get_header();?>
 	//            'nopaging' => true,
 	            'exclude' => ACCOUNT_DELETED_ID,
 				'meta_query' => array(
+						'relation' => 'OR',
 						array(
 								'key'     => 'member_order_data',
-								'value'   => '0',
-								'compare' => '>'
+								'compare' => 'EXISTS'
+						),
+						array(
+								'key'     => 'member_order_data',
+								'compare' => 'NOT EXISTS'
 						),
 				),	  
 				'query_id' => 'get_members_for_members_page',
