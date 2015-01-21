@@ -67,10 +67,14 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
-};
+}
 
 /** Add an author filtering to exclude account-deleted's account from users query */
 add_action('pre_user_query', function(WP_User_Query $query){
+    global $wpdb;
+    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
+        $query->query_orderby = str_replace( 'user_login', $wpdb->usermeta.".meta_value", $query->query_orderby );
+    }
 
     if(stristr($query->query_where, 'WHERE 1=1') === false) {
         $query->query_where = 'WHERE 1=1 '.$query->query_where;
@@ -170,38 +174,38 @@ add_action('init', function(){
 
 
 add_action('init', function(){
-    p2p_register_connection_type(array(
-        'name' => 'task-doers',
-        'from' => 'tasks',
-        'to' => 'user',
-        'cardinality' => 'many-to-many',
-//        'admin_column' => true,
-        'admin_dropdown' => 'any',
-        'fields' => array(
-            'is_approved' => array(
-                'title' => __('Doer approved', 'tst'),
-                'type' => 'checkbox',
-                'default' => false,
+    if ( function_exists('p2p_register_connection_type') ) {
+        p2p_register_connection_type(array(
+            'name' => 'task-doers',
+            'from' => 'tasks',
+            'to' => 'user',
+            'cardinality' => 'many-to-many',
+            'admin_dropdown' => 'any',
+            'fields' => array(
+                'is_approved' => array(
+                    'title' => __('Doer approved', 'tst'),
+                    'type' => 'checkbox',
+                    'default' => false,
+                ),
             ),
-        ),
-        'title' => array(
-            'from' => __('Task doers', 'tst'),
-            'to' => __('Tasks', 'tst'),
-        ),
-        'from_labels' => array(
-            'singular_name' => __('Task', 'tst'),
-            'search_items' => __('Search tasks', 'tst'),
-            'not_found' => __('No tasks found.', 'tst'),
-            'create' => __('Create connections', 'tst'),
-        ),
-        'to_labels' => array(
-            'singular_name' => __('Doer', 'tst'),
-            'search_items' => __('Search doers', 'tst'),
-            'not_found' => __('No doers found.', 'tst'),
-            'create' => __('Create connections', 'tst'),
-        ),
-//        'to_query_vars' => array(/*'role' => 'editor'*/)
-    ));
+            'title' => array(
+                'from' => __('Task doers', 'tst'),
+                'to' => __('Tasks', 'tst'),
+            ),
+            'from_labels' => array(
+                'singular_name' => __('Task', 'tst'),
+                'search_items' => __('Search tasks', 'tst'),
+                'not_found' => __('No tasks found.', 'tst'),
+                'create' => __('Create connections', 'tst'),
+            ),
+            'to_labels' => array(
+                'singular_name' => __('Doer', 'tst'),
+                'search_items' => __('Search doers', 'tst'),
+                'not_found' => __('No doers found.', 'tst'),
+                'create' => __('Create connections', 'tst'),
+            ),
+        ));
+    }
 });
 
 if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
@@ -606,6 +610,7 @@ function ajax_add_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->connect($_POST['task-id'], get_current_user_id(), array());
+    tst_actualize_current_member_role();
 
     // Send email to the task doer:
     global $email_templates;
@@ -651,6 +656,7 @@ function ajax_remove_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->disconnect($_POST['task-id'], get_current_user_id());
+    tst_actualize_current_member_role();
 
     // Send email to the task doer:
     global $email_templates;
@@ -1139,6 +1145,14 @@ function tst_send_admin_notif_consult_needed($post_id) {
     }
 }
 
+function tst_post_updated( $post_id ) {
+    remove_action( 'save_post', 'tst_post_updated' );
+    $post = get_post( $post_id );
+    if($post) {
+        tst_actualize_member_role($post->post_author);
+    }
+}
+add_action( 'save_post', 'tst_post_updated' );
 
 function tst_consult_column( $column, $post_id ) {
     switch ( $column ) {
