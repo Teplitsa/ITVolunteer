@@ -46,11 +46,11 @@
 		
 		<div class="navbar-right">			
 			<?php if(is_user_logged_in()) {?>
-				<a href="<?php echo tst_get_member_url(get_user_by('id', get_current_user_id()));?>" class="btn btn-primary navbar-btn navbar-right"><?php _e('Your profile', 'tst');?></a>
+				<a href="<?php echo home_url('task-actions');?>" class="btn btn-primary navbar-btn navbar-right add-new-task-button"><?php _e('New task', 'tst');?></a>
 			<?php } else {?>
 				<a href="<?php echo home_url('/registration/')?>" class="btn btn-primary navbar-btn navbar-right home-registration-button" ><?php _e('Register', 'tst');?></a>
 			<?php }?>
-			<!-- <a href="<?php echo home_url('task-actions');?>" class="btn btn-primary navbar-btn navbar-right add-new-task-button"><?php _e('New task', 'tst');?></a> -->
+<!--		<a href="<?php echo tst_get_member_url(get_user_by('id', get_current_user_id()));?>" class="btn btn-primary navbar-btn navbar-right"><?php _e('Your profile', 'tst');?></a> -->
 		</div>
 
 		<ul class="nav navbar-nav pull-right" id="menu-actions">

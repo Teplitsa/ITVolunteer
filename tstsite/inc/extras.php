@@ -180,12 +180,13 @@ function tst_remove_admin_bar($show){
 /* redirect incapable mebers from admin */
 add_action('parse_query', 'tst_admin_redirect');
 function tst_admin_redirect(){
+	# this sometimes brokes ajax calls
 	
-	if(is_admin() && !current_user_can('edit_others_posts')){
-		$redirect = home_url();
-		wp_redirect($redirect);
-		die();
-	}
+	//if(is_admin() && !current_user_can('edit_others_posts')){
+	//	$redirect = home_url();
+	//	wp_redirect($redirect);
+	//	die();
+	//}
 	
 }
 
@@ -251,6 +252,43 @@ function tst_get_member_role_label($role) {
         case 3: return __('Participator', 'tst');
         default: return __('Unknown role', 'tst');
     }
+}
+
+$ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
+function tst_actualize_member_role($user) {
+	global $ROLE_SORT_TABLE;
+	if(!is_object($user)) {
+		$user = (int)$user;
+		$user = get_user_by('id', $user);
+	}
+	if($user) {
+		$new_member_role = tst_get_member_role($user);
+		update_user_meta($user->ID, 'member_role', $new_member_role);
+		set_user_order_data($user->ID, $ROLE_SORT_TABLE[(int)$new_member_role]);
+	}
+}
+
+function tst_actualize_current_member_role() {
+	tst_actualize_member_role(get_current_user_id());
+}
+
+function set_user_order_data($user_id, $order_data) {	
+		update_user_meta($user_id, 'member_order_data', $order_data);
+}
+
+function tst_process_members_filter($users_query_params) {
+	
+	if( !empty($_GET['role']) && (int)$_GET['role']) {
+	    $metas = array();
+	    $metas[] = array(
+		'key' => 'member_role',
+		'value' => $_GET['role'],
+		'compare' => '=',
+	    );
+	    $users_query_params['meta_query'] = $metas;
+	}
+	
+	return $users_query_params;
 }
 
 function tst_get_task_author_link($task = null){

@@ -198,15 +198,22 @@ function tst_members_paging($query, $echo = true){
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	$base = str_replace('http://', 'https://', $base);
+	if (!empty($_SERVER['HTTPS'])) {
+		$base = str_replace('http://', 'https://', $base);
+	}
 	
 	// Calculate total pages:
 	$per_page = get_option('posts_per_page');
-    $user_query = new WP_User_Query(array(
-        'nopaging' => true,
-        'exclude' => ACCOUNT_DELETED_ID,
-    ));
+	
+	$users_query_params = array(
+	    'nopaging' => true,
+	    'exclude' => ACCOUNT_DELETED_ID,
+	);
+	$users_query_params = tst_process_members_filter($users_query_params);
+	
+	$user_query = new WP_User_Query($users_query_params);
 	$users_count = array('total_users' => $user_query->total_users);
+	
 	$total_pages = ceil($users_count['total_users']/$per_page); //do we need any particular part?
     
 	$pagination = array(
@@ -257,8 +264,10 @@ function frl_paginate_links($query = null, $echo = true) {
 	
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
-	$base = trailingslashit(esc_url($parts['host'].$parts['path'], 'https'));
-	$base = str_replace('http://', 'https://', $base);
+	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
+	if (!empty($_SERVER['HTTPS'])) {
+		$base = str_replace('http://', 'https://', $base);
+	}
     
 	$pagination = array(
         'base' => $base.'%_%',
@@ -415,9 +424,16 @@ function tst_temp_avatar($user = null){
 		$user = $tst_member;
 	}
 	
-	$default = str_replace( 'http://', 'https://', get_template_directory_uri()) . '/img/temp-avatar.png';
+	$default = get_template_directory_uri() . '/img/temp-avatar.png';
+	if (!empty($_SERVER['HTTPS'])) {
+		$default = str_replace( 'http://', 'https://', $default);
+	}
 	$size = 180;
-	$grav_url = $user ? "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
+	$grav_url = $user ? "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
+	
+	if (!empty($_SERVER['HTTPS'])) {
+		$grav_url = str_replace( 'http://', 'https://', $grav_url);
+	}	
 ?>
 	<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 <?php

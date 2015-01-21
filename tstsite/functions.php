@@ -244,29 +244,13 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
-add_action('wp_print_scripts', 'enqueue_scripts_fix', 100);
-add_action('wp_print_styles', 'enqueue_styles_fix', 100);
- 
-function enqueue_scripts_fix() {
-	if(!is_admin()) {
-		if (!empty($_SERVER['HTTPS'])) {
-			global $wp_scripts;
-			foreach ((array) $wp_scripts->registered as $script) {
-				if (stripos($script->src, 'http://', 0) !== FALSE)
-					$script->src = str_replace('http://', 'https://', $script->src);
-			}
-		}
-	}
-}
- 
-function enqueue_styles_fix() {
-	if(!is_admin()) {
-		if (!empty($_SERVER['HTTPS'])) {
-			global $wp_styles;
-			foreach ((array) $wp_styles->registered as $script) {
-				if (stripos($script->src, 'http://', 0) !== FALSE)
-					$script->src = str_replace('http://', 'https://', $script->src);
-			}
+add_action('wp_print_styles', 'print_styles_fix', 100);
+function print_styles_fix() {
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_styles;
+		foreach ((array) $wp_styles->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
 		}
 	}
 }
