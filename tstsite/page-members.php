@@ -232,15 +232,41 @@ get_header();?>
 		$per_page = get_option('posts_per_page');
 		$current = ($wp_query->query_vars['paged'] > 1) ? $wp_query->query_vars['paged'] : 1;
 		$offset = ($current > 1) ? ($current-1)*$per_page : 0;
-		
-		$user_query = new WP_User_Query(array(
-            'number' => $per_page,
-            'offset' => $offset,
-//            'nopaging' => true,
-            'exclude' => ACCOUNT_DELETED_ID,
-        ));
-		if($user_query->results) {?>
 
+		$users_query_params = array(
+	            'number' => $per_page,
+	            'offset' => $offset,
+	//            'nopaging' => true,
+	            'exclude' => ACCOUNT_DELETED_ID,
+				'meta_query' => array(
+						'relation' => 'OR',
+						array(
+								'key'     => 'member_order_data',
+								'compare' => 'EXISTS'
+						),
+						array(
+								'key'     => 'member_order_data',
+								'compare' => 'NOT EXISTS'
+						),
+				),	  
+				'query_id' => 'get_members_for_members_page',
+	        );
+		
+		$users_query_params = tst_process_members_filter($users_query_params);
+
+		$user_query = new WP_User_Query($users_query_params);
+		?>
+		
+		<div class="row">
+			<div class="col-md-8">
+			</div>
+			<div class="col-md-4">
+				<?php get_template_part( 'members', 'filter'); ?>
+			</div>
+		</div>
+		
+		<?if($user_query->results) {?>
+		
 		<div class="row in-loop members-list">
 		<?php
 			foreach($user_query->results as $u){

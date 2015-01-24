@@ -67,10 +67,14 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
-};
+}
 
 /** Add an author filtering to exclude account-deleted's account from users query */
 add_action('pre_user_query', function(WP_User_Query $query){
+    global $wpdb;
+    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
+        $query->query_orderby = str_replace( 'user_login', $wpdb->usermeta.".meta_value", $query->query_orderby );
+    }
 
     if(stristr($query->query_where, 'WHERE 1=1') === false) {
         $query->query_where = 'WHERE 1=1 '.$query->query_where;
@@ -316,20 +320,30 @@ function ajax_add_edit_task(){
     // New task
     else {
         $is_new_task = true;
-        $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';
+        $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';        
     }
 
     $_POST['id'] = wp_insert_post($params);
     if($_POST['id']) {
+        $old_is_tst_consult_needed = get_field(ITV_ACF_TASK_is_tst_consult_needed, $_POST['id']);
+        $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
 
         update_field('field_533bebda0fe8d', htmlentities(trim($_POST['expecting']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bec930fe8e', htmlentities(trim(@$_POST['about-reward']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bef200fe90', $_POST['deadline'], $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
+        update_field(ITV_ACF_TASK_is_tst_consult_needed, $new_is_tst_consult_needed, $_POST['id']);
 		
         if($is_new_task) {
             tst_send_admin_notif_new_task($_POST['id']);
+        }
+        
+        if($new_is_tst_consult_needed) {
+            if($is_new_task || !$old_is_tst_consult_needed) {
+                update_field(ITV_ACF_TASK_is_tst_consult_done, false, $_POST['id']);
+                tst_send_admin_notif_consult_needed($_POST['id']);
+            }
         }
 
         if($params['post_status'] == 'draft') {
@@ -596,6 +610,7 @@ function ajax_add_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->connect($_POST['task-id'], get_current_user_id(), array());
+    tst_actualize_current_member_role();
 
     // Send email to the task doer:
     global $email_templates;
@@ -641,6 +656,7 @@ function ajax_remove_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->disconnect($_POST['task-id'], get_current_user_id());
+    tst_actualize_current_member_role();
 
     // Send email to the task doer:
     global $email_templates;
@@ -1099,3 +1115,65 @@ function tst_send_admin_notif_new_task($post_id) {
 		wp_mail($to, $subject, $message, $headers);
 	}
 }
+
+function tst_send_admin_notif_consult_needed($post_id) {
+    global $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM;
+    $task = get_post($post_id);
+    
+    if($task && count($ITV_CONSULT_EMAILS) > 0) {
+            $to = $ITV_CONSULT_EMAILS[0];
+            $other_emails = array_slice($ITV_CONSULT_EMAILS, 1);
+            $message = __('itv_email_test_consult_needed_message', 'tst');
+            $data = array(
+                    '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+                    '{{task_title}}' => get_the_title($post_id),
+                    '{{task_content}}' => $task->post_content
+            );
+            $message = str_replace(array_keys($data), $data, $message);
+            $message = str_replace("\\", "", $message);
+            $message = nl2br($message);
+            
+            $subject = __('itv_email_test_consult_needed_subject', 'tst');
+            
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+            if(count($other_emails) > 0) {
+                    $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+            }
+            wp_mail($to, $subject, $message, $headers);
+    }
+}
+
+function tst_post_updated( $post_id ) {
+    remove_action( 'save_post', 'tst_post_updated' );
+    $post = get_post( $post_id );
+    if($post) {
+        tst_actualize_member_role($post->post_author);
+    }
+}
+add_action( 'save_post', 'tst_post_updated' );
+
+function tst_consult_column( $column, $post_id ) {
+    switch ( $column ) {
+	case 'is_tst_consult_needed' :
+            $is_tst_consult_needed = get_field(ITV_ACF_TASK_is_tst_consult_needed, $post_id);
+            if($is_tst_consult_needed) {
+                $is_tst_consult_done = get_field(ITV_ACF_TASK_is_tst_consult_done, $post_id);
+                if($is_tst_consult_done) {
+                    echo "<b class='itv-admin-test-consult-done'>".__('Done', 'tst')."</b>";
+                }
+                else {
+                    echo "<b class='itv-admin-test-consult-needed'>".__('Needed!', 'tst')."</b>";
+                }
+            }
+            break;
+    }
+}
+add_action( 'manage_posts_custom_column' , 'tst_consult_column', 10, 2 );
+
+
+function add_tst_consult_column( $columns ) {
+    return array_merge( $columns, array( 'is_tst_consult_needed' => __( 'Te-st consulting', 'tst' ) ) );
+}
+add_action( 'manage_posts_columns' , 'add_tst_consult_column');
