@@ -256,6 +256,17 @@ function print_styles_fix() {
 }
 
 /**
+ * Lock Administration Screens for user 
+ */
+function wp_admin_block() {
+	if (!current_user_can('administrator')) { 
+		wp_redirect( home_url() );
+		exit();
+	}	
+}
+add_action('admin_menu', 'wp_admin_block');
+
+/**
  * Custom additions.
  */
 if(is_admin()) {
