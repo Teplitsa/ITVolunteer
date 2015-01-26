@@ -98,10 +98,11 @@ function tst_widgets_init() {
 						'name' => 'Футер - 1/3',
 						'description' => 'Динамическая нижняя область - 1 колонка'
 					),
-		/*'footer_two' => array(
+		'footer_two' => array(
 						'name' => 'Футер - 2/3',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
+		/*
 		'footer_three' => array(
 						'name' => 'Футер - 3/3',
 						'description' => 'Динамическая нижняя область - 3 колонка'
@@ -158,7 +159,7 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.4');
+    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.5');
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -254,6 +255,17 @@ function print_styles_fix() {
 		}
 	}
 }
+
+/**
+ * Lock Administration Screens for user 
+ */
+function wp_admin_block() {
+	if (!current_user_can('administrator')) { 
+		wp_redirect( home_url() );
+		exit();
+	}	
+}
+add_action('admin_menu', 'wp_admin_block');
 
 /**
  * Custom additions.

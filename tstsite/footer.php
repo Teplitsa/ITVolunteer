@@ -21,7 +21,8 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 		</div>		
 	
 		<div class="col-md-4">
-
+			<?php dynamic_sidebar('footer_two-sidebar');?>
+			
             <?php
 				if( !is_page('contacts') ) {
 					get_template_part('contact', 'form');
@@ -30,7 +31,6 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 					echo '&nbsp;';
 				}
 			?>
-				
 		</div><!-- col-md-4 -->
 		
 		<div class="col-md-4">

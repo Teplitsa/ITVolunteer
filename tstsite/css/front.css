@@ -188,7 +188,7 @@ body.admin-bar .navbar-fixed-top {
   font-size: 13px;
   cursor: pointer;
   color: #999;
-  margin-top: 23px; }
+  margin-top: 63px; }
   #bottombar #open-contact-form:hover {
     text-decoration: underline;
     color: #428bca; }
@@ -1115,4 +1115,24 @@ a.itv-company-logo-action, a.itv-company-logo-action:hover {
 #is_tst_consult_needed {
   margin-right:5px;
   vertical-align: top;
+}
+
+/*	links footer sidebar */
+.widget.widget_links.bottom h5 {
+  margin-top:23px;
+  font-weight: 700;
+}
+
+.widget.widget_links.bottom ul {
+  padding-left:0px;
+}
+
+.widget.widget_links.bottom ul li {
+  list-style: none;
+  margin-bottom:10px;
+}
+
+.widget.widget_links.bottom ul li a {
+  display: block;
+  margin-bottom:3px;
 }
