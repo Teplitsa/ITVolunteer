@@ -264,6 +264,7 @@ function tst_actualize_member_role($user) {
 	if($user) {
 		$new_member_role = tst_get_member_role($user);
 		update_user_meta($user->ID, 'member_role', $new_member_role);
+		update_user_meta($user->ID, 'member_rating', sprintf("%010d", tst_get_user_rating($user)));
 		set_user_order_data($user->ID, $ROLE_SORT_TABLE[(int)$new_member_role]);
 	}
 }
@@ -279,13 +280,16 @@ function set_user_order_data($user_id, $order_data) {
 function tst_process_members_filter($users_query_params) {
 	
 	if( !empty($_GET['role']) && (int)$_GET['role']) {
-	    $metas = array();
-	    $metas[] = array(
-		'key' => 'member_role',
-		'value' => $_GET['role'],
-		'compare' => '=',
-	    );
-	    $users_query_params['meta_query'] = $metas;
+		$users_query_params['itv_member_role'] = $_GET['role'];
+	//    $metas_cond = array(
+	//		'key' => 'member_role',
+	//		'value' => $_GET['role'],
+	//		'compare' => '=',
+	//    );
+	//	if(!is_array(@$users_query_params['meta_query'])) {
+	//		$users_query_params['meta_query'] = array();
+	//	}
+	//	array_unshift($users_query_params['meta_query'], $metas_cond);
 	}
 	
 	return $users_query_params;

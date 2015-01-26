@@ -23,6 +23,17 @@ if( !$cur_user_id ) {?>
                 <?php _e('You must log in to offer help to somebody!', 'tst');?> <a href="<?php echo tst_get_login_url();?>"><?php _e('Log In');?></a> <?php _e('or', 'tst');?> <a href="<?php echo tst_get_register_url();?>"><?php _e('Register', 'tst');?></a>.
             </em></div>
         </div>
+        
+        <?php if($post->post_status != 'draft' && $candidates) {?>
+        <div class="connected-users">
+            <h5><?php _e('Volunteers offered their help', 'tst');?>:</h5>
+            <ul>
+            <?php foreach($candidates as $candidate) {?>
+                <li><?php frl_task_candidate_markup($candidate, 4);?></li>
+            <?php }?>
+            </ul>
+        </div>
+        <?php }?>        
     </div>
 
 <?php } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'draft') {?>
@@ -39,7 +50,8 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
+<?php# } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
+<?php } elseif($is_curr_users_task && $post->post_status == 'publish' && !$candidates) {?>
 
     <div id="">
         <a href="#" id="author-unpublish" class="btn btn-danger btn-lg widefat"><?php _e('Stop publication', 'tst');?></a>
@@ -55,7 +67,8 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
+<?php# } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
+<?php } elseif($is_curr_users_task && $post->post_status == 'publish' && $candidates) {?>
 
     <div id="">
         <a href="#" id="task-send-to-work" class="btn btn-success btn-lg widefat"><?php _e('In work!', 'tst');?></a>
@@ -77,7 +90,8 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'in_work') {?>
+<?php# } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'in_work') {?>
+<?php } else if($is_curr_users_task && $post->post_status == 'in_work') {?>
 
     <div id="">
         <a href="#" id="author-close" class="btn btn-danger btn-lg widefat"><?php _e('Close the task', 'tst');?></a>        
@@ -113,7 +127,8 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'closed') {?>
+<?php# } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'closed') {?>
+<?php } else if($is_curr_users_task && $post->post_status == 'closed') {?>
 
     <a href="#" id="task-send-to-work" class="btn btn-danger btn-lg widefat"><?php _e('Return to work', 'tst');?></a>
     <br />

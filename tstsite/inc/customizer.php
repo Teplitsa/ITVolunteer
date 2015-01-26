@@ -73,7 +73,19 @@ function tst_main_query_mods(WP_Query $query) {
 add_action('pre_user_query', function(WP_User_Query $query){
     global $wpdb;
     if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
-        $query->query_orderby = str_replace( 'user_login', $wpdb->usermeta.".meta_value", $query->query_orderby );
+        $query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
+        $query->query_from = " FROM {$wpdb->users}
+            INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
+            INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
+        ";
+        $query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
+        $query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
+        
+        if(@$query->query_vars['itv_member_role']) {
+            $member_role = (int)$query->query_vars['itv_member_role'];            
+            $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
+            $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
+        }
     }
 
     if(stristr($query->query_where, 'WHERE 1=1') === false) {
@@ -394,6 +406,7 @@ function ajax_publish_task() {
 
 //    wp_publish_post($_POST['task-id']);
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+    tst_actualize_current_member_role();
 
     die(json_encode(array(
         'status' => 'ok',
@@ -419,6 +432,7 @@ function ajax_unpublish_task() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
+    tst_actualize_current_member_role();
 
     die(json_encode(array(
         'status' => 'ok',
@@ -443,7 +457,21 @@ function ajax_task_to_work() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
-
+    
+    $task = get_post($_POST['task-id']);
+    if($task) {
+        $users = get_users( array(
+          'connected_type' => 'task-doers',
+          'connected_items' => $task
+        ));
+        
+        foreach($users as $user) {
+            if(tst_is_user_candidate($user->ID, $task->ID)) {
+                tst_actualize_member_role($user);    
+            }
+        }
+    }
+    
     /** @todo Send emails to all task doers... */
 
     die(json_encode(array(
@@ -469,6 +497,19 @@ function ajax_close_task() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'closed'));
+    $task = get_post($_POST['task-id']);
+    if($task) {
+        $users = get_users( array(
+          'connected_type' => 'task-doers',
+          'connected_items' => $task
+        ));
+        
+        foreach($users as $user) {
+            if(tst_is_user_candidate($user->ID, $task->ID)) {
+                tst_actualize_member_role($user);    
+            }
+        }
+    }
 
     /** @todo Send emails to all task doers... */
 
@@ -503,6 +544,9 @@ function ajax_approve_candidate() {
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
+    
+    tst_actualize_member_role($doer);    
+    tst_actualize_member_role($task_author);    
 
     // Notice to doer:
     global $email_templates;
@@ -565,6 +609,7 @@ function ajax_refuse_candidate() {
     // Send email to the task doer:
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
+    tst_actualize_member_role($_POST['doer-id']);
 
     global $email_templates;
 //    add_filter('wp_mail_content_type', function(){
@@ -769,7 +814,8 @@ function ajax_user_register() {
             /** @var $user_id integer */
             $activation_code = sha1($user_id.'-activation-'.time());
             update_user_meta($user_id, 'activation_code', $activation_code);
-
+            tst_actualize_member_role($user_id);
+            
             global $email_templates;
 //            add_filter('wp_mail_content_type', function(){
 //                return 'text/html';
@@ -1045,8 +1091,10 @@ function tst_get_user_working_tasks($user, $status = array()) {
 }
 
 function tst_get_user_rating($user) {
-
-    if(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+    if(is_object($user)) {
+        ;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
         $user = get_user_by('id', $user);
         if(!$user) {
             $user = get_user_by('login', $user);
