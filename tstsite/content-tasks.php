@@ -1,6 +1,6 @@
 <?php
 /**
- * this is temporary post layout
+ * Task in loop
  * 
  */
 
@@ -28,7 +28,7 @@
 			<div class="title-content">
 				<h4>				
 					<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); //echo ' ('.strlen(get_the_title()).')'; ?></a>
-				</h4>
+				</h4>			
 				<div class="task-meta"><?php tst_task_fixed_meta();?></div>
 			</div>
 

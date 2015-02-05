@@ -32,6 +32,9 @@ get_header();?>
 			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
 			<h1 class="page-title <?php if(is_single_member()) echo 'member-title';?>">
 			<?php echo frl_page_title();?>
+			<?php if(!is_single_member()):?>
+			<span class="itv-total-members-heading"><?php echo tst_get_active_members_count() ?></span>
+			<?endif?>			
 			<?php if(is_single_member() && current_user_can('edit_user', $tst_member->ID)): ?>
 				<small class="edit-item"> <a href="<?php echo tst_get_edit_member_url();?>"><?php _e('Edit', 'tst');?></a></small>
 			<?php endif; ?>
@@ -74,7 +77,13 @@ get_header();?>
 					</section>
 					<?endif?>
 					
-
+					<?if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
+					<section class="data-section-member">
+						<h4><?php _e('Te-st partner', 'tst');?></h4>
+						<img class="itv-test-partner-big" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" />
+					</section>
+					<?endif?>
+					
 					<?if($user_bio = trim(tst_get_member_field('user_bio'))):?>
 					<section class="data-section-member">
 						<h4><?php _e('About me', 'tst');?></h4>

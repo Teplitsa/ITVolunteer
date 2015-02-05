@@ -40,7 +40,7 @@ if( !empty($_GET['task']) ){
 			'expecting' => get_field('field_533bebda0fe8d', $task->ID),
 			'about_reward' => get_field('field_533bec930fe8e', $task->ID),
 			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
-			'deadline' => get_field('field_533bef200fe90', $task->ID),
+			'deadline' => date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID)),
 			'reward_id' => get_field('field_533bef600fe91', $task->ID),
 			'is_tst_consult_needed' => get_field(ITV_ACF_TASK_is_tst_consult_needed, $task->ID),
 		);

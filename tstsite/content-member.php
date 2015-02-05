@@ -20,6 +20,7 @@ global $tst_member;?>
 
                 <?php
                     $is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true);
+					$is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true);
                     $role = tst_get_member_role($tst_member);
                     switch($role) {
                         case 1: $class = 'label-warning'; break;
@@ -32,6 +33,7 @@ global $tst_member;?>
 					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
 					
 					<?if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" /><?endif?>
+					<?if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" /><?endif?>
 				</div>
 				<h4 class="member-title"><a href="<?php echo tst_get_member_url();?>"><?php echo tst_get_member_name();?></a></h4>
 				
