@@ -19,7 +19,7 @@ get_header(); ?>
         <?php global $wp_query;
         $wp_query = new WP_Query(array(
             'post_type' => 'tasks',
-            'post_status' => array('publish', 'in_work'),
+            'post_status' => array('publish'),
             'nopaging' => 1,
             'author' => '-'.ACCOUNT_DELETED_ID,
         ));
