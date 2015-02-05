@@ -30,7 +30,7 @@ if($news_post):
 	<div class="home-news-content">
 		<?$thumbnail = get_the_post_thumbnail($news_post->ID, 'large')?>
 		<?php if ( $thumbnail ): ?>
-			<?php echo $thumbnail ?>
+			<a href="<?php echo get_permalink($news_post->ID);?>" class="thumb-link"><?php echo $thumbnail ?></a>
 		<?php endif?>
 		<?php global $post; $prev_post = $post; $post = $news_post; ?>
 		<?php echo the_excerpt(); ?>

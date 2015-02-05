@@ -1,18 +1,34 @@
 /** Presets **/
-$regularBgC: #f5f5f5;
-$regularLinkC: #428BCA;
-$regulatLinkHoverC: #2a6496;
-$regularBorderC: #e9e9e9;
-$regularLinkedTitleC: #333;
-
-$greenLabel: #5CB85C;
-$greenSaturated: #3C763D;
 $greenOlive: #9bd15b;
 
-$redLabel: #D2322D;
-$redSaturated: #A94442;
 
-$metaTextC: #777;
+$color-text : #333;
+$color-white: #fff;
+$color-text-black: #111;
+
+$color-link-one : #428BCA;
+$color-link-two : #2a6496;
+
+$color-secondary : #f5f5f5;
+$color-border-normal: #ccc;
+$color-border-light : #e9e9e9;
+
+$color-label-green-normal: #5CB85C;
+$color-label-green-dark: #3C763D;
+$color-label-green-semi: #9bd15b;
+
+$color-label-red-normal: #D2322D;
+$color-label-red-dark: #A94442;
+
+$color-text-semi: #666;
+$color-text-meta: #777;
+$color-text-light: #999;
+
+$color-deadline-urgent: #D2322D;
+$color-deadline-low-urgent: #f0ad4e;
+$color-deadline-no-urgent: #5BC0DE;
+$color-deadline-all-time: #aeaeae;
+
 
 $divMargin: 30px;
 $statusW: 65px;
@@ -51,7 +67,7 @@ $statusW: 65px;
 
 @mixin post-title {
 	a {
-		color: $regularLinkedTitleC;
+		color: $color-text;
 		&:hover {
 			text-decoration: underline;
 		}
@@ -69,8 +85,8 @@ $statusW: 65px;
 	transition: all 0.3s ;
 	&:hover {
 		color: #fff;
-		background: $greenLabel;
-		border-color: $greenLabel;
+		background: $color-label-green-normal;
+		border-color: $color-label-green-normal;
 		opacity: 1;
 	}
 }
