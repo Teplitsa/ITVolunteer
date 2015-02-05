@@ -12,46 +12,53 @@
 			</div>
 		</div>
 
-		<div class="col-md-10">
+		<div class="col-md-7">
 
 			<div class="home-text"><p>
             <?php global $post; echo $post->post_content; //the_content(); - not working for some reason ?>
 				<? //_e('it-volunteer - a platform for the exchange of tasks to provide digital services for non-profit organizations and community initiatives. Here you can either ask for help for your project or organization, and to offer it. <a href="http://help.te-st.ru/about/">Read more.</a>', 'tst');?>
 			</p></div>
 
-			<div class="home-text-buttons">
-				<div class="pull-left">
-					<button class="btn btn-primary home-watch-video-button" data-toggle="modal" data-target="#myModal">
-						<span class="glyphicon glyphicon-play-circle"></span> <?php _e('Watch the video', 'tst');?>
-					</button>
-					
-					<!-- Modal -->
-					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-									<h4 class="modal-title" id="myModalLabel"><?php _e('About IT-Volunteer', 'tst');?></h4>
-								</div>
-								<div class="modal-body">
-									<?php echo get_post_meta(get_the_ID(), 'video', true);?>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div> <!-- .pull-left -->
-
-				<div class="pull-left">
-					<a href="<?php echo home_url('task-actions');?>" class="btn btn-success add-new-task-button"><span class="glyphicon glyphicon-file"></span> <?php _e('New task', 'tst');?></a>				
-					<?php if(is_user_logged_in()) {?>
-						<!-- <a href="<?php echo tst_get_member_url(get_user_by('id', get_current_user_id()));?>" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> <?php _e('Your profile', 'tst');?></a> -->
-					<?php } else {?>
-						<!-- <a href="<?php echo home_url('/registration/')?>" class="btn btn-success home-registration-button" ><span class="glyphicon glyphicon-log-in"></span> <?php _e('Register', 'tst');?></a> -->
-					<?php }?>
-
-				</div><!-- .pull-left -->
-			</div>
 		</div>
 
+		<div class="col-md-3">
+			<div class="intro-play-video-button pull-right" data-toggle="modal" data-target="#myModal">
+				<div class="intro-play-icon"></div>
+				<div class="intro-play-lable"><?php _e('how it works', 'tst');?></div>
+			</div>
+			<!-- Modal -->
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="myModalLabel"><?php _e('About IT-Volunteer', 'tst');?></h4>
+						</div>
+						<div class="modal-body">
+							<?php echo get_post_meta(get_the_ID(), 'video', true);?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div><!-- .row -->
+</div>
+
+<div class="home-header-buttons">
+	<div class="row">
+		<div class="col-md-9 clearfix">
+			<div class="home-header-members-count pull-left">
+				<?php _e('Members count', 'tst');?>: <span class="itv-members-count"><?php echo tst_get_active_members_count() ?></span>
+			</div>
+			<div class="itv-tasks-stats pull-left">
+				<span><?php _e('Tasks on site', 'tst');?></span>
+				<a href="<?php echo home_url('/tasks/?st=publish')?>" style="color:#4cae4c;"><?php _e('New tasks:', 'tst')?> <?php echo tst_get_new_tasks_count();?></a>
+				<a href="<?php echo home_url('/tasks/?st=in_work')?>" style="color:#D0021B;"><?php _e('In work tasks:', 'tst')?> <?php echo tst_get_work_tasks_count();?></a>
+				<a href="<?php echo home_url('/tasks/?st=closed')?>"><?php _e('Closed tasks:', 'tst')?> <?php echo tst_get_closed_tasks_count();?></a>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<a href="<?php echo home_url('task-actions');?>" class="add-new-task-button"><?php _e('Create task', 'tst');?></a>
+		</div>
+	</div>
 </div>

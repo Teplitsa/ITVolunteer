@@ -96,6 +96,14 @@ jQuery(function($){
         $(this).slideUp(200);
         $('#contact-form').slideDown(200);
     });
+	
+	 $('#close-contact-form').click(function(e){
+        e.preventDefault();
+		
+		$('#contact-form').slideUp(200);
+        $('#open-contact-form').slideDown(200);
+        
+    });
 
     $('#contact-form').on('submit', '', function(e){
         e.preventDefault();
@@ -778,16 +786,18 @@ jQuery(function($){
 	}
 
     var $container = $('.members-list');
-
     $container.imagesLoaded(function(){
         $container.masonry({
             itemSelector: '.member'
         });
     });
 
-//    $('.members-list').masonry({
-//        itemSelector: '.member'
-//    });
+    var $home_tasks_list = $('.home-section.tasks .tasks-list');
+    $home_tasks_list.imagesLoaded(function(){
+        $home_tasks_list.masonry({
+            itemSelector: '.tasks.type-tasks'
+        });
+    });
 
     $('#tasks-filters-trigger').click(function(e){
         e.preventDefault();

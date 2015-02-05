@@ -23,8 +23,8 @@
 </head>
 <?php flush(); ?>
 
-<body id="top" <?php body_class(); ?>>
-
+<?php $home_body_class = is_front_page() ? 'itv-home-body' : '';?>
+<body id="top" <?php body_class($home_body_class); ?>>
 
 <nav id="site-navigation" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
@@ -33,7 +33,6 @@
 </nav><!-- #site-navigation -->
 
 <div id="page" class="hfeed site">
-
 
 <div class="container">
 <?php if(is_front_page()):?>

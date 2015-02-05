@@ -37,6 +37,9 @@ $tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the
 			<div class="te-st"><a href="http://te-st.ru" target="_blank">
 			<img src="<?php echo get_template_directory_uri().'/img/tst-banner.png';?>" alt="<?php echo $tst;?>">
 			</a></div>
+			<div class="pull-right clearfix itv-total-members-footer">
+				<?php _e('Total members count:', 'tst') ?> <?php echo tst_get_active_members_count()?>
+			</div>
 		</div>
 	</div>
 
