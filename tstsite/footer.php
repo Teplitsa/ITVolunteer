@@ -8,7 +8,7 @@
  */
 
 $cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons СС-BY-SA 3.0</a>';
-$tst = __("Teplitsa of social technologies - crowdsourcing, technologies for the charity", "tst");?>
+$tst = __("Teplitsa of social technologies - краудсорсинг, технологии для благотворительности", "tst");?>
 
 <div id="bottombar" class="widget-area page-bottom small">
 
