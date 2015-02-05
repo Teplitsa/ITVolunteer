@@ -277,3 +277,4 @@ require get_template_directory().'/inc/extras.php';
 require get_template_directory().'/inc/related.php';
 require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
+require get_template_directory().'/inc/post-types.php';
