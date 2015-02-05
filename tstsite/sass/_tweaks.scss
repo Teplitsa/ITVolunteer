@@ -1,106 +1,153 @@
-/* Additional styles */
-.in-loop{	
-	.type-tasks {
-		margin: {
-			top: 15px;
-			bottom: 15px;
-		}		
-	}
-	.border-card {
-		border: 2px solid $regularBorderC;
-		padding: 1px 10px 10px;
-		-webkit-border-radius: 4px 4px 0 0;
-		border-radius: 4px 4px 0 0;
-	}
+/* Fixes */
+
+/* reward */
+.reward.task-param {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;}
 	
-	.task-footer {
-		background: $regularBorderC;
-		-webkit-border-radius: 0 0 4px 4px;
-		border-radius: 0 0 4px 4px;
-		padding: 4px 10px;
-		
-		.task-log {
-			display: inline-block;
-			font-size: 11px;
-			text-transform: uppercase;
-			color: #999;			
-			line-height: 25px;
-			vertical-align: bottom;
-			b {
-				color: #333;
-			}
+.task-summary-content  .reward.task-param  {
+    max-width: 280px;}
+
+.status-block-task .reward.task-param {
+    max-width: none;}
+	
+
+.beta-label {
+    background-color: #FF0000;
+    bottom: -7px;
+    color: #FFFFFF;
+    font-size: 12px;
+    left: 48px;
+    padding: 1px 3px;
+    position: absolute;
+}
+
+.footer-rss {
+	margin-right:30px;
+}
+
+.fb-widget {	
+	width:300px;
+	margin: 0px auto;
+}
+
+#site-navigation .container {
+  width: 1170px !important;
+}
+
+@media all and (max-width: 1200px)  {
+  
+  .in-loop .task-summary .task-params div[class *='col'] {
+	float: none;
+	width: 100%;	
+	margin-bottom: 5px; 
+  }
+  
+  .in-loop .task-summary .task-params .deadline {
+	width: auto;
+  }
+  
+  .task-summary-content .reward.task-param {
+	max-width: 100%;
+  }
+}
+
+.itv-user-workplace {
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+
+#upload_user_company_logo input {
+	cursor:pointer;
+}
+
+a.itv-company-logo-action, a.itv-company-logo-action:hover {
+	margin-bottom: 5px;
+	text-decoration: none;
+	vertical-align: middle;  
+	text-decoration:none;
+}
+
+.itv-about-reward-bubble {
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+.itv-about-reward-bubble {
+	margin-top:5px;
+	margin-bottom:5px;
+	width:70%;
+}
+
+.itv-test-employee, .itv-test-partner {
+	width:20px;
+	margin-left:5px;
+}
+
+.itv-test-employee-big, .itv-test-partner-big {
+	width:50px;
+}
+
+.skills_list .form-group {
+	width:30%;
+	float:left;
+	height: 50px;
+	overflow: hidden;
+}
+
+.itv-task-view-row {
+    margin-top: 10px;
+}
+
+.itv-task-view-row .btn {
+	cursor: default;
+	border: none;
+	background:none;
+}
+
+.itv-task-view-row .task-param.btn,
+.itv-task-view-row .task-param.btn:hover {
+  background: none;
+}
+
+/* customize comments subscriptions */
+.comment-form-subscriptions {
+	display:none !important;
+}
+
+.label-from {
+  font-size: 0.8em;
+}
+
+/* task form sub label */
+.itv-task-form-sublabel {
+  font-size:0.9em;
+  font-style: italic;
+  margin:0px 0px 10px 0px;
+}
+
+#is_tst_consult_needed {
+  margin-right:5px;
+  vertical-align: top;
+}
+
+
+/*	links footer sidebar */
+.widget.widget_links.bottom {
+	h5 { font-weight: 700; }
+
+	ul {
+		padding-left:0px;
+		li {
+			list-style: none;
+			margin-bottom:10px;
 		}
-	}
-	
-	.hentry:nth-of-type(2n+1) {
-		//clear:left;
-	}
-	
-	.task-title {
-		.title-content {
-			margin-bottom: 0.5em; 
-		}
-		h4 {
-			margin-bottom: 2px;
-			@include post-title;
-		}		
-	}
-	
-	.task-summary {
-		padding-left: $statusW + 6px - 18px;
-		max-width: 380px;
-		
-		a.btn-default {
-			@include details-link;
-			margin-top: 13px;
-			margin-left: 15px;
+		a {
+			display: block;
+			margin-bottom:3px;
 		}
 	}
 }
 
-.member .border-card {
-	-webkit-border-radius: 4px 4px 4px 4px;
-	border-radius: 4px 4px 4px 4px;
-}
-
-.fixed-member-meta,
-.task-meta {
-	font-size: 12px;
-	color: #999;
-	time {
-		color: $regularLinkedTitleC;
-	}
-	
-	a {
-		color: $greenOlive;
-		&:hover {
-			color: $regularLinkedTitleC;
-		}
-	}
-	.status-meta {
-		color: $greenOlive;
-		text-transform: uppercase;
-	}
-	
-	.sep {
-		display: inline-block;
-		padding: 0 4px;
-	}
-}
-		
-.tags {
-	font-size: 12px;
-	a {
-		display: inline-block;
-		border: 2px solid $regularBorderC;
-		padding: 4px 12px;
-		color: $regularLinkedTitleC;
-		background: #fff;
-		text-decoration: none;
-		&:hover {
-			background: $greenLabel;
-			border-color: $greenLabel;
-			color: #fff;
-		}
-	}
-}
