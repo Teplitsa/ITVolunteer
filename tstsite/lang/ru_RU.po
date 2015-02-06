@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-05 21:29+0300\n"
-"PO-Revision-Date: 2015-02-05 21:29+0300\n"
+"POT-Creation-Date: 2015-02-06 14:18+0300\n"
+"PO-Revision-Date: 2015-02-06 14:18+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -124,7 +124,7 @@ msgstr "«Пирожковый» рейтинг"
 
 # @ tst
 #: content-member.php:47 inc/customizer.php:208 inc/post-types.php:39
-#: inc/post-types.php:41 navbar.php:30
+#: inc/post-types.php:41 navbar.php:30 Копия
 msgid "Tasks"
 msgstr "Задачи"
 
@@ -155,17 +155,17 @@ msgid "Tags: %1$s"
 msgstr "Теги: %1$s"
 
 # @ tst
-#: content-tasks.php:41 content.php:41
+#: content-tasks.php:41
 msgid "Volunteers"
 msgstr "Волонтёры"
 
 # @ tst
-#: content-tasks.php:48 content.php:48
+#: content-tasks.php:48
 msgid "Tags"
 msgstr "Теги"
 
 # @ tst
-#: content-tasks.php:54 content.php:54
+#: content-tasks.php:54
 msgid "Get the details"
 msgstr "Узнать подробности"
 
@@ -372,7 +372,7 @@ msgstr ""
 
 # @ tst
 #: homepage.php:61 navbar.php:51 navbar.php:68 page-registration.php:101
-#: sidebar-task.php:23
+#: sidebar-task.php:23 Копия
 msgid "Register"
 msgstr "Зарегистрироваться"
 
@@ -1176,6 +1176,7 @@ msgstr "Участвует с"
 # @ tst
 # @ default
 #: inc/extras.php:672 navbar.php:67 page-login.php:81 sidebar-task.php:23
+#: Копия
 msgid "Log In"
 msgstr "Войти"
 
@@ -1298,7 +1299,7 @@ msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:45 inc/template-tags.php:116 navbar.php:49
+#: inc/post-types.php:45 inc/template-tags.php:116 navbar.php:49 Копия
 msgid "New task"
 msgstr "Новая задача"
 
@@ -1465,57 +1466,56 @@ msgid "Filter members"
 msgstr "Найти пользователей"
 
 # @ tst
-#: navbar.php:13
+#: navbar.php:13 Копия
 msgid "beta-version"
 msgstr "beta-версия"
 
 # @ tst
-#: navbar.php:20 navbar.php:22
+#: navbar.php:20 navbar.php:22 Копия
 msgid "About"
 msgstr "О проекте"
 
-# @ tst
 #: navbar.php:23
-msgid "FAQ"
-msgstr "FAQ"
+msgid "News"
+msgstr "Новости"
 
 # @ tst
-#: navbar.php:24
+#: navbar.php:24 Копия
 msgid "Contacts"
 msgstr "Контакты"
 
 # @ tst
-#: navbar.php:31
+#: navbar.php:31 Копия
 msgid "Members"
 msgstr "Участники"
 
 # @ tst
-#: navbar.php:33 navbar.php:38 searchform.php:16
+#: navbar.php:33 navbar.php:38 searchform.php:16 Копия
 msgid "Search"
 msgstr "Поиск"
 
 # @ tst
-#: navbar.php:40
+#: navbar.php:40 Копия
 msgid "Go"
 msgstr "Искать"
 
 # @ tst
-#: navbar.php:53
+#: navbar.php:53 Копия
 msgid "Your profile"
 msgstr "Ваш профиль"
 
 # @ tst
-#: navbar.php:61
+#: navbar.php:61 Копия
 msgid "My tasks"
 msgstr "Мои задачи"
 
 # @ tst
-#: navbar.php:62
+#: navbar.php:62 Копия
 msgid "My profile"
 msgstr "Мой профиль"
 
 # @ tst
-#: navbar.php:63
+#: navbar.php:63 Копия
 msgid "Log out"
 msgstr "Выйти"
 
@@ -2245,6 +2245,11 @@ msgstr "Выберите метки задач"
 #: tasks-filter.php:67
 msgid "Filter tasks"
 msgstr "Найти задачи"
+
+# @ tst
+#: Копия navbar.php:23
+msgid "FAQ"
+msgstr "FAQ"
 
 # @ tst
 #~ msgid ""

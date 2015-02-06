@@ -20,7 +20,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php _e('About', 'tst');?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
-            <!--<li><a href="<?php echo home_url('faq');?>"><?php _e('FAQ', 'tst');?></a></li>-->
+            <li><a href="<?php echo home_url('news');?>"><?php _e('News', 'tst');?></a></li>
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>
         </li>
