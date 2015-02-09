@@ -3,6 +3,10 @@
  * The main template file.
  **/
 
+global $wp_query;
+
+$css = (isset($wp_query->posts[0]->post_type)) ? $wp_query->posts[0]->post_type : 'tasks';
+
 get_header(); ?>
 
 <header class="page-heading">
@@ -21,12 +25,11 @@ get_header(); ?>
 </header>
 	
 <div class="page-body">
-
 	<?php if ( have_posts() ) : ?>
-	<div class="row in-loop tasks-list">
+	<div class="row in-loop <?php echo $css;?>-list">
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php get_template_part( 'content', get_post_format() ); ?>
+			<?php get_template_part('content', get_post_type()); ?>
 
 		<?php endwhile; ?>
 	</div><!-- .row -->
