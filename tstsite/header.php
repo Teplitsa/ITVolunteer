@@ -41,4 +41,4 @@
 </section>
 <?php endif;?>
 	
-<div class="page-decor">
+<div class="page-decor"><?php echo apply_filters('itv_notification_bar', '');?>
