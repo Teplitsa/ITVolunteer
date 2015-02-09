@@ -792,12 +792,12 @@ jQuery(function($){
         });
     });
 
-    var $home_tasks_list = $('.home-section.tasks .tasks-list');
-    $home_tasks_list.imagesLoaded(function(){
-        $home_tasks_list.masonry({
-            itemSelector: '.tasks.type-tasks'
-        });
-    });
+    //var $home_tasks_list = $('.home-section.tasks .tasks-list');
+    //$home_tasks_list.imagesLoaded(function(){
+    //    $home_tasks_list.masonry({
+    //        itemSelector: '.tasks.task-item-masonry'
+    //    });
+    //});
 
     $('#tasks-filters-trigger').click(function(e){
         e.preventDefault();
