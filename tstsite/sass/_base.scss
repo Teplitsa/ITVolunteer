@@ -1553,3 +1553,27 @@ div[class |="status-block"] {
 		background-size: 100% 412px;
 	}	
 }
+
+
+/* notifications */
+#menu-actions {
+	.badge {
+		background: #ED9C28;
+	}
+	.dropdown-menu {
+		li {
+			position: relative;
+			.badge {
+				position: absolute;
+				right: 3px;
+				top: 0;
+				background: #ED9C28;
+			}
+		}
+	}
+}
+
+.page-decor > .alert {
+	margin: 10px 30px;
+	padding: 10px 15px;
+}
