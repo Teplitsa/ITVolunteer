@@ -218,21 +218,7 @@ add_action('admin_enqueue_scripts', function(){
 		'site_url' => site_url('/'),
 	));    
 
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_styles;
-		foreach ((array) $wp_styles->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
 	
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_scripts;
-		foreach ((array) $wp_scripts->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
 });
 
 /* login style */
@@ -243,16 +229,8 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
-add_action('wp_print_styles', 'print_styles_fix', 100);
-function print_styles_fix() {
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_styles;
-		foreach ((array) $wp_styles->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
-}
+
+
 
 /**
  * Lock Administration Screens for user 
