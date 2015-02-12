@@ -3,6 +3,8 @@
  * The Navbar 
  */
 
+$p = get_page(get_option('page_for_posts'));
+$news_title = apply_filters('the_title', $p->post_title);
 ?>
 	<div class="site-branding navbar-header">		
 		<?php if(!is_front_page()):?>	
@@ -20,7 +22,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php _e('About', 'tst');?> <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
-            <!--<li><a href="<?php echo home_url('faq');?>"><?php _e('FAQ', 'tst');?></a></li>-->
+            <li><a href="<?php echo home_url('news');?>"><?php echo $news_title;?></a></li>
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>
         </li>
@@ -56,10 +58,14 @@
 		<ul class="nav navbar-nav pull-right" id="menu-actions">
 		<?php if(is_user_logged_in()): global $current_user; ?>
 			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo tst_get_member_name($current_user);?> <b class="caret"></b></a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">					
+					<?php echo tst_get_member_name($current_user);?> <b class="caret"></b>
+					<?php echo apply_filters('itv_notification_badge', '');?>
+				</a>
 				<ul class="dropdown-menu">					
 					<li><a href="<?php echo home_url('/member-actions/member-tasks/');?>"><?php _e('My tasks', 'tst');?></a></li>
-					<li><a href="<?php echo tst_get_member_url($current_user);?>"><?php _e('My profile', 'tst');?></a></li>										
+					<li><a href="<?php echo tst_get_member_url($current_user);?>"><?php _e('My profile', 'tst');?></a>
+						<?php echo apply_filters('itv_notification_badge', '');?></li>
 					<li><a href="<?php echo wp_logout_url(tst_get_login_url().'&t=1');?>"><?php _e('Log out', 'tst');?></a></li>
 				</ul>
 			</li>

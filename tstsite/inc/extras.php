@@ -27,6 +27,10 @@ function frl_custom_excerpt_length( $l ) {
 /** inject */
 add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
 function frl_custom_excerpt_more( $output ) {
+	
+	if(is_singular())
+		return $output;
+	
 	if (is_search())
 		$output .= '&nbsp;[&hellip;]';
 	else
@@ -202,7 +206,7 @@ function tst_custom_widgets(){
 	unregister_widget('WP_Widget_Calendar');
 	unregister_widget('WP_Widget_Meta');
 	unregister_widget('WP_Widget_Categories');
-	unregister_widget('WP_Widget_Recent_Posts');
+	//unregister_widget('WP_Widget_Recent_Posts');
 	unregister_widget('WP_Widget_Tag_Cloud');
 	//unregister_widget('WP_Widget_Search');
 	unregister_widget('FrmListEntries');
@@ -682,6 +686,90 @@ function tst_get_member_action_title(){
 
 function tst_get_member_tasks_title() {
     return __('All tasks', 'tst');
+}
+
+/* count users total */
+global $ITV_TOTAL_USERS_COUNT;
+$ITV_TOTAL_USERS_COUNT = null;
+function tst_get_active_members_count() {
+	global $ITV_TOTAL_USERS_COUNT;	
+	if(is_null($ITV_TOTAL_USERS_COUNT)) {
+		$result = count_users();
+		$emergency = @$result['total_users'];
+		$what_we_need = @$result['avail_roles']['author'];
+		$ITV_TOTAL_USERS_COUNT = $what_we_need ? $what_we_need : $emergency;
+	}
+	return $ITV_TOTAL_USERS_COUNT;
+}
+
+/* count tasks by statuses */
+global $ITV_TASKS_COUNT_ALL, $ITV_TASKS_COUNT_WORK, $ITV_TASKS_COUNT_CLOSED, $ITV_TASKS_COUNT_NEW;
+$ITV_TASKS_COUNT_ALL = null;
+$ITV_TASKS_COUNT_WORK = null;
+$ITV_TASKS_COUNT_CLOSED = null;
+
+function tst_get_new_tasks_count() {
+	global $ITV_TASKS_COUNT_NEW;	
+	if(is_null($ITV_TASKS_COUNT_NEW)) {
+		$args = array(
+			'post_type' => 'tasks',
+			'post_status' => 'publish',
+			'query_id' => 'count_tasks_by_status',
+			'nopaging' => 1,
+			'exclude' => ACCOUNT_DELETED_ID,			
+		);
+		$wp_query = new WP_Query($args);
+		$ITV_TASKS_COUNT_NEW = $wp_query->found_posts;
+	}
+	return $ITV_TASKS_COUNT_NEW;
+}
+
+function tst_get_all_tasks_count() {
+	global $ITV_TASKS_COUNT_ALL;	
+	if(is_null($ITV_TASKS_COUNT_ALL)) {
+		$args = array(
+			'post_type' => 'tasks',
+			'post_status' => array('publish', 'in_work', 'closed'),
+			'query_id' => 'count_tasks_by_status',
+			'nopaging' => 1,
+			'exclude' => ACCOUNT_DELETED_ID,			
+		);
+		$wp_query = new WP_Query($args);
+		$ITV_TASKS_COUNT_ALL = $wp_query->found_posts;
+	}
+	return $ITV_TASKS_COUNT_ALL;
+}
+
+function tst_get_work_tasks_count() {
+	global $ITV_TASKS_COUNT_WORK;	
+	if(is_null($ITV_TASKS_COUNT_WORK)) {
+		$args = array(
+			'post_type' => 'tasks',
+			'post_status' => 'in_work',
+			'query_id' => 'count_tasks_by_status',
+			'nopaging' => 1,
+			'exclude' => ACCOUNT_DELETED_ID,
+		);
+		$wp_query = new WP_Query($args);
+		$ITV_TASKS_COUNT_WORK = $wp_query->found_posts;
+	}
+	return $ITV_TASKS_COUNT_WORK;
+}
+
+function tst_get_closed_tasks_count() {
+	global $ITV_TASKS_COUNT_CLOSED;	
+	if(is_null($ITV_TASKS_COUNT_CLOSED)) {
+		$args = array(
+			'post_type' => 'tasks',
+			'post_status' => 'closed',
+			'query_id' => 'count_tasks_by_status',
+			'nopaging' => 1,
+			'exclude' => ACCOUNT_DELETED_ID,
+		);
+		$wp_query = new WP_Query($args);
+		$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
+	}
+	return $ITV_TASKS_COUNT_CLOSED;
 }
 
 

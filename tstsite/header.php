@@ -23,8 +23,8 @@
 </head>
 <?php flush(); ?>
 
-<body id="top" <?php body_class(); ?>>
-
+<?php $home_body_class = is_front_page() ? 'itv-home-body' : '';?>
+<body id="top" <?php body_class($home_body_class); ?>>
 
 <nav id="site-navigation" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 	<div class="container">
@@ -34,7 +34,6 @@
 
 <div id="page" class="hfeed site">
 
-
 <div class="container">
 <?php if(is_front_page()):?>
 <section class="intro-panel">
@@ -42,4 +41,4 @@
 </section>
 <?php endif;?>
 	
-<div class="page-decor">
+<div class="page-decor"><?php echo apply_filters('itv_notification_bar', '');?>

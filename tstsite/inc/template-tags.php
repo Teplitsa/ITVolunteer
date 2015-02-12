@@ -75,7 +75,13 @@ function frl_breadcrumbs(){
 		
 		$title = frl_page_title();
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
-	}	
+	}
+	elseif(is_single()) {
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+		
+		$bredcrumbs[] = "<li class='active'>{$title}</li>";
+	}
 	else { //@to_do make real structures here
 		
 		$title = frl_page_title();
@@ -118,11 +124,15 @@ function frl_page_title(){
     elseif(is_page('member-tasks'))
         $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
 
-	elseif(is_page())
+	elseif(is_page() || is_single())
         $title = apply_filters('the_title', $post->post_title);
-    elseif(is_search())
+    elseif(is_search()){
         $title = __('Search results', 'tst');
-
+    }
+	elseif(is_home()){
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+	}
     elseif(is_404())
 		$title = __('Page not found', 'tst');
 
@@ -198,9 +208,9 @@ function tst_members_paging($query, $echo = true){
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	if (!empty($_SERVER['HTTPS'])) {
-		$base = str_replace('http://', 'https://', $base);
-	}
+	//if (!empty($_SERVER['HTTPS'])) {
+	//	$base = str_replace('http://', 'https://', $base);
+	//}
 	
 	// Calculate total pages:
 	$per_page = get_option('posts_per_page');
@@ -265,9 +275,9 @@ function frl_paginate_links($query = null, $echo = true) {
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	if (!empty($_SERVER['HTTPS'])) {
-		$base = str_replace('http://', 'https://', $base);
-	}
+	//if (!empty($_SERVER['HTTPS'])) {
+	//	$base = str_replace('http://', 'https://', $base);
+	//}
     
 	$pagination = array(
         'base' => $base.'%_%',
@@ -425,15 +435,9 @@ function tst_temp_avatar($user = null){
 	}
 	
 	$default = get_template_directory_uri() . '/img/temp-avatar.png';
-	if (!empty($_SERVER['HTTPS'])) {
-		$default = str_replace( 'http://', 'https://', $default);
-	}
 	$size = 180;
-	$grav_url = $user ? "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
-	
-	if (!empty($_SERVER['HTTPS'])) {
-		$grav_url = str_replace( 'http://', 'https://', $grav_url);
-	}	
+	$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
+		
 ?>
 	<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 <?php
@@ -525,7 +529,7 @@ function tst_task_params(){
 <div class="row task-params">
 	<div class="col-md-4">
 	<?php
-		$deadline = get_field('field_533bef200fe90', get_the_ID());
+		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', get_the_ID()));
 		$interval = tst_get_days_until_deadline($deadline); 
 		$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');
 	?>

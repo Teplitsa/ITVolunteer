@@ -17,7 +17,10 @@ function tst_main_query_mods(WP_Query $query) {
         $query->set('author', '-'.ACCOUNT_DELETED_ID);
     }
 
-    if(($query->is_main_query() && $query->is_archive())
+    if($query->query_vars['query_id'] == 'count_tasks_by_status') {
+        $query->set('author', '-'.ACCOUNT_DELETED_ID);
+    }
+    elseif(($query->is_main_query() && $query->is_archive())
        || ($query->get('post_type') == 'tasks')
     ) {
         
@@ -300,7 +303,25 @@ function tst_get_deadline_class($days) {
         return 'all-time-of-world';
 }
 
+function date_from_dd_mm_yy_to_yymmdd($date) {
+    if(preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $date)) {
+        $date_arr = date_parse_from_format ( "d.m.Y" , $date );
+        return sprintf("%04d%02d%02d", $date_arr['year'], $date_arr['month'], $date_arr['day']);
+    }
+    else {
+        return $date;
+    }
+}
 
+function date_from_yymmdd_to_dd_mm_yy($date) {
+    if(preg_match('/^\d{8}$/', $date)) {
+        $date_arr = date_parse_from_format ( "Ymd" , $date );
+        return sprintf("%02d.%02d.%04d", $date_arr['day'], $date_arr['month'], $date_arr['year']);
+    }
+    else {
+        return $date;
+    }
+}
 
 function ajax_add_edit_task(){
 
@@ -343,7 +364,7 @@ function ajax_add_edit_task(){
         update_field('field_533bebda0fe8d', htmlentities(trim($_POST['expecting']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bec930fe8e', htmlentities(trim(@$_POST['about-reward']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
-        update_field('field_533bef200fe90', $_POST['deadline'], $_POST['id']);
+        update_field('field_533bef200fe90', date_from_dd_mm_yy_to_yymmdd($_POST['deadline']), $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
         update_field(ITV_ACF_TASK_is_tst_consult_needed, $new_is_tst_consult_needed, $_POST['id']);
 		
@@ -1221,7 +1242,12 @@ function tst_consult_column( $column, $post_id ) {
 add_action( 'manage_posts_custom_column' , 'tst_consult_column', 10, 2 );
 
 
-function add_tst_consult_column( $columns ) {
-    return array_merge( $columns, array( 'is_tst_consult_needed' => __( 'Te-st consulting', 'tst' ) ) );
+function add_tst_consult_column( $columns, $post_type ) {
+    
+    if($post_type == 'tasks'){
+        $columns = array_merge( $columns, array( 'is_tst_consult_needed' => __( 'Te-st consulting', 'tst' ) ) );
+    }    
+    
+    return $columns;
 }
-add_action( 'manage_posts_columns' , 'add_tst_consult_column');
+add_action( 'manage_posts_columns' , 'add_tst_consult_column', 2,2);

@@ -15,21 +15,11 @@ get_header(); ?>
 }?>
 
 <section class="home-section tasks">
-	<header class="section-header">
-		<div class="row">
-			<div class="col-md-8">
-				<h3><?php _e('Recent tasks', 'tst');?></h3>
-			</div>
-            <div class="col-md-4">
-                <?php get_template_part('tasks', 'filter'); ?>
-            </div>
-		</div>
-	</header>
 	<div class="section-content">
         <?php global $wp_query;
         $wp_query = new WP_Query(array(
             'post_type' => 'tasks',
-            'post_status' => array('publish', 'in_work'),
+            'post_status' => array('publish'),
             'nopaging' => 1,
             'author' => '-'.ACCOUNT_DELETED_ID,
         ));
@@ -42,7 +32,11 @@ get_header(); ?>
                     $count++;
                     the_post();?>
 
-                    <?php get_template_part('content', get_post_format());?>
+                    <?php get_template_part('content-tasks', get_post_format());?>
+					
+					<?if($count == 4):?>
+						<?php get_template_part('home-news');?>
+					<?endif?>
 
                 <?php }?>
             </div><!-- .row -->
@@ -58,5 +52,14 @@ get_header(); ?>
         <?php }?>
 	</div>
 </section><!-- .home-section -->
+
+<div class="itv-home-prefooter clearfix">
+	<p class="pull-left"><?php _e('Need help with site?', 'tst');?></p>
+	<?php if(is_user_logged_in()): ?>
+		<a href="<?php echo home_url('task-actions');?>" class="add-new-task-button pull-right"><?php _e('Create task', 'tst');?></a>
+	<?php else: ?>
+		<a href="<?php echo home_url('/registration/')?>" class="register-prefooter pull-right"><?php _e('Register', 'tst');?></a>
+	<?php endif?>
+</div>
 
 <?php get_footer(); ?>
