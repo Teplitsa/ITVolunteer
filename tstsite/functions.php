@@ -236,10 +236,25 @@ add_action('login_enqueue_scripts', function(){
  * Lock Administration Screens for user 
  */
 function wp_admin_block() {
-	if (!current_user_can('administrator')) { 
-		wp_redirect( home_url() );
-		exit();
+	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
+		if (!current_user_can('administrator')) { 
+			wp_redirect( home_url() );
+			exit();
+		}
 	}	
+	else {
+		if(is_user_logged_in()) {
+			if (!current_user_can('administrator')) {
+				$current_user = wp_get_current_user();
+				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
+				exit();
+			}
+		}
+		else {
+			wp_redirect( site_url('/') );
+			exit();
+		}
+	}
 }
 add_action('admin_menu', 'wp_admin_block');
 

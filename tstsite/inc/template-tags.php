@@ -208,9 +208,6 @@ function tst_members_paging($query, $echo = true){
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	//if (!empty($_SERVER['HTTPS'])) {
-	//	$base = str_replace('http://', 'https://', $base);
-	//}
 	
 	// Calculate total pages:
 	$per_page = get_option('posts_per_page');
@@ -275,9 +272,6 @@ function frl_paginate_links($query = null, $echo = true) {
 	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	//if (!empty($_SERVER['HTTPS'])) {
-	//	$base = str_replace('http://', 'https://', $base);
-	//}
     
 	$pagination = array(
         'base' => $base.'%_%',
