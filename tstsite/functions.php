@@ -257,7 +257,6 @@ function wp_admin_block() {
 	}
 }
 add_action('admin_menu', 'wp_admin_block');
-
 /**
  * Custom additions.
  */
