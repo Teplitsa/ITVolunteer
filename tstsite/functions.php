@@ -94,7 +94,7 @@ function tst_widgets_init() {
 						'name' => 'Участник: Боковая колонка',
 						'description' => 'Боковая колонка на страницах участников'
 					),				
-		/*'footer_one' => array(
+		'footer_one' => array(
 						'name' => 'Футер - 1/3',
 						'description' => 'Динамическая нижняя область - 1 колонка'
 					),
@@ -102,7 +102,7 @@ function tst_widgets_init() {
 						'name' => 'Футер - 2/3',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
-		'footer_three' => array(
+		/*'footer_three' => array(
 						'name' => 'Футер - 3/3',
 						'description' => 'Динамическая нижняя область - 3 колонка'
 					),
