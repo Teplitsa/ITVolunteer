@@ -14,7 +14,9 @@ https://www.youtube.com/watch?v=D32OZIhoC6E
 
 * Система является надстройкой над CMS WordPress. Она устанавливается как тема (theme) и требует минимум настроек.
 
-**Официальный сайт плагина:** [itv.te-st.ru](https://itv.te-st.ru/)
+**Официальный сайт платформы:** [itv.te-st.ru](https://itv.te-st.ru/)
+![](https://itv.te-st.ru/wp-content/uploads/homescreen.png)
+
 
 **Внимание:** для разворачивания системы необходим действующий сайт на базе CMS WordPress (версии не ниже 3.5).
 
