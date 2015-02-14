@@ -23,10 +23,6 @@ $news_title = apply_filters('the_title', $p->post_title);
           <ul class="dropdown-menu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
             <li><a href="<?php echo home_url('news');?>"><?php echo $news_title;?></a></li>
-<<<<<<< HEAD
-=======
-             <li><a href="<?php echo home_url('sovety-dlya-nko-uspeshnye-zadachi');?>"><?php _e('Advices', 'tst');?></a></li>
->>>>>>> dev
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>
         </li>

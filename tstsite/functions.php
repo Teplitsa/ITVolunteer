@@ -91,7 +91,7 @@ function tst_widgets_init() {
 						'name' => 'Участник: Боковая колонка',
 						'description' => 'Боковая колонка на страницах участников'
 					),				
-		/*'footer_one' => array(
+		'footer_one' => array(
 						'name' => 'Футер - 1/3',
 						'description' => 'Динамическая нижняя область - 1 колонка'
 					),
@@ -99,6 +99,7 @@ function tst_widgets_init() {
 						'name' => 'Футер - 2/3',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
+		/*
 		'footer_three' => array(
 						'name' => 'Футер - 3/3',
 						'description' => 'Динамическая нижняя область - 3 колонка'
@@ -153,7 +154,7 @@ add_action('wp_enqueue_scripts', function(){
 
    // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
-	wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
     wp_enqueue_style('front', $url.'/css/front.css', array(), '1.6');
 	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), '1.8');
@@ -217,7 +218,21 @@ add_action('admin_enqueue_scripts', function(){
 		'site_url' => site_url('/'),
 	));    
 
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_styles;
+		foreach ((array) $wp_styles->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
+		}
+	}
 	
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_scripts;
+		foreach ((array) $wp_scripts->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
+		}
+	}
 });
 
 /* login style */
@@ -228,34 +243,28 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
-
-
+add_action('wp_print_styles', 'print_styles_fix', 100);
+function print_styles_fix() {
+	if (!empty($_SERVER['HTTPS'])) {
+		global $wp_styles;
+		foreach ((array) $wp_styles->registered as $script) {
+			if (stripos($script->src, 'http://', 0) !== FALSE)
+				$script->src = str_replace('http://', 'https://', $script->src);
+		}
+	}
+}
 
 /**
  * Lock Administration Screens for user 
  */
 function wp_admin_block() {
-	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
-		if (!current_user_can('administrator')) { 
-			wp_redirect( home_url() );
-			exit();
-		}
+	if (!current_user_can('administrator')) { 
+		wp_redirect( home_url() );
+		exit();
 	}	
-	else {
-		if(is_user_logged_in()) {
-			if (!current_user_can('administrator')) {
-				$current_user = wp_get_current_user();
-				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
-				exit();
-			}
-		}
-		else {
-			wp_redirect( site_url('/') );
-			exit();
-		}
-	}
 }
 add_action('admin_menu', 'wp_admin_block');
+
 /**
  * Custom additions.
  */
@@ -269,8 +278,4 @@ require get_template_directory().'/inc/related.php';
 require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
-<<<<<<< HEAD
 require get_template_directory().'/inc/notifications.php';
-=======
-require get_template_directory().'/inc/notifications.php';
->>>>>>> dev
