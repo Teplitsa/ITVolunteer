@@ -1505,6 +1505,7 @@ div[class |="status-block"] {
 
 /*	news on main */
 .home-news {
+<<<<<<< HEAD
 	border:1px solid $color-border-normal;
 	border-left:none;
 	background-color: $color-secondary;
@@ -1512,15 +1513,26 @@ div[class |="status-block"] {
 	margin:15px 15px 15px -15px;
 	padding-left:30px;
 	padding-bottom:30px;
+=======
+	.border-card {
+		border-color: #A4A4A4;
+	}
+>>>>>>> dev
 	
 	h2 {
 		background-color: #A4A4A4;
 		color: $color-white;
 		font-weight: bold;
 		text-transform: uppercase;
+<<<<<<< HEAD
 		margin: 10px 0 0 -30px;
 		padding: 7px 0 7px 30px;
 		font-size:1em;
+=======
+		margin: 0 0 0 -30px;
+		padding: 7px 0 7px 30px;
+		font-size: 1em;
+>>>>>>> dev
 		width:40%;
 	}
 	
@@ -1535,10 +1547,19 @@ div[class |="status-block"] {
 	
 	.home-news-content .thumb-link {
 		display: block;
+<<<<<<< HEAD
 	}
 	.home-news-content img {
 		margin:0px 0px 10px 0px;
 		max-width:495px;
+=======
+		margin: $divMargin/2 0;
+	}
+	
+	.home-news-content img {
+		max-width: 100%;
+		height: auto;
+>>>>>>> dev
 	}
 }
 
