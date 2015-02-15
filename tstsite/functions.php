@@ -218,21 +218,7 @@ add_action('admin_enqueue_scripts', function(){
 		'site_url' => site_url('/'),
 	));    
 
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_styles;
-		foreach ((array) $wp_styles->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
 	
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_scripts;
-		foreach ((array) $wp_scripts->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
 });
 
 /* login style */
@@ -243,25 +229,32 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
-add_action('wp_print_styles', 'print_styles_fix', 100);
-function print_styles_fix() {
-	if (!empty($_SERVER['HTTPS'])) {
-		global $wp_styles;
-		foreach ((array) $wp_styles->registered as $script) {
-			if (stripos($script->src, 'http://', 0) !== FALSE)
-				$script->src = str_replace('http://', 'https://', $script->src);
-		}
-	}
-}
+
+
 
 /**
  * Lock Administration Screens for user 
  */
 function wp_admin_block() {
-	if (!current_user_can('administrator')) { 
-		wp_redirect( home_url() );
-		exit();
+	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
+		if (!current_user_can('administrator')) { 
+			wp_redirect( home_url() );
+			exit();
+		}
 	}	
+	else {
+		if(is_user_logged_in()) {
+			if (!current_user_can('administrator')) {
+				$current_user = wp_get_current_user();
+				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
+				exit();
+			}
+		}
+		else {
+			wp_redirect( site_url('/') );
+			exit();
+		}
+	}
 }
 add_action('admin_menu', 'wp_admin_block');
 
