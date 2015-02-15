@@ -6,7 +6,7 @@
 
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6'); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 item-masonry'); ?>>
 
 	<div class="border-card">
 		<header class="task-title">

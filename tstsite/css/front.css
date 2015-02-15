@@ -88,15 +88,12 @@ body.admin-bar .navbar-fixed-top {
   margin-left: 97px;
   background: #234d72;
   /* Old browsers */
-  background: -moz-linear-gradient(top, #234d72 0%, #3276b1 100%);
   /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #234d72), color-stop(100%, #3276b1));
   /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top, #234d72 0%, #3276b1 100%);
   /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #234d72 0%, #3276b1 100%);
   /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #234d72 0%, #3276b1 100%);
   /* IE10+ */
   background: linear-gradient(to bottom, #234d72 0%, #3276b1 100%);
   /* W3C */
@@ -271,7 +268,6 @@ body.admin-bar .navbar-fixed-top {
   .in-loop .border-card {
     border: 2px solid #e9e9e9;
     padding: 15px;
-    -webkit-border-radius: 4px;
     border-radius: 4px; }
   .in-loop .task-title {
     padding-left: 77px;
@@ -299,8 +295,6 @@ body.admin-bar .navbar-fixed-top {
     padding: 2px;
     border: 1px solid #ccc;
     width: 65px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
     border-radius: 4px;
     text-align: center;
     line-height: 1;
@@ -329,9 +323,6 @@ body.admin-bar .navbar-fixed-top {
     padding: 4px 24px;
     background: #f1f1f1;
     -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    -ms-transition: all 0.3s;
-    -o-transition: all 0.3s;
     transition: all 0.3s; }
     .in-loop .read-more a:hover {
       color: #fff;
@@ -565,8 +556,6 @@ body.admin-bar .navbar-fixed-top {
 /** task actions **/
 .chosen-container-multi .chosen-choices {
   border-color: #ccc;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px; }
   .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
     height: 32px;
@@ -609,7 +598,6 @@ body.admin-bar .navbar-fixed-top {
   vertical-align: middle;
   white-space: nowrap;
   border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
   color: #fff; }
   #commentsubmit:hover {
@@ -657,9 +645,6 @@ body.admin-bar .navbar-fixed-top {
       padding: 4px 24px;
       background: #f1f1f1;
       -webkit-transition: all 0.3s;
-      -moz-transition: all 0.3s;
-      -ms-transition: all 0.3s;
-      -o-transition: all 0.3s;
       transition: all 0.3s; }
       .in-loop .member .member-more a:hover {
         color: #fff;
@@ -729,8 +714,6 @@ div[class|="status-block"] .row-top {
   .role-marker button {
     width: 150px;
     height: 49px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
     border-radius: 0px;
     cursor: default; }
   .role-marker .role-desc {
@@ -738,8 +721,6 @@ div[class|="status-block"] .row-top {
     color: #fff;
     padding: 2px 7px;
     margin-left: 5px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
     border-radius: 50%;
     cursor: pointer; }
 
@@ -815,8 +796,6 @@ div[class|="status-block"] .row-top {
   background: #fafafa;
   border: 1px solid #eee;
   padding: 30px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
   border-radius: 3px;
   margin-bottom: 200px; }
   .login-form #login-message {
@@ -832,8 +811,6 @@ div[class|="status-block"] .row-top {
   padding: 5px 15px;
   background: #F2DEDE;
   border: 1px solid #EBCCD1;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
   border-radius: 4px;
   color: #A94442;
   font-size: 13px; }
@@ -906,8 +883,6 @@ div[class|="status-block"] .row-top {
     margin: 0px 0px 0px 0px;
     background: #fff;
     border: 1px solid #c7c7c7;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     padding: 15px 40px; }
     .intro-panel .well .col-md-10 div[class*="home-text"] {
@@ -940,8 +915,6 @@ div[class|="status-block"] .row-top {
   .home-header-buttons .add-new-task-button {
     background-color: #5CB85C;
     color: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     padding: 10px 0;
     font-size: 1.2em;
@@ -953,7 +926,6 @@ div[class|="status-block"] .row-top {
     font-weight: bold;
     width: 200px;
     -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
     transition: all 0.3s; }
     .home-header-buttons .add-new-task-button:hover {
       text-decoration: none;
@@ -1048,7 +1020,6 @@ div[class|="status-block"] .row-top {
     border: 1px solid #ccc;
     z-index: 1000;
     padding: 25px 25px 10px;
-    -webkit-box-shadow: 1px 1px 3px 1px rgba(200, 200, 200, 0.7);
     box-shadow: 1px 1px 3px 1px rgba(200, 200, 200, 0.7); }
     .members-filters-frame #members-filters #task_tags_chosen,
     .members-filters-frame #members-filters .form-control,
@@ -1097,7 +1068,6 @@ div[class|="status-block"] .row-top {
   text-transform: uppercase;
   color: #333;
   -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
   transition: all 0.3s; }
   .page-body #menu-about a:hover {
     color: #262626;
@@ -1142,8 +1112,6 @@ div[class|="status-block"] .row-top {
   .itv-home-prefooter .register-prefooter, .itv-home-prefooter .add-new-task-button {
     background-color: #5CB85C;
     color: #fff;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
     border-radius: 3px;
     padding: 10px 20px;
     font-size: 1.3em;
@@ -1151,40 +1119,34 @@ div[class|="status-block"] .row-top {
     border: 3px solid #fff;
     font-weight: bold;
     -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
     transition: all 0.3s; }
     .itv-home-prefooter .register-prefooter:hover, .itv-home-prefooter .add-new-task-button:hover {
       text-decoration: none;
       background-color: #449d44; }
 
 /*	news on main */
-.home-news {
-  border: 1px solid #ccc;
-  border-left: none;
-  background-color: #f5f5f5;
-  float: left;
-  margin: 15px 15px 15px -15px;
-  padding-left: 30px;
-  padding-bottom: 30px; }
-  .home-news h2 {
-    background-color: #A4A4A4;
-    color: #fff;
+.home-news .border-card {
+  border-color: #A4A4A4; }
+.home-news h2 {
+  background-color: #A4A4A4;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 0 -30px;
+  padding: 7px 0 7px 30px;
+  font-size: 1em;
+  width: 40%; }
+.home-news h4 {
+  margin-top: 20px; }
+  .home-news h4 a {
     font-weight: bold;
-    text-transform: uppercase;
-    margin: 10px 0 0 -30px;
-    padding: 7px 0 7px 30px;
-    font-size: 1em;
-    width: 40%; }
-  .home-news h4 {
-    margin-top: 20px; }
-    .home-news h4 a {
-      font-weight: bold;
-      color: #111; }
-  .home-news .home-news-content .thumb-link {
-    display: block; }
-  .home-news .home-news-content img {
-    margin: 0px 0px 10px 0px;
-    max-width: 495px; }
+    color: #111; }
+.home-news .home-news-content .thumb-link {
+  display: block;
+  margin: 15px 0; }
+.home-news .home-news-content img {
+  max-width: 100%;
+  height: auto; }
 
 .news-pic {
   margin: 0px 0px 20px 0px; }

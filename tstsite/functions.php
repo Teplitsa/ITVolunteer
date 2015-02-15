@@ -99,8 +99,7 @@ function tst_widgets_init() {
 						'name' => 'Футер - 2/3',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
-		/*
-		'footer_three' => array(
+		/*'footer_three' => array(
 						'name' => 'Футер - 3/3',
 						'description' => 'Динамическая нижняя область - 3 колонка'
 					),
@@ -257,7 +256,6 @@ function wp_admin_block() {
 	}
 }
 add_action('admin_menu', 'wp_admin_block');
-
 /**
  * Custom additions.
  */

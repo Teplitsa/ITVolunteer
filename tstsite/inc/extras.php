@@ -78,18 +78,18 @@ function frl_print_top_link(){
 /**
  * Favicon
  **/
-function frl_favicon(){
+function itv_favicon(){
 	
-	$favicon_test = WP_CONTENT_DIR. '/favicon.ico'; //in the root not working don't know why
+	$favicon_test = get_template_directory(). '/favicon.ico'; //in the root not working don't know why
     if(!file_exists($favicon_test))
         return;
         
-    $favicon = content_url('favicon.ico');
+    $favicon = get_template_directory_uri(). '/favicon.ico';
 	echo "<link href='{$favicon}' rel='shortcut icon' type='image/x-icon' >";
 }
-add_action('wp_enqueue_scripts', 'frl_favicon', 1);
-add_action('admin_enqueue_scripts', 'frl_favicon', 1);
-add_action('login_enqueue_scripts', 'frl_favicon', 1);
+add_action('wp_enqueue_scripts', 'itv_favicon', 1);
+add_action('admin_enqueue_scripts', 'itv_favicon', 1);
+add_action('login_enqueue_scripts', 'itv_favicon', 1);
 
 
 /**

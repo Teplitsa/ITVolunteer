@@ -17,7 +17,7 @@ function tst_main_query_mods(WP_Query $query) {
         $query->set('author', '-'.ACCOUNT_DELETED_ID);
     }
 
-    if($query->query_vars['query_id'] == 'count_tasks_by_status') {
+    if(isset($query->query_vars['query_id']) && @$query->query_vars['query_id'] == 'count_tasks_by_status') {
         $query->set('author', '-'.ACCOUNT_DELETED_ID);
     }
     elseif(($query->is_main_query() && $query->is_archive())

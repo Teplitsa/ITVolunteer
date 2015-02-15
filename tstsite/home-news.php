@@ -20,7 +20,8 @@ if(count($news_posts)) {
 <?php
 if($news_post):
 ?>
-<article <?php post_class('col-md-6 home-news'); ?>>
+<article <?php post_class('col-md-6 home-news item-masonry'); ?>>
+<div class="border-card">
 	<h2>Новости проекта</h2>
 	
 	<h4>				
@@ -36,7 +37,8 @@ if($news_post):
 		<?php echo the_excerpt(); ?>
 		<? $post = $prev_post;?>
 	</div>
-	
+
+</div>
 </article>
 
 <?php endif?>
