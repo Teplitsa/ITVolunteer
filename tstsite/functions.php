@@ -67,10 +67,7 @@ function tst_setup() {
 		'social'    => 'Социальные кнопки'
 	));
 
-	/**
-	 * Enable support for Post Formats
-	 */
-	add_theme_support( 'post-formats', array('image', 'video', 'gallery'));
+	
 }
 endif; // blank_setup
 add_action( 'after_setup_theme', 'tst_setup' );
@@ -156,7 +153,7 @@ add_action('wp_enqueue_scripts', function(){
 
    // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
-	wp_enqueue_style('jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
     wp_enqueue_style('front', $url.'/css/front.css', array(), '1.6');
 	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), '1.8');
