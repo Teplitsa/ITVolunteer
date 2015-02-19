@@ -907,6 +907,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
+            tst_actualize_member_role($member);            
 
             die(json_encode(array(
                 'status' => 'ok',
