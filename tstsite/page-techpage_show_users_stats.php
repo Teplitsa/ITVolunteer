@@ -41,18 +41,15 @@ $user_query = new WP_User_Query($users_query_params);
 
 foreach($user_query->results as $user) {
 	
-	$member_role = get_user_meta($user->ID, 'member_role', true);
-	$member_rating = get_user_meta($user->ID, 'member_rating', true);
-	
-	$new_member_role = tst_get_member_role($user);
-	
-	echo "===" . $user->user_login . "<br />";
+	echo "==========" . $user->user_login . "<br />";
 	echo 'member_order_data=' . get_user_meta($user->ID, 'member_order_data', true) . "<br />";
-	echo 'member_rating=' . $member_rating . "<br />";
-	echo 'member_role=' . $member_role . "<br />";
-	echo 'new_member_role=' . $new_member_role . "<br />";
+	echo 'member_rating=' . get_user_meta($user->ID, 'member_rating', true) . "<br />";
+	echo 'tst_get_user_rating=' . tst_get_user_rating($user) . "<br />";
+	echo 'member_role=' . get_user_meta($user->ID, 'member_role', true) . "<br />";
+	echo 'new_member_role=' . tst_get_member_role($user) . "<br />";
 	echo 'user_created_tasks=' . count(tst_get_user_created_tasks($user->ID)) . "**********<br />";
 	echo 'user_working_tasks=' . count(tst_get_user_working_tasks($user->ID)) . "**********<br />";
+	
 }
 
 ?>

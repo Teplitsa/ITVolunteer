@@ -9,7 +9,6 @@ if(current_user_can( 'manage_options' )) {
 	
 	$action = $_GET['itv_action'];
 	$include_file_path = get_template_directory() . '/page-techpage_' . $action . '.php';
-	echo $include_file_path . '<br />';
 ?>
 
 <?php if(is_file($include_file_path)):?>
