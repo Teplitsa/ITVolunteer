@@ -1,13 +1,33 @@
+
 <br />
 ***********************************
 <br /><br />
 
 <?php
 
+add_action('pre_user_query', function(WP_User_Query $query){
+	
+	if(@$_GET['user']) {
+		return;
+	}
+	
+	global $wpdb;
+	
+	$query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
+	$query->query_from = " FROM {$wpdb->users}
+	INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
+	INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
+	";
+	$query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
+	$query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
+
+}, 100);
+
+
 $user_login = @$_GET['user'];
 
 $users_query_params = array(
-    'number' => $per_page,
+    'number' => 10,
     'offset' => $offset,
     'exclude' => ACCOUNT_DELETED_ID,
 );
@@ -19,38 +39,21 @@ if($user_login) {
 
 $user_query = new WP_User_Query($users_query_params);
 
-$to_fix_count = 0;
 foreach($user_query->results as $user) {
-	echo "===" . $user->user_login . "<br />";
-	
-	$is_to_fix = 0;
 	
 	$member_role = get_user_meta($user->ID, 'member_role', true);
-	
-	if(empty($member_role)) {
-		$is_to_fix = 1;
-	}
-	
-	if($is_to_fix) {
-		$to_fix_count++;
-	}
+	$member_rating = get_user_meta($user->ID, 'member_rating', true);
 	
 	$new_member_role = tst_get_member_role($user);
-	$is_to_fix = 1;	# always fix
-	if($is_to_fix && @$_GET['update'] == 'ok') {
-		tst_actualize_member_role($user->ID);
-		echo 'actualized.';
-	}
 	
+	echo "===" . $user->user_login . "<br />";
 	echo 'member_order_data=' . get_user_meta($user->ID, 'member_order_data', true) . "<br />";
-	echo 'member_rating=' . get_user_meta($user->ID, 'member_rating', true) . "<br />";
-	echo 'member_role=' . get_user_meta($user->ID, 'member_role', true) . "<br />";
+	echo 'member_rating=' . $member_rating . "<br />";
+	echo 'member_role=' . $member_role . "<br />";
 	echo 'new_member_role=' . $new_member_role . "<br />";
 	echo 'user_created_tasks=' . count(tst_get_user_created_tasks($user->ID)) . "**********<br />";
 	echo 'user_working_tasks=' . count(tst_get_user_working_tasks($user->ID)) . "**********<br />";
 }
-
-echo "<br />to_fix_count=" . $to_fix_count . "<br />";
 
 ?>
 <br />
