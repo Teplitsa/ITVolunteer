@@ -5,7 +5,7 @@
 	<div class="pull-right icon"><span class="glyphicon glyphicon-collapse-down"></span></div>
 </div>
 
-<div id="tasks-filters" <?php echo empty($_GET) ? 'style="display: none;"' : '';?>>
+<div id="tasks-filters" style="display: none;">
 	<form id="tasks-filters-form" method="get" action="<?php echo site_url('/tasks/')?>" class="form-horizontal">
 		<div class="form-group">
 			<label for="filter-task-status" class="col-sm-3 control-label"><?php _e('Status', 'tst');?></label>
