@@ -147,3 +147,24 @@ function tst_get_member_user_skills_string($member_id) {
 	}
 	return implode(', ', $actual_user_skills);
 }
+
+
+/* SEO Title */
+add_filter( 'wpseo_title', 'itv_user_profile_seo_title');
+function itv_user_profile_seo_title($title) {
+	
+	if(is_single_member()){
+		$tst_member = get_user_by('slug', get_query_var('membername'));
+		if($tst_member ) {
+			
+			$title = sprintf(__('Member: %s', 'tst'), frl_page_title());
+			$org = get_user_meta($tst_member->__get('ID'), 'user_workplace', true);
+			if($org){
+				$title .= " / ".esc_attr($org);
+			}
+			$title .= ' - '.get_bloginfo('name');
+		}
+	}
+	
+	return $title;
+}

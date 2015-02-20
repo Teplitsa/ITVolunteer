@@ -22,3 +22,14 @@ div[aria-describedby="csp-credentials"] {
 .itv-admin-test-consult-done {
   color:#00bb00;
 }
+
+.column-thumbnail {
+	width: 10%;
+}
+
+.column-title {
+	width: 20%;
+}
+.column-post_views {
+	width: 10%;
+}

@@ -137,40 +137,6 @@ add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
 
 
 
-/**
-* remove SEO columns
-**/
-add_action('admin_init', function(){
-	foreach(get_post_types(array('public' => true), 'names') as $pt) {
-		add_filter('manage_' . $pt . '_posts_columns', 'frl_clear_seo_columns', 100);
-	}
-	
-	if(isset($GLOBALS['wpseo_admin'])){
-		$wp_seo = $GLOBALS['wpseo_admin'];	
-		remove_action('show_user_profile', array($wp_seo, 'user_profile'));
-		remove_action('edit_user_profile', array($wp_seo, 'user_profile'));
-	}	
-	
-}, 100);
-
-function frl_clear_seo_columns($columns){
-
-	if(isset($columns['wpseo-score']))
-		unset($columns['wpseo-score']);
-	
-	if(isset($columns['wpseo-title']))
-		unset($columns['wpseo-title']);
-	
-	if(isset($columns['wpseo-metadesc']))
-		unset($columns['wpseo-metadesc']);
-	
-	if(isset($columns['wpseo-focuskw']))
-		unset($columns['wpseo-focuskw']);
-	
-	return $columns;
-}
-
-
 /* no admin bar for non-editors */
 add_filter('show_admin_bar', 'tst_remove_admin_bar');
 function tst_remove_admin_bar($show){
