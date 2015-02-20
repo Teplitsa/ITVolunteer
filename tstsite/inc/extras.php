@@ -258,9 +258,10 @@ function tst_get_member_role_label($role) {
     }
 }
 
-$ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
+global $ITV_ROLE_SORT_TABLE;
+$ITV_ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
 function tst_actualize_member_role($user) {
-	global $ROLE_SORT_TABLE;
+	global $ITV_ROLE_SORT_TABLE;
 	if(!is_object($user)) {
 		$user = (int)$user;
 		$user = get_user_by('id', $user);
@@ -269,7 +270,7 @@ function tst_actualize_member_role($user) {
 		$new_member_role = tst_get_member_role($user);
 		update_user_meta($user->ID, 'member_role', $new_member_role);
 		update_user_meta($user->ID, 'member_rating', sprintf("%010d", tst_get_user_rating($user)));
-		set_user_order_data($user->ID, $ROLE_SORT_TABLE[(int)$new_member_role]);
+		set_user_order_data($user->ID, $ITV_ROLE_SORT_TABLE[(int)$new_member_role]);
 	}
 }
 
