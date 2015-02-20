@@ -131,6 +131,7 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="task-descr"><?php _e('Task description', 'tst');?></label>
+			<small><a href="<?php echo site_url('/sovety-dlya-nko-uspeshnye-zadachi/') ?>" target="_blank">(<?php _e('Create task instructions', 'tst'); ?>)</a></small>
 			<div class="itv-task-form-sublabel"><?php _e('itv_task_description_more_info', 'tst')?></div>
 			<textarea id="task-descr" class="form-control" rows="6"><?php echo empty($task_data['task_descr']) ? '' : htmlspecialchars_decode($task_data['task_descr'], ENT_QUOTES);?></textarea>
             <div id="task-descr-vm" class="validation-message" style="display: none;"></div>

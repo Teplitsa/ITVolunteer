@@ -89,11 +89,13 @@ add_action('pre_user_query', function(WP_User_Query $query){
             $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
             $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
         }
+        #echo $query->query_fields . ' ' . $query->query_from . ' ' . $query->query_where . ' ' . $query->query_orderby;
     }
 
     if(stristr($query->query_where, 'WHERE 1=1') === false) {
         $query->query_where = 'WHERE 1=1 '.$query->query_where;
     }
+    
 //    if( !is_admin() ) {
 //        $query->set('exclude', array(ACCOUNT_DELETED_ID));
 //    }
@@ -905,6 +907,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
+            tst_actualize_member_role($member);            
 
             die(json_encode(array(
                 'status' => 'ok',
@@ -1113,12 +1116,12 @@ function tst_get_user_working_tasks($user, $status = array()) {
 
 function tst_get_user_rating($user) {
     if(is_object($user)) {
-        ;
+    	;
     }
     elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
         $user = get_user_by('id', $user);
         if(!$user) {
-            $user = get_user_by('login', $user);
+        	$user = get_user_by('login', $user);
         }
     }
     else {
@@ -1126,14 +1129,14 @@ function tst_get_user_rating($user) {
     }
     
 #    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
-	
-    return count(get_posts(array(
+
+    return $user ? count(get_posts(array(
         'connected_type' => 'task-doers',
         'connected_items' => $user->ID,
         'post_status' => 'closed',
         'suppress_filters' => false,
         'nopaging' => true
-    )));
+    ))) : 0;
 }
 
 function tst_is_user_candidate($user_id = false, $task_id = false) {
