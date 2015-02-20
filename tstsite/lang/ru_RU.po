@@ -3,8 +3,13 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 <<<<<<< HEAD
+<<<<<<< HEAD
 "POT-Creation-Date: 2015-02-19 18:31+0200\n"
 "PO-Revision-Date: 2015-02-19 18:32+0200\n"
+=======
+"POT-Creation-Date: 2015-02-20 21:29+0300\n"
+"PO-Revision-Date: 2015-02-20 21:30+0300\n"
+>>>>>>> origin/dev
 =======
 "POT-Creation-Date: 2015-02-20 21:29+0300\n"
 "PO-Revision-Date: 2015-02-20 21:30+0300\n"
@@ -517,7 +522,11 @@ msgstr "Статус задачи"
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:121 inc/customizer.php:1182 inc/customizer.php:1211
+=======
+#: inc/customizer.php:121 inc/customizer.php:1183 inc/customizer.php:1212
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:121 inc/customizer.php:1183 inc/customizer.php:1212
 >>>>>>> origin/dev
@@ -612,8 +621,13 @@ msgstr "Во время редактирования задачи произош
 #: inc/customizer.php:518 inc/customizer.php:559 inc/customizer.php:626
 #: inc/customizer.php:673 inc/customizer.php:719 inc/customizer.php:776
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:928
 #: inc/customizer.php:951
+=======
+#: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:929
+#: inc/customizer.php:952
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:929
 #: inc/customizer.php:952
@@ -662,7 +676,11 @@ msgstr "К сожалению, во время обновления вашего
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:913
+=======
+#: inc/customizer.php:914
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:914
 >>>>>>> origin/dev
@@ -676,7 +694,11 @@ msgstr ""
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:939
+=======
+#: inc/customizer.php:940
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:940
 >>>>>>> origin/dev
@@ -689,7 +711,11 @@ msgstr ""
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:969
+=======
+#: inc/customizer.php:970
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:970
 >>>>>>> origin/dev
@@ -698,7 +724,11 @@ msgstr "Ваше сообщение отправлено! Спасибо вам 
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1168
+=======
+#: inc/customizer.php:1169
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1169
 >>>>>>> origin/dev
@@ -714,7 +744,11 @@ msgstr ""
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1178
+=======
+#: inc/customizer.php:1179
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1179
 >>>>>>> origin/dev
@@ -723,7 +757,11 @@ msgstr "Создана новая задача"
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1197
+=======
+#: inc/customizer.php:1198
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1198
 >>>>>>> origin/dev
@@ -739,7 +777,11 @@ msgstr ""
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1207
+=======
+#: inc/customizer.php:1208
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1208
 >>>>>>> origin/dev
@@ -748,7 +790,11 @@ msgstr "Требуется консультация на ИТВ"
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1235
+=======
+#: inc/customizer.php:1236
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1236
 >>>>>>> origin/dev
@@ -757,7 +803,11 @@ msgstr "Оказана"
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1238
+=======
+#: inc/customizer.php:1239
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1239
 >>>>>>> origin/dev
@@ -766,7 +816,11 @@ msgstr "Требуется!"
 
 # @ tst
 <<<<<<< HEAD
+<<<<<<< HEAD
 #: inc/customizer.php:1250
+=======
+#: inc/customizer.php:1251
+>>>>>>> origin/dev
 =======
 #: inc/customizer.php:1251
 >>>>>>> origin/dev
