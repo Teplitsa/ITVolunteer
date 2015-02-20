@@ -459,6 +459,8 @@ class Tst_Task_Submitbox {
 
 add_action('admin_menu', function(){
     remove_meta_box('submitdiv', 'tasks', 'side');
+    remove_meta_box('rewarddiv', 'tasks', 'side'); 
+    remove_meta_box('categorydiv', 'tasks', 'side');
 });
 
 add_action('add_meta_boxes', function($post_type){
@@ -479,4 +481,96 @@ add_action('add_meta_boxes', function($post_type){
         'side',
         'high'
     );
+});
+
+
+/**
+* remove SEO columns
+**/
+add_action('admin_init', function(){
+	foreach(get_post_types(array('public' => true), 'names') as $pt) {
+		add_filter('manage_' . $pt . '_posts_columns', 'frl_clear_seo_columns', 100);
+	}
+	
+	if(isset($GLOBALS['wpseo_admin'])){
+		$wp_seo = $GLOBALS['wpseo_admin'];	
+		remove_action('show_user_profile', array($wp_seo, 'user_profile'));
+		remove_action('edit_user_profile', array($wp_seo, 'user_profile'));
+	}	
+	
+}, 100);
+
+function frl_clear_seo_columns($columns){
+
+	if(isset($columns['wpseo-score']))
+		unset($columns['wpseo-score']);
+	
+	if(isset($columns['wpseo-title']))
+		unset($columns['wpseo-title']);
+	
+	if(isset($columns['wpseo-metadesc']))
+		unset($columns['wpseo-metadesc']);
+	
+	if(isset($columns['wpseo-focuskw']))
+		unset($columns['wpseo-focuskw']);
+	
+	return $columns;
+}
+
+add_filter('wpseo_use_page_analysis', '__return_false');
+
+
+/** Columns on task screen **/
+add_filter('manage_posts_columns', 'itv_common_columns_names', 50, 2);
+function itv_common_columns_names($columns, $post_type) {
+		
+	if(!in_array($post_type, array('post', 'tasks', 'attachment')))
+		return $columns;
+
+	
+	if($post_type == 'tasks'){
+		$columns['rewards'] = 'Награда';
+	}
+	
+    
+     if($post_type == 'post'){       
+		$columns['thumbnail'] = 'Миниат.';
+    }
+	
+	
+	return $columns;
+}
+
+add_action('manage_posts_custom_column', 'itv_common_columns_content', 2, 2);
+function itv_common_columns_content($column_name, $post_id) {
+	
+	$cpost = get_post($post_id);
+	if($column_name == 'rewards') {
+		
+        $term_id = get_field('reward', $post_id);
+        if($term_id){
+            $term = get_term($term_id, 'reward');
+            if($term)
+                echo apply_filters('single_cat_title', $term->name);
+        }
+	}
+    elseif($column_name == 'thumbnail'){
+        $img = get_the_post_thumbnail($post_id, 'thumbnail');
+		if(empty($img))
+			echo "&ndash;";
+        else
+			echo "<div class='admin-tmb'>{$img}</div>";
+    }
+   
+}
+
+
+/* admin tax columns */
+add_filter('manage_taxonomies_for_tasks_columns', function($taxonomies){
+    
+    $key = array_search('category', $taxonomies);
+	if($key)
+        unset($taxonomies[$key]);
+	
+    return $taxonomies;
 });

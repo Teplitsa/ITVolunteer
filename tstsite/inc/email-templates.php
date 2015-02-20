@@ -31,7 +31,7 @@ $email_templates = array(
     ),
     'account_activated_notice' => array(
         'title' => __('it-volunteer - welcome!', 'tst'),
-        'text' => __("Greetings!\n\nYour account is active now, welcome to it-volunteering ranks.\n\nYour login: <strong>%s</strong>\nPlease write down your pass to keep it safe.\n\nBest,\nit-volunteer", 'tst'),
+        'text' => __("Greetings!\n\nYour account is active now, welcome to it-volunteering ranks.\n\nYour login: <strong>%s</strong>\nPlease write down your pass to keep it safe. \nUse the following link to enter the site: %s\n\n\nBest,\nit-volunteer", 'tst'),
     ),
     'new_comment_task_author_notification' => array(
         'title' => __('ITVolunteer - new comment on your task!', 'tst'),
