@@ -5,7 +5,7 @@
 	<div class="pull-right icon"><span class="glyphicon glyphicon-collapse-down"></span></div>
 </div>
 
-<div id="members-filters" <?php echo empty($_GET) ? 'style="display: none;"' : '';?>>
+<div id="members-filters" style="display: none;">
 	<form id="members-filters-form" method="get" action="<?php echo site_url('/members/')?>" class="form-horizontal">
 		<div class="form-group">
 			<label for="filter-member-status" class="col-sm-3 control-label"><?php _e('Member role', 'tst');?></label>
