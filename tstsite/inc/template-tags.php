@@ -223,6 +223,13 @@ function tst_members_paging($query, $echo = true){
 	
 	$total_pages = ceil($users_count['total_users']/$per_page); //do we need any particular part?
     
+	$filter_args = array();
+	if(isset($_GET) && is_array($_GET)) {
+		foreach($_GET as $k => $v) {
+			$filter_args[$k] = $v;
+		}
+	}
+	
 	$pagination = array(
         'base' => $base.'%_%',
         'format' => 'page/%#%/',
@@ -234,7 +241,7 @@ function tst_members_paging($query, $echo = true){
         'mid_size' => 4,
         'show_all' => false,
         'type' => 'list', //list
-		'add_args' => array()
+		'add_args' => $filter_args
     );
     	
 	
@@ -273,6 +280,12 @@ function frl_paginate_links($query = null, $echo = true) {
 	$parts = parse_url(get_pagenum_link(1));	
 	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
 	
+	$filter_args = array();
+	if(isset($_GET) && is_array($_GET)) {
+		foreach($_GET as $k => $v) {
+			$filter_args[$k] = $v;
+		}		
+	}
     
 	$pagination = array(
         'base' => $base.'%_%',
@@ -285,7 +298,7 @@ function frl_paginate_links($query = null, $echo = true) {
         'mid_size' => 4,
         'show_all' => false,
         'type' => 'list', //list
-		'add_args' => array()
+		'add_args' => $filter_args
     );
     
 	
