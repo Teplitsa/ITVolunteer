@@ -2,18 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< HEAD
-<<<<<<< HEAD
-"POT-Creation-Date: 2015-02-19 18:31+0200\n"
-"PO-Revision-Date: 2015-02-19 18:32+0200\n"
-=======
 "POT-Creation-Date: 2015-02-20 21:29+0300\n"
 "PO-Revision-Date: 2015-02-20 21:30+0300\n"
->>>>>>> origin/dev
-=======
-"POT-Creation-Date: 2015-02-20 21:29+0300\n"
-"PO-Revision-Date: 2015-02-20 21:30+0300\n"
->>>>>>> origin/dev
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -510,6 +500,7 @@ msgid "%1$s-%2$s"
 msgstr "%1$s в %2$s"
 
 # @ default
+#. translators: 1: month input, 2: day input, 3: year input, 4: hour input, 5: minute input
 #: inc/admin.php:447
 #, php-format
 msgid "%1$s%2$s, %3$s @ %4$s : %5$s"
@@ -521,15 +512,7 @@ msgid "Task status"
 msgstr "Статус задачи"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:121 inc/customizer.php:1182 inc/customizer.php:1211
-=======
 #: inc/customizer.php:121 inc/customizer.php:1183 inc/customizer.php:1212
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:121 inc/customizer.php:1183 inc/customizer.php:1212
->>>>>>> origin/dev
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -620,18 +603,8 @@ msgstr "Во время редактирования задачи произош
 #: inc/customizer.php:426 inc/customizer.php:453 inc/customizer.php:478
 #: inc/customizer.php:518 inc/customizer.php:559 inc/customizer.php:626
 #: inc/customizer.php:673 inc/customizer.php:719 inc/customizer.php:776
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:928
-#: inc/customizer.php:951
-=======
 #: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:929
 #: inc/customizer.php:952
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:810 inc/customizer.php:872 inc/customizer.php:929
-#: inc/customizer.php:952
->>>>>>> origin/dev
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные."
 
@@ -675,15 +648,7 @@ msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:913
-=======
 #: inc/customizer.php:914
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:914
->>>>>>> origin/dev
 #, php-format
 msgid ""
 "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
@@ -693,15 +658,7 @@ msgstr ""
 "\">Просмотреть</a>."
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:939
-=======
 #: inc/customizer.php:940
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:940
->>>>>>> origin/dev
 msgid ""
 "<strong>Error:</strong> something wrong happens when we deleted your "
 "account. We are already looking to it."
@@ -710,28 +667,12 @@ msgstr ""
 "эту проблему."
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:969
-=======
 #: inc/customizer.php:970
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:970
->>>>>>> origin/dev
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1168
-=======
 #: inc/customizer.php:1169
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1169
->>>>>>> origin/dev
 msgid "itv_email_new_task_added_message"
 msgstr ""
 "Создана новая задача: \n"
@@ -743,28 +684,12 @@ msgstr ""
 "Описание: {{task_content}}"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1178
-=======
 #: inc/customizer.php:1179
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1179
->>>>>>> origin/dev
 msgid "itv_email_new_task_added_subject"
 msgstr "Создана новая задача"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1197
-=======
 #: inc/customizer.php:1198
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1198
->>>>>>> origin/dev
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -776,54 +701,22 @@ msgstr ""
 "Описание: {{task_content}}"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1207
-=======
 #: inc/customizer.php:1208
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1208
->>>>>>> origin/dev
 msgid "itv_email_test_consult_needed_subject"
 msgstr "Требуется консультация на ИТВ"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1235
-=======
 #: inc/customizer.php:1236
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1236
->>>>>>> origin/dev
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1238
-=======
 #: inc/customizer.php:1239
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1239
->>>>>>> origin/dev
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-<<<<<<< HEAD
-<<<<<<< HEAD
-#: inc/customizer.php:1250
-=======
 #: inc/customizer.php:1251
->>>>>>> origin/dev
-=======
-#: inc/customizer.php:1251
->>>>>>> origin/dev
 msgid "Te-st consulting"
 msgstr "Консультация"
 

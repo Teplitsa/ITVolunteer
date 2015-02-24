@@ -28,7 +28,7 @@ function itv_custom_content(){
         'show_ui'           => true,
         'show_in_nav_menus' => true,
         'show_tagcloud'     => true,
-        'show_admin_column' => true,
+        'show_admin_column' => false,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'reward', 'with_front' => false),
         //'update_count_callback' => '',        
@@ -70,3 +70,8 @@ function itv_custom_content(){
 }
 
 }//if tst_custom_content
+
+
+
+
+

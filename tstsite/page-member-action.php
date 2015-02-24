@@ -164,6 +164,7 @@ get_header();?>
 			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>
 			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
 		</div>
+	
 		
 		<div class="form-group">
 			<label for="user_speciality"><?php _e('Speciality', 'tst');?></label>
