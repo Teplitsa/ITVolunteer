@@ -131,10 +131,22 @@ get_header();?>
 						<dl class="member-data-list">
 							<dt>Email: </dt>
 							<dd><?php echo sanitize_text_field(tst_get_member_field('user_email'));?></dd>
+							
+							<?php $user_skype = tst_get_member_field('user_skype'); ?>
+							<?php if($user_skype): ?>
+							<dt>Skype: </dt>
+							<dd><?php echo sanitize_text_field($user_skype);?></dd>
+							<?php endif?>
+							
+							<?php $user_contacts = tst_get_member_field('user_contacts'); ?>
+							<?php if($user_contacts): ?>
 							<dt><?php _e('Additional', 'tst');?>: </dt>
-							<dd><?php echo apply_filters('frl_the_content', tst_get_member_field('user_contacts'));?></dd>
+							<dd><?php echo apply_filters('frl_the_content', $user_contacts);?></dd>
+							<?php endif?>
+							
 						</dl>
-					</section>
+						
+						</section>
 					<?php endif;?>
 				</div><!-- .col-md-9 -->
 			</div>

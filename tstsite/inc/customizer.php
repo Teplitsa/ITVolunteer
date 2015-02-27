@@ -902,6 +902,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'user_professional', htmlentities($_POST['pro'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_website', htmlentities($_POST['user_website'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'user_skype', htmlentities($_POST['user_skype'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'twitter', htmlentities($_POST['twitter'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'facebook', htmlentities($_POST['facebook'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));

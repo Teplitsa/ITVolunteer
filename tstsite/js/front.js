@@ -736,7 +736,7 @@ jQuery(function($){
                 'spec': $form.find('#user_speciality').val(),
                 'bio': $form.find('#user_bio').val(),
                 'pro': $form.find('#user_professional').val(),
-		'user_skills': $user_skills,
+                'user_skills': $user_skills,
                 'user_workplace': $form.find('#user_workplace').val()
             };
             $('.user_contacts').each(function(index){

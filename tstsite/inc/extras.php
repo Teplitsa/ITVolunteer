@@ -448,6 +448,7 @@ function tst_get_member_field($field, $member = null){
 		'user_professional',
 		'user_contacts',
 		'user_website',
+		'user_skype',
 		'user_socials',
 		'user_email',
 		'user_workplace'
@@ -488,6 +489,10 @@ function tst_get_member_field($field, $member = null){
             $value = (!empty($value)) ? untrailingslashit(esc_url($value)) : $value;
             break;
 	
+		case 'user_skype':
+			$value = get_user_meta($member->ID, 'user_skype', true);
+			break;
+            
 		case 'user_socials':
             $value = tst_get_member_links_list($member);
             break;
