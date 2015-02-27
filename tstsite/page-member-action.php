@@ -37,7 +37,8 @@ $member_data = array(
     'user_professional' => tst_get_member_field('user_professional', $member),
     'user_contacts' => tst_get_member_field('user_contacts', $member),
     'user_website' => tst_get_member_field('user_website', $member),
-    'user_workplace' => tst_get_member_field('user_workplace', $member),
+    'user_skype' => tst_get_member_field('user_skype', $member),
+	'user_workplace' => tst_get_member_field('user_workplace', $member),
 );
 
 $social = array();
@@ -190,7 +191,7 @@ get_header();?>
 		
 		<h4><?php _e('Contact details', 'tst');?></h4>		
 		<?php //wp_get_user_contact_methods( $profileuser )
-			$fields = array_merge(array('user_website' => __('Website', 'tst')), $social_ids);
+			$fields = array_merge(array('user_website' => __('Website', 'tst'), 'user_skype' => __('User Skype', 'tst')), $social_ids);
 			foreach($fields as $key => $label) {?>
 
 			<div class="form-group">
