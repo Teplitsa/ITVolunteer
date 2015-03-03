@@ -328,7 +328,8 @@ function date_from_yymmdd_to_dd_mm_yy($date) {
 function ajax_add_edit_task(){
 
     $_POST['id'] = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
-
+    $itv_log = ItvLog::instance();
+    
     $params = array(
         'post_type' => 'tasks',
         'post_title' => htmlentities(trim($_POST['title']), ENT_COMPAT, 'UTF-8'),
@@ -343,6 +344,7 @@ function ajax_add_edit_task(){
         if(isset($_POST['status']) && $_POST['status'] == 'trash') {
 
             wp_trash_post($_POST['id']);
+            $itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
 
             die(json_encode(array(
                 'status' => 'deleted',
@@ -371,7 +373,11 @@ function ajax_add_edit_task(){
         update_field(ITV_ACF_TASK_is_tst_consult_needed, $new_is_tst_consult_needed, $_POST['id']);
 		
         if($is_new_task) {
+        	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
             tst_send_admin_notif_new_task($_POST['id']);
+        }
+        else {
+        	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_EDIT, get_current_user_id());
         }
         
         if($new_is_tst_consult_needed) {
@@ -431,7 +437,8 @@ function ajax_publish_task() {
 //    wp_publish_post($_POST['task-id']);
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
     tst_actualize_current_member_role();
-
+    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
+    
     die(json_encode(array(
         'status' => 'ok',
         'permalink' => get_permalink($_POST['task-id'])
@@ -457,7 +464,8 @@ function ajax_unpublish_task() {
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
     tst_actualize_current_member_role();
-
+    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
+    
     die(json_encode(array(
         'status' => 'ok',
     )));
@@ -481,7 +489,8 @@ function ajax_task_to_work() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
-    
+    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_INWORK, get_current_user_id());
+        
     $task = get_post($_POST['task-id']);
     if($task) {
         $users = get_users( array(
@@ -521,6 +530,8 @@ function ajax_close_task() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'closed'));
+    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
+    
     $task = get_post($_POST['task-id']);
     if($task) {
         $users = get_users( array(
@@ -570,7 +581,9 @@ function ajax_approve_candidate() {
     $task_author = get_user_by('id', $task->post_author);
     
     tst_actualize_member_role($doer);    
-    tst_actualize_member_role($task_author);    
+    tst_actualize_member_role($task_author);
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
+    
 
     // Notice to doer:
     global $email_templates;
@@ -634,7 +647,8 @@ function ajax_refuse_candidate() {
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
     tst_actualize_member_role($_POST['doer-id']);
-
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
+    
     global $email_templates;
 //    add_filter('wp_mail_content_type', function(){
 //        return 'text/html';
@@ -680,7 +694,8 @@ function ajax_add_candidate() {
 
     p2p_type('task-doers')->connect($_POST['task-id'], get_current_user_id(), array());
     tst_actualize_current_member_role();
-
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
+    
     // Send email to the task doer:
     global $email_templates;
 //    add_filter('wp_mail_content_type', function(){
@@ -726,7 +741,8 @@ function ajax_remove_candidate() {
 
     p2p_type('task-doers')->disconnect($_POST['task-id'], get_current_user_id());
     tst_actualize_current_member_role();
-
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+    
     // Send email to the task doer:
     global $email_templates;
 //    add_filter('wp_mail_content_type', function(){
@@ -1248,7 +1264,6 @@ function tst_send_user_notif_consult_needed($post_id) {
 }
 
 
-
 function tst_task_saved( $post_id ) {
 	if ( $post->post_type != 'task' ) {
 		return;
@@ -1261,6 +1276,25 @@ function tst_task_saved( $post_id ) {
     }
 }
 add_action( 'save_post', 'tst_task_saved' );
+
+
+function tst_task_updated( $task_id, $task, $is_update) {
+	if ( $post->post_type != 'task' ) {
+		return;
+	}
+	
+	if(is_admin()) {
+		$itv_log = ItvLog::instance();
+		if($is_update) {
+			$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_EDIT, get_current_user_id());
+		}
+		else {
+			$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
+		}
+	}
+}
+add_action( 'wp_insert_post', 'tst_task_updated', 10, 3);
+
 
 function tst_consult_column( $column, $post_id ) {
     switch ( $column ) {
@@ -1279,6 +1313,35 @@ function tst_consult_column( $column, $post_id ) {
     }
 }
 add_action( 'manage_posts_custom_column' , 'tst_consult_column', 10, 2 );
+
+
+function itv_tasks_log_box_content($task) {
+	$itv_log = ItvLog::instance();
+	$log_records = $itv_log->get_task_log($task->ID);
+	echo "<table>";
+	foreach ($log_records as $k => $log) {
+		
+		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
+		if($user) {
+			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+		}
+		else {
+			$user_text = __('Unknown user', 'tst');
+		}
+		
+		echo "<tr>";
+		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
+		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
+		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+}
+
+function itv_add_tasks_log_box() {
+	add_meta_box( 'itv_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_tasks_log_box_content', 'tasks' );
+}
+add_action( 'add_meta_boxes', 'itv_add_tasks_log_box' );
 
 
 function add_tst_consult_column( $columns, $post_type ) {

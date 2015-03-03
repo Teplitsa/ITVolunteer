@@ -33,3 +33,7 @@ div[aria-describedby="csp-credentials"] {
 .column-post_views {
 	width: 10%;
 }
+
+.itv-stats-time {
+	padding-right:30px;
+}
