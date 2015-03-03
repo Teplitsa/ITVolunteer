@@ -596,3 +596,37 @@ function itv_clean_user_profile(){
     }  
     
 }
+
+
+/* User table columns */
+add_filter("manage_users_columns", 'itv_user_columns_names');
+function itv_user_columns_names($columns){
+    
+    $columns['particip'] = __('Participation', 'tst');
+    
+    return $columns;
+}
+
+add_filter('manage_users_custom_column', 'itv_user_columns_content', 2, 3);
+function itv_user_columns_content($out, $column_name, $user_id){
+       
+
+    if($column_name == 'particip' && function_exists('get_field_object')){
+        $part_obj = get_field_object('user_participation', 'user_'.$user_id);
+        $value = (isset($part_obj['value'])) ? $part_obj['value'] : false;
+        
+        if(!is_array($value))
+            $value = array('nopart');
+        
+      
+        $labels = array();
+        foreach($value as $v){
+            if(isset($part_obj['choices'][$v]))
+                $labels[] = $part_obj['choices'][$v];
+        }
+        
+        $out = "<i>".implode(', ', $labels)."</i>";
+    }
+    
+    return $out;
+}
