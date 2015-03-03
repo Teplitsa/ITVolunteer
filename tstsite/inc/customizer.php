@@ -1248,14 +1248,19 @@ function tst_send_user_notif_consult_needed($post_id) {
 }
 
 
-function tst_post_updated( $post_id ) {
-    remove_action( 'save_post', 'tst_post_updated' );
+
+function tst_task_saved( $post_id ) {
+	if ( $post->post_type != 'task' ) {
+		return;
+	}
+		
+    remove_action( 'save_post', 'tst_task_saved' );
     $post = get_post( $post_id );
     if($post) {
         tst_actualize_member_role($post->post_author);
     }
 }
-add_action( 'save_post', 'tst_post_updated' );
+add_action( 'save_post', 'tst_task_saved' );
 
 function tst_consult_column( $column, $post_id ) {
     switch ( $column ) {
