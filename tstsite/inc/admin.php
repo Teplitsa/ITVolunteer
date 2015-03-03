@@ -574,3 +574,25 @@ add_filter('manage_taxonomies_for_tasks_columns', function($taxonomies){
 	
     return $taxonomies;
 });
+
+
+/* no SEO options in user profile */
+add_action('admin_init', 'itv_clean_user_profile');
+function itv_clean_user_profile(){
+    global $wp_filter;
+    
+    if(isset($wp_filter['show_user_profile'][10])){
+        foreach($wp_filter['show_user_profile'][10] as $i => $func){
+            if($wp_filter['show_user_profile'][10][$i]['function'][1] == 'user_profile')
+                unset($wp_filter['show_user_profile'][10][$i]);
+        }
+    }
+    
+    if(isset($wp_filter['edit_user_profile'][10])){
+        foreach($wp_filter['edit_user_profile'][10] as $i => $func){
+            if($wp_filter['edit_user_profile'][10][$i]['function'][1] == 'user_profile')
+                unset($wp_filter['edit_user_profile'][10][$i]);
+        }
+    }  
+    
+}

@@ -378,6 +378,7 @@ function ajax_add_edit_task(){
             if($is_new_task || !$old_is_tst_consult_needed) {
                 update_field(ITV_ACF_TASK_is_tst_consult_done, false, $_POST['id']);
                 tst_send_admin_notif_consult_needed($_POST['id']);
+                tst_send_user_notif_consult_needed($_POST['id']);
             }
         }
 
@@ -1217,6 +1218,35 @@ function tst_send_admin_notif_consult_needed($post_id) {
             wp_mail($to, $subject, $message, $headers);
     }
 }
+
+function tst_send_user_notif_consult_needed($post_id) {
+    global $ITV_EMAIL_FROM;
+    
+    $task = get_post($post_id);
+    $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
+    if($task_author) {
+        $to = $task_author->user_email;
+        
+        $message = __('itv_email_test_consult_needed_notification', 'tst');
+        $data = array(
+                '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+                '{{task_title}}' => get_the_title($post_id),
+        );
+        $message = str_replace(array_keys($data), $data, $message);
+        $message = str_replace("\\", "", $message);
+        $message = nl2br($message);
+        
+        $subject = __('itv_email_test_consult_needed_notification_subject', 'tst');
+        
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+        
+        wp_mail($to, $subject, $message, $headers);
+    }
+    
+}
+
 
 function tst_post_updated( $post_id ) {
     remove_action( 'save_post', 'tst_post_updated' );
