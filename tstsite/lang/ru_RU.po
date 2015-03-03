@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-02 23:20+0300\n"
-"PO-Revision-Date: 2015-03-02 23:20+0300\n"
+"POT-Creation-Date: 2015-03-03 09:07+0300\n"
+"PO-Revision-Date: 2015-03-03 09:08+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -460,7 +460,7 @@ msgstr "Видимость"
 # @ default
 #: inc/admin.php:266 inc/admin.php:296
 msgid "Private"
-msgstr "Private"
+msgstr ""
 
 # @ default
 #: inc/admin.php:269 inc/admin.php:294
@@ -510,6 +510,10 @@ msgstr ""
 #: inc/admin.php:478
 msgid "Task status"
 msgstr "Статус задачи"
+
+#: inc/admin.php:605
+msgid "Participation"
+msgstr "Участие"
 
 # @ tst
 #: inc/customizer.php:121 inc/customizer.php:1185 inc/customizer.php:1214
