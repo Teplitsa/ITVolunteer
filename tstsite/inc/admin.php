@@ -718,7 +718,7 @@ function itv_all_tasks_log_box_content() {
 		}
 
 		echo "<tr>";
-		echo "<td class='itv-stats-time' width='30%'>".$task_text."</td>";
+		echo "<td class='itv-stats-time' width='40%'>".$task_text."</td>";
 		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
 		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
