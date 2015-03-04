@@ -1315,35 +1315,6 @@ function tst_consult_column( $column, $post_id ) {
 add_action( 'manage_posts_custom_column' , 'tst_consult_column', 10, 2 );
 
 
-function itv_tasks_log_box_content($task) {
-	$itv_log = ItvLog::instance();
-	$log_records = $itv_log->get_task_log($task->ID);
-	echo "<table>";
-	foreach ($log_records as $k => $log) {
-		
-		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
-		if($user) {
-			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
-		}
-		else {
-			$user_text = __('Unknown user', 'tst');
-		}
-		
-		echo "<tr>";
-		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
-		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
-		echo "</tr>";
-	}
-	echo "</table>";
-}
-
-function itv_add_tasks_log_box() {
-	add_meta_box( 'itv_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_tasks_log_box_content', 'tasks' );
-}
-add_action( 'add_meta_boxes', 'itv_add_tasks_log_box' );
-
-
 function add_tst_consult_column( $columns, $post_type ) {
     
     if($post_type == 'tasks'){

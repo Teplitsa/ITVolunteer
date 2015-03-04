@@ -630,3 +630,132 @@ function itv_user_columns_content($out, $column_name, $user_id){
     
     return $out;
 }
+
+#	add task activity log on task edit page in admin panel
+function itv_tasks_log_box_content($task) {
+	$itv_log = ItvLog::instance();
+	$log_records = $itv_log->get_task_log($task->ID);
+	echo "<table>";
+	foreach ($log_records as $k => $log) {
+
+		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
+		$user_text = '';
+		if($user) {
+			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+		}
+		else {
+			$user_text = __('Unknown user', 'tst');
+		}
+
+		echo "<tr>";
+		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
+		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
+		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+}
+
+function itv_add_tasks_log_box() {
+	add_meta_box( 'itv_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_tasks_log_box_content', 'tasks' );
+}
+add_action( 'add_meta_boxes', 'itv_add_tasks_log_box' );
+
+
+#	show tasks activity log on tasks log page 
+function itv_all_tasks_log_box_content() {
+	$itv_log = ItvLog::instance();
+	
+	$page = (int)@$_GET['pn'];
+	if($page <= 0) {
+		$page = 1;
+	}
+	
+	$limit = 50;
+	$offset = ($page - 1) * $limit;
+	
+	$log_records = $itv_log->get_all_tasks_log($offset, $limit);
+	$all_records_count = $itv_log->get_all_tasks_log_records_count();
+	
+	$pn_args = array(
+			'base'               => 'edit.php?post_type=tasks&page=itv_all_tasks_log_page%_%',
+			'format'             => '&pn=%#%',
+			'total'              => ceil($all_records_count / $limit),
+			'current'            => $page,
+			'show_all'           => TRUE,
+			'end_size'           => 1,
+			'mid_size'           => 2,
+			'prev_next'          => True,
+			'prev_text'          => __('« Previous', 'tst'),
+			'next_text'          => __('Next »', 'tst'),
+			'type'               => 'plain',
+			'add_args'           => TRUE,
+			'add_fragment'       => '',
+			'before_page_number' => '',
+			'after_page_number'  => ''
+	);
+	
+	echo paginate_links( $pn_args ) . "<br /><br />";
+	echo "<table>";
+	foreach ($log_records as $k => $log) {
+
+		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
+		$user_text = '';
+		if($user) {
+			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+		}
+		else {
+			$user_text = __('Unknown user', 'tst');
+		}
+		
+		$task = get_post($log->task_id);
+		$task_text = '';
+		if($task) {
+			$task_text = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $task->post_title . "</a>";
+		}
+		else {
+			$task_text = __('Unknown task', 'tst');
+		}
+
+		echo "<tr>";
+		echo "<td class='itv-stats-time' width='30%'>".$task_text."</td>";
+		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
+		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
+		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+		echo "</tr>";
+	}
+	echo "</table>";
+	
+	echo "<br />".paginate_links( $pn_args );
+}
+
+// function itv_add_all_tasks_activity_log_box() {
+// 	add_meta_box( 'itv_all_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
+// }
+// add_action( 'add_meta_boxes', 'itv_add_all_tasks_activity_log_box' );
+
+
+#	add tasks log page in admin panel
+add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
+function register_itv_tasks_log_submenu_page() {
+	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
+}
+
+function itv_tasks_log_page_callback() {
+	add_meta_box( 'itv_all_task_actions_log', __( 'All Tasks Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
+	
+	echo '<div class="wrap"><div id="icon-tools" class="icon32"></div>';
+	echo '<h2>' . __('Itv Tasks Log', 'tst') . '</h2>';
+?>	
+	<div id="poststuff">
+		<div id="post-body" class="metabox-holder columns-2">
+			<div id="post-body-content" style="position: relative;">
+				<div id="postbox-container-2" class="postbox-container">
+					<?php do_meta_boxes("itv_all_tasks_log_page", "normal", null); ?>
+				</div>
+			</div>
+		</div>
+	</div>
+<?php 	
+	echo '</div>';
+}

@@ -61,6 +61,36 @@ class ItvLog {
 		return $actions;		
 	}
 	
+	public function get_all_tasks_log($offset = 0, $limit = 5) {
+		global $wpdb;
+		
+		$offset = (int)$offset;
+		$limit = (int)$limit;
+		
+		$actions = $wpdb->get_results(
+			"
+			SELECT * FROM $this->task_action_table
+			WHERE 1
+			ORDER BY action_time DESC
+			LIMIT $offset, $limit
+			"
+		);
+		
+		return $actions;
+	}
+	
+	public function get_all_tasks_log_records_count() {
+		global $wpdb;
+		
+		$actions = $wpdb->get_var(
+				"
+				SELECT COUNT(*) FROM $this->task_action_table
+				"
+		);
+		
+		return $actions;
+	}
+	
 	public function humanize_action($action, $user_text) {
 		return sprintf(__('itv_task_actions_log_'.$action, 'tst'), $user_text);
 	}

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 19:24+0200\n"
-"PO-Revision-Date: 2015-03-03 19:24+0200\n"
+"POT-Creation-Date: 2015-03-05 00:34+0200\n"
+"PO-Revision-Date: 2015-03-05 00:34+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -510,6 +510,42 @@ msgstr ""
 msgid "Task status"
 msgstr "Статус задачи"
 
+#: inc/admin.php:605
+msgid "Participation"
+msgstr "Участие"
+
+#: inc/admin.php:647 inc/admin.php:708
+msgid "Unknown user"
+msgstr "Неизвестный пользователь"
+
+#: inc/admin.php:652 inc/admin.php:723
+msgid "itv_status_become"
+msgstr "Статус стал: %s"
+
+#: inc/admin.php:660
+msgid "Task Changes Log"
+msgstr "Лог изменений задачи"
+
+#: inc/admin.php:689
+msgid "« Previous"
+msgstr "« Назад"
+
+#: inc/admin.php:690
+msgid "Next »"
+msgstr "Далее »"
+
+#: inc/admin.php:717
+msgid "Unknown task"
+msgstr "Неизвестная задача"
+
+#: inc/admin.php:741 inc/admin.php:748
+msgid "Itv Tasks Log"
+msgstr "Лог изменений задач"
+
+#: inc/admin.php:745
+msgid "All Tasks Changes Log"
+msgstr "Лог изменений задач"
+
 # @ tst
 #: inc/customizer.php:121 inc/customizer.php:1201 inc/customizer.php:1230
 #: inc/customizer.php:1259
@@ -738,20 +774,8 @@ msgstr "Оказана"
 msgid "Needed!"
 msgstr "Требуется!"
 
-#: inc/customizer.php:1329
-msgid "Unknown user"
-msgstr "Неизвестный пользователь"
-
-#: inc/customizer.php:1334
-msgid "itv_status_become"
-msgstr "Статус стал: %s"
-
-#: inc/customizer.php:1342
-msgid "Task Changes Log"
-msgstr "Лог изменений задачи"
-
 # @ tst
-#: inc/customizer.php:1350
+#: inc/customizer.php:1321
 msgid "Te-st consulting"
 msgstr "Консультация"
 
@@ -1258,51 +1282,51 @@ msgstr ""
 msgid "Participate"
 msgstr "Участвовать"
 
-#: inc/itv_log.php:65
+#: inc/itv_log.php:95
 msgid "itv_task_actions_log_"
 msgstr ""
 
-#: inc/itv_log.php:69
+#: inc/itv_log.php:99
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
 
-#: inc/itv_log.php:70
+#: inc/itv_log.php:100
 msgid "itv_task_actions_log_delete"
 msgstr "Задача удалена пользователем %s"
 
-#: inc/itv_log.php:71
+#: inc/itv_log.php:101
 msgid "itv_task_actions_log_edit"
 msgstr "Изменена пользователем %s"
 
-#: inc/itv_log.php:72
+#: inc/itv_log.php:102
 msgid "itv_task_actions_log_add_candidate"
 msgstr "Добавлен кандидат %s"
 
-#: inc/itv_log.php:73
+#: inc/itv_log.php:103
 msgid "itv_task_actions_log_refuse_candidate"
 msgstr "Отклонен кандидат %s"
 
-#: inc/itv_log.php:74
+#: inc/itv_log.php:104
 msgid "itv_task_actions_log_approve_candidate"
 msgstr "Одобрен кандидат %s"
 
-#: inc/itv_log.php:75
+#: inc/itv_log.php:105
 msgid "itv_task_actions_log_remove_candidate"
 msgstr "Удален кандидат %s"
 
-#: inc/itv_log.php:76
+#: inc/itv_log.php:106
 msgid "itv_task_actions_log_publish"
 msgstr "Задача опубликована пользователем %s"
 
-#: inc/itv_log.php:77
+#: inc/itv_log.php:107
 msgid "itv_task_actions_log_unpublish"
 msgstr "Задача снята с публикации %s"
 
-#: inc/itv_log.php:78
+#: inc/itv_log.php:108
 msgid "itv_task_actions_log_inwork"
 msgstr "Задача поставлена в работу пользователем %s"
 
-#: inc/itv_log.php:79
+#: inc/itv_log.php:109
 msgid "itv_task_actions_log_close"
 msgstr "Задача закрыта пользователем %s"
 
@@ -2345,8 +2369,11 @@ msgstr "Выберите метки задач"
 msgid "Filter tasks"
 msgstr "Найти задачи"
 
-#~ msgid "Participation"
-#~ msgstr "Участие"
+#~ msgid "Prev page"
+#~ msgstr "Назад"
+
+#~ msgid "Next page"
+#~ msgstr "Вперед"
 
 # @ tst
 #~ msgid ""
