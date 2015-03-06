@@ -635,7 +635,15 @@ function itv_user_columns_content($out, $column_name, $user_id){
 function itv_tasks_log_box_content($task) {
 	$itv_log = ItvLog::instance();
 	$log_records = $itv_log->get_task_log($task->ID);
+	
 	echo "<table>";
+	
+	echo "<tr class='itv-stats-header'>";
+	echo "<th>".__("Activity time", 'tst')."</th>";
+	echo "<th>".__("Status become", 'tst')."</th>";
+	echo "<th>".__("Activity details", 'tst')."</th>";
+	echo "</tr>";
+	
 	foreach ($log_records as $k => $log) {
 
 		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
@@ -649,7 +657,7 @@ function itv_tasks_log_box_content($task) {
 
 		echo "<tr>";
 		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
+		echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
 		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
 		echo "</tr>";
 	}
@@ -697,6 +705,14 @@ function itv_all_tasks_log_box_content() {
 	
 	echo paginate_links( $pn_args ) . "<br /><br />";
 	echo "<table>";
+	
+	echo "<tr class='itv-stats-header'>";
+	echo "<th>".__("Task title", 'tst')."</th>";
+	echo "<th>".__("Activity time", 'tst')."</th>";
+	echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
+	echo "<th>".__("Activity details", 'tst')."</th>";
+	echo "</tr>";
+	
 	foreach ($log_records as $k => $log) {
 
 		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
@@ -718,9 +734,9 @@ function itv_all_tasks_log_box_content() {
 		}
 
 		echo "<tr>";
-		echo "<td class='itv-stats-time' width='40%'>".$task_text."</td>";
+		echo "<td class='itv-stats-task-title'>".$task_text."</td>";
 		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-		echo "<td class='itv-stats-time'>".sprintf(__('itv_status_become', 'tst'), tst_get_task_status_label($log->task_status))."</td>";
+		echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
 		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
 		echo "</tr>";
 	}

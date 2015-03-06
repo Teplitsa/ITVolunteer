@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-05 00:34+0200\n"
-"PO-Revision-Date: 2015-03-05 00:34+0200\n"
+"POT-Creation-Date: 2015-03-06 22:45+0200\n"
+"PO-Revision-Date: 2015-03-06 22:46+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -514,35 +514,48 @@ msgstr "Статус задачи"
 msgid "Participation"
 msgstr "Участие"
 
-#: inc/admin.php:647 inc/admin.php:708
+#: inc/admin.php:642 inc/admin.php:711
+msgid "Activity time"
+msgstr "Время"
+
+#: inc/admin.php:643 inc/admin.php:712
+msgid "Status become"
+msgstr "Статус стал"
+
+#: inc/admin.php:644 inc/admin.php:713
+msgid "Activity details"
+msgstr "Детали"
+
+#: inc/admin.php:655 inc/admin.php:724
 msgid "Unknown user"
 msgstr "Неизвестный пользователь"
 
-#: inc/admin.php:652 inc/admin.php:723
-msgid "itv_status_become"
-msgstr "Статус стал: %s"
-
-#: inc/admin.php:660
+#: inc/admin.php:668
 msgid "Task Changes Log"
 msgstr "Лог изменений задачи"
 
-#: inc/admin.php:689
+#: inc/admin.php:697
 msgid "« Previous"
 msgstr "« Назад"
 
-#: inc/admin.php:690
+#: inc/admin.php:698
 msgid "Next »"
 msgstr "Далее »"
 
-#: inc/admin.php:717
+# @ tst
+#: inc/admin.php:710 page-task-action.php:111
+msgid "Task title"
+msgstr "Заголовок задачи"
+
+#: inc/admin.php:733
 msgid "Unknown task"
 msgstr "Неизвестная задача"
 
-#: inc/admin.php:741 inc/admin.php:748
+#: inc/admin.php:757 inc/admin.php:764
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
-#: inc/admin.php:745
+#: inc/admin.php:761
 msgid "All Tasks Changes Log"
 msgstr "Лог изменений задач"
 
@@ -1982,11 +1995,6 @@ msgid "Please, %s."
 msgstr "Пожалуйста, %s."
 
 # @ tst
-#: page-task-action.php:111
-msgid "Task title"
-msgstr "Заголовок задачи"
-
-# @ tst
 #: page-task-action.php:125
 #, php-format
 msgid ""
@@ -2368,6 +2376,9 @@ msgstr "Выберите метки задач"
 #: tasks-filter.php:67
 msgid "Filter tasks"
 msgstr "Найти задачи"
+
+#~ msgid "itv_status_become"
+#~ msgstr "Статус стал: %s"
 
 #~ msgid "Prev page"
 #~ msgstr "Назад"
