@@ -161,12 +161,12 @@ get_header();?>
 								<td class="num"><span class="user-rating"><?php echo $user_rating;?></span></td>
 							</tr>
 							<tr>
-								<th><?php _e('Tasks created', 'tst');?></th>
-								<td class="num"><?php echo count($tasks_created).' / <span title="'.__('Closed from them', 'tst').'">'.$tasks_created_closed.'</span>';?></td>
-							</tr>
-							<tr>
 								<th><?php _e('Tasks joined', 'tst');?></th>
 								<td class="num"><?php echo count($tasks_working_on).' / <span title="'.__('Closed from them', 'tst').'">'.$user_rating.'</span>';?></td>
+							</tr>
+							<tr>
+								<th><?php _e('Tasks created', 'tst');?></th>
+								<td class="num"><?php echo count($tasks_created).' / <span title="'.__('Closed from them', 'tst').'">'.$tasks_created_closed.'</span>';?></td>
 							</tr>
 						</tbody>
 					</table>

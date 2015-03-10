@@ -45,9 +45,9 @@ global $tst_member;?>
 						<?endif?>
 						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo tst_get_user_rating($tst_member->ID);?></b>
 						<span><?php _e('Tasks', 'tst');?>:</span>
-						<span title="<?php _e('Created tasks / completed tasks', 'tst');?>"><?php echo count(tst_get_user_created_tasks($tst_member->ID)).'('.count(tst_get_user_created_tasks($tst_member->ID, 'closed')).')';?></span>
-						<?php echo ' / '; ?>
 						<b title="<?php _e('Participating in tasks / completed tasks', 'tst');?>"><?php echo count(tst_get_user_working_tasks($tst_member->ID)).'(<span>'.count(tst_get_user_working_tasks($tst_member->ID, 'closed')).'</span>)';?></b>
+						<?php echo ' / '; ?>
+						<span title="<?php _e('Created tasks / completed tasks', 'tst');?>"><?php echo count(tst_get_user_created_tasks($tst_member->ID)).'('.count(tst_get_user_created_tasks($tst_member->ID, 'closed')).')';?></span>
 			
 					</span>
 			
