@@ -1324,3 +1324,15 @@ function add_tst_consult_column( $columns, $post_type ) {
     return $columns;
 }
 add_action( 'manage_posts_columns' , 'add_tst_consult_column', 2,2);
+
+
+# customize RSS feed post types
+function rss_feed_request($qv) {
+	if(isset($qv['feed'])) {
+		if(!isset($qv['post_type'])) {
+			$qv['post_type'] = 'tasks';
+		}
+	}
+	return $qv;
+}
+add_filter('request', 'rss_feed_request');
