@@ -240,6 +240,33 @@ function tst_actualize_member_role($user) {
 	}
 }
 
+# count task candidates
+function tst_get_task_candidates_number($task_id) {
+	$arr = array(
+		'connected_type' => 'task-doers',
+		'connected_items' => $task_id,
+	);
+	return count(get_users($arr));
+}
+
+function tst_get_task_status_order($task_id) {
+	$task = get_post($task_id);
+	global $ITV_TASK_STATUSES_ORDER;
+	$order = 100;
+	if($task) {
+		$order = array_search($task->post_status, $ITV_TASK_STATUSES_ORDER);
+		if($order < 0) {
+			$order = 100;
+		}
+	}
+	return $order;
+}
+
+function tst_actualize_task_stats($task_id) {
+	update_post_meta($task_id, 'candidates_number', tst_get_task_candidates_number($task_id));
+	update_post_meta($task_id, 'status_order', tst_get_task_status_order($task_id));
+}
+
 function tst_actualize_current_member_role() {
 	tst_actualize_member_role(get_current_user_id());
 }

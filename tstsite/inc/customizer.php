@@ -23,7 +23,8 @@ function tst_main_query_mods(WP_Query $query) {
     elseif(($query->is_main_query() && $query->is_archive())
        || ($query->get('post_type') == 'tasks')
     ) {
-        
+    	$query->set('query_id', 'get_tasks');
+    	
         if( !empty($_GET['st']) ) {
             $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
         }
@@ -70,6 +71,47 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
+    
+    global $wpdb;
+    if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
+    	$metas = (array)$query->get('meta_query');
+    	
+    	$query->set('orderby', 'menu_order');
+    	$query->set('order', 'ASC');
+    	
+    	if(!$metas) {
+    		$metas = array();
+    	}
+    	
+    	$meta_candidates_number = array(
+    			'key' => 'candidates_number',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	$meta_status_order = array(
+    			'key' => 'status_order',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	 
+    	array_unshift($metas, $meta_status_order);
+    	array_unshift($metas, $meta_candidates_number);
+    	
+    	$query->set('meta_query', $metas);
+    	add_filter('posts_orderby','ord_cand_orderbyreplace');
+    }
+}
+
+function ord_cand_orderbyreplace($orderby) {
+	remove_filter('posts_orderby','ord_cand_orderbyreplace');
+	return str_replace('str_posts.menu_order ASC', 'cast(mt1.meta_value as unsigned) ASC, cast(str_postmeta.meta_value as unsigned) DESC', $orderby);
+}
+
+#add_filter( 'posts_request', 'dump_request' );
+function dump_request( $input ) {
+	if(preg_match('/candidates_number/', $input))
+	var_dump($input);
+	return $input;
 }
 
 /** Add an author filtering to exclude account-deleted's account from users query */
@@ -529,10 +571,12 @@ function ajax_close_task() {
         )));
     }
 
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'closed'));
-    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
+    $task_id = $_POST['task-id'];
+    wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
+    ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
+    tst_send_admin_notif_task_complete($task_id);
     
-    $task = get_post($_POST['task-id']);
+    $task = get_post($task_id);
     if($task) {
         $users = get_users( array(
           'connected_type' => 'task-doers',
@@ -689,11 +733,13 @@ function ajax_add_candidate() {
         )));
     }
 
-    $task = get_post($_POST['task-id']);
+    $task_id = $_POST['task-id'];
+    $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 
-    p2p_type('task-doers')->connect($_POST['task-id'], get_current_user_id(), array());
+    p2p_type('task-doers')->connect($task_id, get_current_user_id(), array());
     tst_actualize_current_member_role();
+    tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
     
     // Send email to the task doer:
@@ -710,7 +756,7 @@ function ajax_add_candidate() {
             $task_author->first_name,
             $task->post_title,
             htmlentities($_POST['candidate-message'], ENT_COMPAT, 'UTF-8'),
-            get_permalink($_POST['task-id'])
+            get_permalink($task_id)
         ))
     );
 
@@ -736,11 +782,13 @@ function ajax_remove_candidate() {
         )));
     }
 
-    $task = get_post($_POST['task-id']);
+    $task_id = $_POST['task-id'];
+    $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 
-    p2p_type('task-doers')->disconnect($_POST['task-id'], get_current_user_id());
+    p2p_type('task-doers')->disconnect($task_id, get_current_user_id());
     tst_actualize_current_member_role();
+    tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
     
     // Send email to the task doer:
@@ -1196,6 +1244,35 @@ function tst_send_admin_notif_new_task($post_id) {
 		
 		$subject = __('itv_email_new_task_added_subject', 'tst');
 		
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+		if(count($other_emails) > 0) {
+			$headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+		}
+		wp_mail($to, $subject, $message, $headers);
+	}
+}
+
+function tst_send_admin_notif_task_complete($post_id) {
+	global $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_EMAIL_FROM;
+	$task = get_post($post_id);
+
+	if($task && count($ITV_TASK_COMLETE_NOTIF_EMAILS) > 0) {
+		$to = $ITV_TASK_COMLETE_NOTIF_EMAILS[0];
+		$other_emails = array_slice($ITV_TASK_COMLETE_NOTIF_EMAILS, 1);
+		$message = __('itv_email_task_complete_message', 'tst');
+		$data = array(
+				'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+				'{{task_title}}' => get_the_title($post_id),
+				'{{task_content}}' => $task->post_content
+		);
+		$message = str_replace(array_keys($data), $data, $message);
+		$message = str_replace("\\", "", $message);
+		$message = nl2br($message);
+
+		$subject = __('itv_email_task_complete_subject', 'tst');
+
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
 		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
