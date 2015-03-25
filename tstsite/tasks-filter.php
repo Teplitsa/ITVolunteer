@@ -1,11 +1,17 @@
 <div class="tasks-filters-frame">
 	
 <div class="pull-right">
-	<div id="tasks-filters-trigger" class="pull-right">
-		<span class="txt"><?php _e('Select a tasks', 'tst');?></span>
-		<div class="pull-right icon"><span class="glyphicon glyphicon-collapse-down"></span></div>
+	<div>
+		<div id="tasks-filters-trigger" class="pull-right">
+			<span class="txt"><?php _e('Select a tasks', 'tst');?></span>
+			<div class="pull-right icon"><span class="glyphicon glyphicon-collapse-down"></span></div>
+		</div>
 	</div>
+	<?php if(isset($_GET['ord_cand'])): ?>
+	<a href="<?php echo home_url('/tasks/')?>" class="pull-right"><?php _e('Usual sort', 'tst') ?></a>
+	<?php else: ?>
 	<a href="<?php echo home_url('/tasks/?ord_cand=1')?>" class="pull-right"><?php _e('Sort by candidates amount', 'tst') ?></a>
+	<?php endif ?>
 </div>
 
 <div id="tasks-filters" style="display: none;">
