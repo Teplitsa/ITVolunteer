@@ -157,7 +157,7 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.6');
+    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.7');
 	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), '1.8');
 
 
@@ -198,6 +198,8 @@ add_action('wp_enqueue_scripts', function(){
         'contactor_message_empty' => __('Your message is required.', 'tst'),
         'user_company_logo_upload_error' => __('Company logo upload failed', 'tst'),
         'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
+        'user_avatar_upload_error' => __('Avatar upload failed', 'tst'),
+        'user_avatar_delete_error' => __('Avatar delete failed', 'tst'),
 //        '' => __('.', 'tst'),
     ));
 

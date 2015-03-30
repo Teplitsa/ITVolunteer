@@ -448,13 +448,20 @@ function tst_temp_avatar($user = null){
 		$user = $tst_member;
 	}
 	
-	$default = get_template_directory_uri() . '/img/temp-avatar.png';
-	$size = 180;
-	$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
+	$itv_user_avatar = tst_get_member_user_avatar($user->ID);
+	
+	if($itv_user_avatar) {
+		echo $itv_user_avatar;
+	}
+	else {
+		$default = get_template_directory_uri() . '/img/temp-avatar.png';
+		$size = 180;
+		$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
 		
-?>
-	<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
-<?php
+		?>
+			<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
+		<?php
+	}
 }
 
 function tst_login_avatar(){

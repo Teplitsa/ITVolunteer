@@ -128,7 +128,18 @@ get_header();?>
 	</div><!-- .col-md-4 -->
 
 	<div class="col-md-8">
-		<h4><?php _e('Profile data', 'tst');?></h4>	
+		<h4><?php _e('Profile data', 'tst');?></h4>
+		
+		<div class="form-group">
+			<?$user_avatar = tst_get_member_user_avatar($member_data['member_id'])?>
+			
+			<label for="user_avatar"><?php _e('Member avatar', 'tst');?></label>
+			&nbsp;<a id="upload_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"></a>
+			&nbsp;<a id="delete_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-avatar-action" <?if(!$user_avatar):?>style="display:none;"<?endif?> title="<?php _e('Delete avatar', 'tst');?>"></a>
+			
+			<div id="upload_user_avatar_info"><?=$user_avatar?></div>
+			<div id="upload_user_avatar_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
+		</div>
 		
 		<div class="form-group">
 			<label for="first_name"><?php _e('First name', 'tst');?></label>

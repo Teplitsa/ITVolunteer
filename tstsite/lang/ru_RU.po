@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-26 01:25+0200\n"
-"PO-Revision-Date: 2015-03-26 01:25+0200\n"
+"POT-Creation-Date: 2015-03-29 10:26+0200\n"
+"PO-Revision-Date: 2015-03-29 10:28+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -113,7 +113,7 @@ msgid "Te-st partner"
 msgstr "Партнер Теплицы социальных технологий"
 
 # @ tst
-#: content-member.php:44 page-member-action.php:154 page-members.php:100
+#: content-member.php:44 page-member-action.php:165 page-members.php:100
 msgid "Place of work"
 msgstr "Место работы"
 
@@ -310,6 +310,14 @@ msgstr "При загрузке логотипа произошла ошибка
 #: functions.php:200
 msgid "Company logo delete failed"
 msgstr "При удалении логотипа произошла ошибка."
+
+#: functions.php:201
+msgid "Avatar upload failed"
+msgstr "При загрузке аватара произошла ошибка"
+
+#: functions.php:202
+msgid "Avatar delete failed"
+msgstr "При удалении аватара произошла ошибка!"
 
 # @ tst
 #: home-well.php:27
@@ -1196,7 +1204,7 @@ msgid "Created at"
 msgstr "Создано"
 
 # @ tst
-#: inc/extras.php:358 inc/template-tags.php:567
+#: inc/extras.php:358 inc/template-tags.php:574
 msgid "No reward setted yet"
 msgstr "Награда не объявлена"
 
@@ -1226,7 +1234,7 @@ msgid "More"
 msgstr "Подробнее"
 
 # @ tst
-#: inc/extras.php:554 page-member-action.php:193
+#: inc/extras.php:554 page-member-action.php:204
 msgid "Website"
 msgstr "Вебсайт"
 
@@ -1368,7 +1376,7 @@ msgstr "Награды"
 
 # @ tst
 #: inc/post-types.php:10 page-members.php:202 page-members.php:227
-#: page-task-action.php:172 tasks-filter.php:45
+#: page-task-action.php:172 tasks-filter.php:47
 msgid "Reward"
 msgstr "Награда"
 
@@ -1567,23 +1575,23 @@ msgid "Approve"
 msgstr "Одобрить"
 
 # @ tst
-#: inc/template-tags.php:456
+#: inc/template-tags.php:462
 msgid "Member"
 msgstr "Участник"
 
 # @ tst
-#: inc/template-tags.php:462
+#: inc/template-tags.php:469
 msgid "LogIn"
 msgstr "Войти"
 
 # @ tst
-#: inc/template-tags.php:509
+#: inc/template-tags.php:516
 #, php-format
 msgctxt "1: date, 2: time"
 msgid "%1$s at %2$s"
 msgstr "%1$s в %2$s"
 
-#: inc/user_profile.php:160
+#: inc/user_profile.php:243
 #, php-format
 msgid "Member: %s"
 msgstr "Участник: %s"
@@ -1773,97 +1781,109 @@ msgstr "Удалить профиль"
 msgid "Profile data"
 msgstr "Данные профиля"
 
+#: page-member-action.php:136
+msgid "Member avatar"
+msgstr "Аватар"
+
+#: page-member-action.php:137
+msgid "Upload user avatar"
+msgstr "Загрузить аватар"
+
+#: page-member-action.php:138
+msgid "Delete avatar"
+msgstr "Удалить аватар"
+
 # @ tst
-#: page-member-action.php:134 page-registration.php:87
+#: page-member-action.php:145 page-registration.php:87
 msgid "First name"
 msgstr "Имя"
 
 # @ tst
-#: page-member-action.php:136 page-registration.php:89
+#: page-member-action.php:147 page-registration.php:89
 msgid "Please provide your first name"
 msgstr "Пожалуйста, укажите ваше имя"
 
 # @ tst
-#: page-member-action.php:141 page-registration.php:94
+#: page-member-action.php:152 page-registration.php:94
 msgid "Last name"
 msgstr "Фамилия"
 
 # @ tst
-#: page-member-action.php:143 page-registration.php:96
+#: page-member-action.php:154 page-registration.php:96
 msgid "Please provide your last name"
 msgstr "Пожалуйста, укажите вашу фамилию"
 
 # @ tst
-#: page-member-action.php:148
+#: page-member-action.php:159
 msgid "City"
 msgstr "Город"
 
 # @ tst
-#: page-member-action.php:150
+#: page-member-action.php:161
 msgid "Please specify the city where you live"
 msgstr "Пожалуйста, укажите город, в котором вы живете"
 
 # @ tst
-#: page-member-action.php:161
+#: page-member-action.php:172
 msgid "Company logo"
 msgstr "Логотип организации"
 
 # @ tst
-#: page-member-action.php:162
+#: page-member-action.php:173
 msgid "Upload company logo"
 msgstr "Загрузить логотип организации"
 
 # @ tst
-#: page-member-action.php:163
+#: page-member-action.php:174
 msgid "Delete company logo"
 msgstr "Удалить логотип организации"
 
 # @ tst
-#: page-member-action.php:170
+#: page-member-action.php:181
 msgid "Speciality"
 msgstr "Специализация"
 
 # @ tst
-#: page-member-action.php:172
+#: page-member-action.php:183
 msgid "Describe your speciality in a few words"
 msgstr "Опишите в нескольких словах вашу специализацию"
 
 # @ tst
-#: page-member-action.php:176
+#: page-member-action.php:187
 msgid "Bio"
 msgstr "Биография"
 
 # @ tst
-#: page-member-action.php:178
+#: page-member-action.php:189
 msgid "Please provide a brief information about yourself"
 msgstr "Пожалуйста, укажите краткую информацию о себе"
 
 # @ tst
-#: page-member-action.php:182 page-members.php:115
+#: page-member-action.php:193 page-members.php:115
 msgid "Skills list"
 msgstr "Я умею делать"
 
 # @ tst
-#: page-member-action.php:191 page-members.php:130
+#: page-member-action.php:202 page-members.php:130
 msgid "Contact details"
 msgstr "Контактная информация"
 
-#: page-member-action.php:193
+#: page-member-action.php:204
 msgid "User Skype"
 msgstr "Skype"
 
 # @ tst
-#: page-member-action.php:204
+#: page-member-action.php:215
 msgid "Additional contact info"
 msgstr "Дополнительные контактные данные"
 
 # @ tst
-#: page-member-action.php:206
+#: page-member-action.php:217
 msgid "Please provide some additional ways to contact you"
 msgstr "Пожалуйста, укажите дополнительные способы связи с вами"
 
 # @ tst
-#: page-member-action.php:212
+#: page-member-action.php:223
 msgid "Save data"
 msgstr "Сохранить данные"
 
@@ -1960,7 +1980,7 @@ msgstr "Автор удалил свой профиль"
 #  Оставить дедлайн? или назвать иначе?
 # @ tst
 #: page-members.php:201 page-members.php:226 page-task-action.php:165
-#: tasks-filter.php:32
+#: tasks-filter.php:34
 msgid "Deadline"
 msgstr "Дэдлайн"
 
@@ -2065,12 +2085,12 @@ msgstr ""
 "вам."
 
 # @ tst
-#: page-task-action.php:174 tasks-filter.php:48
+#: page-task-action.php:174 tasks-filter.php:50
 msgid "Select a reward for a service, please"
 msgstr "Выберите награду за выполнение задачи"
 
 # @ tst
-#: page-task-action.php:186 tasks-filter.php:60
+#: page-task-action.php:186 tasks-filter.php:62
 msgid "Task tags"
 msgstr "Теги"
 
@@ -2348,55 +2368,55 @@ msgid "Discussion"
 msgstr "Обсуждение"
 
 # @ tst
-#: tasks-filter.php:5
+#: tasks-filter.php:6
 msgid "Select a tasks"
 msgstr "Выбрать задачи"
-
-#: tasks-filter.php:9
-msgid "Sort by candidates amount"
-msgstr "Сортировать по количеству волонтеров"
 
 #: tasks-filter.php:11
 msgid "Usual sort"
 msgstr "Обычная сортировка"
 
+#: tasks-filter.php:13
+msgid "Sort by candidates amount"
+msgstr "Сортировать по количеству волонтеров"
+
 # @ tst
-#: tasks-filter.php:18
+#: tasks-filter.php:20
 msgid "Status"
 msgstr "Статус"
 
 # @ tst
-#: tasks-filter.php:21
+#: tasks-filter.php:23
 msgid "Any status"
 msgstr "Любой статус"
 
 # @ tst
-#: tasks-filter.php:35
+#: tasks-filter.php:37
 msgid "Any date"
 msgstr "Любая дата"
 
 # @ tst
-#: tasks-filter.php:36
+#: tasks-filter.php:38
 msgid "Less than 10 days"
 msgstr "Менее 10 дней"
 
 # @ tst
-#: tasks-filter.php:37
+#: tasks-filter.php:39
 msgid "Less than a month"
 msgstr "Менее месяца"
 
 # @ tst
-#: tasks-filter.php:38
+#: tasks-filter.php:40
 msgid "More than a month"
 msgstr "Более месяца"
 
 # @ tst
-#: tasks-filter.php:62
+#: tasks-filter.php:64
 msgid "Choose a tags for the task"
 msgstr "Выберите метки задач"
 
 # @ tst
-#: tasks-filter.php:74
+#: tasks-filter.php:76
 msgid "Filter tasks"
 msgstr "Найти задачи"
 
