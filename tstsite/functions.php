@@ -59,7 +59,8 @@ function tst_setup() {
 	//add_image_size('poster', 220, 295, true ); // poster in widget	
 	add_image_size('embed', 640, 400, true ); // fixed size for embending
 	add_image_size('long', 640, 280, true ); // long thumbnail for pages
-
+	add_image_size('avatar', 180, 180, array( 'center', 'center' ) );
+	
 	/**
 	 * This theme uses wp_nav_menu() in one location.
 	 */

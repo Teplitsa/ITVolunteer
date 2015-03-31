@@ -132,11 +132,14 @@ function ajax_upload_user_avatar() {
 	}
 	else {
 		$image_id = media_handle_upload( 'user_avatar', 0 );
+		$attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+		wp_update_attachment_metadata( $image_id,  $attach_data );
+				
 		if( $image_id ) {
 			update_user_meta($member->ID, 'user_avatar', $image_id);
 			$res = array(
 					'status' => 'ok',
-					'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'logo' )),
+					'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
 			);
 		} else {
 			$res = array(
@@ -160,8 +163,9 @@ add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 function tst_get_member_user_avatar($member_id) {
 	$image_id = get_user_meta($member_id, 'user_avatar', true);
 	$res = '';
+	
 	if($image_id) {
-		$res = wp_get_attachment_image( $image_id, 'logo' );
+		$res = wp_get_attachment_image( $image_id, 'avatar' );
 	}
 	return $res;
 }
