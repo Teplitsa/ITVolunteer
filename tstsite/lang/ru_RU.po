@@ -313,11 +313,11 @@ msgstr "При удалении логотипа произошла ошибка
 
 #: functions.php:201
 msgid "Avatar upload failed"
-msgstr "При загрузке аватара произошла ошибка"
+msgstr "При загрузке фоторграфии произошла ошибка"
 
 #: functions.php:202
 msgid "Avatar delete failed"
-msgstr "При удалении аватара произошла ошибка!"
+msgstr "При удалении фоторграфии произошла ошибка!"
 
 # @ tst
 #: home-well.php:27
@@ -1783,15 +1783,15 @@ msgstr "Данные профиля"
 
 #: page-member-action.php:136
 msgid "Member avatar"
-msgstr "Аватар"
+msgstr "Фотография"
 
 #: page-member-action.php:137
 msgid "Upload user avatar"
-msgstr "Загрузить аватар"
+msgstr "Загрузить фотографию"
 
 #: page-member-action.php:138
 msgid "Delete avatar"
-msgstr "Удалить аватар"
+msgstr "Удалить фотографию"
 
 # @ tst
 #: page-member-action.php:145 page-registration.php:87
