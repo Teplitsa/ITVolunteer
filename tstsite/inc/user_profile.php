@@ -83,6 +83,93 @@ function tst_get_member_user_company_logo($member_id) {
 	return $res;
 }
 
+# user avatar
+function ajax_delete_user_avatar() {
+	$member = wp_get_current_user();
+
+	$res = null;
+	if(!$member) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'restricted method',
+		);
+	}
+	else {
+		$image_id = get_user_meta($member->ID, 'user_avatar', true);
+		if( $image_id ) {
+			wp_delete_attachment( $image_id, true );
+			$res = array(
+					'status' => 'ok',
+			);
+		} else {
+			$res = array(
+					'status' => 'error',
+					'message' => 'image not found',
+			);
+		}
+	}
+
+	if(!$res) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'unkown error',
+		);
+	}
+
+	die(json_encode($res));
+}
+add_action('wp_ajax_delete-user-avatar', 'ajax_delete_user_avatar');
+
+function ajax_upload_user_avatar() {
+	$member = wp_get_current_user();
+
+	$res = null;
+	if(!$member) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'restricted method',
+		);
+	}
+	else {
+		$image_id = media_handle_upload( 'user_avatar', 0 );
+		$attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+		wp_update_attachment_metadata( $image_id,  $attach_data );
+				
+		if( $image_id ) {
+			update_user_meta($member->ID, 'user_avatar', $image_id);
+			$res = array(
+					'status' => 'ok',
+					'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
+			);
+		} else {
+			$res = array(
+					'status' => 'error',
+					'message' => 'upload image error',
+			);
+		}
+	}
+
+	if(!$res) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'unkown error',
+		);
+	}
+
+	die(json_encode($res));
+}
+add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
+
+function tst_get_member_user_avatar($member_id) {
+	$image_id = get_user_meta($member_id, 'user_avatar', true);
+	$res = '';
+	
+	if($image_id) {
+		$res = wp_get_attachment_image( $image_id, 'avatar' );
+	}
+	return $res;
+}
+
 # user skills
 $ITV_USER_SKILLS_EXCLUDE_CATEGORIES = array('prochee', 'materials');
 

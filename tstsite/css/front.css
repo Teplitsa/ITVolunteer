@@ -1253,10 +1253,11 @@ div[class|="status-block"] .row-top {
   text-overflow: ellipsis;
   white-space: nowrap; }
 
-#upload_user_company_logo input {
+#upload_user_company_logo input, #upload_user_avatar input {
   cursor: pointer; }
 
-a.itv-company-logo-action, a.itv-company-logo-action:hover {
+a.itv-company-logo-action, a.itv-company-logo-action:hover,
+a.itv-avatar-action, a.itv-avatar-action:hover {
   margin-bottom: 5px;
   text-decoration: none;
   vertical-align: middle;
