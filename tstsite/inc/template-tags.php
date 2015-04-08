@@ -377,8 +377,15 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 			<span class="btn btn-danger btn-xs"><?php _e('Disapprove', 'tst');?></span>
 		</span>
 
+		<?php
+		} elseif($mode == 3 && !ItvReviews::instance()->is_review_for_doer_and_task($candidate->ID, get_the_ID())) {?>
+				 
+		<span class="leave-review" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>">
+			<span class="btn btn-primary btn-xs" title="<?php _e('Leave review', 'tst');?>"><span class="glyphicon glyphicon-bullhorn"></span></span>
+		</span>
+		
 		<?php }
-
+				
 	} else { ?>
 	
 		<span class="candidate-li">

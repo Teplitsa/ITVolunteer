@@ -1205,6 +1205,24 @@ div[class|="status-block"] .row-top {
   margin: 10px 30px;
   padding: 10px 15px; }
 
+/* doer reviews */
+.itv-review-tabs {
+  padding-left: 15px; }
+
+.itv-user-reviews-list {
+  margin-top: 20px;
+  padding: 0px 20px 0px 20px; }
+
+.itv-user-reviews-list .itv-user-review-item {
+  padding: 0px 0px 20px 0px; }
+
+.itv-user-reviews-list .itv-user-review-message {
+  padding-bottom: 0px;
+  font-style: italic; }
+
+.itv-user-reviews-list .itv-user-review-author {
+  text-align: right; }
+
 /* Fixes */
 /* reward */
 .reward.task-param {

@@ -276,3 +276,4 @@ require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
+require get_template_directory().'/inc/itv_reviews.php';

@@ -139,6 +139,24 @@ if( !$cur_user_id ) {?>
         <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
         <div id="task-message"></div>
     </form>
+    
+        <form id="task-leave-review-form" style="display: none;" class="task-message widefat">
+            <p><?php _e('Leave a review to the task doer just to thank him.', 'tst');?></p>
+            <div class="form-group">
+                <textarea id="review-message" class="form-control" rows="6"></textarea>
+                <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
+                <input type="hidden" id="doer-id" value="" />
+                <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-leave-review');?>" />
+             </div>
+            <div class="form-group">
+                <input type="reset" id="cancel-leave-review" value="<?php _e('Cancel', 'tst');?>" class="btn btn-default btn-sm"/>
+                <input type="submit" value="<?php _e('Send', 'tst');?>" class="btn btn-success btn-sm"/>
+                <img id="add_review_loading" style="display:none;" src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" />
+            </div>
+            <div id="task-review-message"></div>
+        </form>
+        <div id="task-review-message-ok-message" class="alert alert-success" style="display:none;"></div>
+    
     <div class="connected-users">
         <h5><?php _e('Doers participated', 'tst');?>:</h5>
         <ul>
