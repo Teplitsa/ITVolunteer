@@ -818,6 +818,86 @@ function ajax_remove_candidate() {
 add_action('wp_ajax_remove-candidate', 'ajax_remove_candidate');
 add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 
+/** Leave a review */
+function ajax_leave_review() {
+	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+	if(
+			empty($_POST['task-id'])
+			|| empty($_POST['doer-id'])
+			|| empty($_POST['nonce'])
+			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
+	) {
+		die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = $_POST['task-id'];
+	$doer_id = $_POST['doer-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+
+	if(!$task) {
+		die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+	
+	if($author_id != $task->post_author) {
+		die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+		)));
+	}
+	
+	$task_doer = null;
+	
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		if( !$doer ) // If doer deleted his account
+			continue;
+		if($doer_id == $doer->ID) {
+			$task_doer = $doer;
+			break;
+		}
+	}
+	
+	if(!$task_doer) {
+		die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+		)));
+	}
+	
+	$message = htmlentities(trim(@$_POST['review-message']), ENT_QUOTES, 'UTF-8');
+	if(!$message) {
+		die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> empty message.', 'tst'),
+		)));
+	}
+	
+	if($task_doer) {
+		$itv_reviews = ItvReviews::instance();
+		if($itv_reviews->is_review_for_doer_and_task($task_doer->ID, $task->ID)) {
+			die(json_encode(array(
+					'status' => 'fail',
+					'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
+			)));
+		}
+		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message);
+	}
+	
+	die(json_encode(array(
+			'status' => 'ok',
+			'message' => __('Review saved', 'tst'),
+	)));
+}
+add_action('wp_ajax_leave-review', 'ajax_leave_review');
+add_action('wp_ajax_nopriv_leave-review', 'ajax_leave_review');
+
 /** Add a new login check - is account active or not: */
 add_filter('authenticate', function($user, $username, $password){
     if( !is_wp_error($user) && get_user_meta($user->ID, 'activation_code', true)) {

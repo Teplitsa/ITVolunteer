@@ -378,7 +378,7 @@ add_action('init', 'tst_members_rewrite');
 function tst_members_rewrite(){
 	global $wp;
 
-    $wp->add_query_var('membername');
+	$wp->add_query_var('membername');
 	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
 	// [^/]+/([^/]+)/?$  pagename=members
 }

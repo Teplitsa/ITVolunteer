@@ -456,6 +456,53 @@ jQuery(function($){
 
         });
     });
+    
+    $('.leave-review').click(function(e){
+        e.preventDefault();
+
+        $(this).hide();
+        $('#task-leave-review-form').slideDown(200);
+        $('#task-leave-review-form').find('#doer-id').val($(this).data('doer-id'));
+    });
+
+    $('#cancel-leave-review').click(function(e){
+        $('.leave-review').show();
+        $('#task-leave-review-form').slideUp(200);
+    });
+    
+    $('#task-leave-review-form').submit(function(e){
+        e.preventDefault();
+
+        $('#add_review_loading').show();
+        
+        var $form = $(this),
+            $buttons = $form.find('input[type="submit"][type="reset"]');
+
+        $buttons.attr('disabled', 'disabled');
+
+        $.post(frontend.ajaxurl, {
+            'action': 'leave-review',
+            'task-id': $form.find('#task-id').val(),
+            'doer-id': $form.find('#doer-id').val(),
+            'review-message': $form.find('#review-message').val(),
+            'nonce': $form.find('#nonce').val()
+        }, function(resp){
+
+            resp = jQuery.parseJSON(resp);
+
+            if(resp.status == 'ok') {
+            	$('#add_review_loading').hide();
+                $('#task-leave-review-form').remove();
+                $('#task-review-message-ok-message').html(resp.message);
+                $('#task-review-message-ok-message').show();
+            } else {
+            	$('#add_review_loading').hide();            	
+                $buttons.removeAttr('disabled');
+                $form.find('#task-review-message').html(resp.message);
+            }
+
+        });
+    });
 
     $('#task-offer-help').click(function(e){
         e.preventDefault();

@@ -150,6 +150,42 @@ get_header();?>
 					<?php endif;?>
 				</div><!-- .col-md-9 -->
 			</div>
+			<?php
+				$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews_short_list($tst_member->ID); 
+			?>
+			<?php if(count($latest_doer_reviews) > 0):?>
+			<div class="row">
+		        <div id="task-tabs" class="itv-reviews-tabs">
+		            <ul class="nav nav-tabs">
+		                <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
+		            </ul>
+		            <div class="tab-content">
+		                <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
+		                <?php foreach($latest_doer_reviews as $review):?>
+		                	<?php 
+		                		$review_author = get_user_by('id', $review->author_id);
+		                		$review_author_url = $review_author ? trailingslashit(site_url('/members/'.$review_author->user_login)) : '';
+		                	?>
+		                	<div class="itv-user-review-item clearfix">
+		                		<div class="itv-user-review-message">
+		                		<?php echo apply_filters('frl_the_content', stripslashes($review->message))?>
+		                		</div>
+		                		<?php if($review_author):?>
+		                		<div class="itv-user-review-author pull-right">
+		                			<a href="<?php echo $review_author_url;?>"><?php echo $review_author->first_name.' '.$review_author->last_name;?></a>
+		                			<br />
+		                			<small><i><?php echo date("d.m.Y", strtotime($review->time_add)); ?></i></small>
+		                		</div>
+		                		<?php endif?>
+		                	</div>
+		                	
+		                <?php endforeach;?>
+						<a href="<?php echo home_url("doer-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All doer reviews', 'tst');?> &raquo;</a>
+		                </div>
+					</div>
+				</div>			
+			</div>
+			<?php endif?>
 		</div>
 		<div class="col-md-4">
 			<div class="panel panel-default member-activity">
