@@ -1417,7 +1417,7 @@ function tst_send_user_notif_consult_needed($post_id) {
         if($consult_week_day >=5 || $consult_week_day == 0) {
         	$consult_week_day = 1;
         }
-        $consult_week_day_str =  __('itv_week_day_' . $consult_week_day);
+        $consult_week_day_str =  __('itv_week_day_' . $consult_week_day, 'tst');
         
         $message = __('itv_email_test_consult_needed_notification', 'tst');
         $data = array(
@@ -1435,6 +1435,7 @@ function tst_send_user_notif_consult_needed($post_id) {
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_CONSULT_EMAIL_FROM.'>' . "\r\n";
+        $headers .= 'Bcc: ' . $ITV_CONSULT_EMAIL_FROM . "\r\n";
         
         wp_mail($to, $subject, $message, $headers);
     }
