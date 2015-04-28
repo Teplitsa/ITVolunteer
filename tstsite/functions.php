@@ -12,6 +12,7 @@ global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM, $ITV_TASK_COMLET
 $ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
 $ITV_TASK_COMLETE_NOTIF_EMAILS = array('vlad@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
 $ITV_CONSULT_EMAILS = array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com');
+$ITV_CONSULT_EMAIL_FROM = 'anna.ladoshkina@te-st.ru';
 $ITV_EMAIL_FROM = 'info@itv.te-st.ru';
 $ITV_TASK_STATUSES_ORDER = Array('publish', 'in_work', 'closed', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
 

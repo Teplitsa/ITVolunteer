@@ -1393,16 +1393,37 @@ function tst_send_admin_notif_consult_needed($post_id) {
 }
 
 function tst_send_user_notif_consult_needed($post_id) {
-    global $ITV_EMAIL_FROM;
+    global $ITV_CONSULT_EMAIL_FROM;
     
     $task = get_post($post_id);
     $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
     if($task_author) {
         $to = $task_author->user_email;
         
+        $consult_week_day = (int)date('w');
+        
+        $consult_date_dif = 0;
+        if($consult_week_day > 0 && $consult_week_day < 5) {
+        	$consult_date_dif = 1;
+        }
+        elseif($consult_week_day == 0) {
+        	$consult_date_dif = 1;
+        }
+        else {
+        	$consult_date_dif = 8 - $consult_week_day;
+        }
+        $consult_date = date('d.m.Y', time() + $consult_date_dif * 24 * 3600);
+        
+        if($consult_week_day >=5 || $consult_week_day == 0) {
+        	$consult_week_day = 1;
+        }
+        $consult_week_day_str =  __('itv_week_day_' . $consult_week_day);
+        
         $message = __('itv_email_test_consult_needed_notification', 'tst');
         $data = array(
-                '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+        		'{{consult_week_day}}' => $consult_week_day_str,
+        		'{{consult_date}}' => $consult_date,
+        		'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
                 '{{task_title}}' => get_the_title($post_id),
         );
         $message = str_replace(array_keys($data), $data, $message);
@@ -1413,7 +1434,7 @@ function tst_send_user_notif_consult_needed($post_id) {
         
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_CONSULT_EMAIL_FROM.'>' . "\r\n";
         
         wp_mail($to, $subject, $message, $headers);
     }
@@ -1493,3 +1514,11 @@ function rss_feed_request($qv) {
 	return $qv;
 }
 add_filter('request', 'rss_feed_request');
+
+__('itv_week_day_0', 'tst');
+__('itv_week_day_1', 'tst');
+__('itv_week_day_2', 'tst');
+__('itv_week_day_3', 'tst');
+__('itv_week_day_4', 'tst');
+__('itv_week_day_5', 'tst');
+__('itv_week_day_6', 'tst');
