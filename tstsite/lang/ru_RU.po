@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-28 08:50+0200\n"
-"PO-Revision-Date: 2015-04-28 09:03+0200\n"
+"PO-Revision-Date: 2015-04-28 09:19+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -851,31 +851,31 @@ msgstr "Консультация"
 
 #: inc/customizer.php:1504
 msgid "itv_week_day_0"
-msgstr "Воскресенье"
+msgstr "воскресенье"
 
 #: inc/customizer.php:1505
 msgid "itv_week_day_1"
-msgstr "Понедельник"
+msgstr "понедельник"
 
 #: inc/customizer.php:1506
 msgid "itv_week_day_2"
-msgstr "Вторник"
+msgstr "вторник"
 
 #: inc/customizer.php:1507
 msgid "itv_week_day_3"
-msgstr "Среда"
+msgstr "среду"
 
 #: inc/customizer.php:1508
 msgid "itv_week_day_4"
-msgstr "Четверг"
+msgstr "четверг"
 
 #: inc/customizer.php:1509
 msgid "itv_week_day_5"
-msgstr "Пятница"
+msgstr "пятницу"
 
 #: inc/customizer.php:1510
 msgid "itv_week_day_6"
-msgstr "Суббота"
+msgstr "субботу"
 
 # @ tst
 #: inc/email-templates.php:4

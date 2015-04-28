@@ -1403,10 +1403,7 @@ function tst_send_user_notif_consult_needed($post_id) {
         $consult_week_day = (int)date('w');
         
         $consult_date_dif = 0;
-        if($consult_week_day > 0 && $consult_week_day < 5) {
-        	$consult_date_dif = 1;
-        }
-        elseif($consult_week_day == 0) {
+        if($consult_week_day >= 0 && $consult_week_day < 5) {
         	$consult_date_dif = 1;
         }
         else {
@@ -1414,8 +1411,11 @@ function tst_send_user_notif_consult_needed($post_id) {
         }
         $consult_date = date('d.m.Y', time() + $consult_date_dif * 24 * 3600);
         
-        if($consult_week_day >=5 || $consult_week_day == 0) {
+        if($consult_week_day >=5) {
         	$consult_week_day = 1;
+        }
+        else {
+        	$consult_week_day += 1;
         }
         $consult_week_day_str =  __('itv_week_day_' . $consult_week_day, 'tst');
         
