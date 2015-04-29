@@ -8,7 +8,7 @@ require get_template_directory().'/inc/acf_keys.php';
  * @package Blank
  */
  
-global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM, $ITV_TASK_COMLETE_NOTIF_EMAILS;
+global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM, $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_CONSULT_EMAIL_FROM;
 $ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
 $ITV_TASK_COMLETE_NOTIF_EMAILS = array('vlad@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
 $ITV_CONSULT_EMAILS = array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com');

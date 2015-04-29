@@ -1393,7 +1393,7 @@ function tst_send_admin_notif_consult_needed($post_id) {
 }
 
 function tst_send_user_notif_consult_needed($post_id) {
-    global $ITV_CONSULT_EMAIL_FROM;
+    global $ITV_CONSULT_EMAIL_FROM, $ITV_CONSULT_EMAILS;
     
     $task = get_post($post_id);
     $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
@@ -1435,7 +1435,7 @@ function tst_send_user_notif_consult_needed($post_id) {
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
         $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_CONSULT_EMAIL_FROM.'>' . "\r\n";
-        $headers .= 'Bcc: ' . $ITV_CONSULT_EMAIL_FROM . "\r\n";
+        $headers .= 'Bcc: ' . implode(', ', $ITV_CONSULT_EMAILS) . "\r\n";
         
         wp_mail($to, $subject, $message, $headers);
     }
