@@ -973,12 +973,16 @@ function ajax_user_register() {
             'last_name' => $_POST['last_name'],
             'role' => 'author',
         ));
+        
         if(is_wp_error($user_id)) {
             die(json_encode(array(
                 'status' => 'fail',
                 'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while registering your account.', 'tst').'</div>',
             )));
         } else {
+        	$itv_log = ItvLog::instance();
+        	$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
+        		 
             /** @var $user_id integer */
             $activation_code = sha1($user_id.'-activation-'.time());
             update_user_meta($user_id, 'activation_code', $activation_code);
@@ -1038,7 +1042,6 @@ function ajax_update_profile() {
                 'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while updating your profile.', 'tst').'</div>',
             )));
         } else {
-
             // Update another fields...
             update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
@@ -1055,6 +1058,9 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
             tst_actualize_member_role($member);            
 
+            $itv_log = ItvLog::instance();
+            $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
+            
             die(json_encode(array(
                 'status' => 'ok',
                 'message' => '<div class="alert alert-success">'.sprintf(__('Your profile is successfully updated! <a href="%s" class="alert-link">View it</a>', 'tst'), tst_get_member_url($member)).'</div>',
@@ -1075,8 +1081,19 @@ function ajax_delete_profile() {
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
     }
+    
+    $user = get_user_by('id', $_POST['id']);
+    $user_login = '';
+    if($user) {
+    	$user_login = $user->user_login;
+    }
 
-    if(wp_delete_user($_POST['id'], ACCOUNT_DELETED_ID)) {
+    #	delete user from multisite forever
+    if(wpmu_delete_user($_POST['id'])) {
+    #if(wp_delete_user($_POST['id'], ACCOUNT_DELETED_ID)) {
+    	$itv_log = ItvLog::instance();
+    	$itv_log->log_user_action(ItvLog::$ACTION_USER_DELETE_PROFILE, $user_id, $user_login);
+    	 
         die(json_encode(array(
             'status' => 'ok',
         )));
