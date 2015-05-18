@@ -645,7 +645,6 @@ function itv_tasks_log_box_content($task) {
 	echo "</tr>";
 	
 	foreach ($log_records as $k => $log) {
-
 		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
 		$user_text = '';
 		if($user) {
@@ -654,7 +653,7 @@ function itv_tasks_log_box_content($task) {
 		else {
 			$user_text = __('Unknown user', 'tst');
 		}
-
+		
 		echo "<tr>";
 		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 		echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
@@ -707,38 +706,51 @@ function itv_all_tasks_log_box_content() {
 	echo "<table>";
 	
 	echo "<tr class='itv-stats-header'>";
-	echo "<th>".__("Task title", 'tst')."</th>";
+	echo "<th>".__("Log record title", 'tst')."</th>";
 	echo "<th>".__("Activity time", 'tst')."</th>";
 	echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
 	echo "<th>".__("Activity details", 'tst')."</th>";
 	echo "</tr>";
 	
 	foreach ($log_records as $k => $log) {
-
-		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
-		$user_text = '';
-		if($user) {
-			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+		if($itv_log->is_user_action($log->action)) {
+			$user_id = $log->assoc_user_id;
+			$user_login = $log->task_status;
+			$user_text = "<a href='".get_edit_user_link( $user_id )."'>" . $user_login . "</a>";
+				
+			echo "<tr>";
+			echo "<td class='itv-stats-task-title'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
+			echo "<td class='itv-stats-time'>"."</td>";
+			echo "<td>".$user_text."</td>";
+			echo "</tr>";
 		}
 		else {
-			$user_text = __('Unknown user', 'tst');
+			$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
+			$user_text = '';
+			if($user) {
+				$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+			}
+			else {
+				$user_text = __('Unknown user', 'tst');
+			}
+			
+			$task = get_post($log->task_id);
+			$task_text = '';
+			if($task) {
+				$task_text = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $task->post_title . "</a>";
+			}
+			else {
+				$task_text = __('Unknown task', 'tst');
+			}
+	
+			echo "<tr>";
+			echo "<td class='itv-stats-task-title'>".$task_text."</td>";
+			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
+			echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
+			echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "</tr>";
 		}
-		
-		$task = get_post($log->task_id);
-		$task_text = '';
-		if($task) {
-			$task_text = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $task->post_title . "</a>";
-		}
-		else {
-			$task_text = __('Unknown task', 'tst');
-		}
-
-		echo "<tr>";
-		echo "<td class='itv-stats-task-title'>".$task_text."</td>";
-		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-		echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
-		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
-		echo "</tr>";
 	}
 	echo "</table>";
 	
@@ -754,7 +766,8 @@ function itv_all_tasks_log_box_content() {
 #	add tasks log page in admin panel
 add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
 function register_itv_tasks_log_submenu_page() {
-	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
+#	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
+	add_submenu_page( 'tools.php', __('Itv General Log', 'tst'), __('Itv General Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 }
 
 function itv_tasks_log_page_callback() {

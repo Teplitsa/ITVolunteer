@@ -13,6 +13,10 @@ class ItvLog {
 	public static $ACTION_TASK_INWORK = 'inwork';
 	public static $ACTION_TASK_CLOSE = 'close';
 	
+	public static $ACTION_USER_REGISTER = 'user_register';
+	public static $ACTION_USER_UPDATE = 'user_update';
+	public static $ACTION_USER_DELETE_PROFILE = 'user_delete_profile';
+	
 	private $task_action_table;
 	private static $_instance = NULL;
 	
@@ -40,6 +44,30 @@ class ItvLog {
 						SET task_id = %d, action = %s, assoc_user_id = %d, action_time = NOW(), task_status = %s
 						",
 						$task_id, $action, $action_assoc_user_id, $task->post_status
+				)
+		);
+	}
+
+	public function is_user_action($action) {
+		return array_search($action, array('user_register', 'user_update', 'user_delete_profile')) !== false;
+	}
+	
+	public function log_user_action($action, $user_id = 0, $user_login = '') {
+		if(!$user_login) {
+			$user = get_user_by('id', $user_id);
+			if($user) {
+				$user_login = $user->user_login;
+			}
+		}
+		 
+		global $wpdb;
+		$wpdb->query(
+				$wpdb->prepare(
+						"
+						INSERT INTO $this->task_action_table
+						SET task_id = 0, action = %s, assoc_user_id = %d, action_time = NOW(), task_status = %s
+						",
+						$action, $user_id, $user_login
 				)
 		);
 	}
@@ -107,3 +135,7 @@ __('itv_task_actions_log_publish', 'tst');
 __('itv_task_actions_log_unpublish', 'tst');
 __('itv_task_actions_log_inwork', 'tst');
 __('itv_task_actions_log_close', 'tst');
+
+__('itv_task_actions_log_user_register', 'tst');
+__('itv_task_actions_log_user_update', 'tst');
+__('itv_task_actions_log_user_delete_profile', 'tst');

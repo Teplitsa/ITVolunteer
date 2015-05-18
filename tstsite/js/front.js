@@ -87,7 +87,15 @@ jQuery(function($){
     });
 
     $('#task-delete').click(function(){
-        return confirm(frontend.task_delete_confirm);
+        var $form = $('#task-action');
+        is_ok = confirm(frontend.task_delete_confirm);
+        if(is_ok) {
+        	$form.data('delete-clicked', 'true');
+        }
+        else {
+        	$form.data('delete-clicked', '');
+        }
+        return is_ok
     });
 
     $('#open-contact-form').click(function(e){
@@ -184,8 +192,11 @@ jQuery(function($){
             form_is_valid = true,
             val = '';
 
-        if( !$submit_used.length ) // Submit only by click on one of the submit buttons
+        if( !$submit_used.length && !$form.data('delete-clicked')) // Submit only by click on one of the submit buttons
             return;
+        
+        // remove click flags
+        $form.data('delete-clicked', '');
 
         $form.find('.validation-message').html('').hide();
 
