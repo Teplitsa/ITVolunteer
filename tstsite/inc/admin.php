@@ -685,7 +685,7 @@ function itv_all_tasks_log_box_content() {
 	$all_records_count = $itv_log->get_all_tasks_log_records_count();
 	
 	$pn_args = array(
-			'base'               => 'edit.php?post_type=tasks&page=itv_all_tasks_log_page%_%',
+			'base'               => 'tools.php?page=itv_all_tasks_log_page%_%',
 			'format'             => '&pn=%#%',
 			'total'              => ceil($all_records_count / $limit),
 			'current'            => $page,
