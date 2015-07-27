@@ -107,6 +107,28 @@ class ItvLog {
 		return $actions;
 	}
 	
+	public function get_task_inwork_time($task_id) {
+		return $this->get_task_status_time($task_id, 'in_work');
+	}
+	
+	public function get_task_close_time($task_id) {
+		return $this->get_task_status_time($task_id, 'closed');
+	}
+	
+	public function get_task_status_time($task_id, $task_status) {
+		$logs = $this->get_task_log($task_id);
+		$res_log = null;
+		foreach($logs as $log) {
+			if($log->task_status == $task_status) {
+				$res_log = $log;
+			}
+			elseif($res_log) {
+				break;
+			}
+		}
+		return $res_log ? $res_log->action_time : '';
+	}
+	
 	public function get_all_tasks_log_records_count() {
 		global $wpdb;
 		
