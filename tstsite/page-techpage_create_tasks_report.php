@@ -8,9 +8,10 @@ $offset = @$_GET['offset'] ? @$_GET['offset'] : 0;
 
 $query_params = array(
 	'post_type' => 'tasks',
-	'nopaging' => true,
-	'number' => 200,
-	'offset' => $offset
+	'posts_per_page' => 200,
+	'offset' => $offset,
+	'orderby' => 'ID',
+	'order'   => 'ASC'		
 );
 
 $task_id = @$_GET['task_id'];
@@ -22,7 +23,7 @@ if($task_id) {
 global $wpdb;
 $query = new WP_Query($query_params);
 
-$wpdb->query("TRUNCATE str_tasks_report");
+#$wpdb->query("TRUNCATE str_tasks_report");
 $itv_log = ItvLog::instance();
 
 while($query->have_posts()) {
