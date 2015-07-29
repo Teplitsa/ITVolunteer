@@ -35,7 +35,7 @@ get_header(); ?>
                     <?php get_template_part('content-tasks', get_post_format());?>
 					
 					<?if($count == 4):?>
-						<?php //get_template_part('home-news');?>
+						<?php get_template_part('home-news');?>
 					<?endif?>
 
                 <?php }?>

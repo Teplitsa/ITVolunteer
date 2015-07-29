@@ -26,7 +26,7 @@ if($news_posts->have_posts()): while($news_posts->have_posts()) : $news_posts->t
 	</h4>	
 	
 	<div class="home-news-content">
-		<?php $thumbnail = get_the_post_thumbnail(get_the_ID(), 'large')?>
+		<?php $thumbnail = get_the_post_thumbnail(get_the_ID(), 'embed')?>
 		<?php if ( $thumbnail ): ?>
 			<a href="<?php the_permalink(); ?>" class="thumb-link"><?php echo $thumbnail ?></a>
 		<?php endif?>

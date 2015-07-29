@@ -11,11 +11,12 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 item-masonry tpl-task'); ?>>
 <div class="border-card">
 	<div class="status-wrap">
-		<?php $status_label = tst_get_task_status_label(); ?>
-		<span class="status-label"><?php echo $status_label;?></span>
+		<?php //$status_label = tst_get_task_status_label(); ?>
+		<span class="status-label">&nbsp;</span>
 	</div>
-		
+	
 	<header class="task-header">
+		
 		<h4 class="task-title">				
 			<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
 		</h4>							

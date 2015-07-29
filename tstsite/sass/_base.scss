@@ -82,116 +82,11 @@ img {
 
 
 /** Layout **/
-body {
-	padding-top: 50px;
-	background: #e6e6e6 url(../img/bg.png) repeat 0 0;
-}
-
-body.admin-bar {
-	
-	.navbar-fixed-top {
-		top: 32px;
-	}
-}
-
-/* header */
-.site-branding {
-	position: relative;
-	width: 200px;
-}
-.site-branding .navbar-brand {
-	display: block;
-	background: transparent url(../img/logo.png) no-repeat 15px center;
-	width: 180px;
-	@include image-replace;	
-	height: 50px;
-	
-}
-
-.navbar-form[role="search"] {
-	input[type="text"] {
-		width: 168px;	
-	}	
-}
-
-#menu-center {
-margin-left: 97px;
-background: rgb(35,77,114); /* Old browsers */
-background: -moz-linear-gradient(top,  rgba(35,77,114,1) 0%, rgba(50,118,177,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(35,77,114,1)), color-stop(100%,rgba(50,118,177,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(35,77,114,1) 0%,rgba(50,118,177,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(35,77,114,1) 0%,rgba(50,118,177,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(35,77,114,1) 0%,rgba(50,118,177,1) 100%); /* IE10+ */
-background: linear-gradient(to bottom,  rgba(35,77,114,1) 0%,rgba(50,118,177,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#234d72', endColorstr='#3276b1',GradientType=0 ); /* IE6-9 */
-	li {
-		& > a {
-			padding-right: 25px;
-			padding-left: 25px;
-			color: $color-border-normal;
-			&:hover {
-				background: transparentize($color-link-one, 0.98); 
-				color: $color-white;
-			}
-		}
-		border-right: 1px solid rgba(35,77,114,1);
-	}
-	
-	.dropdown.open{
-		& > a {
-			background: transparentize($color-link-one, 0.98); 
-			color: $color-white;
-		}
-	}
-	.dropdown-menu li {
-		border-right: none;
-	}
-}
 
 .page-decor {
 	border: 1px solid #c2c2c2;
 	background: $color-white;		
 	margin-bottom: 10px;
-}
-
-.page-bottom,
-.page-heading {
-	background: $color-secondary;
-	border-top: 1px solid $color-border-light;
-	border-bottom: 1px solid $color-border-light;
-	padding: {
-		top: 15px;
-		bottom: 15px;
-	}
-}
-
-.page-bottom,
-.page-heading,
-.page-body {
-	padding: {
-		left: 30px;
-		right: 30px;
-	}
-}
-
-.page-heading {
-	margin-bottom: $divMargin;	
-	.breadcrumb {
-		margin: 0;
-		background: transparent;
-		padding: 0 0 7px;
-		font-size: 0.92em;
-		a {
-			color: $color-text-semi;
-			&:hover {
-				color: $color-text;
-			}
-		}
-	}
-	h1 {
-		margin: 0;
-		font-weight: normal;
-	}
 }
 
 .page-body {
@@ -1538,46 +1433,6 @@ div[class |="status-block"] {
 	}
 }
 
-/*	news on main */
-.home-news {
-	.border-card {
-		border-color: #A4A4A4;
-	}
-	
-	h2 {
-		background-color: #A4A4A4;
-		color: $color-white;
-		font-weight: bold;
-		text-transform: uppercase;
-		margin: 0 0 0 -30px;
-		padding: 7px 0 7px 30px;
-		font-size: 1em;
-		width:40%;
-	}
-	
-	h4 {
-		margin-top:20px;
-		
-		a {
-			font-weight: bold;
-			color: $color-text-black;
-		}
-	}
-	
-	.home-news-content .thumb-link {
-		display: block;
-		margin: $divMargin/2 0;
-	}
-	
-	.home-news-content img {
-		max-width: 100%;
-		height: auto;
-	}
-}
-
-.news-pic {
-	margin:0px 0px 20px 0px;
-}
 
 
 

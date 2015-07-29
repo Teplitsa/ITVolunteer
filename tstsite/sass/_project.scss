@@ -4,6 +4,11 @@
  * already adopted new styles
  **/
 
+body {
+	//padding-top: 50px;
+	background: #e6e6e6 url(../img/bg.png) repeat 0 0;
+}
+
 a {
 	color: $color-link-one;
 	&:hover, &:focus, &:active {
@@ -12,42 +17,86 @@ a {
 }
 
 
+// page header
+.page-bottom,
+.page-heading {
+	background: $color-secondary;
+	border-top: 1px solid $color-border-light;
+	border-bottom: 1px solid $color-border-light;
+	
+	padding: {
+		top: $measure-columns-gut / 2;
+		bottom: $measure-columns-gut / 2;
+	}
+}
+
+.page-bottom,
+.page-heading,
+.page-body {
+	padding: {
+		left: $measure-columns-gut;
+		right: $measure-columns-gut;
+	}
+}
+
+.page-heading {
+	margin-bottom: $measure-elements-margin;
+	
+	&.tasks-list-header {
+		padding-top: $measure-columns-gut;
+	}
+	
+	.breadcrumb {
+		margin: 0;
+		background: transparent;
+		padding: 0 0 7px;
+		font-size: 0.92em;
+		
+		a {
+			color: $color-text-semi;
+			&:hover { color: $color-text; }
+		}
+	}
+	
+	h1 {
+		margin: 0;
+		font-weight: normal;
+	}
+}
+
 
 /** Taks in loop */
 .tpl-task {
 	
 	.border-card {
 		border-top: 1px solid $color-border-light;
-		padding-bottom: 22px;
+		padding: 16px 0 16px 24px;
+		position: relative;
 	}
 	
 	.status-wrap {
-		text-align: right;
-		height: 19px;
-		vertical-align: top;
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		top: 22px;
+		left: 0;
 	}
 		
 	.status-label {
-		display: inline-block;
-		width: $statusW;
-		padding: 4px 0;
-		font-size: 11px;
-		font-weight: bold;
-		line-height: 1;
-		vertical-align: top;
-		text-align: center;
-		
-		background: $color-text-meta;
-		color: $color-white;	
+		display: block;
+		width: 10px;
+		height: 10px;
+		color: rgba(255,255,255,0);
+		background: $color-label-green-normal;
+		border-radius: 50%;
 	}
 	
-	&.status-publish .status-label { background: $color-label-green-normal; }
-	&.status-in_work .status-label { background: $color-status-violet; }
-	&.status-closed .status-label { background: $color-status-gold;  }
+	&.status-in_work .status-label {  background: $color-label-work; }
+	&.status-closed .status-label { background: $color-label-closed; }
 	
 	.task-title {
 		@include post-title();
-		margin: 5px 0 3px;
+		margin: 0 0 3px;
 		padding-left: 0;
 	}
 	
@@ -121,4 +170,87 @@ a {
 	}
 	
 } //tpl
+
+
+/** Tasks List Screen **/
+.tasks-list-header {
+	.tasks-filters {
+		@include clearfix;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		padding-top: 12px;
+		
+		a {
+			display: inline-block;
+			line-height: 1;
+			padding: 4px 13px 6px;
+		}
+		
+		li {
+			float: left;
+			&.publish a { color: $color-label-green-normal; }
+			&.in_work a { color: $color-label-work;}
+			&.closed a { color: $color-label-closed;}
+		}
+				
+		li.active {
+			a {
+				color: $color-white;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			
+			&.publish a { background: $color-label-green-normal; }
+			&.in_work a { background: $color-label-work ;}
+			&.closed a { background: $color-label-closed;}
+		}
+	}
+}
+
+
+/** Homepage **/
+.home-news {
+	.border-card {
+		border-top: 1px solid $color-border-light;
+		padding: 0 0 12px 0;
+		position: relative;
+	}
+	
+	h2 {
+		background-color: #A4A4A4;
+		color: $color-white;
+		font-weight: bold;
+		text-transform: uppercase;
+		margin: 0 0 0 -30px;
+		padding: 7px 0 7px 30px;
+		font-size: 1em;
+		width: 45%;
+	}
+	
+	h4 {
+		margin-top:20px;
+		
+		a {
+			font-weight: bold;
+			color: $color-text-black;
+		}
+	}
+	
+	.home-news-content {
+		.thumb-link {
+			display: block;
+			margin: $measure-elements-margin/2 0;
+		}
+		
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		a { text-decoration: none; }
+	}	
+}
+
 

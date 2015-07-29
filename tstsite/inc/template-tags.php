@@ -1,12 +1,98 @@
 <?php
 /**
- * Site specifictemplate tags
+ * Common template tags - on top reviewed ones
+ * 
  **/
 
 
-/**
- * Page title elements
- **/
+/** == Page elements == **/
+
+/* page title */
+function frl_page_title(){	
+	global $post, $tst_member;
+	
+	$title = '';
+	if(is_post_type_archive('tasks')){
+        $title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
+		
+	}
+    elseif(is_tag()) {
+        $title = apply_filters('tag_archive_title', single_tag_title('', false));
+		$title = sprintf(__('Tasks by tag: %s', 'tst'), $title);
+    }
+	elseif(is_singular('tasks')) {
+
+		$id = intval($post->ID); 
+		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
+
+	} elseif(is_single_member())
+        $title = apply_filters('the_title', tst_get_member_name());
+
+	elseif(is_page('task-actions')) {
+		
+		if(empty($_GET['task']))
+			$title = __('New task', 'tst');
+		else {
+			$id = intval($_GET['task']);
+			$title = sprintf(__('Edit task #%s', 'tst'), $id);
+		}
+	} elseif(is_page('member-actions'))
+        $title = apply_filters('the_title', tst_get_member_action_title());
+
+    elseif(is_page('member-tasks'))
+        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
+
+	elseif(is_page() || is_single())
+        $title = apply_filters('the_title', $post->post_title);
+    elseif(is_search()){
+        $title = __('Search results', 'tst');
+    }
+	elseif(is_home()){
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+	}
+    elseif(is_404())
+		$title = __('Page not found', 'tst');
+
+    else { //@to_do make reeal titles here
+		$title = __('Some title', 'tst');
+	}
+	
+	return $title;
+}
+
+/* Excerpts filters for texts */
+function frl_continue_reading_link() {
+	$more = __('More', 'tst');
+	return '&nbsp;<a href="'. esc_url( get_permalink() ) . '"><span class="meta-nav">'.$more.'&hellip;</span></a>';
+}
+
+add_filter( 'excerpt_more', 'frl_auto_excerpt_more' );
+function frl_auto_excerpt_more( $more ) {
+	return '&hellip;';
+}
+
+add_filter( 'excerpt_length', 'frl_custom_excerpt_length' );
+function frl_custom_excerpt_length( $l ) {
+	return 35;
+}
+
+add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
+function frl_custom_excerpt_more( $output ) {
+	
+	if(is_singular())
+		return $output;
+	
+	if (is_search())
+		$output .= '&nbsp;[&hellip;]';
+	else
+		$output .= frl_continue_reading_link();
+	
+	return $output;
+}
+
+
+// old 
 function frl_breadcrumbs(){
 	global $post;
 	
@@ -90,59 +176,6 @@ function frl_breadcrumbs(){
 	
 	return (!empty($bredcrumbs)) ? "<ol class='breadcrumb'>".implode('',$bredcrumbs )."</ol>" : '';
 }
-
-
-function frl_page_title(){	
-	global $post, $tst_member;
-	
-//	$title = '';
-	if(is_post_type_archive('tasks'))
-        $title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
-
-    elseif(is_tag())
-        $title = apply_filters('tag_archive_title', single_tag_title('', false));
-
-	elseif(is_singular('tasks')) {
-
-		$id = intval($post->ID); 
-		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
-
-	} elseif(is_single_member())
-        $title = apply_filters('the_title', tst_get_member_name());
-
-	elseif(is_page('task-actions')) {
-		
-		if(empty($_GET['task']))
-			$title = __('New task', 'tst');
-		else {
-			$id = intval($_GET['task']);
-			$title = sprintf(__('Edit task #%s', 'tst'), $id);
-		}
-	} elseif(is_page('member-actions'))
-        $title = apply_filters('the_title', tst_get_member_action_title());
-
-    elseif(is_page('member-tasks'))
-        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
-
-	elseif(is_page() || is_single())
-        $title = apply_filters('the_title', $post->post_title);
-    elseif(is_search()){
-        $title = __('Search results', 'tst');
-    }
-	elseif(is_home()){
-		$p = get_page(get_option('page_for_posts'));
-		$title = apply_filters('the_title', $p->post_title);
-	}
-    elseif(is_404())
-		$title = __('Page not found', 'tst');
-
-    else { //@to_do make reeal titles here
-		$title = __('Some title', 'tst');
-	}
-	
-	return $title;
-}
-
 
 
 /**

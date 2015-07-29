@@ -26,7 +26,7 @@
 <?php $home_body_class = is_front_page() ? 'itv-home-body' : '';?>
 <body id="top" <?php body_class($home_body_class); ?>>
 
-<nav id="site-navigation" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+<nav id="site_navigation" class="site-navigation" role="navigation">
 	<div class="container">
 		<?php get_template_part('navbar');?>
 	</div>
