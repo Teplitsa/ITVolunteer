@@ -320,20 +320,6 @@ function tst_get_task_status_list() {
     );
 }
 
-function tst_get_task_status_label($status = false) {
-
-    if( !$status ) {
-        global $post;
-
-        if( !$post || $post->post_type != 'tasks')
-            return false;
-
-        $status = $post->post_status;
-    }
-
-    $status_list = tst_get_task_status_list();
-    return isset($status_list[$status]) ? $status_list[$status] : false;
-}
 
 function tst_get_deadline_class($days) {
     $days = (int)$days;

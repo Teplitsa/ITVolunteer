@@ -58,22 +58,6 @@ function frl_correct_menu_arg($args){
 }
 
 
-/**
- * Inject  top link  HTML
- * require <body> tag to have id ='top'
- **/
-function frl_print_top_link(){
-
-	if(!is_admin()):
- ?>	
-	<div id="top-link">
-		<a href="#top"><?php _e('Top', 'tst');?></a>
-	</div>
-	
-<?php endif; 
-}
-//add_action('wp_footer', 'frl_print_top_link');
-
 
 /**
  * Favicon
@@ -132,8 +116,13 @@ add_filter( 'frl_the_content', 'wpautop'            );
 add_filter( 'frl_the_content', 'shortcode_unautop'  );
 add_filter( 'frl_the_content', 'do_shortcode' );
 
+
+add_filter( 'frl_the_title', 'wptexturize'   );
+add_filter( 'frl_the_title', 'convert_chars' );
+add_filter( 'frl_the_title', 'trim'          );
+
 /* jpeg compression */
-add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
+//add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
 
 
 
@@ -293,21 +282,7 @@ function tst_process_members_filter($users_query_params) {
 	return $users_query_params;
 }
 
-function tst_get_task_author_link($task = null){
-	global $post;
-	
-	if(!$task)
-		$task = $post;
-		
-	$author = get_user_by('id', $task->post_author);
-	if( !$author )
-		return '';
 
-	$name = tst_get_member_name($author);
-	$url = tst_get_member_url($author);
-	
-	return "<a href='{$url}'>{$name}</a>";
-}
 
 function tst_task_fixed_meta($task = null){
 	global $post;

@@ -1,0 +1,124 @@
+/**
+ * New design
+ *
+ * already adopted new styles
+ **/
+
+a {
+	color: $color-link-one;
+	&:hover, &:focus, &:active {
+		color: $color-link-two;
+	}
+}
+
+
+
+/** Taks in loop */
+.tpl-task {
+	
+	.border-card {
+		border-top: 1px solid $color-border-light;
+		padding-bottom: 22px;
+	}
+	
+	.status-wrap {
+		text-align: right;
+		height: 19px;
+		vertical-align: top;
+	}
+		
+	.status-label {
+		display: inline-block;
+		width: $statusW;
+		padding: 4px 0;
+		font-size: 11px;
+		font-weight: bold;
+		line-height: 1;
+		vertical-align: top;
+		text-align: center;
+		
+		background: $color-text-meta;
+		color: $color-white;	
+	}
+	
+	&.status-publish .status-label { background: $color-label-green-normal; }
+	&.status-in_work .status-label { background: $color-status-violet; }
+	&.status-closed .status-label { background: $color-status-gold;  }
+	
+	.task-title {
+		@include post-title();
+		margin: 5px 0 3px;
+		padding-left: 0;
+	}
+	
+	.task-meta {
+		font-size: 12px;
+		color: $color-text-meta;
+		font-weight: 300;
+		
+		a {
+			color: $color-text-black;
+			font-weight: 300;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-tags {
+		font-size: 12px;
+		color: $color-text-meta;
+		margin-top: 5px;
+		
+		a {
+			color: $color-text-meta;
+			font-weight: 500;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-summary {
+		position: relative;
+	}
+	
+	.task-reward {
+		margin-top: 1em;
+		padding-right: $statusW +10px;
+		
+		.reward-icon  {
+			margin-right: 5px;
+		}
+	}
+	
+	&.status-publish .reward-label { color: $color-label-green-normal;  }
+	
+	.task-more {
+		width: $statusW;
+		position: absolute;
+		top: -6px;
+		right: 0;
+		text-align: center;
+		vertical-align: top;
+		
+		a {
+			display: inline-block;
+			height: 17px;
+			color: transparentize($color-text-meta, 0.3);
+			font-weight: bold;
+			font-size: 30px;
+			letter-spacing: 0.5px;
+			line-height: 17px;
+			vertical-align: top;
+			@include transition(all 0.35s);
+			
+			&:hover, &:focus, &:active {
+				color: darken($color-text-meta, 20%);
+				text-decoration: none;
+			}
+		}
+	}
+	
+} //tpl
+

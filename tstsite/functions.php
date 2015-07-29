@@ -170,9 +170,10 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('jquery-masonry ');
+	//wp_enqueue_script('jquery-masonry');
     wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'jquery-masonry'), '1.6', true);
+	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), '1.6', true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -278,3 +279,4 @@ require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
 require get_template_directory().'/inc/itv_reviews.php';
+require get_template_directory().'/inc/template-tasks.php';

@@ -551,6 +551,7 @@ function tst_comment( $comment, $args, $depth ) {
 }
 
 
+/** Old task params - to be reworked */
 function tst_task_params(){
 	
 ?>
