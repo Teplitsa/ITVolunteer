@@ -25,15 +25,16 @@ if(is_single_member()) {
 
 get_header();?>
 
-<header class="page-heading">
+
+<header class="page-heading members-list-header no-breadcrumbs">
 
 	<div class="row">
 		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+			<!--<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>-->
 			<h1 class="page-title <?php if(is_single_member()) echo 'member-title';?>">
 			<?php echo frl_page_title();?>
 			<?php if(!is_single_member()):?>
-			<span class="itv-total-members-heading"><?php echo tst_get_active_members_count() ?></span>
+			<span class="itv-total-members-heading">( <?php echo tst_get_active_members_count() ?> )</span>
 			<?endif?>			
 			<?php if(is_single_member() && current_user_can('edit_user', $tst_member->ID)): ?>
 				<small class="edit-item"> <a href="<?php echo tst_get_edit_member_url();?>"><?php _e('Edit', 'tst');?></a></small>

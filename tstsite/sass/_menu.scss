@@ -11,6 +11,8 @@ $menu_height: 46px;
 	
 	.site-branding {
 		float: left;
+		line-height: $menu_height;
+		vertical-align: middle;
 		
 		.logo {
 			font-family: Arial, Helvetica, sans-serif;
@@ -20,7 +22,7 @@ $menu_height: 46px;
 			width: 180px;
 			height: $menu_height;
 			font-size: 20px;
-			line-height: $menu_height;
+			line-height: 36px;
 			vertical-align: middle;
 			color: transparentize($color-white, 0.07);
 			text-decoration: none;
@@ -56,7 +58,7 @@ $menu_height: 46px;
 		@include for(large-screens) {
 			display: block;
 			clear: none;
-			padding: 0 0 0 200px;			
+			padding: 0 0 0 220px;			
 		}
 	}
 	
@@ -72,20 +74,33 @@ $menu_height: 46px;
 	li {
 		list-style-type: none;
 		padding: 0;
-		margin: 0;
+		margin: 0;	
+	}
+	
+	a {
+		display: inline-block;
+		color: #cccccc;
+		line-height: 1;
+		padding: 6px 0;
+		text-decoration: none;
+		@include transition(all 0.35s);
 		
-		a {
-			display: inline-block;
-			color: #A9A9A9;
-			line-height: 1;
-			padding: 6px 0;
-			text-decoration: none;
-			@include transition(all 0.35s);
-			
-			&:hover, &:focus, &:active {
-				color: $color-white;		
-			}
+		&:hover, &:focus, &:active {
+			color: $color-white;		
 		}
+	}
+	
+	.count {
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 11px;
+		font-weight: 500;
+		line-height: 14px;
+		margin-left: 8px;		
+	}
+	
+	a:hover .count, .count:hover {
+		color: $color-white;
+		cursor: pointer;
 	}
 	
 	.submenu {
@@ -98,12 +113,14 @@ $menu_height: 46px;
 		li {
 			float: left;
 			position: relative;
-			padding: 11px 0 9px;
+			padding: ($menu_height - 27px) / 2 0; 
 		}
 		
 		a {
-			
+			padding: 5px 0;
+			line-height: 16px;			
 		}
+		
 		.submenu {
 			display: none;
 			padding: 5px 0;
@@ -129,7 +146,7 @@ $menu_height: 46px;
 				color: $color-text;
 				
 				&:hover, &:focus, &:active {
-					background: $color-secondary;
+					background: darken($color-secondary, 10%);
 					color: $color-text-black;
 				}
 			}
@@ -144,7 +161,7 @@ $menu_height: 46px;
 
 .fixed-nav #site_navigation {
 	width: 100%;
-	min-height: 50px;
+	min-height: $menu_height;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -162,26 +179,35 @@ $menu_height: 46px;
 	
 	.important-item {
 		margin-bottom: 6px;
-		
+				
 		a {
 			background: $color-label-green-normal;
 			color: $color-white;
-			padding: 5px 13px 7px;
+			line-height: 16px;
+			padding: 4px 13px 6px 13px; 
+			border-radius: 1px;
 			
 			&:hover, &:focus, &:active {
-				background: darken($color-label-green-normal, 15%);		
+				background: darken($color-label-green-normal, 15%);				
 			}
+		}
+		
+		.count {						
+			color: $color-white; //$color-label-green-normal;
+			margin-left: 6px;
 		}
 	}
 	
 	.important-item-2 {
 		a {
-			color: #DDDDDD;
+			//color: #DDDDDD;
 			&:hover, &:focus, &:active {
 				color: $color-white;		
 			}
 		}
 	}
+	
+	
 	
 	@include for(large-screens) {
 		@include clearfix;
@@ -203,7 +229,7 @@ $menu_height: 46px;
 	
 	.important-item {
 		a {
-			color: #DDDDDD;
+			color: #eee;
 			&:hover, &:focus, &:active {
 				color: $color-white;		
 			}

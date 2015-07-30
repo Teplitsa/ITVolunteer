@@ -58,7 +58,17 @@
 			</div>
 		</div>
 		<div class="col-md-3">
-			<a href="<?php echo home_url('task-actions');?>" class="add-new-task-button"><?php _e('Create task', 'tst');?></a>
+		<?php
+			//GA Events
+			$ga_atts = array(
+				'category' => 'Создать задачу',
+				'action' => 'Кнопка создать задачу на главной',
+				'label' => 'Действия на главной'
+			);
+		?>
+			<a href="<?php echo home_url('task-actions');?>" <?php tst_ga_event_data($ga_atts);?> class="add-new-task-button ga-event-trigger">
+				<?php _e('Create task', 'tst');?>
+			</a>
 		</div>
 	</div>
 </div>

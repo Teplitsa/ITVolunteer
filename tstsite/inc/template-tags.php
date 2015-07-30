@@ -61,38 +61,6 @@ function frl_page_title(){
 	return $title;
 }
 
-/* Excerpts filters for texts */
-function frl_continue_reading_link() {
-	$more = __('More', 'tst');
-	return '&nbsp;<a href="'. esc_url( get_permalink() ) . '"><span class="meta-nav">'.$more.'&hellip;</span></a>';
-}
-
-add_filter( 'excerpt_more', 'frl_auto_excerpt_more' );
-function frl_auto_excerpt_more( $more ) {
-	return '&hellip;';
-}
-
-add_filter( 'excerpt_length', 'frl_custom_excerpt_length' );
-function frl_custom_excerpt_length( $l ) {
-	return 35;
-}
-
-add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
-function frl_custom_excerpt_more( $output ) {
-	
-	if(is_singular())
-		return $output;
-	
-	if (is_search())
-		$output .= '&nbsp;[&hellip;]';
-	else
-		$output .= frl_continue_reading_link();
-	
-	return $output;
-}
-
-
-// old 
 function frl_breadcrumbs(){
 	global $post;
 	
@@ -156,8 +124,21 @@ function frl_breadcrumbs(){
 		$title = __('All Tasks', 'tst');
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
 	}
+	elseif(is_home()) {
+		$about = get_page_by_path('about');
+		$about_t = apply_filters('the_title', $about->post_title);
+		$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
+		
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+		$bredcrumbs[] = "<li class='active'>{$title}</li>";
+	}
 	elseif(is_page()) {
-		//is this correct?
+		if(is_page('sovety-dlya-nko-uspeshnye-zadachi') || is_page('contacts')) {
+			$about = get_page_by_path('about');
+			$about_t = apply_filters('the_title', $about->post_title);
+			$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
+		}
 		
 		$title = frl_page_title();
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
@@ -166,6 +147,10 @@ function frl_breadcrumbs(){
 		$p = get_page(get_option('page_for_posts'));
 		$title = apply_filters('the_title', $p->post_title);
 		
+		$about = get_page_by_path('about');
+		$about_t = apply_filters('the_title', $about->post_title);
+				
+		$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
 	}
 	else { //@to_do make real structures here
@@ -176,6 +161,77 @@ function frl_breadcrumbs(){
 	
 	return (!empty($bredcrumbs)) ? "<ol class='breadcrumb'>".implode('',$bredcrumbs )."</ol>" : '';
 }
+
+
+/* Excerpts filters for texts */
+function frl_continue_reading_link() {
+	$more = __('More', 'tst');
+	return '&nbsp;<a href="'. esc_url( get_permalink() ) . '"><span class="meta-nav">'.$more.'&hellip;</span></a>';
+}
+
+add_filter( 'excerpt_more', 'frl_auto_excerpt_more' );
+function frl_auto_excerpt_more( $more ) {
+	return '&hellip;';
+}
+
+add_filter( 'excerpt_length', 'frl_custom_excerpt_length' );
+function frl_custom_excerpt_length( $l ) {
+	return 35;
+}
+
+add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
+function frl_custom_excerpt_more( $output ) {
+	
+	if(is_singular())
+		return $output;
+	
+	if (is_search())
+		$output .= '&nbsp;[&hellip;]';
+	else
+		$output .= frl_continue_reading_link();
+	
+	return $output;
+}
+
+
+/** Login & Registration tags **/
+function tst_get_login_url($redirect = true) {
+
+    if(is_bool($redirect))
+        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'registration') ? home_url() : wp_get_referer());
+    elseif(strlen($redirect) > 1)
+        $redirect = '?redirect_to='.urlencode($redirect);
+    else
+        $redirect = '';
+
+	return home_url('registration/'.$redirect);
+}
+
+function tst_get_register_url() {
+
+	return home_url('registration');
+}
+
+
+/** GA Events **/
+function tst_ga_event_data($atts = array()){
+	
+	$defaults = array(
+		'category' => 'Неизвестная категория события',
+		'action' => 'Неизвестное действие',
+		'label' => 'Неизвестное место события'
+	);
+	
+	$atts = wp_parse_args($atts, $defaults);
+	
+	foreach($atts as $key => $value) {
+		$value = esc_attr($value);
+		echo " data-{$key}='{$value}' ";
+	}
+}
+
+// old 
+
 
 
 /**
@@ -365,22 +421,7 @@ function frl_paginate_links($query = null, $echo = true) {
 		$links;
 }
 
-function tst_get_login_url($redirect = true) {
 
-    if(is_bool($redirect))
-        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'registration') ? home_url() : wp_get_referer());
-    elseif(strlen($redirect) > 1)
-        $redirect = '?redirect_to='.urlencode($redirect);
-    else
-        $redirect = '';
-
-	return home_url('login/'.$redirect);
-}
-
-function tst_get_register_url() {
-
-	return home_url('registration');
-}
 
 function frl_get_sep() {
 	return "<span class='sep'>/</span>";
@@ -497,7 +538,7 @@ function tst_temp_avatar($user = null){
 		$default = get_template_directory_uri() . '/img/temp-avatar.png';
 		$size = 180;
 		$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
-		
+		$grav_url = $default;
 		?>
 			<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 		<?php

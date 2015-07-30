@@ -800,6 +800,12 @@ img {
 	
 	.thumbnail {
 		margin-bottom: 0;
+		width: 100px;
+		height: 100px;
+		img {
+			max-width: 100%;
+			height: auto;
+		}
 	}
 	
 	.member-status {
@@ -1299,50 +1305,7 @@ div[class |="status-block"] {
 }
 
 
-/* Recent News */
 
-//loop
-.tpl-post {
-	margin-bottom:15px;	
-	.border-card {
-		padding: 18px 25px;
-	}
-	
-	h4 {
-		@include post-title;
-	}
-	
-	.post-meta {
-		color: $color-text-meta;
-		font-size: 0.857em;
-		margin-top: 4px;
-	}
-	
-	.post-preview {
-		margin: 15px 0;
-		a {
-			display: block;
-		}
-	}
-}
-
-.single-post {
-	
-	.page-summary {
-		font-size: 1.52em;
-		line-height: 1.4;
-		font-weight: 600;
-		margin-bottom: 15px;
-	}
-	
-	.page-media {
-		margin-bottom: 15px;
-	}
-	
-	h3, h4 {
-		margin-top: 1.5em;
-	}
-}
 
 
 .page-body #menu-about {
@@ -1367,27 +1330,7 @@ div[class |="status-block"] {
 	}
 }
 
-.widget_recent_entries {
-	ul {
-		border-top: 1px dotted $color-border-normal;
-		border-bottom: 1px dotted $color-border-normal;
-		padding-top: 1px;
-	}
-	li {
-		margin-bottom: 1px;
-		font-size: 0.95em;
-		border-top: 1px dotted $color-border-normal;
-		border-bottom: 1px dotted $color-border-normal;
-		padding: 6px 0;
-	}
-	
-	.post-date {
-		font-weight: bold;
-		font-size: 0.95em;
-		margin-left: 5px;
-		color: $color-text-meta;
-	}
-}
+
 
 /* members count */
 .itv-total-members-footer {
@@ -1396,8 +1339,10 @@ div[class |="status-block"] {
 }
 
 .itv-total-members-heading {
-  margin-left:20px;
-  font-weight: 700;
+	margin-left:15px;
+	font-weight: normal;
+	font-size: 0.75em;
+	color: rgba(0,0,0,0.54);  
 }
 
 .itv-home-prefooter {

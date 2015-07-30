@@ -45,6 +45,40 @@ jQuery(function($){
 	});
     
 	
+	/* Masonry */
+	
+	var $members_list = $('.members-list');
+	
+	//imagesLoaded doesn't work because of gravatar
+	$members_list.masonry({itemSelector: '.member'});			
+	$(window).resize(function(){			
+		$members_list.masonry('bindResize');		
+	});
+	
+	
+	var $tasks_list = $('.tasks-list');	
+	
+	$tasks_list.masonry({
+		itemSelector: '.item-masonry'
+	});			
+	$(window).resize(function(){			
+		$tasks_list.masonry('bindResize');		
+	});
+	
+	var $posts_list = $('.post-list'); 
+	
+	$posts_list.masonry({
+		itemSelector: '.tpl-post'
+	});
+	$posts_list.imagesLoaded().progress( function() {
+		$posts_list.masonry('layout');
+	});	
+	$(window).resize(function(){			
+		$posts_list.masonry('bindResize');		
+	});
+	
+	
+	
 	/* current paging item */
 	$('ul.pagination').find('span.current').parents('li').addClass('active');
 	
@@ -819,23 +853,7 @@ jQuery(function($){
 		$('html, body').scrollTop(STarget);
 	}
 	
-	/* masonry */
-    var $container = $('.members-list'); 
-    $container.imagesLoaded(function(){
-        $container.masonry({
-            itemSelector: '.member'
-        });
-    });
 	
-	if (windowWidth > 991) {
-		var $tasks_list = $('.tasks-list'); 
-		$tasks_list.imagesLoaded(function(){ 
-			$tasks_list.masonry({
-				itemSelector: '.item-masonry'
-			});
-			
-		});
-	}
     
 
     $('#tasks-filters-trigger').click(function(e){
@@ -957,16 +975,24 @@ jQuery(function($){
     }
 });
 
+
+//GA Events
 jQuery(function($){
-	$('.add-new-task-button').click(function(){
-		ga('send', 'event', 'button', 'add_task_main');
-	});
-	$('.home-registration-button').click(function(){
-		ga('send', 'event', 'button', 'registr');
-	});
-	$('.home-watch-video-button').click(function(){
-		ga('send', 'event', 'button', 'video');
-	});	
+	
+	console.log(typeof ga == 'function');
+	
+	if(typeof ga == 'function') {		
+		$('.ga-event-trigger').on('click', function(e){
+		
+			var trigger = $(this),
+				label = trigger.attr('data-ga-label'),
+				action = trigger.attr('data-ga-action'),
+				category = trigger.attr('data-ga-category');
+			
+			//to_do check for the correct value
+			ga('send', 'event', category, action, label, 1);	
+		});		
+	}	
 });
 
 // customize comments subscriptions

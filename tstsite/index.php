@@ -9,23 +9,27 @@ $css = (isset($wp_query->posts[0]->post_type)) ? $wp_query->posts[0]->post_type 
 
 get_header(); ?>
 
-<header class="page-heading tasks-list-header">
+<header class="page-heading <?php echo $css;?>-list-header <?php if(!is_home()){echo 'no-breadcrumbs'; }?>">
 	
 	<?php if(is_post_type_archive('tasks')) { ?>
 	<div class="row">	
-		<div class="col-md-2">
-			<!--<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>-->
+		<div class="col-md-2">			
 			<h1 class="page-title"><?php echo frl_page_title();?></h1>			
 		</div>
 		
 		<div class="col-md-10">
 			<?php //get_template_part( 'tasks', 'filter'); ?>
-			<?php tst_tasks_filters_menu();?>
-			
+			<?php tst_tasks_filters_menu();?>			
 		</div><!-- col-md-4 -->
 	</div>
+	
 	<?php } else { ?>
+	
+		<?php if(is_home()) { ?>
+			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+		<?php } ?>
 		<h1 class="page-title"><?php echo frl_page_title();?></h1>
+	
 	<?php } ?>
 </header>
 	

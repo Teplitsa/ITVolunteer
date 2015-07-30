@@ -18,13 +18,13 @@ $news_title = apply_filters('the_title', $p->post_title);
 <div class="site-navigation-area">
 	<ul id="content_menu" class="content-menu">
 		<li class="important-item">
-			<a href="<?php echo home_url('tasks');?>">
-				<?php _e('Tasks', 'tst');?> (<?php echo tst_get_all_tasks_count();?>)
+			<a href="<?php echo home_url('tasks?st=publish');?>">
+				<?php _e('Tasks', 'tst');?> <span class="count ">( <?php echo tst_get_new_tasks_count();?> )</span>
 			</a>
 		</li>
 		<li class="important-item-2">
 			<a href="<?php echo home_url('members');?>">
-				<?php _e('Members', 'tst');?> (<?php echo tst_get_active_members_count();?>)
+				<?php _e('Members', 'tst');?> <span class="count ">( <?php echo tst_get_active_members_count();?> )</span>
 			</a>
 		</li>	
 		
@@ -55,16 +55,14 @@ $news_title = apply_filters('the_title', $p->post_title);
 			</ul>
 		</li>
 	<?php else: ?>
-		<li><a href="<?php echo home_url('login/');?>"><?php _e('Log In', 'tst');?></a></li>			
+		<li><a href="<?php echo home_url('/registration/');?>"><?php _e('Log In', 'tst');?></a></li>			
 	<?php endif;?>
 	
-	<li class="important-item">
 	<?php if(is_user_logged_in()) {?>
+	<li class="important-item">	
 		<a href="<?php echo home_url('task-actions');?>" class=""><?php _e('New task', 'tst');?></a></li>
-	<?php } else {?>
-		<a href="<?php echo home_url('/registration/')?>" class="" ><?php _e('Register', 'tst');?></a>
+	</li>
 	<?php }?>
-	</li>	
-	</ul>
 	
+	</ul>	
 </div>	

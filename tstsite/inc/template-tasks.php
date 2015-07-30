@@ -5,6 +5,16 @@
  **/
 
 /** == Tasks in loop ==**/
+function tst_get_task_status_list() {
+    return array(
+        'draft'   => __('Draft', 'tst'),
+        'publish' => __('Opened', 'tst'),
+        'in_work' => __('In work', 'tst'),
+        'closed'  => __('Closed', 'tst'),
+    );
+}
+
+
 function tst_get_task_status_label($status = false) {
 
     if( !$status ) {
@@ -20,6 +30,26 @@ function tst_get_task_status_label($status = false) {
     return isset($status_list[$status]) ? $status_list[$status] : false;
 }
 
+function tst_tast_status_tip(){
+	global $post;
+
+    if( !$post || $post->post_type != 'tasks')
+        return '';
+	
+	$label = array();
+    $status = $post->post_status;
+	$status_list = tst_get_task_status_list();
+	
+    $label[] = isset($status_list[$status]) ? $status_list[$status] : '';
+	
+	if($status != 'closed' && function_exists('get_field')){
+		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('deadline', get_the_ID()));
+		$deadline = date('d.m.Y', strtotime($deadline));
+		$label[] = sprintf(__('deadline: %s', 'tst'), $deadline);
+	}
+
+	return implode(', ', $label);
+}
 
 function tst_task_fixed_meta_in_card($task = null){
 	global $post;

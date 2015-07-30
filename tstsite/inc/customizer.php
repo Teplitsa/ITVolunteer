@@ -311,15 +311,6 @@ add_action('tst_deadline_reminder_hook', function(){
 });
 
 
-function tst_get_task_status_list() {
-    return array(
-        'draft' => __('Draft', 'tst'),
-        'publish' => __('Opened', 'tst'),
-        'in_work' => __('In work', 'tst'),
-        'closed' => __('Closed', 'tst'),
-    );
-}
-
 
 function tst_get_deadline_class($days) {
     $days = (int)$days;

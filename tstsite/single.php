@@ -23,26 +23,14 @@ get_header(); ?>
 <div class="page-body single-post">	
 	
 	<div class="row in-single">
-		
-		<div class="col-md-2">
-			<div class="page-actions">
-			<?php
-				wp_nav_menu(array(
-					'menu' => 'about',
-					'menu_class' => 'list-unstyled'
-				));
-			?>	
-			</div>
-			
-		</div>
-		
-		<div class="col-md-7">
+				
+		<div class="col-md-8">
 			<div class="page-summary"><?php the_excerpt();?></div>
 			<div class="page-media"><?php the_post_thumbnail('embed') ;?></div>
 			<div class="page-content"><?php the_content();?></div>
 		</div>
 			
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<div class="page-sidebar"><?php dynamic_sidebar('page-sidebar');?></div>
 		</div>
 		
