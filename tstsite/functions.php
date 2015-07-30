@@ -1,4 +1,5 @@
 <?php
+define('TST_WORKING_VERSION', '1.9.1');
 @error_reporting(E_ALL & ~E_NOTICE);
 require get_template_directory().'/inc/acf_keys.php';
 
@@ -159,8 +160,8 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), '1.9');
-	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), '1.8');
+    wp_enqueue_style('front', $url.'/css/front.css', array(), TST_WORKING_VERSION);
+	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), TST_WORKING_VERSION);
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -173,7 +174,7 @@ add_action('wp_enqueue_scripts', function(){
 	//wp_enqueue_script('jquery-masonry');
     wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), '1.6', true);
+    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), TST_WORKING_VERSION, true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
