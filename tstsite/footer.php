@@ -8,42 +8,80 @@
  */
 
 $cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons СС-BY-SA 3.0</a>';
-$tst = __("Teplitsa of social technologies - краудсорсинг, технологии для благотворительности", "tst");?>
+
+
+function tst_brand_banner() {
+	$banner = get_template_directory_uri().'/img/tst-banner';
+	$tst = __("Teplitsa of social technologies - краудсорсинг, технологии для благотворительности", "tst");
+?>
+	<div class="te-st">
+		<a href="http://te-st.ru" target="_blank">			
+			<img src="<?php echo $banner;?>.svg" onerror="this.onerror=null;this.src=<?php echo $banner;?>.png"  alt="<?php echo $tst;?>">
+		</a>
+	</div>
+<?php
+}
+
+?>
 
 <div id="bottombar" class="widget-area page-bottom small">
-
-	<div class="row">
-	
-		<div class="col-md-4">
-			<div class="fb-widget">
-			<?php dynamic_sidebar('footer_one-sidebar');?>
-			</div>
-		</div>		
-	
-		<div class="col-md-4">
-			<?php dynamic_sidebar('footer_two-sidebar');?>
-			
-            <?php
-				if( !is_page('contacts') ) {
-					get_template_part('contact', 'form');
-				}
-				else {
-					echo '&nbsp;';
-				}
-			?>
-		</div><!-- col-md-4 -->
-		
-		<div class="col-md-4">
-			<div class="te-st"><a href="http://te-st.ru" target="_blank">
-			<img src="<?php echo get_template_directory_uri().'/img/tst-banner.png';?>" alt="<?php echo $tst;?>">
-			</a></div>
-			<div class="pull-right clearfix itv-total-members-footer">
-				<?php _e('Total members count:', 'tst') ?> <?php echo tst_get_active_members_count()?>
-			</div>
-		</div>
+<div class="row">
+<?php if(is_page('registration')) { ?>
+	<div class="col-sm-6 registration-col-1">
+		<?php get_template_part('contact', 'form'); ?>
 	</div>
+	<div class="col-sm-6 registration-col-2">
+		<?php tst_brand_banner();?>
+	</div>
+	
+<?php } else { ?>
 
+	<div class="col-md-9">
+	<div class="row">
+		<div class="col-sm-12 col-md-4 footer-info">
+			<div class="widget">
+				<div class="footer-brand">
+					<a href="" class="footer-logo"><?php bloginfo('name');?></a>
+					<div class="beta-label"><?php _e('Beta-version', 'tst');?></div>
+				</div>
+				
+				<div class="footer-stat">
+					<p><?php _e('Total members:', 'tst') ?> <?php echo tst_get_active_members_count(); ?></p>
+					<p><?php _e('Total tasks:', 'tst') ?> <?php echo tst_get_all_tasks_count(); ?></p>
+					<p><?php _e('Tasks completed:', 'tst') ?> <?php echo tst_get_closed_tasks_count(); ?></p>
+				</div>
+				
+				<div class="footer-contact">
+				<?php
+					if( !is_page('contacts') ) {
+						get_template_part('contact', 'form');
+					}
+					else {
+						echo '&nbsp;';
+					}
+				?>
+				</div>
+			</div>
+		</div><!-- .col-md-4  -->	
+		
+		<div class="col-sm-6 col-md-4">
+			<?php dynamic_sidebar('footer_one-sidebar');?>		
+		</div><!-- .col-md-4  -->
+		
+		<div class="col-sm-6 col-md-4">
+			<?php dynamic_sidebar('footer_two-sidebar');?>		
+		</div><!-- .col-md-4  -->
+		
+	</div><!-- .row  -->	
+	</div>
+	
+	<div class="col-md-3">
+		<?php tst_brand_banner();?>		
+	</div>
+		
+<?php } ?>
 </div>
+</div><!-- #bottombar -->
 
 </div><!-- .page-decor -->
 </div><!-- .contaner -->
@@ -60,9 +98,9 @@ $tst = __("Teplitsa of social technologies - краудсорсинг, техн�
 			</div>
 			
 			<div class="col-md-6">
-				<div class="rss-link pull-right footer-rss"><a href="<?php echo site_url('/feed/')?>" target="_blank" title="RSS">
-				<img src="<?php echo get_template_directory_uri().'/img/rss.png';?>" alt="RSS" width="16">
-				</a></div>
+				<div class="rss-link pull-right footer-rss">
+					<a href="<?php echo site_url('/feed/')?>" target="_blank" title="RSS">RSS</a>
+				</div>
 			</div>
 		</div>
 	</div>

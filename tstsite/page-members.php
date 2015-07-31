@@ -281,7 +281,7 @@ get_header();?>
 	<footer class="inpage-footer">
 		<div class="row">
 			<div class="col-md-8"><?php tst_content_nav( 'nav-below' ); ?>&nbsp;</div>
-			<div class="col-md-4"><div class="sharing"><?php frl_page_actions();?></div></div>
+			<div class="col-md-4">&nbsp;</div>
 		</div>		
 	</footer>
 	

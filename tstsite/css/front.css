@@ -75,64 +75,6 @@ img {
 .page-bottom {
   margin-top: 30px; }
 
-#colophon {
-  font-size: 11px;
-  color: #666; }
-  #colophon a {
-    color: #666; }
-    #colophon a:hover {
-      color: #333; }
-  #colophon .copy {
-    padding: 0 30px 40px; }
-
-.widget img {
-  max-width: 100%;
-  height: auto; }
-.widget h3, .widget h5 {
-  margin-top: 0; }
-.widget ul, .widget ol {
-  padding: 0;
-  list-style-type: none; }
-.widget li {
-  list-style-type: none;
-  margin-bottom: 10px; }
-
-.te-st {
-  text-align: right; }
-  .te-st a {
-    display: inline-block; }
-
-/* contact form */
-#bottombar #open-contact-form {
-  font-size: 13px;
-  cursor: pointer;
-  color: #999;
-  margin-top: 63px; }
-  #bottombar #open-contact-form:hover {
-    text-decoration: underline;
-    color: #0095C7; }
-#bottombar #close-contact-form {
-  display: inline-block;
-  cursor: pointer;
-  margin-right: 5px;
-  margin-top: 10px; }
-  #bottombar #close-contact-form:hover {
-    color: #A94442;
-    text-decoration: underline; }
-#bottombar .widget {
-  padding: 20px 0; }
-
-.page-template-homepage #bottombar {
-  margin-top: 0; }
-
-.contact-form-result {
-  display: none; }
-
-#contact-form .form-group .alert-danger {
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-top: 5px; }
-
 /** Tasks **/
 .task-params .task-param,
 .task-params .task-param:hover {
@@ -726,51 +668,6 @@ div[class|="status-block"] .row-top {
     .task-row .col-md-4 a {
       margin-left: 8px; }
 
-/** Registration **/
-.register-form .panel-body {
-  background: #fcfcfc; }
-
-.register-form .panel-heading {
-  background: #f3f3f3; }
-
-.login-form {
-  background: #fafafa;
-  border: 1px solid #eee;
-  padding: 30px;
-  border-radius: 3px;
-  margin-bottom: 200px; }
-  .login-form #login-message {
-    margin-top: 15px;
-    margin-bottom: 15px; }
-    .login-form #login-message:first-child {
-      margin-top: 0; }
-    .login-form #login-message:last-child {
-      margin-bottom: 0; }
-
-.validation-message {
-  margin-top: 5px;
-  padding: 5px 15px;
-  background: #F2DEDE;
-  border: 1px solid #EBCCD1;
-  border-radius: 4px;
-  color: #A94442;
-  font-size: 13px; }
-
-#register-form-message.validation-message {
-  padding: 0;
-  margin: 0;
-  background: transparent;
-  border: none;
-  color: inherit; }
-
-.activation-message {
-  min-height: 500px; }
-
-#login-message.alert-danger a {
-  color: #A94442; }
-  #login-message.alert-danger a:hover {
-    text-decoration: underline; }
-
 /** search & 404 **/
 .sbutton-holder {
   margin-left: -20px; }
@@ -1070,18 +967,6 @@ div[class|="status-block"] .row-top {
 .status-block-task .reward.task-param {
   max-width: none; }
 
-.beta-label {
-  background-color: red;
-  bottom: -7px;
-  color: #fff;
-  font-size: 12px;
-  left: 48px;
-  padding: 1px 3px;
-  position: absolute; }
-
-.footer-rss {
-  margin-right: 30px; }
-
 .fb-widget {
   width: 300px;
   margin: 0px auto; }
@@ -1162,18 +1047,6 @@ a.itv-avatar-action, a.itv-avatar-action:hover {
 #is_tst_consult_needed {
   margin-right: 5px;
   vertical-align: top; }
-
-/*	links footer sidebar */
-.widget.widget_links.bottom h5 {
-  font-weight: 700; }
-.widget.widget_links.bottom ul {
-  padding-left: 0px; }
-  .widget.widget_links.bottom ul li {
-    list-style: none;
-    margin-bottom: 10px; }
-  .widget.widget_links.bottom ul a {
-    display: block;
-    margin-bottom: 3px; }
 
 /** Menu */
 #site_navigation {
@@ -1369,7 +1242,6 @@ a {
   a:hover, a:focus, a:active {
     color: #026E93; }
 
-.page-bottom,
 .page-heading {
   background: #f5f5f5;
   border-top: 1px solid #eee;
@@ -1377,7 +1249,6 @@ a {
   padding-top: 15px;
   padding-bottom: 15px; }
 
-.page-bottom,
 .page-heading,
 .page-body {
   padding-left: 30px;
@@ -1399,6 +1270,109 @@ a {
   .page-heading h1 {
     margin: 0;
     font-weight: normal; }
+
+.page-bottom {
+  background: #f5f5f5;
+  border-top: 1px solid #eee;
+  padding: 30px; }
+
+.widget img {
+  max-width: 100%;
+  height: auto; }
+.widget h3, .widget h5 {
+  margin-top: 0; }
+.widget .widget-title {
+  margin-bottom: 30px; }
+.widget ul, .widget ol {
+  padding: 0;
+  list-style-type: none; }
+.widget li {
+  list-style-type: none;
+  margin-bottom: 10px; }
+
+.te-st {
+  text-align: right; }
+  .te-st a {
+    display: inline-block; }
+
+#bottombar .footer-info {
+  font-size: 12px;
+  line-height: 1.45;
+  color: rgba(0, 0, 0, 0.54); }
+#bottombar #open-contact-form {
+  display: inline-block;
+  cursor: pointer;
+  color: #333;
+  max-width: 180px; }
+  #bottombar #open-contact-form:hover {
+    text-decoration: underline;
+    color: #111; }
+#bottombar #close-contact-form {
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 10px; }
+  #bottombar #close-contact-form:hover {
+    color: #A94442;
+    text-decoration: underline; }
+#bottombar .footer-brand {
+  margin-bottom: 30px; }
+  #bottombar .footer-brand a {
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    line-height: 1.1;
+    color: #333; }
+    #bottombar .footer-brand a:hover, #bottombar .footer-brand a:focus, #bottombar .footer-brand a:active {
+      text-decoration: none;
+      color: #333; }
+  #bottombar .footer-brand .beta-label {
+    text-transform: lowercase;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px; }
+#bottombar .footer-stat {
+  margin-bottom: 30px; }
+  #bottombar .footer-stat p {
+    margin: 0 0 2px 0; }
+#bottombar .widget {
+  margin-bottom: 30px; }
+  @media screen and (min-width: 992px) {
+    #bottombar .widget {
+      margin-bottom: 0; } }
+
+.page-template-homepage #bottombar {
+  margin-top: 0; }
+
+#contact-form {
+  padding-top: 30px; }
+  #contact-form .contact-form-result {
+    display: none; }
+  #contact-form .form-group .alert-danger {
+    padding: 5px 0;
+    margin-top: 5px; }
+
+/*	links footer sidebar */
+.widget.widget_links.bottom ul {
+  padding-left: 0px; }
+  .widget.widget_links.bottom ul li {
+    list-style: none;
+    margin-bottom: 10px; }
+  .widget.widget_links.bottom ul a {
+    display: block;
+    margin-bottom: 3px; }
+
+#colophon {
+  font-size: 11px;
+  color: #666; }
+  #colophon a {
+    color: #666; }
+    #colophon a:hover {
+      color: #333; }
+  #colophon .copy {
+    padding: 0 30px 40px; }
+  #colophon .footer-rss {
+    padding-right: 30px; }
 
 /** Taks in loop */
 .tpl-task .border-card {
@@ -1585,5 +1559,80 @@ a {
   font-size: 0.85em;
   margin-left: 5px;
   color: #8899A6; }
+
+/** Login & Register **/
+.register-page-body {
+  background: #f5f5f5;
+  padding-top: 40px;
+  padding-bottom: 30px; }
+
+.register-actions + #bottombar {
+  margin-top: 0;
+  border-top: 1px; }
+
+#register_content {
+  max-width: 850px; }
+  @media screen and (min-width: 1200px) {
+    #register_content {
+      margin-left: 36px; } }
+
+.register-form,
+.login-form {
+  max-width: 460px; }
+  .register-form div[class*="col-"],
+  .login-form div[class*="col-"] {
+    padding: 0 5px; }
+  .register-form .row,
+  .login-form .row {
+    margin: 0 -5px; }
+  .register-form .form-group,
+  .login-form .form-group {
+    margin-bottom: 10px; }
+
+.login-title {
+  font-weight: normal;
+  margin: 6px 0 0; }
+
+.login-form {
+  margin-top: 21px;
+  margin-bottom: 21px;
+  border: 1px solid #ddd;
+  border-radius: 4px 4px 0 0;
+  padding: 10px;
+  background: #fff; }
+  @media screen and (min-width: 1200px) {
+    .login-form {
+      margin-right: 15px; } }
+  .login-form .checkbox {
+    margin: 0;
+    font-size: 12px; }
+    .login-form .checkbox #rememberme {
+      margin-top: 1px; }
+  .login-form #do-login {
+    box-sizing: border-box;
+    min-width: 100%;
+    text-align: center; }
+  .login-form .lost-psw {
+    font-size: 12px; }
+
+@media screen and (min-width: 1200px) {
+  .register-form {
+    margin-left: 25px; } }
+.register-form .panel-heading {
+  padding: 10px;
+  font-weight: bold;
+  background: #fff; }
+.register-form .panel-body {
+  padding: 10px;
+  background: #fff; }
+.register-form .register-action {
+  margin-bottom: 0;
+  text-align: right; }
+.register-form #do-register {
+  background: #5CB85C;
+  border-color: #5CB85C; }
+  .register-form #do-register:hover, .register-form #do-register:focus, .register-form #do-register:active {
+    background: #449d44;
+    border-color: #449d44; }
 
 /*# sourceMappingURL=front.css.map */

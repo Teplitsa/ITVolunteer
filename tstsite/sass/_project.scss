@@ -20,7 +20,6 @@ a {
 
 
 // page header
-.page-bottom,
 .page-heading {
 	background: $color-secondary;
 	border-top: 1px solid $color-border-light;
@@ -32,7 +31,6 @@ a {
 	}
 }
 
-.page-bottom,
 .page-heading,
 .page-body {
 	padding: {
@@ -65,6 +63,165 @@ a {
 		font-weight: normal;
 	}
 }
+
+
+//footer
+.page-bottom {
+	background: $color-secondary;
+	border-top: 1px solid $color-border-light;
+	padding: $measure-columns-gut;
+}
+
+
+.widget {
+	img {
+		max-width: 100%;
+		height: auto;		
+	}
+	
+	h3, h5 {
+		margin-top: 0;
+	}
+	
+	.widget-title {
+		margin-bottom: $measure-columns-gut;
+	}
+	
+	ul, ol {
+		padding: 0;
+		list-style-type: none;
+	}
+	
+	li {
+		list-style-type: none;
+		margin-bottom: 10px;
+	}
+}
+
+.te-st {
+	text-align: right;
+	a { display: inline-block; 	}
+}
+
+#bottombar {	
+	.footer-info {
+		font-size: 12px;
+		line-height: 1.45;
+		color: rgba(0,0,0, 0.54);
+	}
+	
+	#open-contact-form {
+		display: inline-block;
+		cursor: pointer;
+		color: $color-text;
+		max-width: 180px;
+		
+		&:hover {
+			text-decoration: underline;
+			color: $color-text-black;
+		}
+	}
+	
+	#close-contact-form {		
+		display: inline-block;
+		cursor: pointer;
+		margin-right: 5px;
+		margin-top: 10px;
+		
+		&:hover {
+			color: $color-label-red-dark;
+			text-decoration: underline;
+		}
+	}
+	
+	.footer-brand {
+		margin-bottom: $measure-elements-margin;
+		
+		a {
+			display: block;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 20px;
+			line-height: 1.1;
+			color: $color-text;
+			&:hover, &:focus, &:active {
+				text-decoration: none;
+				color: $color-text;
+			}
+		}
+		
+		.beta-label {
+			text-transform: lowercase;
+			font-size: 12px;
+			color: rgba(0,0,0, 0.5);
+			letter-spacing: 0.5px;
+		}
+	}
+	
+	.footer-stat {
+		margin-bottom: $measure-elements-margin;
+		
+		p { margin: 0 0 2px 0;}
+	}
+	
+	.widget  {
+		margin-bottom: $measure-columns-gut;
+		@include for(medium-screens) {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.page-template-homepage #bottombar {
+	margin-top: 0;
+}
+
+#contact-form {
+	padding-top:  $measure-columns-gut;	
+	.contact-form-result { display: none; }
+	.form-group .alert-danger {
+		padding: 5px 0;	
+		margin-top: 5px;
+	}
+}
+
+
+/*	links footer sidebar */
+.widget.widget_links.bottom {
+	ul {
+		padding-left:0px;
+		
+		li {
+			list-style: none;
+			margin-bottom:10px;
+		}
+		a {
+			display: block;
+			margin-bottom:3px;
+		}
+	}
+}
+
+
+#colophon {
+	font-size: 11px;
+	color: $color-text-semi;
+	a {
+		color: $color-text-semi;
+		&:hover {
+			color: $color-text;	
+		}
+	}
+	.copy {
+		padding: 0 30px 40px;
+	}
+	
+	.footer-rss {
+		padding-right: $measure-columns-gut;
+	}
+}
+
+
+
 
 
 /** Taks in loop */
@@ -336,3 +493,116 @@ a {
 		color: $color-text-meta;
 	}
 }
+
+
+/** Login & Register **/
+.register-page-body {
+	background: #f5f5f5;
+	padding-top: $measure-elements-margin +10px;
+	padding-bottom: $measure-elements-margin;
+}
+
+.register-actions + #bottombar {
+	margin-top: 0;
+	border-top: 1px;
+}
+
+#register_content {
+	max-width: 850px;
+	
+	@include for(large-screens) {
+		margin-left: 36px;
+	}
+	
+}
+
+.register-form,
+.login-form { //reset
+	div[class *="col-"] {
+		padding: 0 5px;
+	}
+	
+	.row {
+		margin: 0 -5px;
+	}
+	
+	.form-group {
+		margin-bottom: 10px;		
+	}
+	
+	.form-control {
+		//padding: 4px 8px;	
+	}
+	
+	max-width: 460px;
+}
+
+.login-title {
+	font-weight: normal;
+	margin: 6px 0 0;
+}
+
+.login-form {	
+	margin-top: 21px;
+	margin-bottom: 21px;
+	border: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+	padding: 10px;
+	background: #fff;
+	
+	@include for(large-screens) {
+		margin-right: 15px;
+	}
+	
+	.checkbox {
+		margin: 0;
+		font-size: 12px;
+		#rememberme {
+			margin-top: 1px;
+		}
+	}
+	
+	#do-login {
+		box-sizing: border-box;
+		min-width: 100%;
+		text-align: center;
+	}
+	
+	.lost-psw  {		
+		font-size: 12px;		
+	}
+}
+
+.register-form {
+	
+	@include for(large-screens) {
+		margin-left: 25px;
+	}
+	
+	
+	.panel-heading {
+		padding: 10px;
+		font-weight: bold;
+		background: #fff;
+	}
+	
+	.panel-body {
+		padding: 10px;
+		background: #fff;
+	}
+	
+	.register-action {
+		margin-bottom: 0;
+		text-align: right;
+	}
+	
+	#do-register {
+		background: $color-label-green-normal;
+		border-color: $color-label-green-normal;
+		&:hover, &:focus, &:active {
+			background: darken($color-label-green-normal, 10%);
+			border-color: darken($color-label-green-normal, 10%);
+		}
+	}
+}
+

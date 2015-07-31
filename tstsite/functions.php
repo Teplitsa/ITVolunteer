@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.1');
+define('TST_WORKING_VERSION', '1.9.2');
 @error_reporting(E_ALL & ~E_NOTICE);
 require get_template_directory().'/inc/acf_keys.php';
 
@@ -97,11 +97,11 @@ function tst_widgets_init() {
 						'description' => 'Боковая колонка на страницах участников'
 					),				
 		'footer_one' => array(
-						'name' => 'Футер - 1/3',
+						'name' => 'Футер - 1',
 						'description' => 'Динамическая нижняя область - 1 колонка'
 					),
 		'footer_two' => array(
-						'name' => 'Футер - 2/3',
+						'name' => 'Футер - 2',
 						'description' => 'Динамическая нижняя область - 2 колонка'
 					),
 		/*'footer_three' => array(

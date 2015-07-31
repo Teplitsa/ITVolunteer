@@ -9,7 +9,7 @@
 
 /* page title */
 function frl_page_title(){	
-	global $post, $tst_member;
+	global $post, $tst_member, $wp_query;
 	
 	$title = '';
 	if(is_post_type_archive('tasks')){
@@ -18,7 +18,7 @@ function frl_page_title(){
 	}
     elseif(is_tag()) {
         $title = apply_filters('tag_archive_title', single_tag_title('', false));
-		$title = sprintf(__('Tasks by tag: %s', 'tst'), $title);
+		$title = sprintf(__('Tasks by tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
     }
 	elseif(is_singular('tasks')) {
 
@@ -488,19 +488,7 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
  **/
 function frl_page_actions(){
 ?>
-<div class="share-buttons">
 
-<script type="text/javascript">(function() {
-  if (window.pluso)if (typeof window.pluso.start == "function") return;
-  if (window.ifpluso==undefined) { window.ifpluso = 1;
-    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-    var h=d[g]('body')[0];
-    h.appendChild(s);
-  }})();</script>
-<div class="pluso" data-background="transparent" data-options="small,square,line,horizontal,nocounter,theme=04" data-services="facebook,vkontakte,twitter,google,livejournal"></div>
-</div>
 <?php
 }
 

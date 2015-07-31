@@ -106,93 +106,9 @@ img {
 	margin-top: $divMargin;
 }
 
-#colophon {
-	font-size: 11px;
-	color: $color-text-semi;
-	a {
-		color: $color-text-semi;
-		&:hover {
-			color: $color-text;	
-		}
-	}
-	.copy {
-		padding: 0 30px 40px;
-	}
-}
 
 
-.widget {
-	img {
-		max-width: 100%;
-		height: auto;		
-	}
-	h3, h5 {
-		margin-top: 0;
-	}
-	
-	ul, ol {
-		padding: 0;
-		list-style-type: none;
-	}
-	
-	li {
-		list-style-type: none;
-		margin-bottom: 10px;
-	}
-}
 
-.te-st {
-	text-align: right;
-	a {
-		display: inline-block;
-		
-	}
-}
-
-/* contact form */
-#bottombar {
-	#open-contact-form {
-		font-size: 13px;
-		cursor: pointer;
-		color: $color-text-light;
-		margin-top: 63px;
-		&:hover {
-			text-decoration: underline;
-			color: $color-link-one;
-		}
-	}
-	
-	#close-contact-form {		
-		display: inline-block;
-		cursor: pointer;
-		margin-right: 5px;
-		margin-top: 10px;
-		&:hover {
-			color: $color-label-red-dark;
-			text-decoration: underline;
-		}
-	}
-	
-	.widget {
-		padding: 20px 0;
-	}
-}
-
-.page-template-homepage #bottombar {
-	margin-top: 0;
-}
-
-.contact-form-result {	
-	display: none;
-}
-
-#contact-form .form-group .alert-danger {
-	padding: {
-		top: 5px;
-		bottom: 5px;
-	}
-	margin-top: 5px;
-}
 
 
 
@@ -1008,60 +924,7 @@ div[class |="status-block"] {
 
 
 
-/** Registration **/
-.register-form .panel-body {
-	background: #fcfcfc;
-}
 
-.register-form .panel-heading {
-	background: #f3f3f3;
-}
-
-.login-form {
-	background: #fafafa;
-	border: 1px solid #eee;
-	padding: 30px;
-	-webkit-border-radius: 3px;
-	-moz-border-radius: 3px;
-	border-radius: 3px; 
-	margin-bottom: 200px;
-	
-	#login-message {
-		@include smart-margin(15px);	
-	}
-}
-
-.validation-message {
-	//display: none;
-	margin-top: 5px;
-	padding: 5px 15px;
-	background: #F2DEDE;
-	border: 1px solid #EBCCD1;
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	color: #A94442;
-	font-size: 13px;
-}
-
-#register-form-message.validation-message {
-	padding: 0;
-	margin: 0;
-	background: transparent;
-	border: none;
-	color: inherit;
-}
-
-.activation-message {
-	min-height: 500px;
-}
-
-#login-message.alert-danger a {
-	color: $color-label-red-dark;
-	&:hover {
-		text-decoration: underline;
-	}
-}
 
 
 /** search & 404 **/

@@ -2,18 +2,16 @@
 /**
  * The Navbar 
  */
-
-$p = get_page(get_option('page_for_posts'));
-$news_title = apply_filters('the_title', $p->post_title);
 ?>
 	<div class="site-branding">		
-		<?php if(!is_front_page()):?>	
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="logo"><?php bloginfo( 'name' ); ?></a>
-		<?php else:?>
-			<span class="logo"><?php bloginfo( 'name' ); ?></span>
-		<?php endif;?>			
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="logo"><?php bloginfo( 'name' ); ?></a>				
 	</div>
-	
+
+<?php
+	if(!is_page('registration')) {
+		$p = get_page(get_option('page_for_posts'));
+		$news_title = apply_filters('the_title', $p->post_title);	
+?>		
 <div id="menu-trigger" class="menu-toggle"><span class="glyphicon glyphicon-menu-hamburger"></span></div>	
 <div class="site-navigation-area">
 	<ul id="content_menu" class="content-menu">
@@ -65,4 +63,5 @@ $news_title = apply_filters('the_title', $p->post_title);
 	<?php }?>
 	
 	</ul>	
-</div>	
+</div>
+<?php } ?>

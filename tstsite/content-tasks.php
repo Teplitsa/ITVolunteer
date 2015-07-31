@@ -29,7 +29,7 @@
 
 	<div class="task-summary">
 		<div class="task-reward"><?php tst_task_reward_in_card();?></div>
-		<div class="task-more"><a href="<?php the_permalink(); ?>" class="more-link">...</a></div>		
+		<div class="task-more"><a href="<?php the_permalink(); ?>" class="more-link" title="<?php _e('Details', 'tst');?>">...</a></div>		
 	</div>
 	
 </div>	<!-- .border-card -->		

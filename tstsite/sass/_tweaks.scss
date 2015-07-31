@@ -12,21 +12,6 @@
 
 .status-block-task .reward.task-param {
     max-width: none;}
-	
-
-.beta-label {
-    background-color: red;
-    bottom: -7px;
-    color: $color-white;
-    font-size: 12px;
-    left: 48px;
-    padding: 1px 3px;
-    position: absolute;
-}
-
-.footer-rss {
-	margin-right:30px;
-}
 
 .fb-widget {	
 	width:300px;
@@ -132,20 +117,4 @@ a.itv-avatar-action, a.itv-avatar-action:hover {
 }
 
 
-/*	links footer sidebar */
-.widget.widget_links.bottom {
-	h5 { font-weight: 700; }
-
-	ul {
-		padding-left:0px;
-		li {
-			list-style: none;
-			margin-bottom:10px;
-		}
-		a {
-			display: block;
-			margin-bottom:3px;
-		}
-	}
-}
 

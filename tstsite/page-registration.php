@@ -17,112 +17,108 @@ $refer = empty($_GET['redirect_to']) ?
 
 get_header();?>
 
-<article class="member-actions">
+<article class="register-actions">
 <?php while ( have_posts() ) : the_post();?>
 
-
-<header class="page-heading complex-login no-breadcrumbs">
-
-	<div class="row">
-		<div class="col-md-8">			
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>			
-		</div>
-
-		<div class="col-md-4"></div>
-	</div><!-- .row -->
-
-</header>
-
-<div class="page-body">
-
+<div class="page-body register-page-body">
 	
+<div id="register_content">
 <div class="row">
-	<div class="col-md-5">		
-		<h4><?php _e('LogIn into your account', 'tst');?></h4>
-		
+	<div class="col-sm-5">
+		<h2 class="login-title"><?php echo frl_page_title();?></h2>
 		<!-- login form -->
 		<div class="login-form">
+			
 		<form id="login-form" method="post" action="<?php echo esc_url(site_url('wp-login.php', 'login_post'));?>" name="loginform"  role="form">
 			<?php wp_nonce_field('user-login');?>
 	
-			<div class="form-group">
-				<label for="user_login"><?php _e('Username', 'tst');?></label>
-				<input type="text" size="20" value="" class="form-control" id="user_login" name="log">
+			<div class="form-group">				
+				<input type="text" size="20" value="" class="form-control input-sm" id="user_login" name="log" placeholder="<?php _e('Username or Email', 'tst');?>">				
 			</div>
-			<div class="form-group">
-				<label for="user_pass"><?php _e('Password', 'tst');?></label>
-				<input type="password" size="20" value="" class="form-control" id="user_pass" name="pwd">
-			</div>
-	
+			
+			<div class="row">
+				<div class="col-xs-8">
+					<div class="form-group">				
+						<input type="password" size="20" value="" class="form-control input-sm" id="user_pass" name="pwd" placeholder="<?php _e('Password', 'tst');?>">
+					</div>					
+				</div><!-- .col-  -->
+				
+				<div class="col-xs-4">
+					<div class="form-group">
+						<input type="submit" id="do-login" value="<?php _e('Log In', 'tst');?>" class="btn btn-primary btn-sm" id="wp-submit" name="wp-submit">
+						<input type="hidden" value="<?php echo $back_url;?>" id="redirect_to" name="redirect_to" />						
+					</div>
+				</div><!-- .col-  -->
+			</div><!-- .row -->	
+			
 			<div class="checkbox">
 				<label>
-					<input type="checkbox" value="forever" id="rememberme" name="rememberme"><?php _e('Remember Me', 'tst');?>
-				</label>
+					<input type="checkbox" value="forever" id="rememberme" name="rememberme" checked="checked"><?php _e('Remember Me', 'tst');?></label>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span class="lost-psw "><a title="Восстановление пароля" href="<?php echo wp_lostpassword_url();?>">Забыли пароль?</a>				
+				</span>
 			</div>
-	
-			<div class="form-group">
-				<input type="submit" id="do-login" value="<?php _e('Log In', 'tst');?>" class="btn btn-primary" id="wp-submit" name="wp-submit">
-				<input type="hidden" value="<?php echo $back_url;?>" id="redirect_to" name="redirect_to" />
-				<div id="login-message" class="alert alert-danger" style="display: none;"></div>
-			</div>
+			
+			<div id="login-message" class="alert alert-danger" style="display: none;"></div>
 		</form>
-		</div><!-- .login-form -->
 		
-	</div>
+		</div><!-- .login-form -->		
+	</div><!-- .col- -->
 	
-	<div class="col-md-7">
-		<h4><?php _e('Register New Account', 'tst');?></h4>
+	<div class="col-sm-7">		
 		
-		<div id="register-form-message" class="validation-message" style="display: none"></div>
+		<div id="register-form-message" class="validation-message" style="display: none"></div>		
 		<form id="user-reg" action="#">
 		<?php wp_nonce_field('user-reg');?>
 	
 		<div class="panel panel-default register-form">
-		<div class="panel-heading"><small><?php _e('All fields are required', 'tst');?></small></div>
-	
+		<div class="panel-heading"><small><?php _e('Register new account', 'tst');?></small></div>
+		
 		<div class="panel-body">
-			<div class="form-group">
+			<!--<div class="form-group">
 				<label for="user_login"><?php _e('Username (login)', 'tst');?></label>
-				<input type="text" name="user_login" id="user_login" value="" class="form-control" maxlength="15" />
-				<small class="help-block"><?php _e('Username can\'t be changed in the future. It must consist of only latin alphabet symbols.', 'tst');?></small>
+				<input type="text" name="user_login" id="user_login" value="" class="form-control" maxlength="15" />			
 				<div id="user_login_vm" class="validation-message" style="display: none"></div>
-			</div>
+			</div>-->
+			<div class="row">
+				<div class="col-xs-5 col-md-4">
+					<div class="form-group">						
+						<input type="text" class="form-control input-sm" name="first_name" id="first_name" value="" placeholder="<?php _e('First name', 'tst');?>"/>					
+						<div id="first_name_vm" class="validation-message" style="display: none"></div>
+					</div>				
+				</div>
+				
+				<div class="col-xs-7 col-md-8">
+					<div class="form-group">						
+						<input type="text" class="form-control input-sm" name="last_name" id="last_name" value=""  placeholder="<?php _e('Last name', 'tst');?>"/>					
+						<div id="last_name_vm" class="validation-message" style="display: none"></div>
+					</div>
+				</div>
+			</div>	<!-- .row -->		
 			
-			<div class="form-group">
-				<label for="email"><?php _e('Email', 'tst');?></label>
-				<input type="text" name="email" id="email" value="" class="form-control" />
+			<div class="form-group">				
+				<input type="text" name="email" id="email" value="" class="form-control input-sm" placeholder="<?php _e('Email', 'tst');?>"/>
 				<div id="user_email_vm" class="validation-message" style="display: none"></div>
 			</div>
 			
-			<div class="form-group">
-				<label for="pass1"><?php _e('Password', 'tst');?></label>
-				<input class="hidden" value=" " /><!-- #24364 workaround -->
-				<input type="password" name="pass1" id="pass1" class="form-control" value="" autocomplete="off" />
+			<div class="row">
+				<div class="col-sm-7 col-md-8">
+					<div class="form-group">				
+					<input class="hidden" value=" " /><!-- #24364 workaround -->
+					<input type="password" name="pass1" id="pass1" class="form-control input-sm" value="" autocomplete="off" placeholder="<?php _e('Password', 'tst');?>"/>
+				</div>
+				</div>
+				<div class="col-sm-5 col-md-4">
+					<div class="form-group register-action">
+						<input type="submit" value="<?php _e('Register', 'tst');?>" class="btn btn-primary btn-sm" id="do-register" name="do-register">				
+					</div>
+				</div>
 			</div>
 			
-			<div class="form-group">
+			
+			<!--<div class="form-group">
 				<label for="pass2"><?php _e('Repeat password', 'tst');?></label>			
 				<input name="pass2" type="password" id="pass2" class="form-control" value="" autocomplete="off" />
 				<div id="user_pass_vm" class="validation-message" style="display: none"></div>
-			</div>
-	
-			<div class="form-group">
-				<label for="first_name"><?php _e('First name', 'tst');?></label>
-				<input type="text" class="form-control" name="first_name" id="first_name" value="" />
-				<small class="help-block"><?php _e('Please provide your first name', 'tst');?></small>
-				<div id="first_name_vm" class="validation-message" style="display: none"></div>
-			</div>
-	
-			<div class="form-group">
-				<label for="last_name"><?php _e('Last name', 'tst');?></label>
-				<input type="text" class="form-control" name="last_name" id="last_name" value="" />
-				<small class="help-block"><?php _e('Please provide your last name', 'tst');?></small>
-				<div id="last_name_vm" class="validation-message" style="display: none"></div>
-			</div>
-			
-			<div class="form-group">
-				<input type="submit" value="<?php _e('Register', 'tst');?>" class="btn btn-primary" id="do-register" name="do-register">				
-			</div>
+			</div>-->
 
 		</div>
 		</div>
@@ -131,7 +127,7 @@ get_header();?>
 		
 	</div><!-- .col-md-7-->
 </div><!-- .row -->
-	
+</div>	
 
 </div> <!-- .page-body -->
 
