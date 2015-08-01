@@ -1,0 +1,251 @@
+/** Homepage **/
+.home-news {
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: 0 0 12px 0;
+		position: relative;
+	}
+	
+	h2 {
+		background-color: #A4A4A4;
+		color: $color-white;
+		font-weight: bold;
+		text-transform: uppercase;
+		margin: 0 0 0 -30px;
+		padding: 7px 0 7px 30px;
+		font-size: 1em;
+		width: 45%;
+	}
+	
+	h4 {
+		margin-top:20px;
+		
+		a {
+			font-weight: bold;
+			color: $color-text-black;
+		}
+	}
+	
+	.home-news-content {
+		.thumb-link {
+			display: block;
+			margin: $measure-elements-margin/2 0;
+		}
+		
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		a { text-decoration: none; }
+	}	
+}
+
+
+/** Recent News **/
+.tpl-post {	
+		
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: $measure-columns-gut/2 0 $measure-columns-gut;
+	}
+	
+	&:nth-of-type(1) {
+		.border-card {
+			padding-top: 0;
+		}
+	}
+	
+	@include for(medium-screens) {
+		&:nth-of-type(2) {
+			.border-card {
+				padding-top: 0;
+			}
+		}
+	}
+	
+	h4 {
+		@include post-title;
+	}
+	
+	.post-meta {
+		color: $color-text-meta;
+		font-size: 0.857em;		
+	}
+	
+	.post-preview {
+		margin: $measure-columns-gut/2 0;
+		a { display: block; }
+	}
+	
+	.post-summary p {
+		margin: 0;
+	}	
+	
+}
+
+.blog .tpl-post {
+	
+	@include for(medium-screens) {
+		&:nth-of-type(even) {
+			padding-left: $measure-columns-gut*1.5;
+		}
+		&:nth-of-type(odd) {
+			padding-right: $measure-columns-gut*1.5;
+		}
+	}
+}
+
+.single-post {
+	
+	.page-summary {
+		font-size: 1.52em;
+		line-height: 1.4;
+		font-weight: 600;
+		margin-bottom: 15px;
+	}
+	
+	.page-media {
+		margin-bottom: 15px;
+	}
+	
+	h3, h4 {
+		margin-top: 1.5em;
+	}
+}
+
+.widget_recent_entries {
+	ul {
+		border-top: 1px solid $color-border-light;
+		list-style-type: none;
+	}
+	li {		
+		font-size: 0.95em;		
+		border-bottom: 1px solid $color-border-light;
+		padding: 6px 0;
+	}
+	
+	.post-date {		
+		font-size: 0.85em;
+		margin-left: 5px;
+		color: $color-text-meta;
+	}
+}
+
+
+/** Login & Register **/
+.register-page-body {
+	background: #f5f5f5;
+	padding-top: $measure-elements-margin +10px;
+	padding-bottom: $measure-elements-margin;
+}
+
+.register-actions + #bottombar {
+	margin-top: 0;
+	border-top: 1px;
+}
+
+#register_content {
+	max-width: 850px;
+	
+	@include for(large-screens) {
+		margin-left: 36px;
+	}	
+}
+
+.registration-col-1 {
+	margin-bottom: $measure-elements-margin;
+	@include for(small-screens) {
+		margin-bottom: 0;
+	}
+}
+
+.register-form,
+.login-form { //reset
+	div[class *="col-"] {
+		padding: 0 5px;
+	}
+	
+	.row {
+		margin: 0 -5px;
+	}
+	
+	.form-group {
+		margin-bottom: 10px;		
+	}
+	
+	.form-control {
+		//padding: 4px 8px;	
+	}
+	
+	max-width: 460px;
+}
+
+.login-title {
+	font-weight: normal;
+	margin: 6px 0 0;
+}
+
+.login-form {	
+	margin-top: 21px;
+	margin-bottom: 21px;
+	border: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+	padding: 10px;
+	background: #fff;
+	
+	@include for(large-screens) {
+		margin-right: 15px;
+	}
+	
+	.checkbox {
+		margin: 0;
+		font-size: 12px;
+		#rememberme {
+			margin-top: 1px;
+		}
+	}
+	
+	#do-login {
+		box-sizing: border-box;
+		min-width: 100%;
+		text-align: center;
+	}
+	
+	.lost-psw  {		
+		font-size: 12px;		
+	}
+}
+
+.register-form {
+	
+	@include for(large-screens) {
+		margin-left: 25px;
+	}
+	
+	
+	.panel-heading {
+		padding: 10px;
+		font-weight: bold;
+		background: #fff;
+	}
+	
+	.panel-body {
+		padding: 10px;
+		background: #fff;
+	}
+	
+	.register-action {
+		margin-bottom: 0;
+		text-align: right;
+	}
+	
+	#do-register {
+		background: $color-label-green-normal;
+		border-color: $color-label-green-normal;
+		&:hover, &:focus, &:active {
+			background: darken($color-label-green-normal, 10%);
+			border-color: darken($color-label-green-normal, 10%);
+		}
+	}
+}

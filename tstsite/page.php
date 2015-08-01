@@ -30,7 +30,7 @@ get_header(); ?>
 				<?php the_content();?>
 				<?php
 					if(is_page('contacts')) {
-						get_template_part('contact', 'form');
+						get_template_part('partials/contact', 'form');
 					}
 				?>		
 			</div>

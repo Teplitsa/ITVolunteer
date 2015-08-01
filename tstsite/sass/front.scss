@@ -2,10 +2,15 @@
 @import 'bourbon';
 @import 'utility';
 
-//@import 'grid';
+//old styles
 @import 'base';
 @import 'tweaks';
 
-@import 'menu';
+//new styles
 @import 'project';
+@import 'menu';
+@import 'tasks';
+@import 'members';
+@import 'pages';
+
 

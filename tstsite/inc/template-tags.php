@@ -217,9 +217,9 @@ function tst_get_register_url() {
 function tst_ga_event_data($atts = array()){
 	
 	$defaults = array(
-		'category' => 'Неизвестная категория события',
-		'action' => 'Неизвестное действие',
-		'label' => 'Неизвестное место события'
+		'ga_category' => 'Неизвестная категория события',
+		'ga_action' => 'Неизвестное действие',
+		'ga_label' => 'Неизвестное место события'
 	);
 	
 	$atts = wp_parse_args($atts, $defaults);

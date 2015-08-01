@@ -25,20 +25,24 @@ get_header(); ?>
         ));
         $tasks_per_page = get_option('posts_per_page');
         if(have_posts()) { $count = 0;?>
+		
             <div class="row in-loop tasks-list">
-                <?php while(have_posts()) {
-                    if($count >= $tasks_per_page)
+            <?php
+				while(have_posts()) {
+                    if($count >= $tasks_per_page){
                         break;
-                    $count++;
-                    the_post();?>
-
-                    <?php get_template_part('content-tasks', get_post_format());?>
+                    }
 					
-					<?if($count == 4):?>
-						<?php get_template_part('home-news');?>
-					<?endif?>
+                    $count++;
+                    the_post();
 
-                <?php }?>
+                    get_template_part('partials/content', 'tasks');					
+					if($count == 4){
+						get_template_part('partials/home', 'news');
+					}
+					
+                } //enwhile
+			?>
             </div><!-- .row -->
 
             <?php if($wp_query->post_count > $tasks_per_page) {?>

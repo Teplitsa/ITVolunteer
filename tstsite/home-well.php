@@ -63,7 +63,7 @@
 			$ga_atts = array(
 				'category' => 'Создать задачу',
 				'action' => 'Кнопка создать задачу на главной',
-				'label' => 'Действия на главной'
+				'label' => 'Главная'
 			);
 		?>
 			<a href="<?php echo home_url('task-actions');?>" <?php tst_ga_event_data($ga_atts);?> class="add-new-task-button ga-event-trigger">

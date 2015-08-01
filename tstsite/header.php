@@ -28,7 +28,7 @@
 
 <nav id="site_navigation" class="site-navigation" role="navigation">
 	<div class="container">
-		<?php get_template_part('navbar');?>
+		<?php get_template_part('partials/navbar');?>
 	</div>
 </nav><!-- #site-navigation -->
 

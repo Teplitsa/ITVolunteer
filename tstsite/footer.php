@@ -28,7 +28,7 @@ function tst_brand_banner() {
 <div class="row">
 <?php if(is_page('registration')) { ?>
 	<div class="col-sm-6 registration-col-1">
-		<?php get_template_part('contact', 'form'); ?>
+		<?php get_template_part('partials/contact', 'form'); ?>
 	</div>
 	<div class="col-sm-6 registration-col-2">
 		<?php tst_brand_banner();?>
@@ -54,7 +54,7 @@ function tst_brand_banner() {
 				<div class="footer-contact">
 				<?php
 					if( !is_page('contacts') ) {
-						get_template_part('contact', 'form');
+						get_template_part('partials/contact', 'form');
 					}
 					else {
 						echo '&nbsp;';

@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.2');
+define('TST_WORKING_VERSION', '1.9.3');
 @error_reporting(E_ALL & ~E_NOTICE);
 require get_template_directory().'/inc/acf_keys.php';
 

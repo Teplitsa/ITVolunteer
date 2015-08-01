@@ -5,7 +5,7 @@ jQuery(function($){
 	$('html').removeClass('no-js').addClass('js');	
 	var windowWidth = $('#page').width();
 	
-	/* responsive nav */	
+	/* Responsive nav */	
     var navCont = $('#site_navigation');
     $('#menu-trigger').on('click', function(e){
 
@@ -46,7 +46,6 @@ jQuery(function($){
     
 	
 	/* Masonry */
-	
 	var $members_list = $('.members-list');
 	
 	//imagesLoaded doesn't work because of gravatar
@@ -56,14 +55,16 @@ jQuery(function($){
 	});
 	
 	
-	var $tasks_list = $('.tasks-list');	
+	var $tasks_list = $('.tasks-list');
 	
 	$tasks_list.masonry({
 		itemSelector: '.item-masonry'
 	});			
+	
 	$(window).resize(function(){			
 		$tasks_list.masonry('bindResize');		
 	});
+	
 	
 	var $posts_list = $('.post-list'); 
 	
@@ -609,7 +610,10 @@ jQuery(function($){
 
         });
     });
-
+	
+	/** Registration & Login **/
+	$('#user_login').focus();
+	
     $('#login-form').submit(function(e){
         e.preventDefault();
 
@@ -717,6 +721,9 @@ jQuery(function($){
             });
         }
     });
+	
+	
+	
 
     $('#delete_profile').click(function(e){
         e.preventDefault();
@@ -985,11 +992,16 @@ jQuery(function($){
 		$('.ga-event-trigger').on('click', function(e){
 		
 			var trigger = $(this),
-				label = trigger.attr('data-ga-label'),
-				action = trigger.attr('data-ga-action'),
-				category = trigger.attr('data-ga-category');
+				label = trigger.attr('data-ga_label'),
+				action = trigger.attr('data-ga_action'),
+				category = trigger.attr('data-ga_category');
 			
 			//to_do check for the correct value
+			//debug
+			console.log(category);
+			console.log(action);
+			console.log(label);
+			
 			ga('send', 'event', category, action, label, 1);	
 		});		
 	}	

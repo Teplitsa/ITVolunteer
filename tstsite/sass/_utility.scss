@@ -59,6 +59,17 @@ $screen-lg-min : 1200px;
 	}
 }
 
+@mixin upto($media) {
+	@if $media == small-screens {
+		@media screen and (max-width: $screen-sm-min - 1) { @content; }
+	}
+	@else if $media == medium-screens {
+		@media screen and (max-width: $screen-md-min - 1) { @content; }
+	}
+	@else if $media == large-screens {
+		@media screen and (max-width: $screen-lg-min - 1) { @content; }
+	}
+}
 
 // mixins
 @mixin smart-margin($margin) {
