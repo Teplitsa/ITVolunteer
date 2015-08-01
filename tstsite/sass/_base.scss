@@ -903,9 +903,6 @@ div[class |="status-block"] {
 
 
 
-
-
-
 /** search & 404 **/
 .sbutton-holder {
 	margin-left: -20px;
@@ -960,137 +957,6 @@ div[class |="status-block"] {
 }
 
 
-/** homepage **/
-.intro-panel {
-	background: #EDEDED;	
-	padding: 20px 30px;
-	border-left: 1px solid #c2c2c2;
-	border-right: 1px solid #c2c2c2;
-	
-	.well {
-		margin: 0px 0px 0px 0px;
-		background: #fff;
-		border: 1px solid #c7c7c7;
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
-		padding: 15px 40px;
-		
-		.col-md-10 div[class *="home-text"]{			
-			padding-left: 10px;
-		}
-	}
-	
-	.intro-play-video-button {
-		background-color: #F9F9F9;
-		border: 1px solid #C5C5C5;
-		width: 200px;
-		height:100px;
-		margin: 3px 0px 0px 0px;
-		cursor:pointer;
-		
-		.intro-play-icon {
-			width:64px;
-			height:64px;
-			background-image: url(../img/play-video-64.png);
-			margin: auto;
-			margin-top:8px;
-		}
-		
-		.intro-play-lable {
-			text-align: center;
-			color: $color-text-light;
-			font-size:1em;
-			font-weight: bold;
-			margin-top:3px;
-		}
-	}
-	
-	.modal-dialog {
-		width: 680px;
-	}
-}
-
-.home-header-buttons {
-	color: $color-text;
-	
-	.add-new-task-button {
-		background-color: $color-label-green-normal;
-		color: $color-white;
-		-webkit-border-radius: 3px;
-		-moz-border-radius: 3px;
-		border-radius: 3px;
-		padding: 10px 0;
-		font-size: 1.2em;
-		text-align: center;
-		display:block;
-		position:absolute;
-		bottom:-70px;
-		right:60px;
-		font-weight: bold;
-		width: 200px;
-		@include transition(all 0.3s);
-		&:hover {
-			text-decoration: none;
-			background: darken($color-label-green-normal, 10%);
-		}
-	}
-	
-	.home-header-members-count {
-		text-align: left;
-		padding: 15px 0px 0px 40px;
-		text-transform: uppercase;
-		width:23%;		
-	}
-	
-	/* tasks stats buttons */
-	.itv-tasks-stats {
-		margin:15px 0px 0px 45px;
-	}
-	
-	.itv-tasks-stats span {
-		text-transform: uppercase;
-	}
-	
-	.itv-tasks-stats a {
-		margin-left:30px;
-		background:none;
-		border: none;
-		color: $color-text;
-	}
-	
-	.itv-tasks-stats a:hover {
-	}
-}
-
-.home-section {
-	padding: 0 30px;
-	h3 {
-		margin-top: 0;
-	}
-}
-
-.home-section.tasks {
-	padding-top: 30px;
-}
-
-.home-nav {
-	margin-top: $divMargin;
-	text-align: center;
-}
-
-.intro-logo {
-	max-width: 110px;
-	padding-top: 10px;
-	img {
-		max-width: 100%;
-		height: auto;
-	}
-}
-
-.home-text {
-	padding: 3px 15px 0px 15px;
-}
 
 /* tasks filters */
 .members-filters-frame,
@@ -1145,9 +1011,6 @@ div[class |="status-block"] {
 		}
 	}
 }
-
-
-
 
 
 .page-body #menu-about {

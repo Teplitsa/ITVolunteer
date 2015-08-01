@@ -700,100 +700,6 @@ div[class|="status-block"] .row-top {
   font-weight: bold;
   text-align: center; }
 
-/** homepage **/
-.intro-panel {
-  background: #EDEDED;
-  padding: 20px 30px;
-  border-left: 1px solid #c2c2c2;
-  border-right: 1px solid #c2c2c2; }
-  .intro-panel .well {
-    margin: 0px 0px 0px 0px;
-    background: #fff;
-    border: 1px solid #c7c7c7;
-    border-radius: 3px;
-    padding: 15px 40px; }
-    .intro-panel .well .col-md-10 div[class*="home-text"] {
-      padding-left: 10px; }
-  .intro-panel .intro-play-video-button {
-    background-color: #F9F9F9;
-    border: 1px solid #C5C5C5;
-    width: 200px;
-    height: 100px;
-    margin: 3px 0px 0px 0px;
-    cursor: pointer; }
-    .intro-panel .intro-play-video-button .intro-play-icon {
-      width: 64px;
-      height: 64px;
-      background-image: url(../img/play-video-64.png);
-      margin: auto;
-      margin-top: 8px; }
-    .intro-panel .intro-play-video-button .intro-play-lable {
-      text-align: center;
-      color: #999;
-      font-size: 1em;
-      font-weight: bold;
-      margin-top: 3px; }
-  .intro-panel .modal-dialog {
-    width: 680px; }
-
-.home-header-buttons {
-  color: #333;
-  /* tasks stats buttons */ }
-  .home-header-buttons .add-new-task-button {
-    background-color: #5CB85C;
-    color: #fff;
-    border-radius: 3px;
-    padding: 10px 0;
-    font-size: 1.2em;
-    text-align: center;
-    display: block;
-    position: absolute;
-    bottom: -70px;
-    right: 60px;
-    font-weight: bold;
-    width: 200px;
-    -webkit-transition: all 0.3s;
-    transition: all 0.3s; }
-    .home-header-buttons .add-new-task-button:hover {
-      text-decoration: none;
-      background: #449d44; }
-  .home-header-buttons .home-header-members-count {
-    text-align: left;
-    padding: 15px 0px 0px 40px;
-    text-transform: uppercase;
-    width: 23%; }
-  .home-header-buttons .itv-tasks-stats {
-    margin: 15px 0px 0px 45px; }
-  .home-header-buttons .itv-tasks-stats span {
-    text-transform: uppercase; }
-  .home-header-buttons .itv-tasks-stats a {
-    margin-left: 30px;
-    background: none;
-    border: none;
-    color: #333; }
-
-.home-section {
-  padding: 0 30px; }
-  .home-section h3 {
-    margin-top: 0; }
-
-.home-section.tasks {
-  padding-top: 30px; }
-
-.home-nav {
-  margin-top: 30px;
-  text-align: center; }
-
-.intro-logo {
-  max-width: 110px;
-  padding-top: 10px; }
-  .intro-logo img {
-    max-width: 100%;
-    height: auto; }
-
-.home-text {
-  padding: 3px 15px 0px 15px; }
-
 /* tasks filters */
 .members-filters-frame,
 .tasks-filters-frame {
@@ -1498,6 +1404,62 @@ a {
 
 /** == Members Templates == **/
 /** Homepage **/
+.home-section {
+  padding: 0 30px; }
+  .home-section.tasks {
+    padding-top: 30px; }
+
+.home-nav {
+  margin-top: 30px;
+  text-align: center; }
+
+.intro-panel {
+  background: #EDEDED;
+  padding: 20px 30px;
+  border-left: 1px solid #c2c2c2;
+  border-right: 1px solid #c2c2c2; }
+  .intro-panel .well {
+    margin: 0px;
+    background: #fff;
+    border: 1px solid #c7c7c7;
+    border-radius: 3px;
+    padding: 20px 30px; }
+  .intro-panel .modal-dialog {
+    width: 680px; }
+  .intro-panel .intro-text {
+    max-width: 850px;
+    margin: 0 auto; }
+  .intro-panel .intro-actions {
+    text-align: center;
+    margin-top: 20px; }
+  .intro-panel .cta {
+    display: inline-block; }
+  .intro-panel .details {
+    margin-left: 10px;
+    display: inline-block; }
+    .intro-panel .details a {
+      color: #8899A6; }
+
+.home-header-buttons {
+  color: #333;
+  text-align: center;
+  padding-top: 15px; }
+  .home-header-buttons span {
+    text-transform: uppercase; }
+  .home-header-buttons a {
+    margin-left: 10px;
+    -webkit-transition: all 0.35s;
+    transition: all 0.35s;
+    white-space: nowrap; }
+    .home-header-buttons a:hover, .home-header-buttons a:focus, .home-header-buttons a:active {
+      text-decoration: underline; }
+  .home-header-buttons .publish {
+    color: #5CB85C; }
+  .home-header-buttons .in_work {
+    color: #FFAB00; }
+  .home-header-buttons .closed {
+    color: #566672; }
+
 .home-news .border-card {
   border-bottom: 1px solid #eee;
   padding: 0 0 12px 0;
