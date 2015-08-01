@@ -985,8 +985,7 @@ jQuery(function($){
 
 //GA Events
 jQuery(function($){
-	
-	console.log(typeof ga == 'function');
+		
 	
 	if(typeof ga == 'function') {		
 		$('.ga-event-trigger').on('click', function(e){
