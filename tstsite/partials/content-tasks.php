@@ -30,9 +30,9 @@
 		}
 		
 		$ga_atts_1 = array(
-			'category' => 'Подробности задачи',
-			'action' => 'Заголовок в карточке задачи',
-			'label' => $label
+			'ga_category' => 'Подробности задачи',
+			'ga_action' => 'Заголовок в карточке задачи',
+			'ga_label' => $label
 		);
 	?>
 		<h4 class="task-title">				
@@ -46,9 +46,9 @@
 	<?php
 		//GA Event		
 		$ga_atts_2 = array(
-			'category' => 'Подробности задачи',
-			'action' => 'Ссылка подробнее в карточке задачи',
-			'label' => $label
+			'ga_category' => 'Подробности задачи',
+			'ga_action' => 'Ссылка подробнее в карточке задачи',
+			'ga_label' => $label
 		);
 	?>
 		<div class="task-reward"><?php tst_task_reward_in_card();?></div>
