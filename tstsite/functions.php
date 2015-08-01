@@ -30,7 +30,7 @@ $email_templates = array();
 
 function tst_get_version_num(){
 	
-	if(false !== strpos(site_url(), 'http://testplugins.ngo2.ru')){
+	if(false !== strpos(site_url(), 'testplugins.ngo2.ru')){
 		//on dev force random number to avoid cache problems
 		$num = rand();
 	}
