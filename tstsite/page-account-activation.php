@@ -11,7 +11,7 @@ if(get_current_user_id() || empty($_GET['uid'])) {
 
 $user = get_user_by('id', (int)$_GET['uid']);
 
-global $tst_nav_w, $tst_main_w, $tst_side_w;
+
 
 get_header();?>
 <?php while ( have_posts() ) : the_post(); ?>

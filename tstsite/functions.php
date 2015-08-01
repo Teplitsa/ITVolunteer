@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.3');
+define('TST_WORKING_VERSION', '1.9.4');
 @error_reporting(E_ALL & ~E_NOTICE);
 require get_template_directory().'/inc/acf_keys.php';
 
@@ -23,15 +23,23 @@ $ITV_TASK_STATUSES_ORDER = Array('publish', 'in_work', 'closed', 'future', 'draf
 if(!isset($content_width))
 	$content_width = 640; /* pixels */
 
-if(empty($tst_main_w)) { //setting of main content wrappers
-	
-	$tst_nav_w = 0;
-	$tst_main_w = 8;
-	$tst_side_w = 4;
-}
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
 $email_templates = array();
+
+
+function tst_get_version_num(){
+	
+	if(false !== strpos(site_url(), 'http://testplugins.ngo2.ru')){
+		//on dev force random number to avoid cache problems
+		$num = rand();
+	}
+	else {
+		$num = (defined('TST_WORKING_VERSION')) ? TST_WORKING_VERSION : '1.0';
+	}
+	
+	return $num;
+}
 
 if ( ! function_exists( 'tst_setup' ) ) :
 function tst_setup() {
@@ -155,13 +163,14 @@ add_action('widgets_init', 'tst_widgets_init');
 add_action('wp_enqueue_scripts', function(){
 
     $url = get_template_directory_uri();
-
+	$version = tst_get_version_num();
+	
    // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), TST_WORKING_VERSION);
-	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), TST_WORKING_VERSION);
+    wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
+	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), $version);
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -174,7 +183,7 @@ add_action('wp_enqueue_scripts', function(){
 	//wp_enqueue_script('jquery-masonry');
     wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), TST_WORKING_VERSION, true);
+    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
