@@ -7,7 +7,7 @@
  * @package Blank
  */
 
-$cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons СС-BY-SA 3.0</a>';
+$cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons СС-BY-SA.&nbsp;3.0</a>';
 
 
 function tst_brand_banner() {

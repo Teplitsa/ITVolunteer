@@ -791,10 +791,13 @@ div[class|="status-block"] .row-top {
   color: rgba(0, 0, 0, 0.54); }
 
 .itv-home-prefooter {
+  margin-top: 40px;
   background-color: #5CB85C;
   color: #fff;
-  padding: 15px 40px 15px 40px;
-  margin-top: 40px; }
+  padding: 15px; }
+  @media screen and (min-width: 768px) {
+    .itv-home-prefooter {
+      padding: 15px 30px; } }
   .itv-home-prefooter p {
     font-size: 1.4em;
     width: 50%;
@@ -977,7 +980,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  height: 46px;
+  min-height: 46px;
   z-index: 10000;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); }
 
@@ -1001,8 +1004,13 @@ a {
 
 .page-heading,
 .page-body {
-  padding-left: 30px;
-  padding-right: 30px; }
+  padding-left: 15px;
+  padding-right: 15px; }
+  @media screen and (min-width: 768px) {
+    .page-heading,
+    .page-body {
+      padding-left: 30px;
+      padding-right: 30px; } }
 
 .page-heading {
   margin-bottom: 30px; }
@@ -1027,7 +1035,10 @@ a {
   margin-top: 30px;
   background: #f5f5f5;
   border-top: 1px solid #eee;
-  padding: 30px; }
+  padding: 30px 15px; }
+  @media screen and (min-width: 768px) {
+    .page-bottom {
+      padding: 30px; } }
 
 .widget img {
   max-width: 100%;
@@ -1154,8 +1165,7 @@ a {
 
 /** Menu */
 #site_navigation {
-  background: #111;
-  height: 46px; }
+  background: #111; }
   #site_navigation .container {
     position: relative; }
     #site_navigation .container:before, #site_navigation .container:after {
@@ -1452,7 +1462,10 @@ a {
 /** == Members Templates == **/
 /** Homepage **/
 .home-section {
-  padding: 0 30px; }
+  padding: 0 15px; }
+  @media screen and (min-width: 768px) {
+    .home-section {
+      padding: 0 30px; } }
   .home-section.tasks {
     padding-top: 14px; }
 
@@ -1462,9 +1475,12 @@ a {
 
 .intro-panel {
   background: #EDEDED;
-  padding: 20px 30px;
+  padding: 15px;
   border-left: 1px solid #c2c2c2;
   border-right: 1px solid #c2c2c2; }
+  @media screen and (min-width: 768px) {
+    .intro-panel {
+      padding: 20px 30px; } }
   .intro-panel .well {
     margin: 0px;
     background: #fff;
@@ -1529,13 +1545,15 @@ a {
   color: #fff;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 0 0 0 -30px;
-  padding: 7px 0 7px 30px;
+  margin: 0 0 0 -15px;
+  padding: 7px 0 7px 15px;
   font-size: 1em;
   width: 90%; }
   @media screen and (min-width: 768px) {
     .home-news h2 {
-      width: 45%; } }
+      width: 45%;
+      padding-left: 30px;
+      margin-left: -30px; } }
 .home-news h4 {
   margin-top: 20px; }
   .home-news h4 a {

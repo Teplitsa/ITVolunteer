@@ -1,7 +1,6 @@
 /** Menu */
 #site_navigation {
 	background: $color-text-black;
-	height: $menu_height;
 	
 	.container {
 		@include clearfix;

@@ -1051,10 +1051,14 @@ div[class |="status-block"] {
 }
 
 .itv-home-prefooter {
+	margin-top:40px;
 	background-color: $color-label-green-normal;
 	color: $color-white;
-	padding:15px 40px 15px 40px;
-	margin-top:40px;
+	padding: $measure-columns-gut/2;
+	@include for(small-screens) {
+		padding: $measure-columns-gut/2 $measure-columns-gut;
+	}
+	
 	
 	p {
 		font-size:1.4em;

@@ -1,7 +1,10 @@
 /** Homepage **/
 
 .home-section {	
-	padding: 0 $measure-columns-gut;
+	padding: 0 $measure-columns-gut/2;
+	@include for(small-screens) {
+		padding: 0 $measure-columns-gut;
+	}
 	
 	&.tasks {
 		padding-top: $measure-columns-gut - 16px;
@@ -17,7 +20,12 @@
 // well section
 .intro-panel {
 	background: #EDEDED;	
-	padding: 20px $measure-columns-gut;
+	padding: $measure-columns-gut/2;
+	
+	@include for(small-screens) {
+		padding: 20px $measure-columns-gut;
+	}
+	
 	border-left: 1px solid #c2c2c2;
 	border-right: 1px solid #c2c2c2;
 	
@@ -108,13 +116,15 @@
 		color: $color-white;
 		font-weight: bold;
 		text-transform: uppercase;
-		margin: 0 0 0 -30px;
-		padding: 7px 0 7px 30px;
+		margin: 0 0 0 -15px;
+		padding: 7px 0 7px 15px;
 		font-size: 1em;
 		width: 90%;
 		
 		@include for(small-screens) {
 			width: 45%;
+			padding-left: 30px;
+			margin-left: -30px;
 		}
 		
 	}

@@ -42,7 +42,7 @@ a {
 	top: 0;
 	left: 0;
 	width: 100%;
-	height: $menu_height;
+	min-height: $menu_height;
 	z-index: 10000;
 	box-shadow: 1px 1px 3px rgba(0,0,0, 0.3);
 }
@@ -79,9 +79,12 @@ a {
 
 .page-heading,
 .page-body {
-	padding: {
-		left: $measure-columns-gut;
-		right: $measure-columns-gut;
+	padding-left: $measure-columns-gut/2;
+	padding-right: $measure-columns-gut/2;
+	
+	@include for(small-screens) {
+		padding-left: $measure-columns-gut;
+		padding-right: $measure-columns-gut;
 	}
 }
 
@@ -120,7 +123,10 @@ a {
 	margin-top: $measure-elements-margin;
 	background: $color-secondary;
 	border-top: 1px solid $color-border-light;
-	padding: $measure-columns-gut;
+	padding: $measure-columns-gut $measure-columns-gut/2;
+	@include for(small-screens) {
+		padding: $measure-columns-gut;
+	}
 }
 
 
