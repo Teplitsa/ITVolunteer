@@ -945,7 +945,7 @@ function ajax_user_register() {
         )));
     } else {
         $user_id = wp_insert_user(array(
-            'user_login' => $_POST['login'],
+            'user_login' => $user_login,
             'user_email' => $_POST['email'],
             'user_pass' => $_POST['pass'],
             'first_name' => $_POST['first_name'],
