@@ -37,10 +37,10 @@
 				width: 34px;
 				height: 36px;
 				
-				/*@include for-retina(){
+				@include for-retina(){
 					background: transparent url('../img/logo-sprite-2x.png') no-repeat 0 0;
-					background-size: 34px 36px;
-				}*/
+					background-size: 84px 84px;
+				}
 			}
 		}
 	}

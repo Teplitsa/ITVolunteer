@@ -1071,11 +1071,11 @@ a {
     background: url("../img/logo-sprite.png") no-repeat -59px -44px;
     position: absolute;
     top: 0;
-    left: 0;
-    /*@include for-retina() {
-    	background: url('../img/logo-sprite-2x.png') no-repeat -118px -90px;
-    	background-size: 25px 40px;	
-    }*/ }
+    left: 0; }
+    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+      .te-st a:before {
+        background: url("../img/logo-sprite-2x.png") no-repeat -59px -44px;
+        background-size: 84px 84px; } }
 
 #bottombar .footer-info {
   font-size: 12px;
@@ -1188,11 +1188,11 @@ a {
         top: 4px;
         background: transparent url("../img/logo-sprite.png") no-repeat 0 0;
         width: 34px;
-        height: 36px;
-        /*@include for-retina(){
-        	background: transparent url('../img/logo-sprite-2x.png') no-repeat 0 0;
-        	background-size: 34px 36px;
-        }*/ }
+        height: 36px; }
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-moz-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx) {
+          #site_navigation .site-branding .logo:before {
+            background: transparent url("../img/logo-sprite-2x.png") no-repeat 0 0;
+            background-size: 84px 84px; } }
   #site_navigation .menu-toggle {
     color: #A9A9A9;
     cursor: pointer;
