@@ -1066,7 +1066,6 @@ a {
   position: relative;
   font-family: Tahoma,Verdana,Segoe,sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.7px;
   font-size: 11px;
   line-height: 16px;
   color: #B5B5B5;
@@ -1074,6 +1073,9 @@ a {
   width: 180px;
   text-align: left;
   padding: 3px 0 5px 37px; }
+  @media screen and (min-width: 768px) {
+    .te-st a {
+      letter-spacing: 0.7px; } }
   .te-st a:before {
     content: '';
     display: block;

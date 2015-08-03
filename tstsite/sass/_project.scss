@@ -164,12 +164,14 @@ a {
 		position: relative;
 		
 		font-family: Tahoma,Verdana,Segoe,sans-serif;
-		text-transform: uppercase;
-		letter-spacing: 0.7px;
+		text-transform: uppercase;		
 		font-size: 11px;
 		line-height: 16px;
 		color: #B5B5B5;
 		text-decoration: none;
+		@include for(small-screens) {
+			letter-spacing: 0.7px;
+		}
 		
 		width: 180px;
 		text-align: left;
