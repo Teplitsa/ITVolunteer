@@ -179,10 +179,10 @@ a {
 			top: 0;
 			left: 0;
 			
-			@include for-retina() {
+			/*@include for-retina() {
 				background: url('../img/logo-sprite-2x.png') no-repeat -118px -90px;
 				background-size: 25px 40px;	
-			}
+			}*/
 		}
 		
 	}
