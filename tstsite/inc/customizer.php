@@ -925,14 +925,15 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
-    $_POST['login'] = sanitize_user(itv_translit_sanitize($_POST['first_name']) . '_' . itv_translit_sanitize($_POST['last_name']), true);
+    $user_login = sanitize_user(itv_translit_sanitize($_POST['first_name']) . '_' . itv_translit_sanitize($_POST['last_name']), true);
+    $user_login = itv_get_unique_user_login($user_login);
 
     if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
         die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
-    } else if(username_exists($_POST['login'])) {
+    } else if(username_exists($user_login)) {
         die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('Username already exists!', 'tst').'</div>',
@@ -1530,6 +1531,16 @@ function itv_translit_sanitize($string) {
 			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
 	);
 	return strtr($string, $rtl_translit);
+}
+
+function itv_get_unique_user_login($user_login) {
+	$new_ok_login = $user_login;
+	$try_limit = 10;
+	while(username_exists($new_ok_login) && $try_limit) {
+		$new_ok_login = $user_login . rand(0, 1000);
+		$try_limit -= 1;
+	}
+	return $new_ok_login;
 }
 
 __('itv_week_day_0', 'tst');
