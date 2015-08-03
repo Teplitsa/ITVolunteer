@@ -41,6 +41,7 @@ $color-deadline-all-time: #aeaeae;
 $measure-columns-gut: 30px;
 $measure-elements-margin: 30px;
 
+$menu_height: 46px;
 
 // media queries
 $screen-sm-min : 768px;
@@ -70,6 +71,23 @@ $screen-lg-min : 1200px;
 		@media screen and (max-width: $screen-lg-min - 1) { @content; }
 	}
 }
+
+//media query for retina displays
+@mixin for-retina(){
+	@media
+	only screen and (-webkit-min-device-pixel-ratio: 2),
+	only screen and (   min--moz-device-pixel-ratio: 2), //that's FF bug in some versions
+	only screen and (   -moz-min-device-pixel-ratio: 2),
+	only screen and (     -o-min-device-pixel-ratio: 2/1),
+	only screen and (        min-device-pixel-ratio: 2),
+	only screen and (                min-resolution: 192dpi),
+	only screen and (                min-resolution: 2dppx) { 	  
+		// Retina-specific stuff here
+		@content;	
+	}	
+}
+
+
 
 // mixins
 @mixin smart-margin($margin) {

@@ -39,9 +39,9 @@ jQuery(function($){
 		}   
 	};
 	
-	sticky_navigation();
+	//sticky_navigation();
 	$(window).scroll(function() {
-		sticky_navigation();
+		//sticky_navigation();
 	});
     
 	
@@ -314,13 +314,13 @@ jQuery(function($){
     });
 
     /* Task page sidebar, Guest viewing */
-    $('#guest-help').click(function(e){
-        e.preventDefault();
-
-        $(this).attr('disabled', 'disabled');
-        $('#default').slideUp(100);
-        $('#login-please').slideDown(100);
-    });
+    //$('#guest-help').click(function(e){
+    //    e.preventDefault();
+    //
+    //    $(this).attr('disabled', 'disabled');
+    //    $('#default').slideUp(100);
+    //    $('#login-please').slideDown(100);
+    //});
 
     $('#author-publish').click(function(e){
         e.preventDefault();

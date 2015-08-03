@@ -13,16 +13,11 @@ $doers = tst_get_task_doers(false, true);
 if( !$cur_user_id ) {?>
 
     <div id="">
-        <a href="#" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>>
+        <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>>
             <?php _e('Offer help', 'tst');?>
         </a>
         <br />
-        <div id="guest-help-message" class="text-center help-block">
-            <div id="default"><em>(<?php _e('You have not offered your help yet', 'tst');?>)</em></div>
-            <div id="login-please" style="display: none;"><em>
-                <?php _e('You must log in to offer help to somebody!', 'tst');?> <a href="<?php echo tst_get_login_url();?>"><?php _e('Log In');?></a> <?php _e('or', 'tst');?> <a href="<?php echo tst_get_register_url();?>"><?php _e('Register', 'tst');?></a>.
-            </em></div>
-        </div>
+        
         
         <?php if($post->post_status != 'draft' && $candidates) {?>
         <div class="connected-users">

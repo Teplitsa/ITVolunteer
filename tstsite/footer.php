@@ -16,7 +16,7 @@ function tst_brand_banner() {
 ?>
 	<div class="te-st">
 		<a href="http://te-st.ru" target="_blank">			
-			<img src="<?php echo $banner;?>.svg" onerror="this.onerror=null;this.src=<?php echo $banner;?>.png"  alt="<?php echo $tst;?>">
+			Теплица социальных технологий
 		</a>
 	</div>
 <?php
@@ -85,7 +85,6 @@ function tst_brand_banner() {
 
 </div><!-- .page-decor -->
 </div><!-- .contaner -->
-</div><!-- #page -->
 
 <footer id="colophon" class="site-footer" role="contentinfo">
 	<div class="container">
@@ -105,6 +104,12 @@ function tst_brand_banner() {
 		</div>
 	</div>
 </footer>
+
+
+</div><!-- #page -->
+</div><!-- .site-layout -->
+</div><!-- .site-layout-container-->
+
 
 <?php wp_footer(); ?>
 

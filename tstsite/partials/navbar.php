@@ -17,7 +17,7 @@
 	<ul id="content_menu" class="content-menu">
 		<li class="important-item">
 			<a href="<?php echo home_url('tasks?st=publish');?>">
-				<?php _e('Tasks', 'tst');?> <span class="count ">( <?php echo tst_get_new_tasks_count();?> )</span>
+				<?php _e('Tasks', 'tst');?> (<span class="count "><?php echo tst_get_new_tasks_count();?></span>)
 			</a>
 		</li>
 		<li class="important-item-2">

@@ -1,9 +1,8 @@
 /** Menu */
-$menu_height: 46px;
-
 #site_navigation {
 	background: $color-text-black;
-		
+	height: $menu_height;
+	
 	.container {
 		@include clearfix;
 		position: relative;
@@ -17,8 +16,7 @@ $menu_height: 46px;
 		.logo {
 			font-family: Arial, Helvetica, sans-serif;
 			box-sizing: border-box;
-			display: block;
-			background: transparent url(../img/logo.png) no-repeat 15px center;
+			display: block;			
 			width: 180px;
 			height: $menu_height;
 			font-size: 20px;
@@ -27,6 +25,23 @@ $menu_height: 46px;
 			color: transparentize($color-white, 0.07);
 			text-decoration: none;
 			padding-left: 63px;
+			position: relative;
+			
+			&:before {
+				content:  '';
+				display: block;
+				position: absolute;
+				left: 5px;
+				top: 4px;
+				background: transparent url('../img/logo-sprite.png') no-repeat 0 0;				
+				width: 34px;
+				height: 36px;
+				
+				@include for-retina(){
+					background: transparent url('../img/logo-sprite-2x.png') no-repeat 0 0;
+					background-size: 34px 36px;
+				}
+			}
 		}
 	}
 		
@@ -162,15 +177,15 @@ $menu_height: 46px;
 .fixed-nav #site_navigation {
 	width: 100%;
 	min-height: $menu_height;
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: 10000;
 }
 
 .fixed-nav.admin-bar #site_navigation {
-	@media screen and (min-width: 600px) { top: 46px; }
-	@media screen and (min-width: 782px) { top: 32px; }
+	//@media screen and (min-width: 600px) { top: 46px; }
+	//@media screen and (min-width: 782px) { top: 32px; }
 }
 
 
@@ -179,22 +194,17 @@ $menu_height: 46px;
 	
 	.important-item {
 		margin-bottom: 6px;
-				
-		a {
-			background: $color-label-green-normal;
-			color: $color-white;
-			line-height: 16px;
-			padding: 4px 13px 6px 13px; 
+		
+		.count {			
 			border-radius: 1px;
-			
-			&:hover, &:focus, &:active {
-				background: darken($color-label-green-normal, 15%);				
-			}
+			margin: 0 3px;
+			padding: 2px 6px;
+			background: $color-label-green-normal;
+			color: $color-white;			
 		}
 		
-		.count {						
-			color: $color-white; //$color-label-green-normal;
-			margin-left: 6px;
+		a:hover .count, .count:hover {
+			background: darken($color-label-green-normal, 10%);
 		}
 	}
 	

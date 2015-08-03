@@ -5,27 +5,6 @@
 
 
 
-
-
-/**
- * Menu filters
- **/
-add_filter( 'wp_nav_menu_args', 'frl_correct_menu_arg' );
-function frl_correct_menu_arg($args){
-	
-	if(isset($args['menu_class'])){
-		$args['menu_class'] .= ' list-unstyled';
-		
-	}
-	else {
-		$args['menu_class'] = 'list-unstyled';
-	}
-	
-	return $args;
-}
-
-
-
 /**
  * Favicon
  **/
@@ -138,6 +117,24 @@ function tst_custom_widgets(){
 //    register_widget('TST_Single_Task_Widget');
 }
 add_action('widgets_init', 'tst_custom_widgets', 11);
+
+
+/**
+ * Redirect unused pages
+ **/
+add_action('parse_query', 'tst_redirect_aunused_pages');
+function tst_redirect_aunused_pages($query){
+	
+	if(is_admin())
+		return;
+	
+	if($query->is_main_query() && isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
+		$redirect = home_url('registration');
+		wp_redirect($redirect);
+		die();
+	}
+	
+}
 
 
 

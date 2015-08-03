@@ -4,7 +4,7 @@
 	padding: 0 $measure-columns-gut;
 	
 	&.tasks {
-		padding-top: $measure-columns-gut
+		padding-top: $measure-columns-gut - 16px;
 	}
 }
 
@@ -44,19 +44,32 @@
 	}
 	
 	.cta {
-		display: inline-block;		
+		display: inline-block;
+		padding: 0 5px;
 	}
 	
-	.details {
-		margin-left: 10px ;
+	.details {			
 		display: inline-block;
+		padding: 0 5px;
+		
 		a {
 			color: $color-text-meta;
+			text-decoration: underline;
+			@include transition(all 0.35s);
 			
+			&:hover, &:focus, &:active {
+				color: darken($color-text-meta, 15%);		
+			}
+		}
+		
+		&.desktop-only { display: none;	}
+		
+		@include for(small-screens) {
+			&.mobile-only { display: none;	}
+			&.desktop-only { display: inline; }
 		}
 	}
 }
-
 	
 .home-header-buttons {
 	color: $color-text;
@@ -98,7 +111,12 @@
 		margin: 0 0 0 -30px;
 		padding: 7px 0 7px 30px;
 		font-size: 1em;
-		width: 45%;
+		width: 90%;
+		
+		@include for(small-screens) {
+			width: 45%;
+		}
+		
 	}
 	
 	h4 {
@@ -271,6 +289,16 @@
 .login-title {
 	font-weight: normal;
 	margin: 6px 0 0;
+}
+
+.rl-error {
+	margin: 5px 0 0;
+	font-size: 12px;
+	padding: 4px 9px;
+	background: #F2DEDE;
+	border: 1px solid darken(#F2DEDE, 10%);
+	color: $color-label-red-normal;
+	border-radius: 4px;
 }
 
 .login-form {	

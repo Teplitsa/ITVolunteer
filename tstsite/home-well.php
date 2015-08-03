@@ -9,23 +9,12 @@ global $post;
 	</div>
 	
 	<div class="intro-actions">
-		<div class="cta">
-			<?php
-				//GA Events
-				$ga_atts = array(
-					'ga_category' => 'Создать задачу',
-					'ga_action' => 'Кнопка создать задачу на главной',
-					'ga_label' => 'Главная'
-				);
-			?>
-				<a href="<?php echo home_url('task-actions');?>" <?php tst_ga_event_data($ga_atts);?> class="btn btn-success ga-event-trigger">
-					<?php _e('Create task', 'tst');?>
-				</a>			
+		<div class="details mobile-only">			
+			<a href="http://www.youtube.com/embed/D32OZIhoC6E" target="_blank"><?php _e('how it works', 'tst');?></a>
 		</div>
 		
-		<div class="details">
+		<div class="details desktop-only">
 			<a href="#" data-toggle="modal" data-target="#myModal"><?php _e('how it works', 'tst');?></a>
-			
 			<!-- Modal -->
 			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
@@ -41,6 +30,21 @@ global $post;
 				</div>
 			</div>
 		</div>
+		
+		<div class="cta">
+			<?php
+				//GA Events
+				$ga_atts = array(
+					'ga_category' => 'Создать задачу',
+					'ga_action' => 'Кнопка создать задачу на главной',
+					'ga_label' => 'Главная'
+				);
+			?>
+				<a href="<?php echo home_url('task-actions');?>" <?php tst_ga_event_data($ga_atts);?> class="btn btn-success ga-event-trigger">
+					<?php _e('Create task', 'tst');?>
+				</a>			
+		</div>
+		
 	</div>
 	
 </div><!-- .well -->	
@@ -48,13 +52,13 @@ global $post;
 <div class="home-header-buttons">	
 	
 	<span><?php _e('Tasks on site', 'tst');?></span>
-	<a href="<?php echo home_url('/tasks/?st=publish')?>" class="publish">
+	<a href="<?php echo tst_tasks_filters_link('publish'); ?>" class="publish">
 		<?php _e('New tasks:', 'tst')?>&nbsp;<?php echo tst_get_new_tasks_count();?>
 	</a>
-	<a href="<?php echo home_url('/tasks/?st=in_work')?>" class="in_work">
+	<a href="<?php echo tst_tasks_filters_link('in_work'); ?>" class="in_work">
 		<?php _e('In work tasks:', 'tst')?>&nbsp;<?php echo tst_get_work_tasks_count();?>
 	</a>
-	<a href="<?php echo home_url('/tasks/?st=closed')?>" class="closed">
+	<a href="<?php echo tst_tasks_filters_link('closed'); ?>" class="closed">
 		<?php _e('Closed tasks:', 'tst')?>&nbsp;<?php echo tst_get_closed_tasks_count();?>
 	</a>	
 	

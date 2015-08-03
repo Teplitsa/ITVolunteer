@@ -111,19 +111,29 @@ function tst_tasks_filters_menu(){
 	}
 ?>
 <ul class="tasks-filters">
-	<li class="publish<?php if($current == 'publish') echo ' active';?>"><a href="<?php echo home_url('/tasks/?st=publish')?>">
+	<li class="publish<?php if($current == 'publish') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('publish'); ?>">
 		<?php _e('New tasks:', 'tst')?> <?php echo tst_get_new_tasks_count();?>
 	</a></li>
-	<li class="in_work<?php if($current == 'in_work') echo ' active';?>"><a href="<?php echo home_url('/tasks/?st=in_work')?>">
+	<li class="in_work<?php if($current == 'in_work') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('in_work'); ?>">
 		<?php _e('In work tasks:', 'tst')?> <?php echo tst_get_work_tasks_count();?>
 	</a></li>
-	<li class="closed<?php if($current == 'closed') echo ' active';?>"><a href="<?php echo home_url('/tasks/?st=closed')?>">
+	<li class="closed<?php if($current == 'closed') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('closed'); ?>">
 		<?php _e('Closed tasks:', 'tst')?> <?php echo tst_get_closed_tasks_count();?>
 	</a></li>
 </ul>
 <?php	
 }
 
+function tst_tasks_filters_link($status = 'publish') {
+	
+	$statuses = array('publish', 'in_work', 'closed');
+	if(!in_array($status, $statuses))
+		$status = 'publish';
+		
+	$url = home_url('/tasks/?st='.$status); //alter for pretty permalink support
+	
+	return $url;
+}
 
 
 /** == Tasks counters == **/

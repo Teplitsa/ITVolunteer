@@ -9,6 +9,8 @@ body {
 	//background: #e6e6e6 url(../img/bg.png) repeat 0 0;
 	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAF0lEQVQImWM4c+bMGQaiwOnTp2dilQAAF1kGK+1C+BUAAAAASUVORK5CYII=) repeat;
 	background-color: #e6e6e6;
+	min-height: 100%;
+	width: 100%;
 }
 
 a {
@@ -17,6 +19,40 @@ a {
 		color: $color-link-two;
 	}
 }
+
+//layout for fixed nav
+
+.site-layout-container {
+	height: 100%;
+    position: absolute;
+    width: 100%;
+}
+
+.site-layout {
+	height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    width: 100%;
+	z-index: 1;
+}
+
+#site_navigation {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: $menu_height;
+	z-index: 10000;
+	box-shadow: 1px 1px 3px rgba(0,0,0, 0.3);
+}
+
+#page {
+	padding-top: $menu_height;
+}
+
+
+
 
 
 // page header
@@ -54,6 +90,10 @@ a {
 	
 	&.no-breadcrumbs {
 		padding-top: $measure-columns-gut;
+	}
+	
+	&.tasks-list-header {
+		margin-bottom: $measure-elements-margin - 16px;
 	}
 	
 	.breadcrumb {
@@ -110,8 +150,42 @@ a {
 }
 
 .te-st {
-	text-align: right;
-	a { display: inline-block; 	}
+	@include clearfix;
+	a {
+		display: block;
+		float: right;
+		box-sizing: border-box;
+		position: relative;
+		
+		font-family: Tahoma,Verdana,Segoe,sans-serif;
+		text-transform: uppercase;
+		letter-spacing: 0.7px;
+		font-size: 11px;
+		line-height: 16px;
+		color: #B5B5B5;
+		text-decoration: none;
+		
+		width: 180px;
+		text-align: left;
+		padding: 3px 0 5px 37px;		
+		
+		&:before {
+			content:  '';
+			display: block;
+			width: 25px;
+			height: 40px;
+			background: url('../img/logo-sprite.png') no-repeat -59px -44px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			
+			@include for-retina() {
+				background: url('../img/logo-sprite-2x.png') no-repeat -118px -90px;
+				background-size: 25px 40px;	
+			}
+		}
+		
+	}
 }
 
 #bottombar {	
@@ -146,7 +220,7 @@ a {
 	}
 	
 	.footer-brand {
-		margin-bottom: $measure-elements-margin;
+		margin-bottom: $measure-elements-margin/2;
 		
 		a {
 			display: block;
@@ -194,24 +268,6 @@ a {
 		margin-top: 5px;
 	}
 }
-
-
-/*	links footer sidebar */
-.widget.widget_links.bottom {
-	ul {
-		padding-left:0px;
-		
-		li {
-			list-style: none;
-			margin-bottom:10px;
-		}
-		a {
-			display: block;
-			margin-bottom:3px;
-		}
-	}
-}
-
 
 #colophon {
 	font-size: 11px;
