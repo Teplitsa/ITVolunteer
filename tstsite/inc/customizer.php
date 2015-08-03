@@ -975,7 +975,7 @@ function ajax_user_register() {
             wp_mail(
                 $_POST['email'],
                 $email_templates['activate_account_notice']['title'],
-                nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code")))
+                nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
             );
 
             die(json_encode(array(
@@ -1542,6 +1542,29 @@ function itv_get_unique_user_login($user_login) {
 	}
 	return $new_ok_login;
 }
+
+function itv_email_login_authenticate($user, $username, $password) {
+	if(is_a($user, 'WP_User')) {
+		return $user;
+	}
+	
+	$is_auth_ok = wp_authenticate_username_password(null, $username, $password);
+	if(!is_wp_error($is_auth_ok)) {
+		return $is_auth_ok;
+	}
+
+	if(!empty($username)){
+		$username = str_replace('&', '&amp;', stripslashes($username));
+		$user = get_user_by('email', $username);
+		if(isset($user, $user->user_login, $user->user_status) && 0 == (int) $user->user_status) {
+			$username = $user->user_login;
+		}
+	}
+
+	return wp_authenticate_username_password( null, $username, $password );
+}
+remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
+add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
 
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
