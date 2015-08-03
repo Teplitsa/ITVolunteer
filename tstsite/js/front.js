@@ -651,16 +651,6 @@ jQuery(function($){
             val = '';
 
         // Validation:
-        val = $form.find('#user_login').val();
-        if(val.length <= 3) {
-            form_is_valid = false;
-            $form.find('#user_login_vm').html(frontend.user_login_too_short).show();
-        } else if( !val.match(/^([a-zA-Z0-9\-])*$/) ) {
-            form_is_valid = false;
-            $form.find('#user_login_vm').html(frontend.user_login_incorrect).show();
-        } else
-            $form.find('#user_login_vm').html('').hide();
-
         val = $form.find('#email').val();
         if( !val.length ) {
             form_is_valid = false;
@@ -672,15 +662,11 @@ jQuery(function($){
             $form.find('#user_email_vm').html('').hide();
 
         val = $form.find('#pass1').val();
-        if(val != $form.find('#pass2').val()) {
-            form_is_valid = false;
-            $form.find('#user_pass_vm').html(frontend.passes_are_inequal).show();
-        } else if( !val.length ) {
-            form_is_valid = false;
-            $form.find('#user_pass_vm').html(frontend.user_pass_empty).show();
-        } else
-            $form.find('#user_pass_vm').html('').hide();
-
+		if( !val.length ) {
+			form_is_valid = false;
+			$form.find('#user_pass_vm').html(frontend.user_pass_empty).show();
+		}
+        
         val = $form.find('#first_name').val();
         if(val.length < 3) {
             form_is_valid = false;

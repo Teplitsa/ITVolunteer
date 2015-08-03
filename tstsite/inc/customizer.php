@@ -925,6 +925,7 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+    $_POST['login'] = sanitize_user(itv_translit_sanitize($_POST['first_name']) . '_' . itv_translit_sanitize($_POST['last_name']), true);
 
     if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
         die(json_encode(array(
@@ -1509,6 +1510,27 @@ function rss_feed_request($qv) {
 	return $qv;
 }
 add_filter('request', 'rss_feed_request');
+
+function itv_translit_sanitize($string) {
+	$rtl_translit = array (
+			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
+			"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
+			"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
+			"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
+			"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
+			"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
+			"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
+			"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
+			"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
+			"е"=>"e","ё"=>"yo","ж"=>"zh",
+			"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
+			"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+			"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
+			"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
+			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
+	);
+	return strtr($string, $rtl_translit);
+}
 
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
