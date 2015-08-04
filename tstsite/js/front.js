@@ -960,9 +960,9 @@ jQuery(function($){
 
 //GA Events
 jQuery(function($){
-	//if(typeof ga == 'function') {		
+	if(typeof ga == 'function') {		
 		$('.ga-event-trigger').on('click', function(e){
-		e.preventDefault();
+		//e.preventDefault();
 			var trigger = $(this),
 				triggerId = trigger.attr('data-ga_event');
 			
@@ -977,7 +977,7 @@ jQuery(function($){
 			}
 			
 		});		
-	//}	
+	}	
 });
 
 // customize comments subscriptions
