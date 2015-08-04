@@ -318,6 +318,9 @@
 	border: 1px solid darken(#F2DEDE, 10%);
 	color: $color-label-red-normal;
 	border-radius: 4px;
+	a {
+		color: $color-label-red-dark;		
+	}
 }
 
 .login-form {	

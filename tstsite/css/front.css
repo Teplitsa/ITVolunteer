@@ -1672,6 +1672,8 @@ a {
   border: 1px solid #e4b9b9;
   color: #D2322D;
   border-radius: 4px; }
+  .rl-error a {
+    color: #A94442; }
 
 .login-form {
   margin-top: 21px;

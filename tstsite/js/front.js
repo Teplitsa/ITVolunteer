@@ -1,51 +1,49 @@
 /* scripts */
 
-/* Top link Plugin by David Walsh (http://davidwalsh.name/jquery-top-link)
-  rewritten by @foralien to be safely used in no-conflict mode */
-
-(function($) {
- 
-	$.fn.topLink = function(settings) {
-	    var config = {
-	    	'min'       : 400,
-	    	'fadeSpeed' : 200
-	    };
- 
-		if (settings) $.extend(config, settings);
- 
-		this.each(function() {
-       		//listen for scroll
-			var el = $(this);
-			el.hide(); //in case the user forgot
-			
-			$(window).scroll(function() {
-				if($(window).scrollTop() >= settings.min){
-					el.fadeIn(settings.fadeSpeed);
-					
-				} else {
-					el.fadeOut(settings.fadeSpeed);
-				}
-			});			
-    	});
- 
-    	return this; 
-	};
- 
-})(jQuery);
-
-
 jQuery(function($){
-	$('html').removeClass('no-js').addClass('js');
+	$('html').removeClass('no-js').addClass('js');	
+	var windowWidth = $('#page').width();
 	
-	/* no rich interations fot ie6/ie7 */
-	var windowWidth = $(window).width();
-	var testIE = false;
-	if($('html').hasClass('ie6') || $('html').hasClass('ie7')){
-		testIE = true;
-	}
+	/* Responsive nav */	
+    var navCont = $('#site_navigation');
+    $('#menu-trigger').on('click', function(e){
+
+        e.preventDefault();
+        if (navCont.hasClass('toggled')) { 
+            //remove
+            navCont.find('.site-navigation-area').slideUp('normal', function(){
+				navCont.removeClass('toggled');
+				navCont.find('.site-navigation-area').removeAttr('style');
+			});
+            
+        }
+        else { 
+            //add
+            navCont.find('.site-navigation-area').slideDown('normal', function(){
+				navCont.addClass('toggled');
+				navCont.find('.site-navigation-area').removeAttr('style');
+			});
+            
+        }
+    });
 	
-	/* top link	 */
-	var toplinkTrigger = $('#top-link');
+	  
+	
+	/* Masonry */
+	var $members_list = $('.members-list');
+	
+	//imagesLoaded doesn't work because of gravatar
+	$members_list.masonry({itemSelector: '.member'});			
+	$(window).resize(function(){			
+		$members_list.masonry('bindResize');		
+	});
+	
+	
+	var $tasks_list = $('.tasks-list');
+	
+	$tasks_list.masonry({
+		itemSelector: '.item-masonry'
+	});			
 	
 	$(window).resize(function(){			
 		$tasks_list.masonry('bindResize');		
@@ -64,6 +62,7 @@ jQuery(function($){
 		$posts_list.masonry('bindResize');		
 	});
 	
+	
 	/* Modal on home */			
 	$('#myModal').on('shown.bs.modal', function () {
 		var targetSrc = $('#hp-mtr').find('a').attr('href');
@@ -74,6 +73,7 @@ jQuery(function($){
 		
 		$(this).find('iframe').removeAttr('src');
 	});
+	
 	
 	/* current paging item */
 	$('ul.pagination').find('span.current').parents('li').addClass('active');
