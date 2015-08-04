@@ -3,104 +3,7 @@
  * Code for ITV functions
  */
 
-/** Add an author filtering on Tasks to exclude account-deleted's tasks */
-add_action('pre_get_posts', 'tst_main_query_mods');
-function tst_main_query_mods(WP_Query $query) {
 
-    // exclude account_deleted's tasks:
-    if( !is_admin() && $query->is_main_query() ) {
-        if(is_tag() && !$query->get('post_type')) {
-
-            $query->set('post_type', 'tasks');
-        }
-
-        $query->set('author', '-'.ACCOUNT_DELETED_ID);
-    }
-
-    if(isset($query->query_vars['query_id']) && @$query->query_vars['query_id'] == 'count_tasks_by_status') {
-        $query->set('author', '-'.ACCOUNT_DELETED_ID);
-    }
-    elseif(($query->is_main_query() && $query->is_archive())
-       || ($query->get('post_type') == 'tasks')
-    ) {
-    	$query->set('query_id', 'get_tasks');
-    	
-        if( !empty($_GET['st']) ) {
-            $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
-        }
-        if( !empty($_GET['dl']) ) {
-            $metas = (array)$query->get('meta_query');
-            switch($_GET['dl']) {
-                case '10':
-                    $metas[] = array(
-                        'key' => 'deadline',
-                        'value' => array(date('Ymd'), date('Ymd', strtotime('+10 days'))),
-                        'compare' => 'BETWEEN',
-                        'type' => 'DATE'
-                    );
-                    break;
-                case 'lm':
-                    $metas[] = array(
-                        'key' => 'deadline',
-                        'value' => array(date('Ymd'), date('Ymd', strtotime('+1 month'))),
-                        'compare' => 'BETWEEN',
-                        'type' => 'DATE'
-                    );
-                    break;
-                case 'mm':
-                    $metas[] = array(
-                        'key' => 'deadline',
-                        'value' => array(date('Ymd', strtotime('+1 month')), date('Ymd', strtotime('+6 months'))),
-                        'compare' => 'BETWEEN',
-                        'type' => 'DATE'
-                    );
-                    break;
-            }
-            $query->set('meta_query', $metas);
-        }
-        if( !empty($_GET['rw']) ) {
-            $metas = (array)$query->get('meta_query');
-            $metas[] = array(
-                'key' => 'reward',
-                'value' => $_GET['rw'], //'slug',
-                'compare' => '=',
-            );
-            $query->set('meta_query', $metas);
-        }
-        if( !empty($_GET['tt']) ) {
-            $query->set('tag_slug__in', (array)$_GET['tt']);
-        }
-    }
-    
-    global $wpdb;
-    if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
-    	$metas = (array)$query->get('meta_query');
-    	
-    	$query->set('orderby', 'menu_order');
-    	$query->set('order', 'ASC');
-    	
-    	if(!$metas) {
-    		$metas = array();
-    	}
-    	
-    	$meta_candidates_number = array(
-    			'key' => 'candidates_number',
-    			'value' => '',
-    			'compare' => '>='
-    	);
-    	$meta_status_order = array(
-    			'key' => 'status_order',
-    			'value' => '',
-    			'compare' => '>='
-    	);
-    	 
-    	array_unshift($metas, $meta_status_order);
-    	array_unshift($metas, $meta_candidates_number);
-    	
-    	$query->set('meta_query', $metas);
-    	add_filter('posts_orderby','ord_cand_orderbyreplace');
-    }
-}
 
 function ord_cand_orderbyreplace($orderby) {
 	remove_filter('posts_orderby','ord_cand_orderbyreplace');
@@ -311,29 +214,6 @@ add_action('tst_deadline_reminder_hook', function(){
 });
 
 
-function tst_get_task_status_list() {
-    return array(
-        'draft' => __('Draft', 'tst'),
-        'publish' => __('Opened', 'tst'),
-        'in_work' => __('In work', 'tst'),
-        'closed' => __('Closed', 'tst'),
-    );
-}
-
-function tst_get_task_status_label($status = false) {
-
-    if( !$status ) {
-        global $post;
-
-        if( !$post || $post->post_type != 'tasks')
-            return false;
-
-        $status = $post->post_status;
-    }
-
-    $status_list = tst_get_task_status_list();
-    return isset($status_list[$status]) ? $status_list[$status] : false;
-}
 
 function tst_get_deadline_class($days) {
     $days = (int)$days;
@@ -948,13 +828,14 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+    $user_login = itv_get_unique_user_login(itv_translit_sanitize($_POST['first_name']), itv_translit_sanitize($_POST['last_name']));
 
     if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
         die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
-    } else if(username_exists($_POST['login'])) {
+    } else if(username_exists($user_login)) {
         die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('Username already exists!', 'tst').'</div>',
@@ -966,7 +847,7 @@ function ajax_user_register() {
         )));
     } else {
         $user_id = wp_insert_user(array(
-            'user_login' => $_POST['login'],
+            'user_login' => $user_login,
             'user_email' => $_POST['email'],
             'user_pass' => $_POST['pass'],
             'first_name' => $_POST['first_name'],
@@ -996,7 +877,7 @@ function ajax_user_register() {
             wp_mail(
                 $_POST['email'],
                 $email_templates['activate_account_notice']['title'],
-                nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code")))
+                nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
             );
 
             die(json_encode(array(
@@ -1532,6 +1413,91 @@ function rss_feed_request($qv) {
 	return $qv;
 }
 add_filter('request', 'rss_feed_request');
+
+function itv_translit_sanitize($string) {
+	$rtl_translit = array (
+			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
+			"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
+			"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
+			"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
+			"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
+			"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
+			"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
+			"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
+			"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
+			"е"=>"e","ё"=>"yo","ж"=>"zh",
+			"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
+			"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+			"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
+			"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
+			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
+	);
+	return strtr($string, $rtl_translit);
+}
+
+function itv_get_unique_user_login($first_name, $last_name = '') {
+	$new_ok_login = sanitize_user($first_name, true);
+	$is_ok = false;
+	
+	if(!username_exists($new_ok_login)) {
+		$is_ok = true;
+	}
+	
+	if(!$is_ok && $last_name) {
+		$new_ok_login = sanitize_user($last_name, true);
+		if(!username_exists($new_ok_login)) {
+			$is_ok = true;
+		}
+	}
+	
+	if(!$is_ok) {
+		$user_login = sanitize_user($first_name . ($last_name ? '_' . $last_name : ''), true);
+		$new_ok_login = $user_login;
+		$iter = 1;
+		while(username_exists($new_ok_login) && $iter < 1000) {
+			$new_ok_login = $user_login . $iter;
+			$iter += 1;
+		}
+	}
+	
+	return $new_ok_login;
+}
+
+function itv_email_login_authenticate($user, $username, $password) {
+	if(is_a($user, 'WP_User')) {
+		return $user;
+	}
+	
+	$itv_log = ItvLog::instance();
+	
+	$is_auth_ok = wp_authenticate_username_password(null, $username, $password);
+	if(!is_wp_error($is_auth_ok)) {
+		$user = $is_auth_ok;
+		if($user) {
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_LOGIN, $user->ID, $user->user_login);
+		}
+		return $is_auth_ok;
+	}
+
+	if(!empty($username)){
+		$username = str_replace('&', '&amp;', stripslashes($username));
+		$user = get_user_by('email', $username);
+		if(isset($user, $user->user_login, $user->user_status) && 0 == (int) $user->user_status) {
+			$username = $user->user_login;
+		}
+	}
+
+	$is_auth_ok = wp_authenticate_username_password( null, $username, $password );
+	if(!is_wp_error($is_auth_ok)) {
+		$user = $is_auth_ok;
+		if($user) {
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_EMAIL, $user->ID, $user->user_login);
+		}
+	}
+	return $is_auth_ok;
+}
+remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
+add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
 
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');

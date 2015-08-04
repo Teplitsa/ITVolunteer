@@ -1,6 +1,16 @@
 /* project styles */
 @import 'bourbon';
 @import 'utility';
+
+//old styles
 @import 'base';
 @import 'tweaks';
+
+//new styles
+@import 'project';
+@import 'menu';
+@import 'tasks';
+@import 'members';
+@import 'pages';
+
 

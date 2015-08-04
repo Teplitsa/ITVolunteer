@@ -6,21 +6,19 @@ if( !is_page('contacts') ) {?>
 
 <div id="contact-form" <?php if( !is_page('contacts') ) {?> style="display: none;" <?php }?>>
     <form>
-        <div class="form-group">
-            <label><?php _e('First and last name', 'tst');?></label>
-            <input type="text" class="form-control" id="name-field" placeholder="<?php _e('Please, enter your name here', 'tst');?>" value="<?php echo $user->first_name.($user->last_name ? ' '.$user->last_name : '');?>" />
+        <div class="form-group">           
+            <input type="text" class="form-control input-sm" id="name-field" placeholder="<?php _e('Your name', 'tst');?>" value="<?php echo $user->first_name.($user->last_name ? ' '.$user->last_name : '');?>" />
             <div id="name-message" class="alert alert-danger" style="display: none;"></div>
         </div>
 
-        <div class="form-group">
-            <label><?php _e('Email', 'tst');?></label>
-            <input type="text" class="form-control" id="email-field" placeholder="<?php _e('Please, enter your email here', 'tst');?>" value="<?php echo $user->user_email ? $user->user_email : '';?>" />
+        <div class="form-group">            
+            <input type="text" class="form-control input-sm" id="email-field" placeholder="<?php _e('Email', 'tst');?>" value="<?php echo $user->user_email ? $user->user_email : '';?>" />
             <div id="email-message" class="alert alert-danger" style="display: none;"></div>
         </div>
 
         <div class="form-group">
             <label><?php _e('Your message:', 'tst');?></label>
-            <textarea id="message-field" class="form-control"></textarea>
+            <textarea id="message-field" class="form-control input-sm"></textarea>
             <div id="message-message" class="alert alert-danger" style="display: none;"></div>
         </div>
 

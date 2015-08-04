@@ -1,0 +1,146 @@
+/** == Tasks templates **/
+
+/** Taks in loop */
+.tpl-task {
+		
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: 16px 0 16px 24px;
+		position: relative;
+	}
+		
+	.status-wrap {
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		top: 22px;
+		left: 0;
+	}
+		
+	.status-label {
+		display: block;
+		width: 10px;
+		height: 10px;
+		color: rgba(255,255,255,0);
+		background: $color-label-green-normal;
+		border-radius: 50%;
+	}
+	
+	&.status-in_work .status-label {  background: $color-label-work; }
+	&.status-closed .status-label { background: $color-label-closed; }
+	
+	.task-title {
+		@include post-title();
+		margin: 0 0 3px;
+		padding-left: 0;
+	}
+	
+	.task-meta {
+		font-size: 12px;
+		color: $color-text-meta;
+		font-weight: 300;
+		
+		a {
+			color: $color-text-black;
+			font-weight: 300;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-tags {
+		font-size: 12px;
+		color: $color-text-meta;
+		margin-top: 5px;
+		
+		a {
+			color: $color-text-meta;
+			font-weight: 500;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-summary {
+		position: relative;
+	}
+	
+	.task-reward {
+		margin-top: 1em;
+		padding-right: $statusW +10px;
+		
+		.reward-icon  {
+			margin-right: 5px;
+		}
+	}
+	
+	&.status-publish .task-reward { color: $color-label-green-normal;  }
+	
+	.task-more {
+		width: $statusW;
+		position: absolute;
+		top: -6px;
+		right: 0;
+		text-align: center;
+		vertical-align: top;
+		
+		a {
+			display: inline-block;
+			height: 17px;
+			color: transparentize($color-text-meta, 0.3);
+			font-weight: bold;
+			font-size: 30px;
+			letter-spacing: 0.5px;
+			line-height: 17px;
+			vertical-align: top;
+			@include transition(all 0.35s);
+			
+			&:hover, &:focus, &:active {
+				color: darken($color-text-meta, 20%);
+				text-decoration: none;
+			}
+		}
+	}
+	
+} //tpl
+
+
+
+/** Tasks List Screen **/
+.tasks-list-header {
+	.tasks-filters {
+		@include clearfix;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		padding-top: 12px;
+		
+		a {
+			display: inline-block;
+			line-height: 1;
+			padding: 4px 13px 6px;
+		}
+		
+		li {
+			float: left;
+			&.publish a { color: $color-label-green-normal; }
+			&.in_work a { color: $color-label-work;}
+			&.closed a { color: $color-label-closed;}
+		}
+				
+		li.active {
+			a {
+				color: $color-white;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			
+			&.publish a { background: $color-label-green-normal; }
+			&.in_work a { background: $color-label-work ;}
+			&.closed a { background: $color-label-closed;}
+		}
+	}
+}

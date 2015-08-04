@@ -16,18 +16,18 @@
 <div class="site-navigation-area">
 	<ul id="content_menu" class="content-menu">
 		<li class="important-item">
-			<a href="<?php echo home_url('tasks?st=publish');?>">
-				<?php _e('Tasks', 'tst');?> <span class="count ">( <?php echo tst_get_new_tasks_count();?> )</span>
+			<a href="<?php echo tst_tasks_filters_link('publish');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_tf_list');?>>
+				<?php _e('Tasks', 'tst');?> (<span class="count "><?php echo tst_get_new_tasks_count();?></span>)
 			</a>
 		</li>
 		<li class="important-item-2">
-			<a href="<?php echo home_url('members');?>">
+			<a href="<?php echo home_url('members');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_mb_list');?>>
 				<?php _e('Members', 'tst');?> <span class="count ">( <?php echo tst_get_active_members_count();?> )</span>
 			</a>
 		</li>	
 		
         <li class="has-children">
-          <a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?> <b class="caret"></b></a>
+          <a href="<?php echo home_url('about');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_about');?>><?php _e('About', 'tst');?> <b class="caret"></b></a>
           <ul class="submenu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
             <li><a href="<?php echo home_url('news');?>"><?php echo $news_title;?></a></li>
@@ -41,7 +41,7 @@
 	<?php if(is_user_logged_in()): global $current_user; ?>
 		<li class="has-children">
 		<?php $user_url = tst_get_member_url($current_user);?>
-			<a href="<?php echo $user_url;?>">					
+			<a href="<?php echo $user_url;?>" class="ga-event-trigger" <?php tst_ga_event_data('m_profile');?>>					
 				<?php echo tst_get_member_name($current_user);?> <b class="caret"></b>
 				<?php echo apply_filters('itv_notification_badge', '');?>
 			</a>
@@ -53,12 +53,12 @@
 			</ul>
 		</li>
 	<?php else: ?>
-		<li><a href="<?php echo home_url('/registration/');?>"><?php _e('Log In', 'tst');?></a></li>			
+		<li><a href="<?php echo home_url('/registration/');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_login');?>><?php _e('Log In', 'tst');?></a></li>			
 	<?php endif;?>
 	
 	<?php if(is_user_logged_in()) {?>
 	<li class="important-item">	
-		<a href="<?php echo home_url('task-actions');?>" class=""><?php _e('New task', 'tst');?></a></li>
+		<a href="<?php echo home_url('task-actions');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_ntask');?>><?php _e('New task', 'tst');?></a></li>
 	</li>
 	<?php }?>
 	

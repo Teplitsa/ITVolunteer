@@ -1,73 +1,79 @@
 /* scripts */
 
-/* Top link Plugin by David Walsh (http://davidwalsh.name/jquery-top-link)
-  rewritten by @foralien to be safely used in no-conflict mode */
-
-(function($) {
- 
-	$.fn.topLink = function(settings) {
-	    var config = {
-	    	'min'       : 400,
-	    	'fadeSpeed' : 200
-	    };
- 
-		if (settings) $.extend(config, settings);
- 
-		this.each(function() {
-       		//listen for scroll
-			var el = $(this);
-			el.hide(); //in case the user forgot
-			
-			$(window).scroll(function() {
-				if($(window).scrollTop() >= settings.min){
-					el.fadeIn(settings.fadeSpeed);
-					
-				} else {
-					el.fadeOut(settings.fadeSpeed);
-				}
-			});			
-    	});
- 
-    	return this; 
-	};
- 
-})(jQuery);
-
-
 jQuery(function($){
-	$('html').removeClass('no-js').addClass('js');
+	$('html').removeClass('no-js').addClass('js');	
+	var windowWidth = $('#page').width();
 	
-	/* no rich interations fot ie6/ie7 */
-	var windowWidth = $(window).width();
-	var testIE = false;
-	if($('html').hasClass('ie6') || $('html').hasClass('ie7')){
-		testIE = true;
-	}
+	/* Responsive nav */	
+    var navCont = $('#site_navigation');
+    $('#menu-trigger').on('click', function(e){
+
+        e.preventDefault();
+        if (navCont.hasClass('toggled')) { 
+            //remove
+            navCont.find('.site-navigation-area').slideUp('normal', function(){
+				navCont.removeClass('toggled');
+				navCont.find('.site-navigation-area').removeAttr('style');
+			});
+            
+        }
+        else { 
+            //add
+            navCont.find('.site-navigation-area').slideDown('normal', function(){
+				navCont.addClass('toggled');
+				navCont.find('.site-navigation-area').removeAttr('style');
+			});
+            
+        }
+    });
 	
-	/* top link	 */
-	var toplinkTrigger = $('#top-link');
+	  
 	
-	if( windowWidth > 600 && !testIE ) {
-		toplinkTrigger
-		.topLink({ //appearance
-			min: 400,
-			fadeSpeed: 500
-			
-		})
-		.on('click', function(event){ //smoth scroll
-			event.preventDefault();
-			var full_url = toplinkTrigger.find('a').attr('href');
-			
-			var parts = full_url.split("#");
-			var trgt = parts[1];
-			
-			var target_offset = $("#"+trgt).offset();
-			var target_top = target_offset.top;
-			
-				
-			$('html, body').animate({scrollTop:target_top}, 900);
-		});    
-	}
+	/* Masonry */
+	var $members_list = $('.members-list');
+	
+	//imagesLoaded doesn't work because of gravatar
+	$members_list.masonry({itemSelector: '.member'});			
+	$(window).resize(function(){			
+		$members_list.masonry('bindResize');		
+	});
+	
+	
+	var $tasks_list = $('.tasks-list');
+	
+	$tasks_list.masonry({
+		itemSelector: '.item-masonry'
+	});			
+	
+	$(window).resize(function(){			
+		$tasks_list.masonry('bindResize');		
+	});
+	
+	
+	var $posts_list = $('.post-list'); 
+	
+	$posts_list.masonry({
+		itemSelector: '.tpl-post'
+	});
+	$posts_list.imagesLoaded().progress( function() {
+		$posts_list.masonry('layout');
+	});	
+	$(window).resize(function(){			
+		$posts_list.masonry('bindResize');		
+	});
+	
+	
+	/* Modal on home */			
+	$('#myModal').on('shown.bs.modal', function () {
+		var targetSrc = $('#hp-mtr').find('a').attr('href');
+		$(this).find('iframe').attr({src : targetSrc});
+	});
+	
+	$('#myModal').on('hidden.bs.modal', function() {
+		
+		$(this).find('iframe').removeAttr('src');
+	});
+	
 	
 	/* current paging item */
 	$('ul.pagination').find('span.current').parents('li').addClass('active');
@@ -302,14 +308,8 @@ jQuery(function($){
         });
     });
 
-    /* Task page sidebar, Guest viewing */
-    $('#guest-help').click(function(e){
-        e.preventDefault();
-
-        $(this).attr('disabled', 'disabled');
-        $('#default').slideUp(100);
-        $('#login-please').slideDown(100);
-    });
+    
+    
 
     $('#author-publish').click(function(e){
         e.preventDefault();
@@ -599,7 +599,10 @@ jQuery(function($){
 
         });
     });
-
+	
+	/** Registration & Login **/
+	$('#user_login').focus();
+	
     $('#login-form').submit(function(e){
         e.preventDefault();
 
@@ -637,16 +640,6 @@ jQuery(function($){
             val = '';
 
         // Validation:
-        val = $form.find('#user_login').val();
-        if(val.length <= 3) {
-            form_is_valid = false;
-            $form.find('#user_login_vm').html(frontend.user_login_too_short).show();
-        } else if( !val.match(/^([a-zA-Z0-9\-])*$/) ) {
-            form_is_valid = false;
-            $form.find('#user_login_vm').html(frontend.user_login_incorrect).show();
-        } else
-            $form.find('#user_login_vm').html('').hide();
-
         val = $form.find('#email').val();
         if( !val.length ) {
             form_is_valid = false;
@@ -658,15 +651,11 @@ jQuery(function($){
             $form.find('#user_email_vm').html('').hide();
 
         val = $form.find('#pass1').val();
-        if(val != $form.find('#pass2').val()) {
-            form_is_valid = false;
-            $form.find('#user_pass_vm').html(frontend.passes_are_inequal).show();
-        } else if( !val.length ) {
-            form_is_valid = false;
-            $form.find('#user_pass_vm').html(frontend.user_pass_empty).show();
-        } else
-            $form.find('#user_pass_vm').html('').hide();
-
+		if( !val.length ) {
+			form_is_valid = false;
+			$form.find('#user_pass_vm').html(frontend.user_pass_empty).show();
+		}
+        
         val = $form.find('#first_name').val();
         if(val.length < 3) {
             form_is_valid = false;
@@ -698,15 +687,20 @@ jQuery(function($){
 
                 resp = jQuery.parseJSON(resp);
 
-                if(resp.status == 'ok')
-                    $form.fadeOut(200);
-                else
+                if(resp.status == 'ok') {
+                	$form.find('.panel-body #reg-form-fields').hide();
+                }
+                else {
                     $submit.parents('.form-group').show();
+                }
 
                 $('#register-form-message').html(resp.message).show();
             });
         }
     });
+	
+	
+	
 
     $('#delete_profile').click(function(e){
         e.preventDefault();
@@ -842,20 +836,9 @@ jQuery(function($){
 		//$('html, body').animate({scrollTop:STarget}, 300);
 		$('html, body').scrollTop(STarget);
 	}
-
-    var $container = $('.members-list');
-    $container.imagesLoaded(function(){
-        $container.masonry({
-            itemSelector: '.member'
-        });
-    });
-
-    var $tasks_list = $('.tasks-list');
-    $tasks_list.imagesLoaded(function(){
-        $tasks_list.masonry({
-            itemSelector: '.item-masonry'
-        });
-    });
+	
+	
+    
 
     $('#tasks-filters-trigger').click(function(e){
         e.preventDefault();
@@ -976,16 +959,27 @@ jQuery(function($){
     }
 });
 
+
+//GA Events
 jQuery(function($){
-	$('.add-new-task-button').click(function(){
-		ga('send', 'event', 'button', 'add_task_main');
-	});
-	$('.home-registration-button').click(function(){
-		ga('send', 'event', 'button', 'registr');
-	});
-	$('.home-watch-video-button').click(function(){
-		ga('send', 'event', 'button', 'video');
-	});	
+	if(typeof ga == 'function') {		
+		$('.ga-event-trigger').on('click', function(e){
+		//e.preventDefault();
+			var trigger = $(this),
+				triggerId = trigger.attr('data-ga_event');
+			
+			//to_do check for the correct value
+			//debug
+			if (ga_events[triggerId]) {
+				console.log(ga_events[triggerId].ga_category);
+				console.log(ga_events[triggerId].ga_action);
+				console.log(ga_events[triggerId].ga_label);
+			
+				ga('send', 'event', ga_events[triggerId].ga_category, ga_events[triggerId].ga_action, ga_events[triggerId].ga_label, 1);	
+			}
+			
+		});		
+	}	
 });
 
 // customize comments subscriptions

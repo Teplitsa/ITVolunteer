@@ -26,7 +26,7 @@ $email_templates = array(
     ),
     'activate_account_notice' => array(
         'title' => __('ITVolunteer - activate your account', 'tst'),
-        'text' => __("Greerings!\n\nYour registration is almost done. To complete it, please <a href='%s'>click here</a>.\n\nBest,\nITVolunteer", 'tst'),
+        'text' => __("Greerings!\n\nYour registration is almost done. To complete it, please <a href='%s'>click here</a>.\nYour login is %s\n\nBest,\nITVolunteer", 'tst'),
         'test' => __('denisch_test_localization', 'tst'),
     ),
     'account_activated_notice' => array(

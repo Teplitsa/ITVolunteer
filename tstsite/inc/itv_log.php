@@ -16,6 +16,8 @@ class ItvLog {
 	public static $ACTION_USER_REGISTER = 'user_register';
 	public static $ACTION_USER_UPDATE = 'user_update';
 	public static $ACTION_USER_DELETE_PROFILE = 'user_delete_profile';
+	public static $ACTION_USER_LOGIN_EMAIL = 'user_login_email';
+	public static $ACTION_USER_LOGIN_LOGIN = 'user_login_login';
 	
 	private $task_action_table;
 	private static $_instance = NULL;
@@ -49,7 +51,7 @@ class ItvLog {
 	}
 
 	public function is_user_action($action) {
-		return array_search($action, array('user_register', 'user_update', 'user_delete_profile')) !== false;
+		return array_search($action, array('user_register', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login')) !== false;
 	}
 	
 	public function log_user_action($action, $user_id = 0, $user_login = '') {
@@ -161,3 +163,5 @@ __('itv_task_actions_log_close', 'tst');
 __('itv_task_actions_log_user_register', 'tst');
 __('itv_task_actions_log_user_update', 'tst');
 __('itv_task_actions_log_user_delete_profile', 'tst');
+__('itv_task_actions_log_user_login_login', 'tst');
+__('itv_task_actions_log_user_login_email', 'tst');

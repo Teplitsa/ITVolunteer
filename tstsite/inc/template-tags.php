@@ -1,12 +1,66 @@
 <?php
 /**
- * Site specifictemplate tags
+ * Common template tags - on top reviewed ones
+ * 
  **/
 
 
-/**
- * Page title elements
- **/
+/** == Page elements == **/
+
+/* page title */
+function frl_page_title(){	
+	global $post, $tst_member, $wp_query;
+	
+	$title = '';
+	if(is_post_type_archive('tasks')){
+        $title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
+		
+	}
+    elseif(is_tag()) {
+        $title = apply_filters('tag_archive_title', single_tag_title('', false));
+		$title = sprintf(__('Tasks by tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
+    }
+	elseif(is_singular('tasks')) {
+
+		$id = intval($post->ID); 
+		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
+
+	} elseif(is_single_member())
+        $title = apply_filters('the_title', tst_get_member_name());
+
+	elseif(is_page('task-actions')) {
+		
+		if(empty($_GET['task']))
+			$title = __('New task', 'tst');
+		else {
+			$id = intval($_GET['task']);
+			$title = sprintf(__('Edit task #%s', 'tst'), $id);
+		}
+	} elseif(is_page('member-actions'))
+        $title = apply_filters('the_title', tst_get_member_action_title());
+
+    elseif(is_page('member-tasks'))
+        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
+
+	elseif(is_page() || is_single())
+        $title = apply_filters('the_title', $post->post_title);
+    elseif(is_search()){
+        $title = __('Search results', 'tst');
+    }
+	elseif(is_home()){
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+	}
+    elseif(is_404())
+		$title = __('Page not found', 'tst');
+
+    else { //@to_do make reeal titles here
+		$title = __('Some title', 'tst');
+	}
+	
+	return $title;
+}
+
 function frl_breadcrumbs(){
 	global $post;
 	
@@ -70,8 +124,21 @@ function frl_breadcrumbs(){
 		$title = __('All Tasks', 'tst');
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
 	}
+	elseif(is_home()) {
+		$about = get_page_by_path('about');
+		$about_t = apply_filters('the_title', $about->post_title);
+		$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
+		
+		$p = get_page(get_option('page_for_posts'));
+		$title = apply_filters('the_title', $p->post_title);
+		$bredcrumbs[] = "<li class='active'>{$title}</li>";
+	}
 	elseif(is_page()) {
-		//is this correct?
+		if(is_page('sovety-dlya-nko-uspeshnye-zadachi') || is_page('contacts')) {
+			$about = get_page_by_path('about');
+			$about_t = apply_filters('the_title', $about->post_title);
+			$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
+		}
 		
 		$title = frl_page_title();
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
@@ -80,6 +147,10 @@ function frl_breadcrumbs(){
 		$p = get_page(get_option('page_for_posts'));
 		$title = apply_filters('the_title', $p->post_title);
 		
+		$about = get_page_by_path('about');
+		$about_t = apply_filters('the_title', $about->post_title);
+				
+		$bredcrumbs[] = "<li><a href='".get_permalink($about)."'>{$about_t}</a></li>";
 		$bredcrumbs[] = "<li class='active'>{$title}</li>";
 	}
 	else { //@to_do make real structures here
@@ -92,56 +163,63 @@ function frl_breadcrumbs(){
 }
 
 
-function frl_page_title(){	
-	global $post, $tst_member;
-	
-//	$title = '';
-	if(is_post_type_archive('tasks'))
-        $title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
-
-    elseif(is_tag())
-        $title = apply_filters('tag_archive_title', single_tag_title('', false));
-
-	elseif(is_singular('tasks')) {
-
-		$id = intval($post->ID); 
-		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
-
-	} elseif(is_single_member())
-        $title = apply_filters('the_title', tst_get_member_name());
-
-	elseif(is_page('task-actions')) {
-		
-		if(empty($_GET['task']))
-			$title = __('New task', 'tst');
-		else {
-			$id = intval($_GET['task']);
-			$title = sprintf(__('Edit task #%s', 'tst'), $id);
-		}
-	} elseif(is_page('member-actions'))
-        $title = apply_filters('the_title', tst_get_member_action_title());
-
-    elseif(is_page('member-tasks'))
-        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
-
-	elseif(is_page() || is_single())
-        $title = apply_filters('the_title', $post->post_title);
-    elseif(is_search()){
-        $title = __('Search results', 'tst');
-    }
-	elseif(is_home()){
-		$p = get_page(get_option('page_for_posts'));
-		$title = apply_filters('the_title', $p->post_title);
-	}
-    elseif(is_404())
-		$title = __('Page not found', 'tst');
-
-    else { //@to_do make reeal titles here
-		$title = __('Some title', 'tst');
-	}
-	
-	return $title;
+/* Excerpts filters for texts */
+function frl_continue_reading_link() {
+	$more = __('More', 'tst');
+	return '&nbsp;<a href="'. esc_url( get_permalink() ) . '"><span class="meta-nav">'.$more.'&hellip;</span></a>';
 }
+
+add_filter( 'excerpt_more', 'frl_auto_excerpt_more' );
+function frl_auto_excerpt_more( $more ) {
+	return '&hellip;';
+}
+
+add_filter( 'excerpt_length', 'frl_custom_excerpt_length' );
+function frl_custom_excerpt_length( $l ) {
+	return 35;
+}
+
+add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
+function frl_custom_excerpt_more( $output ) {
+	
+	if(is_singular())
+		return $output;
+	
+	if (is_search())
+		$output .= '&nbsp;[&hellip;]';
+	else
+		$output .= frl_continue_reading_link();
+	
+	return $output;
+}
+
+
+/** Login & Registration tags **/
+function tst_get_login_url($redirect = true) {
+
+    if(is_bool($redirect))
+        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'registration') ? home_url() : wp_get_referer());
+    elseif(strlen($redirect) > 1)
+        $redirect = '?redirect_to='.urlencode($redirect);
+    else
+        $redirect = '';
+
+	return home_url('registration/'.$redirect);
+}
+
+function tst_get_register_url() {
+
+	return home_url('registration');
+}
+
+
+/** GA Events **/
+function tst_ga_event_data($trigger_id){
+	
+	echo "data-ga_event='".esc_attr($trigger_id)."'";
+}
+
+// old 
 
 
 
@@ -332,22 +410,7 @@ function frl_paginate_links($query = null, $echo = true) {
 		$links;
 }
 
-function tst_get_login_url($redirect = true) {
 
-    if(is_bool($redirect))
-        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'registration') ? home_url() : wp_get_referer());
-    elseif(strlen($redirect) > 1)
-        $redirect = '?redirect_to='.urlencode($redirect);
-    else
-        $redirect = '';
-
-	return home_url('login/'.$redirect);
-}
-
-function tst_get_register_url() {
-
-	return home_url('registration');
-}
 
 function frl_get_sep() {
 	return "<span class='sep'>/</span>";
@@ -414,19 +477,7 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
  **/
 function frl_page_actions(){
 ?>
-<div class="share-buttons">
 
-<script type="text/javascript">(function() {
-  if (window.pluso)if (typeof window.pluso.start == "function") return;
-  if (window.ifpluso==undefined) { window.ifpluso = 1;
-    var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-    s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-    s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-    var h=d[g]('body')[0];
-    h.appendChild(s);
-  }})();</script>
-<div class="pluso" data-background="transparent" data-options="small,square,line,horizontal,nocounter,theme=04" data-services="facebook,vkontakte,twitter,google,livejournal"></div>
-</div>
 <?php
 }
 
@@ -464,7 +515,7 @@ function tst_temp_avatar($user = null){
 		$default = get_template_directory_uri() . '/img/temp-avatar.png';
 		$size = 180;
 		$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
-		
+		//$grav_url = $default;
 		?>
 			<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 		<?php
@@ -551,6 +602,7 @@ function tst_comment( $comment, $args, $depth ) {
 }
 
 
+/** Old task params - to be reworked */
 function tst_task_params(){
 	
 ?>

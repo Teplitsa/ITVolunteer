@@ -4,133 +4,133 @@
  *
  **/
 
-if(get_current_user_id()) {
-    $refer = stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer();
-    $back_url = $refer ? $refer : home_url();
+ 
+$refer = empty($_GET['redirect_to']) ?
+    (stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer()) :
+    $_GET['redirect_to'];
+	$back_url = $refer ? $refer : home_url();
 
-    wp_redirect($back_url);
-    die();
-}
+	if(get_current_user_id()) {
+		wp_redirect($back_url);
+		die();
+	} 
 
 get_header();?>
 
-<article class="member-actions">
+<article class="register-actions">
 <?php while ( have_posts() ) : the_post();?>
 
-
-<header class="page-heading">
-
-	<div class="row">
-		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>			
-		</div>
-
-		<div class="col-md-4">
-			<div class="status-block-member in-action">
-				<div class="row-top">
-				<?php //... ?>
-				</div>			
-			</div>
-		</div>
-	</div><!-- .row -->
-
-</header>
-
-<div class="page-body">
-<div class="row in-single">
-
-<div class="col-md-8">
+<div class="page-body register-page-body">
 	
-	<div class="row">
-        <div class="col-md-3">
-			<span class="thumbnail">
-				<?php tst_login_avatar();?>
-			</span>
-		</div>
+<div id="register_content">
+<div class="row">
+	<div class="col-sm-5">
+		<h2 class="login-title"><?php echo frl_page_title();?></h2>
+		<!-- login form -->
+		<div class="login-form">
+			
+		<form id="login-form" method="post" action="<?php echo esc_url(site_url('wp-login.php', 'login_post'));?>" name="loginform"  role="form">
+			<?php wp_nonce_field('user-login');?>
+	
+			<div class="form-group">				
+				<input type="text" size="20" value="" class="form-control input-sm" id="user_login" name="log" placeholder="<?php _e('Username or Email', 'tst');?>">				
+			</div>
+			
+			<div class="row">
+				<div class="col-xs-8">
+					<div class="form-group">				
+						<input type="password" size="20" value="" class="form-control input-sm" id="user_pass" name="pwd" placeholder="<?php _e('Password', 'tst');?>">
+					</div>					
+				</div><!-- .col-  -->				
+				<div class="col-xs-4">
+					<div class="form-group">
+						<input type="submit" id="do-login" <?php tst_ga_event_data('reg_login');?> value="<?php _e('Log In', 'tst');?>" class="btn btn-primary btn-sm ga-event-trigger" name="wp-submit">
+						<input type="hidden" value="<?php echo $back_url;?>" id="redirect_to" name="redirect_to" />						
+					</div>
+				</div><!-- .col-  -->
+			</div><!-- .row -->	
+			
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" value="forever" id="rememberme" name="rememberme" checked="checked"><?php _e('Remember Me', 'tst');?></label>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<span class="lost-psw "><a title="Восстановление пароля" href="<?php echo wp_lostpassword_url();?>">Забыли пароль?</a>				
+				</span>
+			</div>
+			
+			<div id="login-message" class="rl-error" style="display: none;"></div>
+		</form>
 		
-		<div class="col-md-9">
+		</div><!-- .login-form -->		
+	</div><!-- .col- -->
+	
+	<div class="col-sm-7">		
+		
+		<form id="user-reg" action="#">
+		<?php wp_nonce_field('user-reg');?>
+	
+		<div class="panel panel-default register-form">
+		<div class="panel-heading"><?php _e('Register new account', 'tst');?></div>
+		
+		<div class="panel-body">
 			<div id="register-form-message" class="validation-message" style="display: none"></div>
-			<form id="user-reg" action="#">
-			<?php wp_nonce_field('user-reg');?>
-		
-			<div class="panel panel-default register-form">
-			<div class="panel-heading"><small><?php _e('All fields are required', 'tst');?></small></div>
-		
-			<div class="panel-body">
-				<div class="form-group">
+			<div id="reg-form-fields">
+				<!--<div class="form-group">
 					<label for="user_login"><?php _e('Username (login)', 'tst');?></label>
-					<input type="text" name="user_login" id="user_login" value="" class="form-control" maxlength="15" />
-					<small class="help-block"><?php _e('Username can\'t be changed in the future. It must consist of only latin alphabet symbols.', 'tst');?></small>
+					<input type="text" name="user_login" id="user_login" value="" class="form-control" maxlength="15" />			
 					<div id="user_login_vm" class="validation-message" style="display: none"></div>
+				</div>-->
+				<div class="row">
+					<div class="col-xs-5 col-md-4">
+						<div class="form-group">						
+							<input type="text" class="form-control input-sm" name="first_name" id="first_name" value="" placeholder="<?php _e('First name', 'tst');?>"/>					
+							<div id="first_name_vm" class="validation-message rl-error" style="display: none"></div>
+						</div>				
+					</div>
+					
+					<div class="col-xs-7 col-md-8">
+						<div class="form-group">						
+							<input type="text" class="form-control input-sm" name="last_name" id="last_name" value=""  placeholder="<?php _e('Last name', 'tst');?>"/>					
+							<div id="last_name_vm" class="validation-message rl-error" style="display: none"></div>
+						</div>
+					</div>
+				</div>	<!-- .row -->		
+				
+				<div class="form-group">				
+					<input type="text" name="email" id="email" value="" class="form-control input-sm" placeholder="<?php _e('Email', 'tst');?>"/>
+					<div id="user_email_vm" class="validation-message rl-error" style="display: none"></div>
 				</div>
 				
-				<div class="form-group">
-					<label for="email"><?php _e('Email', 'tst');?></label>
-					<input type="text" name="email" id="email" value="" class="form-control" />
-					<div id="user_email_vm" class="validation-message" style="display: none"></div>
+				<div class="row">
+					<div class="col-sm-7 col-md-8">
+						<div class="form-group">				
+						<input class="hidden" value=" " /><!-- #24364 workaround -->
+						<input type="password" name="pass1" id="pass1" class="form-control input-sm" value="" autocomplete="off" placeholder="<?php _e('Password', 'tst');?>"/>
+						<div id="user_pass_vm" class="validation-message rl-error" style="display: none"></div>
+					</div>
+					</div>
+					<div class="col-sm-5 col-md-4">
+					<div class="form-group register-action">
+							<input type="submit" value="<?php _e('Register', 'tst');?>" <?php tst_ga_event_data('reg_reg');?> class="btn btn-primary btn-sm ga-event-trigger" id="do-register" name="do-register">				
+						</div>
+					</div>
 				</div>
 				
-				<div class="form-group">
-					<label for="pass1"><?php _e('Password', 'tst');?></label>
-					<input class="hidden" value=" " /><!-- #24364 workaround -->
-					<input type="password" name="pass1" id="pass1" class="form-control" value="" autocomplete="off" />
-				</div>
 				
-				<div class="form-group">
+				<!--<div class="form-group">
 					<label for="pass2"><?php _e('Repeat password', 'tst');?></label>			
 					<input name="pass2" type="password" id="pass2" class="form-control" value="" autocomplete="off" />
 					<div id="user_pass_vm" class="validation-message" style="display: none"></div>
-				</div>
-		
-				<div class="form-group">
-					<label for="first_name"><?php _e('First name', 'tst');?></label>
-					<input type="text" class="form-control" name="first_name" id="first_name" value="" />
-					<small class="help-block"><?php _e('Please provide your first name', 'tst');?></small>
-					<div id="first_name_vm" class="validation-message" style="display: none"></div>
-				</div>
-		
-				<div class="form-group">
-					<label for="last_name"><?php _e('Last name', 'tst');?></label>
-					<input type="text" class="form-control" name="last_name" id="last_name" value="" />
-					<small class="help-block"><?php _e('Please provide your last name', 'tst');?></small>
-					<div id="last_name_vm" class="validation-message" style="display: none"></div>
-				</div>
-				
-				<div class="form-group">
-					<input type="submit" value="<?php _e('Register', 'tst');?>" class="btn btn-primary" id="do-register" name="do-register">
-		
-					<!--<a href="<?php echo wp_get_referer() ? wp_get_referer() : home_url();?>" class="cancel-reg text-danger"><?php _e('Cancel profile creation', 'tst');?></a>-->
-				</div>
-	
+				</div>-->
 			</div>
-			</div>
+
+		</div>
+		</div>
+	
+		</form>
 		
-			</form>
-			
-			
-			
-			
-		</div><!-- .col-md-9-->
-	</div><!-- .row -->
-	
-</div><!-- .col-md-8 -->
-	
-<div class="col-md-4">
-	<div class="panel panel-default"><div class="panel-body">
-			<h4><?php _e('Already have an account?', 'tst');?></h4>
-			<p>
-			<?php
-				$login = tst_get_login_url();
-				$login = "<a href='{$login}'>".__('Enter on site', 'tst')."</a>";
-				printf(__("Please, %s.", 'tst'), $login);
-				?>
-			</p>
-	</div></div>
-</div><!-- .col-md-4 -->
-	
-	
+	</div><!-- .col-md-7-->
 </div><!-- .row -->
+</div>	
+
 </div> <!-- .page-body -->
 
 <?php endwhile; // end of the loop. ?>

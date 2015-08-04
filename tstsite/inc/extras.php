@@ -4,76 +4,6 @@
  **/
 
 
-/**
- * Custom excerpts
- **/
-
-/** more link */
-function frl_continue_reading_link() {
-	return '&nbsp;<a href="'. esc_url( get_permalink() ) . '"><span class="meta-nav">[&raquo;]</span></a>';
-}
-
-/** excerpt filters  */
-add_filter( 'excerpt_more', 'frl_auto_excerpt_more' );
-function frl_auto_excerpt_more( $more ) {
-	return '&hellip;';
-}
-
-add_filter( 'excerpt_length', 'frl_custom_excerpt_length' );
-function frl_custom_excerpt_length( $l ) {
-	return 35;
-}
-
-/** inject */
-add_filter( 'get_the_excerpt', 'frl_custom_excerpt_more' );
-function frl_custom_excerpt_more( $output ) {
-	
-	if(is_singular())
-		return $output;
-	
-	if (is_search())
-		$output .= '&nbsp;[&hellip;]';
-	else
-		$output .= frl_continue_reading_link();
-	
-	return $output;
-}
-
-
-/**
- * Menu filters
- **/
-add_filter( 'wp_nav_menu_args', 'frl_correct_menu_arg' );
-function frl_correct_menu_arg($args){
-	
-	if(isset($args['menu_class'])){
-		$args['menu_class'] .= ' list-unstyled';
-		
-	}
-	else {
-		$args['menu_class'] = 'list-unstyled';
-	}
-	
-	return $args;
-}
-
-
-/**
- * Inject  top link  HTML
- * require <body> tag to have id ='top'
- **/
-function frl_print_top_link(){
-
-	if(!is_admin()):
- ?>	
-	<div id="top-link">
-		<a href="#top"><?php _e('Top', 'tst');?></a>
-	</div>
-	
-<?php endif; 
-}
-//add_action('wp_footer', 'frl_print_top_link');
-
 
 /**
  * Favicon
@@ -132,8 +62,13 @@ add_filter( 'frl_the_content', 'wpautop'            );
 add_filter( 'frl_the_content', 'shortcode_unautop'  );
 add_filter( 'frl_the_content', 'do_shortcode' );
 
+
+add_filter( 'frl_the_title', 'wptexturize'   );
+add_filter( 'frl_the_title', 'convert_chars' );
+add_filter( 'frl_the_title', 'trim'          );
+
 /* jpeg compression */
-add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
+//add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
 
 
 
@@ -183,6 +118,166 @@ function tst_custom_widgets(){
 }
 add_action('widgets_init', 'tst_custom_widgets', 11);
 
+
+/**
+ * Query manipulations
+ **/
+
+add_action('parse_request', 'tst_request_corrections');
+function tst_request_corrections($request){
+	
+	if($request->request == 'tasks') {
+		$redirect = get_post_type_archive_link('tasks');
+		wp_redirect($redirect);
+		die();
+	}
+}
+
+add_action('parse_query', 'tst_query_corrections');
+function tst_query_corrections($query){
+	
+	if(is_admin() || !$query->is_main_query())
+		return;
+	
+	if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
+		$redirect = home_url('registration');
+		wp_redirect($redirect);
+		die();
+		
+	}
+	elseif(is_tag() && !$query->get('post_type')) {
+		$query->set('post_type', 'tasks');
+		
+	}
+	elseif($query->get('task_status')){
+		
+		if($query->get('task_status') == 'all'){ //fix for archive
+			$query->set('task_status', '');
+		}
+		else {
+			$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed'))) ? $query->get('task_status') : 'publish';
+			$query->set('post_status', $status);
+		}
+		
+		if($query->get('navpage')){
+			$query->set('paged', intval($query->get('navpage')));
+		}
+	}
+	
+	//var_dump($query->query_vars);
+}
+
+add_action('init', 'tst_custom_query_vars');
+function tst_custom_query_vars(){
+	global $wp;
+	
+	$wp->add_query_var('task_status');
+	$wp->add_query_var('navpage');
+	
+	//rewrite for pages   '/?([0-9]{1,})/?$'
+	add_rewrite_rule('^tasks/([^/]*)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
+	
+	//rewrite
+	add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	
+	
+}
+
+
+/** To-do: remove from  pre_get_posts into parse_query with custom qv */
+add_action('pre_get_posts', 'tst_main_query_mods');
+function tst_main_query_mods(WP_Query $query) {
+
+    // exclude account_deleted's tasks:
+    if( !is_admin() && $query->is_main_query() ) {
+        
+        $query->set('author', '-'.ACCOUNT_DELETED_ID);
+    }
+
+    if(isset($query->query_vars['query_id']) && @$query->query_vars['query_id'] == 'count_tasks_by_status') {
+        $query->set('author', '-'.ACCOUNT_DELETED_ID);
+    }
+    elseif(($query->is_main_query() && $query->is_archive())
+       || ($query->get('post_type') == 'tasks')
+    ) {
+    	$query->set('query_id', 'get_tasks');
+    	
+        //if( !empty($_GET['st']) ) {
+        //    $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
+        //}
+        if( !empty($_GET['dl']) ) {
+            $metas = (array)$query->get('meta_query');
+            switch($_GET['dl']) {
+                case '10':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd'), date('Ymd', strtotime('+10 days'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+                case 'lm':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd'), date('Ymd', strtotime('+1 month'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+                case 'mm':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd', strtotime('+1 month')), date('Ymd', strtotime('+6 months'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+            }
+            $query->set('meta_query', $metas);
+        }
+        if( !empty($_GET['rw']) ) {
+            $metas = (array)$query->get('meta_query');
+            $metas[] = array(
+                'key' => 'reward',
+                'value' => $_GET['rw'], //'slug',
+                'compare' => '=',
+            );
+            $query->set('meta_query', $metas);
+        }
+        if( !empty($_GET['tt']) ) {
+            $query->set('tag_slug__in', (array)$_GET['tt']);
+        }
+    }
+    
+    global $wpdb;
+    if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
+    	$metas = (array)$query->get('meta_query');
+    	
+    	$query->set('orderby', 'menu_order');
+    	$query->set('order', 'ASC');
+    	
+    	if(!$metas) {
+    		$metas = array();
+    	}
+    	
+    	$meta_candidates_number = array(
+    			'key' => 'candidates_number',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	$meta_status_order = array(
+    			'key' => 'status_order',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	 
+    	array_unshift($metas, $meta_status_order);
+    	array_unshift($metas, $meta_candidates_number);
+    	
+    	$query->set('meta_query', $metas);
+    	add_filter('posts_orderby','ord_cand_orderbyreplace');
+    }
+}
 
 
 /**
@@ -293,21 +388,7 @@ function tst_process_members_filter($users_query_params) {
 	return $users_query_params;
 }
 
-function tst_get_task_author_link($task = null){
-	global $post;
-	
-	if(!$task)
-		$task = $post;
-		
-	$author = get_user_by('id', $task->post_author);
-	if( !$author )
-		return '';
 
-	$name = tst_get_member_name($author);
-	$url = tst_get_member_url($author);
-	
-	return "<a href='{$url}'>{$name}</a>";
-}
 
 function tst_task_fixed_meta($task = null){
 	global $post;
@@ -699,76 +780,6 @@ function tst_get_active_members_count() {
 		$ITV_TOTAL_USERS_COUNT = $what_we_need ? $what_we_need : $emergency;
 	}
 	return $ITV_TOTAL_USERS_COUNT;
-}
-
-/* count tasks by statuses */
-global $ITV_TASKS_COUNT_ALL, $ITV_TASKS_COUNT_WORK, $ITV_TASKS_COUNT_CLOSED, $ITV_TASKS_COUNT_NEW;
-$ITV_TASKS_COUNT_ALL = null;
-$ITV_TASKS_COUNT_WORK = null;
-$ITV_TASKS_COUNT_CLOSED = null;
-
-function tst_get_new_tasks_count() {
-	global $ITV_TASKS_COUNT_NEW;	
-	if(is_null($ITV_TASKS_COUNT_NEW)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'publish',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,			
-		);
-		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_NEW = $wp_query->found_posts;
-	}
-	return $ITV_TASKS_COUNT_NEW;
-}
-
-function tst_get_all_tasks_count() {
-	global $ITV_TASKS_COUNT_ALL;	
-	if(is_null($ITV_TASKS_COUNT_ALL)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => array('publish', 'in_work', 'closed'),
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,			
-		);
-		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_ALL = $wp_query->found_posts;
-	}
-	return $ITV_TASKS_COUNT_ALL;
-}
-
-function tst_get_work_tasks_count() {
-	global $ITV_TASKS_COUNT_WORK;	
-	if(is_null($ITV_TASKS_COUNT_WORK)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'in_work',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,
-		);
-		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_WORK = $wp_query->found_posts;
-	}
-	return $ITV_TASKS_COUNT_WORK;
-}
-
-function tst_get_closed_tasks_count() {
-	global $ITV_TASKS_COUNT_CLOSED;	
-	if(is_null($ITV_TASKS_COUNT_CLOSED)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'closed',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,
-		);
-		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
-	}
-	return $ITV_TASKS_COUNT_CLOSED;
 }
 
 
