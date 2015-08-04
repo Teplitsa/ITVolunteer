@@ -41,11 +41,10 @@ get_header();?>
 					<div class="form-group">				
 						<input type="password" size="20" value="" class="form-control input-sm" id="user_pass" name="pwd" placeholder="<?php _e('Password', 'tst');?>">
 					</div>					
-				</div><!-- .col-  -->
-				
+				</div><!-- .col-  -->				
 				<div class="col-xs-4">
 					<div class="form-group">
-						<input type="submit" id="do-login" value="<?php _e('Log In', 'tst');?>" class="btn btn-primary btn-sm" id="wp-submit" name="wp-submit">
+						<input type="submit" id="do-login" <?php tst_ga_event_data('reg_login');?> value="<?php _e('Log In', 'tst');?>" class="btn btn-primary btn-sm ga-event-trigger" name="wp-submit">
 						<input type="hidden" value="<?php echo $back_url;?>" id="redirect_to" name="redirect_to" />						
 					</div>
 				</div><!-- .col-  -->
@@ -107,8 +106,8 @@ get_header();?>
 				</div>
 				</div>
 				<div class="col-sm-5 col-md-4">
-					<div class="form-group register-action">
-						<input type="submit" value="<?php _e('Register', 'tst');?>" class="btn btn-primary btn-sm" id="do-register" name="do-register">				
+				<div class="form-group register-action">
+						<input type="submit" value="<?php _e('Register', 'tst');?>" <?php tst_ga_event_data('reg_reg');?> class="btn btn-primary btn-sm ga-event-trigger" id="do-register" name="do-register">				
 					</div>
 				</div>
 			</div>

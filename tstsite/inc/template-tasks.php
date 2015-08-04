@@ -89,37 +89,40 @@ function tst_get_task_author_link($task = null){
 }
 
 
-function tst_task_reward_in_card(){
-	$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward'); //
+function tst_task_reward_in_card(){	
+	$reward = get_term(get_field('reward', get_the_ID()), 'reward');
+	if(is_wp_error($reward))
+		return;
+	
 ?>
-	<span class="reward-label" <?if(!is_wp_error($reward)):?>title="Награда"<?endif?>>
-		<span class="reward-icon glyphicon glyphicon-star"></span>
-		<span class="reward-name"><?php
-			echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name;
-		?>
-		</span>
-	</span>
+<span class="reward-icon glyphicon glyphicon-star"></span>
+<span class="reward-name" title="<?php _e('Reward', 'tst');?>">
+<?php echo apply_filters('frl_the_title', $reward->name); ?>
+</span>
+</span>
 <?php
 }
 
 
 function tst_tasks_filters_menu(){
 	
-	$current = '';
-	if(isset($_GET['st']) & !empty($_GET['st'])){
-		$current = trim($_GET['st']);
-	}
 ?>
 <ul class="tasks-filters">
-	<li class="publish<?php if($current == 'publish') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('publish'); ?>">
+	<li class="ga-event-trigger publish<?php if($current == 'publish') echo ' active';?>">
+	<a href="<?php echo tst_tasks_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
 		<?php _e('New tasks:', 'tst')?> <?php echo tst_get_new_tasks_count();?>
-	</a></li>
-	<li class="in_work<?php if($current == 'in_work') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('in_work'); ?>">
+	</a>
+	</li>
+	<li class="ga-event-trigger in_work<?php if($current == 'in_work') echo ' active';?>">
+	<a href="<?php echo tst_tasks_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
 		<?php _e('In work tasks:', 'tst')?> <?php echo tst_get_work_tasks_count();?>
-	</a></li>
-	<li class="closed<?php if($current == 'closed') echo ' active';?>"><a href="<?php echo tst_tasks_filters_link('closed'); ?>">
+	</a>
+	</li>
+	<li class="closed<?php if($current == 'closed') echo ' active';?>">
+	<a href="<?php echo tst_tasks_filters_link('closed'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_close');?>>
 		<?php _e('Closed tasks:', 'tst')?> <?php echo tst_get_closed_tasks_count();?>
-	</a></li>
+	</a>
+	</li>
 </ul>
 <?php	
 }

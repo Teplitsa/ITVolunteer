@@ -170,7 +170,7 @@ add_action('wp_enqueue_scripts', function(){
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
     wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
-	wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), $version);
+	//wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), $version);
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -290,3 +290,4 @@ require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
 require get_template_directory().'/inc/itv_reviews.php';
 require get_template_directory().'/inc/template-tasks.php';
+require get_template_directory().'/inc/stats-events.php';

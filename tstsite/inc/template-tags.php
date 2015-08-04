@@ -214,20 +214,9 @@ function tst_get_register_url() {
 
 
 /** GA Events **/
-function tst_ga_event_data($atts = array()){
+function tst_ga_event_data($trigger_id){
 	
-	$defaults = array(
-		'ga_category' => 'Неизвестная категория события',
-		'ga_action' => 'Неизвестное действие',
-		'ga_label' => 'Неизвестное место события'
-	);
-	
-	$atts = wp_parse_args($atts, $defaults);
-	
-	foreach($atts as $key => $value) {
-		$value = esc_attr($value);
-		echo " data-{$key}='{$value}' ";
-	}
+	echo "data-ga_event='".esc_attr($trigger_id)."'";
 }
 
 // old 

@@ -24,37 +24,25 @@
 .intro-panel {	
 	border-left: 1px solid #c2c2c2;
 	border-right: 1px solid #c2c2c2;
-	
-	.well {
-		margin: 0px;
-		background: #fff;
-		border: none;		
-		border-radius: 0px;
-		padding: 20px $measure-columns-gut /2;
-		@include for(small-screens) {
-			padding: $measure-columns-gut;
-		}
-	}
-	
-	.intro-text {
+	background: #fff;
+		
+	h1 {
 		max-width: 820px;
 		margin: 0 auto;
+		padding: $measure-columns-gut $measure-columns-gut/2 0 $measure-columns-gut/2;
 		font-weight: 500;		
 		line-height: 1.1;
 		text-align: center;		
 		font-size: 21px;
-		
+				
 		@include for(small-screens) {
 			font-size: 32px;
 		}
-		p {
-			margin: 0;
-		}
 	}
 	
-	.intro-actions {
+	.intro-panel-actions {
 		text-align: center;
-		margin-top: $measure-columns-gut;
+		margin: $measure-columns-gut 0;
 	}
 	
 	.cta {
@@ -88,7 +76,7 @@
 	}
 }
 	
-.home-header-buttons {
+.intro-panel-filters {	
 	color: $color-text;
 	text-align: center;
 	padding: $measure-columns-gut /2 0;

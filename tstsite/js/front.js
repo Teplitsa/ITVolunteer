@@ -960,25 +960,24 @@ jQuery(function($){
 
 //GA Events
 jQuery(function($){
-		
-	
-	if(typeof ga == 'function') {		
+	//if(typeof ga == 'function') {		
 		$('.ga-event-trigger').on('click', function(e){
-		
+		e.preventDefault();
 			var trigger = $(this),
-				label = trigger.attr('data-ga_label'),
-				action = trigger.attr('data-ga_action'),
-				category = trigger.attr('data-ga_category');
+				triggerId = trigger.attr('data-ga_event');
 			
 			//to_do check for the correct value
 			//debug
-			console.log(category);
-			console.log(action);
-			console.log(label);
+			if (ga_events[triggerId]) {
+				console.log(ga_events[triggerId].ga_category);
+				console.log(ga_events[triggerId].ga_action);
+				console.log(ga_events[triggerId].ga_label);
 			
-			ga('send', 'event', category, action, label, 1);	
+				ga('send', 'event', ga_events[triggerId].ga_category, ga_events[triggerId].ga_action, ga_events[triggerId].ga_label, 1);	
+			}
+			
 		});		
-	}	
+	//}	
 });
 
 // customize comments subscriptions

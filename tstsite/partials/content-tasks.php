@@ -3,8 +3,6 @@
  * Task in loop
  * 
  */
-
-
  
 ?>
 
@@ -18,41 +16,19 @@
 		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());?>">&nbsp;</span>
 	</div>
 	
-	<header class="task-header">
-	<?php
-		//GA Event
-		$label = 'Список задач';
-		if(is_front_page()){
-			$label = 'Главная';
-		}
-		elseif(is_tag()){
-			$label = 'Тег';
-		}
-		
-		$ga_atts_1 = array(
-			'ga_category' => 'Подробности задачи',
-			'ga_action' => 'Заголовок в карточке задачи',
-			'ga_label' => $label
-		);
-	?>
+	<header class="task-header">	
 		<h4 class="task-title">				
-			<a href="<?php the_permalink(); ?>" <?php tst_ga_event_data($ga_atts_1);?> class="ga-event-trigger" rel="bookmark"><?php the_title(); ?></a>
+			<a href="<?php the_permalink(); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php the_title(); ?></a>
 		</h4>							
 		<div class="task-meta"><?php echo tst_task_fixed_meta_in_card();?></div>
 		<?php echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
 	</header><!-- .entry-header -->
 
-	<div class="task-summary">
-	<?php
-		//GA Event		
-		$ga_atts_2 = array(
-			'ga_category' => 'Подробности задачи',
-			'ga_action' => 'Ссылка подробнее в карточке задачи',
-			'ga_label' => $label
-		);
-	?>
+	<div class="task-summary">	
 		<div class="task-reward"><?php tst_task_reward_in_card();?></div>
-		<div class="task-more"><a href="<?php the_permalink(); ?>" <?php tst_ga_event_data($ga_atts_2);?> class="more-link ga-event-trigger" title="<?php _e('Details', 'tst');?>">...</a></div>		
+		<div class="task-more">
+			<a href="<?php the_permalink(); ?>" class="more-link ga-event-trigger" <?php tst_ga_event_data('tc_more');?>  title="<?php _e('Details', 'tst');?>">...</a>
+		</div>		
 	</div>
 	
 </div>	<!-- .border-card -->		

@@ -37,10 +37,9 @@
 <div id="page" class="hfeed site">
 
 <div class="container">
-<?php if(is_front_page()):?>
-<section class="intro-panel">
-	<?php get_template_part('home-well');?>
-</section>
-<?php endif;?>
-	
+<?php
+	if(is_front_page()) {
+		get_template_part('partials/home', 'well');
+	}
+?>	
 <div class="page-decor"><?php echo apply_filters('itv_notification_bar', '');?>
