@@ -64,7 +64,7 @@ get_header();?>
 	
 	<div class="col-sm-7">		
 		
-		<div id="register-form-message" class="validation-message rl-error" style="display: none"></div>		
+		<div id="register-form-message" class="validation-message" style="display: none"></div>		
 		<form id="user-reg" action="#">
 		<?php wp_nonce_field('user-reg');?>
 	

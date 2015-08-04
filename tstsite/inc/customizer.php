@@ -828,8 +828,7 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
-    $user_login = sanitize_user(itv_translit_sanitize($_POST['first_name']) . '_' . itv_translit_sanitize($_POST['last_name']), true);
-    $user_login = itv_get_unique_user_login($user_login);
+    $user_login = itv_get_unique_user_login(itv_translit_sanitize($_POST['first_name']), itv_translit_sanitize($_POST['last_name']));
 
     if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
         die(json_encode(array(
@@ -1436,13 +1435,31 @@ function itv_translit_sanitize($string) {
 	return strtr($string, $rtl_translit);
 }
 
-function itv_get_unique_user_login($user_login) {
-	$new_ok_login = $user_login;
-	$try_limit = 10;
-	while(username_exists($new_ok_login) && $try_limit) {
-		$new_ok_login = $user_login . rand(0, 1000);
-		$try_limit -= 1;
+function itv_get_unique_user_login($first_name, $last_name = '') {
+	$new_ok_login = sanitize_user($first_name, true);
+	$is_ok = false;
+	
+	if(!username_exists($new_ok_login)) {
+		$is_ok = true;
 	}
+	
+	if(!$is_ok && $last_name) {
+		$new_ok_login = sanitize_user($last_name, true);
+		if(!username_exists($new_ok_login)) {
+			$is_ok = true;
+		}
+	}
+	
+	if(!$is_ok) {
+		$user_login = sanitize_user($first_name . ($last_name ? '_' . $last_name : ''), true);
+		$new_ok_login = $user_login;
+		$iter = 1;
+		while(username_exists($new_ok_login) && $iter < 1000) {
+			$new_ok_login = $user_login . $iter;
+			$iter += 1;
+		}
+	}
+	
 	return $new_ok_login;
 }
 
@@ -1451,8 +1468,14 @@ function itv_email_login_authenticate($user, $username, $password) {
 		return $user;
 	}
 	
+	$itv_log = ItvLog::instance();
+	
 	$is_auth_ok = wp_authenticate_username_password(null, $username, $password);
 	if(!is_wp_error($is_auth_ok)) {
+		$user = $is_auth_ok;
+		if($user) {
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_LOGIN, $user->ID, $user->user_login);
+		}
 		return $is_auth_ok;
 	}
 
@@ -1464,7 +1487,14 @@ function itv_email_login_authenticate($user, $username, $password) {
 		}
 	}
 
-	return wp_authenticate_username_password( null, $username, $password );
+	$is_auth_ok = wp_authenticate_username_password( null, $username, $password );
+	if(!is_wp_error($is_auth_ok)) {
+		$user = $is_auth_ok;
+		if($user) {
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_EMAIL, $user->ID, $user->user_login);
+		}
+	}
+	return $is_auth_ok;
 }
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
