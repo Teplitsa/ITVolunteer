@@ -154,6 +154,15 @@
 }
 
 
+//modal
+#myModal {		
+	z-index: 10000;
+	
+	.modal-dialog {
+		width: 670px;
+		margin-top: 56px;
+	}
+}
 
 
 

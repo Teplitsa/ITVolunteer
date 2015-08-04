@@ -1,6 +1,31 @@
 <?php
 /* well on homepage **/
 global $post;
+
+$video = get_post_meta($post->ID, 'video', true);
+if(empty($video))
+	$video = '#';
+
+//print modal	
+add_action('wp_footer', function(){
+	
+?>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel"><?php _e('About IT-Volunteer', 'tst');?></h4>
+			</div>
+			<div class="modal-body" id="video-content">
+				<iframe allowfullscreen="" frameborder="0" height="360" width="640"></iframe>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+});	
+
 ?>
 <div class="well">
 	
@@ -10,25 +35,11 @@ global $post;
 	
 	<div class="intro-actions">
 		<div class="details mobile-only">			
-			<a href="http://www.youtube.com/embed/D32OZIhoC6E" target="_blank"><?php _e('how it works', 'tst');?></a>
+			<a href="http://<?php echo $video;?>" target="_blank"><?php _e('how it works', 'tst');?></a>
 		</div>
 		
-		<div class="details desktop-only">
-			<a href="#" data-toggle="modal" data-target="#myModal"><?php _e('how it works', 'tst');?></a>
-			<!-- Modal -->
-			<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="myModalLabel"><?php _e('About IT-Volunteer', 'tst');?></h4>
-						</div>
-						<div class="modal-body">
-							<?php echo get_post_meta(get_the_ID(), 'video', true);?>
-						</div>
-					</div>
-				</div>
-			</div>
+		<div class="details desktop-only" id="hp-mtr">
+			<a href="//<?php echo $video;?>/?autoplay=1" data-toggle="modal" data-target="#myModal" target="_blank"><?php _e('how it works', 'tst');?></a>			
 		</div>
 		
 		<div class="cta">

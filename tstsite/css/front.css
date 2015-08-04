@@ -801,7 +801,6 @@ div[class|="status-block"] .row-top {
   .itv-home-prefooter p {
     font-size: 1.4em;
     width: 50%;
-    font-weight: bold;
     margin: 0; }
   .itv-home-prefooter .register-prefooter, .itv-home-prefooter .add-new-task-button {
     background-color: #5CB85C;
@@ -811,7 +810,6 @@ div[class|="status-block"] .row-top {
     font-size: 1.3em;
     display: block;
     border: 3px solid #fff;
-    font-weight: bold;
     -webkit-transition: all 0.3s;
     transition: all 0.3s; }
     .itv-home-prefooter .register-prefooter:hover, .itv-home-prefooter .add-new-task-button:hover {
@@ -1569,6 +1567,12 @@ a {
   height: auto; }
 .home-news .home-news-content a {
   text-decoration: none; }
+
+#myModal {
+  z-index: 10000; }
+  #myModal .modal-dialog {
+    width: 670px;
+    margin-top: 56px; }
 
 /** Recent News **/
 .tpl-post .border-card {
