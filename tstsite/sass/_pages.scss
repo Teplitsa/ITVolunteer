@@ -39,10 +39,14 @@
 	.intro-text {
 		max-width: 820px;
 		margin: 0 auto;
-		font-weight: 500;
-		font-size: 32px;
+		font-weight: 500;		
 		line-height: 1.1;
-		text-align: center;
+		text-align: center;		
+		font-size: 21px;
+		
+		@include for(small-screens) {
+			font-size: 32px;
+		}
 		p {
 			margin: 0;
 		}
@@ -73,6 +77,9 @@
 		}
 		
 		&.desktop-only { display: none;	}
+		&.mobile-only { 
+			margin-bottom: 10px;
+		}
 		
 		@include for(small-screens) {
 			&.mobile-only { display: none;	}

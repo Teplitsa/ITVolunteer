@@ -1492,9 +1492,12 @@ a {
     max-width: 820px;
     margin: 0 auto;
     font-weight: 500;
-    font-size: 32px;
     line-height: 1.1;
-    text-align: center; }
+    text-align: center;
+    font-size: 21px; }
+    @media screen and (min-width: 768px) {
+      .intro-panel .intro-text {
+        font-size: 32px; } }
     .intro-panel .intro-text p {
       margin: 0; }
   .intro-panel .intro-actions {
@@ -1515,6 +1518,8 @@ a {
         color: #607381; }
     .intro-panel .details.desktop-only {
       display: none; }
+    .intro-panel .details.mobile-only {
+      margin-bottom: 10px; }
     @media screen and (min-width: 768px) {
       .intro-panel .details.mobile-only {
         display: none; }
