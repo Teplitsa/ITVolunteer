@@ -106,14 +106,15 @@ function tst_task_reward_in_card(){
 
 function tst_tasks_filters_menu(){
 	
+	$current = (isset($_GET['st'])) ? trim($_GET['st']) : 'publish';
 ?>
 <ul class="tasks-filters">
-	<li class="ga-event-trigger publish<?php if($current == 'publish') echo ' active';?>">
+	<li class="publish<?php if($current == 'publish') echo ' active';?>">
 	<a href="<?php echo tst_tasks_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
 		<?php _e('New tasks:', 'tst')?> <?php echo tst_get_new_tasks_count();?>
 	</a>
 	</li>
-	<li class="ga-event-trigger in_work<?php if($current == 'in_work') echo ' active';?>">
+	<li class="in_work<?php if($current == 'in_work') echo ' active';?>">
 	<a href="<?php echo tst_tasks_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
 		<?php _e('In work tasks:', 'tst')?> <?php echo tst_get_work_tasks_count();?>
 	</a>
