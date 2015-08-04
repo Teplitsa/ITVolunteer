@@ -687,10 +687,12 @@ jQuery(function($){
 
                 resp = jQuery.parseJSON(resp);
 
-                if(resp.status == 'ok')
-                    $form.fadeOut(200);
-                else
+                if(resp.status == 'ok') {
+                	$form.find('.panel-body #reg-form-fields').hide();
+                }
+                else {
                     $submit.parents('.form-group').show();
+                }
 
                 $('#register-form-message').html(resp.message).show();
             });
