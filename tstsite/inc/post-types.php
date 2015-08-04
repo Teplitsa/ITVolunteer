@@ -60,7 +60,7 @@ function itv_custom_content(){
         'show_in_admin_bar'  => true,
         //'query_var'          => true,        
         'capability_type'    => 'post',
-        'has_archive'        => 'tasks',
+        'has_archive'        => 'tasks/all',
         'rewrite'            => array('slug' => 'tasks', 'with_front' => false),
         'hierarchical'       => false,
         'menu_position'      => 5,

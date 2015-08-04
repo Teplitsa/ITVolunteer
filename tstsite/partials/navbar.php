@@ -16,7 +16,7 @@
 <div class="site-navigation-area">
 	<ul id="content_menu" class="content-menu">
 		<li class="important-item">
-			<a href="<?php echo home_url('tasks?st=publish');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_tf_list');?>>
+			<a href="<?php echo tst_tasks_filters_link('publish');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_tf_list');?>>
 				<?php _e('Tasks', 'tst');?> (<span class="count "><?php echo tst_get_new_tasks_count();?></span>)
 			</a>
 		</li>

@@ -105,8 +105,9 @@ function tst_task_reward_in_card(){
 
 
 function tst_tasks_filters_menu(){
+	global $wp_query;
 	
-	$current = (isset($_GET['st'])) ? trim($_GET['st']) : 'publish';
+	$current = ($wp_query->get('task_status')) ? trim($wp_query->get('task_status')) : '';
 ?>
 <ul class="tasks-filters">
 	<li class="publish<?php if($current == 'publish') echo ' active';?>">
@@ -134,7 +135,7 @@ function tst_tasks_filters_link($status = 'publish') {
 	if(!in_array($status, $statuses))
 		$status = 'publish';
 		
-	$url = home_url('/tasks/?st='.$status); //alter for pretty permalink support
+	$url = home_url("/tasks/$status/"); //alter for pretty permalink support
 	
 	return $url;
 }

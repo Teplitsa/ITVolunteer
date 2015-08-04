@@ -120,22 +120,164 @@ add_action('widgets_init', 'tst_custom_widgets', 11);
 
 
 /**
- * Redirect unused pages
+ * Query manipulations
  **/
-add_action('parse_query', 'tst_redirect_aunused_pages');
-function tst_redirect_aunused_pages($query){
+
+add_action('parse_request', 'tst_request_corrections');
+function tst_request_corrections($request){
 	
-	if(is_admin())
-		return;
-	
-	if($query->is_main_query() && isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
-		$redirect = home_url('registration');
+	if($request->request == 'tasks') {
+		$redirect = get_post_type_archive_link('tasks');
 		wp_redirect($redirect);
 		die();
 	}
+}
+
+add_action('parse_query', 'tst_query_corrections');
+function tst_query_corrections($query){
+	
+	if(is_admin() || !$query->is_main_query())
+		return;
+	
+	if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
+		$redirect = home_url('registration');
+		wp_redirect($redirect);
+		die();
+		
+	}
+	elseif(is_tag() && !$query->get('post_type')) {
+		$query->set('post_type', 'tasks');
+		
+	}
+	elseif($query->get('task_status')){
+		
+		if($query->get('task_status') == 'all'){ //fix for archive
+			$query->set('task_status', '');
+		}
+		else {
+			$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed'))) ? $query->get('task_status') : 'publish';
+			$query->set('post_status', $status);
+		}
+		
+		if($query->get('navpage')){
+			$query->set('paged', intval($query->get('navpage')));
+		}
+	}
+	
+	//var_dump($query->query_vars);
+}
+
+add_action('init', 'tst_custom_query_vars');
+function tst_custom_query_vars(){
+	global $wp;
+	
+	$wp->add_query_var('task_status');
+	$wp->add_query_var('navpage');
+	
+	//rewrite for pages   '/?([0-9]{1,})/?$'
+	add_rewrite_rule('^tasks/([^/]*)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
+	
+	//rewrite
+	add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	
 	
 }
 
+
+/** To-do: remove from  pre_get_posts into parse_query with custom qv */
+add_action('pre_get_posts', 'tst_main_query_mods');
+function tst_main_query_mods(WP_Query $query) {
+
+    // exclude account_deleted's tasks:
+    if( !is_admin() && $query->is_main_query() ) {
+        
+        $query->set('author', '-'.ACCOUNT_DELETED_ID);
+    }
+
+    if(isset($query->query_vars['query_id']) && @$query->query_vars['query_id'] == 'count_tasks_by_status') {
+        $query->set('author', '-'.ACCOUNT_DELETED_ID);
+    }
+    elseif(($query->is_main_query() && $query->is_archive())
+       || ($query->get('post_type') == 'tasks')
+    ) {
+    	$query->set('query_id', 'get_tasks');
+    	
+        //if( !empty($_GET['st']) ) {
+        //    $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
+        //}
+        if( !empty($_GET['dl']) ) {
+            $metas = (array)$query->get('meta_query');
+            switch($_GET['dl']) {
+                case '10':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd'), date('Ymd', strtotime('+10 days'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+                case 'lm':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd'), date('Ymd', strtotime('+1 month'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+                case 'mm':
+                    $metas[] = array(
+                        'key' => 'deadline',
+                        'value' => array(date('Ymd', strtotime('+1 month')), date('Ymd', strtotime('+6 months'))),
+                        'compare' => 'BETWEEN',
+                        'type' => 'DATE'
+                    );
+                    break;
+            }
+            $query->set('meta_query', $metas);
+        }
+        if( !empty($_GET['rw']) ) {
+            $metas = (array)$query->get('meta_query');
+            $metas[] = array(
+                'key' => 'reward',
+                'value' => $_GET['rw'], //'slug',
+                'compare' => '=',
+            );
+            $query->set('meta_query', $metas);
+        }
+        if( !empty($_GET['tt']) ) {
+            $query->set('tag_slug__in', (array)$_GET['tt']);
+        }
+    }
+    
+    global $wpdb;
+    if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
+    	$metas = (array)$query->get('meta_query');
+    	
+    	$query->set('orderby', 'menu_order');
+    	$query->set('order', 'ASC');
+    	
+    	if(!$metas) {
+    		$metas = array();
+    	}
+    	
+    	$meta_candidates_number = array(
+    			'key' => 'candidates_number',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	$meta_status_order = array(
+    			'key' => 'status_order',
+    			'value' => '',
+    			'compare' => '>='
+    	);
+    	 
+    	array_unshift($metas, $meta_status_order);
+    	array_unshift($metas, $meta_candidates_number);
+    	
+    	$query->set('meta_query', $metas);
+    	add_filter('posts_orderby','ord_cand_orderbyreplace');
+    }
+}
 
 
 /**
