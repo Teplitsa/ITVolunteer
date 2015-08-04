@@ -175,10 +175,12 @@ function tst_custom_query_vars(){
 	$wp->add_query_var('navpage');
 	
 	//rewrite for pages   '/?([0-9]{1,})/?$'
-	add_rewrite_rule('^tasks/([^/]*)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
+	
 	
 	//rewrite
-	add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	//add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
 	
 	
 }
