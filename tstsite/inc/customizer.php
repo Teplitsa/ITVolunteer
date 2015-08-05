@@ -17,34 +17,7 @@ function dump_request( $input ) {
 	return $input;
 }
 
-/** Add an author filtering to exclude account-deleted's account from users query */
-add_action('pre_user_query', function(WP_User_Query $query){
-    global $wpdb;
-    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
-        $query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
-        $query->query_from = " FROM {$wpdb->users}
-            INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
-            INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
-        ";
-        $query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
-        $query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
-        
-        if(@$query->query_vars['itv_member_role']) {
-            $member_role = (int)$query->query_vars['itv_member_role'];            
-            $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
-            $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
-        }
-        #echo $query->query_fields . ' ' . $query->query_from . ' ' . $query->query_where . ' ' . $query->query_orderby;
-    }
 
-    if(stristr($query->query_where, 'WHERE 1=1') === false) {
-        $query->query_where = 'WHERE 1=1 '.$query->query_where;
-    }
-    
-//    if( !is_admin() ) {
-//        $query->set('exclude', array(ACCOUNT_DELETED_ID));
-//    }
-}, 100);
 
 add_action('post_updated', function($id, WP_Post $after_update, WP_Post $pre_update){
 

@@ -1,1 +1,45 @@
 /** == Members Templates == **/
+
+/** Tasks List Screen **/
+.members-list-header {
+	.members-filters {
+		@include clearfix;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		padding-top: 12px;
+		
+		@include for(large-screens) {
+			margin-left: -36px;
+		}
+		
+		a {
+			display: inline-block;
+			line-height: 1;
+			padding: 4px 13px 6px;
+		}
+		
+		li {
+			float: left;
+			a { color: $color-label-closed; }
+			&.donee a { color: $color-deadline-low-urgent; }
+			&.activist a { color: $color-deadline-no-urgent;}
+			&.hero a { color: $color-label-green-normal; }
+		}
+				
+		li.active {
+			a {
+				color: $color-white;
+				background: $color-label-closed;
+				
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			
+			&.donee a { background: $color-deadline-low-urgent; }
+			&.activist a { background: $color-deadline-no-urgent;}
+			&.hero a { background: $color-label-green-normal;  }
+		}
+	}
+}

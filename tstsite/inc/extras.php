@@ -122,7 +122,35 @@ add_action('widgets_init', 'tst_custom_widgets', 11);
 /**
  * Query manipulations
  **/
+ 
+/*  Custom query vars and rewrites */
+add_action('init', 'tst_custom_query_vars');
+function tst_custom_query_vars(){
+	global $wp;
+	
+	$wp->add_query_var('navpage');
+	
+	//Pretty permalinks for tasks
+	$wp->add_query_var('task_status');	
+	
+		
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?$', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');	
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/?$', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	
+	
+	//Pretty permalinks for members
+	$wp->add_query_var('member_role');
+	$wp->add_query_var('membername');
+	
+	add_rewrite_rule('^members/(donee|activist|hero)/page/([0-9]{1,})/?$', 'index.php?pagename=members&member_role=$matches[1]&navpage=$matches[2]', 'top');
+	add_rewrite_rule('^members/(donee|activist|hero)/?$', 'index.php?pagename=members&member_role=$matches[1]', 'top');	
+	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
+	// [^/]+/([^/]+)/?$  pagename=members
 
+}
+
+
+/* Request customization */
 add_action('parse_request', 'tst_request_corrections');
 function tst_request_corrections($request){
 	
@@ -133,6 +161,8 @@ function tst_request_corrections($request){
 	}
 }
 
+
+/* Query customization */
 add_action('parse_query', 'tst_query_corrections');
 function tst_query_corrections($query){
 	
@@ -167,26 +197,39 @@ function tst_query_corrections($query){
 	//var_dump($query->query_vars);
 }
 
-add_action('init', 'tst_custom_query_vars');
-function tst_custom_query_vars(){
-	global $wp;
-	
-	$wp->add_query_var('task_status');
-	$wp->add_query_var('navpage');
-	
-	//rewrite for pages   '/?([0-9]{1,})/?$'
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
-	
-	
-	//rewrite
-	//add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
-	
-	
-}
+
+/* Members query customisation  */
+add_action('pre_user_query', function(WP_User_Query $query){
+    global $wpdb;
+    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
+        $query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
+        $query->query_from = " FROM {$wpdb->users}
+            INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
+            INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
+        ";
+        $query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
+        $query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
+        
+        if(@$query->query_vars['itv_member_role']) {
+            $member_role = (int)$query->query_vars['itv_member_role'];            
+            $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
+            $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
+        }
+        //echo $query->query_fields . ' ' . $query->query_from . ' ' . $query->query_where . ' ' . $query->query_orderby;
+    }
+
+    if(stristr($query->query_where, 'WHERE 1=1') === false) {
+        $query->query_where = 'WHERE 1=1 '.$query->query_where;
+    }
+    
+//    if( !is_admin() ) {
+//        $query->set('exclude', array(ACCOUNT_DELETED_ID));
+//    }
+}, 100);
 
 
-/** To-do: remove from  pre_get_posts into parse_query with custom qv */
+/* OLD filteting for query
+ * @to_do: move from  pre_get_posts into parse_query with custom qv */
 add_action('pre_get_posts', 'tst_main_query_mods');
 function tst_main_query_mods(WP_Query $query) {
 
@@ -282,6 +325,8 @@ function tst_main_query_mods(WP_Query $query) {
 }
 
 
+
+/** == OLD == **/
 /**
  * Tasks actions
  **/
@@ -372,26 +417,6 @@ function set_user_order_data($user_id, $order_data) {
 		update_user_meta($user_id, 'member_order_data', $order_data);
 }
 
-function tst_process_members_filter($users_query_params) {
-	
-	if( !empty($_GET['role']) && (int)$_GET['role']) {
-		$users_query_params['itv_member_role'] = $_GET['role'];
-	//    $metas_cond = array(
-	//		'key' => 'member_role',
-	//		'value' => $_GET['role'],
-	//		'compare' => '=',
-	//    );
-	//	if(!is_array(@$users_query_params['meta_query'])) {
-	//		$users_query_params['meta_query'] = array();
-	//	}
-	//	array_unshift($users_query_params['meta_query'], $metas_cond);
-	}
-	
-	return $users_query_params;
-}
-
-
-
 function tst_task_fixed_meta($task = null){
 	global $post;
 	
@@ -457,14 +482,7 @@ function tst_get_edit_task_url($task = null){
 /**
  * Members actions
  **/
-add_action('init', 'tst_members_rewrite');
-function tst_members_rewrite(){
-	global $wp;
 
-	$wp->add_query_var('membername');
-	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
-	// [^/]+/([^/]+)/?$  pagename=members
-}
 
 /* contact fields */
 add_filter( 'user_contactmethods', 'tst_correct_contactmethods', 10, 1 );
@@ -769,21 +787,6 @@ function tst_get_member_action_title(){
 function tst_get_member_tasks_title() {
     return __('All tasks', 'tst');
 }
-
-/* count users total */
-global $ITV_TOTAL_USERS_COUNT;
-$ITV_TOTAL_USERS_COUNT = null;
-function tst_get_active_members_count() {
-	global $ITV_TOTAL_USERS_COUNT;	
-	if(is_null($ITV_TOTAL_USERS_COUNT)) {
-		$result = count_users();
-		$emergency = @$result['total_users'];
-		$what_we_need = @$result['avail_roles']['author'];
-		$ITV_TOTAL_USERS_COUNT = $what_we_need ? $what_we_need : $emergency;
-	}
-	return $ITV_TOTAL_USERS_COUNT;
-}
-
 
 function tst_member_profile_infoblock($user_login) {
 	

@@ -34,7 +34,7 @@ $color-text-meta: #8899A6 !default;
 $color-text-light: #999 !default; 
 
 $color-deadline-urgent: #D2322D;
-$color-deadline-low-urgent: #f0ad4e;
+$color-deadline-low-urgent: $color-label-work; //#f0ad4e;
 $color-deadline-no-urgent: #5BC0DE;
 $color-deadline-all-time: #aeaeae;
 

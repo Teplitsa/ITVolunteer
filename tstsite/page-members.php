@@ -23,37 +23,44 @@ if(is_single_member()) {
     $user_rating = tst_get_user_rating($user_login);
 }
 
+$header_css = (is_single_member()) ? 'member-header' : 'members-list-header no-breadcrumbs';
 get_header();?>
 
 
-<header class="page-heading members-list-header no-breadcrumbs">
-
+<header class="page-heading <?php echo $header_css;?>">
 	<div class="row">
+		
+	<?php if(!is_single_member()) { ?>
+		<div class="col-md-3">
+			<h1 class="page-title"><?php echo frl_page_title();?></h1>
+		</div>
+		<div class="col-md-9">
+			<?php tst_members_filters_menu();?>
+		</div>
+		
+	<?php } else { ?>
 		<div class="col-md-8">
-			<!--<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>-->
-			<h1 class="page-title <?php if(is_single_member()) echo 'member-title';?>">
-			<?php echo frl_page_title();?>
-			<?php if(!is_single_member()):?>
-			<span class="itv-total-members-heading">( <?php echo tst_get_active_members_count() ?> )</span>
-			<?endif?>			
-			<?php if(is_single_member() && current_user_can('edit_user', $tst_member->ID)): ?>
+			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+			<h1 class="page-title member-title"><?php echo frl_page_title();?>
+					
+			<?php if(current_user_can('edit_user', $tst_member->ID)): ?>
 				<small class="edit-item"> <a href="<?php echo tst_get_edit_member_url();?>"><?php _e('Edit', 'tst');?></a></small>
 			<?php endif; ?>
 			</h1>
-			<?php if(is_single_member()):?>
-				<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member));?></div>
-			<?php endif;?>
+			
+			<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member));?></div>
+			
 		</div>
 
 		<div class="col-md-4">
-			<?php if(is_single_member()) { //single case ?>
+			
 			<div class="status-block-member">
 				<?php tst_member_profile_infoblock($user_login);?>
 			</div>
-			<?php } else { // list case ?>
-				&nbsp; <!-- TODO: Блок фильтров списка -->
-			<?php }?>
+			
 		</div>
+	<?php } ?>
+		
 	</div><!-- .row -->
 
 </header>
@@ -288,31 +295,22 @@ get_header();?>
 	<?php } else { // list
 
 		$per_page = get_option('posts_per_page');
-		$current = ($wp_query->query_vars['paged'] > 1) ? $wp_query->query_vars['paged'] : 1;
+		$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
 		$offset = ($current > 1) ? ($current-1)*$per_page : 0;
 
 		$users_query_params = array(
-	            'number' => $per_page,
-	            'offset' => $offset,
-	//            'nopaging' => true,
-	            'exclude' => ACCOUNT_DELETED_ID,
-				'query_id' => 'get_members_for_members_page',
-	        );
+	        'number' => $per_page,
+	        'offset' => $offset,
+	//      'nopaging' => true,
+	        'exclude' => ACCOUNT_DELETED_ID,
+			'query_id' => 'get_members_for_members_page',
+	    );
 		
 		$users_query_params = tst_process_members_filter($users_query_params);
-
 		$user_query = new WP_User_Query($users_query_params);
+		
+		if($user_query->results) {
 		?>
-		
-		<div class="row">
-			<div class="col-md-8">
-			</div>
-			<div class="col-md-4">
-				<?php get_template_part( 'members', 'filter'); ?>
-			</div>
-		</div>
-		
-		<?if($user_query->results) {?>
 		
 		<div class="row in-loop members-list">
 		<?php
@@ -322,8 +320,10 @@ get_header();?>
 			}
 		?>
 		</div><!-- .row -->
-
-        <?php tst_content_nav( 'nav-below' ); ?>
+		
+		<nav class="clearfix nav-paging" id="nav-below" role="navigation"><div class="pull-right">
+			<?php tst_members_paging($wp_query, $user_query, $echo = true); ?>
+		</div></nav>       
 
 		<?php } else {?>
 
