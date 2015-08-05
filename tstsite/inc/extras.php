@@ -530,21 +530,25 @@ function tst_get_member_summary($member = null, $more = false){
 		$summary = "<em>{$spec}.</em> ".$summary;
 	}
 	
-	$summary = apply_filters('frl_the_content', wp_trim_words($summary, 30));
-	
-	if($more){
+	$summary = wp_trim_words($summary, 20);
+	if($more && !empty($summary)){
 		$url = tst_get_member_url($member);
-		$summary .= "<p class='member-more'><a href='{$url}' class='btn btn-default btn-sm'>".__('More', 'tst')."</a></p>";
+		$summary .= " <a href='{$url}' class='more-link'>".__('Detailed', 'tst')."</a>";
 	}
 	
+	$summary = apply_filters('frl_the_content', $summary);	
 	return $summary;
 }
 
 function tst_get_member_name($member = null){
 	global $tst_member;
-	
-	if(!$member)
+		
+	if(!$member){
 		$member = $tst_member;
+	}
+	elseif(is_int($member)){
+		$member = get_user_by('id', $member);
+	}
 	
 	$name = sanitize_text_field($member->first_name.' '.$member->last_name);	
 	

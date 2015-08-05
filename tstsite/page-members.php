@@ -20,8 +20,12 @@ if(is_single_member()) {
     $tasks_created = tst_get_user_created_tasks($user_login);
     $tasks_created_closed = count(tst_get_user_created_tasks($user_login, 'closed'));
     $tasks_working_on = tst_get_user_working_tasks($user_login);
+	$tasks_closed = tst_get_user_closed_tasks($user_login);
+	
     $user_rating = tst_get_user_rating($user_login);
 }
+
+
 
 $header_css = (is_single_member()) ? 'member-header' : 'members-list-header no-breadcrumbs';
 get_header();?>
@@ -38,7 +42,7 @@ get_header();?>
 			<?php tst_members_filters_menu();?>
 		</div>
 		
-	<?php } else { ?>
+	<?php } else {  ?>
 		<div class="col-md-8">
 			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
 			<h1 class="page-title member-title"><?php echo frl_page_title();?>
@@ -71,10 +75,9 @@ get_header();?>
 	<div class="row in-single">
 		<div class="col-md-8">
 			<div class="row">
-				<div class="col-md-3">
-					<span class="thumbnail">
-						<?php tst_temp_avatar();?>
-					</span>
+				<div class="col-md-3">					
+					<?php tst_temp_avatar();?>
+					
 				</div>
 				<div class="col-md-9">
 					
@@ -154,8 +157,29 @@ get_header();?>
 							
 						</dl>
 						
-						</section>
+					</section>
 					<?php endif;?>
+					
+					<?php if(count($tasks_closed) > 0) { ?>
+					<section class="data-section-member">
+						<h4><?php _e('Closed tasks', 'tst');?></h4>
+						<ul class="member-tasks-list">
+						<?php foreach(array_slice($tasks_closed, 0, 20) as $task) {?>
+                        <li>
+                            <div class="mt-title">
+                            <?php if($task->post_author != ACCOUNT_DELETED_ID) {?>
+                                <a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
+                            <?php } else {
+                                echo $task->post_title;
+                            }?>
+
+                            </div>
+                            <div class="mt-meta"><?php echo tst_task_fixed_meta_in_card($task);?></div>                            
+                        </li>
+                    <?php } //endforeach ?>
+						</ul>
+					</section>
+					<?php } ?>
 				</div><!-- .col-md-9 -->
 			</div>
 			<?php
@@ -239,11 +263,8 @@ get_header();?>
                             }?>
 
                             </div>
-                            <div class="mt-meta"><strong>
-                                <?php _e('Created by', 'tst');?>:</strong> <?php echo $task->post_author != ACCOUNT_DELETED_ID ? tst_get_task_author_link($task) : __('Author deleted his account', 'tst');?>
-                            </div>
-                            <div class="mt-meta"><strong><?php _e('Deadline', 'tst');?>:</strong> <?php echo tst_get_task_meta($task, 'deadline');?></div>
-                            <div class="mt-meta"><strong><?php _e('Reward', 'tst');?>:</strong> <?php echo tst_get_task_meta($task, 'reward');?></div>
+                            <div class="mt-meta"><?php echo tst_task_fixed_meta_in_card($task);?></div>                            
+                            
                         </li>
                     <?php } //endforeach
 				        }
@@ -265,10 +286,12 @@ get_header();?>
 						else {
 						foreach(array_slice($tasks_created, 0, 5) as $task) {?>
 							<li>
-								<div class="mt-title"><a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a></div>
-								<div class="mt-meta"><strong><?php _e('Created by', 'tst');?>:</strong> <?php _e('Me', 'tst');?></div>
-								<div class="mt-meta"><strong><?php _e('Deadline', 'tst');?>:</strong> <?php echo tst_get_task_meta($task, 'deadline');?></div>
-								<div class="mt-meta"><strong><?php _e('Reward', 'tst');?>:</strong> <?php echo tst_get_task_meta($task, 'reward');?></div>
+								<div class="mt-title">
+									<a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
+								</div>							
+								<div class="mt-meta">
+									<span class="reward-icon glyphicon glyphicon-star"></span> <?php echo tst_get_task_meta($task, 'reward');?>
+								</div>
 							</li>
                     <?php } //endforeach
 					
@@ -295,7 +318,14 @@ get_header();?>
 	<?php } else { // list
 
 		$per_page = get_option('posts_per_page');
-		$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
+		
+		if($wp_query->query_vars['navpage']) {
+			$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
+		}
+		else {
+			$current = ($wp_query->query_vars['paged'] > 1) ? $wp_query->query_vars['paged'] : 1;
+		}
+		
 		$offset = ($current > 1) ? ($current-1)*$per_page : 0;
 
 		$users_query_params = array(

@@ -697,6 +697,8 @@ img {
 		margin-bottom: 0;
 		width: 100px;
 		height: 100px;
+		border: none;
+		padding: 0;
 		img {
 			max-width: 100%;
 			height: auto;
@@ -747,7 +749,7 @@ img {
 	dt {
 		float: left;
 		width: 90px;
-		color: $color-text-light;
+		color: $color-text-meta;
 	}
 	
 	dd {
@@ -856,23 +858,27 @@ div[class |="status-block"] {
 	margin: 0;
 	padding: 0;
 	li {
-		@include smart-margin(10px);
+		@include smart-margin(15px);
 		padding: 0;
 	}
-	.mt-title {
-		margin-bottom: 5px;
-	}
+	
 	.mt-meta {
-		font-size: 13px;
-		color: $color-text-black;
+		font-size: 0.85em;
+		color: $color-text-meta;
+		a {
+			color: $color-text-meta;
+		}
 		strong {
 			font-weight: normal;
-			color: $color-text-light;
+			color: $color-text-meta;
 		}
 	}
 }
 
+
+
 /** member tasks */
+#tasks-closed,
 #tasks-working-on,
 #tasks-created {
 	padding: 30px 15px;
@@ -888,12 +894,12 @@ div[class |="status-block"] {
 		margin-bottom: 7px;
 	}
 	
-	.col-md-2 {
+	.task-row-meta {
 		font-size: 13px;
-		color: $color-text-semi;
+		color: $color-text-meta;
 	}
 	
-	.col-md-4 {
+	.task-row-action {
 		text-align: right;
 		a {
 			margin-left: 8px;

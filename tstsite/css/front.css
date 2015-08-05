@@ -490,7 +490,9 @@ img {
   .in-loop .member .thumbnail {
     margin-bottom: 0;
     width: 100px;
-    height: 100px; }
+    height: 100px;
+    border: none;
+    padding: 0; }
     .in-loop .member .thumbnail img {
       max-width: 100%;
       height: auto; }
@@ -532,7 +534,7 @@ img {
 .member-links-list dt {
   float: left;
   width: 90px;
-  color: #999; }
+  color: #8899A6; }
 .member-links-list dd {
   margin-left: 95px;
   margin-bottom: 10px; }
@@ -616,23 +618,24 @@ div[class|="status-block"] .row-top {
   margin: 0;
   padding: 0; }
   .member-tasks-list li {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     padding: 0; }
     .member-tasks-list li:first-child {
       margin-top: 0; }
     .member-tasks-list li:last-child {
       margin-bottom: 0; }
-  .member-tasks-list .mt-title {
-    margin-bottom: 5px; }
   .member-tasks-list .mt-meta {
-    font-size: 13px;
-    color: #111; }
+    font-size: 0.85em;
+    color: #8899A6; }
+    .member-tasks-list .mt-meta a {
+      color: #8899A6; }
     .member-tasks-list .mt-meta strong {
       font-weight: normal;
-      color: #999; }
+      color: #8899A6; }
 
 /** member tasks */
+#tasks-closed,
 #tasks-working-on,
 #tasks-created {
   padding: 30px 15px; }
@@ -649,12 +652,12 @@ div[class|="status-block"] .row-top {
   .task-row h5 {
     margin-top: 0;
     margin-bottom: 7px; }
-  .task-row .col-md-2 {
+  .task-row .task-row-meta {
     font-size: 13px;
-    color: #666; }
-  .task-row .col-md-4 {
+    color: #8899A6; }
+  .task-row .task-row-action {
     text-align: right; }
-    .task-row .col-md-4 a {
+    .task-row .task-row-action a {
       margin-left: 8px; }
 
 /** search & 404 **/

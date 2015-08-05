@@ -134,7 +134,7 @@ get_header();?>
 			<?$user_avatar = tst_get_member_user_avatar($member_data['member_id'])?>
 			
 			<label for="user_avatar"><?php _e('Member avatar', 'tst');?></label>
-			&nbsp;<a id="upload_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"></a>
+			&nbsp;<a id="upload_user_avatar" href="javascript:void(0);" class="btn btn-primary btn-xs itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"><?php _e('Upload avatar', 'tst');?></a>
 			&nbsp;<a id="delete_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-avatar-action" <?if(!$user_avatar):?>style="display:none;"<?endif?> title="<?php _e('Delete avatar', 'tst');?>"></a>
 			
 			<div id="upload_user_avatar_info"><?=$user_avatar?></div>
@@ -170,7 +170,7 @@ get_header();?>
 			<?$user_company_logo = tst_get_member_user_company_logo($member_data['member_id'])?>
 			
 			<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>
-			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-company-logo-action" title="<?php _e('Upload company logo', 'tst');?>"></a>
+			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="btn btn-primary btn-xs itv-company-logo-action" title="<?php _e('Upload logo', 'tst');?>"><?php _e('Upload logo', 'tst');?></a>
 			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
 			
 			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>

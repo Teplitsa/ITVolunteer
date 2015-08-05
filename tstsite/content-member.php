@@ -64,7 +64,9 @@ global $tst_member;?>
 	
 	
 	
-	<div class="member-summary"><?php echo html_entity_decode(tst_get_member_summary($tst_member, true), ENT_QUOTES, 'UTF-8');?></div>
+	<div class="member-summary">
+		<?php echo tst_get_member_summary($tst_member, true);?>
+	</div>
 	
 	</div>
 </article><!-- .member -->
