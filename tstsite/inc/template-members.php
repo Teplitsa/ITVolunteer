@@ -168,7 +168,7 @@ function tst_temp_avatar($user = null){
 		$default = get_template_directory_uri() . '/img/temp-avatar.png';
 		$size = 180;
 		$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
-		$grav_url = $default;
+		//$grav_url = $default;
 		?>
 			<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
 		<?php
