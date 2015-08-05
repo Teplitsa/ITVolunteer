@@ -288,6 +288,7 @@ require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
+require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
 require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';

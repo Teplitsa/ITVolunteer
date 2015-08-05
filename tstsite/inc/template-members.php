@@ -14,17 +14,17 @@ function tst_members_filters_menu(){
 <ul class="members-filters">
 	<li class="hero<?php if($current == 'hero') echo ' active';?>">
 	<a href="<?php echo tst_members_filters_link('hero'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('ml_mf_hero');?>>
-		<?php _e('Superheroes:', 'tst')?> 123
+		<?php _e('Superheroes:', 'tst')?> <?php echo ItvSiteStats::instance()->get_stats_value(ItvSiteStats::$USERS_ROLE_SUPERHERO);?>
 	</a>
 	</li>
 	<li class="donee<?php if($current == 'donee') echo ' active';?>">
 	<a href="<?php echo tst_members_filters_link('donee'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('ml_mf_donee');?>>
-		<?php _e('Beneficiaries:', 'tst')?> 123
+		<?php _e('Beneficiaries:', 'tst')?> <?php echo ItvSiteStats::instance()->get_stats_value(ItvSiteStats::$USERS_ROLE_BENEFICIARY);?>
 	</a>
 	</li>
 	<li class="activist<?php if($current == 'activist') echo ' active';?>">
 	<a href="<?php echo tst_members_filters_link('activist'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('ml_mf_activist');?>>
-		<?php _e('Activists:', 'tst')?> 123
+		<?php _e('Activists:', 'tst')?> <?php echo ItvSiteStats::instance()->get_stats_value(ItvSiteStats::$USERS_ROLE_ACTIVIST);?>
 	</a>
 	</li>	
 	<li class="all<?php if($current == 'all') echo ' active';?>">
@@ -55,10 +55,8 @@ $ITV_TOTAL_USERS_COUNT = null;
 function tst_get_active_members_count() {
 	global $ITV_TOTAL_USERS_COUNT;	
 	if(is_null($ITV_TOTAL_USERS_COUNT)) {
-		$result = count_users();
-		$emergency = @$result['total_users'];
-		$what_we_need = @$result['avail_roles']['author'];
-		$ITV_TOTAL_USERS_COUNT = $what_we_need ? $what_we_need : $emergency;
+		$itv_site_stats = ItvSiteStats::instance();
+		$ITV_TOTAL_USERS_COUNT = $itv_site_stats->get_stats_value(ItvSiteStats::$USERS_TOTAL);
 	}
 	return $ITV_TOTAL_USERS_COUNT;
 }
