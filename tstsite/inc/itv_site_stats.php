@@ -1,5 +1,4 @@
 <?php
-
 class ItvSiteStats {
 	public static $USERS_ROLE_BENEFICIARY = 'common_stats_users_beneficiary_count';
 	public static $USERS_ROLE_SUPERHERO = 'common_stats_users_superhero_count';
@@ -20,7 +19,6 @@ class ItvSiteStats {
 		$value = get_option($key);
 		return $value ? $value : 0;
 	}
-
 	public function refresh_users_role_stats($per_page = 100) {
 		
 		$USERS_ROLE_BENEFICIARY_COUNT = 0;
@@ -44,7 +42,6 @@ class ItvSiteStats {
 			$users_count_portion = 0;
 					
 			foreach($user_query->results as $user) {
-<<<<<<< HEAD
 				$is_count = true;
 // 				$is_count = false;
 // 				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
@@ -54,16 +51,6 @@ class ItvSiteStats {
 // 						}
 // 					}
 // 				}
-=======
-				$is_count = false;
-				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
-					foreach ( $user->roles as $role ) {
-						if($role == 'author') {
-							$is_count = true;
-						}
-					}
-				}
->>>>>>> local-dev
 						
 				if($is_count) {
 					
