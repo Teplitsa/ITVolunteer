@@ -38,7 +38,7 @@ get_header();?>
 			<?php tst_members_filters_menu();?>
 		</div>
 		
-	<?php } else { tst_update_member_stat($tst_member);  ?>
+	<?php } else { #tst_update_member_stat($tst_member);  ?>
 		<div class="col-md-8">
 			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
 			<h1 class="page-title member-title"><?php echo frl_page_title();?>
