@@ -19,7 +19,7 @@ if(is_single_member()) {
 
     $tasks_created = tst_get_user_created_tasks($user_login);
     $tasks_created_closed = count(tst_get_user_created_tasks($user_login, 'closed'));
-    $tasks_working_on = tst_get_user_working_tasks($user_login);
+    $tasks_working_on = tst_get_user_working_tasks($user_login, array('publish', 'in_work'));
 	$tasks_closed = tst_get_user_closed_tasks($user_login);
 	
     $user_rating = tst_get_user_rating($user_login);
