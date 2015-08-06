@@ -18,6 +18,7 @@ class ItvLog {
 	public static $ACTION_USER_DELETE_PROFILE = 'user_delete_profile';
 	public static $ACTION_USER_LOGIN_EMAIL = 'user_login_email';
 	public static $ACTION_USER_LOGIN_LOGIN = 'user_login_login';
+	public static $ACTION_USER_LOGIN_FAILED = 'user_login_failed';
 	
 	private $task_action_table;
 	private static $_instance = NULL;
@@ -51,10 +52,10 @@ class ItvLog {
 	}
 
 	public function is_user_action($action) {
-		return array_search($action, array('user_register', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login')) !== false;
+		return array_search($action, array('user_register', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed')) !== false;
 	}
 	
-	public function log_user_action($action, $user_id = 0, $user_login = '') {
+	public function log_user_action($action, $user_id = 0, $user_login = '', $text_data = null) {
 		if(!$user_login) {
 			$user = get_user_by('id', $user_id);
 			if($user) {
@@ -67,9 +68,9 @@ class ItvLog {
 				$wpdb->prepare(
 						"
 						INSERT INTO $this->task_action_table
-						SET task_id = 0, action = %s, assoc_user_id = %d, action_time = NOW(), task_status = %s
+						SET task_id = 0, action = %s, assoc_user_id = %d, action_time = NOW(), task_status = %s, data = %s
 						",
-						$action, $user_id, $user_login
+						$action, $user_id, $user_login, $text_data
 				)
 		);
 	}
@@ -165,3 +166,4 @@ __('itv_task_actions_log_user_update', 'tst');
 __('itv_task_actions_log_user_delete_profile', 'tst');
 __('itv_task_actions_log_user_login_login', 'tst');
 __('itv_task_actions_log_user_login_email', 'tst');
+__('itv_task_actions_log_user_login_failed', 'tst');

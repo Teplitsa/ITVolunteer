@@ -1357,13 +1357,19 @@ function itv_email_login_authenticate($user, $username, $password) {
 	
 	$itv_log = ItvLog::instance();
 	
-	$is_auth_ok = wp_authenticate_username_password(null, $username, $password);
-	if(!is_wp_error($is_auth_ok)) {
-		$user = $is_auth_ok;
+	$auth_result = wp_authenticate_username_password(null, $username, $password);
+	if(!is_wp_error($auth_result)) {
+		$user = $auth_result;
 		if($user) {
-			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_LOGIN, $user->ID, $user->user_login);
+			if(get_user_meta($user->ID, 'activation_code', true)) {
+				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_FAILED, $user->ID, $user->user_login, __('Your account is not active yet! Please check out your email.', 'tst'));
+			}
+			else {
+				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_LOGIN, $user->ID, $user->user_login);
+				save_user_last_login_time($user);
+			}
 		}
-		return $is_auth_ok;
+		return $auth_result;
 	}
 
 	if(!empty($username)){
@@ -1374,17 +1380,41 @@ function itv_email_login_authenticate($user, $username, $password) {
 		}
 	}
 
-	$is_auth_ok = wp_authenticate_username_password( null, $username, $password );
-	if(!is_wp_error($is_auth_ok)) {
-		$user = $is_auth_ok;
+	$auth_result = wp_authenticate_username_password( null, $username, $password );
+	if(!is_wp_error($auth_result)) {
+		$user = $auth_result;
 		if($user) {
-			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_EMAIL, $user->ID, $user->user_login);
+			if(get_user_meta($user->ID, 'activation_code', true)) {
+				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_FAILED, $user->ID, $user->user_login, __('Your account is not active yet! Please check out your email.', 'tst'));
+			}
+			else {
+				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_EMAIL, $user->ID, $user->user_login);
+				save_user_last_login_time($user);
+			}
 		}
 	}
-	return $is_auth_ok;
+	else {
+		$user = get_user_by('email', $username);
+		if(!$user) {
+			$user = get_user_by('login', $username);
+		}
+		if($user) {
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_FAILED, $user->ID, $user->user_login, strip_tags($auth_result->get_error_message()));
+		}
+	}
+	
+	return $auth_result;
 }
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
+
+function save_user_last_login_time($user) {
+	update_user_meta($user->ID, 'itv_last_login_time', date('Y-m-d H:i:s'));
+}
+
+function get_user_last_login_time($user) {
+	return $user ? get_user_meta($user->ID, 'itv_last_login_time', true) : null;
+}
 
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');

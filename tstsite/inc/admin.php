@@ -710,26 +710,33 @@ function itv_all_tasks_log_box_content() {
 	echo "<th>".__("Activity time", 'tst')."</th>";
 	echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
 	echo "<th>".__("Activity details", 'tst')."</th>";
+	echo "<th></th>";
 	echo "</tr>";
 	
 	foreach ($log_records as $k => $log) {
 		if($itv_log->is_user_action($log->action)) {
 			$user_id = $log->assoc_user_id;
 			$user_login = $log->task_status;
-			$user_text = "<a href='".get_edit_user_link( $user_id )."'>" . $user_login . "</a>";
+			
+			$user = $user_id ? get_user_by( 'id', $user_id ) : NULL;
+			$user_link = $user ? tst_get_member_url($user) : get_edit_user_link( $user_id );
+			
+			$user_text = "<a href='".$user_link."'>" . $user_login . "</a>";
 				
 			echo "<tr>";
 			echo "<td class='itv-stats-task-title'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
 			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 			echo "<td class='itv-stats-time'>"."</td>";
 			echo "<td>".$user_text."</td>";
+			echo "<td>".$log->data."</td>";
 			echo "</tr>";
 		}
 		else {
 			$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
 			$user_text = '';
 			if($user) {
-				$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+				$user_link = tst_get_member_url($user);
+				$user_text = "<a href='".$user_link."'>" . $user->display_name . "</a>";
 			}
 			else {
 				$user_text = __('Unknown user', 'tst');
@@ -749,6 +756,7 @@ function itv_all_tasks_log_box_content() {
 			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 			echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
 			echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "<td>".$log->data."</td>";
 			echo "</tr>";
 		}
 	}
