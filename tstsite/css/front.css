@@ -599,7 +599,19 @@ div[class|="status-block"] .row-top {
     width: 150px;
     height: 49px;
     border-radius: 0px;
-    cursor: default; }
+    cursor: default;
+    color: white;
+    background: #566672; }
+    .role-marker button:hover {
+      color: white; }
+    .role-marker button.donee {
+      background: #EF8000; }
+    .role-marker button.activist {
+      background: #FFAB00; }
+    .role-marker button.hero {
+      background: #5CB85C; }
+    .role-marker button.volunteer {
+      background: #5BC0DE; }
   .role-marker .role-desc {
     background: #999;
     color: #fff;

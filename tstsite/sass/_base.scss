@@ -819,11 +819,18 @@ div[class |="status-block"] {
 	}
 	button {
 		width: 150px;
-		height: 49px;	
-		-webkit-border-radius: 0px;
-		-moz-border-radius: 0px;
+		height: 49px;			
 		border-radius: 0px;
 		cursor: default;
+		color: white;
+		background: $color-user-user;
+		&:hover {
+			color: white;
+		}
+		&.donee { background: $color-user-donee; }
+		&.activist  { background: $color-user-activist;}
+		&.hero { background: $color-user-hero; }
+		&.volunteer { background: $color-user-volunteer; }
 	}
 	
 	.role-desc {		

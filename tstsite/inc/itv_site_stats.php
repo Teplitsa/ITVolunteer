@@ -44,6 +44,7 @@ class ItvSiteStats {
 			$users_count_portion = 0;
 					
 			foreach($user_query->results as $user) {
+<<<<<<< HEAD
 				$is_count = true;
 // 				$is_count = false;
 // 				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
@@ -53,6 +54,16 @@ class ItvSiteStats {
 // 						}
 // 					}
 // 				}
+=======
+				$is_count = false;
+				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
+					foreach ( $user->roles as $role ) {
+						if($role == 'author') {
+							$is_count = true;
+						}
+					}
+				}
+>>>>>>> local-dev
 						
 				if($is_count) {
 					
