@@ -18,7 +18,7 @@ if(is_single_member()) {
         die();
     }
 	
-	$activity = tst_get_member_activity($user);
+	$activity = tst_get_member_activity($tst_member);
 }
 
 
