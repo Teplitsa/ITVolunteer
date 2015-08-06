@@ -369,8 +369,8 @@ get_header();?>
 			}
 		}
 		else { //general ordrby	
-			$users_query_params['orderby'] = array('registered' => 'DESC');
-			//$users_query_params['meta_key'] = 'tst_member_tasks_solved';
+			$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+			$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 		}
 		
 		
