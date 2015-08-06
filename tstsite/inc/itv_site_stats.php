@@ -22,8 +22,14 @@ class ItvSiteStats {
 	}
 
 	public function refresh_users_role_stats($per_page = 100) {
-		$offset = 0;
 		
+		$USERS_ROLE_BENEFICIARY_COUNT = 0;
+		$USERS_ROLE_SUPERHERO_COUNT = 0;
+		$USERS_ROLE_ACTIVIST_COUNT = 0;
+		$USERS_ROLE_VOLUNTEER_COUNT = 0;
+		$USERS_COUNT = 0;
+			
+		$offset = 0;
 		$is_stop = false;
 		while(!$is_stop) {
 			echo 'offset=' . $offset . "\n";
@@ -35,12 +41,6 @@ class ItvSiteStats {
 			);
 			$user_query = new WP_User_Query($users_query_params);
 		
-			$USERS_ROLE_BENEFICIARY_COUNT = 0;
-			$USERS_ROLE_SUPERHERO_COUNT = 0;
-			$USERS_ROLE_ACTIVIST_COUNT = 0;
-			$USERS_ROLE_VOLUNTEER_COUNT = 0;
-			$USERS_COUNT = 0;
-			
 			$users_count_portion = 0;
 					
 			foreach($user_query->results as $user) {
