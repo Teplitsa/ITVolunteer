@@ -352,24 +352,24 @@ get_header();?>
 			
 			//orderby
 			if($wp_query->query_vars['member_role'] == 'hero'){
-				$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+				$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 				$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 			}
 			elseif($wp_query->query_vars['member_role'] == 'volunteer') {
-				$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+				$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 				$users_query_params['meta_key'] = 'tst_member_tasks_joined';
 			}
 			elseif($wp_query->query_vars['member_role'] == 'donee') {
-				$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+				$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 				$users_query_params['meta_key'] = 'tst_member_tasks_created_closed';
 			}
 			elseif($wp_query->query_vars['member_role'] == 'activist') {
-				$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+				$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 				$users_query_params['meta_key'] = 'tst_member_tasks_created';
 			}
 		}
 		else { //general ordrby	
-			$users_query_params['orderby'] = array('meta_value' => 'DESC', 'registered' => 'DESC');
+			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 		}
 		
@@ -382,7 +382,7 @@ get_header();?>
 		<div class="row in-loop members-list">
 		<?php
 			foreach($user_query->results as $u){
-				$tst_member = $u;
+				$tst_member = $u; 
 				get_template_part('content', 'member'); 
 			}
 		?>
