@@ -331,7 +331,9 @@ function ajax_publish_task() {
 
 //    wp_publish_post($_POST['task-id']);
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
-    tst_actualize_current_member_role();
+    //tst_actualize_current_member_role();
+	tst_update_current_member_stat();
+	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
     
     die(json_encode(array(
@@ -358,7 +360,9 @@ function ajax_unpublish_task() {
     }
 
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
-    tst_actualize_current_member_role();
+    //tst_actualize_current_member_role();
+	tst_update_current_member_stat();
+	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
     
     die(json_encode(array(
@@ -395,7 +399,8 @@ function ajax_task_to_work() {
         
         foreach($users as $user) {
             if(tst_is_user_candidate($user->ID, $task->ID)) {
-                tst_actualize_member_role($user);    
+                //tst_actualize_member_role($user);
+				tst_update_member_stat($user);
             }
         }
     }
@@ -438,7 +443,8 @@ function ajax_close_task() {
         
         foreach($users as $user) {
             if(tst_is_user_candidate($user->ID, $task->ID)) {
-                tst_actualize_member_role($user);    
+               // tst_actualize_member_role($user);
+				tst_update_member_stat($user);
             }
         }
     }
@@ -477,8 +483,11 @@ function ajax_approve_candidate() {
     $doer = get_user_by('id', $_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
     
-    tst_actualize_member_role($doer);    
-    tst_actualize_member_role($task_author);
+    //tst_actualize_member_role($doer);    
+    //tst_actualize_member_role($task_author);
+	tst_update_member_stat($doer);
+	tst_update_member_stat($task_author);
+	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
     
 
@@ -543,7 +552,9 @@ function ajax_refuse_candidate() {
     // Send email to the task doer:
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
-    tst_actualize_member_role($_POST['doer-id']);
+    //tst_actualize_member_role($_POST['doer-id']);
+	tst_update_member_stat($_POST['doer-id']);
+	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
     
     global $email_templates;
@@ -591,7 +602,8 @@ function ajax_add_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->connect($task_id, get_current_user_id(), array());
-    tst_actualize_current_member_role();
+    //tst_actualize_current_member_role();
+	tst_update_current_member_stat();
     tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
     
@@ -640,7 +652,8 @@ function ajax_remove_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 
     p2p_type('task-doers')->disconnect($task_id, get_current_user_id());
-    tst_actualize_current_member_role();
+    //tst_actualize_current_member_role();
+	tst_update_current_member_stat();
     tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
     
@@ -840,7 +853,8 @@ function ajax_user_register() {
             /** @var $user_id integer */
             $activation_code = sha1($user_id.'-activation-'.time());
             update_user_meta($user_id, 'activation_code', $activation_code);
-            tst_actualize_member_role($user_id);
+            //tst_actualize_member_role($user_id);
+			tst_update_member_stat($user_id);
             
             global $email_templates;
 //            add_filter('wp_mail_content_type', function(){
@@ -910,7 +924,8 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
-            tst_actualize_member_role($member);            
+            //tst_actualize_member_role($member);
+			tst_update_member_stat($member);
 
             $itv_log = ItvLog::instance();
             $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
@@ -1220,7 +1235,8 @@ function tst_task_saved( $task_id, $task ) {
     remove_action( 'save_post', 'tst_task_saved' );
     $post = get_post( $task_id );
     if($post) {
-        tst_actualize_member_role($post->post_author);
+        //tst_actualize_member_role($post->post_author);
+		tst_update_member_stat($post->post_author);
     }
 }
 add_action( 'save_post', 'tst_task_saved', 10, 2 );

@@ -21,15 +21,12 @@ global $tst_member;?>
                 <?php
                     $is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true);
 					$is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true);
-                    $role = tst_get_member_role($tst_member);
-                    switch($role) {
-                        case 1: $class = 'label-warning'; break;
-                        case 2: $class = 'label-success'; break;
-                        case 3:
-                        default: $class = 'label-info';
-                    }?>
+                    $role = tst_get_member_role_key($tst_member);
+					
+					$activity = tst_get_member_activity($tst_member);					
+                ?>
 				<div class="member-status">
-					<span class="label <?php echo $class;?>"><?php echo tst_get_member_role_label($role);?></span>
+					<span class="label <?php echo esc_attr($role);?>"><?php echo tst_get_role_name($role);?></span>
 					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
 					
 					<?if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" /><?endif?>
@@ -43,18 +40,19 @@ global $tst_member;?>
 						<?if($place_of_work = tst_get_member_field('user_workplace')):?>
 						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?=$place_of_work?></b><br />
 						<?endif?>
-						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo tst_get_user_rating($tst_member->ID);?></b>
+						
+						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo (int)$activity['solved'];?></b>
+						
 						<span><?php _e('Tasks', 'tst');?>:</span>
-						<b title="<?php _e('Participating in tasks / completed tasks', 'tst');?>"><?php echo count(tst_get_user_working_tasks($tst_member->ID)).'(<span>'.count(tst_get_user_working_tasks($tst_member->ID, 'closed')).'</span>)';?></b>
+						<b title="<?php _e('Participating in tasks / completed tasks', 'tst');?>"><?php echo (int)$activity['joined'].'(<span>'.(int)$activity['solved'].'</span>)';?></b>
 						<?php echo ' / '; ?>
-						<span title="<?php _e('Created tasks / completed tasks', 'tst');?>"><?php echo count(tst_get_user_created_tasks($tst_member->ID)).'('.count(tst_get_user_created_tasks($tst_member->ID, 'closed')).')';?></span>
+						<span title="<?php _e('Created tasks / completed tasks', 'tst');?>"><?php echo (int)$activity['created'].'('.(int)$activity['created_closed'].')';?></span>
 			
 					</span>
 			
-					<?php $city = sanitize_text_field(tst_get_member_field('user_city', $tst_member));
-					
+					<?php $city = sanitize_text_field(tst_get_member_field('user_city', $tst_member));					
 					if($city) {?>
-					<span class='city'><?php echo $city;?></span>
+						<span class='city'><?php echo $city;?></span>
 					<?php }?>
 				</div>
 							
@@ -65,7 +63,7 @@ global $tst_member;?>
 	
 	
 	<div class="member-summary">
-		<?php echo tst_get_member_summary($tst_member, true);?>
+		<?php echo html_entity_decode(tst_get_member_summary($tst_member, true), ENT_QUOTES, 'UTF-8'); ?>
 	</div>
 	
 	</div>

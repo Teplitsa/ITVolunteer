@@ -221,6 +221,12 @@ $events_data['ml_mf_hero'] = array(
 	'ga_action' => 'Ссылка на супергероев - в заголовке',
 	'ga_label' => tst_detect_page_type()
 );
+$events_data['ml_mf_volunteer'] = array(
+	'ga_category' => 'Фильтр участников - Волонтер',
+	'ga_action' => 'Ссылка на волонтеров - в заголовке',
+	'ga_label' => tst_detect_page_type()
+);
+
 
 	
 	wp_localize_script('front', 'ga_events', $events_data);

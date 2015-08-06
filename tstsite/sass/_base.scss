@@ -707,6 +707,14 @@ img {
 	
 	.member-status {
 		margin-top: 4px;
+		
+		.label {
+			background: $color-user-user;
+			&.hero { background: $color-user-hero; }
+			&.donee { background: $color-user-donee; }
+			&.activist { background: $color-user-activist; }
+			&.volunteer { background: $color-user-volunteer; }
+		}
 	}
 	
 	.member-title {

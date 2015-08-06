@@ -21,25 +21,26 @@
 		
 		li {
 			float: left;
-			a { color: $color-label-closed; }
-			&.donee a { color: $color-deadline-low-urgent; }
-			&.activist a { color: $color-deadline-no-urgent;}
-			&.hero a { color: $color-label-green-normal; }
+			a { color: $color-user-user; }
+			
+			&.donee a { color: $color-user-donee; }
+			&.activist a { color: $color-user-activist;}
+			&.hero a { color: $color-user-hero; }
+			&.volunteer a { color: $color-user-volunteer; }
 		}
 				
 		li.active {
 			a {
 				color: $color-white;
-				background: $color-label-closed;
-				
-				&:hover {
-					text-decoration: none;
-				}
+				background: $color-user-user;				
+				&:hover { text-decoration: none; }
 			}
 			
-			&.donee a { background: $color-deadline-low-urgent; }
-			&.activist a { background: $color-deadline-no-urgent;}
-			&.hero a { background: $color-label-green-normal;  }
+			&.donee a { background: $color-user-donee; }
+			&.activist a { background: $color-user-activist;}
+			&.hero a { background: $color-user-hero; }
+			&.volunteer a { background: $color-user-volunteer; }
 		}
 	}
 }
+

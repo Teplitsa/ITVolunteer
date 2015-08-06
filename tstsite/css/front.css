@@ -498,6 +498,16 @@ img {
       height: auto; }
   .in-loop .member .member-status {
     margin-top: 4px; }
+    .in-loop .member .member-status .label {
+      background: #566672; }
+      .in-loop .member .member-status .label.hero {
+        background: #5CB85C; }
+      .in-loop .member .member-status .label.donee {
+        background: #EF8000; }
+      .in-loop .member .member-status .label.activist {
+        background: #FFAB00; }
+      .in-loop .member .member-status .label.volunteer {
+        background: #5BC0DE; }
   .in-loop .member .member-title {
     margin: 15px 0 5px; }
     .in-loop .member .member-title a {
@@ -1486,22 +1496,26 @@ a {
     .members-list-header .members-filters li a {
       color: #566672; }
     .members-list-header .members-filters li.donee a {
-      color: #FFAB00; }
+      color: #EF8000; }
     .members-list-header .members-filters li.activist a {
-      color: #5BC0DE; }
+      color: #FFAB00; }
     .members-list-header .members-filters li.hero a {
       color: #5CB85C; }
+    .members-list-header .members-filters li.volunteer a {
+      color: #5BC0DE; }
   .members-list-header .members-filters li.active a {
     color: #fff;
     background: #566672; }
     .members-list-header .members-filters li.active a:hover {
       text-decoration: none; }
   .members-list-header .members-filters li.active.donee a {
-    background: #FFAB00; }
+    background: #EF8000; }
   .members-list-header .members-filters li.active.activist a {
-    background: #5BC0DE; }
+    background: #FFAB00; }
   .members-list-header .members-filters li.active.hero a {
     background: #5CB85C; }
+  .members-list-header .members-filters li.active.volunteer a {
+    background: #5BC0DE; }
 
 /** Homepage **/
 .home-section {
