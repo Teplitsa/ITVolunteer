@@ -214,3 +214,11 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
     $query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
 }
+
+function save_user_last_login_time($user) {
+	update_user_meta($user->ID, 'itv_last_login_time', date('Y-m-d H:i:s'));
+}
+
+function get_user_last_login_time($user) {
+	return $user ? get_user_meta($user->ID, 'itv_last_login_time', true) : null;
+}

@@ -721,10 +721,10 @@ function itv_all_tasks_log_box_content() {
 			$user = $user_id ? get_user_by( 'id', $user_id ) : NULL;
 			$user_link = $user ? tst_get_member_url($user) : get_edit_user_link( $user_id );
 			
-			$user_text = "<a href='".$user_link."'>" . $user_login . "</a>";
+			$user_text = "<a href='".$user_link."' title='".get_user_last_login_time($user)."'>" . $user_login . "</a>";
 				
 			echo "<tr>";
-			echo "<td class='itv-stats-task-title'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "<td class='itv-stats-task-title' title='".get_user_meta($user->ID, 'last_login_time', true)."'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
 			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 			echo "<td class='itv-stats-time'>"."</td>";
 			echo "<td>".$user_text."</td>";

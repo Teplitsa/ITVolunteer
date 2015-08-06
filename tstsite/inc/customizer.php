@@ -1408,14 +1408,6 @@ function itv_email_login_authenticate($user, $username, $password) {
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
 
-function save_user_last_login_time($user) {
-	update_user_meta($user->ID, 'itv_last_login_time', date('Y-m-d H:i:s'));
-}
-
-function get_user_last_login_time($user) {
-	return $user ? get_user_meta($user->ID, 'itv_last_login_time', true) : null;
-}
-
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
 __('itv_week_day_2', 'tst');
