@@ -546,7 +546,7 @@ jQuery(function($){
 
             resp = jQuery.parseJSON(resp);
 
-            if(resp.status == 'ok') {
+            if(resp.status == 'ok') { 
                 window.location.href = window.location.href.indexOf('?') > 0 ?
                     window.location.href+'&t=7' : window.location.href+'?t=7';
             } else {

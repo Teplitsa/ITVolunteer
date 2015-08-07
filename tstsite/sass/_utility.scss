@@ -97,6 +97,13 @@ $screen-lg-min : 1200px;
 
 
 // mixins
+@mixin word-wrap {
+  word-break:     break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens:    auto;
+  hyphens:         auto;
+}
+
 @mixin smart-margin($margin) {
 	margin:{
 		top: $margin;

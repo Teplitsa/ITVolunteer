@@ -79,8 +79,8 @@ function frl_breadcrumbs(){
 		
 		$bredcrumbs[] = "<li><a href='{$a_link}'>{$a_title}</a></li>";
 		
-		$title = frl_page_title();
-		$bredcrumbs[] = "<li class='active'>{$title}</li>";
+		$title = mb_substr(frl_page_title(), 0, 40);
+		$bredcrumbs[] = "<li class='active'>{$title}&hellip;</li>";
 	}
 	elseif(is_single_member()){
 				

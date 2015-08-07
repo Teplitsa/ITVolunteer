@@ -240,17 +240,19 @@ img {
 
 /** single task **/
 .task-title {
-  position: relative;
-  padding-left: 71px; }
-  .task-title .status-wrap {
-    width: 65px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%; }
+  position: relative; }
   .task-title .label {
     font-size: 11px;
     vertical-align: middle; }
+  @media screen and (min-width: 768px) {
+    .task-title {
+      padding-left: 71px; }
+      .task-title .status-wrap {
+        width: 65px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%; } }
 
 .task-title .status-wrap .label,
 .task-actions .page-heading .label {
@@ -273,20 +275,25 @@ img {
   background: #666; }
 
 .in-single .task-summary {
-  padding-left: 32.5px;
   margin-bottom: 30px; }
+  @media screen and (min-width: 768px) {
+    .in-single .task-summary {
+      padding-left: 32.5px; } }
 
-.in-single .task-details {
-  padding-left: 32.5px; }
-  .in-single .task-details .tab-pane-body {
-    padding-top: 30px; }
+@media screen and (min-width: 768px) {
+  .in-single .task-details {
+    padding-left: 32.5px; } }
+.in-single .task-details .tab-pane-body {
+  padding-top: 30px; }
 
 .page-title .edit-item {
   display: inline-block;
   font-size: 11px;
-  margin-left: 15px;
-  margin-top: 4px;
+  margin-top: 12px;
   vertical-align: top; }
+  @media screen and (min-width: 768px) {
+    .page-title .edit-item {
+      margin-left: 15px; } }
   .page-title .edit-item a {
     display: inline-block;
     padding: 5px 12px 6px;
@@ -375,6 +382,20 @@ img {
 .single-tasks .in-single .col-md-8 > .alert {
   margin-left: 32.5px; }
 
+div[class|="status-block"] {
+  margin-top: 15px; }
+  @media screen and (min-width: 992px) {
+    div[class|="status-block"] {
+      margin-top: 0; }
+      div[class|="status-block"] .row-top {
+        text-align: right; } }
+
+@media screen and (min-width: 768px) {
+  .status-block-task {
+    margin-left: 65px; } }
+@media screen and (min-width: 992px) {
+  .status-block-task {
+    margin-left: 0; } }
 .status-block-task .row-top {
   margin-bottom: 15px; }
 
@@ -408,6 +429,10 @@ img {
   .single-tasks .task-params .reward,
   .single-tasks .task-params .reward:hover {
     border-color: rgba(92, 184, 92, 0.8); }
+    @media screen and (max-width: 991px) {
+      .single-tasks .task-params .reward,
+      .single-tasks .task-params .reward:hover {
+        margin-top: 5px; } }
   .single-tasks .task-params .deadline.urgent:hover,
   .single-tasks .task-params .deadline.urgent {
     border-color: rgba(210, 50, 45, 0.8); }
@@ -431,6 +456,9 @@ img {
 
 .help-block.button-status {
   margin-bottom: 2em; }
+
+.task-actions.sidebar {
+  max-width: 350px; }
 
 .task-actions .pull-right + .return-button {
   margin-top: 30px; }
@@ -570,19 +598,15 @@ img {
     margin-bottom: 0; }
 
 section[class|="data-section"] {
-  margin-top: 30px;
-  margin-bottom: 30px; }
-  section[class|="data-section"]:first-child {
-    margin-top: 0; }
-  section[class|="data-section"]:last-child {
-    margin-bottom: 0; }
-
-div[class|="status-block"] .row-top {
-  text-align: right; }
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+      hyphens: auto;
+  margin: 15px 0 30px; }
 
 .status-block-member .row-top {
   margin-bottom: 10px; }
-
 .status-block-member .row-main:before, .status-block-member .row-main:after {
   content: " ";
   display: table; }
@@ -590,8 +614,10 @@ div[class|="status-block"] .row-top {
   clear: both; }
 
 .role-marker {
-  float: right;
   position: relative; }
+  @media screen and (min-width: 992px) {
+    .role-marker {
+      float: right; } }
   .role-marker .vlabel {
     top: 16px;
     left: -22px; }
@@ -602,6 +628,10 @@ div[class|="status-block"] .row-top {
     cursor: default;
     color: white;
     background: #566672; }
+    @media screen and (max-width: 991px) {
+      .role-marker button {
+        width: 130px;
+        height: 36px; } }
     .role-marker button:hover {
       color: white; }
     .role-marker button.donee {
@@ -629,6 +659,10 @@ div[class|="status-block"] .row-top {
     .member-activity table .num span {
       cursor: pointer; }
 
+.member-tasks .nav-tabs {
+  font-size: 12px; }
+  .member-tasks .nav-tabs li > a {
+    padding: 6px 9px; }
 .member-tasks .tab-pane {
   padding: 25px 15px;
   border-bottom: 1px solid #ddd; }
@@ -886,7 +920,7 @@ div[class|="status-block"] .row-top {
   max-width: 280px; }
 
 .status-block-task .reward.task-param {
-  max-width: none; }
+  max-width: 350px; }
 
 .fb-widget {
   width: 300px;
@@ -1052,7 +1086,12 @@ a {
         color: #333; }
   .page-heading h1 {
     margin: 0;
-    font-weight: normal; }
+    font-weight: normal;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+        hyphens: auto; }
 
 .page-bottom {
   margin-top: 30px;

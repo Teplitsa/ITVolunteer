@@ -25,14 +25,17 @@ function tst_get_role_name($role) {
 
 /* Role interation */
 function tst_user_object($user){
-		
-	if(is_string($user)){
-		$user = get_user_by('login', $user);
-	}
-	elseif(is_int($user)){
+	
+	if(is_object($user))
+		return $user;
+	
+	if((int)$user > 0) {
 		$user = get_user_by('id', $user);
 	}
-	
+	elseif(is_string($user)){
+		$user = get_user_by('login', $user);
+	}
+		
 	return $user;
 }
 
@@ -44,9 +47,23 @@ function tst_update_member_stat($user){ //everything
 	tst_set_member_role($user);
 }
 
-function tst_update_current_member_stat(){
-	tst_update_member_stat(get_current_user_id());
+
+// update data on hooks
+add_action('update_member_stats', 'tst_update_data_for_users');
+function tst_update_data_for_users($users = array()){
+	
+	if(empty($users)){
+		$users[] = get_current_user_id();
+	}
+	
+	foreach($users as $user){
+		tst_update_member_stat($user);
+	}
+	
 }
+
+
+
 
 
 /* role actions */
@@ -181,6 +198,7 @@ function tst_query_member_tasks_created($user, $status = null, $num = null, $onl
 function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $only_count = false) {
 	
 	$params = array(
+		'post_type' => 'tasks',
         'connected_type' => 'task-doers',
         'connected_items' => $user->ID,
         'suppress_filters' => false,
@@ -196,16 +214,17 @@ function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $
 function tst_calculate_member_tasks_solved($user, $num = null, $only_count = false) {
 	
 	$params = array(
-       'connected_type'   => 'task-doers',
-       'connected_items'  => $user->ID,
-       'suppress_filters' => false,
-       'nopaging'         => true,
+		'post_type' => 'tasks',
+		'connected_type'   => 'task-doers',
+		'connected_items'  => $user->ID,
+		'suppress_filters' => false,
+		'nopaging'         => true,
 		'connected_meta'  => array(
-			array(
-				'key'     =>'is_approved',
-				'value'   => 1,
-				'compare' => '='
-			)
+			 array(
+				 'key'     =>'is_approved',
+				 'value'   => 1,
+				 'compare' => '='
+			 )
 		),
 		'post_status'     => array('closed'),
 		'posts_per_page' => ($num) ? (int)$num : -1
@@ -215,6 +234,8 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 	return ($only_count) ? $query->found_posts : $query;	
 }
 
+
+/* Last login data */
 function save_user_last_login_time($user) {
 	update_user_meta($user->ID, 'itv_last_login_time', date('Y-m-d H:i:s'));
 }

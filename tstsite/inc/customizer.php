@@ -186,6 +186,8 @@ function date_from_yymmdd_to_dd_mm_yy($date) {
     }
 }
 
+
+/** Tasks manipulations **/
 function ajax_add_edit_task(){
 
     $_POST['id'] = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
@@ -222,6 +224,7 @@ function ajax_add_edit_task(){
     }
 
     $_POST['id'] = wp_insert_post($params);
+	
     if($_POST['id']) {
         $old_is_tst_consult_needed = get_field(ITV_ACF_TASK_is_tst_consult_needed, $_POST['id']);
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
@@ -281,6 +284,7 @@ function ajax_add_edit_task(){
 add_action('wp_ajax_add-edit-task', 'ajax_add_edit_task');
 add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
 
+
 /** Publish task */
 function ajax_publish_task() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
@@ -296,10 +300,10 @@ function ajax_publish_task() {
         )));
     }
 
-//    wp_publish_post($_POST['task-id']);
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
-    //tst_actualize_current_member_role();
-	tst_update_current_member_stat();
+    $upd_id = wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+	if($author_id = get_post($upd_id)->post_author){
+		do_action('update_member_stats', array($author_id));
+	}
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
     
@@ -310,6 +314,7 @@ function ajax_publish_task() {
 }
 add_action('wp_ajax_publish-task', 'ajax_publish_task');
 add_action('wp_ajax_nopriv_publish-task', 'ajax_publish_task');
+
 
 /** Remove task from publication */
 function ajax_unpublish_task() {
@@ -326,9 +331,10 @@ function ajax_unpublish_task() {
         )));
     }
 
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
-    //tst_actualize_current_member_role();
-	tst_update_current_member_stat();
+    $upd_id = wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
+    if($author_id = get_post($upd_id)->post_author){
+		do_action('update_member_stats', array($author_id));
+	}
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
     
@@ -338,6 +344,7 @@ function ajax_unpublish_task() {
 }
 add_action('wp_ajax_unpublish-task', 'ajax_unpublish_task');
 add_action('wp_ajax_nopriv_unpublish-task', 'ajax_unpublish_task');
+
 
 /** Send task to work */
 function ajax_task_to_work() {
@@ -353,24 +360,19 @@ function ajax_task_to_work() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
-
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
-    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_INWORK, get_current_user_id());
+	
+	$task_id = $_POST['task-id'];
+    wp_update_post(array('ID' => $task_id, 'post_status' => 'in_work'));
+	
+	$task = get_post($task_id);	
+	if($task) {
+		$users = tst_get_task_doers($task->ID);
+		$users[] = get_user_by('id', $task->post_author);;	
+		do_action('update_member_stats', $users);
+	}	
+	
+    ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_INWORK, get_current_user_id());
         
-    $task = get_post($_POST['task-id']);
-    if($task) {
-        $users = get_users( array(
-          'connected_type' => 'task-doers',
-          'connected_items' => $task
-        ));
-        
-        foreach($users as $user) {
-            if(tst_is_user_candidate($user->ID, $task->ID)) {
-                //tst_actualize_member_role($user);
-				tst_update_member_stat($user);
-            }
-        }
-    }
     
     /** @todo Send emails to all task doers... */
 
@@ -380,6 +382,7 @@ function ajax_task_to_work() {
 }
 add_action('wp_ajax_task-in-work', 'ajax_task_to_work');
 add_action('wp_ajax_nopriv_task-in-work', 'ajax_task_to_work');
+
 
 /** Close task */
 function ajax_close_task() {
@@ -401,20 +404,12 @@ function ajax_close_task() {
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
     tst_send_admin_notif_task_complete($task_id);
     
-    $task = get_post($task_id);
-    if($task) {
-        $users = get_users( array(
-          'connected_type' => 'task-doers',
-          'connected_items' => $task
-        ));
-        
-        foreach($users as $user) {
-            if(tst_is_user_candidate($user->ID, $task->ID)) {
-               // tst_actualize_member_role($user);
-				tst_update_member_stat($user);
-            }
-        }
-    }
+    $task = get_post($task_id);	
+	if($task) {
+		$users = tst_get_task_doers($task->ID);
+		$users[] = get_user_by('id', $task->post_author);;	
+		do_action('update_member_stats', $users);
+	}	
 
     /** @todo Send emails to all task doers... */
 
@@ -424,6 +419,7 @@ function ajax_close_task() {
 }
 add_action('wp_ajax_close-task', 'ajax_close_task');
 add_action('wp_ajax_nopriv_close-task', 'ajax_close_task');
+
 
 /** Approve candidate as task doer */
 function ajax_approve_candidate() {
@@ -449,14 +445,14 @@ function ajax_approve_candidate() {
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
-    
-    //tst_actualize_member_role($doer);    
-    //tst_actualize_member_role($task_author);
-	tst_update_member_stat($doer);
-	tst_update_member_stat($task_author);
-	
+    	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
-    
+	
+	if($task) {
+		$users = tst_get_task_doers($task->ID);
+		$users[] = get_user_by('id', $task->post_author);;	
+		do_action('update_member_stats', $users);
+	}	
 
     // Notice to doer:
     global $email_templates;
@@ -497,6 +493,7 @@ function ajax_approve_candidate() {
 add_action('wp_ajax_approve-candidate', 'ajax_approve_candidate');
 add_action('wp_ajax_nopriv_approve-candidate', 'ajax_approve_candidate');
 
+
 /** Refuse candidate as task doer */
 function ajax_refuse_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
@@ -519,16 +516,14 @@ function ajax_refuse_candidate() {
     // Send email to the task doer:
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
-    //tst_actualize_member_role($_POST['doer-id']);
-	tst_update_member_stat($_POST['doer-id']);
-	
+    	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
-    
+	if($task){
+		do_action('update_member_stats', array($doer, $task->post_author));
+	}
+		
     global $email_templates;
-//    add_filter('wp_mail_content_type', function(){
-//        return 'text/html';
-//    });
-
+	
     wp_mail(
         get_user_by('id', $_POST['doer-id'])->user_email,
         $email_templates['refuse_candidate_doer_notice']['title'],
@@ -549,6 +544,7 @@ function ajax_refuse_candidate() {
 add_action('wp_ajax_refuse-candidate', 'ajax_refuse_candidate');
 add_action('wp_ajax_nopriv_refuse-candidate', 'ajax_refuse_candidate');
 
+
 /** Add new candidate */
 function ajax_add_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
@@ -567,13 +563,19 @@ function ajax_add_candidate() {
     $task_id = $_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
+	$task_doer_id = get_current_user_id();
 
-    p2p_type('task-doers')->connect($task_id, get_current_user_id(), array());
-    //tst_actualize_current_member_role();
-	tst_update_current_member_stat();
+    p2p_type('task-doers')->connect($task_id, $task_doer_id, array());    
     tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
-    
+		
+	if($task) {
+		$users = tst_get_task_doers($task->ID);
+		$users[] = get_user_by('id', $task->post_author);;	
+		do_action('update_member_stats', $users);
+	}	
+	
+	
     // Send email to the task doer:
     global $email_templates;
 //    add_filter('wp_mail_content_type', function(){
@@ -594,10 +596,12 @@ function ajax_add_candidate() {
 
     die(json_encode(array(
         'status' => 'ok',
+		'users' => array($task_author, $task_doer_id)
     )));
 }
 add_action('wp_ajax_add-candidate', 'ajax_add_candidate');
 add_action('wp_ajax_nopriv_add-candidate', 'ajax_add_candidate');
+
 
 /** Remove a candidate */
 function ajax_remove_candidate() {
@@ -617,18 +621,18 @@ function ajax_remove_candidate() {
     $task_id = $_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
+	$task_doer_id = get_current_user_id();
 
-    p2p_type('task-doers')->disconnect($task_id, get_current_user_id());
-    //tst_actualize_current_member_role();
-	tst_update_current_member_stat();
-    tst_actualize_task_stats($task_id);
+    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
+	tst_actualize_task_stats($task_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
     
+	if($task){
+		do_action('update_member_stats', array($task_doer_id, $task->post_author));
+	}
+	
     // Send email to the task doer:
     global $email_templates;
-//    add_filter('wp_mail_content_type', function(){
-//        return 'text/html';
-//    });
 
     wp_mail(
         $task_author->user_email,
@@ -650,6 +654,7 @@ function ajax_remove_candidate() {
 }
 add_action('wp_ajax_remove-candidate', 'ajax_remove_candidate');
 add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
+
 
 /** Leave a review */
 function ajax_leave_review() {
@@ -730,6 +735,7 @@ function ajax_leave_review() {
 }
 add_action('wp_ajax_leave-review', 'ajax_leave_review');
 add_action('wp_ajax_nopriv_leave-review', 'ajax_leave_review');
+
 
 /** Add a new login check - is account active or not: */
 add_filter('authenticate', function($user, $username, $password){
@@ -821,9 +827,9 @@ function ajax_user_register() {
         		 
             /** @var $user_id integer */
             $activation_code = sha1($user_id.'-activation-'.time());
-            update_user_meta($user_id, 'activation_code', $activation_code);
-            //tst_actualize_member_role($user_id);
-			tst_update_member_stat($user_id);
+            update_user_meta($user_id, 'activation_code', $activation_code);            
+			do_action('update_member_stats', array($user_id));	
+
             
             global $email_templates;
 //            add_filter('wp_mail_content_type', function(){
@@ -893,8 +899,8 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
-            //tst_actualize_member_role($member);
-			tst_update_member_stat($member);
+           
+		    do_action('update_member_stats', array($user_id));
 
             $itv_log = ItvLog::instance();
             $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
@@ -1203,9 +1209,8 @@ function tst_task_saved( $task_id, $task ) {
 		
     remove_action( 'save_post', 'tst_task_saved' );
     $post = get_post( $task_id );
-    if($post) {
-        //tst_actualize_member_role($post->post_author);
-		tst_update_member_stat($post->post_author);
+    if($post) {       
+		do_action('update_member_stats', array($post->post_author));
     }
 }
 add_action( 'save_post', 'tst_task_saved', 10, 2 );
@@ -1224,6 +1229,8 @@ function tst_task_updated( $task_id, $task, $is_update) {
 		else {
 			$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
 		}
+		
+		do_action('update_member_stats', array($task->post_author));
 	}
 }
 add_action( 'wp_insert_post', 'tst_task_updated', 10, 3);
@@ -1270,6 +1277,7 @@ function rss_feed_request($qv) {
 }
 add_filter('request', 'rss_feed_request');
 
+add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
 function itv_translit_sanitize($string) {
 	$rtl_translit = array (
 			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
