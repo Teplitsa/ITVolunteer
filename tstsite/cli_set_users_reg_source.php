@@ -58,9 +58,9 @@ while(!$is_stop) {
 
 	$users_count_portion = 0;
 		
-	echo $wpdb->last_query . "\n\n";
-	echo $wpdb->last_error . "\n\n";
-	echo "count: " . count($user_query->results) . "\n";
+// 	echo $wpdb->last_query . "\n\n";
+// 	echo $wpdb->last_error . "\n\n";
+// 	echo "count: " . count($user_query->results) . "\n";
 	
 	foreach($user_query->results as $user) {
 		echo "\n\nprocess: " . $user->user_login . " registered: " .$user->user_registered . "\n";

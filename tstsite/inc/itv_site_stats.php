@@ -36,6 +36,8 @@ class ItvSiteStats {
 				'number' => $per_page,
 				'offset' => $offset,
 				'exclude' => ACCOUNT_DELETED_ID,
+				'orderby' => 'user_registered',
+				'order' => 'ASC'
 			);
 			$user_query = new WP_User_Query($users_query_params);
 		

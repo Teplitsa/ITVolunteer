@@ -8,7 +8,7 @@ $user_query = new WP_User_Query($users_query_params);
 $wpdb->query("TRUNCATE str_users_report");
 
 foreach($user_query->results as $user) {
-	echo $user->user_login . "\n";
+// 	echo $user->user_login . " registered: " . $user->user_registered . "\n";	
 
 	$user_avatar = get_user_meta($user->ID, 'user_avatar', true);
 	$is_uploaded_avatar = $user_avatar ? 1 : 0;
@@ -91,6 +91,6 @@ foreach($user_query->results as $user) {
 			)
 	);
 	#echo $wpdb->last_query . "<br />";
-	echo $wpdb->last_error . "\n";
+// 	echo $wpdb->last_error . "\n";
 }
 
