@@ -820,7 +820,7 @@ function ajax_user_register() {
                 'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while registering your account.', 'tst').'</div>',
             )));
         } else {
-        	save_user_reg_source($user_id, get_current_blog_id());
+        	tstmu_save_user_reg_source($user_id, get_current_blog_id());
         	 
         	$itv_log = ItvLog::instance();
         	$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);

@@ -722,7 +722,7 @@ function itv_all_tasks_log_box_content() {
 			$user_link = $user ? tst_get_member_url($user) : get_edit_user_link( $user_id );
 			
 			$user_text = "<a href='".$user_link."' title='".get_user_last_login_time($user)."'>" . $user_login . "</a>";
-			$user_text .= '<br />reg_source=' . get_user_reg_source($user_id);
+			$user_text .= '<br />reg_source=' . tstmu_get_user_reg_source($user_id);
 				
 			echo "<tr>";
 			echo "<td class='itv-stats-task-title' title='".get_user_meta($user->ID, 'last_login_time', true)."'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
