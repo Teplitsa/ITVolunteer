@@ -23,35 +23,6 @@ add_action('login_enqueue_scripts', 'itv_favicon', 1);
 
 
 /**
- * TRanslit in filenames
- **/
-
-add_action('sanitize_file_name', 'frl_translit_sanitize', 0);
-function frl_translit_sanitize($title){
-		
-	$rtl_translit = array (
-		"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"#","є"=>"ye","ѓ"=>"g",
-		"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
-		"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
-		"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
-		"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
-		"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
-		"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
-		"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
-		"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
-		"е"=>"e","ё"=>"yo","ж"=>"zh",
-		"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
-		"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
-		"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
-		"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
-		"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
-	);
-
-	return strtr($title, $rtl_translit);	
-}
-
-
-/**
  * Default filters
  **/
 
@@ -122,7 +93,35 @@ add_action('widgets_init', 'tst_custom_widgets', 11);
 /**
  * Query manipulations
  **/
+ 
+/*  Custom query vars and rewrites */
+add_action('init', 'tst_custom_query_vars');
+function tst_custom_query_vars(){
+	global $wp;
+	
+	$wp->add_query_var('navpage');
+	
+	//Pretty permalinks for tasks
+	$wp->add_query_var('task_status');	
+	
+		
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?$', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');	
+	add_rewrite_rule('^tasks/(publish|in_work|closed)/?$', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	
+	
+	//Pretty permalinks for members
+	$wp->add_query_var('member_role');
+	$wp->add_query_var('membername');
+	
+	add_rewrite_rule('^members/(donee|activist|hero|volunteer)/page/([0-9]{1,})/?$', 'index.php?pagename=members&member_role=$matches[1]&navpage=$matches[2]', 'top');
+	add_rewrite_rule('^members/(donee|activist|hero|volunteer)/?$', 'index.php?pagename=members&member_role=$matches[1]', 'top');	
+	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
+	// [^/]+/([^/]+)/?$  pagename=members
 
+}
+
+
+/* Request customization */
 add_action('parse_request', 'tst_request_corrections');
 function tst_request_corrections($request){
 	
@@ -133,6 +132,8 @@ function tst_request_corrections($request){
 	}
 }
 
+
+/* Query customization */
 add_action('parse_query', 'tst_query_corrections');
 function tst_query_corrections($query){
 	
@@ -167,26 +168,39 @@ function tst_query_corrections($query){
 	//var_dump($query->query_vars);
 }
 
-add_action('init', 'tst_custom_query_vars');
-function tst_custom_query_vars(){
-	global $wp;
-	
-	$wp->add_query_var('task_status');
-	$wp->add_query_var('navpage');
-	
-	//rewrite for pages   '/?([0-9]{1,})/?$'
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');
-	
-	
-	//rewrite
-	//add_rewrite_rule('^tasks/([^/]*)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/?', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
-	
-	
-}
+
+/* Members query customisation  */
+//add_action('pre_user_query', function(WP_User_Query $query){
+//    global $wpdb;
+//    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
+//        $query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
+//        $query->query_from = " FROM {$wpdb->users}
+//            INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
+//            INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
+//        ";
+//        $query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
+//        $query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
+//        
+//        if(@$query->query_vars['itv_member_role']) {
+//            $member_role = (int)$query->query_vars['itv_member_role'];            
+//            $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
+//            $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
+//        }
+//        //echo $query->query_fields . ' ' . $query->query_from . ' ' . $query->query_where . ' ' . $query->query_orderby;
+//    }
+//
+//    if(stristr($query->query_where, 'WHERE 1=1') === false) {
+//        $query->query_where = 'WHERE 1=1 '.$query->query_where;
+//    }
+//    
+////    if( !is_admin() ) {
+////        $query->set('exclude', array(ACCOUNT_DELETED_ID));
+////    }
+//}, 100);
 
 
-/** To-do: remove from  pre_get_posts into parse_query with custom qv */
+/* OLD filteting for query
+ * @to_do: move from  pre_get_posts into parse_query with custom qv */
 add_action('pre_get_posts', 'tst_main_query_mods');
 function tst_main_query_mods(WP_Query $query) {
 
@@ -282,6 +296,10 @@ function tst_main_query_mods(WP_Query $query) {
 }
 
 
+
+
+
+/** == OLD == **/
 /**
  * Tasks actions
  **/
@@ -298,44 +316,6 @@ function tst_get_task_author($task = null){
 	return tst_get_member_name($author);
 }
 
-function tst_get_member_role($user) {
-    $user = is_object($user) ? $user : (int)$user;
-
-    $tasks_created = tst_get_user_created_tasks($user->user_login);
-    $tasks_working_on = tst_get_user_working_tasks($user->user_login);
-
-    if(count($tasks_created) > count($tasks_working_on))
-        return 1;
-    elseif(count($tasks_created) < count($tasks_working_on))
-        return 2;
-    else
-        return 3;
-}
-
-function tst_get_member_role_label($role) {
-    switch($role) {
-        case 1: return __('Client', 'tst');
-        case 2: return __('Volunteer', 'tst');
-        case 3: return __('Participator', 'tst');
-        default: return __('Unknown role', 'tst');
-    }
-}
-
-global $ITV_ROLE_SORT_TABLE;
-$ITV_ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
-function tst_actualize_member_role($user) {
-	global $ITV_ROLE_SORT_TABLE;
-	if(!is_object($user)) {
-		$user = (int)$user;
-		$user = get_user_by('id', $user);
-	}
-	if($user) {
-		$new_member_role = tst_get_member_role($user);
-		update_user_meta($user->ID, 'member_role', $new_member_role);
-		update_user_meta($user->ID, 'member_rating', sprintf("%010d", tst_get_user_rating($user)));
-		set_user_order_data($user->ID, $ITV_ROLE_SORT_TABLE[(int)$new_member_role]);
-	}
-}
 
 # count task candidates
 function tst_get_task_candidates_number($task_id) {
@@ -362,32 +342,6 @@ function tst_get_task_status_order($task_id) {
 function tst_actualize_task_stats($task_id) {
 	update_post_meta($task_id, 'candidates_number', tst_get_task_candidates_number($task_id));
 	update_post_meta($task_id, 'status_order', tst_get_task_status_order($task_id));
-}
-
-function tst_actualize_current_member_role() {
-	tst_actualize_member_role(get_current_user_id());
-}
-
-function set_user_order_data($user_id, $order_data) {	
-		update_user_meta($user_id, 'member_order_data', $order_data);
-}
-
-function tst_process_members_filter($users_query_params) {
-	
-	if( !empty($_GET['role']) && (int)$_GET['role']) {
-		$users_query_params['itv_member_role'] = $_GET['role'];
-	//    $metas_cond = array(
-	//		'key' => 'member_role',
-	//		'value' => $_GET['role'],
-	//		'compare' => '=',
-	//    );
-	//	if(!is_array(@$users_query_params['meta_query'])) {
-	//		$users_query_params['meta_query'] = array();
-	//	}
-	//	array_unshift($users_query_params['meta_query'], $metas_cond);
-	}
-	
-	return $users_query_params;
 }
 
 
@@ -454,18 +408,10 @@ function tst_get_edit_task_url($task = null){
 }
 
 
+
 /**
  * Members actions
  **/
-add_action('init', 'tst_members_rewrite');
-function tst_members_rewrite(){
-	global $wp;
-
-	$wp->add_query_var('membername');
-	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
-	// [^/]+/([^/]+)/?$  pagename=members
-}
-
 /* contact fields */
 add_filter( 'user_contactmethods', 'tst_correct_contactmethods', 10, 1 );
 function tst_correct_contactmethods($contactmethods) {
@@ -484,8 +430,7 @@ function tst_correct_contactmethods($contactmethods) {
 	$contactmethods['facebook'] = __('Facebook profile (link)', 'tst');	
 	$contactmethods['vk'] = __('VKontakte profile (link)', 'tst');
 	$contactmethods['googleplus'] = __('Google+ (link)', 'tst');
-	//$contactmethods['vk'] = __('VKontakte', 'tst');	
-	 
+		 
 	return $contactmethods;
 }
 
@@ -512,21 +457,25 @@ function tst_get_member_summary($member = null, $more = false){
 		$summary = "<em>{$spec}.</em> ".$summary;
 	}
 	
-	$summary = apply_filters('frl_the_content', wp_trim_words($summary, 30));
-	
-	if($more){
+	$summary = wp_trim_words($summary, 20);
+	if($more && !empty($summary)){
 		$url = tst_get_member_url($member);
-		$summary .= "<p class='member-more'><a href='{$url}' class='btn btn-default btn-sm'>".__('More', 'tst')."</a></p>";
+		$summary .= " <a href='{$url}' class='more-link'>".__('Detailed', 'tst')."</a>";
 	}
 	
+	$summary = apply_filters('frl_the_content', $summary);	
 	return $summary;
 }
 
 function tst_get_member_name($member = null){
 	global $tst_member;
-	
-	if(!$member)
+		
+	if(!$member){
 		$member = $tst_member;
+	}
+	elseif(is_int($member)){
+		$member = get_user_by('id', $member);
+	}
 	
 	$name = sanitize_text_field($member->first_name.' '.$member->last_name);	
 	
@@ -693,36 +642,6 @@ function tst_get_member_links_list($member){
 	return "<dl class='member-links-list'>".implode('', $li)."</dl>";
 }
 
-function tst_member_fixed_meta($member = null){
-	global $tst_member;
-	
-	if(!$member)
-		$member = $tst_member;
-?>
-<span class="fixed-member-meta">
-<span class="status-meta" title="<?php _e('Location', 'tst');?>">
-<?php echo sanitize_text_field(tst_get_member_field('user_city', $member));?>
-</span>
-<?php echo frl_get_sep();?>
-<span class="time-label"><?php _e('Joined at', 'tst');?>: </span>
-<time><?php echo tst_get_member_field('user_date', $member);?> </time>
-</span>
-<?php
-}
-
-function tst_editmember_fixed_meta($member = null){
-	global $tst_member;
-	
-	if( !$member )
-		$member = $tst_member;
-?>
-<span class="fixed-member-meta">
-<span class="time-label"><?php _e('Joined at', 'tst');?>: </span>
-<time><?php echo tst_get_member_field('user_date', $member);?> </time>
-</span>
-<?php
-}
-
 function tst_get_member_action_stage(){
 
     $user = wp_get_current_user();
@@ -743,7 +662,6 @@ function tst_get_edit_member_url($member = null){
 
 	return add_query_arg('member', intval($member->ID), home_url('member-actions/'));
 }
-
 
 function tst_get_member_action_title(){
 	
@@ -766,57 +684,221 @@ function tst_get_member_action_title(){
 	return $title;
 }
 
-function tst_get_member_tasks_title() {
-    return __('All tasks', 'tst');
+
+
+
+/** Role calculations === old **/
+function tst_get_member_role($user) {
+    $user = is_object($user) ? $user : (int)$user;
+
+    $tasks_created = tst_get_user_created_tasks($user->user_login);
+    $tasks_working_on = tst_get_user_working_tasks($user->user_login);
+
+    if(count($tasks_created) > count($tasks_working_on))
+        return 1;
+    elseif(count($tasks_created) < count($tasks_working_on))
+        return 2;
+    else
+        return 3;
 }
 
-/* count users total */
-global $ITV_TOTAL_USERS_COUNT;
-$ITV_TOTAL_USERS_COUNT = null;
-function tst_get_active_members_count() {
-	global $ITV_TOTAL_USERS_COUNT;	
-	if(is_null($ITV_TOTAL_USERS_COUNT)) {
-		$result = count_users();
-		$emergency = @$result['total_users'];
-		$what_we_need = @$result['avail_roles']['author'];
-		$ITV_TOTAL_USERS_COUNT = $what_we_need ? $what_we_need : $emergency;
+function tst_get_member_role_label($role) {
+    switch($role) {
+        case 1: return __('Client', 'tst');
+        case 2: return __('Volunteer', 'tst');
+        case 3: return __('Participator', 'tst');
+        default: return __('Unknown role', 'tst');
+    }
+}
+
+global $ITV_ROLE_SORT_TABLE;
+$ITV_ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
+function tst_actualize_member_role($user) {
+	global $ITV_ROLE_SORT_TABLE;
+	if(!is_object($user)) {
+		$user = (int)$user;
+		$user = get_user_by('id', $user);
 	}
-	return $ITV_TOTAL_USERS_COUNT;
+	if($user) {
+		$new_member_role = tst_get_member_role($user);
+		update_user_meta($user->ID, 'member_role', $new_member_role);
+		update_user_meta($user->ID, 'member_rating', sprintf("%010d", tst_get_user_rating($user)));
+		set_user_order_data($user->ID, $ITV_ROLE_SORT_TABLE[(int)$new_member_role]);
+	}
+}
+
+function tst_actualize_current_member_role() {
+	tst_actualize_member_role(get_current_user_id());
+}
+
+function set_user_order_data($user_id, $order_data) {	
+	update_user_meta($user_id, 'member_order_data', $order_data);
 }
 
 
-function tst_member_profile_infoblock($user_login) {
-	
-	$tasks_created = tst_get_user_created_tasks($user_login);
-    $tasks_created_closed = count(tst_get_user_created_tasks($user_login, 'closed'));
-    $tasks_working_on = tst_get_user_working_tasks($user_login);
-	
-?>
-<div class="row-top"><?php tst_member_fixed_meta();?></div>
-<div class="row-main">
-	
-	<div class="role-marker">
-	<span class="vlabel">Роль</span>
-		<?php if(count($tasks_created) > count($tasks_working_on)) {
-			$role = __('Client', 'tst');
-			$class = 'btn-warning';
-			$comment = __('A Client is a blah-blah-blah.', 'tst');
-		} elseif(count($tasks_created) < count($tasks_working_on)) {
-			$role = __('Volunteer', 'tst');
-			$class = 'btn-success';
-			$comment = __('A Volunteer is a mimimi.', 'tst');
-		} else {
-			$role = __('Participator', 'tst');
-			$class = 'btn-info';
-			$comment = __('A Participator is a nyan-nyan.', 'tst');
-		}?>
-	<button type="button" class="btn <?php echo $class;?>"><?php echo $role;?></button>
-	<span class="role-desc" data-toggle="tooltip" data-placement="right" title="<?php echo esc_attr($comment);?>">?</span>
-	</div>
-	
-</div>
-<?php	
+function tst_get_user_rating($user) {
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+    
+#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
+
+    return $user ? count(tst_get_user_closed_tasks($user)) : 0;
 }
 
 
+function tst_is_user_candidate($user_id = false, $task_id = false) {
+
+    $user_id = $user_id ? $user_id : get_current_user_id();
+    if( !$user_id )
+        return false;
+
+    if( !$task_id ) {
+        global $post;
+        $task_id = $post->ID;
+    }
+
+    $p2p_id = p2p_type('task-doers')->get_p2p_id($user_id, $task_id);
+
+    if($p2p_id) // connection exists
+        return (int)p2p_get_meta($p2p_id, 'is_approved', true) ? 2 : 1;
+    return 0;
+}
+
+
+
+/** Tasks calculations **/
+function tst_get_user_created_tasks($user, $status = array()) {
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+	
+    $user = $user ? $user->ID : $user;
+#    $user = (int)$user <= 0 ? get_user_by('login', $user)->ID : $user;
+
+    if( !$status )
+        $status = array('publish', 'in_work', 'closed',);
+
+    $params = array(
+        'post_type' => 'tasks',
+        'author' => $user,
+        'nopaging' => true,
+    );
+
+    if($status && (is_array($status) || strlen($status)))
+        $params['post_status'] = $status;
+
+    $query = new WP_Query($params);
+
+    return $query->get_posts();
+}
+
+function tst_get_user_working_tasks($user, $status = array()) {
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+
+#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
+	
+    if( !$status )
+        $status = array('publish', 'in_work', 'closed');
+
+    $params = array(
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => false,
+        'nopaging' => true
+    );
+
+    if($status && (is_array($status) || strlen($status)))
+        $params['post_status'] = $status;
+
+    return get_posts($params);
+}
+
+function tst_get_user_closed_tasks($user) {
+
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+
+    $status = array('closed');
+
+    $params = array(
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => false,
+        'nopaging' => true,
+		'connected_meta' => array(
+			array(
+				'key' =>'is_approved',
+				'value' => 1,
+				'compare' => '='
+			)
+		),
+		'post_status' => 'closed'
+    );
+	
+    return get_posts($params);
+}
+
+function tst_process_members_filter($users_query_params) {
+	global $wp_query;
+	
+	
+	if(get_query_var('member_role')) {
+		
+		switch(get_query_var('member_role')) {
+			case 'donee':
+				$role = 1;
+				break;
+			case 'hero' :
+				$role = 2;
+				break;
+			default:
+				$role = 3;
+				break;
+		}
+		
+		$users_query_params['itv_member_role'] = $role;		
+	}
+		
+	return $users_query_params;
+}
 

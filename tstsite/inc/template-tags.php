@@ -79,8 +79,8 @@ function frl_breadcrumbs(){
 		
 		$bredcrumbs[] = "<li><a href='{$a_link}'>{$a_title}</a></li>";
 		
-		$title = frl_page_title();
-		$bredcrumbs[] = "<li class='active'>{$title}</li>";
+		$title = mb_substr(frl_page_title(), 0, 40);
+		$bredcrumbs[] = "<li class='active'>{$title}&hellip;</li>";
 	}
 	elseif(is_single_member()){
 				
@@ -272,79 +272,7 @@ function tst_content_nav( $nav_id, $query = null ) {
 	<?php
 }
 
-function tst_members_paging($query, $echo = true){
-	global $wp_rewrite, $wp_query;
-    
-	if(null == $query)
-		$query = $wp_query;
-	
-    //var_dump($wp_query);
-	$remove = array(
-			
-	);
-	
-	$current = ($query->query_vars['paged'] > 1) ? $query->query_vars['paged'] : 1;
-	$parts = parse_url(get_pagenum_link(1));	
-	$base = trailingslashit(esc_url($parts['host'].$parts['path']));
-	if(function_exists('tstmu_is_ssl') && tstmu_is_ssl()){
-		$base = str_replace('http:', 'https:', $base);
-	}
-	
-	// Calculate total pages:
-	$per_page = get_option('posts_per_page');
-	
-	$users_query_params = array(
-	    'nopaging' => true,
-	    'exclude' => ACCOUNT_DELETED_ID,
-	);
-	$users_query_params = tst_process_members_filter($users_query_params);
-	
-	$user_query = new WP_User_Query($users_query_params);
-	$users_count = array('total_users' => $user_query->total_users);
-	
-	$total_pages = ceil($users_count['total_users']/$per_page); //do we need any particular part?
-    
-	$filter_args = array();
-	if(isset($_GET) && is_array($_GET)) {
-		foreach($_GET as $k => $v) {
-			$filter_args[$k] = $v;
-		}
-	}
-	
-	$pagination = array(
-        'base' => $base.'%_%',
-        'format' => 'page/%#%/',
-        'total' => $total_pages,
-        'current' => $current,
-        'prev_text' => __('&laquo; prev.', 'tst'),
-        'next_text' => __('next. &raquo;', 'tst'),
-        'end_size' => 4,
-        'mid_size' => 4,
-        'show_all' => false,
-        'type' => 'list', //list
-		'add_args' => $filter_args
-    );
-    	
-	
-	foreach($remove as $param){
-			
-		if(isset($_GET[$param]) && !empty($_GET[$param]))
-			$pagination['add_args'] = array_merge($pagination['add_args'], array($param => esc_attr(trim($_GET[$param]))));
-	}
-		
-	
-	$links = paginate_links($pagination);
-	if(!empty($links)){
-		
-	    $links = str_replace("<ul class='page-numbers'>", '<ul class="page-numbers pagination">', $links);
-	}
-	
-    if($echo)
-		echo $links;
-	return
-		$links;
-	
-}
+
 
 function frl_paginate_links($query = null, $echo = true) {
     global $wp_rewrite, $wp_query;
@@ -471,62 +399,32 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 }
 
 
-
-/**
- * Sharing buttons
- **/
-function frl_page_actions(){
-?>
-
-<?php
-}
-
-
 if(!function_exists('frl_current_url')){
-function frl_current_url() {
-   
-    $pageURL = 'http';
-   
-    if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
-    $pageURL .= "://";
-   
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-    } else {
-        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-    }
-   
-    return $pageURL;
-}
+	function frl_current_url() {
+	   
+		$pageURL = 'http';
+	   
+		if (isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on")) {$pageURL .= "s";}
+		$pageURL .= "://";
+	   
+		if ($_SERVER["SERVER_PORT"] != "80") {
+			$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+		} else {
+			$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+		}
+	   
+		return $pageURL;
+	}
 }
 
-function tst_temp_avatar($user = null){
-	if($user == null) {
-		global $tst_member;
-		$user = $tst_member;
-	}
-	
-	$itv_user_avatar = tst_get_member_user_avatar($user->ID);
-	
-	if($itv_user_avatar) {
-		echo $itv_user_avatar;
-	}
-	else {
-		$default = get_template_directory_uri() . '/img/temp-avatar.png';
-		$size = 180;
-		$grav_url = $user ? "//www.gravatar.com/avatar/" . md5( strtolower( trim( $user->user_email ) ) ) . "?d=" . urlencode( $default ) . "&s=" . $size : $default;
-		//$grav_url = $default;
-		?>
-			<img src="<?=$grav_url?>" alt="<? _e('Member', 'tst');?>">
-		<?php
-	}
-}
 
 function tst_login_avatar(){
 ?>
 	<img src="<?php echo get_template_directory_uri();?>/img/temp-avatar.png" alt="<? _e('LogIn', 'tst');?>">
 <?php
 }
+
+
 
 /* Comments opened for tasks */
 add_filter('comments_open', 'tst_comments_on_tasks', 2, 2);
@@ -600,6 +498,7 @@ function tst_comment( $comment, $args, $depth ) {
 <?php
 
 }
+
 
 
 /** Old task params - to be reworked */

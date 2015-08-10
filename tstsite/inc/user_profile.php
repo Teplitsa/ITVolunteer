@@ -160,15 +160,6 @@ function ajax_upload_user_avatar() {
 }
 add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 
-function tst_get_member_user_avatar($member_id) {
-	$image_id = get_user_meta($member_id, 'user_avatar', true);
-	$res = '';
-	
-	if($image_id) {
-		$res = wp_get_attachment_image( $image_id, 'avatar' );
-	}
-	return $res;
-}
 
 # user skills
 $ITV_USER_SKILLS_EXCLUDE_CATEGORIES = array('prochee', 'materials');

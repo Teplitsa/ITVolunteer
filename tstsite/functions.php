@@ -225,9 +225,10 @@ add_action('wp_enqueue_scripts', function(){
 add_action('admin_enqueue_scripts', function(){
 
     $url = get_template_directory_uri();
+    $version = tst_get_version_num();
 
-    wp_enqueue_style('tst-admin', $url.'/css/admin.css', array());
-    wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'));
+    wp_enqueue_style('tst-admin', $url.'/css/admin.css', array(), $version);
+    wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'), $version);
     
     wp_localize_script('tst-admin', 'adminend', array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
@@ -288,6 +289,11 @@ require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
+require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
+
 require get_template_directory().'/inc/template-tasks.php';
+require get_template_directory().'/inc/template-members.php';
+require get_template_directory().'/inc/functions-members.php';
 require get_template_directory().'/inc/stats-events.php';
+

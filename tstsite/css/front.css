@@ -81,8 +81,8 @@ img {
   color: #D2322D; }
 .task-params .deadline.low-urgency:hover,
 .task-params .deadline.low-urgency {
-  border-color: #f0ad4e;
-  color: #f0ad4e; }
+  border-color: #FFAB00;
+  color: #FFAB00; }
 .task-params .deadline.no-urgency:hover,
 .task-params .deadline.no-urgency {
   border-color: #5BC0DE;
@@ -210,10 +210,10 @@ img {
       color: rgba(210, 50, 45, 0.2); }
   .in-loop-old .task-params .deadline.low-urgency:hover,
   .in-loop-old .task-params .deadline.low-urgency {
-    border-color: rgba(240, 173, 78, 0.3); }
+    border-color: rgba(255, 171, 0, 0.3); }
     .in-loop-old .task-params .deadline.low-urgency:hover .glyphicon,
     .in-loop-old .task-params .deadline.low-urgency .glyphicon {
-      color: rgba(240, 173, 78, 0.3); }
+      color: rgba(255, 171, 0, 0.3); }
   .in-loop-old .task-params .deadline.no-urgency:hover,
   .in-loop-old .task-params .deadline.no-urgency {
     border-color: rgba(91, 192, 222, 0.3); }
@@ -240,17 +240,19 @@ img {
 
 /** single task **/
 .task-title {
-  position: relative;
-  padding-left: 71px; }
-  .task-title .status-wrap {
-    width: 65px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%; }
+  position: relative; }
   .task-title .label {
     font-size: 11px;
     vertical-align: middle; }
+  @media screen and (min-width: 768px) {
+    .task-title {
+      padding-left: 71px; }
+      .task-title .status-wrap {
+        width: 65px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%; } }
 
 .task-title .status-wrap .label,
 .task-actions .page-heading .label {
@@ -273,20 +275,25 @@ img {
   background: #666; }
 
 .in-single .task-summary {
-  padding-left: 32.5px;
   margin-bottom: 30px; }
+  @media screen and (min-width: 768px) {
+    .in-single .task-summary {
+      padding-left: 32.5px; } }
 
-.in-single .task-details {
-  padding-left: 32.5px; }
-  .in-single .task-details .tab-pane-body {
-    padding-top: 30px; }
+@media screen and (min-width: 768px) {
+  .in-single .task-details {
+    padding-left: 32.5px; } }
+.in-single .task-details .tab-pane-body {
+  padding-top: 30px; }
 
 .page-title .edit-item {
   display: inline-block;
   font-size: 11px;
-  margin-left: 15px;
-  margin-top: 4px;
+  margin-top: 12px;
   vertical-align: top; }
+  @media screen and (min-width: 768px) {
+    .page-title .edit-item {
+      margin-left: 15px; } }
   .page-title .edit-item a {
     display: inline-block;
     padding: 5px 12px 6px;
@@ -375,6 +382,20 @@ img {
 .single-tasks .in-single .col-md-8 > .alert {
   margin-left: 32.5px; }
 
+div[class|="status-block"] {
+  margin-top: 15px; }
+  @media screen and (min-width: 992px) {
+    div[class|="status-block"] {
+      margin-top: 0; }
+      div[class|="status-block"] .row-top {
+        text-align: right; } }
+
+@media screen and (min-width: 768px) {
+  .status-block-task {
+    margin-left: 65px; } }
+@media screen and (min-width: 992px) {
+  .status-block-task {
+    margin-left: 0; } }
 .status-block-task .row-top {
   margin-bottom: 15px; }
 
@@ -408,12 +429,16 @@ img {
   .single-tasks .task-params .reward,
   .single-tasks .task-params .reward:hover {
     border-color: rgba(92, 184, 92, 0.8); }
+    @media screen and (max-width: 991px) {
+      .single-tasks .task-params .reward,
+      .single-tasks .task-params .reward:hover {
+        margin-top: 5px; } }
   .single-tasks .task-params .deadline.urgent:hover,
   .single-tasks .task-params .deadline.urgent {
     border-color: rgba(210, 50, 45, 0.8); }
   .single-tasks .task-params .deadline.low-urgency:hover,
   .single-tasks .task-params .deadline.low-urgency {
-    border-color: rgba(240, 173, 78, 0.8); }
+    border-color: rgba(255, 171, 0, 0.8); }
   .single-tasks .task-params .deadline.no-urgency:hover,
   .single-tasks .task-params .deadline.no-urgency {
     border-color: rgba(91, 192, 222, 0.8); }
@@ -431,6 +456,9 @@ img {
 
 .help-block.button-status {
   margin-bottom: 2em; }
+
+.task-actions.sidebar {
+  max-width: 350px; }
 
 .task-actions .pull-right + .return-button {
   margin-top: 30px; }
@@ -490,12 +518,24 @@ img {
   .in-loop .member .thumbnail {
     margin-bottom: 0;
     width: 100px;
-    height: 100px; }
+    height: 100px;
+    border: none;
+    padding: 0; }
     .in-loop .member .thumbnail img {
       max-width: 100%;
       height: auto; }
   .in-loop .member .member-status {
     margin-top: 4px; }
+    .in-loop .member .member-status .label {
+      background: #566672; }
+      .in-loop .member .member-status .label.hero {
+        background: #5CB85C; }
+      .in-loop .member .member-status .label.donee {
+        background: #EF8000; }
+      .in-loop .member .member-status .label.activist {
+        background: #FFAB00; }
+      .in-loop .member .member-status .label.volunteer {
+        background: #5BC0DE; }
   .in-loop .member .member-title {
     margin: 15px 0 5px; }
     .in-loop .member .member-title a {
@@ -532,7 +572,7 @@ img {
 .member-links-list dt {
   float: left;
   width: 90px;
-  color: #999; }
+  color: #8899A6; }
 .member-links-list dd {
   margin-left: 95px;
   margin-bottom: 10px; }
@@ -558,19 +598,15 @@ img {
     margin-bottom: 0; }
 
 section[class|="data-section"] {
-  margin-top: 30px;
-  margin-bottom: 30px; }
-  section[class|="data-section"]:first-child {
-    margin-top: 0; }
-  section[class|="data-section"]:last-child {
-    margin-bottom: 0; }
-
-div[class|="status-block"] .row-top {
-  text-align: right; }
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  -ms-hyphens: auto;
+      hyphens: auto;
+  margin: 15px 0 30px; }
 
 .status-block-member .row-top {
   margin-bottom: 10px; }
-
 .status-block-member .row-main:before, .status-block-member .row-main:after {
   content: " ";
   display: table; }
@@ -578,8 +614,10 @@ div[class|="status-block"] .row-top {
   clear: both; }
 
 .role-marker {
-  float: right;
   position: relative; }
+  @media screen and (min-width: 992px) {
+    .role-marker {
+      float: right; } }
   .role-marker .vlabel {
     top: 16px;
     left: -22px; }
@@ -587,7 +625,23 @@ div[class|="status-block"] .row-top {
     width: 150px;
     height: 49px;
     border-radius: 0px;
-    cursor: default; }
+    cursor: default;
+    color: white;
+    background: #566672; }
+    @media screen and (max-width: 991px) {
+      .role-marker button {
+        width: 130px;
+        height: 36px; } }
+    .role-marker button:hover {
+      color: white; }
+    .role-marker button.donee {
+      background: #EF8000; }
+    .role-marker button.activist {
+      background: #FFAB00; }
+    .role-marker button.hero {
+      background: #5CB85C; }
+    .role-marker button.volunteer {
+      background: #5BC0DE; }
   .role-marker .role-desc {
     background: #999;
     color: #fff;
@@ -605,6 +659,10 @@ div[class|="status-block"] .row-top {
     .member-activity table .num span {
       cursor: pointer; }
 
+.member-tasks .nav-tabs {
+  font-size: 12px; }
+  .member-tasks .nav-tabs li > a {
+    padding: 6px 9px; }
 .member-tasks .tab-pane {
   padding: 25px 15px;
   border-bottom: 1px solid #ddd; }
@@ -616,23 +674,24 @@ div[class|="status-block"] .row-top {
   margin: 0;
   padding: 0; }
   .member-tasks-list li {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     padding: 0; }
     .member-tasks-list li:first-child {
       margin-top: 0; }
     .member-tasks-list li:last-child {
       margin-bottom: 0; }
-  .member-tasks-list .mt-title {
-    margin-bottom: 5px; }
   .member-tasks-list .mt-meta {
-    font-size: 13px;
-    color: #111; }
+    font-size: 0.85em;
+    color: #8899A6; }
+    .member-tasks-list .mt-meta a {
+      color: #8899A6; }
     .member-tasks-list .mt-meta strong {
       font-weight: normal;
-      color: #999; }
+      color: #8899A6; }
 
 /** member tasks */
+#tasks-closed,
 #tasks-working-on,
 #tasks-created {
   padding: 30px 15px; }
@@ -649,12 +708,12 @@ div[class|="status-block"] .row-top {
   .task-row h5 {
     margin-top: 0;
     margin-bottom: 7px; }
-  .task-row .col-md-2 {
+  .task-row .task-row-meta {
     font-size: 13px;
-    color: #666; }
-  .task-row .col-md-4 {
+    color: #8899A6; }
+  .task-row .task-row-action {
     text-align: right; }
-    .task-row .col-md-4 a {
+    .task-row .task-row-action a {
       margin-left: 8px; }
 
 /** search & 404 **/
@@ -861,7 +920,7 @@ div[class|="status-block"] .row-top {
   max-width: 280px; }
 
 .status-block-task .reward.task-param {
-  max-width: none; }
+  max-width: 350px; }
 
 .fb-widget {
   width: 300px;
@@ -1027,7 +1086,12 @@ a {
         color: #333; }
   .page-heading h1 {
     margin: 0;
-    font-weight: normal; }
+    font-weight: normal;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+        hyphens: auto; }
 
 .page-bottom {
   margin-top: 30px;
@@ -1460,6 +1524,50 @@ a {
     background: #566672; }
 
 /** == Members Templates == **/
+/** Tasks List Screen **/
+.members-list-header .members-filters {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  padding-top: 12px; }
+  .members-list-header .members-filters:before, .members-list-header .members-filters:after {
+    content: " ";
+    display: table; }
+  .members-list-header .members-filters:after {
+    clear: both; }
+  @media screen and (min-width: 1200px) {
+    .members-list-header .members-filters {
+      margin-left: -36px; } }
+  .members-list-header .members-filters a {
+    display: inline-block;
+    line-height: 1;
+    padding: 4px 13px 6px; }
+  .members-list-header .members-filters li {
+    float: left; }
+    .members-list-header .members-filters li a {
+      color: #566672; }
+    .members-list-header .members-filters li.donee a {
+      color: #EF8000; }
+    .members-list-header .members-filters li.activist a {
+      color: #FFAB00; }
+    .members-list-header .members-filters li.hero a {
+      color: #5CB85C; }
+    .members-list-header .members-filters li.volunteer a {
+      color: #5BC0DE; }
+  .members-list-header .members-filters li.active a {
+    color: #fff;
+    background: #566672; }
+    .members-list-header .members-filters li.active a:hover {
+      text-decoration: none; }
+  .members-list-header .members-filters li.active.donee a {
+    background: #EF8000; }
+  .members-list-header .members-filters li.active.activist a {
+    background: #FFAB00; }
+  .members-list-header .members-filters li.active.hero a {
+    background: #5CB85C; }
+  .members-list-header .members-filters li.active.volunteer a {
+    background: #5BC0DE; }
+
 /** Homepage **/
 .home-section {
   padding: 0 15px; }

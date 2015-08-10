@@ -349,17 +349,20 @@ img {
 /** single task **/
 .task-title {
 	position: relative;
-	padding-left: $statusW+6px;
-	.status-wrap {
-		width: $statusW;
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-	}
 	.label {
 		font-size: 11px;
 		vertical-align: middle;		
+	}
+	
+	@include for(small-screens) {
+		padding-left: $statusW+6px;
+		.status-wrap {
+			width: $statusW;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+		}
 	}
 		
 }
@@ -391,24 +394,29 @@ img {
 
 
 .in-single .task-summary{
-	padding-left: $statusW/2;
-	margin-bottom: $divMargin;
+	@include for(small-screens) {
+		padding-left: $statusW/2;
+	}
+	margin-bottom: $measure-elements-margin;
 }
 
 .in-single .task-details {
-	padding-left: $statusW/2;
+	@include for(small-screens) {
+		padding-left: $statusW/2;
+	}
 	
 	.tab-pane-body {
-		padding-top: $divMargin;
+		padding-top: $measure-elements-margin;
 	}
 }
 
 .page-title .edit-item {
 	display: inline-block;	
-	font-size: 11px;
-	margin-left: 15px;
-	margin-top: 4px;	
+	font-size: 11px;	
+	margin-top: 12px;	
 	vertical-align: top;
+	@include for(small-screens) { margin-left: 15px; }
+	
 	a {
 		display: inline-block;
 		padding: 5px 12px 6px;
@@ -427,8 +435,7 @@ img {
 
 
 
-.nextprev {
-	
+.nextprev {	
 	span {
 		display: inline-block;		
 	}
@@ -528,8 +535,21 @@ img {
 	margin-left: $statusW / 2;
 }
 
-.status-block-task .row-top {
-	margin-bottom: 15px;
+div[class |="status-block"] {
+	margin-top: $measure-elements-margin/2;
+	
+	@include for(medium-screens) {
+		margin-top: 0;
+		.row-top { text-align: right; }
+	}
+}
+
+.status-block-task {
+	@include for(small-screens) { margin-left: $statusW;}
+	@include for(medium-screens) { margin-left: 0; }
+	.row-top {
+		margin-bottom: 15px;
+	}
 }
 
 .single-tasks {
@@ -572,7 +592,10 @@ img {
 	.task-params {
 		.reward,
 		.reward:hover {
-			border-color: transparentize($color-label-green-normal, 0.2);			
+			border-color: transparentize($color-label-green-normal, 0.2);
+			@include upto(medium-screens){
+				margin-top: 5px;
+			}
 		}
 		
 		.deadline.urgent:hover,
@@ -613,6 +636,10 @@ img {
 
 .help-block.button-status {
 	margin-bottom: 2em; 
+}
+
+.task-actions.sidebar {
+	max-width: 350px;
 }
 
 .task-actions .pull-right + .return-button {
@@ -697,6 +724,8 @@ img {
 		margin-bottom: 0;
 		width: 100px;
 		height: 100px;
+		border: none;
+		padding: 0;
 		img {
 			max-width: 100%;
 			height: auto;
@@ -705,6 +734,14 @@ img {
 	
 	.member-status {
 		margin-top: 4px;
+		
+		.label {
+			background: $color-user-user;
+			&.hero { background: $color-user-hero; }
+			&.donee { background: $color-user-donee; }
+			&.activist { background: $color-user-activist; }
+			&.volunteer { background: $color-user-volunteer; }
+		}
 	}
 	
 	.member-title {
@@ -747,7 +784,7 @@ img {
 	dt {
 		float: left;
 		width: 90px;
-		color: $color-text-light;
+		color: $color-text-meta;
 	}
 	
 	dd {
@@ -784,24 +821,24 @@ img {
 }
 
 section[class |="data-section"] {
-	@include smart-margin($divMargin);
+	@include word-wrap();
+	margin: $measure-elements-margin/2  0 $measure-elements-margin;
 }
 
-div[class |="status-block"] {
-	.row-top {
-		text-align: right;
-	}
+
+
+.status-block-member {
+	.row-top { margin-bottom: 10px; }
+	.row-main { @include clearfix; }
 }
 
-.status-block-member .row-top {
-	margin-bottom: 10px;
-}
-.status-block-member .row-main {
-	@include clearfix;
+.data-section-member {
+	
 }
 
 .role-marker {
-	float: right;
+	@include for(medium-screens) { float: right; }
+	
 	position: relative;
 	.vlabel {
 		top: 16px;
@@ -809,11 +846,23 @@ div[class |="status-block"] {
 	}
 	button {
 		width: 150px;
-		height: 49px;	
-		-webkit-border-radius: 0px;
-		-moz-border-radius: 0px;
-		border-radius: 0px;
+		height: 49px;
+		
+		@include upto(medium-screens) {
+			width: 130px;
+			height: 36px;
+		}					
+		border-radius: 0px;		
 		cursor: default;
+		color: white;
+		background: $color-user-user;
+		&:hover {
+			color: white;
+		}
+		&.donee { background: $color-user-donee; }
+		&.activist  { background: $color-user-activist;}
+		&.hero { background: $color-user-hero; }
+		&.volunteer { background: $color-user-volunteer; }
 	}
 	
 	.role-desc {		
@@ -842,13 +891,17 @@ div[class |="status-block"] {
 }
 
 .member-tasks {
+	.nav-tabs {
+		font-size: 12px;
+		li > a {
+			padding: 6px 9px;
+		}
+	}
 	.tab-pane {
 		padding: 25px 15px;
 		border-bottom: 1px solid #ddd;
 	}
-	.well {
-		font-size: 13px;
-	}
+	.well { font-size: 13px; }
 }
 
 .member-tasks-list {
@@ -856,23 +909,27 @@ div[class |="status-block"] {
 	margin: 0;
 	padding: 0;
 	li {
-		@include smart-margin(10px);
+		@include smart-margin(15px);
 		padding: 0;
 	}
-	.mt-title {
-		margin-bottom: 5px;
-	}
+	
 	.mt-meta {
-		font-size: 13px;
-		color: $color-text-black;
+		font-size: 0.85em;
+		color: $color-text-meta;
+		a {
+			color: $color-text-meta;
+		}
 		strong {
 			font-weight: normal;
-			color: $color-text-light;
+			color: $color-text-meta;
 		}
 	}
 }
 
+
+
 /** member tasks */
+#tasks-closed,
 #tasks-working-on,
 #tasks-created {
 	padding: 30px 15px;
@@ -888,12 +945,12 @@ div[class |="status-block"] {
 		margin-bottom: 7px;
 	}
 	
-	.col-md-2 {
+	.task-row-meta {
 		font-size: 13px;
-		color: $color-text-semi;
+		color: $color-text-meta;
 	}
 	
-	.col-md-4 {
+	.task-row-action {
 		text-align: right;
 		a {
 			margin-left: 8px;

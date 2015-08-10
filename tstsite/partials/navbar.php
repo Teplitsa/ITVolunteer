@@ -21,7 +21,7 @@
 			</a>
 		</li>
 		<li class="important-item-2">
-			<a href="<?php echo home_url('members');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_mb_list');?>>
+			<a href="<?php echo home_url('members/hero');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_mb_list');?>>
 				<?php _e('Members', 'tst');?> <span class="count ">( <?php echo tst_get_active_members_count();?> )</span>
 			</a>
 		</li>	
