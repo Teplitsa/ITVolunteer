@@ -7,7 +7,7 @@
  * 3W blocks
  **/
 
-function la_banner_format_home_textblock($query, $format_args) {
+function la_banner_format_home_textblock(WP_Query $query, $format_args) {
 	global $post;
 	
 	//check for plugin
@@ -256,7 +256,7 @@ function frl_cycloneslider($slider_id) {
  * Annotation for post formats
  **/
  
-function frl_single_split_content($post) {
+function frl_single_split_content(WP_Post $post) {
 	
 	$parts = array();
 	if(!empty($post->post_excerpt)){

@@ -19,7 +19,7 @@ class Tst_Task_Submitbox {
     /**
      * Constructions
      * */
-    function __construct($post, $params = array()){
+    function __construct(WP_Post $post, $params = array()){
 
         $this->post_object = $post;
         $this->post_type = $post->post_type;
@@ -632,7 +632,7 @@ function itv_user_columns_content($out, $column_name, $user_id){
 }
 
 #	add task activity log on task edit page in admin panel
-function itv_tasks_log_box_content($task) {
+function itv_tasks_log_box_content(WP_Post $task) {
 	$itv_log = ItvLog::instance();
 	$log_records = $itv_log->get_task_log($task->ID);
 	

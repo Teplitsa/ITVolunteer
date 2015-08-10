@@ -1161,7 +1161,7 @@ function tst_send_user_notif_consult_needed($post_id) {
 }
 
 
-function tst_task_saved( $task_id, $task ) {
+function tst_task_saved( $task_id, WP_Post $task ) {
 	if ( $task->post_type != 'tasks' ) {
 		return;
 	}
@@ -1175,7 +1175,7 @@ function tst_task_saved( $task_id, $task ) {
 add_action( 'save_post', 'tst_task_saved', 10, 2 );
 
 
-function tst_task_updated( $task_id, $task, $is_update) {
+function tst_task_updated( $task_id, WP_Post $task, $is_update) {
 	if ( $task->post_type != 'tasks' ) {
 		return;
 	}

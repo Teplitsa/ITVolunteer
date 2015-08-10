@@ -111,7 +111,7 @@ function tst_custom_query_vars(){
 
 /* Request customization */
 add_action('parse_request', 'tst_request_corrections');
-function tst_request_corrections($request){
+function tst_request_corrections(WP $request){
 	
 	if($request->request == 'tasks') {
 		$redirect = get_post_type_archive_link('tasks');
@@ -123,7 +123,7 @@ function tst_request_corrections($request){
 
 /* Query customization */
 add_action('parse_query', 'tst_query_corrections');
-function tst_query_corrections($query){
+function tst_query_corrections(WP_Query $query){
 	
 	if(is_admin() || !$query->is_main_query())
 		return;
