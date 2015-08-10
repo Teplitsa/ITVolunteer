@@ -1054,32 +1054,6 @@ function tst_get_task_doers_count($task_id = false, $only_approved = false) {
 function tst_send_admin_notif_new_task($post_id) {
     # disabled function
     return;
-	global $ITV_ADMIN_EMAILS, $ITV_EMAIL_FROM;
-	$task = get_post($post_id);
-	
-	if($task && count($ITV_ADMIN_EMAILS) > 0) {
-		$to = $ITV_ADMIN_EMAILS[0];
-		$other_emails = array_slice($ITV_ADMIN_EMAILS, 1);
-		$message = __('itv_email_new_task_added_message', 'tst');
-		$data = array(
-			'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-			'{{task_title}}' => get_the_title($post_id),
-			'{{task_content}}' => $task->post_content
-		);
-		$message = str_replace(array_keys($data), $data, $message);
-		$message = str_replace("\\", "", $message);
-		$message = nl2br($message);
-		
-		$subject = __('itv_email_new_task_added_subject', 'tst');
-		
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
-		if(count($other_emails) > 0) {
-			$headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
-		}
-		wp_mail($to, $subject, $message, $headers);
-	}
 }
 
 function tst_send_admin_notif_task_complete($post_id) {
