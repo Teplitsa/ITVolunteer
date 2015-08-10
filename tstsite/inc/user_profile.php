@@ -1,6 +1,6 @@
 <?php
 
-# company logo
+// company logo
 function ajax_delete_user_company_logo() {
 	$member = wp_get_current_user();
 	
@@ -161,7 +161,7 @@ function ajax_upload_user_avatar() {
 add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 
 
-# user skills
+// user skills
 $ITV_USER_SKILLS_EXCLUDE_CATEGORIES = array('prochee', 'materials');
 
 function tst_get_user_skills($member_id) {
@@ -226,8 +226,7 @@ function tst_get_member_user_skills_string($member_id) {
 	return implode(', ', $actual_user_skills);
 }
 
-
-/* SEO Title */
+// SEO Title 
 add_filter( 'wpseo_title', 'itv_user_profile_seo_title');
 function itv_user_profile_seo_title($title) {
 	
