@@ -40,7 +40,7 @@ global $tst_member;
 					<span class="member-points">
 						<?php if($place_of_work = tst_get_member_field('user_workplace')): ?>
 						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?php echo $place_of_work; ?></b><br />
-						<?php endif?>
+						<?php endif; ?>
 						
 						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo (int)$activity['solved'];?></b>
 						
