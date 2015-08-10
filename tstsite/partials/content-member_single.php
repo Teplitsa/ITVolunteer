@@ -51,21 +51,21 @@ $activity = tst_get_member_activity($tst_member);
 				</div>
 				<div class="col-md-9">
 					
-					<?if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
+					<?php if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st employee', 'tst');?></h4>
 						<img class="itv-test-employee-big" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
 					</section>
-					<?endif?>
+					<?php endif?>
 					
-					<?if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
+					<?php if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st partner', 'tst');?></h4>
 						<img class="itv-test-partner-big" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" />
 					</section>
-					<?endif?>
+					<?php endif?>
 					
-					<?if($user_bio = trim(tst_get_member_field('user_bio'))):?>
+					<?php if($user_bio = trim(tst_get_member_field('user_bio'))):?>
 					<section class="data-section-member">
 						<h4><?php _e('About me', 'tst');?></h4>
 						<?php
@@ -73,38 +73,38 @@ $activity = tst_get_member_activity($tst_member);
 							echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
 						?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 
-					<?if($text = tst_get_member_field('user_workplace')):?>
+					<?php if($text = tst_get_member_field('user_workplace')):?>
 					<section class="data-section-member">
 						<h4><?php _e('Place of work', 'tst');?></h4>
 						<?=$text?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					
-					<?if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
+					<?php if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
 					<section class="data-section-member">
 						<?=$user_company_logo?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 
-					<?if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
+					<?php if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Skills list', 'tst');?></h4>
 						<?=$user_skills_string?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					
-					<?if($text = tst_get_member_field('user_socials')):?>
+					<?php if($text = tst_get_member_field('user_socials')):?>
 					<section class="data-section-member">
 						<h4><?php _e('In the web', 'tst');?></h4>
 						<?=$text?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					<?php if(is_user_logged_in()):?>
 					<section class="data-section-member">

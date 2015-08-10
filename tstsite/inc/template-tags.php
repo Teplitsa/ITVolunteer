@@ -420,7 +420,7 @@ if(!function_exists('frl_current_url')){
 
 function tst_login_avatar(){
 ?>
-	<img src="<?php echo get_template_directory_uri();?>/img/temp-avatar.png" alt="<? _e('LogIn', 'tst');?>">
+	<img src="<?php echo get_template_directory_uri();?>/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
 <?php
 }
 
@@ -523,7 +523,7 @@ function tst_task_params(){
 function tst_task_reward($reward) {
 ?>
 	<div class="col-md-8">
-		<span class="reward task-param btn btn-default" <?if(!is_wp_error($reward)):?>title="<?=$reward->name?>"<?endif?>>
+		<span class="reward task-param btn btn-default" <?php if(!is_wp_error($reward)):?>title="<?=$reward->name?>"<?endif?>>
 			<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
 			<span class="reward-name"><?php
 				echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name;

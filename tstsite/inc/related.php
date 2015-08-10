@@ -92,7 +92,7 @@ function tst_related_posts_list($cpost = null, $tax = 'post_tag', $limit = 5, $a
 ?>
 	<ul class="related-posts">
 	<?php while($query->have_posts()): $query->the_post(); ?>
-	<li class="tst-recent-item <? echo esc_attr($post->post_type);?><?php if($args['thumb']) echo ' has-thumb';?>">
+	<li class="tst-recent-item <?php echo esc_attr($post->post_type);?><?php if($args['thumb']) echo ' has-thumb';?>">
 
 		<?php if(has_post_thumbnail() && $args['thumb'] == true): //thumb  ?>
 			<div class="item-preview"><a href="<?php the_permalink(); ?>" rel="bookmark" >

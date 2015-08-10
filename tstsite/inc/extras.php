@@ -357,7 +357,7 @@ function tst_task_fixed_meta($task = null){
 ?>
     <span class="status-meta">
 		<span class="created-by-label"><?php _e('Created by', 'tst');?>:</span> <?php echo tst_get_task_author_link($task);?>,
-		<?if($user_workplace):?><?=$user_workplace?>, <?endif?>
+		<?php if($user_workplace):?><?=$user_workplace?>, <?endif?>
 	</span>
 	<?php //echo frl_get_sep();?>
 	<span class="time-label"></span>

@@ -45,7 +45,7 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php# } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
+<?php # } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && !$candidates) {?>
 <?php } elseif($is_curr_users_task && $post->post_status == 'publish' && !$candidates) {?>
 
     <div id="">
@@ -62,7 +62,7 @@ if( !$cur_user_id ) {?>
         </form>
     </div>
 
-<?php# } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
+<?php # } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'publish' && $candidates) {?>
 <?php } elseif($is_curr_users_task && $post->post_status == 'publish' && $candidates) {?>
 
     <div id="">
@@ -85,7 +85,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php# } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'in_work') {?>
+<?php # } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'in_work') {?>
 <?php } else if($is_curr_users_task && $post->post_status == 'in_work') {?>
 
     <div id="">
@@ -122,7 +122,7 @@ if( !$cur_user_id ) {?>
         </div>
     </div>
 
-<?php# } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'closed') {?>
+<?php # } else if((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'closed') {?>
 <?php } else if($is_curr_users_task && $post->post_status == 'closed') {?>
 
     <a href="#" id="task-send-to-work" class="btn btn-danger btn-lg widefat"><?php _e('Return to work', 'tst');?></a>

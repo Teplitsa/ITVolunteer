@@ -95,7 +95,7 @@ get_header(); ?>
                     <section class="data-section-task">
                         <h4><?php _e('A little about reward', 'tst');?></h4>
 			<div class="row task-params itv-about-reward-bubble">
-				<?$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');?>
+				<?php $reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');?>
 				<?php tst_task_reward($reward)?>
 			</div>
                         <?php echo htmlspecialchars_decode(get_field('field_533bec930fe8e'), ENT_QUOTES);?>
