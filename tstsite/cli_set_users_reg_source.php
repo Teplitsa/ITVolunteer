@@ -37,7 +37,7 @@ $per_page = 100;
 $offset = 0;
 $is_stop = false;
 while(!$is_stop) {
-	echo 'offset=' . $offset . "\n";
+// 	echo 'offset=' . $offset . "\n";
 		
 	$users_query_params = array(
 // 			'number' => $per_page,
@@ -63,25 +63,26 @@ while(!$is_stop) {
 // 	echo "count: " . count($user_query->results) . "\n";
 	
 	foreach($user_query->results as $user) {
-		echo "\n\nprocess: " . $user->user_login . " registered: " .$user->user_registered . "\n";
+// 		echo "\n\nprocess: " . $user->user_login . " registered: " .$user->user_registered . "\n";
 
 		$reg_source = tstmu_get_user_reg_source($user->ID);
-		if(!$reg_source) {
-			echo "search reg source\n";
+#		if(!$reg_source) {
+// 			echo "search reg source\n";
 			$blog_id = itv_get_user_reg_source($user);
 			if($blog_id) {
-				echo "reg source FOUND: " . $blog_id . "\n";
+#				echo "reg source FOUND: " . $blog_id . "\n";
 				tstmu_save_user_reg_source($user->ID, $blog_id);
+				echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
 			}
 			else {
-				echo "reg source NOT FOUND\n";
+// 				echo "reg source NOT FOUND\n";
 				tstmu_save_user_reg_source($user->ID, 1);
 			}
-		}
-		else {
-			echo "reg source EXISTS: " . $reg_source . "\n";
-			echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
-		}
+#		}
+#		else {
+#			echo "reg source EXISTS: " . $reg_source . "\n";
+#			echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
+#		}
 
 // 		echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
 
@@ -114,7 +115,7 @@ function itv_get_user_reg_source($user) {
 function itv_is_email_reg_on_site_earlier($user, $site_emails) {
 	if($site_emails['emails'] && is_array($site_emails['emails'])) {
 		foreach($site_emails['emails'] as $field) {
-			if($field->meta_value == $user->user_email && strtotime($field->created_at) < strtotime($user->user_registered)) {
+			if($field->meta_value == $user->user_email && strtotime($field->created_at) <= strtotime($user->user_registered)) {
 				return true;
 			}
 		}

@@ -21,14 +21,17 @@ foreach($user_query->results as $user) {
 	
 	$user_activity = tst_get_member_activity($user);
 	$created_tasks =  $user_activity['created'];
-	$working_tasks = $user_activity['solved'];
-
+	$solved_tasks = $user_activity['solved'];
+	$working_tasks = count(tst_get_user_working_tasks($user->ID, 'in_work'));
+	
 	# old way
 // 	$created_tasks = count(tst_get_user_created_tasks($user->ID));
-// 	$working_tasks = count(tst_get_user_working_tasks($user->ID));
-	
 	
 	$reg_source_name = tstmu_get_user_reg_source_name($user->ID);
+	$last_login = get_user_last_login_time($user);
+	if($last_login == '0000-00-00 00:00') {
+		$last_login = '';
+	}
 
 	$wpdb->query(
 			$wpdb->prepare(
@@ -60,6 +63,8 @@ foreach($user_query->results as $user) {
 					role = %s,
 					created_tasks = %s,
 					working_tasks = %s,
+					solved_tasks = %s,
+					last_login = %s,
 					reg_source = %s
 					",
 					$user->ID,
@@ -87,6 +92,8 @@ foreach($user_query->results as $user) {
 					$role,
 					$created_tasks,
 					$working_tasks, 
+					$solved_tasks,
+					$last_login,
 					$reg_source_name
 			)
 	);
