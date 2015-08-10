@@ -198,7 +198,7 @@ function ajax_add_edit_task(){
             wp_trash_post($_POST['id']);
             $itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
 
-            die(json_encode(array(
+            wp_wp_die(json_encode(array(
                 'status' => 'deleted',
                 'message' => __('The task was successfully deleted.', 'tst'),
             )));
@@ -243,7 +243,7 @@ function ajax_add_edit_task(){
 			
 		
         if($params['post_status'] == 'draft') {
-            die(json_encode(array(
+            wp_wp_die(json_encode(array(
                 'status' => 'saved',
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
@@ -251,7 +251,7 @@ function ajax_add_edit_task(){
                 'id' => $_POST['id'],
             )));
         } else
-            die(json_encode(array(
+            wp_wp_die(json_encode(array(
                 'status' => 'ok',
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
@@ -262,7 +262,7 @@ function ajax_add_edit_task(){
 
     } else {
 
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => empty($params['ID']) ?
                 __('<strong>Error:</strong> something occured due to the task addition.', 'tst') :
@@ -283,7 +283,7 @@ function ajax_publish_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-publish-by-author')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -296,7 +296,7 @@ function ajax_publish_task() {
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
     
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
         'permalink' => get_permalink($_POST['task-id'])
     )));
@@ -314,7 +314,7 @@ function ajax_unpublish_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-unpublish-by-author')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -327,7 +327,7 @@ function ajax_unpublish_task() {
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
     
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -344,7 +344,7 @@ function ajax_task_to_work() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-send-to-work')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -361,11 +361,8 @@ function ajax_task_to_work() {
 	}	
 	
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_INWORK, get_current_user_id());
-        
-    
-    /** @todo Send emails to all task doers... */
 
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -382,7 +379,7 @@ function ajax_close_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-close-by-author')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -400,9 +397,7 @@ function ajax_close_task() {
 		do_action('update_member_stats', $users);
 	}	
 
-    /** @todo Send emails to all task doers... */
-
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -421,7 +416,7 @@ function ajax_approve_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-ok-'.$_POST['doer-id'])
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -475,7 +470,7 @@ function ajax_approve_candidate() {
     // Task is automatically switched "to work":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
 
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -494,7 +489,7 @@ function ajax_refuse_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-refuse-'.$_POST['doer-id'])
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -526,7 +521,7 @@ function ajax_refuse_candidate() {
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
 	
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -543,7 +538,7 @@ function ajax_add_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -583,7 +578,7 @@ function ajax_add_candidate() {
         ))
     );
 
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
 		'users' => array($task_author, $task_doer_id)
     )));
@@ -601,7 +596,7 @@ function ajax_remove_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-remove-candidate')
     ) {
-        die(json_encode(array(
+        wp_wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -637,7 +632,7 @@ function ajax_remove_candidate() {
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
 	
-    die(json_encode(array(
+    wp_wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -655,7 +650,7 @@ function ajax_leave_review() {
 			|| empty($_POST['nonce'])
 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
 	) {
-		die(json_encode(array(
+		wp_wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
 		)));
@@ -667,14 +662,14 @@ function ajax_leave_review() {
 	$author_id = get_current_user_id();
 
 	if(!$task) {
-		die(json_encode(array(
+		wp_wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> task not found.', 'tst'),
 		)));
 	}
 	
 	if($author_id != $task->post_author) {
-		die(json_encode(array(
+		wp_wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
 		)));
@@ -692,7 +687,7 @@ function ajax_leave_review() {
 	}
 	
 	if(!$task_doer) {
-		die(json_encode(array(
+		wp_wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
 		)));
@@ -700,7 +695,7 @@ function ajax_leave_review() {
 	
 	$message = htmlentities(trim(@$_POST['review-message']), ENT_QUOTES, 'UTF-8');
 	if(!$message) {
-		die(json_encode(array(
+		wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> empty message.', 'tst'),
 		)));
@@ -709,7 +704,7 @@ function ajax_leave_review() {
 	if($task_doer) {
 		$itv_reviews = ItvReviews::instance();
 		if($itv_reviews->is_review_for_doer_and_task($task_doer->ID, $task->ID)) {
-			die(json_encode(array(
+			wp_die(json_encode(array(
 					'status' => 'fail',
 					'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
 			)));
@@ -717,7 +712,7 @@ function ajax_leave_review() {
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message);
 	}
 	
-	die(json_encode(array(
+	wp_die(json_encode(array(
 			'status' => 'ok',
 			'message' => __('Review saved', 'tst'),
 	)));
@@ -744,7 +739,7 @@ function ajax_login() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'user-login')
     ) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -756,13 +751,13 @@ function ajax_login() {
         'remember' => $_POST['remember'],
     ));
     if(is_wp_error($user)) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => $user->get_error_message($user->get_error_code()),
         )));
     }
 
-    die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -779,17 +774,17 @@ function ajax_user_register() {
     $user_login = itv_get_unique_user_login(itv_translit_sanitize($_POST['first_name']), itv_translit_sanitize($_POST['last_name']));
 
     if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
     } else if(username_exists($user_login)) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('Username already exists!', 'tst').'</div>',
         )));
     } else if(email_exists($_POST['email'])) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('Email already exists!', 'tst').'</div>',
         )));
@@ -804,7 +799,7 @@ function ajax_user_register() {
         ));
         
         if(is_wp_error($user_id)) {
-            die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'fail',
                 'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while registering your account.', 'tst').'</div>',
             )));
@@ -831,7 +826,7 @@ function ajax_user_register() {
                 nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
             );
 
-            die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'ok',
                 'message' => '<div class="alert alert-success">'.__('Your registration is complete! Please check out the email you gave us for our activation message.', 'tst').'</div>',
             )));
@@ -848,12 +843,12 @@ function ajax_update_profile() {
     $member = wp_get_current_user();
 
     if( !wp_verify_nonce($_POST['nonce'], 'member_action') ) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
     } else if($member->user_email != $_POST['email'] && email_exists($_POST['email'])) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('Email already exists!', 'tst').'</div>',
         )));
@@ -869,7 +864,7 @@ function ajax_update_profile() {
 
         $user_id = wp_update_user($params);
         if(is_wp_error($user_id)) {
-            die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'fail',
                 'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while updating your profile.', 'tst').'</div>',
             )));
@@ -894,7 +889,7 @@ function ajax_update_profile() {
             $itv_log = ItvLog::instance();
             $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
             
-            die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'ok',
                 'message' => '<div class="alert alert-success">'.sprintf(__('Your profile is successfully updated! <a href="%s" class="alert-link">View it</a>', 'tst'), tst_get_member_url($member)).'</div>',
             )));
@@ -909,7 +904,7 @@ function ajax_delete_profile() {
     $_POST['id'] = (int)$_POST['id'];
 
     if( !wp_verify_nonce($_POST['nonce'], 'member_action') || !$_POST['id'] ) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
@@ -927,11 +922,11 @@ function ajax_delete_profile() {
     	$itv_log = ItvLog::instance();
     	$itv_log->log_user_action(ItvLog::$ACTION_USER_DELETE_PROFILE, $user_id, $user_login);
     	 
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'ok',
         )));
     } else {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> something wrong happens when we deleted your account. We are already looking to it.', 'tst').'</div>',
         )));
@@ -943,7 +938,7 @@ add_action('wp_ajax_nopriv_delete-profile', 'ajax_delete_profile');
 function ajax_add_message() {
 
     if(empty($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'we-are-receiving-a-letter-goshujin-sama')) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -961,12 +956,12 @@ function ajax_add_message() {
     );
 
     if($success) {
-        die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'ok',
             'message' => __('Your message has been sent! Thanks a lot :)', 'tst'),
         )));
     } else {
-//        die(json_encode(array(
+//        wp_die(json_encode(array(
 //            'status' => 'fail',
 //            'message' => __('<strong>Error:</strong> message not processed.', 'tst'),
 //        )));
@@ -1054,6 +1049,35 @@ function tst_get_task_doers_count($task_id = false, $only_approved = false) {
 function tst_send_admin_notif_new_task($post_id) {
     # disabled function
     return;
+}
+
+function tst_send_admin_notif_task_complete($post_id) {
+	global $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_EMAIL_FROM;
+	$task = get_post($post_id);
+
+	if($task && count($ITV_TASK_COMLETE_NOTIF_EMAILS) > 0) {
+		$to = $ITV_TASK_COMLETE_NOTIF_EMAILS[0];
+		$other_emails = array_slice($ITV_TASK_COMLETE_NOTIF_EMAILS, 1);
+		$message = __('itv_email_task_complete_message', 'tst');
+		$data = array(
+				'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+				'{{task_title}}' => get_the_title($post_id),
+				'{{task_content}}' => $task->post_content
+		);
+		$message = str_replace(array_keys($data), $data, $message);
+		$message = str_replace("\\", "", $message);
+		$message = nl2br($message);
+
+		$subject = __('itv_email_task_complete_subject', 'tst');
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+		if(count($other_emails) > 0) {
+			$headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+		}
+		wp_mail($to, $subject, $message, $headers);
+	}
 }
 
 function tst_send_admin_notif_task_complete($post_id) {

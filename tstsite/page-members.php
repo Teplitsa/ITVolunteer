@@ -14,7 +14,7 @@ if(is_single_member()) {
         $back_url = $refer ? $refer : home_url();
 
         wp_redirect($back_url);
-        die();
+        exit;
     }
 }
 

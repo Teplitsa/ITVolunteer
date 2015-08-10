@@ -6,7 +6,7 @@
 
 if(get_current_user_id() || empty($_GET['uid'])) {
     wp_redirect(home_url());
-    die();
+    exit;
 }
 
 $user = get_user_by('id', (int)$_GET['uid']);

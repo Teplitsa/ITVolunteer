@@ -13,7 +13,7 @@ $faction = home_url('task-actions');
 if( !is_user_logged_in() ) {
 	$login_url = tst_get_login_url(home_url('/task-actions/'));
 	wp_redirect($login_url);
-	die();
+	exit;
 }
 
 if( !empty($_GET['task']) ){
@@ -26,7 +26,7 @@ if( !empty($_GET['task']) ){
 	
 	if(empty($task) || !current_user_can('edit_post', $task->ID)) {
 		wp_redirect(home_url('/task-actions/'));
-		die();
+		exit;
 	}
 	
 	$faction = add_query_arg('task', $task->ID, $faction);

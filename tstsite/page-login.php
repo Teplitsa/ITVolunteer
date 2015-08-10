@@ -11,7 +11,7 @@ $back_url = $refer ? $refer : home_url();
 
 if(get_current_user_id()) {
     wp_redirect($back_url);
-    die();
+    exit;
 }
 
 get_header();?>

@@ -3,7 +3,6 @@
 <br /><br />
 
 <?php
-//ini_set('max_execution_time', 300);
 
 $itv_site_stats = ItvSiteStats::instance();
 $itv_site_stats->refresh_users_role_stats();

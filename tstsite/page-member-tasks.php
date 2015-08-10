@@ -13,13 +13,13 @@ if( !$member_id ) {
     $back_url = $refer ? $refer : home_url();
 
     wp_redirect($back_url);
-    die();
+    exit;
 }
 
 $member = get_user_by('id', $member_id);
 if(empty($member) || !current_user_can('edit_user', $member_id)) {
     wp_redirect(home_url('member-actions'));
-    die();
+    exit;
 }
 
 $tst_member = $member;

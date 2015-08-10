@@ -12,7 +12,7 @@ $refer = empty($_GET['redirect_to']) ?
 
 	if(get_current_user_id()) {
 		wp_redirect($back_url);
-		die();
+		exit;
 	} 
 
 get_header();?>

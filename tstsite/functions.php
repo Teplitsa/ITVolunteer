@@ -274,6 +274,7 @@ function wp_admin_block() {
 	}
 }
 add_action('admin_menu', 'wp_admin_block');
+
 /**
  * Custom additions.
  */
@@ -283,7 +284,7 @@ if(is_admin()) {
 require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-tags.php';
 require get_template_directory().'/inc/extras.php';
-require get_template_directory().'/inc/related.php';
+//require get_template_directory().'/inc/related.php';
 require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';

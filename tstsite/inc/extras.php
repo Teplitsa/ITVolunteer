@@ -53,18 +53,6 @@ function tst_remove_admin_bar($show){
 	return $show;
 }
 
-/* redirect incapable mebers from admin */
-add_action('parse_query', 'tst_admin_redirect');
-function tst_admin_redirect(){
-	# this sometimes brokes ajax calls
-	
-	//if(is_admin() && !current_user_can('edit_others_posts')){
-	//	$redirect = home_url();
-	//	wp_redirect($redirect);
-	//	die();
-	//}
-	
-}
 
 
 
@@ -83,7 +71,7 @@ function tst_custom_widgets(){
 	//unregister_widget('WP_Widget_Search');
 	unregister_widget('FrmListEntries');
 	
-	register_widget('TST_Related_Widget');
+	//register_widget('TST_Related_Widget');
 	//register_widget('TST_Upcoming_Widget');
 //    register_widget('TST_Single_Task_Widget');
 }
@@ -128,7 +116,7 @@ function tst_request_corrections($request){
 	if($request->request == 'tasks') {
 		$redirect = get_post_type_archive_link('tasks');
 		wp_redirect($redirect);
-		die();
+		exit;
 	}
 }
 
@@ -143,7 +131,7 @@ function tst_query_corrections($query){
 	if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
 		$redirect = home_url('registration');
 		wp_redirect($redirect);
-		die();
+		exit;
 		
 	}
 	elseif(is_tag() && !$query->get('post_type')) {
@@ -165,38 +153,9 @@ function tst_query_corrections($query){
 		}
 	}
 	
-	//var_dump($query->query_vars);
+	
 }
 
-
-/* Members query customisation  */
-//add_action('pre_user_query', function(WP_User_Query $query){
-//    global $wpdb;
-//    if ( isset( $query->query_vars['query_id'] ) && 'get_members_for_members_page' == $query->query_vars['query_id'] ) {
-//        $query->query_fields = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
-//        $query->query_from = " FROM {$wpdb->users}
-//            INNER JOIN {$wpdb->usermeta} wp_usermeta ON ({$wpdb->users}.ID = wp_usermeta.user_id)
-//            INNER JOIN {$wpdb->usermeta} wp_usermeta2 ON ({$wpdb->users}.ID = wp_usermeta2.user_id)
-//        ";
-//        $query->query_where = " WHERE 1=1 AND wp_usermeta.meta_key = 'member_rating' AND wp_usermeta2.meta_key = 'member_order_data' ";
-//        $query->query_orderby = " ORDER BY wp_usermeta.meta_value DESC, wp_usermeta2.meta_value ASC";
-//        
-//        if(@$query->query_vars['itv_member_role']) {
-//            $member_role = (int)$query->query_vars['itv_member_role'];            
-//            $query->query_from .= " INNER JOIN {$wpdb->usermeta} wp_usermeta3 ON ({$wpdb->users}.ID = wp_usermeta3.user_id) ";
-//            $query->query_where .= " AND wp_usermeta3.meta_key = 'member_role' AND wp_usermeta3.meta_value = '{$member_role}' ";
-//        }
-//        //echo $query->query_fields . ' ' . $query->query_from . ' ' . $query->query_where . ' ' . $query->query_orderby;
-//    }
-//
-//    if(stristr($query->query_where, 'WHERE 1=1') === false) {
-//        $query->query_where = 'WHERE 1=1 '.$query->query_where;
-//    }
-//    
-////    if( !is_admin() ) {
-////        $query->set('exclude', array(ACCOUNT_DELETED_ID));
-////    }
-//}, 100);
 
 
 /* OLD filteting for query

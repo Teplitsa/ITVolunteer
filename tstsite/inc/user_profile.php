@@ -33,7 +33,7 @@ function ajax_delete_user_company_logo() {
 		);
 	}
 	
-	die(json_encode($res));
+	wp_wp_die(json_encode($res));
 }
 add_action('wp_ajax_delete-user-company-logo', 'ajax_delete_user_company_logo');
 
@@ -70,7 +70,7 @@ function ajax_upload_user_company_logo() {
 		);
 	}
 	
-	die(json_encode($res));
+	wp_wp_die(json_encode($res));
 }
 add_action('wp_ajax_upload-user-company-logo', 'ajax_upload_user_company_logo');
 
@@ -116,7 +116,7 @@ function ajax_delete_user_avatar() {
 		);
 	}
 
-	die(json_encode($res));
+	wp_wp_die(json_encode($res));
 }
 add_action('wp_ajax_delete-user-avatar', 'ajax_delete_user_avatar');
 
@@ -156,7 +156,7 @@ function ajax_upload_user_avatar() {
 		);
 	}
 
-	die(json_encode($res));
+	wp_wp_die(json_encode($res));
 }
 add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 

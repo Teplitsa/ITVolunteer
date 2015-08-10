@@ -14,14 +14,14 @@ if(empty($_GET['member'])) {
     $back_url = $refer ? $refer : home_url();
 
     wp_redirect($back_url);
-    die();
+    exit;
 }
 		
 $member_id = (int)$_GET['member'];
 $member = get_user_by('id', $member_id);
 if(empty($member) || !current_user_can('edit_user', $member_id)) {
     wp_redirect(home_url('member-actions'));
-    die();
+    exit;
 }
 
 $tst_member = $member;
@@ -170,8 +170,8 @@ get_header();?>
 			<?php $user_company_logo = tst_get_member_user_company_logo($member_data['member_id'])?>
 			
 			<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>
-			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="btn btn-primary btn-xs itv-company-logo-action" title="<?php _e('Upload logo', 'tst');?>"><?php _e('Upload logo', 'tst');?></a>
-			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?php if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
+			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-company-logo-action" title="<?php _e('Upload company logo', 'tst');?>"></a>
+			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
 			
 			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>
 			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
