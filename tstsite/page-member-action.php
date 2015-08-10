@@ -137,8 +137,8 @@ get_header();?>
 			&nbsp;<a id="upload_user_avatar" href="javascript:void(0);" class="btn btn-primary btn-xs itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"><?php _e('Upload avatar', 'tst');?></a>
 			&nbsp;<a id="delete_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-avatar-action" <?php if(!$user_avatar):?>style="display:none;"<?endif?> title="<?php _e('Delete avatar', 'tst');?>"></a>
 			
-			<div id="upload_user_avatar_info"><?=$user_avatar?></div>
-			<div id="upload_user_avatar_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
+			<div id="upload_user_avatar_info"><?php echo $user_avatar; ?></div>
+			<div id="upload_user_avatar_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
 		</div>
 		
 		<div class="form-group">
@@ -167,14 +167,14 @@ get_header();?>
 		</div>
 		
 		<div class="form-group">
-			<?php $user_company_logo = tst_get_member_user_company_logo($member_data['member_id'])?>
+			<?php $user_company_logo = tst_get_member_user_company_logo($member_data['member_id']); ?>
 			
 			<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>
 			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-company-logo-action" title="<?php _e('Upload company logo', 'tst');?>"></a>
-			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
+			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?php endif; ?> title="<?php _e('Delete company logo', 'tst');?>"></a>
 			
-			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>
-			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
+			<div id="upload_user_company_logo_info"><?php echo $user_company_logo; ?></div>
+			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?php site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
 		</div>
 		
 		<div class="form-group">

@@ -207,7 +207,7 @@ get_header();?>
 	<div class="form-group">
 		<label for="task-descr"><?php _e('itv_task_consult_needed_label', 'tst')?></label>
 		<div class="itv-task-form-sublabel">
-			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if($task_data['is_tst_consult_needed']):?>checked="checked"<?endif?>/>
+			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if($task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
 			<?php _e('itv_task_consult_needed_more_info', 'tst')?>
 		</div>			
 	</div>

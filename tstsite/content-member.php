@@ -3,7 +3,8 @@
  * this is temp member layout
  **/
 
-global $tst_member;?>
+global $tst_member;
+?>
 
 <article class="member col-md-6">
 	
@@ -26,19 +27,19 @@ global $tst_member;?>
 					$activity = tst_get_member_activity($tst_member);					
                 ?>
 				<div class="member-status">
-					<span class="label <?php echo esc_attr($role);?>"><?php echo tst_get_role_name($role);?></span>
+					<span class="label <?php echo esc_attr($role); ?>"><?php echo tst_get_role_name($role); ?></span>
 					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
 					
-					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" /><?endif?>
-					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" /><?endif?>
+					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?php echo content_url('themes/tstsite/img/te-st-logo.jpg'); ?>" /><?php endif; ?>
+					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?php echo content_url('themes/tstsite/img/logo-v.png'); ?>" /><?php endif; ?>
 				</div>
 				<h4 class="member-title"><a href="<?php echo tst_get_member_url();?>"><?php echo tst_get_member_name();?></a></h4>
 				
 				<!-- metas -->
 				<div class="member-meta">
 					<span class="member-points">
-						<?php if($place_of_work = tst_get_member_field('user_workplace')):?>
-						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?=$place_of_work?></b><br />
+						<?php if($place_of_work = tst_get_member_field('user_workplace')): ?>
+						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?php echo $place_of_work; ?></b><br />
 						<?php endif?>
 						
 						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo (int)$activity['solved'];?></b>

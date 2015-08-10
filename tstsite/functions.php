@@ -256,7 +256,7 @@ function wp_admin_block() {
 	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
 		if (!current_user_can('administrator')) { 
 			wp_redirect( home_url() );
-			exit();
+			exit;
 		}
 	}	
 	else {
@@ -264,12 +264,12 @@ function wp_admin_block() {
 			if (!current_user_can('administrator')) {
 				$current_user = wp_get_current_user();
 				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
-				exit();
+				exit;
 			}
 		}
 		else {
 			wp_redirect( site_url('/') );
-			exit();
+			exit;
 		}
 	}
 }
@@ -284,7 +284,6 @@ if(is_admin()) {
 require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-tags.php';
 require get_template_directory().'/inc/extras.php';
-//require get_template_directory().'/inc/related.php';
 require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
@@ -292,7 +291,6 @@ require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
 require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
-
 require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';
 require get_template_directory().'/inc/functions-members.php';

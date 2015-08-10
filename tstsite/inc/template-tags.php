@@ -522,15 +522,13 @@ function tst_task_params(){
 
 function tst_task_reward($reward) {
 ?>
-	<div class="col-md-8">
-		<span class="reward task-param btn btn-default" <?php if(!is_wp_error($reward)):?>title="<?=$reward->name?>"<?endif?>>
-			<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
-			<span class="reward-name"><?php
-				echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name;
-			?>
-			</span>
+<div class="col-md-8">
+	<span class="reward task-param btn btn-default" <?php if(!is_wp_error($reward)):?>title="<?php echo $reward->name; ?>"<?php endif; ?>>
+		<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
+		<span class="reward-name">
+		<?php echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name; ?>
 		</span>
-	</div>
-<?php
+	</span>
+</div>
+<?php 
 }
-    
