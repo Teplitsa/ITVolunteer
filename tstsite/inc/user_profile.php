@@ -246,5 +246,3 @@ function itv_user_profile_seo_title($title) {
 	
 	return $title;
 }
-
-
