@@ -277,7 +277,7 @@ function tst_content_nav( $nav_id, $query = null ) {
 function frl_paginate_links($query = null, $echo = true) {
     global $wp_rewrite, $wp_query;
     
-	if(null == $query)
+	if(!$query)
 		$query = $wp_query;
 	
     //var_dump($wp_query);

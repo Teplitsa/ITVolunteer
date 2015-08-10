@@ -92,10 +92,9 @@ function tst_get_active_members_count() {
 function tst_members_paging($page_query, $user_query, $echo = true){
 	global $wp_rewrite, $wp_query;
     
-	if(null == $page_query)
+	if(!$page_query)
 		$page_query = $wp_query;
-	
-    //var_dump($wp_query);
+	    
 	$remove = array(
 			
 	);
@@ -162,7 +161,8 @@ function tst_members_paging($page_query, $user_query, $echo = true){
 
 /** Avatar related functions **/
 function tst_temp_avatar($user = null){
-	if($user == null) {
+	
+	if(!$user) {
 		global $tst_member;
 		$user = $tst_member;
 	}
