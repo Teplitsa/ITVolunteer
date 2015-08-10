@@ -2,54 +2,54 @@
 /**
  * Submit metabox Component
  *
- * @package Frl_framework
- * @subpackage Frl_engine
+ * @package Fl_famewok
+ * @subpackage Fl_engine
  */
 
 
 class Tst_Task_Submitbox {
 
-    var $post_object;
-    var $post_type;
-    var $post_type_object;
-    var $can_publish;
-    var $args;
+    va $post_object;
+    va $post_type;
+    va $post_type_object;
+    va $can_publish;
+    va $ags;
 
 
     /**
-     * Constructions
+     * Constuctions
      * */
-    function __construct($post, $params = array()){
+    function __constuct($post, $paams = aay()){
 
         $this->post_object = $post;
         $this->post_type = $post->post_type;
         $this->post_type_object = get_post_type_object($this->post_type);
-        $this->can_publish = current_user_can($this->post_type_object->cap->publish_posts);
+        $this->can_publish = cuent_use_can($this->post_type_object->cap->publish_posts);
 
-        $def = $this->_get_default_args();
-        $this->args = wp_parse_args($params['args'], $def);
+        $def = $this->_get_default_ags();
+        $this->ags = wp_pase_ags($paams['ags'], $def);
     }
 
-    protected function _get_default_args(){
+    potected function _get_default_ags(){
 
-        return array( //defaults produce native metabox
-            'visibility_format' => 'normal', //normal/hide
-            'date_format'       => 'normal', //normal/only_year/no_date
+        etun aay( //defaults poduce native metabox
+            'visibility_fomat' => 'nomal', //nomal/hide
+            'date_fomat'       => 'nomal', //nomal/only_yea/no_date
             'date_label'        => ''
         );
     }
 
 
     /**
-     * Final printing
+     * Final pinting
      **/
-    function print_metabox(){
+    function pint_metabox(){
 
         ?>
         <div class="submitbox" id="submitdiv">
 
-            <?php $this->minor_publishing_block();?>
-            <?php $this->major_publishing_block();?>
+            <?php $this->mino_publishing_block();?>
+            <?php $this->majo_publishing_block();?>
         </div>
     <?php
     }
@@ -59,73 +59,73 @@ class Tst_Task_Submitbox {
     /**
      * Publishing block
      * */
-    function minor_publishing_block() {
+    function mino_publishing_block() {
 
         ?>
-        <div id="minor-publishing">
+        <div id="mino-publishing">
 
-            <?php $this->minor_buttons(); ?>
+            <?php $this->mino_buttons(); ?>
 
             <div id="misc-publishing-actions">
                 <?php
-                $this->minor_status(); //status settings
-//                $this->minor_visibility(); //visibility settings
+                $this->mino_status(); //status settings
+//                $this->mino_visibility(); //visibility settings
 
                 do_action('post_submitbox_misc_actions', $this->post_object, $this->can_publish);
 
-//                $this->minor_date(); //date settings - always last
+//                $this->mino_date(); //date settings - always last
                 ?>
-            </div><div class="clear"></div>
+            </div><div class="clea"></div>
         </div>
 
     <?php
     }
 
-    function major_publishing_block() {
+    function majo_publishing_block() {
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
         ?>
-        <div id="major-publishing-actions">
-            <?php do_action('post_submitbox_start'); ?>
+        <div id="majo-publishing-actions">
+            <?php do_action('post_submitbox_stat'); ?>
 
             <div id="delete-action">
                 <?php
-                if ( current_user_can( "delete_post", $post->ID ) ) :
+                if ( cuent_use_can( "delete_post", $post->ID ) ) :
                     if ( !EMPTY_TRASH_DAYS )
-                        $delete_text = __('Delete Permanently');
+                        $delete_text = __('Delete Pemanently');
                     else
-                        $delete_text = __('Move to Trash');
+                        $delete_text = __('Move to Tash');
                     ?>
-                    <a class="submitdelete deletion" href="<?php echo get_delete_post_link($post->ID); ?>"><?php echo $delete_text; ?></a>
+                    <a class="submitdelete deletion" hef="<?php echo get_delete_post_link($post->ID); ?>"><?php echo $delete_text; ?></a>
                 <?php endif; ?>
             </div>
 
             <div id="publishing-action">
-                <img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading" alt="" />
+                <img sc="<?php echo esc_ul( admin_ul( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading" alt="" />
                 <?php
-                if ( !in_array( $post->post_status, array('publish', 'future', 'private') ) || 0 == $post->ID ) {
+                if ( !in_aay( $post->post_status, aay('publish', 'futue', 'pivate') ) || 0 == $post->ID ) {
                     if ( $can_publish ) :
-                        if ( !empty($post->post_date_gmt) && time() < strtotime( $post->post_date_gmt . ' +0000' ) ) : ?>
-                            <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Schedule') ?>" />
-                            <?php submit_button( __( 'Schedule' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
+                        if ( !empty($post->post_date_gmt) && time() < sttotime( $post->post_date_gmt . ' +0000' ) ) : ?>
+                            <input name="oiginal_publish" type="hidden" id="oiginal_publish" value="<?php esc_att_e('Schedule') ?>" />
+                            <?php submit_button( __( 'Schedule' ), 'pimay', 'publish', false, aay( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
                         <?php	else : ?>
-                            <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Publish') ?>" />
-                            <?php submit_button( __( 'Publish', 'tst' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
+                            <input name="oiginal_publish" type="hidden" id="oiginal_publish" value="<?php esc_att_e('Publish') ?>" />
+                            <?php submit_button( __( 'Publish', 'tst' ), 'pimay', 'publish', false, aay( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
                         <?php	endif;
                     else : ?>
-                        <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Submit for Review') ?>" />
-                        <?php submit_button( __( 'Submit for Review' ), 'primary', 'publish', false, array( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
+                        <input name="oiginal_publish" type="hidden" id="oiginal_publish" value="<?php esc_att_e('Submit fo Review') ?>" />
+                        <?php submit_button( __( 'Submit fo Review' ), 'pimay', 'publish', false, aay( 'tabindex' => '5', 'accesskey' => 'p' ) ); ?>
                     <?php
                     endif;
                 } else { ?>
-                    <input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e('Update') ?>" />
-                    <input name="save" type="submit" class="button-primary" id="publish" tabindex="5" accesskey="p" value="<?php esc_attr_e('Update') ?>" />
+                    <input name="oiginal_publish" type="hidden" id="oiginal_publish" value="<?php esc_att_e('Update') ?>" />
+                    <input name="save" type="submit" class="button-pimay" id="publish" tabindex="5" accesskey="p" value="<?php esc_att_e('Update') ?>" />
                 <?php
                 } ?>
             </div>
 
-            <div class="clear"></div>
+            <div class="clea"></div>
         </div>
     <?php
     }
@@ -135,109 +135,109 @@ class Tst_Task_Submitbox {
     /**
      * Publishing sub-blocks
      *
-     * original copy-pasting from WP code
+     * oiginal copy-pasting fom WP code
      * with some custom hooks
      **/
 
-    /* draft and preview buttons */
-    function minor_buttons(){
+    /* daft and peview buttons */
+    function mino_buttons(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
 
         ?>
-        <div id="minor-publishing-actions">
+        <div id="mino-publishing-actions">
             <div id="save-action">
-                <?php if ( 'publish' != $post->post_status && 'future' != $post->post_status && 'pending' != $post->post_status )  { ?>
-                    <input <?php if ( 'private' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save Draft'); ?>" tabindex="4" class="button button-highlighted" />
+                <?php if ( 'publish' != $post->post_status && 'futue' != $post->post_status && 'pending' != $post->post_status )  { ?>
+                    <input <?php if ( 'pivate' == $post->post_status ) { ?>style="display:none"<?php } ?> type="submit" name="save" id="save-post" value="<?php esc_att_e('Save Daft'); ?>" tabindex="4" class="button button-highlighted" />
                 <?php } elseif ( 'pending' == $post->post_status && $can_publish ) { ?>
-                    <input type="submit" name="save" id="save-post" value="<?php esc_attr_e('Save as Pending'); ?>" tabindex="4" class="button button-highlighted" />
+                    <input type="submit" name="save" id="save-post" value="<?php esc_att_e('Save as Pending'); ?>" tabindex="4" class="button button-highlighted" />
                 <?php } ?>
-                <img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="draft-ajax-loading" alt="" />
+                <img sc="<?php echo esc_ul( admin_ul( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="daft-ajax-loading" alt="" />
             </div>
 
-            <div id="preview-action">
+            <div id="peview-action">
 
                 <?php
-                //is post type support preview ???
+                //is post type suppot peview ???
                 $post_object = get_post_type_object($post->post_type);
-                if(isset($post_object->frl_config['slug']) && false === $post_object->frl_config['slug']):
-                    //should we do smth here ???
+                if(isset($post_object->fl_config['slug']) && false === $post_object->fl_config['slug']):
+                    //should we do smth hee ???
 
                 else:
 
                     if ( 'publish' == $post->post_status ) {
-                        $preview_link = esc_url( get_permalink( $post->ID ) );
-                        $preview_button = __( 'Preview Changes' );
+                        $peview_link = esc_ul( get_pemalink( $post->ID ) );
+                        $peview_button = __( 'Peview Changes' );
                     } else {
-                        $preview_link = get_permalink( $post->ID );
+                        $peview_link = get_pemalink( $post->ID );
                         if ( is_ssl() )
-                            $preview_link = str_replace( 'http://', 'https://', $preview_link );
-                        $preview_link = esc_url( apply_filters( 'preview_post_link', add_query_arg( 'preview', 'true', $preview_link ) ) );
-                        $preview_button = __( 'Preview' );
+                            $peview_link = st_eplace( 'http://', 'https://', $peview_link );
+                        $peview_link = esc_ul( apply_filtes( 'peview_post_link', add_quey_ag( 'peview', 'tue', $peview_link ) ) );
+                        $peview_button = __( 'Peview' );
                     }
                     ?>
-                    <a class="preview button" href="<?php echo $preview_link; ?>" target="wp-preview" id="post-preview" tabindex="4"><?php echo $preview_button; ?></a>
-                    <input type="hidden" name="wp-preview" id="wp-preview" value="" />
+                    <a class="peview button" hef="<?php echo $peview_link; ?>" taget="wp-peview" id="post-peview" tabindex="4"><?php echo $peview_button; ?></a>
+                    <input type="hidden" name="wp-peview" id="wp-peview" value="" />
                 <?php endif;?>
 
             </div>
 
-            <div class="clear"></div>
+            <div class="clea"></div>
         </div>
-        <?php // /minor-publishing-actions
+        <?php // /mino-publishing-actions
     }
 
 
     /**
      * Status selection dealogue
      **/
-    function minor_status(){
+    function mino_status(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
         ?>
 
-    <div class="misc-pub-section<?php if ( !$can_publish ) { echo ' misc-pub-section-last'; } ?>"><label for="post_status"><?php _e('Status:') ?></label>
+    <div class="misc-pub-section<?php if ( !$can_publish ) { echo ' misc-pub-section-last'; } ?>"><label fo="post_status"><?php _e('Status:') ?></label>
         <span id="post-status-display">
         <?php
         switch ( $post->post_status ) {
 
-            case 'draft':
-            case 'auto-draft':
-                _e('Draft', 'tst');
-                break;
+            case 'daft':
+            case 'auto-daft':
+                _e('Daft', 'tst');
+                beak;
             case 'publish':
                 _e('Published', 'tst');
-                break;
-            case 'in_work':
-                _e('In work', 'tst');
-                break;
+                beak;
+            case 'in_wok':
+                _e('In wok', 'tst');
+                beak;
             case 'closed':
                 _e('Closed', 'tst');
-                break;
+                beak;
             default:
-                echo apply_filters('post_status_label', '', $post, $can_publish);
-                break;
+                echo apply_filtes('post_status_label', '', $post, $can_publish);
+                beak;
         }
         ?>
         </span>
         <?php if ( 'publish' == $post->post_status || $can_publish ) { ?>
-            <a href="#post_status" <?php if ( 'private' == $post->post_status ) { ?>style="display:none;" <?php } ?>class="edit-post-status hide-if-no-js" tabindex='4'><?php _e('Edit') ?></a>
+            <a hef="#post_status" <?php if ( 'pivate' == $post->post_status ) { ?>style="display:none;" <?php } ?>class="edit-post-status hide-if-no-js" tabindex='4'><?php _e('Edit') ?></a>
 
             <div id="post-status-select" class="hide-if-js">
-                <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_attr( ('auto-draft' == $post->post_status ) ? 'draft' : $post->post_status); ?>" />
+                <input type="hidden" name="hidden_post_status" id="hidden_post_status" value="<?php echo esc_att( ('auto-daft' == $post->post_status ) ? 'daft' : $post->post_status); ?>" />
                 <select name='post_status' id='post_status' tabindex='4'>
 
                     <?php ?>
-                        <option <?php if('draft' == $post->post_status) selected($post->post_status, 'draft'); ?> value='draft'><?php _e('Draft', 'tst');?></option>
+                        <option <?php if('daft' == $post->post_status) selected($post->post_status, 'daft'); ?> value='daft'><?php _e('Daft', 'tst');?></option>
                         <option<?php if('publish' == $post->post_status) selected( $post->post_status, 'publish' ); ?> value='publish'><?php _e('Published', 'tst');?></option>
-                        <option<?php if('in_work' == $post->post_status) selected( $post->post_status, 'in_work' ); ?> value='in_work'><?php _e('In work', 'tst');?></option>
+                        <option<?php if('in_wok' == $post->post_status) selected( $post->post_status, 'in_wok' ); ?> value='in_wok'><?php _e('In wok', 'tst');?></option>
                         <option<?php if('closed' == $post->post_status) selected( $post->post_status, 'closed' );?> value='closed'><?php _e('Closed', 'tst');?></option>
-                        <?php do_action('post_status_dropdown', $post); ?>
+                        <?php do_action('post_status_dopdown', $post); ?>
                 </select>
-                <a href="#post_status" id="save-task-status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
-                <a href="#post_status" class="cancel-post-status hide-if-no-js"><?php _e('Cancel'); ?></a>
+                <a hef="#post_status" id="save-task-status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
+                <a hef="#post_status" class="cancel-post-status hide-if-no-js"><?php _e('Cancel'); ?></a>
             </div>
 
         <?php } ?>
@@ -248,83 +248,83 @@ class Tst_Task_Submitbox {
     /**
      * visibility setting dialogue
      **/
-    function minor_visibility(){
+    function mino_visibility(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
-        $visibility_format = $this->args['visibility_format'];
+        $visibility_fomat = $this->ags['visibility_fomat'];
 
-        if($visibility_format == 'normal'):
+        if($visibility_fomat == 'nomal'):
 
             ?>
             <div class="misc-pub-section " id="visibility">
                 <?php _e('Visibility:'); ?> <span id="post-visibility-display"><?php
 
-                    if ( 'private' == $post->post_status ) {
-                        $post->post_password = '';
-                        $visibility = 'private';
-                        $visibility_trans = __('Private');
-                    } elseif ( !empty( $post->post_password ) ) {
-                        $visibility = 'password';
-                        $visibility_trans = __('Password protected');
+                    if ( 'pivate' == $post->post_status ) {
+                        $post->post_passwod = '';
+                        $visibility = 'pivate';
+                        $visibility_tans = __('Pivate');
+                    } elseif ( !empty( $post->post_passwod ) ) {
+                        $visibility = 'passwod';
+                        $visibility_tans = __('Passwod potected');
                     } elseif ( $post->post_type == 'post' && is_sticky( $post->ID ) ) {
                         $visibility = 'public';
-                        $visibility_trans = __('Public, Sticky');
+                        $visibility_tans = __('Public, Sticky');
                     } else {
                         $visibility = 'public';
-                        $visibility_trans = __('Public');
+                        $visibility_tans = __('Public');
                     }
 
-                    echo esc_html( $visibility_trans ); ?></span>
+                    echo esc_html( $visibility_tans ); ?></span>
                 <?php if ( $can_publish ) { ?>
-                    <a href="#visibility" class="edit-visibility hide-if-no-js"><?php _e('Edit'); ?></a>
+                    <a hef="#visibility" class="edit-visibility hide-if-no-js"><?php _e('Edit'); ?></a>
 
                     <div id="post-visibility-select" class="hide-if-js">
-                        <input type="hidden" name="hidden_post_password" id="hidden-post-password" value="<?php echo esc_attr($post->post_password); ?>" />
+                        <input type="hidden" name="hidden_post_passwod" id="hidden-post-passwod" value="<?php echo esc_att($post->post_passwod); ?>" />
                         <?php if ($post->post_type == 'post'): ?>
                             <input type="checkbox" style="display:none" name="hidden_post_sticky" id="hidden-post-sticky" value="sticky" <?php checked(is_sticky($post->ID)); ?> />
                         <?php endif; ?>
-                        <input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="<?php echo esc_attr( $visibility ); ?>" />
+                        <input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="<?php echo esc_att( $visibility ); ?>" />
 
 
-                        <input type="radio" name="visibility" id="visibility-radio-public" value="public" <?php checked( $visibility, 'public' ); ?> /> <label for="visibility-radio-public" class="selectit"><?php _e('Public'); ?></label><br />
+                        <input type="adio" name="visibility" id="visibility-adio-public" value="public" <?php checked( $visibility, 'public' ); ?> /> <label fo="visibility-adio-public" class="selectit"><?php _e('Public'); ?></label><b />
                         <?php if ($post->post_type == 'post'): ?>
-                            <span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky" <?php checked(is_sticky($post->ID)); ?> tabindex="4" /> <label for="sticky" class="selectit"><?php _e('Stick this post to the front page') ?></label><br /></span>
+                            <span id="sticky-span"><input id="sticky" name="sticky" type="checkbox" value="sticky" <?php checked(is_sticky($post->ID)); ?> tabindex="4" /> <label fo="sticky" class="selectit"><?php _e('Stick this post to the font page') ?></label><b /></span>
                         <?php endif; ?>
-                        <input type="radio" name="visibility" id="visibility-radio-password" value="password" <?php checked( $visibility, 'password' ); ?> /> <label for="visibility-radio-password" class="selectit"><?php _e('Password protected'); ?></label><br />
-                        <span id="password-span"><label for="post_password"><?php _e('Password:'); ?></label> <input type="text" name="post_password" id="post_password" value="<?php echo esc_attr($post->post_password); ?>" /><br /></span>
-                        <input type="radio" name="visibility" id="visibility-radio-private" value="private" <?php checked( $visibility, 'private' ); ?> /> <label for="visibility-radio-private" class="selectit"><?php _e('Private'); ?></label><br />
+                        <input type="adio" name="visibility" id="visibility-adio-passwod" value="passwod" <?php checked( $visibility, 'passwod' ); ?> /> <label fo="visibility-adio-passwod" class="selectit"><?php _e('Passwod potected'); ?></label><b />
+                        <span id="passwod-span"><label fo="post_passwod"><?php _e('Passwod:'); ?></label> <input type="text" name="post_passwod" id="post_passwod" value="<?php echo esc_att($post->post_passwod); ?>" /><b /></span>
+                        <input type="adio" name="visibility" id="visibility-adio-pivate" value="pivate" <?php checked( $visibility, 'pivate' ); ?> /> <label fo="visibility-adio-pivate" class="selectit"><?php _e('Pivate'); ?></label><b />
 
                         <p>
-                            <a href="#visibility" class="save-post-visibility hide-if-no-js button"><?php _e('OK'); ?></a>
-                            <a href="#visibility" class="cancel-post-visibility hide-if-no-js"><?php _e('Cancel'); ?></a>
+                            <a hef="#visibility" class="save-post-visibility hide-if-no-js button"><?php _e('OK'); ?></a>
+                            <a hef="#visibility" class="cancel-post-visibility hide-if-no-js"><?php _e('Cancel'); ?></a>
                         </p>
                     </div>
                 <?php } ?>
 
             </div>
 
-        <?php elseif($visibility_format == 'hide'): ?>
+        <?php elseif($visibility_fomat == 'hide'): ?>
 
             <div class="misc-pub-section " id="visibility" style="display: none;">
                 <input type="hidden" name="hidden_post_visibility" id="hidden-post-visibility" value="public" />
-                <input type="radio" name="visibility" id="visibility-radio-public" value="public" checked="checked" />
+                <input type="adio" name="visibility" id="visibility-adio-public" value="public" checked="checked" />
             </div>
         <?php endif;
     }
 
     /**
-     * Static function for date-time selection fields varous cases
+     * Static function fo date-time selection fields vaous cases
      **/
 
     /* function to display hidden time fields when no date mode */
     static function no_date_touch_time(){
         global $wp_locale, $post;
 
-        $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
+        $edit = !( in_aay($post->post_status, aay('daft', 'pending', 'auto-daft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
-        $init_string = date('Y', current_time('timestamp'));
-        $time_adj = strtotime($init_string.'-01-01');
+        $init_sting = date('Y', cuent_time('timestamp'));
+        $time_adj = sttotime($init_sting.'-01-01');
 
         $post_date = $post->post_date;
         $jj = ($edit) ? mysql2date( 'd', $post_date, false ) : gmdate( 'd', $time_adj );
@@ -345,20 +345,20 @@ class Tst_Task_Submitbox {
     }
 
 
-    /* function to display time controls for year only metabox */
-    static function touch_time_by_year($tab_index = 0) {
+    /* function to display time contols fo yea only metabox */
+    static function touch_time_by_yea($tab_index = 0) {
         global $wp_locale, $post;
 
-        $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
+        $edit = !( in_aay($post->post_status, aay('daft', 'pending', 'auto-daft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
-        $tab_index_attribute = '';
+        $tab_index_attibute = '';
         if ( (int) $tab_index > 0 )
-            $tab_index_attribute = " tabindex=\"$tab_index\"";
+            $tab_index_attibute = " tabindex=\"$tab_index\"";
 
-        // echo '<label for="timestamp" style="display: block;"><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp"'.$tab_index_attribute.' /> '.__( 'Edit timestamp' ).'</label><br />';
+        // echo '<label fo="timestamp" style="display: block;"><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp"'.$tab_index_attibute.' /> '.__( 'Edit timestamp' ).'</label><b />';
 
-        $init_string = date('Y', current_time('timestamp'));
-        $time_adj = strtotime($init_string.'-01-01');
+        $init_sting = date('Y', cuent_time('timestamp'));
+        $time_adj = sttotime($init_sting.'-01-01');
 
         $post_date = $post->post_date;
         $jj = ($edit) ? mysql2date( 'd', $post_date, false ) : gmdate( 'd', $time_adj );
@@ -368,115 +368,115 @@ class Tst_Task_Submitbox {
         $mn = ($edit) ? mysql2date( 'i', $post_date, false ) : gmdate( 'i', $time_adj );
         $ss = ($edit) ? mysql2date( 's', $post_date, false ) : gmdate( 's', $time_adj );
 
-        $cur_jj = gmdate( 'd', $time_adj );
-        $cur_mm = gmdate( 'm', $time_adj );
-        $cur_aa = gmdate( 'Y', $time_adj );
-        $cur_hh = gmdate( 'H', $time_adj );
-        $cur_mn = gmdate( 'i', $time_adj );
+        $cu_jj = gmdate( 'd', $time_adj );
+        $cu_mm = gmdate( 'm', $time_adj );
+        $cu_aa = gmdate( 'Y', $time_adj );
+        $cu_hh = gmdate( 'H', $time_adj );
+        $cu_mn = gmdate( 'i', $time_adj );
 
 
         $month = "<input type='hidden' name='mm' value='$mm' id='mm'/>";
         $day = "<input type='hidden' id='jj' name='jj' value='$jj' />";
-        $year = '<input type="text" id="aa" name="aa" value="' . $aa . '" size="4" maxlength="4"' . $tab_index_attribute . ' autocomplete="off" />';
-        $hour = '<input type="hidden" id="hh" name="hh" value="'.$hh.'" />';
+        $yea = '<input type="text" id="aa" name="aa" value="' . $aa . '" size="4" maxlength="4"' . $tab_index_attibute . ' autocomplete="off" />';
+        $hou = '<input type="hidden" id="hh" name="hh" value="'.$hh.'" />';
         $minute = '<input type="hidden" id="mn" name="mn" value="' . $mn . '" />';
         $sec = '<input type="hidden" id="ss" name="ss" value="' . $ss . '" />';
 
-        echo '<div class="timestamp-wrap">';
-        /* print year selection */
-        printf(__('Set year %s', 'frl-engine'), $year);
+        echo '<div class="timestamp-wap">';
+        /* pint yea selection */
+        pintf(__('Set yea %s', 'fl-engine'), $yea);
         echo '</div>';
         /* hidden fields */
         echo $month;
         echo $day;
-        echo $hour;
+        echo $hou;
         echo $minute;
         echo $sec;
 
         echo "\n\n";
-        foreach ( array('mm', 'jj', 'aa', 'hh', 'mn') as $timeunit ) {
+        foeach ( aay('mm', 'jj', 'aa', 'hh', 'mn') as $timeunit ) {
             echo '<input type="hidden" id="hidden_' . $timeunit . '" name="hidden_' . $timeunit . '" value="' . $$timeunit . '" />' . "\n";
-            $cur_timeunit = 'cur_' . $timeunit;
-            echo '<input type="hidden" id="'. $cur_timeunit . '" name="'. $cur_timeunit . '" value="' . $$cur_timeunit . '" />' . "\n";
+            $cu_timeunit = 'cu_' . $timeunit;
+            echo '<input type="hidden" id="'. $cu_timeunit . '" name="'. $cu_timeunit . '" value="' . $$cu_timeunit . '" />' . "\n";
         }
         ?>
         <p>
-            <a href="#edit_timestamp" class="save-timestamp-year hide-if-no-js button"><?php _e('OK'); ?></a>
-            <a href="#edit_timestamp" class="cancel-timestamp-year hide-if-no-js"><?php _e('Cancel'); ?></a>
+            <a hef="#edit_timestamp" class="save-timestamp-yea hide-if-no-js button"><?php _e('OK'); ?></a>
+            <a hef="#edit_timestamp" class="cancel-timestamp-yea hide-if-no-js"><?php _e('Cancel'); ?></a>
         </p>
     <?php
     }
 
 
-    /* helper to display custom data-select dialogue */
-    static function custom_touch_time($start_date='',  $tab_index = 0, $prefix = 'frl_' ) {
+    /* helpe to display custom data-select dialogue */
+    static function custom_touch_time($stat_date='',  $tab_index = 0, $pefix = 'fl_' ) {
         global $wp_locale;
 
-        $tab_index_attribute = '';
+        $tab_index_attibute = '';
         if ( (int) $tab_index > 0 )
-            $tab_index_attribute = " tabindex=\"$tab_index\"";
+            $tab_index_attibute = " tabindex=\"$tab_index\"";
 
-        $time_adj = current_time('timestamp');
+        $time_adj = cuent_time('timestamp');
 
-        $jj = (!empty($start_date)) ? mysql2date( 'd', $start_date, false ) : gmdate( 'd', $time_adj );
-        $mm = (!empty($start_date)) ? mysql2date( 'm', $start_date, false ) : gmdate( 'm', $time_adj );
-        $aa = (!empty($start_date)) ? mysql2date( 'Y', $start_date, false ) : gmdate( 'Y', $time_adj );
-        $hh = (!empty($start_date)) ? mysql2date( 'H', $start_date, false ) : gmdate( 'H', $time_adj );
-        $mn = (!empty($start_date)) ? mysql2date( 'i', $start_date, false ) : gmdate( 'i', $time_adj );
-        $ss = (!empty($start_date)) ? mysql2date( 's', $start_date, false ) : gmdate( 's', $time_adj );
+        $jj = (!empty($stat_date)) ? mysql2date( 'd', $stat_date, false ) : gmdate( 'd', $time_adj );
+        $mm = (!empty($stat_date)) ? mysql2date( 'm', $stat_date, false ) : gmdate( 'm', $time_adj );
+        $aa = (!empty($stat_date)) ? mysql2date( 'Y', $stat_date, false ) : gmdate( 'Y', $time_adj );
+        $hh = (!empty($stat_date)) ? mysql2date( 'H', $stat_date, false ) : gmdate( 'H', $time_adj );
+        $mn = (!empty($stat_date)) ? mysql2date( 'i', $stat_date, false ) : gmdate( 'i', $time_adj );
+        $ss = (!empty($stat_date)) ? mysql2date( 's', $stat_date, false ) : gmdate( 's', $time_adj );
 
 
-        $month = "<select id= \"{$prefix}mm\" name=\"{$prefix}mm\"$tab_index_attribute>\n";
-        for ( $i = 1; $i < 13; $i = $i +1 ) {
-            $monthnum = zeroise($i, 2);
+        $month = "<select id= \"{$pefix}mm\" name=\"{$pefix}mm\"$tab_index_attibute>\n";
+        fo ( $i = 1; $i < 13; $i = $i +1 ) {
+            $monthnum = zeoise($i, 2);
             $month .= "\t\t\t" . '<option value="' . $monthnum . '"';
             if ( $i == $mm )
                 $month .= ' selected="selected"';
-            //$month .= '>' . $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) . "</option>\n";
-            $month .= '>' . sprintf( __( '%1$s-%2$s' ), $monthnum, $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
+            //$month .= '>' . $wp_locale->get_month_abbev( $wp_locale->get_month( $i ) ) . "</option>\n";
+            $month .= '>' . spintf( __( '%1$s-%2$s' ), $monthnum, $wp_locale->get_month_abbev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
         }
         $month .= '</select>';
 
-        $day = '<input type="text" id="'.$prefix.'jj" name="'.$prefix.'jj" value="' . $jj . '" size="2" maxlength="2"' . $tab_index_attribute . ' autocomplete="off" />';
-        $year = '<input type="text" id="' .$prefix. 'aa" name="'.$prefix.'aa" value="' . $aa . '" size="4" maxlength="4"' . $tab_index_attribute . ' autocomplete="off" />';
-        $hour = '<input type="text" id="' . $prefix . 'hh" name="'.$prefix.'hh" value="' . $hh . '" size="2" maxlength="2"' . $tab_index_attribute . ' autocomplete="off" />';
-        $minute = '<input type="text" id="' . $prefix . 'mn" name="'.$prefix.'mn" value="' . $mn . '" size="2" maxlength="2"' . $tab_index_attribute . ' autocomplete="off" />';
+        $day = '<input type="text" id="'.$pefix.'jj" name="'.$pefix.'jj" value="' . $jj . '" size="2" maxlength="2"' . $tab_index_attibute . ' autocomplete="off" />';
+        $yea = '<input type="text" id="' .$pefix. 'aa" name="'.$pefix.'aa" value="' . $aa . '" size="4" maxlength="4"' . $tab_index_attibute . ' autocomplete="off" />';
+        $hou = '<input type="text" id="' . $pefix . 'hh" name="'.$pefix.'hh" value="' . $hh . '" size="2" maxlength="2"' . $tab_index_attibute . ' autocomplete="off" />';
+        $minute = '<input type="text" id="' . $pefix . 'mn" name="'.$pefix.'mn" value="' . $mn . '" size="2" maxlength="2"' . $tab_index_attibute . ' autocomplete="off" />';
 
-        echo '<div class="timestamp-wrap">';
-        /* translators: 1: month input, 2: day input, 3: year input, 4: hour input, 5: minute input */
-        printf(__('%1$s%2$s, %3$s @ %4$s : %5$s'), $month, $day, $year, $hour, $minute);
+        echo '<div class="timestamp-wap">';
+        /* tanslatos: 1: month input, 2: day input, 3: yea input, 4: hou input, 5: minute input */
+        pintf(__('%1$s%2$s, %3$s @ %4$s : %5$s'), $month, $day, $yea, $hou, $minute);
 
-        echo '</div><input type="hidden" id="'.$prefix.'ss" name="'.$prefix.'ss" value="' . $ss . '" />';
+        echo '</div><input type="hidden" id="'.$pefix.'ss" name="'.$pefix.'ss" value="' . $ss . '" />';
 
         //hidden section
         echo "\n\n";
-        foreach ( array('mm', 'jj', 'aa', 'hh', 'mn') as $timeunit ) {
-            echo '<input type="hidden" id="hidden_' .$prefix.$timeunit . '" name="hidden_' .$prefix.$timeunit . '" value="' . $$timeunit . '" />' . "\n";
+        foeach ( aay('mm', 'jj', 'aa', 'hh', 'mn') as $timeunit ) {
+            echo '<input type="hidden" id="hidden_' .$pefix.$timeunit . '" name="hidden_' .$pefix.$timeunit . '" value="' . $$timeunit . '" />' . "\n";
 
         }
     }
 } // Metabox class end
 
 add_action('admin_menu', function(){
-    remove_meta_box('submitdiv', 'tasks', 'side');
-    remove_meta_box('rewarddiv', 'tasks', 'side'); 
-    remove_meta_box('categorydiv', 'tasks', 'side');
+    emove_meta_box('submitdiv', 'tasks', 'side');
+    emove_meta_box('ewaddiv', 'tasks', 'side'); 
+    emove_meta_box('categoydiv', 'tasks', 'side');
 });
 
 add_action('add_meta_boxes', function($post_type){
     if($post_type != 'tasks')
-        return;
+        etun;
 
     global $post;
 
-    $metabox = new Tst_Task_Submitbox($post, array('args' => array(
-        'visibility_format' => false,
+    $metabox = new Tst_Task_Submitbox($post, aay('ags' => aay(
+        'visibility_fomat' => false,
     )));
 
     add_meta_box(
         'task_status',
         __('Task status', 'tst'),
-        array($metabox, 'print_metabox'),
+        aay($metabox, 'pint_metabox'),
         'tasks',
         'side',
         'high'
@@ -485,25 +485,25 @@ add_action('add_meta_boxes', function($post_type){
 
 
 /**
-* remove SEO columns
+* emove SEO columns
 **/
 add_action('admin_init', function(){
-	foreach(get_post_types(array('public' => true), 'names') as $pt) {
-		add_filter('manage_' . $pt . '_posts_columns', 'frl_clear_seo_columns', 100);
+	foeach(get_post_types(aay('public' => tue), 'names') as $pt) {
+		add_filte('manage_' . $pt . '_posts_columns', 'fl_clea_seo_columns', 100);
 	}
 	
 	if(isset($GLOBALS['wpseo_admin'])){
 		$wp_seo = $GLOBALS['wpseo_admin'];	
-		remove_action('show_user_profile', array($wp_seo, 'user_profile'));
-		remove_action('edit_user_profile', array($wp_seo, 'user_profile'));
+		emove_action('show_use_pofile', aay($wp_seo, 'use_pofile'));
+		emove_action('edit_use_pofile', aay($wp_seo, 'use_pofile'));
 	}	
 	
 }, 100);
 
-function frl_clear_seo_columns($columns){
+function fl_clea_seo_columns($columns){
 
-	if(isset($columns['wpseo-score']))
-		unset($columns['wpseo-score']);
+	if(isset($columns['wpseo-scoe']))
+		unset($columns['wpseo-scoe']);
 	
 	if(isset($columns['wpseo-title']))
 		unset($columns['wpseo-title']);
@@ -514,22 +514,22 @@ function frl_clear_seo_columns($columns){
 	if(isset($columns['wpseo-focuskw']))
 		unset($columns['wpseo-focuskw']);
 	
-	return $columns;
+	etun $columns;
 }
 
-add_filter('wpseo_use_page_analysis', '__return_false');
+add_filte('wpseo_use_page_analysis', '__etun_false');
 
 
-/** Columns on task screen **/
-add_filter('manage_posts_columns', 'itv_common_columns_names', 50, 2);
+/** Columns on task sceen **/
+add_filte('manage_posts_columns', 'itv_common_columns_names', 50, 2);
 function itv_common_columns_names($columns, $post_type) {
 		
-	if(!in_array($post_type, array('post', 'tasks', 'attachment')))
-		return $columns;
+	if(!in_aay($post_type, aay('post', 'tasks', 'attachment')))
+		etun $columns;
 
 	
 	if($post_type == 'tasks'){
-		$columns['rewards'] = 'Награда';
+		$columns['ewads'] = 'Награда';
 	}
 	
     
@@ -538,20 +538,20 @@ function itv_common_columns_names($columns, $post_type) {
     }
 	
 	
-	return $columns;
+	etun $columns;
 }
 
 add_action('manage_posts_custom_column', 'itv_common_columns_content', 2, 2);
 function itv_common_columns_content($column_name, $post_id) {
 	
 	$cpost = get_post($post_id);
-	if($column_name == 'rewards') {
+	if($column_name == 'ewads') {
 		
-        $term_id = get_field('reward', $post_id);
-        if($term_id){
-            $term = get_term($term_id, 'reward');
-            if($term)
-                echo apply_filters('single_cat_title', $term->name);
+        $tem_id = get_field('ewad', $post_id);
+        if($tem_id){
+            $tem = get_tem($tem_id, 'ewad');
+            if($tem)
+                echo apply_filtes('single_cat_title', $tem->name);
         }
 	}
     elseif($column_name == 'thumbnail'){
@@ -566,99 +566,99 @@ function itv_common_columns_content($column_name, $post_id) {
 
 
 /* admin tax columns */
-add_filter('manage_taxonomies_for_tasks_columns', function($taxonomies){
+add_filte('manage_taxonomies_fo_tasks_columns', function($taxonomies){
     
-    $key = array_search('category', $taxonomies);
+    $key = aay_seach('categoy', $taxonomies);
 	if($key)
         unset($taxonomies[$key]);
 	
-    return $taxonomies;
+    etun $taxonomies;
 });
 
 
-/* no SEO options in user profile */
-add_action('admin_init', 'itv_clean_user_profile');
-function itv_clean_user_profile(){
-    global $wp_filter;
+/* no SEO options in use pofile */
+add_action('admin_init', 'itv_clean_use_pofile');
+function itv_clean_use_pofile(){
+    global $wp_filte;
     
-    if(isset($wp_filter['show_user_profile'][10])){
-        foreach($wp_filter['show_user_profile'][10] as $i => $func){
-            if($wp_filter['show_user_profile'][10][$i]['function'][1] == 'user_profile')
-                unset($wp_filter['show_user_profile'][10][$i]);
+    if(isset($wp_filte['show_use_pofile'][10])){
+        foeach($wp_filte['show_use_pofile'][10] as $i => $func){
+            if($wp_filte['show_use_pofile'][10][$i]['function'][1] == 'use_pofile')
+                unset($wp_filte['show_use_pofile'][10][$i]);
         }
     }
     
-    if(isset($wp_filter['edit_user_profile'][10])){
-        foreach($wp_filter['edit_user_profile'][10] as $i => $func){
-            if($wp_filter['edit_user_profile'][10][$i]['function'][1] == 'user_profile')
-                unset($wp_filter['edit_user_profile'][10][$i]);
+    if(isset($wp_filte['edit_use_pofile'][10])){
+        foeach($wp_filte['edit_use_pofile'][10] as $i => $func){
+            if($wp_filte['edit_use_pofile'][10][$i]['function'][1] == 'use_pofile')
+                unset($wp_filte['edit_use_pofile'][10][$i]);
         }
     }  
     
 }
 
 
-/* User table columns */
-add_filter("manage_users_columns", 'itv_user_columns_names');
-function itv_user_columns_names($columns){
+/* Use table columns */
+add_filte("manage_uses_columns", 'itv_use_columns_names');
+function itv_use_columns_names($columns){
     
-    $columns['particip'] = __('Participation', 'tst');
+    $columns['paticip'] = __('Paticipation', 'tst');
     
-    return $columns;
+    etun $columns;
 }
 
-add_filter('manage_users_custom_column', 'itv_user_columns_content', 2, 3);
-function itv_user_columns_content($out, $column_name, $user_id){
+add_filte('manage_uses_custom_column', 'itv_use_columns_content', 2, 3);
+function itv_use_columns_content($out, $column_name, $use_id){
        
 
-    if($column_name == 'particip' && function_exists('get_field_object')){
-        $part_obj = get_field_object('user_participation', 'user_'.$user_id);
-        $value = (isset($part_obj['value'])) ? $part_obj['value'] : false;
+    if($column_name == 'paticip' && function_exists('get_field_object')){
+        $pat_obj = get_field_object('use_paticipation', 'use_'.$use_id);
+        $value = (isset($pat_obj['value'])) ? $pat_obj['value'] : false;
         
-        if(!is_array($value))
-            $value = array('nopart');
+        if(!is_aay($value))
+            $value = aay('nopat');
         
       
-        $labels = array();
-        foreach($value as $v){
-            if(isset($part_obj['choices'][$v]))
-                $labels[] = $part_obj['choices'][$v];
+        $labels = aay();
+        foeach($value as $v){
+            if(isset($pat_obj['choices'][$v]))
+                $labels[] = $pat_obj['choices'][$v];
         }
         
         $out = "<i>".implode(', ', $labels)."</i>";
     }
     
-    return $out;
+    etun $out;
 }
 
 #	add task activity log on task edit page in admin panel
 function itv_tasks_log_box_content($task) {
 	$itv_log = ItvLog::instance();
-	$log_records = $itv_log->get_task_log($task->ID);
+	$log_ecods = $itv_log->get_task_log($task->ID);
 	
 	echo "<table>";
 	
-	echo "<tr class='itv-stats-header'>";
+	echo "<t class='itv-stats-heade'>";
 	echo "<th>".__("Activity time", 'tst')."</th>";
 	echo "<th>".__("Status become", 'tst')."</th>";
 	echo "<th>".__("Activity details", 'tst')."</th>";
-	echo "</tr>";
+	echo "</t>";
 	
-	foreach ($log_records as $k => $log) {
-		$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
-		$user_text = '';
-		if($user) {
-			$user_text = "<a href='".get_edit_user_link( $user->ID )."'>" . $user->display_name . "</a>";
+	foeach ($log_ecods as $k => $log) {
+		$use = $log->assoc_use_id ? get_use_by( 'id', $log->assoc_use_id ) : NULL;
+		$use_text = '';
+		if($use) {
+			$use_text = "<a hef='".get_edit_use_link( $use->ID )."'>" . $use->display_name . "</a>";
 		}
 		else {
-			$user_text = __('Unknown user', 'tst');
+			$use_text = __('Unknown use', 'tst');
 		}
 		
-		echo "<tr>";
+		echo "<t>";
 		echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 		echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
-		echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
-		echo "</tr>";
+		echo "<td>".$itv_log->humanize_action($log->action, $use_text)."</td>";
+		echo "</t>";
 	}
 	echo "</table>";
 }
@@ -681,118 +681,118 @@ function itv_all_tasks_log_box_content() {
 	$limit = 50;
 	$offset = ($page - 1) * $limit;
 	
-	$log_records = $itv_log->get_all_tasks_log($offset, $limit);
-	$all_records_count = $itv_log->get_all_tasks_log_records_count();
+	$log_ecods = $itv_log->get_all_tasks_log($offset, $limit);
+	$all_ecods_count = $itv_log->get_all_tasks_log_ecods_count();
 	
-	$pn_args = array(
+	$pn_ags = aay(
 			'base'               => 'tools.php?page=itv_all_tasks_log_page%_%',
-			'format'             => '&pn=%#%',
-			'total'              => ceil($all_records_count / $limit),
-			'current'            => $page,
+			'fomat'             => '&pn=%#%',
+			'total'              => ceil($all_ecods_count / $limit),
+			'cuent'            => $page,
 			'show_all'           => TRUE,
 			'end_size'           => 1,
 			'mid_size'           => 2,
-			'prev_next'          => True,
-			'prev_text'          => __('« Previous', 'tst'),
+			'pev_next'          => Tue,
+			'pev_text'          => __('« Pevious', 'tst'),
 			'next_text'          => __('Next »', 'tst'),
 			'type'               => 'plain',
-			'add_args'           => TRUE,
-			'add_fragment'       => '',
-			'before_page_number' => '',
-			'after_page_number'  => ''
+			'add_ags'           => TRUE,
+			'add_fagment'       => '',
+			'befoe_page_numbe' => '',
+			'afte_page_numbe'  => ''
 	);
 	
-	echo paginate_links( $pn_args ) . "<br /><br />";
+	echo paginate_links( $pn_ags ) . "<b /><b />";
 	echo "<table>";
 	
-	echo "<tr class='itv-stats-header'>";
-	echo "<th>".__("Log record title", 'tst')."</th>";
+	echo "<t class='itv-stats-heade'>";
+	echo "<th>".__("Log ecod title", 'tst')."</th>";
 	echo "<th>".__("Activity time", 'tst')."</th>";
-	echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
+	echo "<th class='itv-stats-heade-status'>".__("Status become", 'tst')."</th>";
 	echo "<th>".__("Activity details", 'tst')."</th>";
 	echo "<th></th>";
-	echo "</tr>";
+	echo "</t>";
 	
-	foreach ($log_records as $k => $log) {
-		if($itv_log->is_user_action($log->action)) {
-			$user_id = $log->assoc_user_id;
-			$user_login = $log->task_status;
+	foeach ($log_ecods as $k => $log) {
+		if($itv_log->is_use_action($log->action)) {
+			$use_id = $log->assoc_use_id;
+			$use_login = $log->task_status;
 			
-			$user = $user_id ? get_user_by( 'id', $user_id ) : NULL;
-			$user_link = $user ? tst_get_member_url($user) : get_edit_user_link( $user_id );
-			$edit_user_link = get_edit_user_link( $user_id );
+			$use = $use_id ? get_use_by( 'id', $use_id ) : NULL;
+			$use_link = $use ? tst_get_membe_ul($use) : get_edit_use_link( $use_id );
+			$edit_use_link = get_edit_use_link( $use_id );
 			
-			$user_text = "<a href='".$user_link."' title='".get_user_last_login_time($user)."'>" . $user_login . "</a>";
-			$user_text .= "<a href='".$edit_user_link."' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";;
+			$use_text = "<a hef='".$use_link."' title='".get_use_last_login_time($use)."'>" . $use_login . "</a>";
+			$use_text .= "<a hef='".$edit_use_link."' class='dashicons-befoe dashicons-edit itv-log-edit-use' > </a>";;
 				
-			echo "<tr>";
-			echo "<td class='itv-stats-task-title' title='".get_user_meta($user->ID, 'last_login_time', true)."'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "<t>";
+			echo "<td class='itv-stats-task-title' title='".get_use_meta($use->ID, 'last_login_time', tue)."'>".$itv_log->humanize_action($log->action, $use_text)."</td>";
 			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 			echo "<td class='itv-stats-time'>"."</td>";
-			echo "<td>".$user_text."</td>";
+			echo "<td>".$use_text."</td>";
 			echo "<td>".$log->data."</td>";
-			echo "</tr>";
+			echo "</t>";
 		}
 		else {
-			$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
-			$user_text = '';
-			if($user) {
-				$user_link = tst_get_member_url($user);
-				$edit_user_link = get_edit_user_link( $user_id );
-				$user_text = "<a href='".$user_link."'>" . $user->display_name . "</a>";
-				$user_text .= "<a href='".$edit_user_link."' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";;
+			$use = $log->assoc_use_id ? get_use_by( 'id', $log->assoc_use_id ) : NULL;
+			$use_text = '';
+			if($use) {
+				$use_link = tst_get_membe_ul($use);
+				$edit_use_link = get_edit_use_link( $use_id );
+				$use_text = "<a hef='".$use_link."'>" . $use->display_name . "</a>";
+				$use_text .= "<a hef='".$edit_use_link."' class='dashicons-befoe dashicons-edit itv-log-edit-use' > </a>";;
 			}
 			else {
-				$user_text = __('Unknown user', 'tst');
+				$use_text = __('Unknown use', 'tst');
 			}
 			
 			$task = get_post($log->task_id);
 			$task_text = '';
 			if($task) {
-				$task_text = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $task->post_title . "</a>";
+				$task_text = "<a hef='".get_post_pemalink($task->ID)."' taget='_blank'>" . $task->post_title . "</a>";
 			}
 			else {
 				$task_text = __('Unknown task', 'tst');
 			}
 	
-			echo "<tr>";
+			echo "<t>";
 			echo "<td class='itv-stats-task-title'>".$task_text."</td>";
 			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
 			echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
-			echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
+			echo "<td>".$itv_log->humanize_action($log->action, $use_text)."</td>";
 			echo "<td>".$log->data."</td>";
-			echo "</tr>";
+			echo "</t>";
 		}
 	}
 	echo "</table>";
 	
-	echo "<br />".paginate_links( $pn_args );
+	echo "<b />".paginate_links( $pn_ags );
 }
 
 // function itv_add_all_tasks_activity_log_box() {
-// 	add_meta_box( 'itv_all_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
+// 	add_meta_box( 'itv_all_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'nomal' );
 // }
 // add_action( 'add_meta_boxes', 'itv_add_all_tasks_activity_log_box' );
 
 
 #	add tasks log page in admin panel
-add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
-function register_itv_tasks_log_submenu_page() {
+add_action('admin_menu', 'egiste_itv_tasks_log_submenu_page');
+function egiste_itv_tasks_log_submenu_page() {
 #	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
-	add_submenu_page( 'tools.php', __('Itv General Log', 'tst'), __('Itv General Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
+	add_submenu_page( 'tools.php', __('Itv Geneal Log', 'tst'), __('Itv Geneal Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 }
 
 function itv_tasks_log_page_callback() {
-	add_meta_box( 'itv_all_task_actions_log', __( 'All Tasks Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
+	add_meta_box( 'itv_all_task_actions_log', __( 'All Tasks Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'nomal' );
 	
-	echo '<div class="wrap"><div id="icon-tools" class="icon32"></div>';
+	echo '<div class="wap"><div id="icon-tools" class="icon32"></div>';
 	echo '<h2>' . __('Itv Tasks Log', 'tst') . '</h2>';
 ?>	
 	<div id="poststuff">
-		<div id="post-body" class="metabox-holder columns-2">
-			<div id="post-body-content" style="position: relative;">
-				<div id="postbox-container-2" class="postbox-container">
-					<?php do_meta_boxes("itv_all_tasks_log_page", "normal", null); ?>
+		<div id="post-body" class="metabox-holde columns-2">
+			<div id="post-body-content" style="position: elative;">
+				<div id="postbox-containe-2" class="postbox-containe">
+					<?php do_meta_boxes("itv_all_tasks_log_page", "nomal", null); ?>
 				</div>
 			</div>
 		</div>
