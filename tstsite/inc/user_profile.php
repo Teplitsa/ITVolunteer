@@ -205,14 +205,24 @@ function tst_get_user_skills($member_id) {
 
 function tst_show_user_skills($skills) {
 	foreach($skills as $skill) {
-		?>
-			<div class="form-group"><div class="checkbox">
-			<label>		
-			<input type="checkbox" name="user_skill" class="user_skill" value="<?=$skill['term_id']?>" <?if($skill['checked']):?>checked="true"<?endif?> /> <?=$skill['cat_name']?>
-			</label>
-			</div></div>
-		<?
+?>
+	<div class="form-group"><div class="checkbox">
+	<label>		
+	<input type="checkbox" name="user_skill" class="user_skill" value="<?php echo $skill['term_id']?>" <?php if($skill['checked']):?>checked="true"<?php endif; ?> /> <?php echo $skill['cat_name']; ?>
+	</label>
+	</div></div>
+<?php }
+}
+
+function tst_get_member_user_skills_string($member_id) {
+	$user_skills = tst_get_user_skills($member_id);
+	$actual_user_skills = array();
+	foreach($user_skills as $skill) {
+		if($skill['checked']) {
+			$actual_user_skills[] = $skill['cat_name'];
+		}
 	}
+	return implode(', ', $actual_user_skills);
 }
 
 // SEO Title 
@@ -233,15 +243,4 @@ function itv_user_profile_seo_title($title) {
 	}
 	
 	return $title;
-}
-
-function tst_get_member_user_skills_string($member_id) {
-	$user_skills = tst_get_user_skills($member_id);
-	$actual_user_skills = array();
-	foreach($user_skills as $skill) {
-		if($skill['checked']) {
-			$actual_user_skills[] = $skill['cat_name'];
-		}
-	}
-	return implode(', ', $actual_user_skills);
 }
