@@ -3,21 +3,10 @@
  * Code for ITV functions
  */
 
-
-
 function ord_cand_orderbyreplace($orderby) {
 	remove_filter('posts_orderby','ord_cand_orderbyreplace');
 	return str_replace('str_posts.menu_order ASC', 'cast(mt1.meta_value as unsigned) ASC, cast(str_postmeta.meta_value as unsigned) DESC', $orderby);
 }
-
-#add_filter( 'posts_request', 'dump_request' );
-function dump_request( $input ) {
-	if(preg_match('/candidates_number/', $input))
-	var_dump($input);
-	return $input;
-}
-
-
 
 add_action('post_updated', function($id, WP_Post $after_update, WP_Post $pre_update){
 
