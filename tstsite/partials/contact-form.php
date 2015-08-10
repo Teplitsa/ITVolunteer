@@ -31,3 +31,4 @@ if( !is_page('contacts') ) {?>
     </form>
     <div id="result-message" class="alert alert-info contact-form-result"></div>
 </div>
+
