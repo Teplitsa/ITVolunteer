@@ -536,3 +536,5 @@ function tst_task_reward($reward) {
 	</div>
 <?	
 }
+
+
