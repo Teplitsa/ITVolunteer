@@ -21,4 +21,3 @@ if(current_user_can( 'manage_options' )) {
 <?php 
 }
 get_footer();
-?>
