@@ -143,10 +143,9 @@ function tst_tasks_filters_link($status = 'publish') {
 
 /** == Tasks counters == **/
 /* count tasks by statuses */
-global $ITV_TASKS_COUNT_ALL, $ITV_TASKS_COUNT_WORK, $ITV_TASKS_COUNT_CLOSED, $ITV_TASKS_COUNT_NEW;
+global $ITV_TASKS_COUNT_ALL, $ITV_TASKS_COUNT_WORK, $ITV_TASKS_COUNT_NEW;
 $ITV_TASKS_COUNT_ALL = null;
 $ITV_TASKS_COUNT_WORK = null;
-$ITV_TASKS_COUNT_CLOSED = null;
 
 function tst_get_new_tasks_count() {
 	global $ITV_TASKS_COUNT_NEW;	
@@ -197,8 +196,7 @@ function tst_get_work_tasks_count() {
 }
 
 function tst_get_closed_tasks_count() {
-	global $ITV_TASKS_COUNT_CLOSED;	
-	if(is_null($ITV_TASKS_COUNT_CLOSED)) {
+	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_CLOSED)) {
 		$args = array(
 			'post_type' => 'tasks',
 			'post_status' => 'closed',
@@ -207,7 +205,7 @@ function tst_get_closed_tasks_count() {
 			'exclude' => ACCOUNT_DELETED_ID,
 		);
 		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
+		ItvSiteStats::$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
 	}
-	return $ITV_TASKS_COUNT_CLOSED;
+	return ItvSiteStats::$ITV_TASKS_COUNT_CLOSED;
 }

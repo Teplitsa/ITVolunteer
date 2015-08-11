@@ -7,6 +7,7 @@ class ItvSiteStats {
 	public static $USERS_TOTAL = 'common_stats_users_count';
 	
 	public static $ITV_TOTAL_USERS_COUNT = null;
+	public static $ITV_TASKS_COUNT_CLOSED = null;
 	
 	private static $_instance = NULL;
 	

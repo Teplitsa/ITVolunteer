@@ -162,10 +162,7 @@ add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 
 
 // user skills
-$ITV_USER_SKILLS_EXCLUDE_CATEGORIES = array('prochee', 'materials');
-
 function tst_get_user_skills($member_id) {
-	global $ITV_USER_SKILLS_EXCLUDE_CATEGORIES;
 	$user_skills = get_user_meta($member_id, 'user_skills', true);
 	if(!is_array($user_skills)) {
 		$user_skills = $user_skills ? array($user_skills) : array();
@@ -178,8 +175,9 @@ function tst_get_user_skills($member_id) {
 	
 	$categories_filtered = array();
 	$parent_categories = array();
+	$skills_exclude_categories = array('prochee', 'materials');
 	foreach($categories as $category) {
-		if(array_search($category->slug, $ITV_USER_SKILLS_EXCLUDE_CATEGORIES) === false) {
+		if(array_search($category->slug, $skills_exclude_categories) === false) {
 			$category_hash = (array)$category;
 			$category_hash['checked'] = array_search($category->term_id, $user_skills) === false ? false : true;
 			if($category->parent) {
