@@ -6,6 +6,8 @@ class ItvSiteStats {
 	public static $USERS_ROLE_VOLUNTEER = 'common_stats_users_volunteer_count';
 	public static $USERS_TOTAL = 'common_stats_users_count';
 	
+	public static $ITV_TOTAL_USERS_COUNT = null;
+	
 	private static $_instance = NULL;
 	
 	public static function instance() {
