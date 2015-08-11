@@ -11,8 +11,6 @@ $cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Co
 
 
 function tst_brand_banner() {
-	$banner = get_template_directory_uri().'/img/tst-banner';
-	$tst = __("Teplitsa of social technologies - краудсорсинг, технологии для благотворительности", "tst");
 ?>
 	<div class="te-st">
 		<a href="http://te-st.ru" target="_blank">			
