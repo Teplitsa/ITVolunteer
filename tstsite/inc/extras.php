@@ -215,8 +215,7 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
-    
-    global $wpdb;
+        
     if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
     	$metas = (array)$query->get('meta_query');
     	
