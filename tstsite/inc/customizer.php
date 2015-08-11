@@ -205,7 +205,7 @@ function ajax_add_edit_task(){
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
 
         update_field('field_533bebda0fe8d', htmlentities(trim($_POST['expecting']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
-        update_field('field_533bec930fe8e', htmlentities(trim(@$_POST['about-reward']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
+        update_field('field_533bec930fe8e', htmlentities(trim(isset($_POST['about-reward']) ? $_POST['about-reward'] : ''), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bef200fe90', date_from_dd_mm_yy_to_yymmdd($_POST['deadline']), $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
@@ -675,7 +675,7 @@ function ajax_leave_review() {
 		)));
 	}
 	
-	$message = htmlentities(trim(@$_POST['review-message']), ENT_QUOTES, 'UTF-8');
+	$message = htmlentities(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), ENT_QUOTES, 'UTF-8');
 	if(!$message) {
 		wp_die(json_encode(array(
 				'status' => 'fail',
@@ -848,7 +848,7 @@ function ajax_update_profile() {
             // Update another fields...
             update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_workplace', htmlentities(@$_POST['user_workplace'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'user_workplace', htmlentities(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_professional', htmlentities($_POST['pro'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
@@ -858,7 +858,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'facebook', htmlentities($_POST['facebook'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_skills', @$_POST['user_skills']);
+            update_user_meta($member->ID, 'user_skills', isset($_POST['user_skills']) ? $_POST['user_skills'] : array());
            
 		    do_action('update_member_stats', array($user_id));
 
@@ -927,7 +927,7 @@ function ajax_add_message() {
         $email_templates['message_added_notification']['title'],
         nl2br(sprintf(
             $email_templates['message_added_notification']['text'],
-            @$_POST['page_url'], $_POST['name'], $_POST['email'], $_POST['message']
+            isset($_POST['page_url']) ? $_POST['page_url'] : '', $_POST['name'], $_POST['email'], $_POST['message']
         ))
     );
 

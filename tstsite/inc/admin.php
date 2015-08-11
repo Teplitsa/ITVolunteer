@@ -670,7 +670,7 @@ add_action( 'add_meta_boxes', 'itv_add_tasks_log_box' );
 function itv_all_tasks_log_box_content() {
 	$itv_log = ItvLog::instance();
 	
-	$page = (int)@$_GET['pn'];
+	$page = isset($_GET['pn']) ? (int)$_GET['pn'] : 0;
 	if($page <= 0) {
 		$page = 1;
 	}
