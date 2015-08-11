@@ -6,10 +6,10 @@
 global $post, $tst_member, $wp_query;
 
 
-if(is_single_member()) {
+if (is_single_member()) {
 	
 	$tst_member = get_user_by('slug', get_query_var('membername'));	
-    if( !$tst_member ) {
+    if (!$tst_member) {
         $refer = stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer();
         $back_url = $refer ? $refer : home_url();
 
@@ -20,7 +20,7 @@ if(is_single_member()) {
 
 get_header();
 
-if(is_single_member()) {	
+if (is_single_member()) {	
 	get_template_part('partials/content', 'member_single');
 	
 } else { ?>
@@ -28,10 +28,10 @@ if(is_single_member()) {
 	<div class="row">
 	
 		<div class="col-md-3">
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>
+			<h1 class="page-title"><?php echo frl_page_title(); ?></h1>
 		</div>
 		<div class="col-md-9">
-			<?php tst_members_filters_menu();?>
+			<?php tst_members_filters_menu(); ?>
 		</div>
 		
 		
@@ -45,10 +45,9 @@ if(is_single_member()) {
 
 	$per_page = get_option('posts_per_page');
 	
-	if($wp_query->query_vars['navpage']) {
+	if ($wp_query->query_vars['navpage']) {
 		$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
-	}
-	else {
+	} else {
 		$current = ($wp_query->query_vars['paged'] > 1) ? $wp_query->query_vars['paged'] : 1;
 	}
 	
@@ -61,7 +60,7 @@ if(is_single_member()) {
 		'query_id' => 'get_members_for_members_page'			
 	);
 	
-	if($wp_query->query_vars['member_role']) {			
+	if ($wp_query->query_vars['member_role']) {			
 		$users_query_params['meta_query'] = array(
 			array(
 				'key'     => 'tst_member_role',
@@ -71,19 +70,19 @@ if(is_single_member()) {
 		);
 		
 		//orderby
-		if($wp_query->query_vars['member_role'] == 'hero'){
+		if ($wp_query->query_vars['member_role'] == 'hero') {
 			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 		}
-		elseif($wp_query->query_vars['member_role'] == 'volunteer') {
+		elseif ($wp_query->query_vars['member_role'] == 'volunteer') {
 			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_joined';
 		}
-		elseif($wp_query->query_vars['member_role'] == 'donee') {
+		elseif ($wp_query->query_vars['member_role'] == 'donee') {
 			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_created_closed';
 		}
-		elseif($wp_query->query_vars['member_role'] == 'activist') {
+		elseif ($wp_query->query_vars['member_role'] == 'activist') {
 			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_created';
 		}
@@ -96,12 +95,12 @@ if(is_single_member()) {
 	
 	$user_query = new WP_User_Query($users_query_params);
 	
-	if($user_query->results) {
+	if ($user_query->results) {
 ?>
 	
 	<div class="row in-loop members-list">
 	<?php
-		foreach($user_query->results as $u){
+		foreach ($user_query->results as $u) {
 			$tst_member = $u; 
 			get_template_part('content', 'member'); 
 		}
@@ -114,7 +113,7 @@ if(is_single_member()) {
 
 	<?php } else {?>
 
-		<?php get_template_part( 'no-results', 'index' ); ?>
+		<?php get_template_part('no-results', 'index'); ?>
 
 	<?php }?>
 

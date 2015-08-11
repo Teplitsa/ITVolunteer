@@ -1,11 +1,11 @@
 <?php
 /**
- * The template for displaying the footer.
- *
- * Contains the closing of the id=main div and all content after
- *
- * @package Blank
- */
+					 * The template for displaying the footer.
+					 *
+					 * Contains the closing of the id=main div and all content after
+					 *
+					 * @package Blank
+					 */
 
 $cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons СС-BY-SA.&nbsp;3.0</a>';
 
@@ -24,12 +24,12 @@ function tst_brand_banner() {
 
 <div id="bottombar" class="widget-area page-bottom small">
 <div class="row">
-<?php if(is_page('registration')) { ?>
+<?php if (is_page('registration')) { ?>
 	<div class="col-sm-6 registration-col-1">
 		<?php get_template_part('partials/contact', 'form'); ?>
 	</div>
 	<div class="col-sm-6 registration-col-2">
-		<?php tst_brand_banner();?>
+		<?php tst_brand_banner(); ?>
 	</div>
 	
 <?php } else { ?>
@@ -39,8 +39,8 @@ function tst_brand_banner() {
 		<div class="col-sm-12 col-md-4 footer-info">
 			<div class="widget">
 				<div class="footer-brand">
-					<a href="" class="footer-logo"><?php bloginfo('name');?></a>
-					<div class="beta-label"><?php _e('Beta-version', 'tst');?></div>
+					<a href="" class="footer-logo"><?php bloginfo('name'); ?></a>
+					<div class="beta-label"><?php _e('Beta-version', 'tst'); ?></div>
 				</div>
 				
 				<div class="footer-stat">
@@ -51,10 +51,9 @@ function tst_brand_banner() {
 				
 				<div class="footer-contact">
 				<?php
-					if( !is_page('contacts') ) {
+					if (!is_page('contacts')) {
 						get_template_part('partials/contact', 'form');
-					}
-					else {
+					} else {
 						echo '&nbsp;';
 					}
 				?>
@@ -63,18 +62,18 @@ function tst_brand_banner() {
 		</div><!-- .col-md-4  -->	
 		
 		<div class="col-sm-6 col-md-4">
-			<?php dynamic_sidebar('footer_one-sidebar');?>		
+			<?php dynamic_sidebar('footer_one-sidebar'); ?>		
 		</div><!-- .col-md-4  -->
 		
 		<div class="col-sm-6 col-md-4">
-			<?php dynamic_sidebar('footer_two-sidebar');?>		
+			<?php dynamic_sidebar('footer_two-sidebar'); ?>		
 		</div><!-- .col-md-4  -->
 		
 	</div><!-- .row  -->	
 	</div>
 	
 	<div class="col-md-3">
-		<?php tst_brand_banner();?>		
+		<?php tst_brand_banner(); ?>		
 	</div>
 		
 <?php } ?>
@@ -89,8 +88,8 @@ function tst_brand_banner() {
 		<div class="row">
 			<div class="col-md-6">
 				<div class="copy">
-					<!-- <a href="<?php home_url();?>"><?php bloginfo('name');?></a>-->
-					<?php printf(__('All materials of the site are avaliabe under license %s', 'tst'), $cc_link);?>
+					<!-- <a href="<?php home_url(); ?>"><?php bloginfo('name'); ?></a>-->
+					<?php printf(__('All materials of the site are avaliabe under license %s', 'tst'), $cc_link); ?>
 				</div>
 			</div>
 			

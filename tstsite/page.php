@@ -6,7 +6,10 @@
 get_header(); ?>
 <?php while ( have_posts() ) : the_post(); ?>
 
-<header class="page-heading <?php if(is_page('about')) echo 'no-breadcrumbs';?>">
+<header class="page-heading <?php if(is_page('about')) {
+	echo 'no-breadcrumbs';
+}
+?>">
 
 	<div class="row">
 		<div class="col-md-12">

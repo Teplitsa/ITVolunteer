@@ -9,10 +9,10 @@ try {
 	$itv_site_stats->refresh_users_role_stats(100);
 }
 catch (ItvNotCLIRunException $ex) {
-	echo $ex->getMessage() . "\n";
+	echo $ex->getMessage()."\n";
 }
 catch (ItvCLIHostNotSetException $ex) {
-	echo $ex->getMessage() . "\n";	
+	echo $ex->getMessage()."\n";	
 }
 catch (Exception $ex) {
 	echo $ex;
