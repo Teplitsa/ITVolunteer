@@ -6,7 +6,7 @@ try {
 	include('cli_common.php');
 	
 	$reg_source_detector = new ItvUserRegSourceDetector();
-	$reg_source_detector->run();
+	$reg_source_detector->run($wpdb);
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";

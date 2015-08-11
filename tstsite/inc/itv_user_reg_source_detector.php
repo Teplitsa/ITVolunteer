@@ -1,7 +1,11 @@
 <?php
 
 class ItvUserRegSourceDetector {
-	public function run() {
+	private $_wpdb;
+	
+	public function run($wpdb) {
+		$this->_wpdb = $wpdb;
+		
 		$sites_emails = $this->get_sites_users_data();
 		$this->detect_and_save_reg_source($sites_emails);
 	}
@@ -41,39 +45,29 @@ class ItvUserRegSourceDetector {
 	
 	private function detect_and_save_reg_source($sites_emails) {
 		$is_stop = false;
-		while(!$is_stop) {
 		
-			$users_query_params = array(
-					'exclude' => ACCOUNT_DELETED_ID,
-					'orderby' => 'user_registered',
-					'order' => 'ASC'
-			);
+		$users_query_params = array(
+				'exclude' => ACCOUNT_DELETED_ID,
+				'orderby' => 'user_registered',
+				'order' => 'ASC'
+		);
+	
+		$user_query = new WP_User_Query($users_query_params);
 		
-			$login = @$argv[2];
-			if($login) {
-				$users_query_params['search'] = $login;
-				$users_query_params['search_columns'] = array('user_email');
+		$users_count_portion = 0;
+		foreach($user_query->results as $user) {
+			$blog_id = $this->itv_get_user_reg_source($user, $sites_emails);
+			if($blog_id) {
+				tstmu_save_user_reg_source($user->ID, $blog_id);
 			}
-		
-			$user_query = new WP_User_Query($users_query_params);
-		
-			$users_count_portion = 0;
-		
-			foreach($user_query->results as $user) {
-				$blog_id = $this->itv_get_user_reg_source($user, $sites_emails);
-				if($blog_id) {
-					tstmu_save_user_reg_source($user->ID, $blog_id);
-				}
-				else {
-					tstmu_save_user_reg_source($user->ID, 1);
-				}
-		
-				$users_count_portion += 1;
+			else {
+				tstmu_save_user_reg_source($user->ID, 1);
 			}
-		
-			if(!$users_count_portion) {
-				$is_stop = true;
-			}
+			$users_count_portion += 1;
+		}
+	
+		if(!$users_count_portion) {
+			$is_stop = true;
 		}
 	}
 
@@ -98,7 +92,7 @@ class ItvUserRegSourceDetector {
 	}
 	
 	private function itv_get_site_reg_emails($site_id, $field_id) {
-		global $wpdb;
+		$wpdb = $this->_wpdb;
 	
 		$kms_data = array('site_id' => $site_id, 'emails' => array());
 		$kms_emails = $wpdb->get_results($wpdb->prepare(
@@ -110,11 +104,6 @@ class ItvUserRegSourceDetector {
 				$field_id)
 		);
 		$kms_data['emails'] = $kms_emails;
-	
-		$emails = array();
-		foreach($kms_emails as $field) {
-			$emails[] = $field->meta_value;
-		}
 	
 		return $kms_data;
 	}
