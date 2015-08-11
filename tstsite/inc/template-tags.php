@@ -9,7 +9,7 @@
 
 /* page title */
 function frl_page_title(){	
-	global $post, $tst_member, $wp_query;
+	global $post, $wp_query;
 	
 	$title = '';
 	if(is_post_type_archive('tasks')){
@@ -226,8 +226,7 @@ function tst_ga_event_data($trigger_id){
 /**
  * Display navigation to next/previous pages when applicable
  */
-function tst_content_nav( $nav_id, $query = null ) {
-	global $wp_query, $post;
+function tst_content_nav( $nav_id, $query = null ) {	
 
 	$nav_class = ( is_single() || is_single_member()) ? 'nav-post' : 'nav-paging';
 	?>
@@ -273,7 +272,7 @@ function tst_content_nav( $nav_id, $query = null ) {
 
 
 function frl_paginate_links($query = null, $echo = true) {
-    global $wp_rewrite, $wp_query;
+    global $wp_query;
     
 	if(!$query)
 		$query = $wp_query;

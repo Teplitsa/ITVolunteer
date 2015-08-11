@@ -3,8 +3,7 @@
  * Params for GA events
  **/
 
-function tst_detect_page_type($type = null) {
-	global $post;
+function tst_detect_page_type($type = null) {	
 	
 	$page_type = array(
 		'tasks_list'   => 'Список задач',

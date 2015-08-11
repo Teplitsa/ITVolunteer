@@ -432,28 +432,7 @@ function frl_attachments_image($attachments){
 	return implode('', $list);
 }
 
-function frl_attachments_download($attachments){
-	
-	$list = array();
-	$gid = uniqid();
-	
-	foreach($attachments as $i => $att){		
-		$img = "<span class='dashicons dashicons-format-aside'></span>";
-		$link = wp_get_attachment_url($att->ID);
-		$title = apply_filters('the_title', $att->post_title);
-		$title_attr = esc_attr($title);
-		$desc = apply_filters('frl_the_content', $att->post_excerpt);
-		
-		$list[$i] = "<article class='frl-batt downlaod cf'>";
-		$list[$i] .= "<div class='batt-preview'>{$img}</div>";
-		$list[$i] .= "<div class='batt-data'>";
-		$list[$i] .= "<h4>{$title}</h4>{$desc}";
-		$list[$i] .= "<p class='download'><a href='{$link}' target='_blank'>Скачать &raquo;</a></p></div>";
-		$list[$i] .= "</article>";		
-	}
-	
-	return implode('', $list);
-}
+
 
 
 /**

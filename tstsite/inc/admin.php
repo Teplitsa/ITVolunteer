@@ -319,7 +319,7 @@ class Tst_Task_Submitbox {
 
     /* function to display hidden time fields when no date mode */
     static function no_date_touch_time(){
-        global $wp_locale, $post;
+        global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
@@ -347,7 +347,7 @@ class Tst_Task_Submitbox {
 
     /* function to display time controls for year only metabox */
     static function touch_time_by_year($tab_index = 0) {
-        global $wp_locale, $post;
+        global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
@@ -365,12 +365,6 @@ class Tst_Task_Submitbox {
         $hh = ($edit) ? mysql2date( 'H', $post_date, false ) : gmdate( 'H', $time_adj );
         $mn = ($edit) ? mysql2date( 'i', $post_date, false ) : gmdate( 'i', $time_adj );
         $ss = ($edit) ? mysql2date( 's', $post_date, false ) : gmdate( 's', $time_adj );
-
-        $cur_jj = gmdate( 'd', $time_adj );
-        $cur_mm = gmdate( 'm', $time_adj );
-        $cur_aa = gmdate( 'Y', $time_adj );
-        $cur_hh = gmdate( 'H', $time_adj );
-        $cur_mn = gmdate( 'i', $time_adj );
 
 
         $month = "<input type='hidden' name='mm' value='$mm' id='mm'/>";
@@ -540,8 +534,7 @@ function itv_common_columns_names($columns, $post_type) {
 
 add_action('manage_posts_custom_column', 'itv_common_columns_content', 2, 2);
 function itv_common_columns_content($column_name, $post_id) {
-	
-	$cpost = get_post($post_id);
+		
 	if($column_name == 'rewards') {
 		
         $term_id = get_field('reward', $post_id);

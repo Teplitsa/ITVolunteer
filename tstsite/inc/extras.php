@@ -780,8 +780,7 @@ function tst_get_user_closed_tasks($user) {
     else {
         $user = get_user_by('login', $user);
     }
-
-    $status = array('closed');
+ 
 
     $params = array(
         'connected_type' => 'task-doers',
@@ -802,8 +801,7 @@ function tst_get_user_closed_tasks($user) {
 }
 
 function tst_process_members_filter($users_query_params) {
-	global $wp_query;
-	
+		
 	
 	if(get_query_var('member_role')) {
 		

@@ -44,8 +44,7 @@ class ItvUserRegSourceDetector {
 	}
 	
 	private function detect_and_save_reg_source($sites_emails) {
-		$is_stop = false;
-		
+				
 		$users_query_params = array(
 				'exclude' => ACCOUNT_DELETED_ID,
 				'orderby' => 'user_registered',
@@ -64,10 +63,6 @@ class ItvUserRegSourceDetector {
 				tstmu_save_user_reg_source($user->ID, 1);
 			}
 			$users_count_portion += 1;
-		}
-	
-		if(!$users_count_portion) {
-			$is_stop = true;
 		}
 	}
 
