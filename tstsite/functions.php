@@ -9,14 +9,6 @@ require get_template_directory().'/inc/acf_keys.php';
  * @package Blank
  */
  
-global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM, $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_CONSULT_EMAIL_FROM;
-$ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_TASK_COMLETE_NOTIF_EMAILS = array('vlad@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_CONSULT_EMAILS = array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_CONSULT_EMAIL_FROM = 'anna.ladoshkina@te-st.ru';
-$ITV_EMAIL_FROM = 'info@itv.te-st.ru';
-$ITV_TASK_STATUSES_ORDER = Array('publish', 'in_work', 'closed', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
-
 /**
  * Initials
  **/
@@ -281,6 +273,7 @@ add_action('admin_menu', 'wp_admin_block');
 if(is_admin()) {
     require get_template_directory().'/inc/admin.php';
 }
+require get_template_directory().'/inc/itv_staff_email_notif.php';
 require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-tags.php';
 require get_template_directory().'/inc/extras.php';

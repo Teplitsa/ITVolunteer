@@ -287,10 +287,10 @@ function tst_get_task_candidates_number($task_id) {
 
 function tst_get_task_status_order($task_id) {
 	$task = get_post($task_id);
-	global $ITV_TASK_STATUSES_ORDER;
+	$task_status_order = array('publish', 'in_work', 'closed', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
 	$order = 100;
 	if($task) {
-		$order = array_search($task->post_status, $ITV_TASK_STATUSES_ORDER);
+		$order = array_search($task->post_status, $task_status_order);
 		if($order < 0) {
 			$order = 100;
 		}
