@@ -6,7 +6,7 @@ class ItvUserReportGenerator {
 		$user_query = new WP_User_Query($users_query_params);
 		$wpdb->query("TRUNCATE str_users_report");
 		
-		foreach ($user_query->results as $user) {
+		foreach($user_query->results as $user) {
 		
 			$user_avatar = get_user_meta($user->ID, 'user_avatar', true);
 			$is_uploaded_avatar = $user_avatar ? 1 : 0;
@@ -18,7 +18,7 @@ class ItvUserReportGenerator {
 			$role = tst_get_member_role_name(get_user_meta($user->ID, 'member_role', true));
 		
 			$user_activity = tst_get_member_activity($user);
-			$created_tasks = $user_activity['created'];
+			$created_tasks =  $user_activity['created'];
 			$solved_tasks = $user_activity['solved'];
 			$working_tasks = count(tst_get_user_working_tasks($user->ID, 'in_work'));
 		
@@ -26,7 +26,7 @@ class ItvUserReportGenerator {
 		
 			$reg_source_name = tstmu_get_user_reg_source_name($user->ID);
 			$last_login = get_user_last_login_time($user);
-			if ($last_login == '0000-00-00 00:00') {
+			if($last_login == '0000-00-00 00:00') {
 			$last_login = '';
 			}
 		

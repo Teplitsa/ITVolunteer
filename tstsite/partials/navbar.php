@@ -52,11 +52,8 @@
 				<li><a href="<?php echo wp_logout_url(tst_get_login_url().'&t=1');?>"><?php _e('Log out', 'tst');?></a></li>
 			</ul>
 		</li>
-	<?php else {
-	: ?>
-		<li><a href="<?php echo home_url('/registration/');
-}
-?>" class="ga-event-trigger" <?php tst_ga_event_data('m_login');?>><?php _e('Log In', 'tst');?></a></li>			
+	<?php else: ?>
+		<li><a href="<?php echo home_url('/registration/');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_login');?>><?php _e('Log In', 'tst');?></a></li>			
 	<?php endif;?>
 	
 	<?php if(is_user_logged_in()) {?>

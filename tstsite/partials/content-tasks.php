@@ -11,11 +11,9 @@
 	<div class="status-wrap">
 		<?php
 			$status_label = tst_get_task_status_label();
-			if($status_lab) {
-					?>
-		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());
-			}
-			?>">&nbsp;</span>
+			if($status_lab)
+		?>
+		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());?>">&nbsp;</span>
 	</div>
 	
 	<header class="task-header">	

@@ -1,17 +1,17 @@
 <?php
 /**
-				 * Page template
-				 **/
+ * Page template
+ **/
 
 get_header(); ?>
-<?php while (have_posts()) : the_post(); ?>
+<?php while ( have_posts() ) : the_post(); ?>
 
 <header class="page-heading">
 
 	<div class="row">
 		<div class="col-md-12">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs(); ?></nav>
-			<h1 class="page-title"><?php echo frl_page_title(); ?></h1>
+			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+			<h1 class="page-title"><?php echo frl_page_title();?></h1>
 		</div>
 		
 	</div>
@@ -35,12 +35,12 @@ get_header(); ?>
 		</div>
 		
 		<div class="col-md-7">
-			<div class="page-content contacts"><?php the_content(); ?></div>
-            <?php get_template_part('contact', 'form'); ?>
+			<div class="page-content contacts"><?php the_content();?></div>
+            <?php get_template_part('contact', 'form');?>
 		</div>
 			
 		<div class="col-md-3">
-			<div class="page-sidebar"><?php dynamic_sidebar('page-sidebar'); ?></div>
+			<div class="page-sidebar"><?php dynamic_sidebar('page-sidebar');?></div>
 		</div>
 		
 	</div><!-- .row -->

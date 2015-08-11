@@ -1,7 +1,7 @@
 <?php
 /**
-	 * Members related functions after review
-	 **/
+ * Members related functions after review
+ **/
 
  
 /* Define  roles */
@@ -24,22 +24,22 @@ function tst_get_role_name($role) {
 
 
 /* Role interation */
-function tst_user_object($user) {
+function tst_user_object($user){
 	
-	if (is_object($user))
+	if(is_object($user))
 		return $user;
 	
-	if ((int)$user > 0) {
+	if((int)$user > 0) {
 		$user = get_user_by('id', $user);
 	}
-	elseif (is_string($user)) {
+	elseif(is_string($user)){
 		$user = get_user_by('login', $user);
 	}
 		
 	return $user;
 }
 
-function tst_update_member_stat($user) { //everything
+function tst_update_member_stat($user){ //everything
 	
 	$user = tst_user_object($user);
 	
@@ -50,13 +50,13 @@ function tst_update_member_stat($user) { //everything
 
 // update data on hooks
 add_action('update_member_stats', 'tst_update_data_for_users');
-function tst_update_data_for_users($users = array()) {
+function tst_update_data_for_users($users = array()){
 	
-	if (empty($users)) {
+	if(empty($users)){
 		$users[] = get_current_user_id();
 	}
 	
-	foreach ($users as $user) {
+	foreach($users as $user){
 		tst_update_member_stat($user);
 	}
 	
@@ -73,31 +73,31 @@ function tst_calculate_member_role($user) {
 	$user = tst_user_object($user);
 	
 	$role = 'user';
-	$activity = tst_calculate_member_activity($user);
+	$activity =  tst_calculate_member_activity($user);
 	
-	if ($activity['solved'] > 0) {
+	if($activity['solved'] > 0){
 		$role = 'hero';
 	}
-	elseif ($activity['created_closed'] > 0) {
+	elseif($activity['created_closed'] > 0){
 		$role = 'donee';
 	}
-	elseif ($activity['joined'] > 0 && $activity['joined'] >= $activity['created']) {
+	elseif($activity['joined'] > 0 && $activity['joined'] >= $activity['created']) {
 		$role = 'volunteer';
 	}
-	elseif ($activity['created'] > 0) {
+	elseif($activity['created'] > 0){
 		$role = 'activist';
 	}
 	
 	return $role;
 }
 
-function tst_get_member_role_key($user) {
+function tst_get_member_role_key($user){
 	
 	$user = tst_user_object($user);
 	return get_user_meta($user->ID, 'tst_member_role', true);
 }
 
-function tst_get_member_role_name($user) {
+function tst_get_member_role_name($user){
 	
 	$user = tst_user_object($user);
 	$key = get_user_meta($user->ID, 'tst_member_role', true);
@@ -117,10 +117,10 @@ function tst_set_member_role($user) {
 function tst_calculate_member_activity($user, $type = 'all') {
 	
 	//user object
-	if (is_string($user)) {
+	if(is_string($user)){
 		$user = get_user_by('login', $user);
 	}
-	elseif (is_int($user)) {
+	elseif(is_int($user)){
 		$user = get_user_by('id', $user);
 	}
 	
@@ -131,36 +131,36 @@ function tst_calculate_member_activity($user, $type = 'all') {
 		'solved'         => 0
 	);	
 	
-	if ($type = 'all') {
+	if($type = 'all'){
 		$activity['created'] = tst_query_member_tasks_created($user, null, null, true);
 		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
 		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
 		
 	}
-	elseif ($type == 'created') {
+	elseif($type == 'created') {
 		$activity['created'] = tst_query_member_tasks_created($user, null, null, true);
 	}
-	elseif ($type == 'created_closed') {
+	elseif($type == 'created_closed') {
 		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
 	}
-	elseif ($type == 'joined') {
+	elseif($type == 'joined') {
 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
 	}
-	elseif ($type == 'solved') {
+	elseif($type == 'solved') {
 		$activity['solved'] = tst_calculate_member_tasks_solved($user, array('closed'), null, true);
 	}
 	
 	return $activity;
 }
 
-function tst_get_member_activity($user, $type = 'all') {
+function tst_get_member_activity($user, $type = 'all'){
 	
 	$user = tst_user_object($user);
 	$keys = ($type == 'all') ? array('created', 'created_closed', 'joined', 'solved') : array($type);
 	$activity = array();
 	
-	foreach ($keys as $key) {		
+	foreach($keys as $key) {		
 		$activity[$key] = get_user_meta($user->ID, 'tst_member_tasks_'.$key, true);
 	}
 	
@@ -173,7 +173,7 @@ function tst_set_member_activity($user, $type = 'all') {
 	$keys = ($type == 'all') ? array('created', 'created_closed', 'joined', 'solved') : array($type);
 	$activity = tst_calculate_member_activity($user, $type);
 	
-	foreach ($keys as $key) {		
+	foreach($keys as $key) {		
 		update_user_meta($user->ID, 'tst_member_tasks_'.$key, $activity[$key]);
 	}	
 }
@@ -181,18 +181,15 @@ function tst_set_member_activity($user, $type = 'all') {
 
 
 /* related tasks queries */
-/**
- * @param string[] $status
- */
 function tst_query_member_tasks_created($user, $status = null, $num = null, $only_count = false) {
 	
 	$params = array(
-		'post_type' => 'tasks',
-		'author' => $user->ID,
-		'nopaging' => true,
+        'post_type' => 'tasks',
+        'author' => $user->ID,
+        'nopaging' => true,
 		'post_status' => ($status) ? $status : array('publish', 'in_work', 'closed'),
 		'posts_per_page' => ($num) ? (int)$num : -1
-	);
+    );
   
 	$query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
@@ -202,21 +199,18 @@ function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $
 	
 	$params = array(
 		'post_type' => 'tasks',
-		'connected_type' => 'task-doers',
-		'connected_items' => $user->ID,
-		'suppress_filters' => false,
-		'nopaging' => true,
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => false,
+        'nopaging' => true,
 		'post_status' => ($status) ? $status : array('publish', 'in_work', 'closed'),
 		'posts_per_page' => ($num) ? (int)$num : -1
-	);
+    );
 
-	$query = new WP_Query($params);
+    $query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
 }
 
-/**
- * @param string[] $num
- */
 function tst_calculate_member_tasks_solved($user, $num = null, $only_count = false) {
 	
 	$params = array(
@@ -234,9 +228,9 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 		),
 		'post_status'     => array('closed'),
 		'posts_per_page' => ($num) ? (int)$num : -1
-	);
+    );
 
-	$query = new WP_Query($params);
+    $query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
 }
 

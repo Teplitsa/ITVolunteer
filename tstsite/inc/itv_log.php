@@ -29,7 +29,7 @@ class ItvLog {
 	}
 	
 	public static function instance() {
-		if (ItvLog::$_instance == NULL) {
+		if(ItvLog::$_instance == NULL) {
 			ItvLog::$_instance = new ItvLog();
 		}
 		return ItvLog::$_instance;
@@ -56,9 +56,9 @@ class ItvLog {
 	}
 	
 	public function log_user_action($action, $user_id = 0, $user_login = '', $text_data = null) {
-		if (!$user_login) {
+		if(!$user_login) {
 			$user = get_user_by('id', $user_id);
-			if ($user) {
+			if($user) {
 				$user_login = $user->user_login;
 			}
 		}
@@ -118,17 +118,14 @@ class ItvLog {
 		return $this->get_task_status_time($task_id, 'closed');
 	}
 	
-	/**
-	 * @param string $task_status
-	 */
 	public function get_task_status_time($task_id, $task_status) {
 		$logs = $this->get_task_log($task_id);
 		$res_log = null;
-		foreach ($logs as $log) {
-			if ($log->task_status == $task_status) {
+		foreach($logs as $log) {
+			if($log->task_status == $task_status) {
 				$res_log = $log;
 			}
-			elseif ($res_log) {
+			elseif($res_log) {
 				break;
 			}
 		}

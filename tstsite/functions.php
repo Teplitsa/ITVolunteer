@@ -12,7 +12,7 @@ require get_template_directory().'/inc/acf_keys.php';
 /**
  * Initials
  **/
-if (!isset($content_width))
+if(!isset($content_width))
 	$content_width = 640; /* pixels */
 
 
@@ -20,19 +20,20 @@ define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service use
 $email_templates = array();
 
 
-function tst_get_version_num() {
+function tst_get_version_num(){
 	
-	if (false !== strpos(site_url(), 'testplugins.ngo2.ru')) {
+	if(false !== strpos(site_url(), 'testplugins.ngo2.ru')){
 		//on dev force random number to avoid cache problems
 		$num = rand();
-	} else {
+	}
+	else {
 		$num = (defined('TST_WORKING_VERSION')) ? TST_WORKING_VERSION : '1.0';
 	}
 	
 	return $num;
 }
 
-if (!function_exists('tst_setup')) :
+if ( ! function_exists( 'tst_setup' ) ) :
 function tst_setup() {
 
 	/**
@@ -41,7 +42,7 @@ function tst_setup() {
 	 * If you're building a theme based on Blank, use a find and replace
 	 * to change 'blank' to the name of your theme in all the template files
 	 */
-	load_theme_textdomain('tst', get_template_directory().'/lang');
+	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
 	global $email_templates;
@@ -52,19 +53,19 @@ function tst_setup() {
 	/**
 	 * Images
 	 **/
-	add_theme_support('post-thumbnails');
+	add_theme_support( 'post-thumbnails' );
 	
 	/* image sizes */
-	set_post_thumbnail_size(390, 244, true); // regular thumbnails
-	add_image_size('logo', 220, 140, true); // logo thumbnail
-	add_image_size('embed', 640, 400, true); // fixed size for embending
-	add_image_size('long', 640, 280, true); // long thumbnail for pages
-	add_image_size('avatar', 180, 180, array('center', 'center'));
+	set_post_thumbnail_size(390, 244, true ); // regular thumbnails
+	add_image_size('logo', 220, 140, true ); // logo thumbnail
+	add_image_size('embed', 640, 400, true ); // fixed size for embending
+	add_image_size('long', 640, 280, true ); // long thumbnail for pages
+	add_image_size('avatar', 180, 180, array( 'center', 'center' ) );
 	
 	/**
 	 * This theme uses wp_nav_menu() in one location.
 	 */
-	register_nav_menus(array(
+	register_nav_menus( array(
 		'primary'   => 'Главное меню',
 		'auxiliary' => 'Вспомогательное меню',		
 		'social'    => 'Социальные кнопки'
@@ -73,7 +74,7 @@ function tst_setup() {
 	
 }
 endif; // blank_setup
-add_action('after_setup_theme', 'tst_setup');
+add_action( 'after_setup_theme', 'tst_setup' );
 
 
 /**
@@ -121,15 +122,15 @@ function tst_widgets_init() {
 	);
 		
 	
-	foreach ($config as $id => $sb) {
+	foreach($config as $id => $sb) {
 		
 		$before = '<div id="%1$s" class="widget %2$s">';
 		
-		if (false !== strpos($id, 'footer')) {
+		if(false !== strpos($id, 'footer')){
 			$before = '<div id="%1$s" class="widget %2$s bottom">';
 			
 		}
-		elseif (false !== strpos($id, 'header')) {
+		elseif(false !== strpos($id, 'header')) {
 			$before = '<div id="%1$s" class="header-block">';
 		}
 		
@@ -150,74 +151,74 @@ add_action('widgets_init', 'tst_widgets_init');
 /**
  * Enqueue scripts and styles
  */
-add_action('wp_enqueue_scripts', function() {
+add_action('wp_enqueue_scripts', function(){
 
-	$url = get_template_directory_uri();
+    $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
-	wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
+    wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-	wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
+    wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
 
 
-	wp_enqueue_script('jquery-ui-datepicker');
-	if(get_locale() == 'ru_RU')
-		wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
+    wp_enqueue_script('jquery-ui-datepicker');
+    if(get_locale() == 'ru_RU')
+        wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
 
-	wp_enqueue_script('jquery-ui-tabs');
-	wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('jquery-ui-tabs');
+    wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
+    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
 
-	wp_localize_script('front', 'frontend', array(
-		'ajaxurl' => admin_url('admin-ajax.php'),
-		'site_url' => site_url('/'),
-		'chosen_no_results_text' => __('No such tags found...', 'tst'),
-		'user_login_too_short' => __('User login must have 4 or more symbols.', 'tst'),
-		'user_login_incorrect' => __('User login contains incorrect symbols.', 'tst'),
-		'user_email_empty' => __('Email is required.', 'tst'),
-		'user_email_incorrect' => __('Email is incorrect.', 'tst'),
-		'passes_are_inequal' => __('Passwords are inconsistent.', 'tst'),
-		'user_pass_empty' => __('Password is required.', 'tst'),
-		'first_name_too_short' => __('First name must be at least 3 symbols long.', 'tst'),
-		'last_name_too_short' => __('Last name must be at least 3 symbols long.', 'tst'),
-		'task_delete_confirm' => __('This task will be deleted. Are you sure?', 'tst'),
-		'profile_delete_confirm' => __('Your profile will be deleted. Are you sure?', 'tst'),
-		'task_title_is_required' => __('Please, set a title for the task.', 'tst'),
-		'deadline_is_required' => __('Please, set a deadline date for the task.', 'tst'),
-		'task_descr_is_required' => __('Please, set a small description for the task.', 'tst'),
-		'expecting_is_required' => __('Please, give a few words about what you are expecting from a task doer.', 'tst'),
-		'about_reward_is_required' => __('Please, note a few words about a reward that you are willing to give for a task.', 'tst'),
-		'about_author_org_is_required' => __('Please, tell something about your project, initiative or an organization.', 'tst'),
-		'some_tags_are_required' => __('Please, set at least one thematic tag for your task.', 'tst'),
-		'reward_is_required' => __('Please, select your reward for a task doer.', 'tst'),
-		'contactor_name_empty' => __('Your name is required.', 'tst'),
-		'contactor_message_empty' => __('Your message is required.', 'tst'),
-		'user_company_logo_upload_error' => __('Company logo upload failed', 'tst'),
-		'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
-		'user_avatar_upload_error' => __('Avatar upload failed', 'tst'),
-		'user_avatar_delete_error' => __('Avatar delete failed', 'tst'),
+    wp_localize_script('front', 'frontend', array(
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'site_url' => site_url('/'),
+        'chosen_no_results_text' => __('No such tags found...', 'tst'),
+        'user_login_too_short' => __('User login must have 4 or more symbols.', 'tst'),
+        'user_login_incorrect' => __('User login contains incorrect symbols.', 'tst'),
+        'user_email_empty' => __('Email is required.', 'tst'),
+        'user_email_incorrect' => __('Email is incorrect.', 'tst'),
+        'passes_are_inequal' => __('Passwords are inconsistent.', 'tst'),
+        'user_pass_empty' => __('Password is required.', 'tst'),
+        'first_name_too_short' => __('First name must be at least 3 symbols long.', 'tst'),
+        'last_name_too_short' => __('Last name must be at least 3 symbols long.', 'tst'),
+        'task_delete_confirm' => __('This task will be deleted. Are you sure?', 'tst'),
+        'profile_delete_confirm' => __('Your profile will be deleted. Are you sure?', 'tst'),
+        'task_title_is_required' => __('Please, set a title for the task.', 'tst'),
+        'deadline_is_required' => __('Please, set a deadline date for the task.', 'tst'),
+        'task_descr_is_required' => __('Please, set a small description for the task.', 'tst'),
+        'expecting_is_required' => __('Please, give a few words about what you are expecting from a task doer.', 'tst'),
+        'about_reward_is_required' => __('Please, note a few words about a reward that you are willing to give for a task.', 'tst'),
+        'about_author_org_is_required' => __('Please, tell something about your project, initiative or an organization.', 'tst'),
+        'some_tags_are_required' => __('Please, set at least one thematic tag for your task.', 'tst'),
+        'reward_is_required' => __('Please, select your reward for a task doer.', 'tst'),
+        'contactor_name_empty' => __('Your name is required.', 'tst'),
+        'contactor_message_empty' => __('Your message is required.', 'tst'),
+        'user_company_logo_upload_error' => __('Company logo upload failed', 'tst'),
+        'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
+        'user_avatar_upload_error' => __('Avatar upload failed', 'tst'),
+        'user_avatar_delete_error' => __('Avatar delete failed', 'tst'),
 //        '' => __('.', 'tst'),
-	));
+    ));
 
 	//comments
-	if (is_singular('tasks') && get_option('thread_comments')) {
+	if(is_singular('tasks') && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
 	}
 });
 
-add_action('admin_enqueue_scripts', function() {
+add_action('admin_enqueue_scripts', function(){
 
-	$url = get_template_directory_uri();
-	$version = tst_get_version_num();
+    $url = get_template_directory_uri();
+    $version = tst_get_version_num();
 
-	wp_enqueue_style('tst-admin', $url.'/css/admin.css', array(), $version);
-	wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'), $version);
+    wp_enqueue_style('tst-admin', $url.'/css/admin.css', array(), $version);
+    wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'), $version);
     
-	wp_localize_script('tst-admin', 'adminend', array(
+    wp_localize_script('tst-admin', 'adminend', array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
 		'site_url' => site_url('/'),
 	));    
@@ -226,10 +227,10 @@ add_action('admin_enqueue_scripts', function() {
 });
 
 /* login style */
-add_action('login_enqueue_scripts', function() {
+add_action('login_enqueue_scripts', function(){
 
-	$url = get_template_directory_uri();
-	wp_enqueue_style('tst-login', $url.'/css/login.css', array());
+    $url = get_template_directory_uri();
+    wp_enqueue_style('tst-login', $url.'/css/login.css', array());
 
 });
 
@@ -241,22 +242,22 @@ add_action('login_enqueue_scripts', function() {
  */
 function wp_admin_block() {
 	$php_self = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
-	if (strstr($php_self, '/wp-admin/profile.php') === false) {
+	if(strstr($php_self, '/wp-admin/profile.php') === false) {
 		if (!current_user_can('administrator')) { 
-			wp_redirect(home_url());
+			wp_redirect( home_url() );
 			exit;
 		}
 	}	
 	else {
-		if (is_user_logged_in()) {
+		if(is_user_logged_in()) {
 			if (!current_user_can('administrator')) {
 				$current_user = wp_get_current_user();
-				wp_redirect(site_url('/members/'.$current_user->user_login.'/'));
+				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
 				exit;
 			}
 		}
 		else {
-			wp_redirect(site_url('/'));
+			wp_redirect( site_url('/') );
 			exit;
 		}
 	}
@@ -267,7 +268,7 @@ add_action('admin_menu', 'wp_admin_block');
  * Custom additions.
  */
 if(is_admin()) {
-	require get_template_directory().'/inc/admin.php';
+    require get_template_directory().'/inc/admin.php';
 }
 require get_template_directory().'/inc/itv_staff_email_notif.php';
 require get_template_directory().'/inc/customizer.php';

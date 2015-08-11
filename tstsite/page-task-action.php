@@ -70,11 +70,10 @@ get_header();?>
 			<div class="status-block-task in-action">
 				<div class="row-top task-meta">	
 				<?php
-					if($new_task) {
-											tst_newtask_fixed_meta();
-					} else {
-											tst_task_fixed_meta($task);
-					}
+					if($new_task)
+						tst_newtask_fixed_meta();
+					else
+						tst_task_fixed_meta($task);
 				?>
 				</div>
 			</div>
@@ -180,9 +179,8 @@ get_header();?>
                     $task_tags = wp_get_post_terms($task->ID, 'post_tag', array());
                     function tag_in_array(stdClass $tag, $array) {
                         foreach($array as $value) {
-                            if($tag->term_id == $value->term_id) {
-                                                            return true;
-                            }
+                            if($tag->term_id == $value->term_id)
+                                return true;
                         }
                         return false;
                     }

@@ -9,7 +9,7 @@ class ItvReviews {
 	}
 	
 	public static function instance() {
-		if (ItvReviews::$_instance == NULL) {
+		if(ItvReviews::$_instance == NULL) {
 			ItvReviews::$_instance = new ItvReviews();
 		}
 		return ItvReviews::$_instance;

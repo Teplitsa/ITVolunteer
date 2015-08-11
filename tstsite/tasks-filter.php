@@ -9,8 +9,7 @@
 	</div>
 	<?php if(isset($_GET['ord_cand'])): ?>
 	<a href="<?php echo home_url('/tasks/')?>" class="pull-right"><?php _e('Usual sort', 'tst') ?></a>
-	<?php else {
-	: ?>
+	<?php else: ?>
 	<a href="<?php echo home_url('/tasks/?ord_cand=1')?>" class="pull-right"><?php _e('Sort by candidates amount', 'tst') ?></a>
 	<?php endif ?>
 </div>
@@ -18,17 +17,13 @@
 <div id="tasks-filters" style="display: none;">
 	<form id="tasks-filters-form" method="get" action="<?php echo site_url('/tasks/')?>" class="form-horizontal">
 		<div class="form-group">
-			<label for="filter-task-status" class="col-sm-3 control-label"><?php _e('Status', 'tst');
-}
-?></label>
+			<label for="filter-task-status" class="col-sm-3 control-label"><?php _e('Status', 'tst');?></label>
 			<div class="col-sm-9">
 				<select name="st" id="filter-task-status" class="form-control">
                     <option value="-" <?php echo isset($_GET['st']) && $_GET['st'] == '-' ? 'selected="selected"' : '';?>><?php _e('Any status', 'tst');?></option>
 				<?php foreach(tst_get_task_status_list() as $status => $label) {
-					if($status == 'draft') {
-											continue;
-					}
-					?>
+					if($status == 'draft')
+						continue;?>
 					<option value="<?php echo $status;?>" <?php echo isset($_GET['st']) && $_GET['st'] == $status ? 'selected="selected"' : '';?>><?php echo $label;?></option>
 				<?php }?>
 				</select>
@@ -55,10 +50,7 @@
 				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
 
 				<?php foreach(get_terms('reward', array('hide_empty' => false)) as $reward) {?>
-					<option value="<?php echo $reward->term_id;?>" <?php if( !empty($_GET['rw']) ) {
-	selected($reward->term_id, $_GET['rw']);
-}
-?> >
+					<option value="<?php echo $reward->term_id;?>" <?php if( !empty($_GET['rw']) ) selected($reward->term_id, $_GET['rw']);?> >
 						<?php echo $reward->name;?>
 					</option>
 				<?php }?>

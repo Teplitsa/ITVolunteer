@@ -61,12 +61,9 @@ get_header(); ?>
 	
 				<?php tst_content_nav( 'nav-below' ); ?>
 	
-			<?php else {
-	: ?>
+			<?php else : ?>
 	
-				<?php get_template_part( 'no-results', 'index' );
-}
-?>
+				<?php get_template_part( 'no-results', 'index' ); ?>
 	
 			<?php endif; ?>
 	

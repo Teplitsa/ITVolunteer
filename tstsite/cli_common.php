@@ -3,10 +3,10 @@
 function find_wordpress_base_path() {
 	$dir = dirname(__FILE__);
 	do {
-		if (file_exists($dir."/wp-config.php")) {
+		if( file_exists($dir."/wp-config.php") ) {
 			return $dir;
 		}
-	} while ($dir = realpath("$dir/.."));
+	} while( $dir = realpath("$dir/..") );
 	return null;
 }
 
@@ -16,15 +16,15 @@ define('WP_CURRENT_THEME', 'tstsite');
 
 include('inc/itv_exceptions.php');
 
-if (php_sapi_name() !== 'cli') {
+if(php_sapi_name() !== 'cli') {
 	throw new ItvNotCLIRunException("Should be run from command line!");
 }
 
-if (!isset($argv[1]) || empty($argv[1])) {
+if(!isset($argv[1]) || empty($argv[1])) {
 	throw new ItvNotCLIRunException("Host must be defined!");
 }
 else {
-	echo "HOST: ".$argv[1]."\n";
+	echo "HOST: " . $argv[1] . "\n";
 }
 
 $_SERVER = array(
@@ -35,4 +35,4 @@ $_SERVER = array(
 );
 
 global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
-require_once(BASE_PATH.'wp-load.php');
+require_once(BASE_PATH . 'wp-load.php');

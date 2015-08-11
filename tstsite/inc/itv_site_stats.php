@@ -15,7 +15,7 @@ class ItvSiteStats {
 	private static $_instance = NULL;
 	
 	public static function instance() {
-		if (ItvSiteStats::$_instance == NULL) {
+		if(ItvSiteStats::$_instance == NULL) {
 			ItvSiteStats::$_instance = new ItvSiteStats();
 		}
 		return ItvSiteStats::$_instance;
@@ -35,8 +35,8 @@ class ItvSiteStats {
 			
 		$offset = 0;
 		$is_stop = false;
-		while (!$is_stop) {
-			echo 'offset='.$offset."\n";
+		while(!$is_stop) {
+			echo 'offset=' . $offset . "\n";
 			
 			$users_query_params = array(
 				'number' => $per_page,
@@ -49,35 +49,35 @@ class ItvSiteStats {
 		
 			$users_count_portion = 0;
 					
-			foreach ($user_query->results as $user) {
+			foreach($user_query->results as $user) {
 				$is_count = true;
 										
-				if ($is_count) {
+				if($is_count) {
 					
 					tst_update_member_stat($user);
 					$user_role = tst_get_member_role_key($user);
 					
-					if ($user_role == 'donee') {
+					if($user_role == 'donee') {
 						$USERS_ROLE_BENEFICIARY_COUNT += 1;
 					}
-					elseif ($user_role == 'hero') {
+					elseif($user_role == 'hero') {
 						$USERS_ROLE_SUPERHERO_COUNT += 1;
 					}
-					elseif ($user_role == 'activist') {
+					elseif($user_role == 'activist') {
 						$USERS_ROLE_ACTIVIST_COUNT += 1;
 					}
-					elseif ($user_role == 'volunteer') {
+					elseif($user_role == 'volunteer') {
 						$USERS_ROLE_VOLUNTEER_COUNT += 1;
 					}
 					else {
-						$USERS_COUNT += 1;
+						$USERS_COUNT +=1;
 					}
 				}
 				
 				$users_count_portion += 1;
 			}
 			
-			if ($users_count_portion < $per_page) {
+			if($users_count_portion < $per_page) {
 				$is_stop = true;
 			}
 			

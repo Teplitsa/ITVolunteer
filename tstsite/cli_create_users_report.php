@@ -9,10 +9,10 @@ try {
 	$reg_report_generator->run($wpdb);
 }
 catch (ItvNotCLIRunException $ex) {
-	echo $ex->getMessage()."\n";
+	echo $ex->getMessage() . "\n";
 }
 catch (ItvCLIHostNotSetException $ex) {
-	echo $ex->getMessage()."\n";
+	echo $ex->getMessage() . "\n";
 }
 catch (Exception $ex) {
 	echo $ex;
