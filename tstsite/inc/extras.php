@@ -215,8 +215,7 @@ function tst_main_query_mods(WP_Query $query) {
             $query->set('tag_slug__in', (array)$_GET['tt']);
         }
     }
-    
-    global $wpdb;
+        
     if(@$_GET['ord_cand'] && $query->query_vars['query_id'] && $query->query_vars['query_id'] == 'get_tasks') {
     	$metas = (array)$query->get('meta_query');
     	
@@ -656,26 +655,6 @@ function tst_get_member_role_label($role) {
         case 3: return __('Participator', 'tst');
         default: return __('Unknown role', 'tst');
     }
-}
-
-global $ITV_ROLE_SORT_TABLE;
-$ITV_ROLE_SORT_TABLE = array(2 => 1, 1 => 2, 3 => 3, 0 => 4);
-function tst_actualize_member_role($user) {
-	global $ITV_ROLE_SORT_TABLE;
-	if(!is_object($user)) {
-		$user = (int)$user;
-		$user = get_user_by('id', $user);
-	}
-	if($user) {
-		$new_member_role = tst_get_member_role($user);
-		update_user_meta($user->ID, 'member_role', $new_member_role);
-		update_user_meta($user->ID, 'member_rating', sprintf("%010d", tst_get_user_rating($user)));
-		set_user_order_data($user->ID, $ITV_ROLE_SORT_TABLE[(int)$new_member_role]);
-	}
-}
-
-function tst_actualize_current_member_role() {
-	tst_actualize_member_role(get_current_user_id());
 }
 
 function set_user_order_data($user_id, $order_data) {	

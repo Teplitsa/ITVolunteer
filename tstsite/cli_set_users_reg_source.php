@@ -2,8 +2,6 @@
 
 include('cli_common.php');
 
-global $sites_emails;
-
 $sites_emails = array();
 array_push($sites_emails, itv_get_site_reg_emails(2, 87));	// paseka
 
@@ -60,7 +58,7 @@ while(!$is_stop) {
 
 
 		$reg_source = tstmu_get_user_reg_source($user->ID);
-			$blog_id = itv_get_user_reg_source($user);
+			$blog_id = itv_get_user_reg_source($user, $sites_emails);
 			if($blog_id) {
 				tstmu_save_user_reg_source($user->ID, $blog_id);
 				echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
@@ -85,8 +83,7 @@ while(!$is_stop) {
 	$offset += $per_page;
 }
 
-function itv_get_user_reg_source($user) {
-	global $sites_emails;
+function itv_get_user_reg_source($user, $sites_emails) {
 	foreach($sites_emails as $site_form_emails) {
 		if(itv_is_email_reg_on_site_earlier($user, $site_form_emails)) {
 			return $site_form_emails['site_id'];

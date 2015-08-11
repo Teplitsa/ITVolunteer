@@ -448,7 +448,6 @@ function tst_get_comment_author_link($comment_id = 0){
 }
 
 function tst_comment( $comment, $args, $depth ) {
-	$GLOBALS['comment'] = $comment;
 ?>
 	<li id="comment-<?php comment_ID(); ?>" <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ); ?>>
 		<article id="div-comment-<?php comment_ID(); ?>" class="comment-body media">

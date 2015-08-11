@@ -76,15 +76,12 @@ function tst_get_members_counter($role_key){
 	return $count;
 }
 
-global $ITV_TOTAL_USERS_COUNT;
-$ITV_TOTAL_USERS_COUNT = null;
 function tst_get_active_members_count() {
-	global $ITV_TOTAL_USERS_COUNT;	
-	if(is_null($ITV_TOTAL_USERS_COUNT)) {
+	if(is_null(ItvSiteStats::$ITV_TOTAL_USERS_COUNT)) {
 		$itv_site_stats = ItvSiteStats::instance();
-		$ITV_TOTAL_USERS_COUNT = $itv_site_stats->get_stats_value(ItvSiteStats::$USERS_TOTAL);
+		ItvSiteStats::$ITV_TOTAL_USERS_COUNT = $itv_site_stats->get_stats_value(ItvSiteStats::$USERS_TOTAL);
 	}
-	return $ITV_TOTAL_USERS_COUNT;
+	return ItvSiteStats::$ITV_TOTAL_USERS_COUNT;
 }
 
 
