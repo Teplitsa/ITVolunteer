@@ -37,11 +37,9 @@ $per_page = 100;
 $offset = 0;
 $is_stop = false;
 while(!$is_stop) {
-// 	echo 'offset=' . $offset . "\n";
+
 		
 	$users_query_params = array(
-// 			'number' => $per_page,
-// 			'offset' => $offset,
 			'exclude' => ACCOUNT_DELETED_ID,
 			'orderby' => 'user_registered',
 			'order' => 'ASC'
@@ -50,7 +48,6 @@ while(!$is_stop) {
 	$login = @$argv[2];
 	if($login) {
 		$users_query_params['search'] = $login;
-		#$users_query_params['search_columns'] = array('user_login', 'user_nicename');
 		$users_query_params['search_columns'] = array('user_email');
 	}
 	
@@ -58,34 +55,20 @@ while(!$is_stop) {
 
 	$users_count_portion = 0;
 		
-// 	echo $wpdb->last_query . "\n\n";
-// 	echo $wpdb->last_error . "\n\n";
-// 	echo "count: " . count($user_query->results) . "\n";
 	
 	foreach($user_query->results as $user) {
-// 		echo "\n\nprocess: " . $user->user_login . " registered: " .$user->user_registered . "\n";
+
 
 		$reg_source = tstmu_get_user_reg_source($user->ID);
-#		if(!$reg_source) {
-// 			echo "search reg source\n";
 			$blog_id = itv_get_user_reg_source($user);
 			if($blog_id) {
-#				echo "reg source FOUND: " . $blog_id . "\n";
 				tstmu_save_user_reg_source($user->ID, $blog_id);
 				echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
 			}
 			else {
-// 				echo "reg source NOT FOUND\n";
 				tstmu_save_user_reg_source($user->ID, 1);
 			}
-#		}
-#		else {
-#			echo "reg source EXISTS: " . $reg_source . "\n";
-#			echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
-#		}
-
-// 		echo "source name: " . tstmu_get_user_reg_source_name($user->ID) . "\n";
-
+        
 		$users_count_portion += 1;
 	}
 	
@@ -143,8 +126,6 @@ function itv_get_site_reg_emails($site_id, $field_id) {
 		$emails[] = $field->meta_value;
 	}
 
-// 	echo $site_id . "\n";
-// 	echo implode(', ', $emails) . "\n";
 
 	return $kms_data;
 }

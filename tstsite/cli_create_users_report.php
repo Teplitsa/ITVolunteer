@@ -8,7 +8,6 @@ $user_query = new WP_User_Query($users_query_params);
 $wpdb->query("TRUNCATE str_users_report");
 
 foreach($user_query->results as $user) {
-// 	echo $user->user_login . " registered: " . $user->user_registered . "\n";	
 
 	$user_avatar = get_user_meta($user->ID, 'user_avatar', true);
 	$is_uploaded_avatar = $user_avatar ? 1 : 0;
@@ -25,7 +24,6 @@ foreach($user_query->results as $user) {
 	$working_tasks = count(tst_get_user_working_tasks($user->ID, 'in_work'));
 	
 	# old way
-// 	$created_tasks = count(tst_get_user_created_tasks($user->ID));
 	
 	$reg_source_name = tstmu_get_user_reg_source_name($user->ID);
 	$last_login = get_user_last_login_time($user);
@@ -97,7 +95,5 @@ foreach($user_query->results as $user) {
 					$reg_source_name
 			)
 	);
-	#echo $wpdb->last_query . "<br />";
-// 	echo $wpdb->last_error . "\n";
 }
 

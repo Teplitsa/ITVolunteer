@@ -80,7 +80,6 @@ get_header();?>
                                 <div class="form-group">
                                     <input type="submit" id="do-login" value="<?php _e('Log In', 'tst');?>" class="btn btn-primary" id="wp-submit" name="wp-submit">
                                     <input type="hidden" value="<?php echo $back_url;?>" id="redirect_to" name="redirect_to" />
-<!--                                    <a href="--><?php //echo wp_lostpassword_url($back_url);?><!--" class="forget-psw">--><?php //_e('Forget password?', 'tst');?><!--</a>-->
                                     <div id="login-message" class="alert alert-danger" style="display: none;"></div>
                                 </div>
                             </form>

@@ -39,7 +39,7 @@ add_filter( 'frl_the_title', 'convert_chars' );
 add_filter( 'frl_the_title', 'trim'          );
 
 /* jpeg compression */
-//add_filter( 'jpeg_quality', create_function( '', 'return 85;' ) );
+
 
 
 
@@ -66,14 +66,9 @@ function tst_custom_widgets(){
 	unregister_widget('WP_Widget_Calendar');
 	unregister_widget('WP_Widget_Meta');
 	unregister_widget('WP_Widget_Categories');
-	//unregister_widget('WP_Widget_Recent_Posts');
 	unregister_widget('WP_Widget_Tag_Cloud');
-	//unregister_widget('WP_Widget_Search');
 	unregister_widget('FrmListEntries');
-	
-	//register_widget('TST_Related_Widget');
-	//register_widget('TST_Upcoming_Widget');
-//    register_widget('TST_Single_Task_Widget');
+
 }
 add_action('widgets_init', 'tst_custom_widgets', 11);
 
@@ -177,9 +172,6 @@ function tst_main_query_mods(WP_Query $query) {
     ) {
     	$query->set('query_id', 'get_tasks');
     	
-        //if( !empty($_GET['st']) ) {
-        //    $query->set('post_status', $_GET['st'] == '-' ? array('publish', 'in_work', 'closed') : $_GET['st']);
-        //}
         if( !empty($_GET['dl']) ) {
             $metas = (array)$query->get('meta_query');
             switch($_GET['dl']) {
@@ -374,7 +366,6 @@ function tst_get_edit_task_url($task = null){
 add_filter( 'user_contactmethods', 'tst_correct_contactmethods', 10, 1 );
 function tst_correct_contactmethods($contactmethods) {
 	
-	//var_dump($contactmethods);
 	if(isset($contactmethods['aim']))
 		unset($contactmethods['aim']);
 	
@@ -445,8 +436,7 @@ function tst_get_member_url($member = null) {
 	
 	if( !$member )
 		$member = $tst_member;
-//    echo '<pre>' . print_r($member, 1) . '</pre>';
-	$url = home_url('/members/'.$member->user_login);
+		$url = home_url('/members/'.$member->user_login);
 	
 	return $url;
 }
@@ -475,7 +465,6 @@ function tst_get_member_field($field, $member = null){
 		return '';
 	
 	$value = '';
-	//var_dump();
 	switch($field) {
 		case 'user_bio':
             $value = get_user_meta($member->ID, 'description', true);
@@ -708,7 +697,6 @@ function tst_get_user_rating($user) {
         $user = get_user_by('login', $user);
     }
     
-#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
 
     return $user ? count(tst_get_user_closed_tasks($user)) : 0;
 }
@@ -750,7 +738,6 @@ function tst_get_user_created_tasks($user, $status = array()) {
     }
 	
     $user = $user ? $user->ID : $user;
-#    $user = (int)$user <= 0 ? get_user_by('login', $user)->ID : $user;
 
     if( !$status )
         $status = array('publish', 'in_work', 'closed',);
@@ -783,7 +770,6 @@ function tst_get_user_working_tasks($user, $status = array()) {
         $user = get_user_by('login', $user);
     }
 
-#    $user = (int)$user <= 0 ? get_user_by('login', $user) : get_user_by('id', $user);
 	
     if( !$status )
         $status = array('publish', 'in_work', 'closed');

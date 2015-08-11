@@ -355,8 +355,6 @@ class Tst_Task_Submitbox {
         if ( (int) $tab_index > 0 )
             $tab_index_attribute = " tabindex=\"$tab_index\"";
 
-        // echo '<label for="timestamp" style="display: block;"><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp"'.$tab_index_attribute.' /> '.__( 'Edit timestamp' ).'</label><br />';
-
         $init_string = date('Y', current_time('timestamp'));
         $time_adj = strtotime($init_string.'-01-01');
 
@@ -432,7 +430,6 @@ class Tst_Task_Submitbox {
             $month .= "\t\t\t" . '<option value="' . $monthnum . '"';
             if ( $i == $mm )
                 $month .= ' selected="selected"';
-            //$month .= '>' . $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) . "</option>\n";
             $month .= '>' . sprintf( __( '%1$s-%2$s' ), $monthnum, $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
         }
         $month .= '</select>';
@@ -769,16 +766,10 @@ function itv_all_tasks_log_box_content() {
 	echo "<br />".paginate_links( $pn_args );
 }
 
-// function itv_add_all_tasks_activity_log_box() {
-// 	add_meta_box( 'itv_all_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
-// }
-// add_action( 'add_meta_boxes', 'itv_add_all_tasks_activity_log_box' );
-
 
 #	add tasks log page in admin panel
 add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
 function register_itv_tasks_log_submenu_page() {
-#	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 	add_submenu_page( 'tools.php', __('Itv General Log', 'tst'), __('Itv General Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 }
 

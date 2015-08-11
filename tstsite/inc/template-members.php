@@ -114,7 +114,7 @@ function tst_members_paging($page_query, $user_query, $echo = true){
 	
 	// Calculate total pages:
 	$per_page = get_option('posts_per_page');
-	$users_count = $user_query->get_total(); //tst_get_active_members_count();
+	$users_count = $user_query->get_total(); 
 	$total_pages = ceil($users_count/$per_page); //do we need any particular part?
     
 	$filter_args = array();

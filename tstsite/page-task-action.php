@@ -36,7 +36,6 @@ if( !empty($_GET['task']) ){
 			'task_title' => $task->post_title,
 			'task_descr' => $task->post_content,
 			'task_status' => $task->post_status,
-			// 'field_533bebda0fe8d' - it's unreliable and bad practice use real meta_key instead
 			'expecting' => get_field('field_533bebda0fe8d', $task->ID),
 			'about_reward' => get_field('field_533bec930fe8e', $task->ID),
 			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
@@ -48,11 +47,6 @@ if( !empty($_GET['task']) ){
 } else {
     $task_data = array(
         'task_status' => 'draft',
-//        'expecting' => get_field('field_533bebda0fe8d', $task->ID),
-//        'about_reward' => get_field('field_533bec930fe8e', $task->ID),
-//        'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
-//        'deadline' => get_field('field_533bef200fe90', $task->ID),
-//        'reward_id' => get_field('field_533bef600fe91', $task->ID),
     );
 }
 
@@ -144,11 +138,6 @@ get_header();?>
             <div id="expecting-vm" class="validation-message" style="display: none;"></div>
 		</div>
 
-<!--		<div class="form-group">-->
-<!--			<label for="about-reward">--><?php //_e('A couple of words about a reward for completing the task', 'tst');?><!--</label>-->
-<!--			<textarea id="about-reward" class="form-control" rows="6">--><?php //echo empty($task_data['about_reward']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_reward'], ENT_QUOTES));?><!--</textarea>-->
-<!--            <div id="about-reward-vm" class="validation-message" style="display: none;"></div>-->
-<!--		</div>-->
 
 		<div class="form-group">
 			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
@@ -223,7 +212,6 @@ get_header();?>
             } else {
                 $publish_text = __('Refresh', 'tst');
                 $new_status = $task->post_status;
-//                $save_text = 'Сохранить как черновик';
             }?>
 
 			<input type="submit" class="task-submit btn btn-success btn-lg widefat" value="<?php echo $publish_text;?>" id="task-publish" name="task-publish" />
@@ -258,7 +246,7 @@ get_header();?>
 				
 				<div class="col-md-6">
 				<?php if($new_task) {?>
-                    <!--<input type="submit" class="task-submit btn btn-default btn-sm widefat" value="<?php _e('Reset', 'tst');?>" id="task-cancel" name="task-cancel" onclick="history.back(); return false;" />-->&nbsp;
+                   &nbsp;
                 <?php } else {?>
                     <input type="submit" class="task-submit btn btn-default btn-sm widefat btn-delete" value="<?php _e('Delete the task', 'tst');?>" id="task-delete" name="task-delete" />
                 <?php }?>	

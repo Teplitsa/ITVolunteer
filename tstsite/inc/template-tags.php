@@ -237,8 +237,6 @@ function tst_content_nav( $nav_id, $query = null ) {
 		
 	<div class="nextprev">
 		<?php
-			//previous_post_link( '<span class="nav-previous">%link</span>', __('&laquo; prev.', 'tst') );
-			//next_post_link('<span class="nav-next">%link</span>', __('next. &raquo;', 'tst') );
 			$back = home_url('tasks');
 		?>
 		<span class="nav-link"><a href="<?php echo $back;?>">&laquo; <?php _e('Back to tasks list', 'tst');?></a></span>
@@ -279,9 +277,7 @@ function frl_paginate_links($query = null, $echo = true) {
     
 	if(!$query)
 		$query = $wp_query;
-	
-    //var_dump($wp_query);
-	$remove = array(
+		$remove = array(
 		's'		
 	);
 	

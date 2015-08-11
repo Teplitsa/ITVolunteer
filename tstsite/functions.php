@@ -48,7 +48,7 @@ function tst_setup() {
 	global $email_templates;
 	include(get_template_directory().'/inc/email-templates.php');	
 
-	//add_theme_support( 'automatic-feed-links' );
+
 
 	/**
 	 * Images
@@ -57,8 +57,7 @@ function tst_setup() {
 	
 	/* image sizes */
 	set_post_thumbnail_size(390, 244, true ); // regular thumbnails
-	add_image_size('logo', 220, 140, true ); // logo thumbnail 
-	//add_image_size('poster', 220, 295, true ); // poster in widget	
+	add_image_size('logo', 220, 140, true ); // logo thumbnail
 	add_image_size('embed', 640, 400, true ); // fixed size for embending
 	add_image_size('long', 640, 280, true ); // long thumbnail for pages
 	add_image_size('avatar', 180, 180, array( 'center', 'center' ) );
@@ -157,12 +156,10 @@ add_action('wp_enqueue_scripts', function(){
     $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
-   // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
     wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
 	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
 	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
     wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
-	//wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), $version);
 
 
     wp_enqueue_script('jquery-ui-datepicker');
@@ -172,8 +169,7 @@ add_action('wp_enqueue_scripts', function(){
     wp_enqueue_script('jquery-ui-tabs');
     wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
-	//wp_enqueue_script('jquery-masonry');
-    wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
+	wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
 	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
     wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
 

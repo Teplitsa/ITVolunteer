@@ -18,7 +18,6 @@ get_header(); ?>
 		</div>
 		
 		<div class="col-md-10">
-			<?php //get_template_part( 'tasks', 'filter'); ?>
 			<?php tst_tasks_filters_menu();?>			
 		</div><!-- col-md-4 -->
 	</div>

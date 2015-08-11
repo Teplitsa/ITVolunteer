@@ -21,7 +21,6 @@ add_action('post_updated', function($id, WP_Post $after_update, WP_Post $pre_upd
             'post_date' => $pre_update->post_date,
         ), array('ID' => $id,));
     }
-//        wp_update_post(array('ID' => $id, 'post_author' => $pre_update->post_author)); // Infinite loop danger
 }, 10, 3);
 
 add_filter('wp_mail_from_name', function($original_email_from){
@@ -79,27 +78,14 @@ add_action('init', 'tst_custom_task_status');
 // Let common users (subscriber role) to edit their tasks:
 add_action('init', function(){
 
-//    $role = get_role('subscriber');
-//    if( !empty($role->capabilities['edit_tasks']) )
-//        return;
-//
-//    $role->add_cap('edit_task');
-//    $role->add_cap('edit_tasks');
-//    $role->add_cap('publish_own_tasks');
+
 });
 
-//add_filter('tasks_available_statuses', function($status_list){
-//    $status_list['publish']->label = __('Opened', 'tst');
-//
-//    unset($status_list['future'], $status_list['pending'], $status_list['private'], $status_list['auto-draft'], $status_list['inherit'], $status_list['']);
-//
-//    return $status_list;
-//});
+
 
 
 
 if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
-//    wp_clear_scheduled_hook('tst_deadline_reminder_hook'); // For debug
     wp_schedule_event(time(), 'daily', 'tst_deadline_reminder_hook');
 }
 
@@ -422,7 +408,6 @@ function ajax_approve_candidate() {
         )));
     }
 
-//    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'closed'));
     p2p_update_meta($_POST['link-id'], 'is_approved', true);
 
     // Send email to the task doer:
@@ -562,9 +547,6 @@ function ajax_add_candidate() {
 	
     // Send email to the task doer:
     global $email_templates;
-//    add_filter('wp_mail_content_type', function(){
-//        return 'text/html';
-//    });
 
     wp_mail(
         $task_author->user_email,
@@ -764,9 +746,6 @@ function ajax_login() {
 add_action('wp_ajax_login', 'ajax_login');
 add_action('wp_ajax_nopriv_login', 'ajax_login');
 
-//add_filter('login_errors', function($message){
-//    return str_replace( sprintf(__('<strong>ERROR</strong>: Invalid username. <a href="%s" title="Password Lost and Found">Lost your password</a>?'), site_url('wp-login.php?action=lostpassword', 'login')), 'Your message here.', $message );
-//});
 
 /** Register a new user */
 function ajax_user_register() {
@@ -816,9 +795,6 @@ function ajax_user_register() {
 
             
             global $email_templates;
-//            add_filter('wp_mail_content_type', function(){
-//                return 'text/html';
-//            });
 
             wp_mail(
                 $_POST['email'],
@@ -961,10 +937,7 @@ function ajax_add_message() {
             'message' => __('Your message has been sent! Thanks a lot :)', 'tst'),
         )));
     } else {
-//        wp_die(json_encode(array(
-//            'status' => 'fail',
-//            'message' => __('<strong>Error:</strong> message not processed.', 'tst'),
-//        )));
+
     }
 }
 add_action('wp_ajax_add-message', 'ajax_add_message');
@@ -973,27 +946,7 @@ add_action('wp_ajax_nopriv_add-message', 'ajax_add_message');
 add_filter('retrieve_password_message', function($message, $key){
 
     return nl2br(str_replace(array('>', '<'), array('', ''), $message));
-//
-//    global $email_templates;
-//
-//    if(empty($_POST['user_login']))
-//        return $message;
-//    elseif(strpos($_POST['user_login'], '@')) {
-//
-//        $user_data = get_user_by('email', trim($_POST['user_login']));
-//        if( !$user_data )
-//            return $message;
-//        else
-//            $_POST['user_login'] = $user_data->user_login;
-//
-//    } else
-//        $_POST['user_login'] = trim($_POST['user_login']);
-//
-//    return nl2br(sprintf(
-//        $email_templates['password_reset_notice']['text'],
-//        $_POST['user_login'],
-//        home_url("wp-login.php?action=rp&key=$key&login=".rawurlencode($_POST['user_login']))
-//    ));
+
 });
 
 

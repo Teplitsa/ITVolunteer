@@ -26,12 +26,3 @@ function itv_notification_bar_screen(){
 	return "<div class='alert alert-info alert-dismissible' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='{$label}'><span aria-hidden='true'>&times;</span></button>{$content}</div>";	
 }
 
-
-//demo
-//add_filter('itv_notification_bar_content', function($out){
-//	return '<p>test message <a href="" class="alert-link">link</a></p>';
-//});
-//
-//add_filter('itv_notification_badge_content', function($out){
-//	return '!';
-//});

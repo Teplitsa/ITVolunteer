@@ -120,7 +120,6 @@ function tst_wp_title( $title, $sep ) {
 
 
 /* menu filter sceleton */
-//add_filter('wp_nav_menu_objects', 'frl_clear_menu_item_classes', 2, 2);
 function frl_clear_menu_item_classes($items, $args){		
 	global $sections;
 	
