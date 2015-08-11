@@ -124,9 +124,8 @@ function frl_clear_menu_item_classes($items, $args){
 	global $sections;
 	
 	if(empty($items))
-		return;	
-	
-	$tops = array(); 
+		return;
+
 	if($args->theme_location == 'primary' && empty($sections['labels'])){
 		foreach($items as $index => $menu_item){
 			//clear mess - remove everythind except any current mark

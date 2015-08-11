@@ -87,7 +87,7 @@ function tst_get_active_members_count() {
 
 /** members paging **/
 function tst_members_paging($page_query, $user_query, $echo = true){
-	global $wp_rewrite, $wp_query;
+	global $wp_query;
     
 	if(!$page_query)
 		$page_query = $wp_query;
