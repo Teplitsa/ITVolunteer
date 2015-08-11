@@ -45,15 +45,7 @@ class ItvSiteStats {
 					
 			foreach($user_query->results as $user) {
 				$is_count = true;
-// 				$is_count = false;
-// 				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
-// 					foreach ( $user->roles as $role ) {
-// 						if($role == 'author') {
-// 							$is_count = true;
-// 						}
-// 					}
-// 				}
-						
+										
 				if($is_count) {
 					
 					tst_update_member_stat($user);

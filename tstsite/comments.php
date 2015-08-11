@@ -1,6 +1,4 @@
 <?php
-//if (!is_user_logged_in())
-//	return;
 ?>
 
 <div id="comments" class="comments-area">

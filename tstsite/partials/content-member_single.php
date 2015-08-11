@@ -9,8 +9,6 @@ if(isset($_GET['update']) && $_GET['update']) {
 	tst_update_member_stat($tst_member);
 }
 
-
-//var_dump($tst_member->user_login);
 $user_login = get_query_var('membername');
 $activity = tst_get_member_activity($tst_member);
 

@@ -78,7 +78,7 @@ get_header(); ?>
                     <?php $tags = wp_get_post_terms(get_the_ID(), 'post_tag');
                     foreach($tags as $tag) {?>
                         <a href="<?php echo home_url('/tag/'.$tag->slug);?>"><?php echo $tag->name;?></a>
-                    <?php } //echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="tags">', ' ', '</div>'); ?>
+                    <?php }  ?>
                 </div>
 			</div>
 

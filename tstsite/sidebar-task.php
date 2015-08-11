@@ -40,7 +40,6 @@ if( !$cur_user_id ) {?>
         <form id="task-publish">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
             <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-publish-by-author');?>" />
-    <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             <div id="task-message"></div>
         </form>
     </div>
@@ -57,7 +56,6 @@ if( !$cur_user_id ) {?>
         <form id="task-unpublish">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
             <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-unpublish-by-author');?>" />
-            <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             <div id="task-message"></div>
         </form>
     </div>
@@ -72,7 +70,6 @@ if( !$cur_user_id ) {?>
         <form id="task-send-to-work-form">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
             <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-send-to-work');?>" />
-            <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             <div id="task-message"></div>
         </form>
         <div class="connected-users">
@@ -97,13 +94,11 @@ if( !$cur_user_id ) {?>
         <form id="task-close">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
             <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-close-by-author');?>" />
-            <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             <div id="task-message"></div>
         </form>
         <form id="task-publish">
             <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
             <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-publish-by-author');?>" />
-            <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             <div id="task-message"></div>
         </form>
         <div class="connected-users">
@@ -131,7 +126,6 @@ if( !$cur_user_id ) {?>
     <form id="task-send-to-work-form">
         <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
         <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-send-to-work');?>" />
-        <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
         <div id="task-message"></div>
     </form>
     
@@ -184,7 +178,6 @@ if( !$cur_user_id ) {?>
             <div class="form-group">
                 <input type="reset" id="cancel-sending-message" value="<?php _e('Cancel', 'tst');?>" class="btn btn-default btn-sm"/>
                 <input type="submit" value="<?php _e('Send', 'tst');?>" class="btn btn-success btn-sm"/>
-                <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             </div>
             <div id="task-message"></div>
         </form>
@@ -224,7 +217,6 @@ if( !$cur_user_id ) {?>
             <div class="form-group">
                 <input type="reset" id="cancel-sending-message" value="<?php _e('Cancel', 'tst');?>" class="btn btn-default btn-sm"/>
                 <input type="submit" value="<?php _e('Send', 'tst');?>" class="btn btn-success btn-sm"/>
-                <!--        <img id="ajax-loading" src="--><?php //echo site_url('/');?><!--" />-->
             </div>
             <div id="task-message"></div>
         </form>

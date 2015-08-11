@@ -23,7 +23,6 @@ if($task_id) {
 global $wpdb;
 $query = new WP_Query($query_params);
 
-#$wpdb->query("TRUNCATE str_tasks_report");
 $itv_log = ItvLog::instance();
 
 while($query->have_posts()) {
@@ -104,11 +103,8 @@ while($query->have_posts()) {
 					$views
 			)
 	);
-	#echo $wpdb->last_query . "<br />";
 	echo $wpdb->last_error . "<br />";
 	
-	#echo 'candidates_number=' . get_post_meta(get_the_ID(), 'candidates_number', true) . "<br />";
-	#echo 'status_order=' . get_post_meta(get_the_ID(), 'status_order', true) . "<br />";
 }
 
 ?>
