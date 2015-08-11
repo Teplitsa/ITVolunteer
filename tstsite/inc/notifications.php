@@ -1,25 +1,25 @@
 <?php
 /**
- * Notifications on ITV
- **/
+	 * Notifications on ITV
+	 **/
 
 /** Notification about KMS **/
 add_filter('itv_notification_badge', 'itv_notification_badge_screen');
-function itv_notification_badge_screen(){
+function itv_notification_badge_screen() {
 	
 	$content = apply_filters('itv_notification_badge_content', '');
 	
-	if(empty($content))
+	if (empty($content))
 		return '';
 	
 	return "<span class='badge'>{$content}</span>";	
 }
 
 add_filter('itv_notification_bar', 'itv_notification_bar_screen');
-function itv_notification_bar_screen(){
+function itv_notification_bar_screen() {
 	
 	$content = apply_filters('itv_notification_bar_content', '');
-	if(empty($content))
+	if (empty($content))
 		return '';
 	
 	$label = __('Close', 'itv');	

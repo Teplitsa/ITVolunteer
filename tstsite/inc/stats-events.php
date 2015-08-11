@@ -18,30 +18,30 @@ function tst_detect_page_type($type = null) {
 		'default'      => 'Неизвестный тип страницы'
 	);
 	
-	if(!$type){
+	if (!$type) {
 		
-		if(is_front_page()){
+		if (is_front_page()) {
 			$type = 'home';
 		}
-		elseif(is_singular('tasks')) {
+		elseif (is_singular('tasks')) {
 			$type = 'task_page';
 		}
-		elseif(is_page('registration')) {
+		elseif (is_page('registration')) {
 			$type = 'red';
 		}
-		elseif(is_page()) {
+		elseif (is_page()) {
 			$type = 'page';
 		}
-		elseif(is_single()) {
+		elseif (is_single()) {
 			$type = 'post';
 		}
-		elseif(is_home()) {
+		elseif (is_home()) {
 			$type = 'news';
 		}
-		elseif(is_tag()) {
+		elseif (is_tag()) {
 			$type = 'tag';
 		}
-		elseif(is_post_type_archive('tasks')){
+		elseif (is_post_type_archive('tasks')) {
 			$type = 'tasks_list';
 		}
 		else {
@@ -55,7 +55,7 @@ function tst_detect_page_type($type = null) {
 
 
 //prepare data for JS
-add_action('wp_enqueue_scripts', function(){
+add_action('wp_enqueue_scripts', function() {
 	
 $events_data = array();
 

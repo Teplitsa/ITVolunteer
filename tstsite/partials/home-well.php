@@ -5,8 +5,9 @@ global $post;
 $ga_label = 'Главная';
 
 $video = get_post_meta($post->ID, 'video', true);
-if(empty($video))
+if(empty($video)) {
 	$video = '#';
+}
 
 //print modal	
 add_action('wp_footer', function(){

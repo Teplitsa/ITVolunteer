@@ -13,8 +13,8 @@ get_header(); ?>
 
 	<div class="row">
 		<div class="col-md-12">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>
+			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs(); ?></nav>
+			<h1 class="page-title"><?php echo frl_page_title(); ?></h1>
 		</div>
 		
 	</div>
@@ -33,8 +33,8 @@ get_header(); ?>
 			
 
 			<div class="page-content">
-				<p><?php  _e("We're sorry, but there is no such page on our website.", "tst");?></p>
-				<p><?php _e('Let\'s try to find an information you needed', 'tst');?></p>
+				<p><?php  _e("We're sorry, but there is no such page on our website.", "tst"); ?></p>
+				<p><?php _e('Let\'s try to find an information you needed', 'tst'); ?></p>
 
 				<div class="search-holder"><?php get_search_form(); ?></div>
 

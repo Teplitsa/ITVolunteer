@@ -10,8 +10,7 @@ function ajax_delete_user_company_logo() {
 			'status' => 'error',
 			'message' => 'restricted method',
 		);
-	}
-	else {
+	} else {
 		$image_id = get_user_meta($member->ID, 'user_company_logo', true);
 		if( $image_id ) {
 			wp_delete_attachment( $image_id, true );
@@ -46,8 +45,7 @@ function ajax_upload_user_company_logo() {
 			'status' => 'error',
 			'message' => 'restricted method',
 		);
-	}
-	else {
+	} else {
 		$image_id = media_handle_upload( 'user_company_logo', 0 );
 		if( $image_id ) {
 			update_user_meta($member->ID, 'user_company_logo', $image_id);
@@ -93,8 +91,7 @@ function ajax_delete_user_avatar() {
 				'status' => 'error',
 				'message' => 'restricted method',
 		);
-	}
-	else {
+	} else {
 		$image_id = get_user_meta($member->ID, 'user_avatar', true);
 		if( $image_id ) {
 			wp_delete_attachment( $image_id, true );
@@ -129,8 +126,7 @@ function ajax_upload_user_avatar() {
 				'status' => 'error',
 				'message' => 'restricted method',
 		);
-	}
-	else {
+	} else {
 		$image_id = media_handle_upload( 'user_avatar', 0 );
 		$attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
 		wp_update_attachment_metadata( $image_id,  $attach_data );

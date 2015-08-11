@@ -1,7 +1,7 @@
 <?php
 /**
- * Homepage elements
- **/
+	 * Homepage elements
+	 **/
 
 /**
  * 3W blocks
@@ -11,23 +11,23 @@ function la_banner_format_home_textblock(WP_Query $query, $format_args) {
 	global $post;
 	
 	//check for plugin
-	if(!class_exists('La_Banner_Core'))
+	if (!class_exists('La_Banner_Core'))
 		return '';		
 	
 	ob_start();
 	
 	$counter = 1;
 		
-	while($query->have_posts()): $query->the_post();
+	while ($query->have_posts()): $query->the_post();
 		$url = esc_url($post->post_excerpt);
 		
 ?>
-		<div class="<?php echo esc_attr($format_args);?>">
-		<article class="home-block block-<?php echo $counter;?>">			
+		<div class="<?php echo esc_attr($format_args); ?>">
+		<article class="home-block block-<?php echo $counter; ?>">			
 			
-			<h3><?php the_title();?></h3>
+			<h3><?php the_title(); ?></h3>
 			<div class="block-content">
-				<?php the_content();?>
+				<?php the_content(); ?>
 				<div class="more-link"><a href="<?php echo $url?>" class="">Подробнее &raquo;</a></div>
 			</div>
 			
@@ -37,9 +37,9 @@ function la_banner_format_home_textblock(WP_Query $query, $format_args) {
     
 	
 <?php     
-    $out = ob_get_contents();
-    ob_end_clean();
-    return $out;
+	$out = ob_get_contents();
+	ob_end_clean();
+	return $out;
 }
 
 
@@ -48,24 +48,23 @@ function la_banner_format_home_textblock(WP_Query $query, $format_args) {
  **/
 
 add_shortcode('tst_home_callout', 'tst_home_callout_screen');
-function tst_home_callout_screen($atts, $content = null){
+function tst_home_callout_screen($atts, $content = null) {
 		
 	extract(shortcode_atts(array(
 		'button_link' => false,
 		'button_text' => __('Participate', 'tst'),		
-	), $atts, 'tst_home_callout' ));
+	), $atts, 'tst_home_callout'));
 	
-	if(empty($content))
+	if (empty($content))
 		return '';
 	
 	$content = apply_filters('frl_the_content', $content);
 	$out = '<div class="callout-wrap"><div class="frame">';
 	
-	if($button_link){
+	if ($button_link) {
 		$out .= '<div class="bit-10">'.$content.'</div>';
 		$out .= '<div class="bit-2"><a class="call btn" href="'.esc_url($button_link).'">'.$button_text.'</a></div>';
-	}
-	else {
+	} else {
 		$out = '<div class="bit-12">'.$content.'</div>';
 	}
 	
@@ -83,7 +82,7 @@ function tst_home_callout_screen($atts, $content = null){
  */
 
 add_filter('body_class', 'tst_body_classes');
-function tst_body_classes( $classes ) {
+function tst_body_classes($classes) {
 	
 
 	return $classes;
@@ -96,43 +95,43 @@ function tst_body_classes( $classes ) {
  * remove filter when Yoas SEO is active
  */
 
-add_filter( 'wp_title', 'tst_wp_title', 10, 2 );
-function tst_wp_title( $title, $sep ) {
+add_filter('wp_title', 'tst_wp_title', 10, 2);
+function tst_wp_title($title, $sep) {
 	global $page, $paged;
 
-	if ( is_feed() )
+	if (is_feed())
 		return $title;
 
 	// Add the blog name
-	$title .= get_bloginfo( 'name' );
+	$title .= get_bloginfo('name');
 
 	// Add the blog description for the home/front page.
-	$site_description = get_bloginfo( 'description', 'display' );
-	if ( $site_description && ( is_home() || is_front_page() ) )
+	$site_description = get_bloginfo('description', 'display');
+	if ($site_description && (is_home() || is_front_page()))
 		$title .= " $sep $site_description";
 
 	// Add a page number if necessary:
-	if ( $paged >= 2 || $page >= 2 )
-		$title .= " $sep " . sprintf('Стр. %s', max( $paged, $page ) );
+	if ($paged >= 2 || $page >= 2)
+		$title .= " $sep ".sprintf('Стр. %s', max($paged, $page));
 
 	return $title;
 }
 
 
 /* menu filter sceleton */
-function frl_clear_menu_item_classes($items, $args){		
+function frl_clear_menu_item_classes($items, $args) {		
 	global $sections;
 	
-	if(empty($items))
+	if (empty($items))
 		return;
 
-	if($args->theme_location == 'primary' && empty($sections['labels'])){
-		foreach($items as $index => $menu_item){
+	if ($args->theme_location == 'primary' && empty($sections['labels'])) {
+		foreach ($items as $index => $menu_item) {
 			//clear mess - remove everythind except any current mark
 			
-			if(!empty($menu_item->classes)){
+			if (!empty($menu_item->classes)) {
 				
-				foreach($menu_item->classes as $i => $iclass){
+				foreach ($menu_item->classes as $i => $iclass) {
 					
 					
 				}
@@ -152,13 +151,13 @@ function frl_clear_menu_item_classes($items, $args){
  * Thumbnails &metas  filters sceletons
  **/
 add_filter('lpg_thumbnail_size', 'tst_lpg_thumbnail_size');
-function tst_lpg_thumbnail_size($size){
+function tst_lpg_thumbnail_size($size) {
 	
 	return 'post-thumbnail'; 
 }
 
 add_filter('la_rpw_thumbnail_size', 'tst_la_rpw_thumbnail_size', 2, 3);
-function tst_la_rpw_thumbnail_size($size,  $post, $instance){
+function tst_la_rpw_thumbnail_size($size, $post, $instance) {
 	
 	
 	return $size; 
@@ -167,7 +166,7 @@ function tst_la_rpw_thumbnail_size($size,  $post, $instance){
 add_filter('la_rpw_post_meta', 'tst_la_rpw_post_meta', 2, 2);
 function tst_la_rpw_post_meta($meta, $post) {
 	
-	if(!empty($meta)){
+	if (!empty($meta)) {
 		$meta = tst_related_item_meta($post);
 	}
 	
@@ -175,7 +174,7 @@ function tst_la_rpw_post_meta($meta, $post) {
 }
 
 add_filter('la_rs_search_item_meta', 'tst_search_meta', 2, 2);
-function tst_search_meta($meta, $post){
+function tst_search_meta($meta, $post) {
 	
 	return $meta;
 	
@@ -183,7 +182,7 @@ function tst_search_meta($meta, $post){
 
 
 
-if ( ! function_exists( 'tst_posted_on' ) ) :
+if (!function_exists('tst_posted_on')) :
 /**
  * Prints HTML with meta information for the current post-date/time and author.
  */
@@ -192,7 +191,7 @@ function tst_posted_on() {
 	
 	$pt = get_post_type();
 	
-	if('event' == $pt){
+	if ('event' == $pt) {
 		tst_event_undertitle_meta();
 		return;
 	}
@@ -205,10 +204,10 @@ function tst_posted_on() {
 	
 	$sep = frl_get_sep();
 	
-	if(!empty($cat))
+	if (!empty($cat))
 		$cat = ' '.$sep.' '.$cat;
 ?>	
-	<time class="entry-date" datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html( get_the_date() );?></time>
+	<time class="entry-date" datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time>
 	<?php echo $cat;
 
 }
@@ -217,16 +216,16 @@ endif;
 
 
 
-function frl_dynamic_copyright($start_year, $name){
+function frl_dynamic_copyright($start_year, $name) {
 	
 	$start = intval($start_year);
-	if($start == 0 || empty($name))
+	if ($start == 0 || empty($name))
 		return;
 		
 	$end = date('Y', time());
 	$copy = "&copy; $start";
 	
-	if($end != $start)
+	if ($end != $start)
 		$copy .= " - $end";
 	
 	$copy .= ". <strong>".$name."</strong>";
@@ -240,7 +239,7 @@ function frl_dynamic_copyright($start_year, $name){
  **/
 function frl_cycloneslider($slider_id) {
 	
-	if(function_exists('cyclone_slider'))
+	if (function_exists('cyclone_slider'))
 		cyclone_slider($slider_id); 	
 }
 
@@ -257,12 +256,11 @@ function frl_cycloneslider($slider_id) {
 function frl_single_split_content(WP_Post $post) {
 	
 	$parts = array();
-	if(!empty($post->post_excerpt)){
+	if (!empty($post->post_excerpt)) {
 		$parts['intro'] = $post->post_excerpt;
 		$parts['content'] = $post->post_content;
 		
-	}
-	else {
+	} else {
 		$parts['intro'] = frl_trim_2_phrases($post->post_content);
 		$parts['content'] = trim(str_replace($parts['intro'], '', $post->post_content));
 	}
@@ -270,10 +268,10 @@ function frl_single_split_content(WP_Post $post) {
 	return $parts;
 }
 
-function frl_trim_2_phrases($text){
+function frl_trim_2_phrases($text) {
 		
 	$sentences = preg_split('/(?<=[.?!])\s+(?=[a-я])/i', $text);
-	if(empty($sentences) || count($sentences) < 2 )
+	if (empty($sentences) || count($sentences) < 2)
 		return $text;
 	
 	return $sentences[0].' '.$sentences[1];
@@ -287,8 +285,8 @@ function frl_trim_2_phrases($text){
 /**
  * Compatibility with Members plugin to build correct caps list
  **/
-add_filter( 'members_get_capabilities', 'frl_cabalilities_list' );
-function frl_cabalilities_list($caps){
+add_filter('members_get_capabilities', 'frl_cabalilities_list');
+function frl_cabalilities_list($caps) {
 	
 	$cpt_caps = frl_get_default_cpt_capabilities();
 	$ct_caps = frl_get_default_tax_capabilities();
@@ -299,19 +297,19 @@ function frl_cabalilities_list($caps){
 	return array_unique($full);
 }
 
-function frl_get_default_cpt_capabilities(){
+function frl_get_default_cpt_capabilities() {
 		
 	$caps = array();
 	$post_types = get_post_types(array(), 'objects');
 	
-	if(empty($post_types))
+	if (empty($post_types))
 		return;
 	
-	foreach($post_types as $post_type => $post_object){ 
-		if($post_object->capability_type != 'post' && $post_object->capability_type != 'page'){
+	foreach ($post_types as $post_type => $post_object) { 
+		if ($post_object->capability_type != 'post' && $post_object->capability_type != 'page') {
 				
 			
-			if(!empty($post_object->cap)){ foreach($post_object->cap as $cap){
+			if (!empty($post_object->cap)) { foreach ($post_object->cap as $cap) {
 				
 				$caps[] = $cap;
 			}}
@@ -324,18 +322,18 @@ function frl_get_default_cpt_capabilities(){
 }
 	    
     
-function frl_get_default_tax_capabilities(){
+function frl_get_default_tax_capabilities() {
 	
 	
 	$ct_caps = array();
 	$taxes = get_taxonomies(array(), 'objects');
-	if(empty($taxes))
+	if (empty($taxes))
 		return $ct_caps;
 	
-	foreach($taxes as $tax_name => $tax_object){
+	foreach ($taxes as $tax_name => $tax_object) {
 		
 		$tax_cap = $tax_object->cap;
-		if(!empty($tax_cap)){ foreach($tax_cap as $cap) {			
+		if (!empty($tax_cap)) { foreach ($tax_cap as $cap) {			
 			$ct_caps[] = $cap;
 		}}
 	}
@@ -350,15 +348,15 @@ function frl_get_default_tax_capabilities(){
 /**
  * No default thumbnails on pages
  **/
-add_filter( 'dfi_thumbnail_html', 'tst_dfi_on_pages', 2, 3);
+add_filter('dfi_thumbnail_html', 'tst_dfi_on_pages', 2, 3);
 function tst_dfi_on_pages($html, $post_id, $default_thumbnail_id) {
 	
 	$pt = get_post_type($post_id); 
-	if($pt != 'page' && $pt != 'leyka_campaign')
+	if ($pt != 'page' && $pt != 'leyka_campaign')
 		return $html;
 	
 	$thumb_id = get_post_thumbnail_id($post_id); 
-	if($thumb_id == $default_thumbnail_id)
+	if ($thumb_id == $default_thumbnail_id)
 		$html = '';
 	
 	return $html;
@@ -372,32 +370,32 @@ function tst_dfi_on_pages($html, $post_id, $default_thumbnail_id) {
 
 //* attachments shortcodes */
 add_shortcode('frl_better_attachments', 'frl_better_attachments_screen');
-function frl_better_attachments_screen($atts){
+function frl_better_attachments_screen($atts) {
 	global $post;
 	
-	extract(shortcode_atts( array(
+	extract(shortcode_atts(array(
 		'format' => 'download',
 		'num' => -1
-	), $atts ));
+	), $atts));
 	
-	if(!function_exists('wpba_get_attachments'))
+	if (!function_exists('wpba_get_attachments'))
 		return '';
 	
 	$attachments = frl_get_attachments($post->ID, $num);
 	
-	if(empty($attachments))
+	if (empty($attachments))
 		return '';
 	
 	$callback = 'frl_attachments_'.$format;
-	if(is_callable($callback))
+	if (is_callable($callback))
 		$out = call_user_func($callback, $attachments);
 		
 	return "<div class='frl-batts'>{$out}</div>";
 }
 
-function frl_get_attachments($post_id, $num = -1){
+function frl_get_attachments($post_id, $num = -1) {
 	
-	if($num == 0)
+	if ($num == 0)
 		$num = -1;
 	
 	$att = new WP_Query(array(
@@ -410,12 +408,12 @@ function frl_get_attachments($post_id, $num = -1){
 	return $att->posts;
 }
 
-function frl_attachments_image($attachments){
+function frl_attachments_image($attachments) {
 	
 	$list = array();
 	$gid = uniqid();
 	
-	foreach($attachments as $i => $att){
+	foreach ($attachments as $i => $att) {
 		$img = wp_get_attachment_image($att->ID, 'cover');
 		$link = wp_get_attachment_url($att->ID);
 		$title = apply_filters('the_title', $att->post_title);
@@ -439,39 +437,39 @@ function frl_attachments_image($attachments){
  * Custom query shortcode
  **/
 add_shortcode('frl_query', 'frl_query_screen');
-function frl_query_screen($atts){
+function frl_query_screen($atts) {
 	global $wp_query;
 	
-	extract( shortcode_atts( array(
+	extract(shortcode_atts(array(
 		'q' => '',
 		'paging' => 0,
 		'format' => 'content',
 		'css' => ''
-	), $atts ) );
+	), $atts));
 	
 	$q = str_replace('+', '&', $q);
 		
 	//on singlural pages page=2 qv detects paging
-	if(isset($wp_query->query_vars['paged']) && $wp_query->query_vars['paged'] > 0)
+	if (isset($wp_query->query_vars['paged']) && $wp_query->query_vars['paged'] > 0)
 		$q .= "&paged=".$wp_query->query_vars['paged'];
-	elseif(isset($wp_query->query_vars['page']) && $wp_query->query_vars['page'] > 0)
+	elseif (isset($wp_query->query_vars['page']) && $wp_query->query_vars['page'] > 0)
 		$q .= "&page=".$wp_query->query_vars['page']."&paged=".$wp_query->query_vars['page'];
 	
 	
 	
 	$query = new WP_Query($q);
-	if(!$query->have_posts())
+	if (!$query->have_posts())
 		return '';
 	
 	$out = "";
 	
 	ob_start();
 	echo "<div class='query-loop cf'>";
-	while($query->have_posts()): $query->the_post();
+	while ($query->have_posts()): $query->the_post();
 		get_template_part($format);
 	endwhile; wp_reset_postdata();
 	
-	if($paging){
+	if ($paging) {
 		echo "<div class='pagination'>";
 		frl_paginate_links($query);
 		echo "</div>";
@@ -488,39 +486,39 @@ function frl_query_screen($atts){
 
  
 /* Custom conditions */
-function is_about(){
+function is_about() {
 	global $post;
 	
-	if(!is_page())
+	if (!is_page())
 		return false;
 	
-	if(is_page('about'))
+	if (is_page('about'))
 		return true;
 	
 	$parents = get_post_ancestors($post);
 	$test = get_page_by_path('about');
-	if(in_array($test->ID, $parents))
+	if (in_array($test->ID, $parents))
 		return true;
 	
 	return false;
 }
 
-function is_page_branch($slug){
+function is_page_branch($slug) {
 	global $post;
 	
-	if(empty($slug))
+	if (empty($slug))
 		return false;
 	
 		
-	if(!is_page())
+	if (!is_page())
 		return false;
 	
-	if(is_page($slug))
+	if (is_page($slug))
 		return true;
 	
 	$parents = get_post_ancestors($post);
 	$test = get_page_by_path($slug);
-	if(in_array($test->ID, $parents))
+	if (in_array($test->ID, $parents))
 		return true;
 	
 	return false;
@@ -528,13 +526,13 @@ function is_page_branch($slug){
 
 function is_materials() {
 	
-	if(is_post_type_archive('article'))
+	if (is_post_type_archive('article'))
 		return true;
 	
-	if(is_tax('art_cat'))
+	if (is_tax('art_cat'))
 		return true;
 	
-	if(is_singular('article'))
+	if (is_singular('article'))
 		return true;
 	
 	return false;
@@ -544,16 +542,16 @@ function is_tax_branch($slug, $tax) {
 	global $post;
 	
 	$test = get_term_by('slug', $slug, $tax);
-	if(empty($test))
+	if (empty($test))
 		return false;
 	
-	if(is_tax($tax)){
+	if (is_tax($tax)) {
 		$qobj = get_queried_object();
-		if($qobj->term_id == $test->term_id || $qobj->parent == $test->term_id)
+		if ($qobj->term_id == $test->term_id || $qobj->parent == $test->term_id)
 			return true;
 	}
 	
-	if(is_singular() && is_object_in_term($post->ID, $tax, $test->term_id))
+	if (is_singular() && is_object_in_term($post->ID, $tax, $test->term_id))
 		return true;
 	
 	return false;
@@ -561,10 +559,10 @@ function is_tax_branch($slug, $tax) {
 
 function is_news() {
 	
-	if(is_home() || is_category())
+	if (is_home() || is_category())
 		return true;
 	
-	if(is_singular('post'))
+	if (is_singular('post'))
 		return true;
 	
 	return false;
@@ -572,13 +570,13 @@ function is_news() {
 
 function is_events() {
 	
-	if(is_post_type_archive('event'))
+	if (is_post_type_archive('event'))
 		return true;
 	
-	if(is_tax('eventcat'))
+	if (is_tax('eventcat'))
 		return true;
 	
-	if(is_singular('event'))
+	if (is_singular('event'))
 		return true;
 	
 	return false;

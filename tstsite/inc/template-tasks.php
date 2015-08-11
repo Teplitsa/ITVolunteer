@@ -20,8 +20,9 @@ function tst_get_task_status_label($status = false) {
     if( !$status ) {
         global $post;
 
-        if( !$post || $post->post_type != 'tasks')
-            return false;
+        if( !$post || $post->post_type != 'tasks') {
+                    return false;
+        }
 
         $status = $post->post_status;
     }
@@ -33,8 +34,9 @@ function tst_get_task_status_label($status = false) {
 function tst_tast_status_tip(){
 	global $post;
 
-    if( !$post || $post->post_type != 'tasks')
-        return '';
+    if( !$post || $post->post_type != 'tasks') {
+            return '';
+    }
 	
 	$label = array();
     $status = $post->post_status;
@@ -54,8 +56,9 @@ function tst_tast_status_tip(){
 function tst_task_fixed_meta_in_card($task = null){
 	global $post;
 	
-	if( !$task )
-		$task = $post;
+	if( !$task ) {
+			$task = $post;
+	}
     
     $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author)));
    
@@ -75,12 +78,14 @@ function tst_task_fixed_meta_in_card($task = null){
 function tst_get_task_author_link($task = null){
 	global $post;
 	
-	if(!$task)
-		$task = $post;
+	if(!$task) {
+			$task = $post;
+	}
 		
 	$author = get_user_by('id', $task->post_author);
-	if( !$author )
-		return '';
+	if( !$author ) {
+			return '';
+	}
 
 	$name = tst_get_member_name($author);
 	$url = tst_get_member_url($author);
@@ -91,8 +96,9 @@ function tst_get_task_author_link($task = null){
 
 function tst_task_reward_in_card(){	
 	$reward = get_term(get_field('reward', get_the_ID()), 'reward');
-	if(is_wp_error($reward))
-		return;
+	if(is_wp_error($reward)) {
+			return;
+	}
 	
 ?>
 <span class="reward-icon glyphicon glyphicon-star"></span>
@@ -110,17 +116,26 @@ function tst_tasks_filters_menu(){
 	$current = ($wp_query->get('task_status')) ? trim($wp_query->get('task_status')) : '';
 ?>
 <ul class="tasks-filters">
-	<li class="publish<?php if($current == 'publish') echo ' active';?>">
+	<li class="publish<?php if($current == 'publish') {
+	echo ' active';
+}
+?>">
 	<a href="<?php echo tst_tasks_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
 		<?php _e('New tasks:', 'tst')?> <?php echo tst_get_new_tasks_count();?>
 	</a>
 	</li>
-	<li class="in_work<?php if($current == 'in_work') echo ' active';?>">
+	<li class="in_work<?php if($current == 'in_work') {
+	echo ' active';
+}
+?>">
 	<a href="<?php echo tst_tasks_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
 		<?php _e('In work tasks:', 'tst')?> <?php echo tst_get_work_tasks_count();?>
 	</a>
 	</li>
-	<li class="closed<?php if($current == 'closed') echo ' active';?>">
+	<li class="closed<?php if($current == 'closed') {
+	echo ' active';
+}
+?>">
 	<a href="<?php echo tst_tasks_filters_link('closed'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_close');?>>
 		<?php _e('Closed tasks:', 'tst')?> <?php echo tst_get_closed_tasks_count();?>
 	</a>
@@ -132,8 +147,9 @@ function tst_tasks_filters_menu(){
 function tst_tasks_filters_link($status = 'publish') {
 	
 	$statuses = array('publish', 'in_work', 'closed');
-	if(!in_array($status, $statuses))
-		$status = 'publish';
+	if(!in_array($status, $statuses)) {
+			$status = 'publish';
+	}
 		
 	$url = home_url("/tasks/$status/"); //alter for pretty permalink support
 	

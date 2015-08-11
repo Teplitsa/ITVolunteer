@@ -260,8 +260,7 @@ $activity = tst_get_member_activity($tst_member);
 					?>
 						<div class="well well-sm"><?php _e('No tasks created', 'tst');?></div>
 					<?php
-						}
-						else {
+						} else {
 						foreach($tasks_created->posts as $task) {?>
 							<li>
 								<div class="mt-title">
