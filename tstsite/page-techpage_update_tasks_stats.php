@@ -9,7 +9,7 @@ $query_params = array(
 	'nopaging' => true,
 );
 
-$task_id = @$_GET['task_id'];
+$task_id = isset($_GET['task_id']) ? $_GET['task_id'] : '';
 
 if($task_id) {
 	$query_params['post__in'] = explode(',', $task_id);
@@ -22,7 +22,8 @@ while($query->have_posts()) {
 	
 	echo "==========" . get_the_ID() . ' --- ' . get_the_title() . "<br />";
 	
-	if(@$_GET['update'] == 'ok') {
+	$update = isset($_GET['update']) ? $_GET['update'] : '';
+	if($update == 'ok') {
 		tst_actualize_task_stats(get_the_ID());
 		echo 'actualized.<br />';
 	}

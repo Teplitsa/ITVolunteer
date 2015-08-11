@@ -241,7 +241,8 @@ add_action('login_enqueue_scripts', function(){
  * Lock Administration Screens for user 
  */
 function wp_admin_block() {
-	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
+	$php_self = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
+	if(strstr($php_self, '/wp-admin/profile.php') === false) {
 		if (!current_user_can('administrator')) { 
 			wp_redirect( home_url() );
 			exit;

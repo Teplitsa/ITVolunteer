@@ -4,7 +4,7 @@
 
 <?php
 
-$offset = @$_GET['offset'] ? @$_GET['offset'] : 0;
+$offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
 
 $query_params = array(
 	'post_type' => 'tasks',
@@ -14,7 +14,7 @@ $query_params = array(
 	'order'   => 'ASC'		
 );
 
-$task_id = @$_GET['task_id'];
+$task_id = isset($_GET['task_id']) ? $_GET['task_id'] : 0;
 
 if($task_id) {
 	$query_params['post__in'] = explode(',', $task_id);

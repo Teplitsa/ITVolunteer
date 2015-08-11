@@ -163,7 +163,7 @@ get_header();?>
 				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
 	
 				<?php foreach(get_terms('reward', array('hide_empty' => false)) as $reward) {?>
-					<option value="<?php echo $reward->term_id;?>" <?php selected($reward->term_id, @$task_data['reward_id']); ?>>
+					<option value="<?php echo $reward->term_id;?>" <?php selected($reward->term_id, isset($task_data['reward_id']) ? $task_data['reward_id'] : ''); ?>>
 						<?php echo $reward->name;?>
 					</option>
 				<?php }?>
