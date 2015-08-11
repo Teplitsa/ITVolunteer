@@ -198,7 +198,7 @@ function ajax_add_edit_task(){
             wp_trash_post($_POST['id']);
             $itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
 
-            wp_wp_die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'deleted',
                 'message' => __('The task was successfully deleted.', 'tst'),
             )));
@@ -243,7 +243,7 @@ function ajax_add_edit_task(){
 			
 		
         if($params['post_status'] == 'draft') {
-            wp_wp_die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'saved',
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
@@ -251,7 +251,7 @@ function ajax_add_edit_task(){
                 'id' => $_POST['id'],
             )));
         } else
-            wp_wp_die(json_encode(array(
+            wp_die(json_encode(array(
                 'status' => 'ok',
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
@@ -262,7 +262,7 @@ function ajax_add_edit_task(){
 
     } else {
 
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => empty($params['ID']) ?
                 __('<strong>Error:</strong> something occured due to the task addition.', 'tst') :
@@ -283,7 +283,7 @@ function ajax_publish_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-publish-by-author')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -296,7 +296,7 @@ function ajax_publish_task() {
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
     
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
         'permalink' => get_permalink($_POST['task-id'])
     )));
@@ -314,7 +314,7 @@ function ajax_unpublish_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-unpublish-by-author')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -327,7 +327,7 @@ function ajax_unpublish_task() {
 	
     ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
     
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -344,7 +344,7 @@ function ajax_task_to_work() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-send-to-work')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -362,7 +362,7 @@ function ajax_task_to_work() {
 	
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_INWORK, get_current_user_id());
 
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -379,7 +379,7 @@ function ajax_close_task() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-close-by-author')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -397,7 +397,7 @@ function ajax_close_task() {
 		do_action('update_member_stats', $users);
 	}	
 
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -416,7 +416,7 @@ function ajax_approve_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-ok-'.$_POST['doer-id'])
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -470,7 +470,7 @@ function ajax_approve_candidate() {
     // Task is automatically switched "to work":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
 
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -489,7 +489,7 @@ function ajax_refuse_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-refuse-'.$_POST['doer-id'])
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -521,7 +521,7 @@ function ajax_refuse_candidate() {
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
 	
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -538,7 +538,7 @@ function ajax_add_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -578,7 +578,7 @@ function ajax_add_candidate() {
         ))
     );
 
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
 		'users' => array($task_author, $task_doer_id)
     )));
@@ -596,7 +596,7 @@ function ajax_remove_candidate() {
         || empty($_POST['nonce'])
         || !wp_verify_nonce($_POST['nonce'], 'task-remove-candidate')
     ) {
-        wp_wp_die(json_encode(array(
+        wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
@@ -632,7 +632,7 @@ function ajax_remove_candidate() {
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
 	
-    wp_wp_die(json_encode(array(
+    wp_die(json_encode(array(
         'status' => 'ok',
     )));
 }
@@ -650,7 +650,7 @@ function ajax_leave_review() {
 			|| empty($_POST['nonce'])
 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
 	) {
-		wp_wp_die(json_encode(array(
+		wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
 		)));
@@ -662,14 +662,14 @@ function ajax_leave_review() {
 	$author_id = get_current_user_id();
 
 	if(!$task) {
-		wp_wp_die(json_encode(array(
+		wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> task not found.', 'tst'),
 		)));
 	}
 	
 	if($author_id != $task->post_author) {
-		wp_wp_die(json_encode(array(
+		wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
 		)));
@@ -687,7 +687,7 @@ function ajax_leave_review() {
 	}
 	
 	if(!$task_doer) {
-		wp_wp_die(json_encode(array(
+		wp_die(json_encode(array(
 				'status' => 'fail',
 				'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
 		)));
@@ -1052,12 +1052,14 @@ function tst_send_admin_notif_new_task($post_id) {
 }
 
 function tst_send_admin_notif_task_complete($post_id) {
-	global $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_EMAIL_FROM;
+	$email_from = ItvStaffEmailNotif::$ITV_EMAIL_FROM;
+	$task_complete_notif_emails = ItvStaffEmailNotif::$ITV_TASK_COMLETE_NOTIF_EMAILS;
+	
 	$task = get_post($post_id);
 
-	if($task && count($ITV_TASK_COMLETE_NOTIF_EMAILS) > 0) {
-		$to = $ITV_TASK_COMLETE_NOTIF_EMAILS[0];
-		$other_emails = array_slice($ITV_TASK_COMLETE_NOTIF_EMAILS, 1);
+	if($task && count($task_complete_notif_emails) > 0) {
+		$to = $task_complete_notif_emails[0];
+		$other_emails = array_slice($task_complete_notif_emails, 1);
 		$message = __('itv_email_task_complete_message', 'tst');
 		$data = array(
 				'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
@@ -1072,7 +1074,7 @@ function tst_send_admin_notif_task_complete($post_id) {
 
 		$headers  = 'MIME-Version: 1.0' . "\r\n";
 		$headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+		$headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
 		if(count($other_emails) > 0) {
 			$headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
 		}
@@ -1082,12 +1084,15 @@ function tst_send_admin_notif_task_complete($post_id) {
 
 
 function tst_send_admin_notif_consult_needed($post_id) {
-    global $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM;
+    $consult_emails = ItvStaffEmailNotif::$ITV_CONSULT_EMAILS;
+    
+    $email_from = ItvStaffEmailNotif::$ITV_EMAIL_FROM;
+    
     $task = get_post($post_id);
     
-    if($task && count($ITV_CONSULT_EMAILS) > 0) {
-            $to = $ITV_CONSULT_EMAILS[0];
-            $other_emails = array_slice($ITV_CONSULT_EMAILS, 1);
+    if($task && count($consult_emails) > 0) {
+            $to = $consult_emails[0];
+            $other_emails = array_slice($consult_emails, 1);
             $message = __('itv_email_test_consult_needed_message', 'tst');
             $data = array(
                     '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
@@ -1102,7 +1107,7 @@ function tst_send_admin_notif_consult_needed($post_id) {
             
             $headers  = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_EMAIL_FROM.'>' . "\r\n";
+            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
             if(count($other_emails) > 0) {
                     $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
             }
@@ -1111,7 +1116,8 @@ function tst_send_admin_notif_consult_needed($post_id) {
 }
 
 function tst_send_user_notif_consult_needed($post_id) {
-    global $ITV_CONSULT_EMAIL_FROM, $ITV_CONSULT_EMAILS;
+    $consult_email_from = ItvStaffEmailNotif::$ITV_CONSULT_EMAIL_FROM;
+    $consult_emails = ItvStaffEmailNotif::$ITV_CONSULT_EMAILS;
     
     $task = get_post($post_id);
     $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
@@ -1152,8 +1158,8 @@ function tst_send_user_notif_consult_needed($post_id) {
         
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$ITV_CONSULT_EMAIL_FROM.'>' . "\r\n";
-        $headers .= 'Bcc: ' . implode(', ', $ITV_CONSULT_EMAILS) . "\r\n";
+        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
+        $headers .= 'Bcc: ' . implode(', ', $consult_emails) . "\r\n";
         
         wp_mail($to, $subject, $message, $headers);
     }
