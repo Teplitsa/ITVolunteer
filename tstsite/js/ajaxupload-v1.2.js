@@ -48,7 +48,7 @@
             button.css('position','relative');
             button.setData = function(data) {
                 settings.data = data;
-            }
+            };
 
 
             var form = $('<form style="margin: 0px !important; padding: 0px !important; position: absolute; top: 0px; left: 0px;"' +
