@@ -143,13 +143,8 @@ function tst_tasks_filters_link($status = 'publish') {
 
 /** == Tasks counters == **/
 /* count tasks by statuses */
-global $ITV_TASKS_COUNT_ALL, $ITV_TASKS_COUNT_WORK, $ITV_TASKS_COUNT_NEW;
-$ITV_TASKS_COUNT_ALL = null;
-$ITV_TASKS_COUNT_WORK = null;
-
 function tst_get_new_tasks_count() {
-	global $ITV_TASKS_COUNT_NEW;	
-	if(is_null($ITV_TASKS_COUNT_NEW)) {
+	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_NEW)) {
 		$args = array(
 			'post_type' => 'tasks',
 			'post_status' => 'publish',
@@ -158,14 +153,13 @@ function tst_get_new_tasks_count() {
 			'exclude' => ACCOUNT_DELETED_ID,			
 		);
 		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_NEW = $wp_query->found_posts;
+		ItvSiteStats::$ITV_TASKS_COUNT_NEW = $wp_query->found_posts;
 	}
-	return $ITV_TASKS_COUNT_NEW;
+	return ItvSiteStats::$ITV_TASKS_COUNT_NEW;
 }
 
 function tst_get_all_tasks_count() {
-	global $ITV_TASKS_COUNT_ALL;	
-	if(is_null($ITV_TASKS_COUNT_ALL)) {
+	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_ALL)) {
 		$args = array(
 			'post_type' => 'tasks',
 			'post_status' => array('publish', 'in_work', 'closed'),
@@ -174,14 +168,13 @@ function tst_get_all_tasks_count() {
 			'exclude' => ACCOUNT_DELETED_ID,			
 		);
 		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_ALL = $wp_query->found_posts;
+		ItvSiteStats::$ITV_TASKS_COUNT_ALL = $wp_query->found_posts;
 	}
-	return $ITV_TASKS_COUNT_ALL;
+	return ItvSiteStats::$ITV_TASKS_COUNT_ALL;
 }
 
 function tst_get_work_tasks_count() {
-	global $ITV_TASKS_COUNT_WORK;	
-	if(is_null($ITV_TASKS_COUNT_WORK)) {
+	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_WORK)) {
 		$args = array(
 			'post_type' => 'tasks',
 			'post_status' => 'in_work',
@@ -190,9 +183,9 @@ function tst_get_work_tasks_count() {
 			'exclude' => ACCOUNT_DELETED_ID,
 		);
 		$wp_query = new WP_Query($args);
-		$ITV_TASKS_COUNT_WORK = $wp_query->found_posts;
+		ItvSiteStats::$ITV_TASKS_COUNT_WORK = $wp_query->found_posts;
 	}
-	return $ITV_TASKS_COUNT_WORK;
+	return ItvSiteStats::$ITV_TASKS_COUNT_WORK;
 }
 
 function tst_get_closed_tasks_count() {
