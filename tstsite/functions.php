@@ -42,7 +42,7 @@ function tst_setup() {
 	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
-	include(get_template_directory().'/inc/email-templates.php');	
+	include(get_template_directory().'/inc/itv_email_templates.php');	
 
 
 
@@ -266,7 +266,8 @@ add_action('admin_menu', 'wp_admin_block');
 if(is_admin()) {
     require get_template_directory().'/inc/admin.php';
 }
-require get_template_directory().'/inc/itv_staff_email_notif.php';
+
+require get_template_directory().'/itv_config.php';
 require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-tags.php';
 require get_template_directory().'/inc/extras.php';

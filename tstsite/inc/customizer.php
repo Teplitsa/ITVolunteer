@@ -1004,8 +1004,10 @@ function tst_send_admin_notif_new_task($post_id) {
 }
 
 function tst_send_admin_notif_task_complete($post_id) {
-	$email_from = ItvStaffEmailNotif::$ITV_EMAIL_FROM;
-	$task_complete_notif_emails = ItvStaffEmailNotif::$ITV_TASK_COMLETE_NOTIF_EMAILS;
+	$itv_config = ItvConfig::instance();
+	
+	$email_from = $itv_config->get('EMAIL_FROM');
+	$task_complete_notif_emails = $itv_config->get('TASK_COMLETE_NOTIF_EMAILS');
 	
 	$task = get_post($post_id);
 
@@ -1036,9 +1038,10 @@ function tst_send_admin_notif_task_complete($post_id) {
 
 
 function tst_send_admin_notif_consult_needed($post_id) {
-    $consult_emails = ItvStaffEmailNotif::$ITV_CONSULT_EMAILS;
-    
-    $email_from = ItvStaffEmailNotif::$ITV_EMAIL_FROM;
+    $itv_config = ItvConfig::instance();
+	
+    $consult_emails = $itv_config->get('CONSULT_EMAILS');
+    $email_from = $itv_config->get('EMAIL_FROM');
     
     $task = get_post($post_id);
     
@@ -1068,8 +1071,10 @@ function tst_send_admin_notif_consult_needed($post_id) {
 }
 
 function tst_send_user_notif_consult_needed($post_id) {
-    $consult_email_from = ItvStaffEmailNotif::$ITV_CONSULT_EMAIL_FROM;
-    $consult_emails = ItvStaffEmailNotif::$ITV_CONSULT_EMAILS;
+    $itv_config = ItvConfig::instance();
+
+    $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
+    $consult_emails = $itv_config->get('CONSULT_EMAILS');
     
     $task = get_post($post_id);
     $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
