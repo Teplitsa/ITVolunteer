@@ -19,7 +19,7 @@ class Tst_Task_Submitbox {
     /**
      * Constructions
      * */
-    function __construct(WP_Post $post, $params = array()){
+    public function __construct(WP_Post $post, $params = array()){
 
         $this->post_object = $post;
         $this->post_type = $post->post_type;
@@ -43,7 +43,7 @@ class Tst_Task_Submitbox {
     /**
      * Final printing
      **/
-    function print_metabox(){
+    public function print_metabox(){
 
         ?>
         <div class="submitbox" id="submitdiv">
@@ -59,7 +59,7 @@ class Tst_Task_Submitbox {
     /**
      * Publishing block
      * */
-    function minor_publishing_block() {
+    public function minor_publishing_block() {
 
         ?>
         <div id="minor-publishing">
@@ -81,7 +81,7 @@ class Tst_Task_Submitbox {
     <?php
     }
 
-    function major_publishing_block() {
+    public function major_publishing_block() {
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -140,7 +140,7 @@ class Tst_Task_Submitbox {
      **/
 
     /* draft and preview buttons */
-    function minor_buttons(){
+    public function minor_buttons(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -192,7 +192,7 @@ class Tst_Task_Submitbox {
     /**
      * Status selection dealogue
      **/
-    function minor_status(){
+    public function minor_status(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -248,7 +248,7 @@ class Tst_Task_Submitbox {
     /**
      * visibility setting dialogue
      **/
-    function minor_visibility(){
+    public function minor_visibility(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -318,7 +318,7 @@ class Tst_Task_Submitbox {
      **/
 
     /* function to display hidden time fields when no date mode */
-    static function no_date_touch_time(){
+    public static function no_date_touch_time(){
         global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
@@ -346,7 +346,7 @@ class Tst_Task_Submitbox {
 
 
     /* function to display time controls for year only metabox */
-    static function touch_time_by_year($tab_index = 0) {
+    public static function touch_time_by_year($tab_index = 0) {
         global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
@@ -401,7 +401,7 @@ class Tst_Task_Submitbox {
 
 
     /* helper to display custom data-select dialogue */
-    static function custom_touch_time($start_date='',  $tab_index = 0, $prefix = 'frl_' ) {
+    public static function custom_touch_time($start_date='',  $tab_index = 0, $prefix = 'frl_' ) {
         global $wp_locale;
 
         $tab_index_attribute = '';

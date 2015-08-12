@@ -3,7 +3,7 @@ class ItvEmailTemplates {
 	private $_email_templates;
 	private static $_instance = NULL;
 	
-	function __construct() {
+	public function __construct() {
 		$this->_email_templates = array(
 		    'approve_candidate_doer_notice' => array(
 		        'title' => __('IT-Volunteer: you have been approved as participant!', 'tst'),

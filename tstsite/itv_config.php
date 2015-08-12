@@ -4,7 +4,7 @@ class ItvConfig {
 	private $_config;
 	private static $_instance = NULL;
 
-	function __construct() {
+	public function __construct() {
 		
 		// change ITV settings here:
 		$this->_config = array(

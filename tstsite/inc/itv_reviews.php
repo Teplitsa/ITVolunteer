@@ -3,7 +3,7 @@
 class ItvReviews {
 	private static $_instance = NULL;
 	
-	function __construct() {
+	public function __construct() {
 		global $wpdb;
 		$this->db_table = $wpdb->prefix.'reviews';
 	}
