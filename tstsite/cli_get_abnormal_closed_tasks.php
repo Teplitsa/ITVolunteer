@@ -1,7 +1,5 @@
 <?php
 
-require_once('inc/itv_user_reg_source_detector.php');
-
 try {
 	include('cli_common.php');
 	

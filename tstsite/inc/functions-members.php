@@ -148,7 +148,7 @@ function tst_calculate_member_activity($user, $type = 'all') {
 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
 	}
 	elseif($type == 'solved') {
-		$activity['solved'] = tst_calculate_member_tasks_solved($user, array('closed'), null, true);
+		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
 	}
 	
 	return $activity;
