@@ -41,7 +41,7 @@ get_header(); ?>
 				</div>
 				<div class="row-main itv-task-view-row">
 					<span class="task-param btn btn-default">
-						<?=do_shortcode('[post-views]')?>
+						<?php echo do_shortcode('[post-views]')?>
 					</span>
 				</div>
 			</div>

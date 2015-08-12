@@ -34,9 +34,7 @@ add_filter('wp_mail_content_type', function(){
 });
 
 add_filter('comment_notification_text', function($email_text, $comment){
-    global $email_templates;
-
-    return sprintf($email_templates['new_comment_task_author_notification']['text'], get_comment_link($comment));
+    return sprintf(ItvEmailTemplates::instance()->get_text('new_comment_task_author_notification'), get_comment_link($comment));
 }, 10, 2);
 
 add_filter('get_comment_link', function($link, $comment, $args){
@@ -90,8 +88,8 @@ if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
 }
 
 add_action('tst_deadline_reminder_hook', function(){
-
-    global $email_templates;
+	
+	$email_templates = ItvEmailTemplates::instance();
 
     foreach(get_posts(array(
         'post_type' => 'tasks',
@@ -106,8 +104,8 @@ add_action('tst_deadline_reminder_hook', function(){
             $task_permalink = get_permalink($task);
             wp_mail(
                 get_user_by('id', $task->post_author)->user_email,
-                $email_templates['deadline_coming_author_notification']['title'],
-                nl2br(sprintf($email_templates['deadline_coming_author_notification']['text'], $task_permalink))
+                $email_templates->get_title('deadline_coming_author_notification'),
+                nl2br(sprintf($email_templates->get_text('deadline_coming_author_notification'), $task_permalink))
             );
 
             foreach(tst_get_task_doers($task->ID, false) as $doer) {
@@ -116,8 +114,8 @@ add_action('tst_deadline_reminder_hook', function(){
                     continue;
                 wp_mail(
                     $doer->user_email,
-                    $email_templates['deadline_coming_doer_notification']['title'],
-                    nl2br(sprintf($email_templates['deadline_coming_doer_notification']['text'], $task_permalink))
+                    $email_templates->get_title('deadline_coming_doer_notification'),
+                    nl2br(sprintf($email_templates->get_text('deadline_coming_doer_notification'), $task_permalink))
                 );
             }
         } else if( !$days_till_deadline && $task->post_status == 'publish' && !tst_get_task_doers($task->ID, false) ) {
@@ -424,12 +422,13 @@ function ajax_approve_candidate() {
 	}	
 
     // Notice to doer:
-    global $email_templates;
+    $email_templates = ItvEmailTemplates::instance();
+    
     wp_mail(
         $doer->user_email,
-        $email_templates['approve_candidate_doer_notice']['title'],
+        $email_templates->get_title('approve_candidate_doer_notice'),
         nl2br(sprintf(
-            $email_templates['approve_candidate_doer_notice']['text'],
+            $email_templates->get_text('approve_candidate_doer_notice'),
             $doer->first_name,
             $task->post_title,
             $task_author->user_email,
@@ -441,9 +440,9 @@ function ajax_approve_candidate() {
     // Notice to author:
     wp_mail(
         $task_author->user_email,
-        $email_templates['approve_candidate_author_notice']['title'],
+        $email_templates->get_title('approve_candidate_author_notice'),
         nl2br(sprintf(
-            $email_templates['approve_candidate_author_notice']['text'],
+            $email_templates->get_text('approve_candidate_author_notice'),
             $task_author->first_name,
             $task->post_title,
             $doer->user_email,
@@ -491,13 +490,13 @@ function ajax_refuse_candidate() {
 		do_action('update_member_stats', array($doer, $task->post_author));
 	}
 		
-    global $email_templates;
+    $email_templates = ItvEmailTemplates::instance();
 	
     wp_mail(
         get_user_by('id', $_POST['doer-id'])->user_email,
-        $email_templates['refuse_candidate_doer_notice']['title'],
+        $email_templates->get_title('refuse_candidate_doer_notice'),
         nl2br(sprintf(
-            $email_templates['refuse_candidate_doer_notice']['text'],
+            $email_templates->get_text('refuse_candidate_doer_notice'),
             $doer->first_name,
             $task->post_title
         ))
@@ -546,13 +545,13 @@ function ajax_add_candidate() {
 	
 	
     // Send email to the task doer:
-    global $email_templates;
+    $email_templates = ItvEmailTemplates::instance();
 
     wp_mail(
         $task_author->user_email,
-        $email_templates['add_candidate_author_notice']['title'],
+        $email_templates->get_title('add_candidate_author_notice'),
         nl2br(sprintf(
-            $email_templates['add_candidate_author_notice']['text'],
+            $email_templates->get_text('add_candidate_author_notice'),
             $task_author->first_name,
             $task->post_title,
             htmlentities($_POST['candidate-message'], ENT_COMPAT, 'UTF-8'),
@@ -598,13 +597,13 @@ function ajax_remove_candidate() {
 	}
 	
     // Send email to the task doer:
-    global $email_templates;
+    $email_templates = ItvEmailTemplates::instance();
 
     wp_mail(
         $task_author->user_email,
-        $email_templates['refuse_candidate_author_notice']['title'],
+        $email_templates->get_title('refuse_candidate_author_notice'),
         nl2br(sprintf(
-            $email_templates['refuse_candidate_author_notice']['text'],
+            $email_templates->get_text('refuse_candidate_author_notice'),
             $task_author->first_name,
             $task->post_title,
             $_POST['candidate-message']
@@ -794,12 +793,12 @@ function ajax_user_register() {
 			do_action('update_member_stats', array($user_id));	
 
             
-            global $email_templates;
+            $email_templates = ItvEmailTemplates::instance();
 
             wp_mail(
                 $_POST['email'],
-                $email_templates['activate_account_notice']['title'],
-                nl2br(sprintf($email_templates['activate_account_notice']['text'], home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
+                $email_templates->get_title('activate_account_notice'),
+                nl2br(sprintf($email_templates->get_text('activate_account_notice'), home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
             );
 
             wp_die(json_encode(array(
@@ -920,13 +919,13 @@ function ajax_add_message() {
         )));
     }
 
-    global $email_templates;
+    $email_templates = ItvEmailTemplates::instance();
 
     $success = wp_mail(
         get_option('admin_email'),
-        $email_templates['message_added_notification']['title'],
+        $email_templates->get_title('message_added_notification'),
         nl2br(sprintf(
-            $email_templates['message_added_notification']['text'],
+            $email_templates->get_text('message_added_notification'),
             isset($_POST['page_url']) ? $_POST['page_url'] : '', $_POST['name'], $_POST['email'], $_POST['message']
         ))
     );

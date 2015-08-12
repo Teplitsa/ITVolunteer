@@ -140,7 +140,7 @@ if( !$cur_user_id ) {?>
             <div class="form-group">
                 <input type="reset" id="cancel-leave-review" value="<?php _e('Cancel', 'tst');?>" class="btn btn-default btn-sm"/>
                 <input type="submit" value="<?php _e('Send', 'tst');?>" class="btn btn-success btn-sm"/>
-                <img id="add_review_loading" style="display:none;" src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" />
+                <img id="add_review_loading" style="display:none;" src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' )?>" />
             </div>
             <div id="task-review-message"></div>
         </form>

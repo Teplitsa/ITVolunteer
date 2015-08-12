@@ -45,12 +45,12 @@ get_header();?>
             <?php } else {
                 update_user_meta($user->ID, 'activation_code', '');
 
-                global $email_templates;
+                $email_templates = ItvEmailTemplates::instance();
 
                 wp_mail(
                     $user->user_email,
-                    $email_templates['account_activated_notice']['title'],
-                    sprintf($email_templates['account_activated_notice']['text'], $user->user_login, home_url('/login/'))
+                    $email_templates->get_title('account_activated_notice'),
+                    sprintf($email_templates->get_text('account_activated_notice'), $user->user_login, home_url('/login/'))
                 );
 
                 $link = '<a href="'.tst_get_login_url().'" class="alert-link">'.__('Enter on site', 'tst').'</a>';?>

@@ -174,7 +174,7 @@ get_header();?>
 			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?php if(!$user_company_logo):?>style="display:none;"<?php endif; ?> title="<?php _e('Delete company logo', 'tst');?>"></a>
 			
 			<div id="upload_user_company_logo_info"><?php echo $user_company_logo; ?></div>
-			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
+			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
 		</div>
 		
 		<div class="form-group">

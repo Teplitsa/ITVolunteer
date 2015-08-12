@@ -16,8 +16,6 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-$email_templates = array();
-
 
 function tst_get_version_num(){
 	
@@ -44,7 +42,6 @@ function tst_setup() {
 	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
-	global $email_templates;
 	include(get_template_directory().'/inc/email-templates.php');	
 
 

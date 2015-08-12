@@ -52,14 +52,14 @@ $activity = tst_get_member_activity($tst_member);
 					<?php if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st employee', 'tst');?></h4>
-						<img class="itv-test-employee-big" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
+						<img class="itv-test-employee-big" src="<?php echo content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
 					</section>
 					<?php endif?>
 					
 					<?php if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st partner', 'tst');?></h4>
-						<img class="itv-test-partner-big" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" />
+						<img class="itv-test-partner-big" src="<?php echo content_url('themes/tstsite/img/logo-v.png')?>" />
 					</section>
 					<?php endif?>
 					
@@ -77,14 +77,14 @@ $activity = tst_get_member_activity($tst_member);
 					<?php if($text = tst_get_member_field('user_workplace')):?>
 					<section class="data-section-member">
 						<h4><?php _e('Place of work', 'tst');?></h4>
-						<?=$text?>
+						<?php echo $text?>
 					</section>
 					<?php endif?>
 
 					
 					<?php if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
 					<section class="data-section-member">
-						<?=$user_company_logo?>
+						<?php echo $user_company_logo?>
 					</section>
 					<?php endif?>
 
@@ -92,7 +92,7 @@ $activity = tst_get_member_activity($tst_member);
 					<?php if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Skills list', 'tst');?></h4>
-						<?=$user_skills_string?>
+						<?php echo $user_skills_string?>
 					</section>
 					<?php endif?>
 
@@ -100,7 +100,7 @@ $activity = tst_get_member_activity($tst_member);
 					<?php if($text = tst_get_member_field('user_socials')):?>
 					<section class="data-section-member">
 						<h4><?php _e('In the web', 'tst');?></h4>
-						<?=$text?>
+						<?php echo $text?>
 					</section>
 					<?php endif?>
 

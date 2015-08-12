@@ -188,7 +188,7 @@ function tst_temp_avatar($user = null){
 			
 		$name = tst_get_member_name($user);		
 		?>
-			<img src="<?=$src?>" alt="<?php echo esc_attr($name); ?>" title="<?php echo esc_attr($name); ?>">
+			<img src="<?php echo $src?>" alt="<?php echo esc_attr($name); ?>" title="<?php echo esc_attr($name); ?>">
 		<?php
 	}
 	
