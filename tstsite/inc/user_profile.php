@@ -26,7 +26,7 @@ function ajax_delete_user_company_logo() {
 		}
 	}
 	
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 			'status' => 'error',
 			'message' => 'unkown error',
@@ -63,7 +63,7 @@ function ajax_upload_user_company_logo() {
 		}
 	}
 	
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 			'status' => 'error',
 			'message' => 'unkown error',
@@ -109,7 +109,7 @@ function ajax_delete_user_avatar() {
 		}
 	}
 
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 				'status' => 'error',
 				'message' => 'unkown error',
@@ -149,7 +149,7 @@ function ajax_upload_user_avatar() {
 		}
 	}
 
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 				'status' => 'error',
 				'message' => 'unkown error',
