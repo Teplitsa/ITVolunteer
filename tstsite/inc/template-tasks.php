@@ -57,7 +57,7 @@ function tst_task_fixed_meta_in_card($task = null){
 	if( !$task )
 		$task = $post;
     
-    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author)));
+    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace')));
    
 	$meta = array();
 	$meta[] = tst_get_task_author_link($task);

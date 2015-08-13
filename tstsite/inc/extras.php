@@ -508,7 +508,7 @@ function tst_get_member_field($field, $member = null){
             break;
 			
 		case 'user_workplace':
-            $value = get_user_meta($member->ID, 'user_workplace', true);
+            $value = is_object($member) ? get_user_meta($member->ID, 'user_workplace', true) : '';
             break;
 
         default:
