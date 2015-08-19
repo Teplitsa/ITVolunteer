@@ -96,7 +96,7 @@ function tst_members_paging($page_query, $user_query, $echo = true){
 			
 	);
 	
-	if($page_query->query_vars['navpage']){
+	if(isset($page_query->query_vars['navpage']) && $page_query->query_vars['navpage']){
 		$current = ($page_query->query_vars['navpage'] > 1) ? $page_query->query_vars['navpage'] : 1;
 	}
 	else{

@@ -291,8 +291,8 @@ $activity = tst_get_member_activity($tst_member);
 			<div class="col-md-8">
 				<nav role="navigation" class="nextprev nav-post">
 				<?php
-					$key = tst_get_member_role_key($tst_member);
-					$back = ($key != 'user') ? home_url('members/'.$role) : home_url('members');					
+					$role = tst_get_member_role_key($tst_member);					
+					$back = ($role != 'user') ? home_url('members/'.$role) : home_url('members');					
 				?>
 				<a href="<?php echo $back;?>">&laquo; <?php _e('Back to members list', 'tst');?></a>				
 				</nav>

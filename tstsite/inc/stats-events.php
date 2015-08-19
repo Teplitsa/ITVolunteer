@@ -27,7 +27,7 @@ function tst_detect_page_type($type = null) {
 			$type = 'task_page';
 		}
 		elseif(is_page('registration')) {
-			$type = 'red';
+			$type = 'reg';
 		}
 		elseif(is_page()) {
 			$type = 'page';

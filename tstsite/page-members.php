@@ -45,7 +45,7 @@ if(is_single_member()) {
 
 	$per_page = get_option('posts_per_page');
 	
-	if($wp_query->query_vars['navpage']) {
+	if(isset($wp_query->query_vars['navpage']) && $wp_query->query_vars['navpage']) {
 		$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
 	}
 	else {
@@ -61,7 +61,7 @@ if(is_single_member()) {
 		'query_id' => 'get_members_for_members_page'			
 	);
 	
-	if($wp_query->query_vars['member_role']) {			
+	if(isset($wp_query->query_vars['member_role']) && $wp_query->query_vars['member_role']) {			
 		$users_query_params['meta_query'] = array(
 			array(
 				'key'     => 'tst_member_role',

@@ -282,4 +282,3 @@ require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';
 require get_template_directory().'/inc/functions-members.php';
 require get_template_directory().'/inc/stats-events.php';
-
