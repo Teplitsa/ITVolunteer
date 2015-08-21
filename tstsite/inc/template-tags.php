@@ -415,7 +415,7 @@ if(!function_exists('frl_current_url')){
 
 function tst_login_avatar(){
 ?>
-	<img src="<?php echo get_template_directory_uri();?>/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
+	<img src="<?php echo get_template_directory_uri();?>/assets/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
 <?php
 }
 

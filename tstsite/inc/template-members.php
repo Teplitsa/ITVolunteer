@@ -183,7 +183,7 @@ function tst_temp_avatar($user = null){
 		}
 		
 		if(empty($src)){
-			$src = get_template_directory_uri() . '/img/temp-avatar.png';
+			$src = get_template_directory_uri() . '/assets/img/temp-avatar.png';
 		}	
 			
 		$name = tst_get_member_name($user);		

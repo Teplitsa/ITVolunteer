@@ -18,7 +18,7 @@
 		$('div#acf-is_tst_consult_done').hide();
 	}
 	else {
-		var tst_logo = $('<img src="'+adminend.site_url+'/wp-content/themes/tstsite/img/te-st-logo.jpg" />');
+		var tst_logo = $('<img src="'+adminend.site_url+'/wp-content/itv/tstsite/assets/img/te-st-logo.jpg" />');
 		tst_logo.css({'vertical-align': 'middle'});
 		$('div#acf-is_tst_consult_needed li').append(tst_logo);
 	}

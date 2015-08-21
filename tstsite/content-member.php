@@ -4,6 +4,8 @@
  **/
 
 global $tst_member;
+
+$img_folder = get_template_directory_uri().'/assets/img/';
 ?>
 
 <article class="member col-md-6">
@@ -30,8 +32,8 @@ global $tst_member;
 					<span class="label <?php echo esc_attr($role); ?>"><?php echo tst_get_role_name($role); ?></span>
 					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
 					
-					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?php echo content_url('themes/tstsite/img/te-st-logo.jpg'); ?>" /><?php endif; ?>
-					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?php echo content_url('themes/tstsite/img/logo-v.png'); ?>" /><?php endif; ?>
+					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?php echo $img_folder.'/te-st-logo.jpg'; ?>" /><?php endif; ?>
+					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?php echo $img_folder.'logo-v.png'; ?>" /><?php endif; ?>
 				</div>
 				<h4 class="member-title"><a href="<?php echo tst_get_member_url();?>"><?php echo tst_get_member_name();?></a></h4>
 				
