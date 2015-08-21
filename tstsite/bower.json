@@ -1,0 +1,33 @@
+{
+  "name": "itv_package",
+  "version": "1.0.0",
+  "homepage": "https://github.com/Teplitsa/ITVolunteer",
+  "authors": [
+    "Teplitsa"
+  ],
+  "description": "package for itv project",
+  "keywords": [
+    "itv"
+  ],
+  "license": "GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "chosen": "~1.4.2",
+    "imagesloaded": "~3.1.8"
+  },
+  "overrides": {
+    "jquery": {
+      "ignore" : true
+    },
+    "bootstrap": {
+      "ignore" : true
+    }
+  }
+}

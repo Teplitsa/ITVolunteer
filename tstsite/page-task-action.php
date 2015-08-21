@@ -41,7 +41,7 @@ if( !empty($_GET['task']) ){
 			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
 			'deadline' => date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID)),
 			'reward_id' => get_field('field_533bef600fe91', $task->ID),
-			'is_tst_consult_needed' => get_field(ITV_ACF_TASK_is_tst_consult_needed, $task->ID),
+			'is_tst_consult_needed' => get_field('is_tst_consult_needed', $task->ID),
 		);
 	}
 } else {
@@ -196,7 +196,7 @@ get_header();?>
 	<div class="form-group">
 		<label for="task-descr"><?php _e('itv_task_consult_needed_label', 'tst')?></label>
 		<div class="itv-task-form-sublabel">
-			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if($task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
+			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if(isset($task_data['is_tst_consult_needed']) && $task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
 			<?php _e('itv_task_consult_needed_more_info', 'tst')?>
 		</div>			
 	</div>

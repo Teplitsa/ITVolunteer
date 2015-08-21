@@ -152,22 +152,23 @@ add_action('wp_enqueue_scripts', function(){
     $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
-    wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
-	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
-	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
+    wp_enqueue_style('bootstrap', $url.'/assets/css/bootstrap.min.css', array());
+	//wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
+	//wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
+    wp_enqueue_style('front', $url.'/assets/css/bundle.css', array(), $version);
 
+
+    wp_enqueue_script('bootstrap', $url.'/assets/js/bootstrap.min.js', array('jquery'), '1.0', true);
 
     wp_enqueue_script('jquery-ui-datepicker');
-    if(get_locale() == 'ru_RU')
-        wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
+    //if(get_locale() == 'ru_RU')
+    //    wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
 
     wp_enqueue_script('jquery-ui-tabs');
-    wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
+    //wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
+	//wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
+	//wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
+    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery', 'jquery-ui-datepicker', 'jquery-masonry'), $version, true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),

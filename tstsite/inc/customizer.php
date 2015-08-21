@@ -199,7 +199,7 @@ function ajax_add_edit_task(){
     $_POST['id'] = wp_insert_post($params);
 	
     if($_POST['id']) {
-        $old_is_tst_consult_needed = get_field(ITV_ACF_TASK_is_tst_consult_needed, $_POST['id']);
+        $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $_POST['id']);
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
 
         update_field('field_533bebda0fe8d', htmlentities(trim($_POST['expecting']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
@@ -207,7 +207,7 @@ function ajax_add_edit_task(){
         update_field('field_533beee40fe8f', htmlentities(trim($_POST['about-author-org']), ENT_COMPAT, 'UTF-8'), $_POST['id']);
         update_field('field_533bef200fe90', date_from_dd_mm_yy_to_yymmdd($_POST['deadline']), $_POST['id']);
         update_field('field_533bef600fe91', (int)$_POST['reward'], $_POST['id']);
-        update_field(ITV_ACF_TASK_is_tst_consult_needed, $new_is_tst_consult_needed, $_POST['id']);
+        update_field('is_tst_consult_needed', $new_is_tst_consult_needed, $_POST['id']);
 		
         if($is_new_task) {
         	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
@@ -219,7 +219,7 @@ function ajax_add_edit_task(){
         
         if($new_is_tst_consult_needed) {
             if($is_new_task || !$old_is_tst_consult_needed) {
-                update_field(ITV_ACF_TASK_is_tst_consult_done, false, $_POST['id']);
+                update_field('is_tst_consult_done', false, $_POST['id']);
                 tst_send_admin_notif_consult_needed($_POST['id']);
                 tst_send_user_notif_consult_needed($_POST['id']);
             }
@@ -1161,9 +1161,9 @@ add_action( 'wp_insert_post', 'tst_task_updated', 10, 3);
 function tst_consult_column( $column, $post_id ) {
     switch ( $column ) {
 	case 'is_tst_consult_needed' :
-            $is_tst_consult_needed = get_field(ITV_ACF_TASK_is_tst_consult_needed, $post_id);
+            $is_tst_consult_needed = get_field('is_tst_consult_needed', $post_id);
             if($is_tst_consult_needed) {
-                $is_tst_consult_done = get_field(ITV_ACF_TASK_is_tst_consult_done, $post_id);
+                $is_tst_consult_done = get_field('is_tst_consult_done', $post_id);
                 if($is_tst_consult_done) {
                     echo "<b class='itv-admin-test-consult-done'>".__('Done', 'tst')."</b>";
                 }

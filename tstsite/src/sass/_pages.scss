@@ -1,7 +1,7 @@
 /** Homepage **/
 
 .home-section {	
-	padding: 0 $measure-columns-gut/2;
+	padding: 0 $measure-columns-gut / 2;
 	@include for(small-screens) {
 		padding: 0 $measure-columns-gut;
 	}

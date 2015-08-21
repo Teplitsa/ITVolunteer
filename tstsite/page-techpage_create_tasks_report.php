@@ -39,7 +39,7 @@ while($query->have_posts()) {
 		$task_author = get_user_by('id', $task->post_author);
 	}
 	
-	$is_need_consult = get_field(ITV_ACF_TASK_is_tst_consult_needed, $post_id);
+	$is_need_consult = get_field('is_tst_consult_needed', $post_id);
 	
 	$inwork_time = $itv_log->get_task_inwork_time($post_id);
 	if(!$inwork_time && $task->post_status == 'in_work') {
