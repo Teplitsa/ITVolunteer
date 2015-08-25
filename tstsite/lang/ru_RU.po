@@ -1671,7 +1671,7 @@ msgstr "Пожалуйста, укажите город, в котором вы 
 #: page-member-action.php:163 partials/content-member.php:42
 #: partials/content-member_single.php:81
 msgid "Place of work"
-msgstr "Место работы"
+msgstr "Организация"
 
 # @ tst
 #: page-member-action.php:170
