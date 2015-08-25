@@ -1,0 +1,347 @@
+/** == Tasks templates **/
+
+/** Taks in loop */
+.tpl-task {
+		
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: 16px 0 16px 24px;
+		position: relative;
+	}
+		
+	.status-wrap {
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		top: 22px;
+		left: 0;
+	}
+		
+	.status-label {
+		@include task-staus-label;
+	}
+	
+	&.status-in_work .status-label {  background: $color-label-work; }
+	&.status-closed .status-label { background: $color-label-closed; }
+	
+	.task-title {
+		@include post-title();
+		margin: 0 0 3px;
+		padding-left: 0;
+	}
+	
+	.task-meta {
+		font-size: 12px;
+		color: $color-text-meta;
+		font-weight: 300;
+		
+		a {
+			color: $color-text-black;
+			font-weight: 300;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-tags {
+		font-size: 12px;
+		color: $color-text-meta;
+		margin-top: 5px;
+		
+		a {
+			color: $color-text-meta;
+			font-weight: 500;
+			&:hover, &:focus, &:active {
+				text-decoration: underline;		
+			}
+		}
+	}
+	
+	.task-summary {
+		position: relative;
+	}
+	
+	.task-reward {
+		margin-top: 1em;
+		padding-right: $statusW +10px;
+		
+		.reward-icon  {
+			margin-right: 5px;
+		}
+	}
+	
+	&.status-publish .task-reward { color: $color-label-green-normal;  }
+	
+	.task-more {
+		width: $statusW;
+		position: absolute;
+		top: -6px;
+		right: 0;
+		text-align: center;
+		vertical-align: top;
+		
+		a {
+			display: inline-block;
+			height: 17px;
+			color: transparentize($color-text-meta, 0.3);
+			font-weight: bold;
+			font-size: 30px;
+			letter-spacing: 0.5px;
+			line-height: 17px;
+			vertical-align: top;
+			@include transition(all 0.35s);
+			
+			&:hover, &:focus, &:active {
+				color: darken($color-text-meta, 20%);
+				text-decoration: none;
+			}
+		}
+	}
+	
+} //tpl
+
+
+
+/** Tasks List Screen **/
+.tasks-list-header {
+	.tasks-filters {
+		@include clearfix;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		padding-top: 12px;
+		
+		a {
+			display: inline-block;
+			line-height: 1;
+			padding: 4px 13px 6px;
+		}
+		
+		li {
+			float: left;
+			&.publish a { color: $color-label-green-normal; }
+			&.in_work a { color: $color-label-work;}
+			&.closed a { color: $color-label-closed;}
+		}
+				
+		li.active {
+			a {
+				color: $color-white;
+				&:hover {
+					text-decoration: none;
+				}
+			}
+			
+			&.publish a { background: $color-label-green-normal; }
+			&.in_work a { background: $color-label-work ;}
+			&.closed a { background: $color-label-closed;}
+		}
+	}
+}
+
+
+/** Single task **/
+.page-title .edit-item {
+	display: inline-block;	
+	font-size: 11px;		
+	vertical-align: top;
+	@include for(small-screens) { margin-left: 15px; }
+	
+	a {
+		display: inline-block;
+		padding: 5px 12px 6px;
+		background: $color-secondary;
+		text-decoration: none;
+		@include transition(all 0.35s);
+		&:hover {
+			color: $color-white;
+			background: $color-link-one;
+		}
+	}
+}
+
+.tpl-task-full {
+	
+	.page-heading {
+		background: transparent;
+		border: none;
+		padding: 20px 30px 0 50px;		
+	}
+	
+	.task-title {
+		position: relative;
+		font-size: 26px;		
+	}
+	
+	.status-wrap {
+		width: 10px;
+		height: 10px;
+		position: absolute;
+		top: 9px;
+		left: -20px;
+	}
+	
+	.status-label {
+		@include task-staus-label;
+	}
+	
+	&.status-in_work .status-label {  background: $color-label-work; }
+	&.status-closed .status-label { background: $color-label-closed; }
+		
+	.page-title .edit-item {
+		margin-top: 6px;
+	}
+	
+	.tags {
+		margin-top: 18px;
+		font-size: 13px;
+		a {
+			display: inline-block;
+			border: 1px solid transparentize($color-text-meta, 0.43);
+			padding: 0 12px;
+			color: $color-text-meta;			
+			text-decoration: none;
+			margin-right: 8px;
+			@include transition(all 0.35s);
+			&:hover {
+				background: $color-text-meta;
+				border-color: $color-text-meta;
+				color: $color-white;
+			}
+		}
+	}
+	
+	.task-reward {
+		margin-top: 9px;
+		color: $color-label-green-normal;
+		font-size: 16px;
+	}
+	
+	.task-top-meta {		
+		font-size: 12px;
+		margin-top: 9px;
+		
+		time {
+			color: $color-text-meta;
+		}
+		
+		@include for(medium-screens) {
+			text-align: right;
+			
+		}
+	}
+	
+	#multibutton {
+		margin-top: 18px;
+		.btn {
+			border-radius: 0;
+		}
+		
+		.help-block {
+			display: none;
+			font-style: normal;
+			font-size: 12px;
+			color: $color-text-meta;
+		}
+	}
+	
+	.page-body {
+		padding-left: 50px;
+	}
+	
+	.task-comments {
+		margin-top: $measure-elements-margin*2;
+	}
+}
+
+
+.task-author {
+	@include clearfix;
+	margin: $measure-elements-margin 0;
+	
+	.task-author-avatar {
+		width: 62px;
+		float: left;
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+	}
+	
+	.task-author-name {
+		margin: 0 0 9px 75px;
+	}
+	
+	.task-author-desc {
+		font-size: 12px;
+		color: $color-text-meta;
+		margin-left: 75px;
+	}
+}
+
+.connected-users {
+	margin-top: $measure-elements-margin;
+	
+	@include for(medium-screens) {
+		margin-top: 0;
+	}
+	
+	h5 {
+		margin-top: 0;
+		margin-bottom: 2em;		
+	}
+	
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		
+		li {
+			padding: 0;
+			margin: 0 0 10px 0;			
+			position: relative;
+			@include clearfix;
+			font-size: 13px;
+		}
+		
+		.c-img {
+			float: left;
+			width: 32px;			
+			margin-right: 10px;
+		}
+		
+		.c-name {
+			float: left;
+			@include calc('width', '(100% - 42px)*0.7');			
+			min-height: 36px;
+			font-weight: bold;
+			line-height: 1.1;
+			
+			.user-rating {
+				margin-top: 2px;
+				font-weight: normal;
+				font-size: 11px;
+				color: $color-text-light; 
+				span {
+					color: $color-label-green-normal;					
+				}
+			}
+		}
+		
+		.c-actions {
+			float: left;
+			@include calc('width', '(100% - 42px)*0.3');		
+			.c-status-app,
+			.c-status-app:hover {
+				background: $color-label-green-normal;
+				cursor: default;
+			}
+			.c-status-napp {
+				background: $color-deadline-all-time;
+				border-color: $color-deadline-all-time;
+				cursor: default;
+			}
+		}
+	}
+}
