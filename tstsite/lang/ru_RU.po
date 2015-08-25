@@ -1877,14 +1877,13 @@ msgstr "Выберите теги для этой задачи"
 # @ tst
 #: page-task-action.php:197
 msgid "itv_task_consult_needed_label"
-msgstr "Дополнительная косультация"
+msgstr "Дополнительная консультация"
 
 # @ tst
 #: page-task-action.php:200
 msgid "itv_task_consult_needed_more_info"
 msgstr ""
-"отметьте, если вам нужна консультация сотрудника Теплицы социальных "
-"технологий."
+"отметьте, что бы получить бесплатную консультация сотрудника Теплицы"
 
 # @ tst
 #: page-task-action.php:210
