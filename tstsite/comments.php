@@ -37,21 +37,27 @@
 	<div class="no-comments well well-sm"><?php _e( 'There is no comments.', 'tst' ); ?></div>
 <?php endif; ?>
 
-<?php comment_form($args = array(
-		'id_form'           => 'commentform',  // that's the wordpress default value! delete it or edit it ;)
-		'id_submit'         => 'commentsubmit',
-		'logged_in_as'      => '',
-		'must_log_in'       => '',
-		'title_reply'       => __( 'Leave a comment', 'tst' ),  // that's the wordpress default value! delete it or edit it ;)
-//	    'title_reply_to'    => __( 'Leave a Reply to %s' ),  // that's the wordpress default value! delete it or edit it ;)
-//	    'cancel_reply_link' => __( 'Cancel Reply' ),  // that's the wordpress default value! delete it or edit it ;)
-//	    'label_submit'      => __( 'Post Comment' ),  // that's the wordpress default value! delete it or edit it ;)
-
-		'comment_field' =>  '<p><textarea id="comment" class="form-control" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
-		'comment_notes_after' => ''
+<?php
+	if(!is_user_logged_in()){
+?>
+	<a href="<?php echo home_url('registration');?>" class="btn btn-primary"><?php _e( 'Leave a comment', 'tst' );?></a>
+<?php
+	}
+	else {
+		comment_form($args = array(
+				'id_form'           => 'commentform',  // that's the wordpress default value! delete it or edit it ;)
+				'id_submit'         => 'commentsubmit',
+				'logged_in_as'      => '',
+				'must_log_in'       => '',
+				'title_reply'       => __( 'Leave a comment', 'tst' ),  // that's the wordpress default value! delete it or edit it ;)
+		//	    'title_reply_to'    => __( 'Leave a Reply to %s' ),  // that's the wordpress default value! delete it or edit it ;)
+		//	    'cancel_reply_link' => __( 'Cancel Reply' ),  // that's the wordpress default value! delete it or edit it ;)
+		//	    'label_submit'      => __( 'Post Comment' ),  // that's the wordpress default value! delete it or edit it ;)
 		
-		
-));
+				'comment_field' =>  '<p><textarea id="comment" class="form-control" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
+				'comment_notes_after' => ''
+		));
+	}
 
 ?>
 

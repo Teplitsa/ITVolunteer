@@ -228,11 +228,11 @@ add_filter( 'wpseo_title', 'itv_user_profile_seo_title');
 function itv_user_profile_seo_title($title) {
 	
 	if(is_single_member()){
-		$tst_member = get_user_by('slug', get_query_var('membername'));
-		if($tst_member ) {
+		$tst_member = tst_get_current_member();
+		if($tst_member->ID) {
 			
 			$title = sprintf(__('Member: %s', 'tst'), frl_page_title());
-			$org = get_user_meta($tst_member->__get('ID'), 'user_workplace', true);
+			$org = get_user_meta($tst_member->ID, 'user_workplace', true);
 			if($org){
 				$title .= " / ".esc_attr($org);
 			}

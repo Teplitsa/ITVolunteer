@@ -172,4 +172,12 @@ $screen-lg-min : 1200px;
 	background-clip: padding-box;
 }
 
+@mixin task-staus-label {
+	display: block;
+	width: 10px;
+	height: 10px;
+	color: rgba(255,255,255,0);
+	background: $color-label-green-normal;
+	border-radius: 50%;
+}
 

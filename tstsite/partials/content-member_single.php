@@ -3,14 +3,16 @@
  * Single member profile
  **/
  
-global $post, $tst_member, $wp_query;
+global $post, $wp_query;
 
+$tst_member = tst_get_current_member();
 if(isset($_GET['update']) && $_GET['update']) {	
-	tst_update_member_stat($tst_member);
+	tst_update_member_stat($tst_member->ID);
 }
 
-$user_login = get_query_var('membername');
-$activity = tst_get_member_activity($tst_member);
+
+$user_login = $tst_member->user_login;
+$activity = tst_get_member_activity($tst_member->user_object);
 
 ?>
 <header class="page-heading member-header">
@@ -25,14 +27,14 @@ $activity = tst_get_member_activity($tst_member);
 			<?php endif; ?>
 			</h1>
 			
-			<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member));?></div>
+			<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member->user_object));?></div>
 			
 		</div>
 
 		<div class="col-md-4">
 			
 			<div class="status-block-member">
-				<?php tst_member_profile_infoblock($tst_member);?>
+				<?php tst_member_profile_infoblock($tst_member->ID);?>
 			</div>
 			
 		</div>
@@ -52,14 +54,14 @@ $activity = tst_get_member_activity($tst_member);
 					<?php if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st employee', 'tst');?></h4>
-						<img class="itv-test-employee-big" src="<?php echo content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
+						<img class="itv-test-employee-big" src="<?php echo get_template_directory_uri().'/assets/img/te-st-logo.jpg'; ?>" />
 					</section>
 					<?php endif?>
 					
 					<?php if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st partner', 'tst');?></h4>
-						<img class="itv-test-partner-big" src="<?php echo content_url('themes/tstsite/img/logo-v.png')?>" />
+						<img class="itv-test-partner-big" src="<?php echo get_template_directory_uri().'/assets/img/logo-v.png'; ?>" />
 					</section>
 					<?php endif?>
 					

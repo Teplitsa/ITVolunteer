@@ -45,42 +45,13 @@ function my_task_function() {
     wp_mail('your@email.com', 'Automatic email', 'Automatic scheduled email from WordPress.');
 }
 
-function tst_custom_task_status(){
-    /**
-     * Предполагаем, что:
-     * draft - черновик задачи,
-     * publish - задача открыта,
-     * in_work - задача в работе,
-     * closed - закрыта.
-     */
 
-    register_post_status('in_work', array(
-        'label'                     => __('In work', 'tst'),
-        'public'                    => true,
-        'exclude_from_search'       => false,
-        'show_in_admin_all_list'    => true,
-        'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('In work <span class="count">(%s)</span>', 'In work <span class="count">(%s)</span>'),
-    ));
-    register_post_status('closed', array(
-        'label'                     => __('Closed', 'tst'),
-        'public'                    => true,
-        'exclude_from_search'       => true,
-        'show_in_admin_all_list'    => true,
-        'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>'),
-    ));
-}
-add_action('init', 'tst_custom_task_status');
 
 // Let common users (subscriber role) to edit their tasks:
 add_action('init', function(){
 
 
 });
-
-
-
 
 
 if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
@@ -1187,39 +1158,6 @@ function add_tst_consult_column( $columns, $post_type ) {
 }
 add_action( 'manage_posts_columns' , 'add_tst_consult_column', 2,2);
 
-
-# customize RSS feed post types
-function rss_feed_request($qv) {
-	if(isset($qv['feed'])) {
-		if(!isset($qv['post_type'])) {
-			$qv['post_type'] = 'tasks';
-		}
-	}
-	return $qv;
-}
-add_filter('request', 'rss_feed_request');
-
-add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
-function itv_translit_sanitize($string) {
-	$rtl_translit = array (
-			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
-			"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
-			"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
-			"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
-			"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
-			"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
-			"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
-			"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
-			"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
-			"е"=>"e","ё"=>"yo","ж"=>"zh",
-			"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
-			"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
-			"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
-			"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
-			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
-	);
-	return strtr($string, $rtl_translit);
-}
 
 function itv_get_unique_user_login($first_name, $last_name = '') {
 	$new_ok_login = sanitize_user($first_name, true);

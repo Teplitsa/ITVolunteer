@@ -4,8 +4,7 @@
  *
  **/
 
-global $tst_member;
-
+ 
 $member_id = get_current_user_id();
 
 if( !$member_id ) {
@@ -22,7 +21,6 @@ if(empty($member) || !current_user_can('edit_user', $member_id)) {
     exit;
 }
 
-$tst_member = $member;
 $member_data = array(
     'member_id' =>  $member_id,
     'user_login' => $member->user_login,
@@ -41,11 +39,10 @@ get_header();?>
 <?php //while ( have_posts() ) : the_post();?>
 
 
-<header class="page-heading">
+<header class="page-heading no-breadcrumbs">
 
 	<div class="row">
-		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+		<div class="col-md-8">			
 			<h1 class="page-title">
 				<?php echo frl_page_title();?>
 				<small class="edit-item"><a href="<?php echo tst_get_member_url($member);?>"><?php _e('Back to profile', 'tst');?></a></small>
@@ -54,7 +51,7 @@ get_header();?>
 		
 		<div class="col-md-4">
             <div class="status-block-member">
-                <?php tst_member_profile_infoblock($member->user_login);?>
+                <?php tst_member_profile_infoblock($member->ID);?>
             </div>
 		</div>
 	</div><!-- .row -->

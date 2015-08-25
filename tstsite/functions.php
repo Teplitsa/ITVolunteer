@@ -164,10 +164,6 @@ add_action('wp_enqueue_scripts', function(){
     //if(get_locale() == 'ru_RU')
     //    wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
 
-    wp_enqueue_script('jquery-ui-tabs');
-    //wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
-	//wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
-	//wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
     wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery', 'jquery-ui-datepicker', 'jquery-masonry'), $version, true);
 
     wp_localize_script('front', 'frontend', array(
@@ -270,7 +266,8 @@ if(is_admin()) {
 
 require get_template_directory().'/itv_config.php';
 require get_template_directory().'/inc/customizer.php';
-require get_template_directory().'/inc/template-tags.php';
+require get_template_directory().'/inc/template-general.php';
+require get_template_directory().'/inc/functions-general.php';
 require get_template_directory().'/inc/extras.php';
 require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
@@ -282,4 +279,5 @@ require get_template_directory().'/inc/itv_reviews.php';
 require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';
 require get_template_directory().'/inc/functions-members.php';
+require get_template_directory().'/inc/functions-tasks.php';
 require get_template_directory().'/inc/stats-events.php';

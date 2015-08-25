@@ -3,13 +3,13 @@
  * Template Name: MembersPage
  **/
 
-global $post, $tst_member, $wp_query;
+global $wp_query;
 
 
 if(is_single_member()) {
 	
-	$tst_member = get_user_by('slug', get_query_var('membername'));	
-    if( !$tst_member ) {
+	$tst_member = tst_get_current_member();	
+    if( !$tst_member->ID ) {
         $refer = stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer();
         $back_url = $refer ? $refer : home_url();
 
@@ -102,8 +102,9 @@ if(is_single_member()) {
 	<div class="row in-loop members-list">
 	<?php
 		foreach($user_query->results as $u){
-			$tst_member = $u; 
-			get_template_part('content', 'member'); 
+			$tst_member = $u;
+			
+			include(get_template_directory().'/partials/content-member.php');
 		}
 	?>
 	</div><!-- .row -->

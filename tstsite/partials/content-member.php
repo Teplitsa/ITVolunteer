@@ -3,8 +3,6 @@
  * this is temp member layout
  **/
 
-global $tst_member;
-
 $img_folder = get_template_directory_uri().'/assets/img/';
 ?>
 
@@ -16,7 +14,7 @@ $img_folder = get_template_directory_uri().'/assets/img/';
 		<div class="row">
 			<div class="col-md-3">
 				<a href="<?php echo tst_get_member_url();?>" class="thumbnail">
-					<?php tst_temp_avatar();?>
+					<?php tst_temp_avatar($tst_member->ID);?>
 				</a>
 			</div>
 			<div class="col-md-9">
@@ -35,12 +33,12 @@ $img_folder = get_template_directory_uri().'/assets/img/';
 					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?php echo $img_folder.'/te-st-logo.jpg'; ?>" /><?php endif; ?>
 					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?php echo $img_folder.'logo-v.png'; ?>" /><?php endif; ?>
 				</div>
-				<h4 class="member-title"><a href="<?php echo tst_get_member_url();?>"><?php echo tst_get_member_name();?></a></h4>
+				<h4 class="member-title"><a href="<?php echo tst_get_member_url($tst_member);?>"><?php echo tst_get_member_name($tst_member);?></a></h4>
 				
 				<!-- metas -->
 				<div class="member-meta">
 					<span class="member-points">
-						<?php if($place_of_work = tst_get_member_field('user_workplace')): ?>
+						<?php if($place_of_work = tst_get_member_field('user_workplace', $tst_member->ID)): ?>
 						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?php echo $place_of_work; ?></b><br />
 						<?php endif; ?>
 						
@@ -53,7 +51,7 @@ $img_folder = get_template_directory_uri().'/assets/img/';
 			
 					</span>
 			
-					<?php $city = sanitize_text_field(tst_get_member_field('user_city', $tst_member));					
+					<?php $city = sanitize_text_field(tst_get_member_field('user_city', $tst_member->ID));					
 					if($city) {?>
 						<span class='city'><?php echo $city;?></span>
 					<?php }?>
@@ -66,7 +64,7 @@ $img_folder = get_template_directory_uri().'/assets/img/';
 	
 	
 	<div class="member-summary">
-		<?php echo html_entity_decode(tst_get_member_summary($tst_member, true), ENT_QUOTES, 'UTF-8'); ?>
+		<?php echo html_entity_decode(tst_get_member_summary($tst_member->ID, true), ENT_QUOTES, 'UTF-8'); ?>
 	</div>
 	
 	</div>

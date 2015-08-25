@@ -14,7 +14,6 @@ function tst_get_task_status_list() {
     );
 }
 
-
 function tst_get_task_status_label($status = false) {
 
     if( !$status ) {
@@ -52,12 +51,9 @@ function tst_tast_status_tip(){
 }
 
 function tst_task_fixed_meta_in_card($task = null){
-	global $post;
-	
-	if( !$task )
-		$task = $post;
-    
-    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace')));
+	    
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
    
 	$meta = array();
 	$meta[] = tst_get_task_author_link($task);
@@ -72,13 +68,10 @@ function tst_task_fixed_meta_in_card($task = null){
 }
 
 
-function tst_get_task_author_link($task = null){
-	global $post;
+function tst_get_task_author_link($task = null){	
 	
-	if(!$task)
-		$task = $post;
-		
-	$author = get_user_by('id', $task->post_author);
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	$author = get_user_by('id', $author_id);
 	if( !$author )
 		return '';
 
@@ -88,6 +81,20 @@ function tst_get_task_author_link($task = null){
 	return "<a href='{$url}'>{$name}</a>";
 }
 
+function tst_get_task_author_avatar($task = null){	
+	
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	return tst_temp_avatar($author_id, false);	
+}
+
+function tst_get_task_author_org($task = null){	
+	
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	$user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
+	
+	return $user_workplace;
+}
+
 
 function tst_task_reward_in_card(){	
 	$reward = get_term(get_field('reward', get_the_ID()), 'reward');
@@ -95,7 +102,7 @@ function tst_task_reward_in_card(){
 		return;
 	
 ?>
-<span class="reward-icon glyphicon glyphicon-star"></span>
+<span class="reward-icon glyphicon glyphicon-gift"></span>
 <span class="reward-name" title="<?php _e('Reward', 'tst');?>">
 <?php echo apply_filters('frl_the_title', $reward->name); ?>
 </span>
@@ -201,4 +208,45 @@ function tst_get_closed_tasks_count() {
 		ItvSiteStats::$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_CLOSED;
+}
+
+
+/** == Single Task == **/
+function tst_tasks_view_counter($task = null) {
+	global $post;
+	
+	if(!$task)
+		$task = $post;
+	
+	$views = pvc_get_post_views($task->ID); //temp usage og plugin function 
+?>
+	<span class="view-counter"><i class="glyphicon glyphicon-eye-open"></i> <?php echo (int)$views;?></span>
+<?php
+}
+
+function tst_get_edit_task_url($task = null){
+	global $post;
+	
+	if(!$task)
+		$task = $post;
+	
+	return add_query_arg('task', intval($task->ID), home_url('/task-actions/'));
+}
+
+function tst_is_user_candidate($user_id = false, $task_id = false) {
+
+    $user_id = $user_id ? $user_id : get_current_user_id();
+    if( !$user_id )
+        return false;
+
+    if( !$task_id ) {
+        global $post;
+        $task_id = $post->ID;
+    }
+
+    $p2p_id = p2p_type('task-doers')->get_p2p_id($user_id, $task_id);
+
+    if($p2p_id) // connection exists
+        return (int)p2p_get_meta($p2p_id, 'is_approved', true) ? 2 : 1;
+    return 0;
 }

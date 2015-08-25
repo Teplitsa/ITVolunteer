@@ -4,7 +4,6 @@
  *
  **/
 
-global $tst_member;
 
 $member_data = array();
 $social_ids =  wp_get_user_contact_methods();
@@ -24,7 +23,6 @@ if(empty($member) || !current_user_can('edit_user', $member_id)) {
     exit;
 }
 
-$tst_member = $member;
 $member_data = array(
     'member_id' =>  $member_id,
     'user_login' => $member->user_login,
@@ -61,11 +59,11 @@ get_header();?>
 <?php while ( have_posts() ) : the_post();?>
 
 
-<header class="page-heading">
+<header class="page-heading no-breadcrumbs">
 
 	<div class="row">
 		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+			
 			<h1 class="page-title">
 				<?php echo frl_page_title();?>
 				 <small class="edit-item"><a href="<?php echo tst_get_member_url($member);?>"><?php _e('Back to Preview mode', 'tst');?></a></small>

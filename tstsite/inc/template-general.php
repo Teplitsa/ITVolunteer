@@ -22,8 +22,8 @@ function frl_page_title(){
     }
 	elseif(is_singular('tasks')) {
 
-		$id = intval($post->ID); 
-		$title = apply_filters('the_title', $post->post_title)." (#{$id})";
+		//$id = intval($post->ID); 
+		$title = apply_filters('the_title', $post->post_title);
 
 	} elseif(is_single_member())
         $title = apply_filters('the_title', tst_get_member_name());
@@ -39,9 +39,10 @@ function frl_page_title(){
 	} elseif(is_page('member-actions'))
         $title = apply_filters('the_title', tst_get_member_action_title());
 
-    elseif(is_page('member-tasks'))
-        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name());
-
+    elseif(is_page('member-tasks')){
+		$user_id = get_current_user_id();
+        $title = apply_filters('the_title', __('All Tasks', 'tst'). ' / '. tst_get_member_name($user_id));
+    }
 	elseif(is_page() || is_single())
         $title = apply_filters('the_title', $post->post_title);
     elseif(is_search()){
@@ -223,9 +224,7 @@ function tst_ga_event_data($trigger_id){
 
 
 
-/**
- * Display navigation to next/previous pages when applicable
- */
+/** Next/previous nav when applicable **/
 function tst_content_nav( $nav_id, $query = null ) {	
 
 	$nav_class = ( is_single() || is_single_member()) ? 'nav-post' : 'nav-paging';
@@ -269,8 +268,7 @@ function tst_content_nav( $nav_id, $query = null ) {
 	<?php
 }
 
-
-
+/** Paging **/
 function frl_paginate_links($query = null, $echo = true) {
     global $wp_query;
     
@@ -333,64 +331,8 @@ function frl_paginate_links($query = null, $echo = true) {
 		$links;
 }
 
-
-
 function frl_get_sep() {
 	return "<span class='sep'>/</span>";
-}
-
-function frl_task_candidate_markup(WP_User $candidate, $mode = 1) {
-	
-$member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
-?>
-<div class="c-img">
-	<?php tst_temp_avatar($candidate);?>
-</div>
-<div class="c-name">
-	<a href="<?php echo $member_url;?>"><?php echo $candidate->first_name.' '.$candidate->last_name;?></a>
-	<div class="user-rating"><?php echo __('Rating', 'tst').': <span>'.tst_get_user_rating($candidate->ID).'</span>';?></div>
-</div>
-<div class="c-actions">
-	<?php if(p2p_get_meta($candidate->p2p_id, 'is_approved', true)) {?>
-
-		<span class="candidate-approved">
-			<span class="c-status-app btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></span>
-		</span>
-
-		<?php if($mode >= 1 && $mode <= 2) {?>
-		 
-		<span class="candidate-refuse" data-link-id="<?php echo $candidate->p2p_id;?>" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>" data-nonce="<?php echo wp_create_nonce($candidate->p2p_id.'-candidate-refuse-'.$candidate->ID);?>">
-			<span class="btn btn-danger btn-xs"><?php _e('Disapprove', 'tst');?></span>
-		</span>
-
-		<?php
-		} elseif($mode == 3 && !ItvReviews::instance()->is_review_for_doer_and_task($candidate->ID, get_the_ID())) {?>
-				 
-		<span class="leave-review" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>">
-			<span class="btn btn-primary btn-xs" title="<?php _e('Leave review', 'tst');?>"><span class="glyphicon glyphicon-bullhorn"></span></span>
-		</span>
-		
-		<?php }
-				
-	} else { ?>
-	
-		<span class="candidate-li">
-			<span class="c-status-napp btn btn-success btn-xs"><span class="glyphicon glyphicon-ok"></span></span>
-		</span>
-	
-		<?php if($mode == 1) {?>
-
-		<span class="candidate-ok" data-link-id="<?php echo $candidate->p2p_id;?>" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>" data-nonce="<?php echo wp_create_nonce($candidate->p2p_id.'-candidate-ok-'.$candidate->ID);?>">
-			<span class="btn btn-default btn-xs"><?php _e('Approve', 'tst');?></span>
-		</span>
-		<?php } ?>
-
-		
-
-	<?php }?>
-</div>
-
-<?php
 }
 
 
@@ -413,14 +355,6 @@ if(!function_exists('frl_current_url')){
 }
 
 
-function tst_login_avatar(){
-?>
-	<img src="<?php echo get_template_directory_uri();?>/assets/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
-<?php
-}
-
-
-
 /* Comments opened for tasks */
 add_filter('comments_open', 'tst_comments_on_tasks', 2, 2);
 function tst_comments_on_tasks($open, $post_id){
@@ -434,24 +368,34 @@ function tst_comments_on_tasks($open, $post_id){
 
 function tst_get_comment_author_link($comment_id = 0){
 		
-	$comment = get_comment($comment_id);
-	
-	if(!$comment->user_id)
+	$member = tst_get_comment_author($comment_id);
+	if(!$member)
 		return '';
 	
-	$member = get_user_by('id', $comment->user_id);	
 	$name = tst_get_member_name($member);
 	$url = tst_get_member_url($member);
 	
 	return "<a href='{$url}' class='url'>{$name}</a>";
 }
 
+function tst_get_comment_author($comment_id = 0){
+	
+	$comment = get_comment($comment_id);
+	
+	if(!$comment->user_id)
+		return false;
+	
+	return get_user_by('id', $comment->user_id);
+}
+
 function tst_comment( $comment, $args, $depth ) {
+	
+	$member = tst_get_comment_author($comment->comment_ID);
 ?>
 	<li id="comment-<?php comment_ID(); ?>" <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ); ?>>
 		<article id="div-comment-<?php comment_ID(); ?>" class="comment-body media">
 			<span class="pull-left comment-avatar">
-				<?php if(0 != $args['avatar_size']) tst_temp_avatar(); ?>
+				<?php if(0 != $args['avatar_size'] && $member) tst_temp_avatar($member); ?>
 			</span>
 
 			<div class="media-body">
@@ -492,37 +436,104 @@ function tst_comment( $comment, $args, $depth ) {
 }
 
 
+/** == User & Tasks connection == **/
 
-/** Old task params - to be reworked */
-function tst_task_params(){	
-?>
-<div class="row task-params">
-	<div class="col-md-4">
-	<?php
-		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', get_the_ID()));
-		$interval = tst_get_days_until_deadline($deadline); 
-		$reward = get_term(get_field('field_533bef600fe91', get_the_ID()), 'reward');
-	?>
-		<span class="<?php echo tst_get_deadline_class($interval);?> deadline task-param btn btn-default">
-			<span class="deadline-icon glyphicon glyphicon-time"></span>
-			<span class="deadline-date"><?php echo date('d.m.Y', strtotime($deadline));?></span>			
-		</span>
-	</div>
+function tst_get_user_created_tasks($user, $status = array()) {
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+	
+    $user = $user ? $user->ID : $user;
 
-	<?php tst_task_reward($reward)?>
-</div><!-- .row -->	
-<?php
+    if( !$status )
+        $status = array('publish', 'in_work', 'closed',);
+
+    $params = array(
+        'post_type' => 'tasks',
+        'author' => $user,
+        'nopaging' => true,
+    );
+
+    if($status && (is_array($status) || strlen($status)))
+        $params['post_status'] = $status;
+
+    $query = new WP_Query($params);
+
+    return $query->get_posts();
 }
 
-function tst_task_reward($reward) {
-?>
-<div class="col-md-8">
-	<span class="reward task-param btn btn-default" <?php if(!is_wp_error($reward)):?>title="<?php echo $reward->name; ?>"<?php endif; ?>>
-		<span class="reward-icon glyphicon glyphicon-thumbs-up"></span>
-		<span class="reward-name">
-		<?php echo is_wp_error($reward) ? __('No reward setted yet', 'tst') : $reward->name; ?>
-		</span>
-	</span>
-</div>
-<?php 
+function tst_get_user_working_tasks($user, $status = array()) {
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+
+	
+    if( !$status )
+        $status = array('publish', 'in_work', 'closed');
+
+    $params = array(
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => false,
+        'nopaging' => true
+    );
+
+    if($status && (is_array($status) || strlen($status)))
+        $params['post_status'] = $status;
+
+    return get_posts($params);
 }
+
+function tst_get_user_closed_tasks($user) {
+
+    if(is_object($user)) {
+    	;
+    }
+    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
+        $user = get_user_by('id', $user);
+        if(!$user) {
+        	$user = get_user_by('login', $user);
+        }
+    }
+    else {
+        $user = get_user_by('login', $user);
+    }
+ 
+
+    $params = array(
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => false,
+        'nopaging' => true,
+		'connected_meta' => array(
+			array(
+				'key' =>'is_approved',
+				'value' => 1,
+				'compare' => '='
+			)
+		),
+		'post_status' => 'closed'
+    );
+	
+    return get_posts($params);
+}
+
+
