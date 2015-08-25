@@ -55,7 +55,7 @@ $doers = tst_get_task_doers(false, true);
 	
 	<div class="row in-single">
 		
-		<div class="col-md-8 col-lg-9">
+		<div class="col-md-8">
         <?php if(isset($_GET['t'])) {
             switch((int)$_GET['t']) {
                 case 1: echo '<div class="alert alert-success">'.__('Task was successfully published!', 'tst').'</div>'; break;
@@ -71,18 +71,20 @@ $doers = tst_get_task_doers(false, true);
             }
         }?>
 
-			<div class="task-summary">
+		
+			<div class="task-summary task-section">
 				<?php the_content(); ?>
 				<?php echo apply_filters('frl_the_content', htmlspecialchars_decode(get_field('expecting'), ENT_QUOTES));?>
 			</div>
 
-			<div class="task-author">			
+			<div class="task-author task-section">
+				<h5><?php _e('Need help', 'tst');?></h5>
 				<div class="task-author-avatar"><?php echo tst_get_task_author_avatar();?></div>
 				<h4 class="task-author-name"><?php echo tst_get_task_author_link() ;?></h4>
 				<div class="task-author-desc"><?php echo html_entity_decode(tst_get_member_summary($author_id, false), ENT_QUOTES, 'UTF-8'); ?></div>
 			</div>
 			
-			<div class="task-details">
+			<div class="task-details task-section">
 				<h5><?php _e('About organization/project', 'tst');?></h5>
 				<?php
 					$org = tst_get_task_author_org();
@@ -93,14 +95,14 @@ $doers = tst_get_task_doers(false, true);
 				<?php echo apply_filters('frl_the_content', htmlspecialchars_decode(get_field('about-author-org'), ENT_QUOTES));?>
 			</div>
 			
-			<div class="task-comments">
-			<?php comments_template(); ?>
+			<div class="task-comments task-section">
+				<h5><?php _e('Comments', 'tst');?></h5>
+				<?php comments_template(); ?>
 			</div>
-
 			
 		</div>
 
-		<div class="col-md-4 col-lg-3">
+		<div class="col-md-4 col-lg-3 col-lg-offset-1">
 			
 			<?php include(get_template_directory().'/partials/sidebar-doers.php');?>
 					

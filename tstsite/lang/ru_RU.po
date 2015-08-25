@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-25 10:02+0300\n"
-"PO-Revision-Date: 2015-08-25 10:02+0300\n"
+"POT-Creation-Date: 2015-08-25 13:09+0300\n"
+"PO-Revision-Date: 2015-08-25 13:09+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -51,7 +51,7 @@ msgid "There is no comments."
 msgstr "Комментариев пока нет."
 
 # @ tst
-#: comments.php:45 single-tasks.php:96
+#: comments.php:43 comments.php:52
 msgid "Leave a comment"
 msgstr "Оставить комментарий"
 
@@ -305,7 +305,7 @@ msgstr "Решено"
 # @ default
 # @ tst
 #: inc/admin.php:226 inc/admin.php:280 page-member-tasks.php:89
-#: partials/content-member_single.php:26 single-tasks.php:32
+#: partials/content-member_single.php:26 single-tasks.php:33
 msgid "Edit"
 msgstr "Редактировать"
 
@@ -1145,8 +1145,7 @@ msgid "Rewards"
 msgstr "Награды"
 
 # @ tst
-#: inc/post-types.php:10 inc/template-tasks.php:98 page-task-action.php:161
-#: tasks-filter.php:47
+#: inc/post-types.php:10 inc/template-tasks.php:106 page-task-action.php:161
 msgid "Reward"
 msgstr "Награда"
 
@@ -1208,7 +1207,7 @@ msgstr "Награды не найдены"
 
 # @ tst
 #: inc/post-types.php:39 inc/post-types.php:41 inc/post-types.php:87
-#: navbar.php:20 partials/content-member.php:47 partials/navbar.php:20
+#: partials/content-member.php:47 partials/navbar.php:20
 msgid "Tasks"
 msgstr "Задачи"
 
@@ -1226,8 +1225,7 @@ msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:45 inc/template-general.php:34 navbar.php:61
-#: partials/navbar.php:61
+#: inc/post-types.php:45 inc/template-general.php:34 partials/navbar.php:61
 msgid "New task"
 msgstr "Новая задача"
 
@@ -1448,8 +1446,8 @@ msgstr "Google+"
 
 # @ tst
 # @ default
-#: inc/template-members.php:564 navbar.php:56 page-login.php:81
-#: page-registration.php:47 partials/navbar.php:56
+#: inc/template-members.php:564 page-login.php:81 page-registration.php:47
+#: partials/navbar.php:56
 msgid "Log In"
 msgstr "Войти"
 
@@ -1474,17 +1472,17 @@ msgid "deadline: %s"
 msgstr "дедлайн: %s"
 
 # @ tst
-#: inc/template-tasks.php:114 partials/home-well.php:56
+#: inc/template-tasks.php:122 partials/home-well.php:56
 msgid "New tasks:"
 msgstr "Ожидают волонтеров:"
 
 # @ tst
-#: inc/template-tasks.php:119 partials/home-well.php:59
+#: inc/template-tasks.php:127 partials/home-well.php:59
 msgid "In work tasks:"
 msgstr "В работе:"
 
 # @ tst
-#: inc/template-tasks.php:124 partials/home-well.php:62
+#: inc/template-tasks.php:132 partials/home-well.php:62
 msgid "Closed tasks:"
 msgstr "Решено:"
 
@@ -1492,60 +1490,6 @@ msgstr "Решено:"
 #, php-format
 msgid "Member: %s"
 msgstr "Участник: %s"
-
-# @ tst
-#: members-filter.php:4
-msgid "Select members"
-msgstr "Выбрать пользователей"
-
-# @ tst
-#: members-filter.php:11
-msgid "Member role"
-msgstr "Роль"
-
-# @ tst
-#: members-filter.php:14
-msgid "Any role"
-msgstr "Любая"
-
-# @ tst
-#: members-filter.php:24
-msgid "Filter members"
-msgstr "Найти пользователей"
-
-# @ tst
-#: navbar.php:25 partials/navbar.php:25
-msgid "Members"
-msgstr "Участники"
-
-# @ tst
-#: navbar.php:30 navbar.php:32 partials/navbar.php:30 partials/navbar.php:32
-msgid "About"
-msgstr "О проекте"
-
-#: navbar.php:34 partials/navbar.php:34
-msgid "Advices"
-msgstr "Советы НКО"
-
-# @ tst
-#: navbar.php:35 partials/navbar.php:35
-msgid "Contacts"
-msgstr "Контакты"
-
-# @ tst
-#: navbar.php:49 partials/navbar.php:49
-msgid "My tasks"
-msgstr "Мои задачи"
-
-# @ tst
-#: navbar.php:50 partials/navbar.php:50
-msgid "My profile"
-msgstr "Мой профиль"
-
-# @ tst
-#: navbar.php:52 partials/navbar.php:52
-msgid "Log out"
-msgstr "Выйти"
 
 # @ tst
 #: no-results.php:10
@@ -1911,17 +1855,17 @@ msgstr ""
 
 #  Оставить дедлайн? или назвать иначе?
 # @ tst
-#: page-task-action.php:154 tasks-filter.php:34
+#: page-task-action.php:154
 msgid "Deadline"
 msgstr "Дедлайн"
 
 # @ tst
-#: page-task-action.php:163 tasks-filter.php:50
+#: page-task-action.php:163
 msgid "Select a reward for a service, please"
 msgstr "Выберите награду за выполнение задачи"
 
 # @ tst
-#: page-task-action.php:175 tasks-filter.php:62
+#: page-task-action.php:175
 msgid "Task tags"
 msgstr "Теги"
 
@@ -2114,6 +2058,40 @@ msgid "Tasks on site"
 msgstr "Задачи"
 
 # @ tst
+#: partials/navbar.php:25
+msgid "Members"
+msgstr "Участники"
+
+# @ tst
+#: partials/navbar.php:30 partials/navbar.php:32
+msgid "About"
+msgstr "О проекте"
+
+#: partials/navbar.php:34
+msgid "Advices"
+msgstr "Советы НКО"
+
+# @ tst
+#: partials/navbar.php:35
+msgid "Contacts"
+msgstr "Контакты"
+
+# @ tst
+#: partials/navbar.php:49
+msgid "My tasks"
+msgstr "Мои задачи"
+
+# @ tst
+#: partials/navbar.php:50
+msgid "My profile"
+msgstr "Мой профиль"
+
+# @ tst
+#: partials/navbar.php:52
+msgid "Log out"
+msgstr "Выйти"
+
+# @ tst
 #: partials/sidebar-doers.php:25
 msgid "Disapprove"
 msgstr "Отклонить"
@@ -2273,37 +2251,37 @@ msgid "Doers participated"
 msgstr "Участвовало исполнителей "
 
 # @ tst
-#: single-tasks.php:60
+#: single-tasks.php:61
 msgid "Task was successfully published!"
 msgstr "Задача успешно опубликована!"
 
 # @ tst
-#: single-tasks.php:61
+#: single-tasks.php:62
 msgid "Task was successfully unpublished."
 msgstr "Публикация задачи отменена."
 
 # @ tst
-#: single-tasks.php:62
+#: single-tasks.php:63
 msgid "Task was successfully sent to work!"
 msgstr "Задача успешно передана в работу!"
 
 # @ tst
-#: single-tasks.php:63
+#: single-tasks.php:64
 msgid "Task was successfully closed!"
 msgstr "Задача успешно решена!"
 
 # @ tst
-#: single-tasks.php:64
+#: single-tasks.php:65
 msgid "The volunteer was successfully approved!"
 msgstr "Волонтёр был успешно утверждён!"
 
 # @ tst
-#: single-tasks.php:65
+#: single-tasks.php:66
 msgid "The volunteer was successfully refused."
 msgstr "Волонтёру было отказано."
 
 # @ tst
-#: single-tasks.php:66
+#: single-tasks.php:67
 msgid ""
 "<strong>You have been added to the task as a volunteer to help with it!</"
 "strong> A task author is already noted."
@@ -2312,67 +2290,22 @@ msgstr ""
 "strong> Автор задания уже уведомлён."
 
 # @ tst
-#: single-tasks.php:67
+#: single-tasks.php:68
 msgid "You have been removed from the volunteers list for this task."
 msgstr "Вы были удалены из списка волонтёров для выполнения этого задания."
 
+#: single-tasks.php:81
+msgid "Need help"
+msgstr "Помощь нужна"
+
 # @ tst
-#: single-tasks.php:84
+#: single-tasks.php:88
 msgid "About organization/project"
 msgstr "Об организации / проекте"
 
-# @ tst
-#: tasks-filter.php:6
-msgid "Select a tasks"
-msgstr "Выбрать задачи"
-
-#: tasks-filter.php:11
-msgid "Usual sort"
-msgstr "Обычная сортировка"
-
-#: tasks-filter.php:13
-msgid "Sort by candidates amount"
-msgstr "Сортировать по количеству волонтеров"
-
-# @ tst
-#: tasks-filter.php:20
-msgid "Status"
-msgstr "Статус"
-
-# @ tst
-#: tasks-filter.php:23
-msgid "Any status"
-msgstr "Любой статус"
-
-# @ tst
-#: tasks-filter.php:37
-msgid "Any date"
-msgstr "Любая дата"
-
-# @ tst
-#: tasks-filter.php:38
-msgid "Less than 10 days"
-msgstr "Менее 10 дней"
-
-# @ tst
-#: tasks-filter.php:39
-msgid "Less than a month"
-msgstr "Менее месяца"
-
-# @ tst
-#: tasks-filter.php:40
-msgid "More than a month"
-msgstr "Более месяца"
-
-# @ tst
-#: tasks-filter.php:64
-msgid "Choose a tags for the task"
-msgstr "Выберите метки задач"
-
-# @ tst
-#: tasks-filter.php:76
-msgid "Filter tasks"
-msgstr "Найти задачи"
+#: single-tasks.php:99
+msgid "Comments"
+msgstr "Комментарии"
 
 #: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/parser.js:239
 #, javascript-format
@@ -2499,6 +2432,64 @@ msgstr ""
 #: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:165
 msgid "bar"
 msgstr ""
+
+# @ tst
+#~ msgid "Select members"
+#~ msgstr "Выбрать пользователей"
+
+# @ tst
+#~ msgid "Member role"
+#~ msgstr "Роль"
+
+# @ tst
+#~ msgid "Any role"
+#~ msgstr "Любая"
+
+# @ tst
+#~ msgid "Filter members"
+#~ msgstr "Найти пользователей"
+
+# @ tst
+#~ msgid "Select a tasks"
+#~ msgstr "Выбрать задачи"
+
+#~ msgid "Usual sort"
+#~ msgstr "Обычная сортировка"
+
+#~ msgid "Sort by candidates amount"
+#~ msgstr "Сортировать по количеству волонтеров"
+
+# @ tst
+#~ msgid "Status"
+#~ msgstr "Статус"
+
+# @ tst
+#~ msgid "Any status"
+#~ msgstr "Любой статус"
+
+# @ tst
+#~ msgid "Any date"
+#~ msgstr "Любая дата"
+
+# @ tst
+#~ msgid "Less than 10 days"
+#~ msgstr "Менее 10 дней"
+
+# @ tst
+#~ msgid "Less than a month"
+#~ msgstr "Менее месяца"
+
+# @ tst
+#~ msgid "More than a month"
+#~ msgstr "Более месяца"
+
+# @ tst
+#~ msgid "Choose a tags for the task"
+#~ msgstr "Выберите метки задач"
+
+# @ tst
+#~ msgid "Filter tasks"
+#~ msgstr "Найти задачи"
 
 #~ msgid ""
 #~ "Teplitsa of social technologies - краудсорсинг, технологии для "

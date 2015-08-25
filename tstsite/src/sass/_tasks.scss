@@ -166,12 +166,13 @@
 	.page-heading {
 		background: transparent;
 		border: none;
-		padding: 20px 30px 0 50px;		
+		padding: 20px 30px 0 50px;
+		margin-bottom: $measure-elements-margin/2;
 	}
 	
 	.task-title {
 		position: relative;
-		font-size: 26px;		
+		font-size: 30px;		
 	}
 	
 	.status-wrap {
@@ -250,15 +251,20 @@
 		padding-left: 50px;
 	}
 	
-	.task-comments {
-		margin-top: $measure-elements-margin*2;
+	.task-section {
+		margin-bottom: $measure-elements-margin;
+	}
+	
+	#reply-title {
+		font-size: 13px;
+		text-transform:  uppercase;
+		font-weight: normal;
 	}
 }
 
 
 .task-author {
-	@include clearfix;
-	margin: $measure-elements-margin 0;
+	@include clearfix;	
 	
 	.task-author-avatar {
 		width: 62px;
@@ -278,15 +284,11 @@
 		color: $color-text-meta;
 		margin-left: 75px;
 	}
+	
 }
 
-.connected-users {
-	margin-top: $measure-elements-margin;
-	
-	@include for(medium-screens) {
-		margin-top: 0;
-	}
-	
+.connected-users {	
+		
 	h5 {
 		margin-top: 0;
 		margin-bottom: 2em;		

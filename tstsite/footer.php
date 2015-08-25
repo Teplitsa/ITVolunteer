@@ -106,6 +106,9 @@ function tst_brand_banner() {
 
 </div><!-- #page -->
 </div><!-- .site-layout -->
+
+<!-- sharing -->
+
 </div><!-- .site-layout-container-->
 
 
