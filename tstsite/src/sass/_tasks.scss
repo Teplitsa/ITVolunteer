@@ -161,18 +161,20 @@
 	}
 }
 
+$base-el-margin : 18px;
+
 .tpl-task-full {
 	
 	.page-heading {
 		background: transparent;
 		border: none;
 		padding: 20px 30px 0 50px;
-		margin-bottom: $measure-elements-margin/2;
+		margin-bottom: 0;
 	}
 	
 	.task-title {
 		position: relative;
-		font-size: 30px;		
+		font-size: 32px;		
 	}
 	
 	.status-wrap {
@@ -195,7 +197,7 @@
 	}
 	
 	.tags {
-		margin-top: 18px;
+		margin: 8px 0;
 		font-size: 13px;
 		a {
 			display: inline-block;
@@ -214,14 +216,14 @@
 	}
 	
 	.task-reward {
-		margin-top: 9px;
+		margin: $base-el-margin 0 6px;
 		color: $color-label-green-normal;
 		font-size: 16px;
 	}
 	
 	.task-top-meta {		
 		font-size: 12px;
-		margin-top: 9px;
+		margin: 6px 0;
 		
 		time {
 			color: $color-text-meta;
@@ -233,8 +235,7 @@
 		}
 	}
 	
-	#multibutton {
-		margin-top: 18px;
+	#multibutton {		
 		.btn {
 			border-radius: 0;
 		}
@@ -252,7 +253,8 @@
 	}
 	
 	.task-section {
-		margin-bottom: $measure-elements-margin;
+		margin-bottom: $base-el-margin;
+		h5 { margin-top: 0; }
 	}
 	
 	#reply-title {
@@ -283,6 +285,9 @@
 		font-size: 12px;
 		color: $color-text-meta;
 		margin-left: 75px;
+		p {
+			margin: 0;
+		}
 	}
 	
 }
