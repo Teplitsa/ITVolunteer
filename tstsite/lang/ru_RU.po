@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-25 13:09+0300\n"
-"PO-Revision-Date: 2015-08-25 13:09+0300\n"
+"POT-Creation-Date: 2015-08-26 00:04+0300\n"
+"PO-Revision-Date: 2015-08-26 00:51+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -19,6 +19,8 @@ msgstr ""
 "X-Poedit-Basepath: ../\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: bower_components\n"
 
 # @ tst
 #: 404.php:36
@@ -252,7 +254,7 @@ msgstr "Расписание"
 
 # @ default
 # @ tst
-#: inc/admin.php:114 page-task-action.php:209
+#: inc/admin.php:114 page-task-action.php:171
 #: partials/sidebar-multibutton.php:15 sidebar-task.php:37
 msgid "Publish"
 msgstr "Опубликовать"
@@ -281,7 +283,6 @@ msgstr "Статус:"
 # @ tst
 # @ default
 #: inc/admin.php:208 inc/admin.php:233 inc/template-tasks.php:10
-#: page-task-action.php:86
 msgid "Draft"
 msgstr "Черновик"
 
@@ -1145,7 +1146,7 @@ msgid "Rewards"
 msgstr "Награды"
 
 # @ tst
-#: inc/post-types.php:10 inc/template-tasks.php:106 page-task-action.php:161
+#: inc/post-types.php:10 inc/template-tasks.php:106 page-task-action.php:144
 msgid "Reward"
 msgstr "Награда"
 
@@ -1794,12 +1795,12 @@ msgid "Username (login)"
 msgstr "Логин"
 
 # @ tst
-#: page-task-action.php:105
+#: page-task-action.php:68
 msgid "Task title"
 msgstr "Заголовок задачи"
 
 # @ tst
-#: page-task-action.php:119
+#: page-task-action.php:92
 #, php-format
 msgid ""
 "Your task was successfully published! Now it's open for a new volunteers to "
@@ -1809,121 +1810,88 @@ msgstr ""
 "волонтёров, <a href='%s'>взгляните сами</a>."
 
 # @ tst
-#: page-task-action.php:120
+#: page-task-action.php:93
 #, php-format
 msgid "Your data was successfully saved. <a href=\"%s\">Check it out</a>"
 msgstr ""
 "Информация была успешно сохранена. <a href=\"%s\">На страницу задачи</a>"
 
 # @ tst
-#: page-task-action.php:127
+#: page-task-action.php:100
 msgid "Task description"
 msgstr "Описание задачи"
 
-#: page-task-action.php:128
+#: page-task-action.php:100
 msgid "Create task instructions"
 msgstr "Инструкция"
 
 # @ tst
-#: page-task-action.php:129
+#: page-task-action.php:102
 msgid "itv_task_description_more_info"
 msgstr ""
 "Больше деталей, конкретики - что бы задачу можно было выполнить не задавая "
-"вам дополнительных вопросов."
+"вам дополнительных вопросов. Что ожидаем от исполнителя - разработка, "
+"дизайн, верстка, правки на существующем сайте."
 
 # @ tst
-#: page-task-action.php:135
-msgid "What we are expecting from you"
-msgstr "Что ожидаем от исполнителя"
-
-# @ tst
-#: page-task-action.php:136
-msgid "itv_task_expecting_more_info"
-msgstr "Консультация, разработка, дизайн, прочее."
-
-# @ tst
-#: page-task-action.php:143
+#: page-task-action.php:107
 msgid "About task author's organization / project"
 msgstr "Об организации / проекте"
 
 # @ tst
-#: page-task-action.php:144
+#: page-task-action.php:108
 msgid "itv_task_about_author_org_more_info"
 msgstr ""
 "Краткое и понятное описание проекта, почему волонтерам следует помочь именно "
 "вам."
 
-#  Оставить дедлайн? или назвать иначе?
-# @ tst
-#: page-task-action.php:154
-msgid "Deadline"
-msgstr "Дедлайн"
+#: page-task-action.php:114
+msgid "Task's author"
+msgstr "Автор:"
 
 # @ tst
-#: page-task-action.php:163
-msgid "Select a reward for a service, please"
-msgstr "Выберите награду за выполнение задачи"
-
-# @ tst
-#: page-task-action.php:175
+#: page-task-action.php:122
 msgid "Task tags"
 msgstr "Теги"
 
 # @ tst
-#: page-task-action.php:177
+#: page-task-action.php:124
 msgid "Choose a tags for the task..."
-msgstr "Выберите теги для этой задачи"
+msgstr "Выберите три тега для этой задачи"
 
 # @ tst
-#: page-task-action.php:197
+#: page-task-action.php:146
+msgid "Select a reward for a service, please"
+msgstr "Выберите награду за выполнение задачи"
+
+# @ tst
+#: page-task-action.php:159
 msgid "itv_task_consult_needed_label"
 msgstr "Дополнительная консультация"
 
 # @ tst
-#: page-task-action.php:200
+#: page-task-action.php:162
 msgid "itv_task_consult_needed_more_info"
 msgstr ""
-"отметьте, что бы получить бесплатную консультация сотрудника Теплицы"
+"получить бесплатную консультацию сотрудника Теплицы социальных технологий"
 
 # @ tst
-#: page-task-action.php:210
+#: page-task-action.php:172
 msgid "Save draft"
 msgstr "Сохранить черновик"
 
 # @ tst
-#: page-task-action.php:213
+#: page-task-action.php:175
 msgid "Refresh"
 msgstr "Обновить"
 
 # @ tst
-#: page-task-action.php:220
-msgid "The task is open for help offers"
-msgstr "Задача открыта для предложений помощи"
-
-# @ tst
-#: page-task-action.php:221 partials/sidebar-multibutton.php:53
-#: sidebar-task.php:92
-msgid "The task is in work"
-msgstr "Задача в работе"
-
-# @ tst
-#: page-task-action.php:222 partials/sidebar-multibutton.php:70
-#: sidebar-task.php:125
-msgid "The task is closed"
-msgstr "Задача решена"
-
-# @ tst
-#: page-task-action.php:223
-msgid "The task is drafted"
-msgstr "Задача является черновиком"
-
-# @ tst
-#: page-task-action.php:242
+#: page-task-action.php:196
 msgid "View Task"
 msgstr "Просмотреть задачу"
 
 # @ tst
-#: page-task-action.php:251
+#: page-task-action.php:205
 msgid "Delete the task"
 msgstr "Удалить задачу"
 
@@ -2148,6 +2116,11 @@ msgstr "Закрыть задачу"
 
 # @ tst
 #: partials/sidebar-multibutton.php:53 sidebar-task.php:92
+msgid "The task is in work"
+msgstr "Задача в работе"
+
+# @ tst
+#: partials/sidebar-multibutton.php:53 sidebar-task.php:92
 msgid "Re-open the task?"
 msgstr "Продолжить набор кандидатов?"
 
@@ -2155,6 +2128,11 @@ msgstr "Продолжить набор кандидатов?"
 #: partials/sidebar-multibutton.php:68 sidebar-task.php:123
 msgid "Return to work"
 msgstr "Вернуться к работе"
+
+# @ tst
+#: partials/sidebar-multibutton.php:70 sidebar-task.php:125
+msgid "The task is closed"
+msgstr "Задача решена"
 
 #: partials/sidebar-multibutton.php:78 sidebar-task.php:133
 msgid "Leave a review to the task doer just to thank him."
@@ -2306,131 +2284,26 @@ msgstr "Об организации / проекте"
 msgid "Comments"
 msgstr "Комментарии"
 
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/parser.js:239
-#, javascript-format
-msgid "Not enough arguments following: %s"
-msgstr ""
+# @ tst
+#~ msgid "What we are expecting from you"
+#~ msgstr "Что ожидаем от исполнителя"
 
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/parser.js:340
-#, javascript-format
-msgid "Invalid JSON config file: %s"
-msgstr ""
+# @ tst
+#~ msgid "itv_task_expecting_more_info"
+#~ msgstr "Консультация, разработка, дизайн, прочее."
 
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:127
-msgid "Commands:"
-msgstr ""
+#  Оставить дедлайн? или назвать иначе?
+# @ tst
+#~ msgid "Deadline"
+#~ msgstr "Дедлайн"
 
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:160
-msgid "Options:"
-msgstr ""
+# @ tst
+#~ msgid "The task is open for help offers"
+#~ msgstr "Задача открыта для предложений помощи"
 
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:169
-msgid "boolean"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:170
-msgid "count"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:171
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:172
-msgid "string"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:173
-msgid "array"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:177
-msgid "required"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:178
-msgid "choices:"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:197
-msgid "Examples:"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:278
-msgid "generated-value"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/usage.js:300
-msgid "default:"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:19
-#, javascript-format
-msgid "Not enough non-option arguments: got %s, need at least %s"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:23
-#, javascript-format
-msgid "Too many non-option arguments: got %s, maximum of %s"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:148
-msgid "Invalid values:"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:151
-#, javascript-format
-msgid "Argument: %s, Given: %s, Choices: %s"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:171
-#, javascript-format
-msgid "Argument check failed: %s"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/lib/validation.js:238
-msgid "Implications failed:"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:26
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:37
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:46
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:55
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:66
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:76
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:290
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:292
-msgid "Hello"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:84
-#, javascript-format
-msgid "Hello %s %s"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:100
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:109
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:125
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:141
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:163
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:183
-msgid "banana"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:124
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:328
-msgid "meow"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:162
-msgid "apple"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:164
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:313
-msgid "foo"
-msgstr ""
-
-#: node_modules/gulp-sass/node_modules/node-sass/node_modules/sass-graph/node_modules/yargs/node_modules/y18n/test/y18n-test.js:165
-msgid "bar"
-msgstr ""
+# @ tst
+#~ msgid "The task is drafted"
+#~ msgstr "Задача является черновиком"
 
 # @ tst
 #~ msgid "Select members"

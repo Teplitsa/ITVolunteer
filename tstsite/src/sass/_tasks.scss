@@ -358,3 +358,71 @@ $base-el-margin : 24px;
 		}
 	}
 }
+
+
+/** Edit tasks **/
+.tpl-edit-task {
+	
+	.page-heading {
+		border: none;
+		padding: 20px 30px 5px 30px;
+		background: transparent;
+		margin-bottom: 15px;
+		
+		@include for(medium-screens) {
+			margin-bottom: 0;
+		}	
+		
+		
+		time {
+			color: $color-text-meta;
+			font-size: 12px;
+			padding-left: 10px;
+		}
+	}
+	
+	.status-label{
+		display: inline-block;
+		background: $color-text-meta;
+		color: $color-white;
+		font-size: 11px;
+		padding: 2px 15px 3px;
+	}
+	
+	.draft-center .btn {
+		border-radius: 0;
+	}
+	
+	.author-ref {
+		color: $color-text-meta;
+		a {
+			color: $color-text-meta;
+		}
+		a:hover {
+			color: $color-text-meta;
+			text-decoration: underline;
+		}
+	}
+	
+	.publish-button {
+		margin-bottom: 0;
+		padding: 15px 0 23px;
+	}
+	
+	.draft-center {
+		margin: 0;
+	}
+	
+	.action-buttons a,
+	.action-buttons input{
+		border-radius: 0;	
+	}
+}
+
+/* task form sub label */
+.itv-task-form-sublabel {
+  font-size: 0.9em;
+  line-height: 1.3;
+  margin-top: 5px; 
+}
+

@@ -36,11 +36,11 @@ if( !empty($_GET['task']) ){
 			'task_title' => $task->post_title,
 			'task_descr' => $task->post_content,
 			'task_status' => $task->post_status,
-			'expecting' => get_field('field_533bebda0fe8d', $task->ID),
-			'about_reward' => get_field('field_533bec930fe8e', $task->ID),
-			'about_author_org' => get_field('field_533beee40fe8f', $task->ID),
-			'deadline' => date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID)),
-			'reward_id' => get_field('field_533bef600fe91', $task->ID),
+			'expecting' => get_field('expecting', $task->ID),
+			'about_reward' => get_field('about_reward', $task->ID),
+			'about_author_org' => get_field('about-author-org', $task->ID),
+			'deadline' => date_from_yymmdd_to_dd_mm_yy(get_field('deadline', $task->ID)),
+			'reward_id' => get_field('reward', $task->ID),
 			'is_tst_consult_needed' => get_field('is_tst_consult_needed', $task->ID),
 		);
 	}
@@ -52,7 +52,7 @@ if( !empty($_GET['task']) ){
 
 get_header();?>
 
-<article class="task-actions">
+<article class="task-actions tpl-edit-task">
 <?php while ( have_posts() ) : the_post();?>
 
 
@@ -62,51 +62,24 @@ get_header();?>
 
 <header class="page-heading">
 
-	<div class="row">
-		<div class="col-md-8">
-			<?php echo frl_breadcrumbs();?>
-		</div>
-		<div class="col-md-4">
-			<div class="status-block-task in-action">
-				<div class="row-top task-meta">	
-				<?php
-					if($new_task)
-						tst_newtask_fixed_meta();
-					else
-						tst_task_fixed_meta($task);
-				?>
-				</div>
-			</div>
-		</div>
-	</div><!-- .row -->
-
-	<div class="row">
-		<div class="col-md-1">
-        <?php if($new_task) {?>
-			<span class="label label-default"><?php _e('Draft');?></span>
-        <?php } else {
-            $status_label = tst_get_task_status_label($task->post_status);
-            switch($task->post_status) {
-                case 'draft':
-                    echo '<span class="label">'.$status_label.'</span>'; break;
-                case 'publish':
-                    echo '<span class="label alert-info">'.$status_label.'</span>'; break;
-                case 'in_work':
-                    echo '<span class="label alert-success">'.$status_label.'</span>'; break;
-                case 'closed':
-                    echo '<span class="label alert-warning">'.$status_label.'</span>'; break;
-                default:
-            }
-        }?>
-		</div>
-
-		<div class="col-md-11">
+	<div class="row">		
+		<div class="col-md-10">
 			<div class="form-group">			
 			    <input class="form-control input-lg" placeholder="<?php _e('Task title', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="90" />
                 <div id="task-title-vm" class="validation-message" style="display: none;"></div>
 			</div>
 		</div>
-	</div>
+		
+		<div class="col-md-2">
+		<?php $today = strtotime(sprintf('now %s hours', get_option('gmt_offset'))); ?>
+			<time><?php echo date('d.m.y.', $today);?></time><br>
+		<?php
+			$status  = ($new_task) ? 'draft' : get_post_status($task);			
+			$status_label = tst_get_task_status_label($status);
+		?>
+			<span class="status-label label-<?php echo $status;?>"><?php echo $status_label;?></span>		
+		</div>
+	</div>	
 </header>
 
 <div class="page-body">
@@ -124,54 +97,28 @@ get_header();?>
         }?>
 
 		<div class="form-group">
-			<label for="task-descr"><?php _e('Task description', 'tst');?></label>
-			<small><a href="<?php echo site_url('/sovety-dlya-nko-uspeshnye-zadachi/') ?>" target="_blank">(<?php _e('Create task instructions', 'tst'); ?>)</a></small>
-			<div class="itv-task-form-sublabel"><?php _e('itv_task_description_more_info', 'tst')?></div>
-			<textarea id="task-descr" class="form-control" rows="6"><?php echo empty($task_data['task_descr']) ? '' : htmlspecialchars_decode($task_data['task_descr'], ENT_QUOTES);?></textarea>
+			<label for="task-descr"><?php _e('Task description', 'tst');?> <small><a href="<?php echo site_url('/sovety-dlya-nko-uspeshnye-zadachi/') ?>" target="_blank">(<?php _e('Create task instructions', 'tst'); ?>)</a></small></label>
+			
+			<textarea id="task-descr" class="form-control" rows="6" placeholder="<?php _e('itv_task_description_more_info', 'tst')?>"><?php echo empty($task_data['task_descr']) ? '' : htmlspecialchars_decode($task_data['task_descr'], ENT_QUOTES);?></textarea>
             <div id="task-descr-vm" class="validation-message" style="display: none;"></div>
 		</div>
 
 		<div class="form-group">
-			<label for="expecting"><?php _e('What we are expecting from you', 'tst');?></label>
-			<div class="itv-task-form-sublabel"><?php _e('itv_task_expecting_more_info', 'tst')?></div>
-			<textarea id="expecting" class="form-control" rows="6"><?php echo empty($task_data['expecting']) ? '' : strip_tags(htmlspecialchars_decode($task_data['expecting'], ENT_QUOTES));?></textarea>
-            <div id="expecting-vm" class="validation-message" style="display: none;"></div>
-		</div>
-
-
-		<div class="form-group">
-			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
-			<div class="itv-task-form-sublabel"><?php _e('itv_task_about_author_org_more_info', 'tst')?></div>
-			<textarea id="about-author-org" class="form-control" rows="6"><?php echo empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));?></textarea>
+			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>			
+			<textarea id="about-author-org" class="form-control" rows="6" placeholder="<?php _e('itv_task_about_author_org_more_info', 'tst')?>"><?php echo empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));?></textarea>
             <div id="about-author-org-vm" class="validation-message" style="display: none;"></div>
 		</div>
-
+		
+		<div class="form-group author-ref">
+		<?php $member_id = ($new_task) ? get_current_user_id() : $task->post_author;  ?>
+			<span class="author-label"><?php _e('Task\'s author', 'tst');?></span> <a href="<?php echo tst_get_member_url((int)$member_id);?>"><?php echo tst_get_member_name((int)$member_id);?></a>
+		</div>
 	</div><!-- .col-md-8 -->
 
+	
 	<div class="col-md-4">
 
 		<div class="form-group">
-			<label for="deadline"><?php _e('Deadline', 'tst');?></label>
-			<input class="form-control" type="text" id="deadline" value="<?php echo empty($task_data['deadline']) ? '' : $task_data['deadline'];?>" />
-			<input type="hidden" id="deadline-real" value="" />
-            <div id="deadline-vm" class="validation-message" style="display: none;"></div>
-		</div>
-	
-		<div class="form-group">
-			<label for="reward"><?php _e('Reward', 'tst');?></label>
-			<select id="reward" class="form-control">
-				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
-	
-				<?php foreach(get_terms('reward', array('hide_empty' => false)) as $reward) {?>
-					<option value="<?php echo $reward->term_id;?>" <?php selected($reward->term_id, isset($task_data['reward_id']) ? $task_data['reward_id'] : ''); ?>>
-						<?php echo $reward->name;?>
-					</option>
-				<?php }?>
-			</select>
-            <div id="reward-vm" class="validation-message" style="display: none;"></div>
-		</div>
-
-        <div class="form-group">
             <label for="task-tags"><?php _e('Task tags', 'tst');?></label>
             <br />
             <select id="task-tags" multiple="10" data-placeholder="<?php _e('Choose a tags for the task...', 'tst');?>">
@@ -186,23 +133,41 @@ get_header();?>
                     }
                 }
 
-                foreach(get_terms('post_tag', array('hide_empty' => false)) as $tag) {?>
+                foreach(get_terms('post_tag', array('hide_empty' => false)) as $tag) { ?>
                 <option value="<?php echo $tag->name;?>" <?php echo (!$new_task && tag_in_array($tag, $task_tags)) ? 'selected="selected"' : '';?>><?php echo $tag->name;?></option>
             <?php }?>
             </select>
             <div id="task-tags-vm" class="validation-message" style="display: none;"></div>
         </div>
 	
-	<div class="form-group">
-		<label for="task-descr"><?php _e('itv_task_consult_needed_label', 'tst')?></label>
-		<div class="itv-task-form-sublabel">
-			<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if(isset($task_data['is_tst_consult_needed']) && $task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
-			<?php _e('itv_task_consult_needed_more_info', 'tst')?>
-		</div>			
-	</div>
+		<div class="form-group">
+			<label for="reward"><?php _e('Reward', 'tst');?></label>
+			<select id="reward" class="form-control">
+				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
+				<?php
+					$terms = get_terms('reward', array('hide_empty' => false));
+					$selected = (isset($task_data['reward_id'])) ? $task_data['reward_id'] : $terms[0]->term_id;
+					foreach($terms as $reward) {
+				?>
+					<option value="<?php echo (int)$reward->term_id;?>" <?php selected($reward->term_id, $selected); ?>>
+						<?php echo $reward->name;?>
+					</option>
+				<?php }?>
+			</select>
+            <div id="reward-vm" class="validation-message" style="display: none;"></div>
+		</div>
+       
+	
+		<div class="form-group checkbox">
+			<b><?php _e('itv_task_consult_needed_label', 'tst')?></b>
+			<label for="is_tst_consult_needed" class="itv-task-form-sublabel">
+				<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if(isset($task_data['is_tst_consult_needed']) && $task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
+				<?php _e('itv_task_consult_needed_more_info', 'tst')?>
+			</label>			
+		</div>
 	
 
-		<div class="form-group">
+		<div class="form-group publish-button">
 			<!-- we should have several types of buttons -->
             <?php
             if($new_task || $task->post_status == 'draft') {
@@ -214,28 +179,20 @@ get_header();?>
                 $new_status = $task->post_status;
             }?>
 
-			<input type="submit" class="task-submit btn btn-success btn-lg widefat" value="<?php echo $publish_text;?>" id="task-publish" name="task-publish" />
-			<p class="help-block text-center button-status"><em><?php
-                switch($task_data['task_status']) {
-                    case 'publish': _e('The task is open for help offers', 'tst'); break;
-                    case 'in_work': _e('The task is in work', 'tst'); break;
-                    case 'closed': _e('The task is closed', 'tst'); break;
-                    default: _e('The task is drafted', 'tst');
-                }
-            ?></em></p>
+			<input type="submit" class="task-submit btn btn-success btn-lg widefat" value="<?php echo $publish_text;?>" id="task-publish" name="task-publish" />			
             <input type="hidden" id="status" value="<?php echo $new_status;?>" />
 		</div>
 
 		<div class="form-group">
 			
 			<?php if($new_task || $task->post_status == 'draft') :?>
-				<div class="text-center">					
+				<div class="draft-center">					
 					<input type="submit" class="task-submit btn btn-default btn-sm" value="<?php echo $save_text;?>" id="task-draft" name="task-draft" />					
                </div>
-				<hr>
+				
 			<?php endif; ?>
 			 
-			<div class="row">
+			<div class="row action-buttons">
 				<div class="col-md-6">
 				<?php if(!$new_task) : ?>
 					<div class="pull-right widefat return-button">
