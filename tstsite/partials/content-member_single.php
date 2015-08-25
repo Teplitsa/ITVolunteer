@@ -270,7 +270,7 @@ $activity = tst_get_member_activity($tst_member->user_object);
 									<a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
 								</div>							
 								<div class="mt-meta">
-									<span class="reward-icon glyphicon glyphicon-star"></span> <?php echo tst_get_task_meta($task, 'reward');?>
+									<span class="reward-icon glyphicon glyphicon-gift"></span> <?php echo tst_get_task_meta($task, 'reward');?>
 								</div>
 							</li>
                     <?php } //endforeach

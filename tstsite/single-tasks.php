@@ -78,14 +78,14 @@ $doers = tst_get_task_doers(false, true);
 			</div>
 
 			<div class="task-author task-section">
-				<h5><?php _e('Need help', 'tst');?></h5>
+				<h5 class="task-section-title"><?php _e('Need help', 'tst');?></h5>
 				<div class="task-author-avatar"><?php echo tst_get_task_author_avatar();?></div>
 				<h4 class="task-author-name"><?php echo tst_get_task_author_link() ;?></h4>
 				<div class="task-author-desc"><?php echo html_entity_decode(tst_get_member_summary($author_id, false), ENT_QUOTES, 'UTF-8'); ?></div>
 			</div>
 			
 			<div class="task-details task-section">
-				<h5><?php _e('About organization/project', 'tst');?></h5>
+				<h5 class="task-section-title"><?php _e('About organization/project', 'tst');?></h5>
 				<?php
 					$org = tst_get_task_author_org();
 					if(!empty($org)){
@@ -96,7 +96,7 @@ $doers = tst_get_task_doers(false, true);
 			</div>
 			
 			<div class="task-comments task-section">
-				<h5><?php _e('Comments', 'tst');?></h5>
+				<h5 class="task-section-title"><?php _e('Comments', 'tst');?></h5>
 				<?php comments_template(); ?>
 			</div>
 			

@@ -161,7 +161,7 @@
 	}
 }
 
-$base-el-margin : 18px;
+$base-el-margin : 24px;
 
 .tpl-task-full {
 	
@@ -216,7 +216,7 @@ $base-el-margin : 18px;
 	}
 	
 	.task-reward {
-		margin: $base-el-margin 0 6px;
+		margin: 10px 0;
 		color: $color-label-green-normal;
 		font-size: 16px;
 	}
@@ -254,13 +254,25 @@ $base-el-margin : 18px;
 	
 	.task-section {
 		margin-bottom: $base-el-margin;
-		h5 { margin-top: 0; }
+		.task-section-title {
+			margin-top: 0;
+			margin-bottom: 6px;
+			text-transform: uppercase;
+			font-weight: normal;
+			font-size: 11px;
+		}
+		
+		.task-section-title + h4 {
+			margin-top: 0;
+			font-weight: normal;
+			color: #111;
+		}
 	}
 	
 	#reply-title {
-		font-size: 13px;
-		text-transform:  uppercase;
+		font-size: 14px;		
 		font-weight: normal;
+		color: #111;
 	}
 }
 
@@ -279,6 +291,7 @@ $base-el-margin : 18px;
 	
 	.task-author-name {
 		margin: 0 0 9px 75px;
+		font-weight: normal;
 	}
 	
 	.task-author-desc {
