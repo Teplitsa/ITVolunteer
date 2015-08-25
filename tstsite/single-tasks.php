@@ -89,7 +89,7 @@ $doers = tst_get_task_doers(false, true);
 				<?php
 					$org = tst_get_task_author_org();
 					if(!empty($org)){
-						echo "<h4>{$org}</h4>";
+						echo "<p>{$org}</p>";
 					}
 				?>
 				<?php echo apply_filters('frl_the_content', htmlspecialchars_decode(get_field('about-author-org'), ENT_QUOTES));?>

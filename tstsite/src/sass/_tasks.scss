@@ -181,7 +181,7 @@ $base-el-margin : 24px;
 		width: 10px;
 		height: 10px;
 		position: absolute;
-		top: 9px;
+		top: 13px;
 		left: -20px;
 	}
 	
@@ -260,19 +260,12 @@ $base-el-margin : 24px;
 			text-transform: uppercase;
 			font-weight: normal;
 			font-size: 11px;
-		}
-		
-		.task-section-title + h4 {
-			margin-top: 0;
-			font-weight: normal;
-			color: #111;
-		}
+		}		
 	}
 	
 	#reply-title {
 		font-size: 14px;		
-		font-weight: normal;
-		color: #111;
+		font-weight: normal;		
 	}
 }
 
