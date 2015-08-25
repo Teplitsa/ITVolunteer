@@ -1210,7 +1210,7 @@ jQuery(function($){
         $(this).addClass('e-clicked');
     });
 
-	$form.submit(function(e){ 
+	$form.submit(function(e){
         e.preventDefault();
 
         var $form = $(this),
