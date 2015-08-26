@@ -271,6 +271,12 @@ $base-el-margin : 24px;
 		font-size: 14px;		
 		font-weight: normal;		
 	}
+	
+	.task-message > p {
+		font-size: 12px;
+		line-height: 1.3;
+		color: $color-text-meta;
+	}
 }
 
 #commentsubmit {

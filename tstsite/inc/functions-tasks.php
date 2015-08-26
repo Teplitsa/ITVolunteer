@@ -37,7 +37,7 @@ function tst_custom_task_status(){
 add_filter('wp_insert_post_data', 'tst_preserve_task_author', 2,2);
 function tst_preserve_task_author($data, $postarr) {
 		
-	if(!empty($postarr['ID']) && $data['post_type'] == 'task') {
+	if(!empty($postarr['ID']) && $data['post_type'] == 'tasks') {
 		$post_id = (int)$postarr['ID'];
 		$post_before = get_post($post_id);
 		$data['post_author'] = $post_before->post_author;
