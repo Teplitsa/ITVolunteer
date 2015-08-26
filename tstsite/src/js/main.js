@@ -78,13 +78,6 @@ jQuery(function($){
 	/* current paging item */
 	$('ul.pagination').find('span.current').parents('li').addClass('active');
 	
-    $('#deadline').datepicker({
-        dateFormat : 'dd.mm.yy', // to show on frontend
-//        altField: '#deadline-real',
-//        altFormat: 'dd.mm.yy', // to send to backend
-        minDate: new Date()
-    });
-
     $('#task-tags').chosen({
         disable_search_threshold: 10,
         max_selected_options: 3,
@@ -388,56 +381,39 @@ jQuery(function($){
 
         });
     });
-
-    $('.candidate-ok').click(function(e){
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $.post(frontend.ajaxurl, {
+	
+	$('#is_approved').on('change', function(e){
+		
+		var $this = $(this),
+			$checked = $this.prop('checked'),
+			action = ($checked) ? 'approve-candidate' : 'refuse-candidate',
+			msgCode = ($checked) ? 't=5' : 't=6';
+		console.log($this.attr('data-link-id'));
+		
+		$('#task-action-message').html('').hide();
+		
+		$.post(frontend.ajaxurl, {
             'action': 'approve-candidate',
-            'link-id': $this.data('link-id'),
-            'task-id': $this.data('task-id'),
-            'doer-id': $this.data('doer-id'),
-            'nonce': $this.data('nonce')
+            'link-id': $this.attr('data-link-id'),
+            'task-id': $this.attr('data-task-id'),
+            'doer-id': $this.attr('data-doer-id'),
+            'nonce': $this.attr('data-nonce')
         }, function(resp){
 
             resp = jQuery.parseJSON(resp);
 
             if(resp.status == 'ok') {
                 window.location.href = window.location.href.indexOf('?') > 0 ?
-                    window.location.href+'&t=5' : window.location.href+'?t=5';
+                    window.location.href+'&'+msgCode: window.location.href+ '?'+msgCode;
             } else {
                 $('#task-action-message').html(resp.message).slideDown(200);
+				$this.prop('checked', !$checked);
             }
 
         });
-    });
+	});
 
-    $('.candidate-refuse').click(function(e){
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $.post(frontend.ajaxurl, {
-            'action': 'refuse-candidate',
-            'link-id': $this.data('link-id'),
-            'task-id': $this.data('task-id'),
-            'doer-id': $this.data('doer-id'),
-            'nonce': $this.data('nonce')
-        }, function(resp){
-
-            resp = jQuery.parseJSON(resp);
-
-            if(resp.status == 'ok') {
-                window.location.href = window.location.href.indexOf('?') > 0 ?
-                    window.location.href+'&t=6' : window.location.href+'?t=6';
-            } else {
-                $('#task-action-message').html(resp.message).slideDown(200);
-            }
-
-        });
-    });
+    
     
     $('.leave-review').click(function(e){
         e.preventDefault();

@@ -318,10 +318,6 @@ div[class |="status-block"] {
 
 
 /** Profile **/
-.member-actions .col-md-8 h4 {
-	@include smart-margin(1.5em);
-}
-
 section[class |="data-section"] {
 	@include word-wrap();
 	margin: $measure-elements-margin/2  0 $measure-elements-margin;

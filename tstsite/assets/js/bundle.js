@@ -1025,10 +1025,6 @@ function makeArray( obj ) {
     }
 
 })(jQuery);
-/*! jQuery UI - v1.10.3 - 2013-05-03
- * http://jqueryui.com
- * Copyright 2013 jQuery Foundation and other contributors; Licensed MIT */
-jQuery(function(e){e.datepicker.regional.ru={closeText:"Закрыть",prevText:"&#x3C;Пред",nextText:"След&#x3E;",currentText:"Сегодня",monthNames:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],monthNamesShort:["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"],dayNames:["воскресенье","понедельник","вторник","среда","четверг","пятница","суббота"],dayNamesShort:["вск","пнд","втр","срд","чтв","птн","сбт"],dayNamesMin:["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],weekHeader:"Нед",dateFormat:"dd.mm.yy",firstDay:1,isRTL:!1,showMonthAfterYear:!1,yearSuffix:""},e.datepicker.setDefaults(e.datepicker.regional.ru)});
 /* scripts */
 
 jQuery(function($){
@@ -1109,13 +1105,6 @@ jQuery(function($){
 	/* current paging item */
 	$('ul.pagination').find('span.current').parents('li').addClass('active');
 	
-    $('#deadline').datepicker({
-        dateFormat : 'dd.mm.yy', // to show on frontend
-//        altField: '#deadline-real',
-//        altFormat: 'dd.mm.yy', // to send to backend
-        minDate: new Date()
-    });
-
     $('#task-tags').chosen({
         disable_search_threshold: 10,
         max_selected_options: 3,
@@ -1419,56 +1408,39 @@ jQuery(function($){
 
         });
     });
-
-    $('.candidate-ok').click(function(e){
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $.post(frontend.ajaxurl, {
+	
+	$('#is_approved').on('change', function(e){
+		
+		var $this = $(this),
+			$checked = $this.prop('checked'),
+			action = ($checked) ? 'approve-candidate' : 'refuse-candidate',
+			msgCode = ($checked) ? 't=5' : 't=6';
+		console.log($this.attr('data-link-id'));
+		
+		$('#task-action-message').html('').hide();
+		
+		$.post(frontend.ajaxurl, {
             'action': 'approve-candidate',
-            'link-id': $this.data('link-id'),
-            'task-id': $this.data('task-id'),
-            'doer-id': $this.data('doer-id'),
-            'nonce': $this.data('nonce')
+            'link-id': $this.attr('data-link-id'),
+            'task-id': $this.attr('data-task-id'),
+            'doer-id': $this.attr('data-doer-id'),
+            'nonce': $this.attr('data-nonce')
         }, function(resp){
 
             resp = jQuery.parseJSON(resp);
 
             if(resp.status == 'ok') {
                 window.location.href = window.location.href.indexOf('?') > 0 ?
-                    window.location.href+'&t=5' : window.location.href+'?t=5';
+                    window.location.href+'&'+msgCode: window.location.href+ '?'+msgCode;
             } else {
                 $('#task-action-message').html(resp.message).slideDown(200);
+				$this.prop('checked', !$checked);
             }
 
         });
-    });
+	});
 
-    $('.candidate-refuse').click(function(e){
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $.post(frontend.ajaxurl, {
-            'action': 'refuse-candidate',
-            'link-id': $this.data('link-id'),
-            'task-id': $this.data('task-id'),
-            'doer-id': $this.data('doer-id'),
-            'nonce': $this.data('nonce')
-        }, function(resp){
-
-            resp = jQuery.parseJSON(resp);
-
-            if(resp.status == 'ok') {
-                window.location.href = window.location.href.indexOf('?') > 0 ?
-                    window.location.href+'&t=6' : window.location.href+'?t=6';
-            } else {
-                $('#task-action-message').html(resp.message).slideDown(200);
-            }
-
-        });
-    });
+    
     
     $('.leave-review').click(function(e){
         e.preventDefault();

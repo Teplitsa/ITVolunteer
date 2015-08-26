@@ -181,3 +181,73 @@ $screen-lg-min : 1200px;
 	border-radius: 50%;
 }
 
+
+// Stylinsh checkbox
+$font-family-icon: 'Glyphicons Halflings';
+$fa-var-check :  "\e013";
+
+
+.pretty-checkbox { 
+
+  label{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;    
+	margin: 0;
+
+    &::before{
+      content: "";
+      display: inline-block;
+      position: absolute;
+      width: 23px;
+      height: 23px;
+      left: 0;
+	  top: 0;
+      border: 1px solid $color-border-normal;
+      border-radius: 3px;
+      background-color: #fff;
+	  cursor: pointer;
+      @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);	  
+    }
+
+    &::after{
+      display: inline-block;
+      position: absolute;
+      width: 23px;
+      height: 23px;
+	  text-align: center;
+	  line-height: 23px;
+      left: 0;
+      top: 0;      
+      font-size: 11px;      
+	  color: #fff;
+	  border-radius: 3px;
+	  background-color: $color-label-green-normal;
+      border-color: $color-label-green-normal;
+	  font-weight: normal;
+	  cursor: pointer;
+    }
+  }
+
+  input[type="checkbox"] {
+    opacity: 0;
+    z-index: 1;
+	margin: 0;
+
+
+    &:checked + label::after{
+      font-family: $font-family-icon;
+      content: $fa-var-check;
+    }
+
+    &:disabled + label{
+      opacity: 0.65;
+
+      &::before{
+        background-color: $color-border-normal;
+        cursor: not-allowed;
+      }
+    }
+
+  } 
+}

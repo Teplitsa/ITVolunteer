@@ -44,3 +44,34 @@
 	}
 }
 
+.member-header .edit-item {
+	padding: 5px 15px;
+	color: $color-link-one;
+	text-decoration: none;
+	background: rgba(255,255,255,0.9);
+	&:hover, &:focus, &:active {
+		background: $color-link-one;
+		color: $color-white;
+	}
+}
+
+
+//fake avatar
+.avatar-group {
+	position: relative;
+	min-height: 180px+25px;
+	
+	.user_avatar-show {
+		width: 180px;
+		height: 180px;
+		position: absolute;
+		top: 25px;
+		left: 0;
+		z-index: 0;
+	}
+	#upload_user_avatar_info {
+		background: $color-white;
+		position: relative;
+		z-index: 10;
+	}
+}

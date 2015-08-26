@@ -66,7 +66,7 @@ get_header();?>
 			
 			<h1 class="page-title">
 				<?php echo frl_page_title();?>
-				 <small class="edit-item"><a href="<?php echo tst_get_member_url($member);?>"><?php _e('Back to Preview mode', 'tst');?></a></small>
+				 <a href="<?php echo tst_get_member_url($member);?>" class="edit-item"><?php _e('Back to Preview mode', 'tst');?></a>
 			</h1>			
 		</div>
 		
@@ -128,11 +128,14 @@ get_header();?>
 	<div class="col-md-8">
 		<h4><?php _e('Profile data', 'tst');?></h4>
 		
-		<div class="form-group">
-			<?php $user_avatar = tst_get_member_user_avatar($member_data['member_id'])?>
-			
-			<label for="user_avatar"><?php _e('Member avatar', 'tst');?></label>
-			&nbsp;<a id="upload_user_avatar" href="javascript:void(0);" class="btn btn-primary btn-xs itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"><?php _e('Upload avatar', 'tst');?></a>
+		<div class="form-group avatar-group">			
+			<?php
+				$user_avatar = tst_get_member_user_avatar($member_data['member_id']);
+				$fallback = tst_get_avatar_fallback($member_data['member_id']);
+			?>
+			<div class="user_avatar-show"><?php echo $fallback;?></div>			
+			<label for="user_avatar"><?php _e('Member avatar', 'tst');?></label>			
+			<a id="upload_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-avatar-action" title="<?php _e('Upload user avatar', 'tst');?>"></a>
 			&nbsp;<a id="delete_user_avatar" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-avatar-action" <?php if(!$user_avatar):?>style="display:none;"<?php endif?> title="<?php _e('Delete avatar', 'tst');?>"></a>
 			
 			<div id="upload_user_avatar_info"><?php echo $user_avatar; ?></div>

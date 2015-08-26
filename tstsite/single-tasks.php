@@ -69,9 +69,9 @@ $doers = tst_get_task_doers(false, true);
 //                case : echo '<div class="alert alert-success">'.__('', 'tst').'</div>'; break;
                 default:
             }
-        }?>
-
-		
+        } else { ?>
+			<div id="task-action-message" class="alert alert-danger" style="display:none;"></div>
+	<?php } ?>
 			<div class="task-summary task-section">
 				<?php the_content(); ?>
 				<?php echo apply_filters('frl_the_content', htmlspecialchars_decode(get_field('expecting'), ENT_QUOTES));?>
@@ -111,6 +111,7 @@ $doers = tst_get_task_doers(false, true);
 	</div><!-- .row -->
 
 </div><!-- .page-body -->
+
 </article>
 <?php endwhile; ?>
 <?php get_footer(); ?>

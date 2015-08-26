@@ -20,14 +20,18 @@
   "dependencies": {
     "bootstrap": "~3.3.5",
     "chosen": "~1.4.2",
-    "imagesloaded": "~3.1.8"
+    "imagesloaded": "~3.1.8",
+    "masonry": "https://github.com/desandro/masonry.git#~3.3.2"
   },
   "overrides": {
     "jquery": {
-      "ignore" : true
+      "ignore": true
     },
     "bootstrap": {
-      "ignore" : true
+      "ignore": true
+    },
+    "masonry": {
+      "ignore": true
     }
   }
 }

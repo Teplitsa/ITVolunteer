@@ -358,7 +358,7 @@ $base-el-margin : 24px;
 		
 		.c-name {
 			float: left;
-			@include calc('width', '(100% - 42px)*0.7');			
+			@include calc('width', '100% - 42px - 54px - 5px');			
 			min-height: 36px;
 			font-weight: bold;
 			line-height: 1.1;
@@ -376,11 +376,29 @@ $base-el-margin : 24px;
 		
 		.c-actions {
 			float: left;
-			@include calc('width', '(100% - 42px)*0.3');		
-			.c-status-app,
-			.c-status-app:hover {
-				background: $color-label-green-normal;
-				cursor: default;
+			width: 54px;
+			position: relative;
+			
+			.approvable {
+				width: 24px;
+				float: left;
+				position: relative;
+				.btn-primary {
+					background: $color-label-green-normal;
+					border-color: $color-label-green-normal;
+					cursor: default;
+				}
+			}
+			
+			.response {
+				width: 24px;
+				float: right;
+			}
+			
+			.for-approve {
+				position: absolute;
+				top: -11px;
+				left: -14px;
 			}
 			.c-status-napp {
 				background: $color-deadline-all-time;

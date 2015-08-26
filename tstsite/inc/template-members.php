@@ -157,6 +157,34 @@ function tst_members_paging($page_query, $user_query, $echo = true){
 
 
 /** Avatar related functions **/
+function tst_get_avatar_fallback($member_id = null) {
+	
+	if( !$member_id )
+		$member_id = tst_get_current_member()->ID;
+	elseif(is_object($member_id))
+		$member_id = $member_id->ID;
+		
+	$src = '';				
+	if($member_id) {
+		if(!metadata_exists('user', $member_id, 'gravatar_local_url')) {
+			$src = tst_localize_gravatar($member_id);
+			update_user_meta($member_id, 'gravatar_local_url', $src);
+		}
+		else {
+			$src = get_user_meta($member_id, 'gravatar_local_url', true);
+		}
+		
+	}
+	
+	if(empty($src)){
+		$src = get_template_directory_uri() . '/assets/img/temp-avatar.png';
+	}	
+		
+	$name = tst_get_member_name($member_id);
+	
+	return "<img src='".$src."' alt='".esc_attr($name)."' title='".esc_attr($name)."'>";	
+}
+
 function tst_temp_avatar($member_id = null, $echo = true){
 	
 	if( !$member_id )
@@ -166,25 +194,8 @@ function tst_temp_avatar($member_id = null, $echo = true){
 	
 	$itv_user_avatar = tst_get_member_user_avatar($member_id);
 	
-	if(!$itv_user_avatar) {		
-		$src = '';				
-		if($member_id) {
-			if(!metadata_exists('user', $member_id, 'gravatar_local_url')) {
-				$src = tst_localize_gravatar($member_id);
-				update_user_meta($member_id, 'gravatar_local_url', $src);
-			}
-			else {
-				$src = get_user_meta($member_id, 'gravatar_local_url', true);
-			}
-			
-		}
-		
-		if(empty($src)){
-			$src = get_template_directory_uri() . '/assets/img/temp-avatar.png';
-		}	
-			
-		$name = tst_get_member_name($member_id);			
-		$itv_user_avatar = "<img src='".$src."' alt='".esc_attr($name)."' title='".esc_attr($name)."'>";		
+	if(!$itv_user_avatar) {					
+		$itv_user_avatar = tst_get_avatar_fallback($member_id);		
 	}
 	
 	if($echo)

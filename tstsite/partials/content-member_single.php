@@ -23,7 +23,7 @@ $activity = tst_get_member_activity($tst_member->user_object);
 			<h1 class="page-title member-title"><?php echo frl_page_title();?>
 					
 			<?php if(current_user_can('edit_user', $tst_member->ID)): ?>
-				<small class="edit-item"> <a href="<?php echo tst_get_edit_member_url();?>"><?php _e('Edit', 'tst');?></a></small>
+				<a href="<?php echo tst_get_edit_member_url();?>" class="edit-item"><?php _e('Edit', 'tst');?></a>
 			<?php endif; ?>
 			</h1>
 			

@@ -7,9 +7,6 @@ function ord_cand_orderbyreplace($orderby) {
 	remove_filter('posts_orderby','ord_cand_orderbyreplace');
 	return str_replace('str_posts.menu_order ASC', 'cast(mt1.meta_value as unsigned) ASC, cast(str_postmeta.meta_value as unsigned) DESC', $orderby);
 }
-
-
-
 add_filter('wp_mail_from_name', function($original_email_from){
     return __('ITVounteer', 'tst');
 });
@@ -31,15 +28,6 @@ add_filter('get_comment_link', function($link, $comment, $args){
 function my_task_function() {
     wp_mail('your@email.com', 'Automatic email', 'Automatic scheduled email from WordPress.');
 }
-
-
-
-// Let common users (subscriber role) to edit their tasks:
-add_action('init', function(){
-
-
-});
-
 
 if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
     wp_schedule_event(time(), 'daily', 'tst_deadline_reminder_hook');
@@ -260,7 +248,7 @@ function ajax_approve_candidate() {
         || empty($_POST['doer-id'])
         || empty($_POST['task-id'])
         || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-ok-'.$_POST['doer-id'])
+        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -333,7 +321,7 @@ function ajax_refuse_candidate() {
         || empty($_POST['doer-id'])
         || empty($_POST['task-id'])
         || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-refuse-'.$_POST['doer-id'])
+        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -710,8 +698,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_workplace', htmlentities(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_professional', htmlentities($_POST['pro'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));            
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_website', htmlentities($_POST['user_website'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skype', htmlentities($_POST['user_skype'], ENT_QUOTES, 'UTF-8'));
