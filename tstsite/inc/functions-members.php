@@ -117,13 +117,8 @@ function tst_set_member_role($user) {
 function tst_calculate_member_activity($user, $type = 'all') {
 	
 	//user object
-	if(is_string($user)){
-		$user = get_user_by('login', $user);
-	}
-	elseif(is_int($user)){
-		$user = get_user_by('id', $user);
-	}
-	
+	$user = tst_user_object($user);
+		
 	$activity = array(
 		'created'        => 0,
 		'created_closed' => 0,
