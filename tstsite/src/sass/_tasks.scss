@@ -163,6 +163,7 @@
 
 $base-el-margin : 24px;
 
+
 .tpl-task-full {
 	
 	.page-heading {
@@ -200,6 +201,7 @@ $base-el-margin : 24px;
 		margin: 8px 0;
 		font-size: 13px;
 		a {
+			font-size: 13px;
 			display: inline-block;
 			border: 1px solid transparentize($color-text-meta, 0.43);
 			padding: 0 12px;
@@ -365,7 +367,8 @@ $base-el-margin : 24px;
 	
 	.page-heading {
 		border: none;
-		padding: 20px 30px 5px 30px;
+		padding-top: 20px;
+		padding-bottom: 5px;
 		background: transparent;
 		margin-bottom: 15px;
 		
@@ -383,14 +386,27 @@ $base-el-margin : 24px;
 	
 	.status-label{
 		display: inline-block;
-		background: $color-text-meta;
+		background: transparentize($color-text-meta, 0.1);
 		color: $color-white;
 		font-size: 11px;
 		padding: 2px 15px 3px;
+		&.label-publish {
+			background: $color-label-green-normal;
+		}
+		&.label-in_work {
+			background: $color-label-work;
+		}
+		&.label-closed {
+			background: $color-label-closed;
+		}
 	}
 	
 	.draft-center .btn {
 		border-radius: 0;
+	}
+	
+	#task-title {
+		font-size: 14px;
 	}
 	
 	.author-ref {
@@ -418,6 +434,34 @@ $base-el-margin : 24px;
 		border-radius: 0;	
 	}
 }
+
+//tags style
+.chosen-container-multi .chosen-choices li.search-choice {
+	font-size: 13px;
+	border-color: transparentize($color-text-meta, 0.43);
+	border-radius: 0;
+	background: $color-white;
+	color: $color-text-meta;
+	.search-choice-close {
+		background: transparent;
+		&:after {
+			content: '\e014';
+			display: inline-block;
+			font-family: 'Glyphicons Halflings';
+			font-style: normal;
+			font-weight: normal;
+			line-height: 1;
+			font-size: 12px;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: transparentize($color-text-meta, 0.43);
+		}
+		&:hover:after {
+			color: $color-text-meta;
+		}
+	}
+}
+
 
 /* task form sub label */
 .itv-task-form-sublabel {

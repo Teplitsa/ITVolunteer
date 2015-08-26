@@ -11,7 +11,7 @@ $faction = home_url('task-actions');
 
 
 if( !is_user_logged_in() ) {
-	$login_url = tst_get_login_url(home_url('/task-actions/'));
+	$login_url = tst_get_login_url($faction);
 	wp_redirect($login_url);
 	exit;
 }
@@ -25,7 +25,7 @@ if( !empty($_GET['task']) ){
 	
 	
 	if(empty($task) || !current_user_can('edit_post', $task->ID)) {
-		wp_redirect(home_url('/task-actions/'));
+		wp_redirect($faction);
 		exit;
 	}
 	
@@ -63,14 +63,14 @@ get_header();?>
 <header class="page-heading">
 
 	<div class="row">		
-		<div class="col-md-10">
+		<div class="col-md-8">
 			<div class="form-group">			
-			    <input class="form-control input-lg" placeholder="<?php _e('Task title', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="90" />
+			    <input class="form-control input-lg" placeholder="<?php _e('Short task description (140 char.)', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="90" />
                 <div id="task-title-vm" class="validation-message" style="display: none;"></div>
 			</div>
 		</div>
 		
-		<div class="col-md-2">
+		<div class="col-md-4">
 		<?php $today = strtotime(sprintf('now %s hours', get_option('gmt_offset'))); ?>
 			<time><?php echo date('d.m.y.', $today);?></time><br>
 		<?php
@@ -132,9 +132,9 @@ get_header();?>
                         return false;
                     }
                 }
-
-                foreach(get_terms('post_tag', array('hide_empty' => false)) as $tag) { ?>
-                <option value="<?php echo $tag->name;?>" <?php echo (!$new_task && tag_in_array($tag, $task_tags)) ? 'selected="selected"' : '';?>><?php echo $tag->name;?></option>
+				$tags = get_terms('post_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'ASC'));
+                foreach($tags as $tag) { ?>
+                <option value="<?php echo esc_attr($tag->name);?>" <?php echo (!$new_task && tag_in_array($tag, $task_tags)) ? 'selected="selected"' : '';?>><?php echo apply_filters('frl_the_title', $tag->name);?></option>
             <?php }?>
             </select>
             <div id="task-tags-vm" class="validation-message" style="display: none;"></div>
@@ -146,11 +146,12 @@ get_header();?>
 				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
 				<?php
 					$terms = get_terms('reward', array('hide_empty' => false));
-					$selected = (isset($task_data['reward_id'])) ? $task_data['reward_id'] : $terms[0]->term_id;
+					$default_reward = get_term_by('slug', 'upominanie-na-sajte', 'reward');
+					$selected = (isset($task_data['reward_id'])) ? $task_data['reward_id'] : $default_reward->term_id;
 					foreach($terms as $reward) {
 				?>
 					<option value="<?php echo (int)$reward->term_id;?>" <?php selected($reward->term_id, $selected); ?>>
-						<?php echo $reward->name;?>
+						<?php echo apply_filters('frl_the_title', $reward->name);?>
 					</option>
 				<?php }?>
 			</select>

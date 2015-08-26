@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-26 00:04+0300\n"
-"PO-Revision-Date: 2015-08-26 00:51+0300\n"
+"POT-Creation-Date: 2015-08-26 13:21+0300\n"
+"PO-Revision-Date: 2015-08-26 13:21+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -254,7 +254,7 @@ msgstr "Расписание"
 
 # @ default
 # @ tst
-#: inc/admin.php:114 page-task-action.php:171
+#: inc/admin.php:114 page-task-action.php:175
 #: partials/sidebar-multibutton.php:15 sidebar-task.php:37
 msgid "Publish"
 msgstr "Опубликовать"
@@ -1794,10 +1794,9 @@ msgstr "Регистрация"
 msgid "Username (login)"
 msgstr "Логин"
 
-# @ tst
 #: page-task-action.php:68
-msgid "Task title"
-msgstr "Заголовок задачи"
+msgid "Short task description (140 char.)"
+msgstr "Краткое описание задачи (140 символов)"
 
 # @ tst
 #: page-task-action.php:92
@@ -1865,33 +1864,33 @@ msgid "Select a reward for a service, please"
 msgstr "Выберите награду за выполнение задачи"
 
 # @ tst
-#: page-task-action.php:159
+#: page-task-action.php:163
 msgid "itv_task_consult_needed_label"
 msgstr "Дополнительная консультация"
 
 # @ tst
-#: page-task-action.php:162
+#: page-task-action.php:166
 msgid "itv_task_consult_needed_more_info"
 msgstr ""
 "получить бесплатную консультацию сотрудника Теплицы социальных технологий"
 
 # @ tst
-#: page-task-action.php:172
+#: page-task-action.php:176
 msgid "Save draft"
 msgstr "Сохранить черновик"
 
 # @ tst
-#: page-task-action.php:175
+#: page-task-action.php:179
 msgid "Refresh"
 msgstr "Обновить"
 
 # @ tst
-#: page-task-action.php:196
+#: page-task-action.php:200
 msgid "View Task"
 msgstr "Просмотреть задачу"
 
 # @ tst
-#: page-task-action.php:205
+#: page-task-action.php:209
 msgid "Delete the task"
 msgstr "Удалить задачу"
 
@@ -2283,6 +2282,10 @@ msgstr "Об организации / проекте"
 #: single-tasks.php:99
 msgid "Comments"
 msgstr "Комментарии"
+
+# @ tst
+#~ msgid "Task title"
+#~ msgstr "Заголовок задачи"
 
 # @ tst
 #~ msgid "What we are expecting from you"
