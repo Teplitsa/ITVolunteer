@@ -146,7 +146,7 @@ get_header();?>
 				<option value=""><?php _e('Select a reward for a service, please', 'tst');?></option>
 				<?php
 					$terms = get_terms('reward', array('hide_empty' => false));
-					$default_reward = get_term_by('slug', 'upominanie-na-sajte', 'reward');
+					$default_reward = get_term_by('slug', 'link', 'reward');
 					$selected = (isset($task_data['reward_id'])) ? $task_data['reward_id'] : $default_reward->term_id;
 					foreach($terms as $reward) {
 				?>
@@ -187,28 +187,23 @@ get_header();?>
 		<div class="form-group">
 			
 			<?php if($new_task || $task->post_status == 'draft') :?>
-				<div class="draft-center">					
-					<input type="submit" class="task-submit btn btn-default btn-sm" value="<?php echo $save_text;?>" id="task-draft" name="task-draft" />					
+				<div class="row task-buttons">				
+					<div class="col-md-6"><input type="submit" class="task-submit widefat btn btn-default btn-sm" value="<?php echo $save_text;?>" id="task-draft" name="task-draft" />	</div>			
                </div>
 				
 			<?php endif; ?>
 			 
-			<div class="row action-buttons">
+			<div class="row task-buttons">
 				<div class="col-md-6">
-				<?php if(!$new_task) : ?>
-					<div class="pull-right widefat return-button">
-						<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-sm widefat btn-grey"><?php _e('View Task', 'tst');?></a>
-					</div>
+				<?php if(!$new_task) : ?>					
+					<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-sm widefat btn-grey"><?php _e('View Task', 'tst');?></a>					
 				<?php endif;?>
 				</div>
-				
-				<div class="col-md-6">
-				<?php if($new_task) {?>
-                   &nbsp;
-                <?php } else {?>
-                    <input type="submit" class="task-submit btn btn-default btn-sm widefat btn-delete" value="<?php _e('Delete the task', 'tst');?>" id="task-delete" name="task-delete" />
-                <?php }?>	
+				<?php if(!$new_task) { ?> 
+				<div class="col-md-6">				
+                    <input type="submit" class="task-submit btn btn-default btn-sm widefat btn-delete" value="<?php _e('Delete the task', 'tst');?>" id="task-delete" name="task-delete" />                	
 				</div>
+				<?php }?>
 				
 			</div><!-- .row -->			
 			

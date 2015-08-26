@@ -179,41 +179,32 @@ jQuery(function($){
     });
 
 	var $form = $('#task-action');
-	$('#task-publish').click(function(e){
-        $('#task-draft').removeClass('e-clicked');
+	$('#task-publish, #task-draft, #task-delete ').click(function(e){
+        $('.task-submit').removeClass('e-clicked');
 		$(this).addClass('e-clicked');
 	});
-    $('#task-draft').click(function(e){
-        $('#task-publish').removeClass('e-clicked');
-        $(this).addClass('e-clicked');
-    });
-
+   
 	$form.submit(function(e){
         e.preventDefault();
 
         var $form = $(this),
-//          $submit_used = $form.find("input[type='submit']:focus"); not working in FF on Mac
 			$submit_used = $form.find('.e-clicked'),
             tags_list = $form.find('#task-tags').val(),
             form_is_valid = true,
-            val = '';
-
-        if( !$submit_used.length && !$form.data('delete-clicked')) // Submit only by click on one of the submit buttons
-            return;
-        
-        // remove click flags
-        $form.data('delete-clicked', '');
+            val = '';      
 
         $form.find('.validation-message').html('').hide();
-
+		
+		//check title
         val = $form.find('#task-title').val();
+		
         if( !val.length ) {
             form_is_valid = false;
             $form.find('#task-title-vm').html(frontend.task_title_is_required).show();
         } else
             $form.find('#task-title-vm').html('').hide();
 
-        if($submit_used.attr('name') == 'task-publish') {
+        if($submit_used.attr('name') == 'task-publish') { //other fields - for publish
 
             val = $form.find('#task-descr').val();
             if( !val.length ) {
@@ -221,34 +212,14 @@ jQuery(function($){
                 $form.find('#task-descr-vm').html(frontend.task_descr_is_required).show();
             } else
                 $form.find('#task-descr-vm').html('').hide();
-
-            val = $form.find('#expecting').val();
-            if( !val.length ) {
-                form_is_valid = false;
-                $form.find('#expecting-vm').html(frontend.expecting_is_required).show();
-            } else
-                $form.find('#expecting-vm').html('').hide();
-
-//            val = $form.find('#about-reward').val();
-//            if( !val.length ) {
-//                form_is_valid = false;
-//                $form.find('#about-reward-vm').html(frontend.about_reward_is_required).show();
-//            } else
-//                $form.find('#about-reward-vm').html('').hide();
-
+        
             val = $form.find('#about-author-org').val();
             if( !val.length ) {
                 form_is_valid = false;
                 $form.find('#about-author-org-vm').html(frontend.about_author_org_is_required).show();
             } else
                 $form.find('#about-author-org-vm').html('').hide();
-
-            val = $form.find('#deadline').val();
-            if( !val.length ) {
-                form_is_valid = false;
-                $form.find('#deadline-vm').html(frontend.deadline_is_required).show();
-            } else
-                $form.find('#deadline-vm').html('').hide();
+          
 
             val = tags_list;
             if( !val || !val.length ) {
@@ -275,25 +246,25 @@ jQuery(function($){
         if(tags_list)
             tags_list = tags_list.join(',');
 	    
-	var is_tst_consult_needed = 0;
-	if($form.find('#is_tst_consult_needed').prop('checked')) {
-		is_tst_consult_needed = 1;
-	}
+		//consultation
+		var is_tst_consult_needed = 0;
+		if($form.find('#is_tst_consult_needed').prop('checked')) {
+			is_tst_consult_needed = 1;
+		}
 
         $.post(frontend.ajaxurl, {
-            'action': 'add-edit-task',
-            'status': $submit_used.attr('name') == 'task-publish' ?
+            'action'               : 'add-edit-task',
+            'status'               : $submit_used.attr('name') == 'task-publish' ?
                 $form.find('#status').val() : ($submit_used.attr('name') == 'task-draft' ? 'draft' : 'trash'),
-            'id': $form.find('#task_id').val(),
-            'title': $form.find('#task-title').val(),
-            'descr': $form.find('#task-descr').val(),
-	    'is_tst_consult_needed': is_tst_consult_needed,
-            'expecting': $form.find('#expecting').val(),
-            'about-reward': $form.find('#about-reward').val(),
-            'about-author-org': $form.find('#about-author-org').val(),
-            'deadline': $form.find('#deadline').val(),
-            'reward': $form.find('#reward').val(),
-            'tags': tags_list
+            'id'                   : $form.find('#task_id').val(),
+            'title'                : $form.find('#task-title').val(),
+            'descr'                : $form.find('#task-descr').val(),
+			'is_tst_consult_needed': is_tst_consult_needed,            
+            'about_reward'         : $form.find('#about-reward').val(),
+            'about_author_org'     : $form.find('#about-author-org').val(),            
+            'reward'               : $form.find('#reward').val(),
+            'tags'                 : tags_list
+			
         }, function(resp){
 
             resp = jQuery.parseJSON(resp);

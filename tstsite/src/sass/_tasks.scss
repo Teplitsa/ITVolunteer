@@ -423,15 +423,32 @@ $base-el-margin : 24px;
 	.publish-button {
 		margin-bottom: 0;
 		padding: 15px 0 23px;
+		input {
+			@include transition(all 0.35s);
+		}
 	}
 	
-	.draft-center {
-		margin: 0;
+	.task-buttons .col-md-6{
+		margin-bottom: 8px;
 	}
 	
-	.action-buttons a,
-	.action-buttons input{
-		border-radius: 0;	
+	.task-buttons a,
+	.task-buttons input{
+		border-radius: 0;
+		@include transition(all 0.35s);
+	}
+	
+	.btn-delete {
+		border-width: 1px;
+	}
+	
+	//errors
+	.validation-message {
+		font-size: 12px;
+		line-height: 1.3;
+		font-weight: bold;
+		color: $color-label-red-normal;
+		padding: 4px 0 0 4px;
 	}
 }
 
