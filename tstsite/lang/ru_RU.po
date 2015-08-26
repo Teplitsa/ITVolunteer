@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-08-26 13:21+0300\n"
-"PO-Revision-Date: 2015-08-26 14:02+0300\n"
+"PO-Revision-Date: 2015-08-26 18:46+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1813,7 +1813,8 @@ msgstr ""
 #, php-format
 msgid "Your data was successfully saved. <a href=\"%s\">Check it out</a>"
 msgstr ""
-"Информация была успешно сохранена. <a href=\"%s\">На страницу задачи</a>"
+"Информация была успешно сохранена. <a href=\"%s\">Перейти на страницу "
+"задачи</a>"
 
 # @ tst
 #: page-task-action.php:100

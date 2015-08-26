@@ -8,20 +8,7 @@ function ord_cand_orderbyreplace($orderby) {
 	return str_replace('str_posts.menu_order ASC', 'cast(mt1.meta_value as unsigned) ASC, cast(str_postmeta.meta_value as unsigned) DESC', $orderby);
 }
 
-add_action('post_updated', function($id, WP_Post $after_update, WP_Post $pre_update){
 
-    if($after_update->post_type != 'tasks')
-        return;
-
-    if(current_user_can('edit_post') && $pre_update->post_author != $after_update->post_author) {
-        global $wpdb;
-
-        $wpdb->update($wpdb->prefix.'posts', array(
-            'post_author' => $pre_update->post_author,
-            'post_date' => $pre_update->post_date,
-        ), array('ID' => $id,));
-    }
-}, 10, 3);
 
 add_filter('wp_mail_from_name', function($original_email_from){
     return __('ITVounteer', 'tst');

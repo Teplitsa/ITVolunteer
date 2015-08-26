@@ -49,7 +49,7 @@
 
 	<a href="#" id="author-close" class="btn btn-danger btn-lg widefat"><?php _e('Close the task', 'tst');?></a>        
 	<br />
-	<div id="task-status" class="text-center help-block">
+	<div id="task-status" class="text-center">
 		<?php _e('The task is in work', 'tst');?> <a href="#" id="author-publish" class=""><?php _e('Re-open the task?', 'tst');?></a>
 	</div>
 	<form id="task-close">
@@ -67,7 +67,7 @@
 
     <a href="#" id="task-send-to-work" class="btn btn-danger btn-lg widefat"><?php _e('Return to work', 'tst');?></a>
     <br />
-    <div id="task-status" class="text-center"><?php _e('The task is closed', 'tst');?></div>
+    <div id="task-status" class="text-center help-block"><?php _e('The task is closed', 'tst');?></div>
     <form id="task-send-to-work-form">
         <input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
         <input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-send-to-work');?>" />

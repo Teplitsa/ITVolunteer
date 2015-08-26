@@ -242,12 +242,14 @@ $base-el-margin : 24px;
 			border-radius: 0;
 		}
 		
-		.help-block {
-			display: none;
+		#task-status {padding-top: 5px;
 			font-style: normal;
 			font-size: 12px;
 			color: $color-text-meta;
-		}
+			&.help-block {
+				display: none;
+			}
+		}		
 	}
 	
 	.page-body {
@@ -268,6 +270,28 @@ $base-el-margin : 24px;
 	#reply-title {
 		font-size: 14px;		
 		font-weight: normal;		
+	}
+}
+
+#commentsubmit {
+	cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+	border-radius: 0;
+	border: none;
+	color: $color-white;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+	background: $color-link-one;
+	@include transition(all 0.35s);
+	
+	&:hover, &:focus, &:active {
+		background: $color-link-two;
 	}
 }
 
@@ -400,11 +424,7 @@ $base-el-margin : 24px;
 			background: $color-label-closed;
 		}
 	}
-	
-	.draft-center .btn {
-		border-radius: 0;
-	}
-	
+		
 	#task-title {
 		font-size: 14px;
 	}
