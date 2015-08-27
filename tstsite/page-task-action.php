@@ -35,14 +35,11 @@ if( !empty($_GET['task']) ){
 			'task_id' => $task->ID,
 			'task_title' => $task->post_title,
 			'task_descr' => $task->post_content,
-			'task_status' => $task->post_status,
-			'expecting' => get_field('expecting', $task->ID),
-			'about_reward' => get_field('about_reward', $task->ID),
-			'about_author_org' => get_field('about-author-org', $task->ID),
-			'deadline' => date_from_yymmdd_to_dd_mm_yy(get_field('deadline', $task->ID)),
+			'task_status' => $task->post_status,				
+			'about_author_org' => get_field('about-author-org', $task->ID),  			
 			'reward_id' => get_field('reward', $task->ID),
 			'is_tst_consult_needed' => get_field('is_tst_consult_needed', $task->ID),
-		);
+		); 
 	}
 } else {
     $task_data = array(
@@ -89,7 +86,7 @@ get_header();?>
         <?php if(isset($_GET['t'])) {
 
             switch((int)$_GET['t']) {
-                case 1: $message = '<div class="alert alert-success">'.sprintf(__("Your task was successfully published! Now it's open for a new volunteers to do it. <a href='%s'>Check it out</a>", 'tst'), get_permalink($_GET['task'])).'</div>'; break;
+                case 1: $message = '<div class="alert alert-success">'.sprintf(__("Information about your task was published! Now it's open for a new volunteers to do it. <a href='%s'>Check it out</a>", 'tst'), get_permalink($_GET['task'])).'</div>'; break;
                 case 2: $message = '<div class="alert alert-success">'.sprintf(__('Your data was successfully saved. <a href="%s">Check it out</a>', 'tst'), get_permalink($_GET['task'])).'</div>'; break;
                     default: $message = '';
             }

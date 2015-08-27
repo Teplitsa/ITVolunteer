@@ -32,6 +32,9 @@
     },
     "masonry": {
       "ignore": true
+    },
+    "imagesloaded": {
+      "ignore": true
     }
   }
 }

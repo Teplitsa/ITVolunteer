@@ -80,12 +80,11 @@ get_header();?>
                         <div class="task-row">
                             <h5><a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a></h5>
                             <div class="row">
-								<div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>
-								<div class="col-md-2 task-row-meta"><b><?php _e('Deadline:', 'tst');?></b> <?php echo date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID));?></div>
+								<div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>								
 								<div class="col-md-2 task-row-meta"><?php echo tst_get_task_status_label($task->post_status);?></div>
 								<div class="col-md-2 task-row-meta"><b><?php _e('Volunteers:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
 							
-							<div class="col-md-4 task-row-action">
+							<div class="col-md-6 task-row-action">
 								<a href="<?php echo tst_get_edit_task_url($task);?>" class="btn btn-primary btn-xs"><?php _e('Edit', 'tst');?></a>
 								<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-xs"><?php _e('View task', 'tst');?></a>
 							</div>
@@ -108,12 +107,11 @@ get_header();?>
                             }?>
                             </h5>
 							<div class="row">
-                            <div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>
-                            <div class="col-md-2 task-row-meta"><b><?php _e('Deadline:', 'tst');?></b> <?php echo date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID));?></div>
+                            <div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>                            
 							<div class="col-md-2 task-row-meta"><?php echo tst_get_task_status_label($task->post_status);?></div>
                             <div class="col-md-2 task-row-meta"><b><?php _e('Volunteers:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>							
 
-                            <div class="col-md-4 task-row-action">
+                            <div class="col-md-6 task-row-action">
 								<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-xs"><?php _e('View task', 'tst');?></a>
 							</div>
 							</div>
@@ -135,12 +133,11 @@ get_header();?>
                             }?>
                             </h5>
 							<div class="row">
-                            <div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>
-                            <div class="col-md-2 task-row-meta"><b><?php _e('Deadline:', 'tst');?></b> <?php echo date_from_yymmdd_to_dd_mm_yy(get_field('field_533bef200fe90', $task->ID));?></div>
+                            <div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>                            
 							<div class="col-md-2 task-row-meta"><?php echo tst_get_task_status_label($task->post_status);?></div>
                             <div class="col-md-2 task-row-meta"><b><?php _e('Volunteers:', 'tst');?></b> <?php echo tst_get_task_doers_count($task->ID);?></div>
 							
-							<div class="col-md-4 task-row-action">
+							<div class="col-md-6 task-row-action">
 								<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-xs"><?php _e('View task', 'tst');?></a>
 							</div>
 							</div>

@@ -24,8 +24,8 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 		<label for="is_approved"></label>
 	</div></div>
 <?php
-} else { ?>
-	<div class="approvable"><span class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-ok"></span></span></div>
+} else { $checked = (p2p_get_meta($candidate->p2p_id, 'is_approved', true)) ? ' checked' : ''; ?>
+	<div class="approvable"><span class="chk-btn<?php echo $checked;?>"><span class="glyphicon glyphicon-ok"></span></span></div>
 <?php } ?>
 
 <?php if($response) { ?>

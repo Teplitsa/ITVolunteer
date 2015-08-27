@@ -111,7 +111,8 @@ jQuery(function($){
         $('#open-contact-form').slideDown(200);
         
     });
-
+	
+	
     $('#contact-form').on('submit', '', function(e){
         e.preventDefault();
 
@@ -170,7 +171,8 @@ jQuery(function($){
             $submit.removeAttr('disabled');
         });
     });
-
+	
+	//task save edit
 	var $form = $('#task-action');
 	$('#task-publish, #task-draft, #task-delete ').click(function(e){
         $('.task-submit').removeClass('e-clicked');
@@ -252,8 +254,7 @@ jQuery(function($){
             'id'                   : $form.find('#task_id').val(),
             'title'                : $form.find('#task-title').val(),
             'descr'                : $form.find('#task-descr').val(),
-			'is_tst_consult_needed': is_tst_consult_needed,            
-            'about_reward'         : $form.find('#about-reward').val(),
+			'is_tst_consult_needed': is_tst_consult_needed,                        
             'about_author_org'     : $form.find('#about-author-org').val(),            
             'reward'               : $form.find('#reward').val(),
             'tags'                 : tags_list
@@ -264,7 +265,7 @@ jQuery(function($){
 
             if(resp.status == 'deleted') {
                 window.location.href = frontend.site_url+'member-actions/member-tasks/?t=1';
-            } else if(resp.status == 'saved' || resp.is_already_published) { // resp.status == 'saved'
+            } else if(resp.status == 'saved') { // resp.status == 'saved'
                 window.location.href = frontend.site_url+'task-actions/?task='+resp.id+'&t=2';
             } else if(resp.status == 'ok') {
                 window.location.href = frontend.site_url+'task-actions/?task='+resp.id+'&t=1';
@@ -382,35 +383,42 @@ jQuery(function($){
         });
     });
 	
+	//approve / dissaprove candidates
 	$('#is_approved').on('change', function(e){
 		
 		var $this = $(this),
 			$checked = $this.prop('checked'),
 			action = ($checked) ? 'approve-candidate' : 'refuse-candidate',
 			msgCode = ($checked) ? 't=5' : 't=6';
-		console.log($this.attr('data-link-id'));
 		
+				
 		$('#task-action-message').html('').hide();
 		
-		$.post(frontend.ajaxurl, {
-            'action': 'approve-candidate',
-            'link-id': $this.attr('data-link-id'),
-            'task-id': $this.attr('data-task-id'),
-            'doer-id': $this.attr('data-doer-id'),
-            'nonce': $this.attr('data-nonce')
-        }, function(resp){
-
-            resp = jQuery.parseJSON(resp);
-
-            if(resp.status == 'ok') {
-                window.location.href = window.location.href.indexOf('?') > 0 ?
-                    window.location.href+'&'+msgCode: window.location.href+ '?'+msgCode;
-            } else {
-                $('#task-action-message').html(resp.message).slideDown(200);
-				$this.prop('checked', !$checked);
-            }
-
-        });
+		$.ajax(frontend.ajaxurl, {
+			type : 'POST',
+			data : {
+				'action' : action,
+				'link-id': $this.attr('data-link-id'),
+				'task-id': $this.attr('data-task-id'),
+				'doer-id': $this.attr('data-doer-id'),
+				'nonce': $this.attr('data-nonce')
+			},
+			beforeSend : function() {
+				$this.parents('.approvable').addClass('loading');
+			},
+			success : function(resp) {
+				resp = jQuery.parseJSON(resp);				
+				if(resp.status == 'ok') {
+					window.location.href = window.location.href.indexOf('?') > 0 ?
+						window.location.href+'&'+msgCode: window.location.href+ '?'+msgCode;
+				} else {
+					$('#task-action-message').html(resp.message).slideDown(200);
+					$this.parents('.approvable').removeClass('loading');
+					$this.prop('checked', !$checked);
+				}
+			}
+		});
+		
 	});
 
     

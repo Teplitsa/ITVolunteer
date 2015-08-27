@@ -88,11 +88,12 @@ function ajax_add_edit_task(){
     if($_POST['id']) {
         $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $_POST['id']);
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
-       
-        update_field('about-reward', htmlentities(trim(isset($_POST['about_reward']) ? $_POST['about_reward'] : ''), ENT_COMPAT, 'UTF-8'), $_POST['id']);
-        update_field('about-author-org', htmlentities(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), ENT_COMPAT, 'UTF-8'), $_POST['id']);       
-        update_field('reward', (int)$_POST['reward'], $_POST['id']);
-        update_field('is_tst_consult_needed', $new_is_tst_consult_needed, $_POST['id']);
+        
+		//update_field doesn't work for some reason - use native functions
+		update_post_meta((int)$_POST['id'], 'about-author-org', htmlentities(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : '')));
+        update_post_meta((int)$_POST['id'], 'reward', (int)$_POST['reward']);
+		update_post_meta((int)$_POST['id'], 'is_tst_consult_needed', $new_is_tst_consult_needed);
+		
 		
         if($is_new_task) {
         	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
@@ -124,8 +125,7 @@ function ajax_add_edit_task(){
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
 //                    __('The task was successfully created.', 'tst'),
-                'id' => $_POST['id'],
-                'is_already_published' => empty($params['ID']) ? 0 : 1,
+                'id' => $_POST['id']
             )));
 
     } else {

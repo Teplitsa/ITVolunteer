@@ -45,7 +45,9 @@ gulp.task('build-js', function() {
                 bowerJson: 'bower.json'
             }
         }),
-        appFiles = [basePaths.bower+'masonry/dist/masonry.pkgd.min.js', basePaths.src+'js/*']; //our own JS files
+        appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
+                    basePaths.bower+'masonry/dist/masonry.pkgd.min.js',
+                    basePaths.src+'js/*']; //our own JS files
 
     return gulp.src(vendorFiles.concat(appFiles)) //join them
         .pipe(plugins.filter('*.js'))//select only .js ones
