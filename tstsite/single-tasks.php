@@ -9,8 +9,10 @@ while ( have_posts() ) : the_post();
 $cur_user_id = get_current_user_id();
 $author_id = get_the_author_meta('ID');
 $is_curr_users_task = (bool)($cur_user_id == $author_id);
-$candidates = tst_get_task_doers(false, false);
-$doers = tst_get_task_doers(false, true); 
+$candidates = tst_get_task_doers(get_the_ID(), false);
+//$doers = tst_get_task_doers(get_the_ID(), true);
+
+
 ?>
 <article <?php post_class('tpl-task-full'); ?>>
 <header class="page-heading">

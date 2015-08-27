@@ -53,7 +53,7 @@ while($query->have_posts()) {
 	
 	$doer = null;
 	if($task) {
-		$candidates = tst_get_task_doers(false, false);
+		$candidates = tst_get_task_doers($task->ID, false);
 		foreach($candidates as $candidate) {
 			if(p2p_get_meta($candidate->p2p_id, 'is_approved', true)) {
 				$doer = $candidate;

@@ -809,34 +809,31 @@ function tst_get_days_until_deadline($deadline) {
 
 }
 
-function tst_get_task_doers($task_id = false, $only_approved = false) {
-
-    if( !$task_id ) {
-        global $post;
-        $task_id = $post->ID;
-    }
+function tst_get_task_doers($task_id, $only_approved = false) {
 
     $arr = array(
         'connected_type' => 'task-doers',
         'connected_items' => $task_id,
     );
-
+	
     if($only_approved) {
         $arr['connected_meta'] = array('is_approved' => true);
         $result = get_users($arr);
+		
     } else {
-        $arr['connected_meta']['is_approved'] = true;
-        $result = get_users($arr);
-        foreach($result as $key => $value) {
-            unset($result[$key]);
-            $result[$value->ID] = $value;
-        }
-
-        unset($arr['connected_meta']); //['is_approved']
-        foreach(get_users($arr) as $key => $value) {
-            unset($result[$key]); // if( !isset($result[$value->ID]) )
-            $result[$value->ID] = $value;
-        }
+		
+		$total = get_users($arr);
+        $arr['connected_meta'] = array('is_approved' => true);
+        $approved = get_users($arr);
+        $result = array();
+		
+		foreach($approved as $key => $user){
+			$result[$user->ID] = $user;
+		}
+		foreach($total as $key => $user) {
+			if(!isset($result[$user->ID]))
+			   $result[$user->ID] = $user;
+		}
     }
 
     return $result;
