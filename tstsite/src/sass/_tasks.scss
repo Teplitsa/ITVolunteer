@@ -391,7 +391,7 @@ $base-el-margin : 24px;
 		
 		.c-actions {
 			float: right;
-			width: 30px;
+			width: 22px;
 			position: relative;
 			
 			.approvable {				
@@ -439,10 +439,8 @@ $base-el-margin : 24px;
 			}
 						
 			.for-approve {
-				position: absolute;
-				top: -11px;
-				left: -14px;
-				z-index: 2;
+				
+				
 			}
 			
 			

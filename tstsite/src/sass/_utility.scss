@@ -187,8 +187,72 @@ $font-family-icon: 'Glyphicons Halflings';
 $fa-var-check :  "\e013";
 
 
-.pretty-checkbox { 
+.pretty-checkbox {	
+	position: relative;
+	text-align: left;
+	
+	label {
+		display: inline-block;
+		vertical-align: middle;
+		position: relative;
+		z-index: 1;
+		margin: 0;
+		width: 1px;
+		height: 18px;
+		cursor: pointer;
+		
+		&::before {
+			content: "";
+			display: block;
+			width: 18px;
+			height: 18px;
+			border: 2px solid $color-border-normal;
+			border-radius: 2px;
+			background-color: #fff;			
+			@include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);
+			position: absolute;
+			left: -18px;
+			top: 0;
+			z-index: 1;
+		}
+		&::after{
+			display: none;
+			font-family: $font-family-icon;
+			content: $fa-var-check;
+			font-weight: normal;
+			text-align: center;
+			line-height: 17px;			  
+			font-size: 11px;      
+			color: #fff;
+			border-radius: 2px;
+			background-color: $color-label-green-normal;
+			border-color: $color-label-green-normal;			
+			width: 18px;
+			height: 18px;
+			position: absolute;
+			top: 0;
+			left: -18px;
+			z-index: 2;			
+		}
+	}
+	
+	input[type="checkbox"] {
+		margin: 0;
+		position: relative;
+		z-index: 3;
+		opacity: 0;
+		cursor: pointer;
+		
+		&:checked + label::after{			
+			display: block;
+		}
+	}
+}
 
+.pretty-checkbox-old { 
+	background: red;
+	position: relative;
+	
   label{
     display: inline-block;
     vertical-align: middle;
@@ -230,7 +294,7 @@ $fa-var-check :  "\e013";
   }
 
   input[type="checkbox"] {
-    opacity: 0;
+    opacity: 1;
     z-index: 1;
 	margin: 0;
 

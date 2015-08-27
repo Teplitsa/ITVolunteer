@@ -823,17 +823,18 @@ function tst_get_task_doers($task_id, $only_approved = false) {
     } else {
 		
 		$total = get_users($arr);
-        $arr['connected_meta'] = array('is_approved' => true);
-        $approved = get_users($arr);
-        $result = array();
+		$result = $queue = array();
 		
-		foreach($approved as $key => $user){
-			$result[$user->ID] = $user;
+		foreach($total as $i => $user){ 
+			if(p2p_get_meta($user->p2p_id, 'is_approved', true)){
+				$result[$user->ID] = $user;
+			}
+			else {
+				$queue[$user->ID] = $user;
+			}
 		}
-		foreach($total as $key => $user) {
-			if(!isset($result[$user->ID]))
-			   $result[$user->ID] = $user;
-		}
+		
+        $result = array_merge($result, $queue);
     }
 
     return $result;

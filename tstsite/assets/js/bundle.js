@@ -526,8 +526,8 @@ jQuery(function($){
     });
 	
 	//approve / dissaprove candidates
-	$('#is_approved').on('change', function(e){
-		
+	$('input[id*="is_approved"]').on('change', function(e){
+			
 		var $this = $(this),
 			$checked = $this.prop('checked'),
 			action = ($checked) ? 'approve-candidate' : 'refuse-candidate',
