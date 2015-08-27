@@ -95,21 +95,7 @@ function tst_main_query_mods(WP_Query $query) {
     }
 }
 
-/** Archived status actions and shedules - move them into cronjobs**/
-function tst_archive_tasks(){
-	
-	$args = array(
-		'post_type' => 'tasks',
-		'post_per_page' => -1,
-		'post_status' => 'publish',
-		'date_query' => array(
-			array(
-				
-			)
-		)
-	);
-	
-}
+
 
 
 /** == OLD == **/

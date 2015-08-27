@@ -25,10 +25,13 @@ function frl_page_title(){
 		//$id = intval($post->ID); 
 		$title = apply_filters('the_title', $post->post_title);
 
-	} elseif(is_single_member())
+	} elseif(is_single_member()) {
         $title = apply_filters('the_title', tst_get_member_name());
-
-	elseif(is_page('task-actions')) {
+		
+	} elseif(is_page('tags')) {
+		$title = apply_filters('post_type_archive_title', get_post_type_object('tasks')->labels->name);
+		
+	} elseif(is_page('task-actions')) {
 		
 		if(empty($_GET['task']))
 			$title = __('New task', 'tst');

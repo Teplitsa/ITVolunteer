@@ -95,8 +95,8 @@ function tst_custom_query_vars(){
 	$wp->add_query_var('task_status');	
 	
 		
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/page/([0-9]{1,})/?$', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');	
-	add_rewrite_rule('^tasks/(publish|in_work|closed)/?$', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
+	add_rewrite_rule('^tasks/(publish|in_work|closed|archived)/page/([0-9]{1,})/?$', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');	
+	add_rewrite_rule('^tasks/(publish|in_work|closed|archived)/?$', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
 	
 	
 	//Pretty permalinks for members
@@ -146,7 +146,7 @@ function tst_query_corrections(WP_Query $query){
 			$query->set('task_status', '');
 		}
 		else {
-			$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed'))) ? $query->get('task_status') : 'publish';
+			$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed', 'archived'))) ? $query->get('task_status') : 'publish';
 			$query->set('post_status', $status);
 		}
 		

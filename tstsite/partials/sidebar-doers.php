@@ -22,9 +22,12 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 </div>
 
 <div class="c-actions">	
-<?php if($actionable) { ?>
+<?php
+	if($actionable) {
+		$label = p2p_get_meta($candidate->p2p_id, 'is_approved', true) ? __('Disapprove', 'tst') : __('Approve', 'tst');
+	?>
 	<div class="approvable"><div class="pretty-checkbox for-approve">
-		<input type="checkbox" id="is_approved-<?php echo (int)$candidate->ID;?>" name="is_approved[]" data-link-id="<?php echo $candidate->p2p_id;?>" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>" data-nonce="<?php echo wp_create_nonce($candidate->p2p_id.'-candidate-'.$candidate->ID);?>"value="1" <?php checked(p2p_get_meta($candidate->p2p_id, 'is_approved', true));?>>
+		<input type="checkbox" id="is_approved-<?php echo (int)$candidate->ID;?>" name="is_approved[]" data-link-id="<?php echo $candidate->p2p_id;?>" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>" data-nonce="<?php echo wp_create_nonce($candidate->p2p_id.'-candidate-'.$candidate->ID);?>"value="1" <?php checked(p2p_get_meta($candidate->p2p_id, 'is_approved', true));?> title="<?php echo esc_attr($label);?>">
 		<label for="is_approved"></label>
 	</div></div>
 <?php

@@ -7,6 +7,7 @@ $statusW: 65px;
 
 $color-label-work: #FFAB00;
 $color-label-closed: darken(#8899A6, 20%);
+$color-label-archived : #0095C7;
 
 
 $color-text : #333 !default;
@@ -249,69 +250,4 @@ $fa-var-check :  "\e013";
 	}
 }
 
-.pretty-checkbox-old { 
-	background: red;
-	position: relative;
-	
-  label{
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;    
-	margin: 0;
 
-    &::before{
-      content: "";
-      display: inline-block;
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 0;
-	  top: 0;
-      border: 2px solid $color-border-normal;
-      border-radius: 2px;
-      background-color: #fff;
-	  cursor: pointer;
-      @include transition(border 0.15s ease-in-out, color 0.15s ease-in-out);	  
-    }
-
-    &::after{
-      display: inline-block;
-      position: absolute;
-      width: 18px;
-      height: 18px;
-	  text-align: center;
-	  line-height: 17px;
-      left: 0;
-      top: 0;      
-      font-size: 11px;      
-	  color: #fff;
-	  border-radius: 2px;
-	  background-color: $color-label-green-normal;
-      border-color: $color-label-green-normal;
-	  font-weight: normal;
-	  cursor: pointer;
-    }
-  }
-
-  input[type="checkbox"] {
-    opacity: 1;
-    z-index: 1;
-	margin: 0;
-
-
-    &:checked + label::after{
-      font-family: $font-family-icon;
-      content: $fa-var-check;
-    }
-
-    &:disabled + label{
-      opacity: 0.65;
-
-      &::before{
-        background-color: $color-border-normal;
-        cursor: not-allowed;
-      }
-    }
-
-  } 
-}

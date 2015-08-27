@@ -11,6 +11,7 @@ function tst_get_task_status_list() {
         'publish' => __('Opened', 'tst'),
         'in_work' => __('In work', 'tst'),
         'closed'  => __('Closed', 'tst'),
+		'archived'  => __('Archived', 'tst')
     );
 }
 
@@ -132,13 +133,26 @@ function tst_tasks_filters_menu(){
 		<?php _e('Closed tasks:', 'tst')?> <?php echo tst_get_closed_tasks_count();?>
 	</a>
 	</li>
+	<?php $archived = tst_get_archived_tasks_count(); if($archived > 0) { ?>
+	<li class="archived<?php if($current == 'archived') echo ' active';?>">
+	<a href="<?php echo tst_tasks_filters_link('archived'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_archived');?>>
+		<?php _e('Archived', 'tst')?>: <?php echo tst_get_archived_tasks_count();?>
+	</a>
+	</li>
+	<?php } ?>
+	<li class="tags<?php if(is_page('tags')) echo ' active';?>">
+	
+	<a href="<?php echo home_url('tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_tags');?>>
+		<?php _e('Tags', 'tst')?>
+	</a>
+	</li>
 </ul>
 <?php	
 }
 
 function tst_tasks_filters_link($status = 'publish') {
 	
-	$statuses = array('publish', 'in_work', 'closed');
+	$statuses = array('publish', 'in_work', 'closed', 'archived');
 	if(!in_array($status, $statuses))
 		$status = 'publish';
 		
@@ -208,6 +222,21 @@ function tst_get_closed_tasks_count() {
 		ItvSiteStats::$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_CLOSED;
+}
+
+function tst_get_archived_tasks_count() {
+	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED)) {
+		$args = array(
+			'post_type' => 'tasks',
+			'post_status' => 'archived',
+			'query_id' => 'count_tasks_by_status',
+			'nopaging' => 1,
+			'exclude' => ACCOUNT_DELETED_ID,
+		);
+		$wp_query = new WP_Query($args);
+		ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED = $wp_query->found_posts;
+	}
+	return ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED;
 }
 
 

@@ -10,6 +10,7 @@ class ItvSiteStats {
 	public static $ITV_TASKS_COUNT_CLOSED = null;
 	public static $ITV_TASKS_COUNT_WORK = null;
 	public static $ITV_TASKS_COUNT_NEW = null;
+	public static $ITV_TASKS_COUNT_ARCHIVED = null;
 	public static $ITV_TASKS_COUNT_ALL = null;
 	
 	private static $_instance = NULL;

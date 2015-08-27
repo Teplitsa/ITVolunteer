@@ -33,6 +33,7 @@ if( !empty($_GET['task']) ){
 	if(function_exists('get_field')){ // check for ACF active
 		$task_data = array(
 			'task_id' => $task->ID,
+			'task_date' => $task->post_date,
 			'task_title' => $task->post_title,
 			'task_descr' => $task->post_content,
 			'task_status' => $task->post_status,				
@@ -69,8 +70,8 @@ get_header();?>
 		</div>
 		
 		<div class="col-md-4">
-		<?php $today = strtotime(sprintf('now %s hours', get_option('gmt_offset'))); ?>
-			<time><?php echo date('d.m.y.', $today);?></time><br>
+		<?php $date = ($new_task) ? strtotime(sprintf('now %s hours', get_option('gmt_offset'))) : strtotime($task_data['task_date']); ?>
+			<time><?php echo date('d.m.y.', $date);?></time><br>
 		<?php
 			$status  = ($new_task) ? 'draft' : get_post_status($task);			
 			$status_label = tst_get_task_status_label($status);

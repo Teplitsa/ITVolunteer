@@ -158,6 +158,17 @@ $events_data['tl_tf_close'] = array(
 	'ga_action' => 'Ссылка закрытых задач - в заголовке',
 	'ga_label' => tst_detect_page_type()
 );
+$events_data['tl_tf_archive'] = array(
+	'ga_category' => 'Фильтр задач - архивные',
+	'ga_action' => 'Ссылка архивных задач - в заголовке',
+	'ga_label' => tst_detect_page_type()
+);
+$events_data['tl_tf_tags'] = array(
+	'ga_category' => 'Фильтр задач - теги',
+	'ga_action' => 'Ссылка на страницу тегов - в заголовке',
+	'ga_label' => tst_detect_page_type()
+);
+
 
 
 /** Menu **/

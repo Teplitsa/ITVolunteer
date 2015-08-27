@@ -41,6 +41,7 @@ function tst_custom_task_status(){
     ));
 }
 
+
 /** Prevent tasks authors to be overriden **/
 add_filter('wp_insert_post_data', 'tst_preserve_task_author', 2,2);
 function tst_preserve_task_author($data, $postarr) {
@@ -81,17 +82,17 @@ function ajax_add_edit_task(){
                 'status' => 'deleted',
                 'message' => __('The task was successfully deleted.', 'tst'),
             )));
-        } else
+        } else {
             $params['post_status'] = $_POST['status'];
-
+        }
     }
     // New task
     else {
         $is_new_task = true;
-        $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';        
+        $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';		
     }
-
-    $_POST['id'] = wp_insert_post($params);
+   
+	$_POST['id'] = wp_insert_post($params);
 	
     if($_POST['id']) {
         $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $_POST['id']);
@@ -148,3 +149,60 @@ function ajax_add_edit_task(){
 }
 add_action('wp_ajax_add-edit-task', 'ajax_add_edit_task');
 add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
+
+
+/**  Archived tasks manipulations **/
+function tst_archive_tasks(){
+	
+	$limit = strtotime('-1 month');
+	$args = array(
+		'post_type' => 'tasks',
+		'post_per_page' => -1,
+		'post_status' => 'publish',
+		'date_query' => array(
+			array(
+				'before'    => array(
+					'year'  => date('Y', $limit),
+					'month' => date('n', $limit),
+					'day'   => date('j', $limit)
+				)
+			)
+		)
+	);
+	
+	$query = new WP_Query($args);
+	if(!$query->have_posts())
+		return;
+	
+	foreach($query->posts as $task){
+		tst_move_task_to_archive($task);
+	}
+}
+
+//add_action('save_post_tasks', 'tst_move_task_to_archive');
+function tst_move_task_to_archive($task){
+	
+	if(is_int($task))
+		$task = get_post($task);
+	
+	if($task->post_status != 'publish')
+		return; //only open task could be archived
+	
+	//check
+	$limit = date('Y-m-d', strtotime('-1 month'));
+	if(date('Y-m-d', strtotime($task->post_date)) >= $limit)
+		return; //not too old
+		
+	$doers = tst_get_task_doers_count($task->ID);
+	if($doers > 0)
+		return; //only task without doers ??
+	
+	//update
+	$postarr['ID'] = $task->ID;
+	$postarr['post_status'] = 'archived';
+	
+	wp_update_post($postarr);
+	
+	//may be some stats need to be updated here or some logs
+	//notify user
+}

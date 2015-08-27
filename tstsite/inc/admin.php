@@ -200,7 +200,7 @@ class Tst_Task_Submitbox {
 
     <div class="misc-pub-section<?php if ( !$can_publish ) { echo ' misc-pub-section-last'; } ?>"><label for="post_status"><?php _e('Status:') ?></label>
         <span id="post-status-display">
-        <?php
+        <?php 
         switch ( $post->post_status ) {
 
             case 'draft':
@@ -215,6 +215,9 @@ class Tst_Task_Submitbox {
                 break;
             case 'closed':
                 _e('Closed', 'tst');
+                break;
+            case 'archived':
+                _e('Archived', 'tst');
                 break;
             default:
                 echo apply_filters('post_status_label', '', $post, $can_publish);
@@ -234,6 +237,7 @@ class Tst_Task_Submitbox {
                         <option<?php if('publish' == $post->post_status) selected( $post->post_status, 'publish' ); ?> value='publish'><?php _e('Published', 'tst');?></option>
                         <option<?php if('in_work' == $post->post_status) selected( $post->post_status, 'in_work' ); ?> value='in_work'><?php _e('In work', 'tst');?></option>
                         <option<?php if('closed' == $post->post_status) selected( $post->post_status, 'closed' );?> value='closed'><?php _e('Closed', 'tst');?></option>
+                        <option<?php if('archived' == $post->post_status) selected( $post->post_status, 'archived' );?> value='archived'><?php _e('Archived', 'tst');?></option>
                         <?php do_action('post_status_dropdown', $post); ?>
                 </select>
                 <a href="#post_status" id="save-task-status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>

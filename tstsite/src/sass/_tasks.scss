@@ -23,6 +23,7 @@
 	
 	&.status-in_work .status-label {  background: $color-label-work; }
 	&.status-closed .status-label { background: $color-label-closed; }
+	&.status-archived .status-label { background: $color-label-archived; }
 	
 	.task-title {
 		@include post-title();
@@ -123,6 +124,7 @@
 			&.publish a { color: $color-label-green-normal; }
 			&.in_work a { color: $color-label-work;}
 			&.closed a { color: $color-label-closed;}
+			&.tags a { color: $color-text;}
 		}
 				
 		li.active {
@@ -136,6 +138,8 @@
 			&.publish a { background: $color-label-green-normal; }
 			&.in_work a { background: $color-label-work ;}
 			&.closed a { background: $color-label-closed;}
+			&.archived a { background: $color-label-archived;}
+			&.tags a { background: $color-text-semi;}
 		}
 	}
 }
@@ -192,6 +196,7 @@ $base-el-margin : 24px;
 	
 	&.status-in_work .status-label {  background: $color-label-work; }
 	&.status-closed .status-label { background: $color-label-closed; }
+	&.status-archived .status-label { background: $color-label-archived; }
 		
 	.page-title .edit-item {
 		margin-top: 6px;
@@ -485,6 +490,9 @@ $base-el-margin : 24px;
 		}
 		&.label-closed {
 			background: $color-label-closed;
+		}
+		&.label-archived {
+			background: $color-label-archived;
 		}
 	}
 		

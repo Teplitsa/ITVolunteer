@@ -204,8 +204,8 @@ add_action('admin_enqueue_scripts', function(){
     $url = get_template_directory_uri();
     $version = tst_get_version_num();
 
-    wp_enqueue_style('tst-admin', $url.'/css/admin.css', array(), $version);
-    wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'), $version);
+    wp_enqueue_style('tst-admin', $url.'/assets/css/admin.css', array(), $version);
+    wp_enqueue_script('tst-admin', $url.'/assets/js/admin.js', array('jquery'), $version);
     
     wp_localize_script('tst-admin', 'adminend', array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
