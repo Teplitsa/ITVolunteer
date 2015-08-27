@@ -23,6 +23,10 @@ function tst_get_version_num(){
 		//on dev force random number to avoid cache problems
 		$num = rand();
 	}
+	elseif(false !== strpos(site_url(), 'multisite')){
+		//on dev force random number to avoid cache problems
+		$num = rand();
+	}
 	else {
 		$num = (defined('TST_WORKING_VERSION')) ? TST_WORKING_VERSION : '1.0';
 	}

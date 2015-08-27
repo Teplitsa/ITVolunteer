@@ -405,14 +405,14 @@ function tst_get_member_field($field, $member_id = null){
 		'user_bio',
 		'user_city',
 		'user_date',
-		'user_speciality',
-		'user_professional',
+		'user_speciality',		
 		'user_contacts',
 		'user_website',
 		'user_skype',
 		'user_socials',
 		'user_email',
-		'user_workplace'
+		'user_workplace',
+		'user_workplace_desc'
 	);
 	
 	if( !in_array($field, $fields) )
@@ -430,10 +430,6 @@ function tst_get_member_field($field, $member_id = null){
 		
 		case 'user_speciality':
             $value = get_user_meta($member_id, 'user_speciality', true);
-            break;
-	
-		case 'user_professional':
-            $value = get_user_meta($member_id, 'user_professional', true);
             break;
 	
 		case 'user_email':
@@ -464,6 +460,10 @@ function tst_get_member_field($field, $member_id = null){
 			
 		case 'user_workplace':
             $value = ($member_id) ? get_user_meta($member_id, 'user_workplace', true) : '';
+            break;
+		
+		case 'user_workplace_desc':
+            $value = ($member_id) ? get_user_meta($member_id, 'user_workplace_desc', true) : '';
             break;
 
         default:

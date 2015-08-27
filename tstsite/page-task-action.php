@@ -47,6 +47,7 @@ if( !empty($_GET['task']) ){
     );
 }
 
+$member_id = ($new_task) ? get_current_user_id() : $task->post_author;
 get_header();?>
 
 <article class="task-actions tpl-edit-task">
@@ -101,13 +102,20 @@ get_header();?>
 		</div>
 
 		<div class="form-group">
-			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>			
-			<textarea id="about-author-org" class="form-control" rows="6" placeholder="<?php _e('itv_task_about_author_org_more_info', 'tst')?>"><?php echo empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));?></textarea>
+			<label for="about-author-org"><?php _e("About task author's organization / project", 'tst');?></label>
+		<?php			
+			if($new_task){
+				$about = apply_filters('frl_the_title', tst_get_member_field('user_workplace_desc', $member_id));
+			}
+			else {
+				$about = empty($task_data['about_author_org']) ? '' : strip_tags(htmlspecialchars_decode($task_data['about_author_org'], ENT_QUOTES));
+			}			
+		?>
+			<textarea id="about-author-org" class="form-control" rows="6" placeholder="<?php _e('itv_task_about_author_org_more_info', 'tst')?>"><?php echo $about;?></textarea>
             <div id="about-author-org-vm" class="validation-message" style="display: none;"></div>
 		</div>
 		
-		<div class="form-group author-ref">
-		<?php $member_id = ($new_task) ? get_current_user_id() : $task->post_author;  ?>
+		<div class="form-group author-ref">		
 			<span class="author-label"><?php _e('Task\'s author', 'tst');?></span> <a href="<?php echo tst_get_member_url((int)$member_id);?>"><?php echo tst_get_member_name((int)$member_id);?></a>
 		</div>
 	</div><!-- .col-md-8 -->

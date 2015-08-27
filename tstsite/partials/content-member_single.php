@@ -78,8 +78,16 @@ $activity = tst_get_member_activity($tst_member->user_object);
 
 					<?php if($text = tst_get_member_field('user_workplace')):?>
 					<section class="data-section-member">
-						<h4><?php _e('Place of work', 'tst');?></h4>
-						<?php echo $text?>
+						<h4><?php _e('Organization', 'tst');?></h4>
+						<?php
+							echo $text;						
+							$desc = tst_get_member_field('user_workplace_desc');
+							if(!empty($desc)){
+								echo "<div class='user_workplace_desc'>";
+								echo apply_filters('frl_the_content', $desc);
+								echo "</div>";
+							}
+						?>
 					</section>
 					<?php endif?>
 

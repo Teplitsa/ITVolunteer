@@ -31,12 +31,12 @@ $member_data = array(
     'last_name' => $member->last_name,
     'user_city' => tst_get_member_field('user_city', $member),
     'user_speciality' => tst_get_member_field('user_speciality', $member),
-    'user_bio' => tst_get_member_field('user_bio', $member),
-    'user_professional' => tst_get_member_field('user_professional', $member),
+    'user_bio' => tst_get_member_field('user_bio', $member),    
     'user_contacts' => tst_get_member_field('user_contacts', $member),
     'user_website' => tst_get_member_field('user_website', $member),
     'user_skype' => tst_get_member_field('user_skype', $member),
 	'user_workplace' => tst_get_member_field('user_workplace', $member),
+	'user_workplace_desc' => tst_get_member_field('user_workplace_desc', $member),
 );
 
 $social = array();
@@ -144,27 +144,39 @@ get_header();?>
 		
 		<div class="form-group">
 			<label for="first_name"><?php _e('First name', 'tst');?></label>
-			<input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo esc_attr(tst_print_member_field('first_name', $member_data));?>">
-			<small class="help-block"><?php _e('Please provide your first name', 'tst');?></small>
+			<input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo esc_attr(tst_print_member_field('first_name', $member_data));?>">			
             <div id="first_name_vm" class="validation-message" style="display: none;"></div>
 		</div>
 		
 		<div class="form-group">
 			<label for="last_name"><?php _e('Last name', 'tst');?></label>
-			<input type="text" class="form-control" name="last_name" id="last_name" value="<?php echo esc_attr(tst_print_member_field('last_name', $member_data));?>">
-			<small class="help-block"><?php _e('Please provide your last name', 'tst');?></small>
+			<input type="text" class="form-control" name="last_name" id="last_name" value="<?php echo esc_attr(tst_print_member_field('last_name', $member_data));?>">			
             <div id="last_name_vm" class="validation-message" style="display: none;"></div>
 		</div>
 		
 		<div class="form-group">
 			<label for="user_city"><?php _e('City', 'tst');?></label>
-			<input type="text" class="form-control" name="user_city" id="user_city" value="<?php echo esc_attr(tst_print_member_field('user_city', $member_data));?>">
-			<small class="help-block"><?php _e('Please specify the city where you live', 'tst');?></small>
+			<input type="text" class="form-control" name="user_city" id="user_city" value="<?php echo esc_attr(tst_print_member_field('user_city', $member_data));?>" placeholder="<?php _e('Please specify the city you live in', 'tst');?>">			
+		</div>
+		
+		<div class="form-group">
+			<label for="user_speciality"><?php _e('Speciality', 'tst');?></label>
+			<input type="text" class="form-control" name="user_speciality" id="user_speciality" value="<?php echo esc_attr(tst_print_member_field('user_speciality', $member_data));?>" placeholder="<?php _e('Describe your speciality in a few words', 'tst');?>">			
+		</div>
+		
+		<div class="form-group">
+			<label for="user_bio"><?php _e('Bio', 'tst');?></label>
+			<textarea name="user_bio" id="user_bio" class="form-control" rows="6" placeholder="<?php _e('Please provide a brief information about yourself', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_bio', $member_data));?></textarea>			
 		</div>
 
 		<div class="form-group">
-			<label for="user_workplace"><?php _e('Place of work', 'tst');?></label>
-			<input type="text" class="form-control" name="user_workplace" id="user_workplace" value="<?php echo esc_attr(tst_print_member_field('user_workplace', $member_data));?>">
+			<label for="user_workplace"><?php _e('Organization', 'tst');?></label>
+			<input type="text" class="form-control" name="user_workplace" id="user_workplace" value="<?php echo esc_attr(tst_print_member_field('user_workplace', $member_data));?>" placeholder="<?php _e('Name of your organization or project', 'tst');?>">
+		</div>
+		
+		<div class="form-group">
+			<label for="user_workplace_desc"><?php _e('About your organization', 'tst');?></label>
+			<textarea name="user_workplace_desc" id="user_workplace_desc" class="form-control" rows="6" placeholder="<?php _e('Brief description of your organization or project', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_workplace_desc', $member_data));?></textarea>			
 		</div>
 		
 		<div class="form-group">
@@ -178,17 +190,7 @@ get_header();?>
 			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
 		</div>
 		
-		<div class="form-group">
-			<label for="user_speciality"><?php _e('Speciality', 'tst');?></label>
-			<input type="text" class="form-control" name="user_speciality" id="user_speciality" value="<?php echo esc_attr(tst_print_member_field('user_speciality', $member_data));?>">
-			<small class="help-block"><?php _e('Describe your speciality in a few words', 'tst');?>.</small>
-		</div>
 		
-		<div class="form-group">
-			<label for="user_bio"><?php _e('Bio', 'tst');?></label>
-			<textarea name="user_bio" id="user_bio" class="form-control" rows="6"><?php echo esc_textarea(tst_print_member_field('user_bio', $member_data));?></textarea>
-			<small class="help-block"><?php _e('Please provide a brief information about yourself', 'tst');?>.</small>
-		</div>
 		
 		<div>
 			<label for="skills_list"><?php _e('Skills list', 'tst');?></label>
@@ -214,8 +216,7 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="user_contacts_text"><?php _e('Additional contact info', 'tst');?></label>
-			<textarea name="user_contacts_text" id="user_contacts_text" class="form-control user_contacts" rows="4"><?php echo esc_textarea(tst_print_member_field('user_contacts', $member_data));?></textarea>
-			<small class="help-block"><?php _e('Please provide some additional ways to contact you', 'tst');?>.</small>
+			<textarea name="user_contacts_text" id="user_contacts_text" class="form-control user_contacts" rows="4" placeholder="<?php _e('Please provide some additional ways to contact you', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_contacts', $member_data));?></textarea>			
 		</div>
 
         <div id="form_message"></div>

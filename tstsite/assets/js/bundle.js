@@ -824,7 +824,9 @@ jQuery(function($){
 
         }
     });
-
+	
+	//edit user profile
+	
     $('#member_action').submit(function(e){
         e.preventDefault();
 
@@ -886,22 +888,16 @@ jQuery(function($){
                 'bio': $form.find('#user_bio').val(),
                 'pro': $form.find('#user_professional').val(),
                 'user_skills': $user_skills,
-                'user_workplace': $form.find('#user_workplace').val()
+                'user_workplace': $form.find('#user_workplace').val(),
+				'user_workplace_desc': $form.find('#user_workplace_desc').val()
             };
             $('.user_contacts').each(function(index){
                 var $this = $(this);
                 params[$this.attr('id')] = $this.val();
             });
             $.post(frontend.ajaxurl, params, function(resp){
-
+            
                 resp = jQuery.parseJSON(resp);
-
-//                if(resp.status == 'ok') {
-                    // ...
-//                } else {
-                    // ...
-//                }
-
                 $submit.parents('.form-group').show();//.removeAttr('disabled');
                 $('#form_message').html(resp.message);
             });

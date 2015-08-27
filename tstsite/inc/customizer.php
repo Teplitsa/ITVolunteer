@@ -698,6 +698,7 @@ function ajax_update_profile() {
             update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_workplace', htmlentities(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', ENT_QUOTES, 'UTF-8'));
+			update_user_meta($member->ID, 'user_workplace_desc', htmlentities(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));            
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_website', htmlentities($_POST['user_website'], ENT_QUOTES, 'UTF-8'));
