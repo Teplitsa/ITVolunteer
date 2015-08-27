@@ -238,3 +238,14 @@ function save_user_last_login_time($user) {
 function get_user_last_login_time($user) {
 	return $user ? get_user_meta($user->ID, 'itv_last_login_time', true) : null;
 }
+
+
+/* No admin bar for non-editors */
+add_filter('show_admin_bar', 'tst_remove_admin_bar');
+function tst_remove_admin_bar($show){
+	
+	if(!current_user_can('edit_others_posts'))
+		return false;
+	
+	return $show;
+}

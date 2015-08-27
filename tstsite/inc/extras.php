@@ -3,19 +3,6 @@
  * Utility functions
  **/
 
-
-/* no admin bar for non-editors */
-add_filter('show_admin_bar', 'tst_remove_admin_bar');
-function tst_remove_admin_bar($show){
-	
-	if(!current_user_can('edit_others_posts'))
-		return false;
-	
-	return $show;
-}
-
-
-
 /* OLD filteting for query
  * @to_do: move from  pre_get_posts into parse_query with custom qv */
 add_action('pre_get_posts', 'tst_main_query_mods');
@@ -108,7 +95,7 @@ function tst_main_query_mods(WP_Query $query) {
     }
 }
 
-
+/** Archived status actions and shedules - move them into cronjobs**/
 
 
 

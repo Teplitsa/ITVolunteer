@@ -31,6 +31,14 @@ function tst_custom_task_status(){
         'show_in_admin_status_list' => true,
         'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>'),
     ));
+	register_post_status('archived', array(
+        'label'                     => __('Archived', 'tst'),
+        'public'                    => true,
+        'exclude_from_search'       => true,
+        'show_in_admin_all_list'    => true,
+        'show_in_admin_status_list' => true,
+        'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>'),
+    ));
 }
 
 /** Prevent tasks authors to be overriden **/
