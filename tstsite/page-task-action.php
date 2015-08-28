@@ -138,7 +138,7 @@ get_header();?>
                         return false;
                     }
                 }
-				$tags = get_terms('post_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'ASC'));
+				$tags = get_terms('post_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
                 foreach($tags as $tag) { ?>
                 <option value="<?php echo esc_attr($tag->name);?>" <?php echo (!$new_task && tag_in_array($tag, $task_tags)) ? 'selected="selected"' : '';?>><?php echo apply_filters('frl_the_title', $tag->name);?></option>
             <?php }?>
