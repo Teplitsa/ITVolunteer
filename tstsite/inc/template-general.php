@@ -539,4 +539,15 @@ function tst_get_user_closed_tasks($user) {
     return get_posts($params);
 }
 
-
+/** Sharing buttons **/
+function frl_social_share() {
+		
+?>
+<div class="social-likes">
+	<div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
+	<div class="twitter" title="Поделиться ссылкой в Твиттере">Twitter</div>
+	<div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+	<div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
+</div>
+<?php
+}
