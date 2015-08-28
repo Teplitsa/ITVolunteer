@@ -151,16 +151,21 @@ add_action('widgets_init', 'tst_widgets_init');
 /**
  * Enqueue scripts and styles
  */
-add_action('wp_enqueue_scripts', function(){
+add_action('wp_enqueue_scripts', 'tst_load_local_scripts', 20); 
+function tst_load_local_scripts(){
 
     $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
+	wp_dequeue_style('dashicons');
+	wp_dequeue_style('post-views-counter-frontend');
+	
     wp_enqueue_style('bootstrap', $url.'/assets/css/bootstrap.min.css', array());	
-    wp_enqueue_style('front', $url.'/assets/css/bundle.css', array(), $version);
+	wp_enqueue_style('front', $url.'/assets/css/bundle.css', array('bootstrap'), $version);
 
-    wp_enqueue_script('bootstrap', $url.'/assets/js/bootstrap.min.js', array('jquery'), '1.0', true);   
-    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery'), $version, true);
+    wp_enqueue_script('bootstrap', $url.'/assets/js/bootstrap.min.js', array(), '1.0', true);	
+    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery', 'bootstrap'), $version, true);
+	
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -197,7 +202,7 @@ add_action('wp_enqueue_scripts', function(){
 	if(is_singular('tasks') && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
 	}
-});
+}
 
 add_action('admin_enqueue_scripts', function(){
 
@@ -223,7 +228,20 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
+/** disable emojji **/
+function disable_wp_emojicons() {
 
+  // all actions related to emojis
+  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
+}
+add_action( 'init', 'disable_wp_emojicons' );
 
 
 /**

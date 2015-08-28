@@ -21,8 +21,7 @@
     "bootstrap": "~3.3.5",
     "chosen": "~1.4.2",
     "imagesloaded": "~3.1.8",
-    "masonry": "https://github.com/desandro/masonry.git#~3.3.2",
-    "fallback": "~1.1.7"
+    "masonry": "https://github.com/desandro/masonry.git#~3.3.2"    
   },
   "overrides": {
     "jquery": {

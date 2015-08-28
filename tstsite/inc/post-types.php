@@ -1,8 +1,27 @@
 <?php
+function deregister_taxonomy_for_object_type( $taxonomy, $object_type) {
+	global $wp_taxonomies;
+
+	if ( !isset($wp_taxonomies[$taxonomy]) )
+		return false;
+
+	if ( ! get_post_type_object($object_type) )
+		return false;
+	
+	foreach($wp_taxonomies[$taxonomy]->object_type as $index => $object){
+		
+		if($object == $object_type)
+			unset($wp_taxonomies[$taxonomy]->object_type[$index]);
+	}
+	
+	return true;
+}
+
 add_action('init', 'itv_custom_content', 20);
 if(!function_exists('itv_custom_content')) {
 function itv_custom_content(){
 	
+	deregister_taxonomy_for_object_type('post_tag', 'post');
 	
 	register_taxonomy('reward', array('tasks'), array(
         'labels' => array(
@@ -64,6 +83,7 @@ function itv_custom_content(){
         'rewrite'            => array('slug' => 'tasks', 'with_front' => false),
         'hierarchical'       => false,
         'menu_position'      => 5,
+		'menu_icon'          => 'dashicons-welcome-write-blog',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
 	));

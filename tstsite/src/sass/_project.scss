@@ -314,6 +314,11 @@ a {
 	li {
 		margin-bottom: 3px;
 	}
+	
+	@include for(medium-screens){
+		column-count: 2;
+		column-gap: 30px;
+	}
 }
 
 

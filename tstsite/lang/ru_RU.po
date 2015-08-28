@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-27 23:45+0300\n"
-"PO-Revision-Date: 2015-08-27 23:45+0300\n"
+"POT-Creation-Date: 2015-08-28 00:45+0300\n"
+"PO-Revision-Date: 2015-08-28 00:46+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -729,12 +729,12 @@ msgid "The task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: inc/functions-tasks.php:147
+#: inc/functions-tasks.php:145
 msgid "<strong>Error:</strong> something occured due to the task addition."
 msgstr "Во время добавления задачи произошли ошибки."
 
 # @ tst
-#: inc/functions-tasks.php:148
+#: inc/functions-tasks.php:146
 msgid "<strong>Error:</strong> something occured due to task edition."
 msgstr "Во время редактирования задачи произошли ошибки"
 
@@ -1516,10 +1516,9 @@ msgstr "В работе:"
 msgid "Closed tasks:"
 msgstr "Решено:"
 
-# @ tst
 #: inc/template-tasks.php:146
-msgid "Tags"
-msgstr "Теги"
+msgid "By tags"
+msgstr "По тегам"
 
 #: inc/user_profile.php:234
 #, php-format
@@ -2290,6 +2289,10 @@ msgstr "Об организации / проекте"
 #: single-tasks.php:102
 msgid "Comments"
 msgstr "Комментарии"
+
+# @ tst
+#~ msgid "Tags"
+#~ msgstr "Теги"
 
 # @ tst
 #~ msgid "Volunteers offered their help"

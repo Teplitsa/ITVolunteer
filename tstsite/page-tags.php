@@ -32,7 +32,10 @@ get_header(); ?>
 				if(!empty($tags)){
 				
 				echo "<ul class='task-tags-list'>";
-				foreach($tags as $tag){
+				foreach($tags as $tag){ 
+					if(isset($_GET['update']) && $_GET['update'] == 1)
+						tst_correct_tag_count($tag->term_taxonomy_id, $tag->taxonomy);
+				
 					echo "<li>";
 					echo "<a href='".get_term_link($tag)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tag->count."</i>";
 					echo "</li>";

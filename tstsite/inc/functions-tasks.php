@@ -206,3 +206,21 @@ function tst_move_task_to_archive($task){
 	//may be some stats need to be updated here or some logs
 	//notify user
 }
+
+
+/** Correct tags calculations for tasks */
+add_action('edited_term_taxonomy', 'tst_correct_tag_count', 2, 2);
+function tst_correct_tag_count($term_taxonomy_id, $taxonomy){
+	global $wpdb;
+	
+	if($taxonomy != 'post_tag')
+		return;
+	
+	if(is_object($term_taxonomy_id))
+		$term_taxonomy_id = (int)$term_taxonomy_id->term_taxonomy_id;
+		
+
+	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status IN ('publish', 'in_work', 'closed', 'archived') AND post_type IN ('tasks') AND term_taxonomy_id = %d", $term_taxonomy_id ));
+		
+	$wpdb->update($wpdb->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term_taxonomy_id ) );
+}

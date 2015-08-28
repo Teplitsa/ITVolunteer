@@ -44,7 +44,7 @@ gulp.task('build-js', function() {
                 bowerDirectory: basePaths.bower,
                 bowerJson: 'bower.json'
             }
-        }),
+        }),        
         appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
                     basePaths.bower+'masonry/dist/masonry.pkgd.min.js',
                     basePaths.src+'js/*']; //our own JS files
@@ -57,6 +57,7 @@ gulp.task('build-js', function() {
         .on('error', console.log) //log
         .pipe(gulp.dest(basePaths.dest+'js')) //write results into file
 });
+
 
 //sass
 gulp.task('build-css', function() {
@@ -105,10 +106,10 @@ gulp.task('copy-b-fonts', function(){
         .pipe(gulp.dest(basePaths.dest+'fonts'));
 });
 
-gulp.task('copy-bootstrap', function(callback) {
+gulp.task('copy-files', function(callback) {
     runSequence('copy-b-css',
         'copy-b-fonts',
-        'copy-b-js',
+        'copy-b-js',        
         callback);
 });
 

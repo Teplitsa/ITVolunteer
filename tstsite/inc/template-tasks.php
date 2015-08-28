@@ -143,7 +143,7 @@ function tst_tasks_filters_menu(){
 	<li class="tags<?php if(is_page('tags')) echo ' active';?>">
 	
 	<a href="<?php echo home_url('tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_tags');?>>
-		<?php _e('Tags', 'tst')?>
+		<?php _e('By tags', 'tst')?>
 	</a>
 	</li>
 </ul>
