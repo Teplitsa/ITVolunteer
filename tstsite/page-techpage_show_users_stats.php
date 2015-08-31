@@ -7,7 +7,7 @@
 
 add_action('pre_user_query', function(WP_User_Query $query){
 	
-	if(@$_GET['user']) {
+	if(isset($_GET['user']) && $_GET['user']) {
 		return;
 	}
 	
@@ -24,7 +24,7 @@ add_action('pre_user_query', function(WP_User_Query $query){
 }, 100);
 
 
-$user_login = @$_GET['user'];
+$user_login = isset($_GET['user']) ? $_GET['user'] : '';
 
 $users_query_params = array(
     'number' => 10,

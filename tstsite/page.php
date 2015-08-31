@@ -27,7 +27,7 @@ get_header(); ?>
 		
 		<div class="col-md-8">
 			<div class="page-content">
-				<?php the_content();?>
+				<?php the_content(); ?>
 				<?php
 					if(is_page('contacts')) {
 						get_template_part('partials/contact', 'form');

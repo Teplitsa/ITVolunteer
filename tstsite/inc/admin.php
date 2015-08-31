@@ -19,7 +19,7 @@ class Tst_Task_Submitbox {
     /**
      * Constructions
      * */
-    function __construct($post, $params = array()){
+    public function __construct(WP_Post $post, $params = array()){
 
         $this->post_object = $post;
         $this->post_type = $post->post_type;
@@ -43,7 +43,7 @@ class Tst_Task_Submitbox {
     /**
      * Final printing
      **/
-    function print_metabox(){
+    public function print_metabox(){
 
         ?>
         <div class="submitbox" id="submitdiv">
@@ -59,7 +59,7 @@ class Tst_Task_Submitbox {
     /**
      * Publishing block
      * */
-    function minor_publishing_block() {
+    public function minor_publishing_block() {
 
         ?>
         <div id="minor-publishing">
@@ -81,7 +81,7 @@ class Tst_Task_Submitbox {
     <?php
     }
 
-    function major_publishing_block() {
+    public function major_publishing_block() {
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -140,7 +140,7 @@ class Tst_Task_Submitbox {
      **/
 
     /* draft and preview buttons */
-    function minor_buttons(){
+    public function minor_buttons(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -192,7 +192,7 @@ class Tst_Task_Submitbox {
     /**
      * Status selection dealogue
      **/
-    function minor_status(){
+    public function minor_status(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -200,7 +200,7 @@ class Tst_Task_Submitbox {
 
     <div class="misc-pub-section<?php if ( !$can_publish ) { echo ' misc-pub-section-last'; } ?>"><label for="post_status"><?php _e('Status:') ?></label>
         <span id="post-status-display">
-        <?php
+        <?php 
         switch ( $post->post_status ) {
 
             case 'draft':
@@ -215,6 +215,9 @@ class Tst_Task_Submitbox {
                 break;
             case 'closed':
                 _e('Closed', 'tst');
+                break;
+            case 'archived':
+                _e('Archived', 'tst');
                 break;
             default:
                 echo apply_filters('post_status_label', '', $post, $can_publish);
@@ -234,6 +237,7 @@ class Tst_Task_Submitbox {
                         <option<?php if('publish' == $post->post_status) selected( $post->post_status, 'publish' ); ?> value='publish'><?php _e('Published', 'tst');?></option>
                         <option<?php if('in_work' == $post->post_status) selected( $post->post_status, 'in_work' ); ?> value='in_work'><?php _e('In work', 'tst');?></option>
                         <option<?php if('closed' == $post->post_status) selected( $post->post_status, 'closed' );?> value='closed'><?php _e('Closed', 'tst');?></option>
+                        <option<?php if('archived' == $post->post_status) selected( $post->post_status, 'archived' );?> value='archived'><?php _e('Archived', 'tst');?></option>
                         <?php do_action('post_status_dropdown', $post); ?>
                 </select>
                 <a href="#post_status" id="save-task-status" class="save-post-status hide-if-no-js button"><?php _e('OK'); ?></a>
@@ -248,7 +252,7 @@ class Tst_Task_Submitbox {
     /**
      * visibility setting dialogue
      **/
-    function minor_visibility(){
+    public function minor_visibility(){
 
         $post = $this->post_object;
         $can_publish = $this->can_publish;
@@ -318,8 +322,8 @@ class Tst_Task_Submitbox {
      **/
 
     /* function to display hidden time fields when no date mode */
-    static function no_date_touch_time(){
-        global $wp_locale, $post;
+    public static function no_date_touch_time(){
+        global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
@@ -346,16 +350,14 @@ class Tst_Task_Submitbox {
 
 
     /* function to display time controls for year only metabox */
-    static function touch_time_by_year($tab_index = 0) {
-        global $wp_locale, $post;
+    public static function touch_time_by_year($tab_index = 0) {
+        global $post;
 
         $edit = !( in_array($post->post_status, array('draft', 'pending', 'auto-draft') ) && (!$post->post_date_gmt || '0000-00-00 00:00:00' == $post->post_date_gmt ) );
 
         $tab_index_attribute = '';
         if ( (int) $tab_index > 0 )
             $tab_index_attribute = " tabindex=\"$tab_index\"";
-
-        // echo '<label for="timestamp" style="display: block;"><input type="checkbox" class="checkbox" name="edit_date" value="1" id="timestamp"'.$tab_index_attribute.' /> '.__( 'Edit timestamp' ).'</label><br />';
 
         $init_string = date('Y', current_time('timestamp'));
         $time_adj = strtotime($init_string.'-01-01');
@@ -367,12 +369,6 @@ class Tst_Task_Submitbox {
         $hh = ($edit) ? mysql2date( 'H', $post_date, false ) : gmdate( 'H', $time_adj );
         $mn = ($edit) ? mysql2date( 'i', $post_date, false ) : gmdate( 'i', $time_adj );
         $ss = ($edit) ? mysql2date( 's', $post_date, false ) : gmdate( 's', $time_adj );
-
-        $cur_jj = gmdate( 'd', $time_adj );
-        $cur_mm = gmdate( 'm', $time_adj );
-        $cur_aa = gmdate( 'Y', $time_adj );
-        $cur_hh = gmdate( 'H', $time_adj );
-        $cur_mn = gmdate( 'i', $time_adj );
 
 
         $month = "<input type='hidden' name='mm' value='$mm' id='mm'/>";
@@ -409,7 +405,7 @@ class Tst_Task_Submitbox {
 
 
     /* helper to display custom data-select dialogue */
-    static function custom_touch_time($start_date='',  $tab_index = 0, $prefix = 'frl_' ) {
+    public static function custom_touch_time($start_date='',  $tab_index = 0, $prefix = 'frl_' ) {
         global $wp_locale;
 
         $tab_index_attribute = '';
@@ -432,7 +428,6 @@ class Tst_Task_Submitbox {
             $month .= "\t\t\t" . '<option value="' . $monthnum . '"';
             if ( $i == $mm )
                 $month .= ' selected="selected"';
-            //$month .= '>' . $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) . "</option>\n";
             $month .= '>' . sprintf( __( '%1$s-%2$s' ), $monthnum, $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) ) ) . "</option>\n";
         }
         $month .= '</select>';
@@ -543,8 +538,7 @@ function itv_common_columns_names($columns, $post_type) {
 
 add_action('manage_posts_custom_column', 'itv_common_columns_content', 2, 2);
 function itv_common_columns_content($column_name, $post_id) {
-	
-	$cpost = get_post($post_id);
+		
 	if($column_name == 'rewards') {
 		
         $term_id = get_field('reward', $post_id);
@@ -632,7 +626,7 @@ function itv_user_columns_content($out, $column_name, $user_id){
 }
 
 #	add task activity log on task edit page in admin panel
-function itv_tasks_log_box_content($task) {
+function itv_tasks_log_box_content(WP_Post $task) {
 	$itv_log = ItvLog::instance();
 	$log_records = $itv_log->get_task_log($task->ID);
 	
@@ -673,7 +667,7 @@ add_action( 'add_meta_boxes', 'itv_add_tasks_log_box' );
 function itv_all_tasks_log_box_content() {
 	$itv_log = ItvLog::instance();
 	
-	$page = (int)@$_GET['pn'];
+	$page = isset($_GET['pn']) ? (int)$_GET['pn'] : 0;
 	if($page <= 0) {
 		$page = 1;
 	}
@@ -769,16 +763,10 @@ function itv_all_tasks_log_box_content() {
 	echo "<br />".paginate_links( $pn_args );
 }
 
-// function itv_add_all_tasks_activity_log_box() {
-// 	add_meta_box( 'itv_all_task_actions_log', __( 'Task Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
-// }
-// add_action( 'add_meta_boxes', 'itv_add_all_tasks_activity_log_box' );
-
 
 #	add tasks log page in admin panel
 add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
 function register_itv_tasks_log_submenu_page() {
-#	add_submenu_page( 'edit.php?post_type=tasks', __('Itv Tasks Log', 'tst'), __('Itv Tasks Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 	add_submenu_page( 'tools.php', __('Itv General Log', 'tst'), __('Itv General Log', 'tst'), 'manage_options', 'itv_all_tasks_log_page', 'itv_tasks_log_page_callback' );
 }
 

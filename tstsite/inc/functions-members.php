@@ -117,13 +117,8 @@ function tst_set_member_role($user) {
 function tst_calculate_member_activity($user, $type = 'all') {
 	
 	//user object
-	if(is_string($user)){
-		$user = get_user_by('login', $user);
-	}
-	elseif(is_int($user)){
-		$user = get_user_by('id', $user);
-	}
-	
+	$user = tst_user_object($user);
+		
 	$activity = array(
 		'created'        => 0,
 		'created_closed' => 0,
@@ -148,7 +143,7 @@ function tst_calculate_member_activity($user, $type = 'all') {
 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
 	}
 	elseif($type == 'solved') {
-		$activity['solved'] = tst_calculate_member_tasks_solved($user, array('closed'), null, true);
+		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
 	}
 	
 	return $activity;
@@ -242,4 +237,15 @@ function save_user_last_login_time($user) {
 
 function get_user_last_login_time($user) {
 	return $user ? get_user_meta($user->ID, 'itv_last_login_time', true) : null;
+}
+
+
+/* No admin bar for non-editors */
+add_filter('show_admin_bar', 'tst_remove_admin_bar');
+function tst_remove_admin_bar($show){
+	
+	if(!current_user_can('edit_others_posts'))
+		return false;
+	
+	return $show;
 }

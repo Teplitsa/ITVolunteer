@@ -4,7 +4,7 @@
 
 <?php
 
-$offset = @$_GET['offset'] ? @$_GET['offset'] : 0;
+$offset = isset($_GET['offset']) ? $_GET['offset'] : 0;
 
 $query_params = array(
 	'post_type' => 'tasks',
@@ -14,7 +14,7 @@ $query_params = array(
 	'order'   => 'ASC'		
 );
 
-$task_id = @$_GET['task_id'];
+$task_id = isset($_GET['task_id']) ? $_GET['task_id'] : 0;
 
 if($task_id) {
 	$query_params['post__in'] = explode(',', $task_id);
@@ -23,7 +23,6 @@ if($task_id) {
 global $wpdb;
 $query = new WP_Query($query_params);
 
-#$wpdb->query("TRUNCATE str_tasks_report");
 $itv_log = ItvLog::instance();
 
 while($query->have_posts()) {
@@ -40,7 +39,7 @@ while($query->have_posts()) {
 		$task_author = get_user_by('id', $task->post_author);
 	}
 	
-	$is_need_consult = get_field(ITV_ACF_TASK_is_tst_consult_needed, $post_id);
+	$is_need_consult = get_field('is_tst_consult_needed', $post_id);
 	
 	$inwork_time = $itv_log->get_task_inwork_time($post_id);
 	if(!$inwork_time && $task->post_status == 'in_work') {
@@ -54,7 +53,7 @@ while($query->have_posts()) {
 	
 	$doer = null;
 	if($task) {
-		$candidates = tst_get_task_doers(false, false);
+		$candidates = tst_get_task_doers($task->ID, false);
 		foreach($candidates as $candidate) {
 			if(p2p_get_meta($candidate->p2p_id, 'is_approved', true)) {
 				$doer = $candidate;
@@ -104,11 +103,8 @@ while($query->have_posts()) {
 					$views
 			)
 	);
-	#echo $wpdb->last_query . "<br />";
 	echo $wpdb->last_error . "<br />";
 	
-	#echo 'candidates_number=' . get_post_meta(get_the_ID(), 'candidates_number', true) . "<br />";
-	#echo 'status_order=' . get_post_meta(get_the_ID(), 'status_order', true) . "<br />";
 }
 
 ?>

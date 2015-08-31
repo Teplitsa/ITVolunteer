@@ -1,0 +1,389 @@
+/** Homepage **/
+
+.home-section {	
+	padding: 0 $measure-columns-gut / 2;
+	@include for(small-screens) {
+		padding: 0 $measure-columns-gut;
+	}
+	
+	&.tasks {
+		padding-top: $measure-columns-gut - 16px;
+	}
+}
+
+.home-nav {
+	margin-top: $measure-columns-gut;
+	text-align: center;
+}
+
+.page-template-homepage .page-decor {
+	border-top: none;
+}
+
+// well section
+.intro-panel {	
+	border-left: 1px solid #c2c2c2;
+	border-right: 1px solid #c2c2c2;
+	background: #fff;
+		
+	h1 {
+		max-width: 820px;
+		margin: 0 auto;
+		padding: $measure-columns-gut $measure-columns-gut/2 0 $measure-columns-gut/2;
+		font-weight: 500;		
+		line-height: 1.1;
+		text-align: center;		
+		font-size: 21px;
+				
+		@include for(small-screens) {
+			font-size: 32px;
+		}
+	}
+	
+	.intro-panel-actions {
+		text-align: center;
+		margin: $measure-columns-gut 0;
+	}
+	
+	.cta {
+		display: inline-block;
+		padding: 0 5px;
+	}
+	
+	.details {			
+		display: inline-block;
+		padding: 0 5px;
+		
+		a {
+			color: $color-text-meta;
+			text-decoration: underline;
+			@include transition(all 0.35s);
+			
+			&:hover, &:focus, &:active {
+				color: darken($color-text-meta, 15%);		
+			}
+		}
+		
+		&.desktop-only { display: none;	}
+		&.mobile-only { 
+			margin-bottom: 10px;
+		}
+		
+		@include for(small-screens) {
+			&.mobile-only { display: none;	}
+			&.desktop-only { display: inline; }
+		}
+	}
+}
+	
+.intro-panel-filters {	
+	color: $color-text;
+	text-align: center;
+	padding: $measure-columns-gut /2 0;
+	background: #ededed;
+	border-top: 1px solid darken(#ededed, 2%);
+	border-bottom: 1px solid darken(#ededed, 2%);
+	
+	span {
+		text-transform: uppercase;
+	}
+	
+	a {
+		margin-left: 10px;
+		@include transition(all 0.35s);
+		white-space: nowrap;
+		
+		&:hover, &:focus, &:active {
+			text-decoration: underline;			
+		}
+	}
+	
+	.publish { color: $color-label-green-normal; }
+	.in_work { color: $color-label-work; }
+	.closed { color: $color-label-closed; }
+}
+
+//news item
+.home-news {
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: 0 0 12px 0;
+		position: relative;
+	}
+	
+	h2 {
+		background-color: #A4A4A4;
+		color: $color-white;
+		font-weight: bold;
+		text-transform: uppercase;
+		margin: 0 0 0 -15px;
+		padding: 7px 0 7px 15px;
+		font-size: 1em;
+		width: 90%;
+		
+		@include for(small-screens) {
+			width: 45%;
+			padding-left: 30px;
+			margin-left: -30px;
+		}
+		
+	}
+	
+	h4 {
+		margin-top:20px;
+		
+		a {
+			font-weight: bold;
+			color: $color-text-black;
+		}
+	}
+	
+	.home-news-content {
+		.thumb-link {
+			display: block;
+			margin: $measure-elements-margin/2 0;
+		}
+		
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+		a { text-decoration: none; }
+	}	
+}
+
+
+//modal
+#myModal {		
+	z-index: 10000;
+	
+	.modal-dialog {
+		width: 670px;
+		margin-top: 56px;
+	}
+}
+
+
+
+/** Recent News **/
+.tpl-post {	
+		
+	.border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding: $measure-columns-gut/2 0 $measure-columns-gut;
+	}
+	
+	&:nth-of-type(1) {
+		.border-card {
+			padding-top: 0;
+		}
+	}
+	
+	@include for(medium-screens) {
+		&:nth-of-type(2) {
+			.border-card {
+				padding-top: 0;
+			}
+		}
+	}
+	
+	h4 {
+		@include post-title;
+	}
+	
+	.post-meta {
+		color: $color-text-meta;
+		font-size: 0.857em;		
+	}
+	
+	.post-preview {
+		margin: $measure-columns-gut/2 0;
+		a { display: block; }
+	}
+	
+	.post-summary p {
+		margin: 0;
+	}	
+	
+}
+
+.blog .tpl-post {
+	
+	@include for(medium-screens) {
+		&:nth-of-type(even) {
+			padding-left: $measure-columns-gut*1.5;
+		}
+		&:nth-of-type(odd) {
+			padding-right: $measure-columns-gut*1.5;
+		}
+	}
+}
+
+.single-post {
+	
+	.page-summary {
+		font-size: 1.52em;
+		line-height: 1.4;
+		font-weight: 600;
+		margin-bottom: 15px;
+	}
+	
+	.page-media {
+		margin-bottom: 15px;
+	}
+	
+	h3, h4 {
+		margin-top: 1.5em;
+	}
+}
+
+.widget_recent_entries {
+	ul {
+		border-top: 1px solid $color-border-light;
+		list-style-type: none;
+	}
+	li {		
+		font-size: 0.95em;		
+		border-bottom: 1px solid $color-border-light;
+		padding: 6px 0;
+	}
+	
+	.post-date {		
+		font-size: 0.85em;
+		margin-left: 5px;
+		color: $color-text-meta;
+	}
+}
+
+
+/** Login & Register **/
+.register-page-body {
+	background: #f5f5f5;
+	padding-top: $measure-elements-margin +10px;
+	padding-bottom: $measure-elements-margin;
+}
+
+.register-actions + #bottombar {
+	margin-top: 0;
+	border-top: 1px;
+}
+
+#register_content {
+	max-width: 850px;
+	
+	@include for(large-screens) {
+		margin-left: 36px;
+	}	
+}
+
+.registration-col-1 {
+	margin-bottom: $measure-elements-margin;
+	@include for(small-screens) {
+		margin-bottom: 0;
+	}
+}
+
+.register-form,
+.login-form { //reset
+	div[class *="col-"] {
+		padding: 0 5px;
+	}
+	
+	.row {
+		margin: 0 -5px;
+	}
+	
+	.form-group {
+		margin-bottom: 10px;		
+	}
+	
+	.form-control {
+		//padding: 4px 8px;	
+	}
+	
+	max-width: 460px;
+}
+
+.login-title {
+	font-weight: normal;
+	margin: 6px 0 0;
+}
+
+.rl-error {
+	margin: 5px 0 0;
+	font-size: 11px;
+	padding: 2px 7px;
+	letter-spacing: 0.5px;
+	background: #F2DEDE;
+	border: 1px solid darken(#F2DEDE, 10%);
+	color: $color-label-red-normal;
+	border-radius: 4px;
+	a {
+		color: $color-label-red-dark;		
+	}
+}
+
+.login-form {	
+	margin-top: 21px;
+	margin-bottom: 21px;
+	border: 1px solid #ddd;
+	border-radius: 4px 4px 0 0;
+	padding: 10px;
+	background: #fff;
+	
+	@include for(large-screens) {
+		margin-right: 15px;
+	}
+	
+	.checkbox {
+		margin: 0;
+		font-size: 12px;
+		#rememberme {
+			margin-top: 1px;
+		}
+	}
+	
+	#do-login {
+		box-sizing: border-box;
+		min-width: 100%;
+		text-align: center;
+	}
+	
+	.lost-psw  {		
+		font-size: 12px;		
+	}
+}
+
+.register-form {
+	
+	@include for(large-screens) {
+		margin-left: 25px;
+	}
+	
+	
+	.panel-heading {
+		padding: 10px;
+		font-weight: bold;
+		background: #fff;
+	}
+	
+	.panel-body {
+		padding: 10px;
+		background: #fff;
+	}
+	
+	.register-action {
+		margin-bottom: 0;
+		text-align: right;
+	}
+	
+	#do-register {
+		background: $color-label-green-normal;
+		border-color: $color-label-green-normal;
+		&:hover, &:focus, &:active {
+			background: darken($color-label-green-normal, 10%);
+			border-color: darken($color-label-green-normal, 10%);
+		}
+	}
+}

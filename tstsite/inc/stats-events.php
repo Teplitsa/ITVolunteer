@@ -3,8 +3,7 @@
  * Params for GA events
  **/
 
-function tst_detect_page_type($type = null) {
-	global $post;
+function tst_detect_page_type($type = null) {	
 	
 	$page_type = array(
 		'tasks_list'   => 'Список задач',
@@ -28,7 +27,7 @@ function tst_detect_page_type($type = null) {
 			$type = 'task_page';
 		}
 		elseif(is_page('registration')) {
-			$type = 'red';
+			$type = 'reg';
 		}
 		elseif(is_page()) {
 			$type = 'page';
@@ -159,6 +158,17 @@ $events_data['tl_tf_close'] = array(
 	'ga_action' => 'Ссылка закрытых задач - в заголовке',
 	'ga_label' => tst_detect_page_type()
 );
+$events_data['tl_tf_archive'] = array(
+	'ga_category' => 'Фильтр задач - архивные',
+	'ga_action' => 'Ссылка архивных задач - в заголовке',
+	'ga_label' => tst_detect_page_type()
+);
+$events_data['tl_tf_tags'] = array(
+	'ga_category' => 'Фильтр задач - теги',
+	'ga_action' => 'Ссылка на страницу тегов - в заголовке',
+	'ga_label' => tst_detect_page_type()
+);
+
 
 
 /** Menu **/

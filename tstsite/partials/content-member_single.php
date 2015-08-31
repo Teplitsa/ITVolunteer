@@ -3,16 +3,16 @@
  * Single member profile
  **/
  
-global $post, $tst_member, $wp_query;
+global $post, $wp_query;
 
+$tst_member = tst_get_current_member();
 if(isset($_GET['update']) && $_GET['update']) {	
-	tst_update_member_stat($tst_member);
+	tst_update_member_stat($tst_member->ID);
 }
 
 
-//var_dump($tst_member->user_login);
-$user_login = get_query_var('membername');
-$activity = tst_get_member_activity($tst_member);
+$user_login = $tst_member->user_login;
+$activity = tst_get_member_activity($tst_member->user_object);
 
 ?>
 <header class="page-heading member-header">
@@ -23,18 +23,18 @@ $activity = tst_get_member_activity($tst_member);
 			<h1 class="page-title member-title"><?php echo frl_page_title();?>
 					
 			<?php if(current_user_can('edit_user', $tst_member->ID)): ?>
-				<small class="edit-item"> <a href="<?php echo tst_get_edit_member_url();?>"><?php _e('Edit', 'tst');?></a></small>
+				<a href="<?php echo tst_get_edit_member_url();?>" class="edit-item"><?php _e('Edit', 'tst');?></a>
 			<?php endif; ?>
 			</h1>
 			
-			<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member));?></div>
+			<div class="subtitle"><?php echo sanitize_text_field(tst_get_member_field('user_speciality', $tst_member->user_object));?></div>
 			
 		</div>
 
 		<div class="col-md-4">
 			
 			<div class="status-block-member">
-				<?php tst_member_profile_infoblock($tst_member);?>
+				<?php tst_member_profile_infoblock($tst_member->ID);?>
 			</div>
 			
 		</div>
@@ -51,21 +51,21 @@ $activity = tst_get_member_activity($tst_member);
 				</div>
 				<div class="col-md-9">
 					
-					<?if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
+					<?php if($is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st employee', 'tst');?></h4>
-						<img class="itv-test-employee-big" src="<?=content_url('themes/tstsite/img/te-st-logo.jpg')?>" />
+						<img class="itv-test-employee-big" src="<?php echo get_template_directory_uri().'/assets/img/te-st-logo.jpg'; ?>" />
 					</section>
-					<?endif?>
+					<?php endif?>
 					
-					<?if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
+					<?php if($is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Te-st partner', 'tst');?></h4>
-						<img class="itv-test-partner-big" src="<?=content_url('themes/tstsite/img/logo-v.png')?>" />
+						<img class="itv-test-partner-big" src="<?php echo get_template_directory_uri().'/assets/img/logo-v.png'; ?>" />
 					</section>
-					<?endif?>
+					<?php endif?>
 					
-					<?if($user_bio = trim(tst_get_member_field('user_bio'))):?>
+					<?php if($user_bio = trim(tst_get_member_field('user_bio'))):?>
 					<section class="data-section-member">
 						<h4><?php _e('About me', 'tst');?></h4>
 						<?php
@@ -73,38 +73,46 @@ $activity = tst_get_member_activity($tst_member);
 							echo $text ? $text : '<div class="">'.__('No data.', 'tst').'</div>';
 						?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 
-					<?if($text = tst_get_member_field('user_workplace')):?>
+					<?php if($text = tst_get_member_field('user_workplace')):?>
 					<section class="data-section-member">
-						<h4><?php _e('Place of work', 'tst');?></h4>
-						<?=$text?>
+						<h4><?php _e('Organization', 'tst');?></h4>
+						<?php
+							echo $text;						
+							$desc = tst_get_member_field('user_workplace_desc');
+							if(!empty($desc)){
+								echo "<div class='user_workplace_desc'>";
+								echo apply_filters('frl_the_content', $desc);
+								echo "</div>";
+							}
+						?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					
-					<?if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
+					<?php if($user_company_logo = tst_get_member_user_company_logo($tst_member->ID)):?>
 					<section class="data-section-member">
-						<?=$user_company_logo?>
+						<?php echo $user_company_logo?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 
-					<?if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
+					<?php if($user_skills_string = tst_get_member_user_skills_string($tst_member->ID)):?>
 					<section class="data-section-member">
 						<h4><?php _e('Skills list', 'tst');?></h4>
-						<?=$user_skills_string?>
+						<?php echo $user_skills_string?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					
-					<?if($text = tst_get_member_field('user_socials')):?>
+					<?php if($text = tst_get_member_field('user_socials')):?>
 					<section class="data-section-member">
 						<h4><?php _e('In the web', 'tst');?></h4>
-						<?=$text?>
+						<?php echo $text?>
 					</section>
-					<?endif?>
+					<?php endif?>
 
 					<?php if(is_user_logged_in()):?>
 					<section class="data-section-member">
@@ -270,7 +278,7 @@ $activity = tst_get_member_activity($tst_member);
 									<a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
 								</div>							
 								<div class="mt-meta">
-									<span class="reward-icon glyphicon glyphicon-star"></span> <?php echo tst_get_task_meta($task, 'reward');?>
+									<span class="reward-icon glyphicon glyphicon-gift"></span> <?php echo tst_get_task_meta($task, 'reward');?>
 								</div>
 							</li>
                     <?php } //endforeach
@@ -293,8 +301,8 @@ $activity = tst_get_member_activity($tst_member);
 			<div class="col-md-8">
 				<nav role="navigation" class="nextprev nav-post">
 				<?php
-					$key = tst_get_member_role_key($tst_member);
-					$back = ($key != 'user') ? home_url('members/'.$role) : home_url('members');					
+					$role = tst_get_member_role_key($tst_member);					
+					$back = ($role != 'user') ? home_url('members/'.$role) : home_url('members');					
 				?>
 				<a href="<?php echo $back;?>">&laquo; <?php _e('Back to members list', 'tst');?></a>				
 				</nav>

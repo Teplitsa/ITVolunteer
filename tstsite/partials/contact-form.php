@@ -1,5 +1,5 @@
 <?php
-$user = wp_get_current_user();
+$user = wp_get_current_user(); 
 if( !is_page('contacts') ) {?>
 <div id="open-contact-form"><?php _e('Something goes wrong? Leave us a message :)', 'tst');?></div>
 <?php }?>
@@ -31,3 +31,4 @@ if( !is_page('contacts') ) {?>
     </form>
     <div id="result-message" class="alert alert-info contact-form-result"></div>
 </div>
+

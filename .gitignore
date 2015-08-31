@@ -1,3 +1,9 @@
-bower_components
-node_modules
+/tstsite/node_modules
+/tstsite/bower_components
+config.codekit
 .sass-cache
+.idea
+.komodotools
+node_modules
+bower_components
+.DS_Store

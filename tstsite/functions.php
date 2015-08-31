@@ -1,6 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.5');
-@error_reporting(E_ALL & ~E_NOTICE);
+define('TST_WORKING_VERSION', '1.9.6');
 require get_template_directory().'/inc/acf_keys.php';
 
 /**
@@ -9,14 +8,6 @@ require get_template_directory().'/inc/acf_keys.php';
  * @package Blank
  */
  
-global $ITV_ADMIN_EMAILS, $ITV_CONSULT_EMAILS, $ITV_EMAIL_FROM, $ITV_TASK_COMLETE_NOTIF_EMAILS, $ITV_CONSULT_EMAIL_FROM;
-$ITV_ADMIN_EMAILS = array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_TASK_COMLETE_NOTIF_EMAILS = array('vlad@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_CONSULT_EMAILS = array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com');
-$ITV_CONSULT_EMAIL_FROM = 'anna.ladoshkina@te-st.ru';
-$ITV_EMAIL_FROM = 'info@itv.te-st.ru';
-$ITV_TASK_STATUSES_ORDER = Array('publish', 'in_work', 'closed', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
-
 /**
  * Initials
  **/
@@ -25,12 +16,14 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-$email_templates = array();
-
 
 function tst_get_version_num(){
 	
 	if(false !== strpos(site_url(), 'testplugins.ngo2.ru')){
+		//on dev force random number to avoid cache problems
+		$num = rand();
+	}
+	elseif(false !== strpos(site_url(), 'multisite')){
 		//on dev force random number to avoid cache problems
 		$num = rand();
 	}
@@ -53,10 +46,9 @@ function tst_setup() {
 	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
-	global $email_templates;
-	include(get_template_directory().'/inc/email-templates.php');	
+	include(get_template_directory().'/inc/itv_email_templates.php');	
 
-	//add_theme_support( 'automatic-feed-links' );
+
 
 	/**
 	 * Images
@@ -65,8 +57,7 @@ function tst_setup() {
 	
 	/* image sizes */
 	set_post_thumbnail_size(390, 244, true ); // regular thumbnails
-	add_image_size('logo', 220, 140, true ); // logo thumbnail 
-	//add_image_size('poster', 220, 295, true ); // poster in widget	
+	add_image_size('logo', 220, 140, true ); // logo thumbnail
 	add_image_size('embed', 640, 400, true ); // fixed size for embending
 	add_image_size('long', 640, 280, true ); // long thumbnail for pages
 	add_image_size('avatar', 180, 180, array( 'center', 'center' ) );
@@ -160,30 +151,21 @@ add_action('widgets_init', 'tst_widgets_init');
 /**
  * Enqueue scripts and styles
  */
-add_action('wp_enqueue_scripts', function(){
+add_action('wp_enqueue_scripts', 'tst_load_local_scripts', 20); 
+function tst_load_local_scripts(){
 
     $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
-   // wp_enqueue_style('gfonts', 'http://fonts.googleapis.com/css?family=Open+Sans|PT+Serif&subset=latin,cyrillic', array());
-    wp_enqueue_style('bootstrap', $url.'/css/bootstrap.min.css', array());
-	wp_enqueue_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css');
-	wp_enqueue_style('chosen', $url.'/css/chosen.css', array());
-    wp_enqueue_style('front', $url.'/css/front.css', array(), $version);
-	//wp_enqueue_style('fixes', $url.'/css/fixes.css', array('front'), $version);
+	wp_dequeue_style('dashicons');
+	wp_dequeue_style('post-views-counter-frontend');
+	
+    wp_enqueue_style('bootstrap', $url.'/assets/css/bootstrap.min.css', array());	
+	wp_enqueue_style('front', $url.'/assets/css/bundle.css', array('bootstrap'), $version);
 
-
-    wp_enqueue_script('jquery-ui-datepicker');
-    if(get_locale() == 'ru_RU')
-        wp_enqueue_script('jquery-ui-datepicker-ru', $url.'/js/jquery.ui.datepicker-ru.js', array('jquery-ui-datepicker'), '1.0', true);
-
-    wp_enqueue_script('jquery-ui-tabs');
-    wp_enqueue_script('jquery-chosen', $url.'/js/chosen.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('bootstrap', $url.'/js/bootstrap.min.js', array('jquery'), '1.0', true);
-	//wp_enqueue_script('jquery-masonry');
-    wp_enqueue_script('ajaxupload', $url.'/js/ajaxupload-v1.2.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('imagesloaded', $url.'/js/imagesloaded.pkgd.min.js', array('jquery'), '1.0', true);
-    wp_enqueue_script('front', $url.'/js/front.js', array('jquery', 'bootstrap', 'jquery-ui-datepicker', 'jquery-chosen', 'imagesloaded', 'jquery-masonry'), $version, true);
+    wp_enqueue_script('bootstrap', $url.'/assets/js/bootstrap.min.js', array(), '1.0', true);	
+    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery', 'bootstrap'), $version, true);
+	
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl' => admin_url('admin-ajax.php'),
@@ -220,15 +202,15 @@ add_action('wp_enqueue_scripts', function(){
 	if(is_singular('tasks') && get_option('thread_comments')) {
 		wp_enqueue_script('comment-reply');
 	}
-});
+}
 
 add_action('admin_enqueue_scripts', function(){
 
     $url = get_template_directory_uri();
     $version = tst_get_version_num();
 
-    wp_enqueue_style('tst-admin', $url.'/css/admin.css', array(), $version);
-    wp_enqueue_script('tst-admin', $url.'/js/admin.js', array('jquery'), $version);
+    wp_enqueue_style('tst-admin', $url.'/assets/css/admin.css', array(), $version);
+    wp_enqueue_script('tst-admin', $url.'/assets/js/admin.js', array('jquery'), $version);
     
     wp_localize_script('tst-admin', 'adminend', array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
@@ -246,17 +228,31 @@ add_action('login_enqueue_scripts', function(){
 
 });
 
+/** disable emojji **/
+function disable_wp_emojicons() {
 
+  // all actions related to emojis
+  remove_action( 'admin_print_styles', 'print_emoji_styles' );
+  remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+  remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
+  remove_action( 'wp_print_styles', 'print_emoji_styles' );
+  remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
+  remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
+  remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
+
+}
+add_action( 'init', 'disable_wp_emojicons' );
 
 
 /**
  * Lock Administration Screens for user 
  */
 function wp_admin_block() {
-	if(strstr(@$_SERVER['PHP_SELF'], '/wp-admin/profile.php') === false) {
+	$php_self = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
+	if(strstr($php_self, '/wp-admin/profile.php') === false) {
 		if (!current_user_can('administrator')) { 
 			wp_redirect( home_url() );
-			exit();
+			exit;
 		}
 	}	
 	else {
@@ -264,36 +260,37 @@ function wp_admin_block() {
 			if (!current_user_can('administrator')) {
 				$current_user = wp_get_current_user();
 				wp_redirect( site_url('/members/' . $current_user->user_login . '/'));
-				exit();
+				exit;
 			}
 		}
 		else {
 			wp_redirect( site_url('/') );
-			exit();
+			exit;
 		}
 	}
 }
 add_action('admin_menu', 'wp_admin_block');
+
 /**
  * Custom additions.
  */
 if(is_admin()) {
     require get_template_directory().'/inc/admin.php';
 }
+
+require get_template_directory().'/itv_config.php';
 require get_template_directory().'/inc/customizer.php';
-require get_template_directory().'/inc/template-tags.php';
+require get_template_directory().'/inc/template-general.php';
+require get_template_directory().'/inc/functions-general.php';
 require get_template_directory().'/inc/extras.php';
-require get_template_directory().'/inc/related.php';
-require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';
 require get_template_directory().'/inc/itv_log.php';
 require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
-
 require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';
 require get_template_directory().'/inc/functions-members.php';
+require get_template_directory().'/inc/functions-tasks.php';
 require get_template_directory().'/inc/stats-events.php';
-

@@ -22,22 +22,16 @@ foreach($posts as $post) {
 	
 	$is_to_fix = false;
 	if(preg_match('/&amp;lt;br \/&amp;gt;/', $expecting)) {
-#		echo $expecting . "<br />-----------------<br />";
-#		echo preg_replace('/&amp;lt;br \/&amp;gt;/', '', $expecting) . "<br />*******************************************<br /><br />";
 		update_field('field_533bebda0fe8d', preg_replace('/&amp;lt;br \/&amp;gt;/', '', $expecting), $task_id);
 		$is_to_fix = true;
 	}
 	
 	if(preg_match('/&amp;lt;br \/&amp;gt;/', $about_reward)) {
-#		echo $about_reward . "<br />-----------------<br />";
-#		echo preg_replace('/&amp;lt;br \/&amp;gt;/', '', $about_reward) . "<br />*******************************************<br /><br />";
 		update_field('field_533bec930fe8e', preg_replace('/&amp;lt;br \/&amp;gt;/', '', $about_reward), $task_id);
 		$is_to_fix = true;
 	}
 	
 	if(preg_match('/&amp;lt;br \/&amp;gt;/', $about_author_org)) {
-#		echo $about_author_org . "<br />-----------------<br />";
-#		echo preg_replace('/&amp;lt;br \/&amp;gt;/', '', $about_author_org) . "<br />*******************************************<br /><br />";
 		update_field('field_533beee40fe8f', preg_replace('/&amp;lt;br \/&amp;gt;/', '', $about_author_org), $task_id);
 		$is_to_fix = true;
 	}

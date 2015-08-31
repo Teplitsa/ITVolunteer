@@ -10,7 +10,7 @@ $query_params = array(
 	'nopaging' => true,
 );
 
-$task_id = @$_GET['task_id'];
+$task_id = isset($_GET['task_id']) ? $_GET['task_id'] : 0;
 
 if($task_id) {
 	$query_params['post__in'] = explode(',', $task_id);

@@ -23,7 +23,7 @@ class ItvLog {
 	private $task_action_table;
 	private static $_instance = NULL;
 	
-	function __construct() {
+	public function __construct() {
 		global $wpdb;
 		$this->task_action_table = $wpdb->prefix.'itv_task_actions_log';
 	}

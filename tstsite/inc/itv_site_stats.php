@@ -6,6 +6,13 @@ class ItvSiteStats {
 	public static $USERS_ROLE_VOLUNTEER = 'common_stats_users_volunteer_count';
 	public static $USERS_TOTAL = 'common_stats_users_count';
 	
+	public static $ITV_TOTAL_USERS_COUNT = null;
+	public static $ITV_TASKS_COUNT_CLOSED = null;
+	public static $ITV_TASKS_COUNT_WORK = null;
+	public static $ITV_TASKS_COUNT_NEW = null;
+	public static $ITV_TASKS_COUNT_ARCHIVED = null;
+	public static $ITV_TASKS_COUNT_ALL = null;
+	
 	private static $_instance = NULL;
 	
 	public static function instance() {
@@ -45,15 +52,7 @@ class ItvSiteStats {
 					
 			foreach($user_query->results as $user) {
 				$is_count = true;
-// 				$is_count = false;
-// 				if ( !empty( $user->roles ) && is_array( $user->roles ) ) {
-// 					foreach ( $user->roles as $role ) {
-// 						if($role == 'author') {
-// 							$is_count = true;
-// 						}
-// 					}
-// 				}
-						
+										
 				if($is_count) {
 					
 					tst_update_member_stat($user);

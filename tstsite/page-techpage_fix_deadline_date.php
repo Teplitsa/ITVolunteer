@@ -27,7 +27,8 @@ foreach($posts as $post) {
 		$is_to_fix = true;
 	}
 	
-	if($is_to_fix && @$_GET['update'] == 'ok') {
+	$update = isset($_GET['update']) ? $_GET['update'] : '';
+	if($is_to_fix && $update == 'ok') {
 		update_field('field_533bef200fe90', date_from_dd_mm_yy_to_yymmdd($deadline), $task_id);
 	}
 	

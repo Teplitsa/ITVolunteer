@@ -5,20 +5,17 @@
  **/
 
 
-global $tst_member;
-
 $user_login = get_query_var('membername');
-$tst_member = get_user_by('slug', $user_login);
+$member = get_user_by('slug', $user_login);
 
-if( !$tst_member ) {
+if( !$member ) {
 	$refer = stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer();
 	$back_url = $refer ? $refer : home_url();
 
 	wp_redirect($back_url);
-	die();
+	exit;
 }
 
-$member = $tst_member;
 $member_id = $member->ID;
 $member_data = array(
 		'member_id' =>  $member_id,
@@ -45,7 +42,7 @@ get_header();?>
 		
 		<div class="col-md-4">
             <div class="status-block-member">
-                <?php tst_member_profile_infoblock($member->user_login);?>
+                <?php tst_member_profile_infoblock($member->ID);?>
             </div>
 		</div>
 	</div><!-- .row -->
@@ -68,7 +65,7 @@ get_header();?>
 		}
 		$per_page = get_option('posts_per_page');
 		$offset = ($current_page - 1) * $per_page;
-		$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews($tst_member->ID, $offset, $per_page); 
+		$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews($member->ID, $offset, $per_page); 
 	?>
 	<?php if(count($latest_doer_reviews) > 0):?>
             <div class="tab-content">
@@ -108,7 +105,7 @@ get_header();?>
                 	$base = str_replace('http:', 'https:', $base);
                 }
                 
-                $total_pages = ceil(ItvReviews::instance()->count_reviews_for_doer($tst_member->ID) / $per_page);
+                $total_pages = ceil(ItvReviews::instance()->count_reviews_for_doer($member->ID) / $per_page);
                 
 				$pagination = array(
 			        'base' => $base.'%_%',
