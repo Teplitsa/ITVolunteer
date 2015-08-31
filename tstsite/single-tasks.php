@@ -83,8 +83,8 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 			<div class="task-author task-section">
 				<h5 class="task-section-title"><?php _e('Need help', 'tst');?></h5>
 				<div class="task-author-avatar"><?php echo tst_get_task_author_avatar();?></div>
-				<h4 class="task-author-name"><?php echo tst_get_task_author_link() ;?></h4>
-				<div class="task-author-desc"><?php echo html_entity_decode(tst_get_member_summary($author_id, false), ENT_QUOTES, 'UTF-8'); ?></div>
+				<h4 class="task-author-name"><?php echo tst_get_task_author_link(null, true) ;?></h4>
+				
 			</div>
 			
 			<div class="task-details task-section">
@@ -111,10 +111,43 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 					
 		</div>
 
-	</div><!-- .row -->
-
+	</div><!-- .row -->	
 </div><!-- .page-body -->
-
 </article>
+<?php
+
+	$related = new WP_Query(array(
+		'post_type' => 'tasks',
+		'posts_per_page' => 2,
+		'author' => (int)get_the_author_meta('ID')
+	)); 
+	if(!$related->have_posts()){
+		$tags = wp_get_object_terms(get_the_ID(), 'post_tag', array('fields' => 'ids', 'orderby' => 'count', 'order' => 'DESC'));
+		$related = new WP_Query(array(
+			'post_type' => 'tasks',
+			'posts_per_page' => 2,
+			'tax_query' => array(
+				array(
+					'tax_query' => 'post_tag',
+					'field' => 'id',
+					'terms' => $tags[0]
+				)
+			)
+		));
+	}
+	
+	if($related->have_posts()) {
+?>
+<aside class="related-tasks">
+	<h5 class="task-section-title">Еще задачи</h5>
+	<div class="row">
+	<?php
+		foreach($related->posts as $rp){
+			tst_task_related_card($rp);
+		}
+	?>
+	</div>
+</aside>
+<?php } ?>
 <?php endwhile; ?>
 <?php get_footer(); ?>

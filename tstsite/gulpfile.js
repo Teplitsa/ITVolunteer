@@ -47,6 +47,7 @@ gulp.task('build-js', function() {
         }),        
         appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
                     basePaths.bower+'masonry/dist/masonry.pkgd.min.js',
+                    basePaths.bower+'social-likes/social-likes.min.js',
                     basePaths.src+'js/*']; //our own JS files
 
     return gulp.src(vendorFiles.concat(appFiles)) //join them
@@ -65,7 +66,7 @@ gulp.task('build-css', function() {
     //paths bourbon
     var paths = require('node-bourbon').includePaths;
 
-    var vendorFiles = gulp.src('bower_components/chosen/chosen.min.css'), //components
+    var vendorFiles = gulp.src(''), //components bower_components/chosen/chosen.min.css
         appFiles = gulp.src(basePaths.src+'sass/main.scss') //our main file with @import-s
             .pipe(!isProduction ? plugins.sourcemaps.init() : gutil.noop())  //process the original sources for sourcemap
             .pipe(plugins.sass({

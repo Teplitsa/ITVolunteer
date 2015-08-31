@@ -21,7 +21,8 @@
     "bootstrap": "~3.3.5",
     "chosen": "~1.4.2",
     "imagesloaded": "~3.1.8",
-    "masonry": "https://github.com/desandro/masonry.git#~3.3.2"    
+    "masonry": "https://github.com/desandro/masonry.git#~3.3.2",
+    "social-likes": "~3.0.14"
   },
   "overrides": {
     "jquery": {
@@ -34,6 +35,9 @@
       "ignore": true
     },
     "imagesloaded": {
+      "ignore": true
+    },
+    "social-likes": {
       "ignore": true
     }
   }

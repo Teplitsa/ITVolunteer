@@ -108,7 +108,7 @@ function tst_brand_banner() {
 </div><!-- .site-layout -->
 
 <!-- sharing -->
-
+<?php do_action('tst_layout_footer');?>
 </div><!-- .site-layout-container-->
 
 

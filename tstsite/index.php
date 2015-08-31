@@ -10,7 +10,7 @@ $css = (isset($wp_query->posts[0]->post_type)) ? $wp_query->posts[0]->post_type 
 get_header(); ?>
 
 <header class="page-heading <?php echo $css;?>-list-header <?php if(!is_home()){echo 'no-breadcrumbs'; }?>">
-	
+
 	<?php if(is_post_type_archive('tasks')) { ?>
 	<div class="row">	
 		<div class="col-md-2">			
@@ -31,15 +31,20 @@ get_header(); ?>
 	
 	<?php } ?>
 </header>
-	
+
 <div class="page-body">
 	<?php if ( have_posts() ) : ?>
 	<div class="row in-loop <?php echo $css;?>-list">
-		<?php while ( have_posts() ) : the_post(); ?>
-
-			<?php get_template_part('partials/content', get_post_type()); ?>
-
-		<?php endwhile; ?>
+		<?php		
+			while(have_posts()) {
+				the_post();
+				$pt = get_post_type();
+				if($pt == 'tasks')
+					tst_task_card_in_loop();
+				else
+					tst_news_item_in_loop();
+			}
+		?>		
 	</div><!-- .row -->
 
 		<?php tst_content_nav( 'nav-below' ); ?>

@@ -540,14 +540,132 @@ function tst_get_user_closed_tasks($user) {
 }
 
 /** Sharing buttons **/
+function tst_have_sharing(){
+	
+	if(is_singular(array('tasks', 'post')))
+		return true;
+	
+	if(is_about())
+		return true;
+	
+	if(is_single_member())
+		return true;
+}
+
+add_action('tst_layout_footer', 'frl_social_share');
 function frl_social_share() {
-		
+	
+	if(!tst_have_sharing())
+		return;	
 ?>
+<div class="social-likes-wrapper">
 <div class="social-likes">
-	<div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
-	<div class="twitter" title="Поделиться ссылкой в Твиттере">Twitter</div>
 	<div class="vkontakte" title="Поделиться ссылкой во Вконтакте">Вконтакте</div>
+	<div class="facebook" title="Поделиться ссылкой на Фейсбуке">Facebook</div>
 	<div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
-</div>
+	<div class="twitter" title="Поделиться ссылкой в Твиттере">Twitter</div>	
+</div></div>
 <?php
+}
+
+ 
+/* Custom conditions */
+function is_about(){
+	global $post;
+	
+	if(!is_page())
+		return false;
+	
+	if(is_page('about'))
+		return true;
+	
+	if(is_page('contacts'))
+		return true;
+	
+	if(is_page('sovety-dlya-nko-uspeshnye-zadachi'))
+		return true;
+	
+	$parents = get_post_ancestors($post);
+	$test = get_page_by_path('about');
+	if(in_array($test->ID, $parents))
+		return true;
+	
+	return false;
+}
+
+function is_page_branch($slug){
+	global $post;
+	
+	if(empty($slug))
+		return false;
+	
+		
+	if(!is_page())
+		return false;
+	
+	if(is_page($slug))
+		return true;
+	
+	$parents = get_post_ancestors($post);
+	$test = get_page_by_path($slug);
+	if(in_array($test->ID, $parents))
+		return true;
+	
+	return false;
+}
+
+function is_tax_branch($slug, $tax) {
+	global $post;
+	
+	$test = get_term_by('slug', $slug, $tax);
+	if(empty($test))
+		return false;
+	
+	if(is_tax($tax)){
+		$qobj = get_queried_object();
+		if($qobj->term_id == $test->term_id || $qobj->parent == $test->term_id)
+			return true;
+	}
+	
+	if(is_singular() && is_object_in_term($post->ID, $tax, $test->term_id))
+		return true;
+	
+	return false;
+}
+
+function is_news() {
+	
+	if(is_home() || is_category())
+		return true;
+	
+	if(is_singular('post'))
+		return true;
+	
+	return false;
+}
+
+
+/** News item in loop **/
+function tst_news_item_in_loop(){
+?>
+<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 tpl-post'); ?>>
+
+	<div class="border-card">
+		
+		<h4><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h4>
+		
+		
+		<div class="post-preview"><a href="<?php the_permalink(); ?>" class="thumb-link">
+			<?php the_post_thumbnail();?>
+		</a></div>
+		
+		<div class="post-summary">
+			<div class="post-meta"><time><?php echo get_the_date();?></time></div>
+			<?php the_excerpt(); ?>
+			
+		</div>
+	</div>	
+		
+</article><!-- #post-## -->	
+<?php	
 }

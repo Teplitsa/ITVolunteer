@@ -30,20 +30,17 @@ function tst_get_task_status_label($status = false) {
     return isset($status_list[$status]) ? $status_list[$status] : false;
 }
 
-function tst_tast_status_tip(){
-	global $post;
-
-    if( !$post || $post->post_type != 'tasks')
-        return '';
-	
+function tst_tast_status_tip($task = null){
+		
 	$label = array();
-    $status = $post->post_status;
+	$task_id = ($task) ? $task->ID : get_the_ID();
+    $status = get_post_status($task_id);
 	$status_list = tst_get_task_status_list();
 	
     $label[] = isset($status_list[$status]) ? $status_list[$status] : '';
 	
 	if($status != 'closed' && function_exists('get_field')){
-		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('deadline', get_the_ID()));
+		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('deadline', $task_id));
 		$deadline = date('d.m.Y', strtotime($deadline));
 		$label[] = sprintf(__('deadline: %s', 'tst'), $deadline);
 	}
@@ -69,14 +66,14 @@ function tst_task_fixed_meta_in_card($task = null){
 }
 
 
-function tst_get_task_author_link($task = null){	
+function tst_get_task_author_link($task = null, $name_wrapper = false){	
 	
 	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
 	$author = get_user_by('id', $author_id);
 	if( !$author )
 		return '';
 
-	$name = tst_get_member_name($author);
+	$name = tst_get_member_name($author, $name_wrapper);
 	$url = tst_get_member_url($author);
 	
 	return "<a href='{$url}'>{$name}</a>";
@@ -97,8 +94,10 @@ function tst_get_task_author_org($task = null){
 }
 
 
-function tst_task_reward_in_card(){	
-	$reward = get_term(get_field('reward', get_the_ID()), 'reward');
+function tst_task_reward_in_card($task = null){
+	
+	$task_id = ($task) ? $task->ID : get_the_ID();
+	$reward = get_term(get_field('reward', $task_id), 'reward');
 	if(is_wp_error($reward))
 		return;
 	
@@ -160,6 +159,79 @@ function tst_tasks_filters_link($status = 'publish') {
 	
 	return $url;
 }
+
+
+function tst_task_card_in_loop(){
+	
+?>	
+<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 item-masonry tpl-task'); ?>>
+<div class="border-card">
+	<div class="status-wrap">
+		<?php
+			$status_label = tst_get_task_status_label();
+			if($status_label) {
+		?>
+		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());?>">&nbsp;</span>
+		<?php } ?>
+	</div>
+	
+	<header class="task-header">	
+		<h4 class="task-title">				
+			<a href="<?php the_permalink(); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php the_title(); ?></a>
+		</h4>							
+		<div class="task-meta"><?php echo tst_task_fixed_meta_in_card();?></div>
+		<?php echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
+	</header><!-- .entry-header -->
+
+	<div class="task-summary">	
+		<div class="task-reward"><?php tst_task_reward_in_card();?></div>
+		<div class="task-more">
+			<a href="<?php the_permalink(); ?>" class="more-link ga-event-trigger" <?php tst_ga_event_data('tc_more');?>  title="<?php _e('Details', 'tst');?>">...</a>
+		</div>		
+	</div>
+	
+</div>	<!-- .border-card -->		
+</article><!-- #post-## -->
+<?php	
+}
+
+function tst_task_related_card($task){
+	
+?>	
+<div class="tpl-task related-task col-md-6">
+<div class="border-card">
+	<div class="status-wrap">
+		<?php
+			$status_label = tst_get_task_status_label($task->post_status);
+			if($status_label) {
+		?>
+		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip($task));?>">&nbsp;</span>
+		<?php } ?>
+	</div>
+	
+	<header class="task-header">	
+		<h4 class="task-title">				
+			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark">
+				<?php echo get_the_title($task->ID); ?>
+			</a>
+		</h4>							
+		<div class="task-meta"><?php echo tst_task_fixed_meta_in_card($task);?></div>
+		<?php echo get_the_term_list($task->ID, 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
+	</header><!-- .entry-header -->
+
+	<div class="task-summary">	
+		<div class="task-reward"><?php tst_task_reward_in_card($task);?></div>
+		<div class="task-more">
+			<a href="<?php echo get_permalink($task); ?>" class="more-link ga-event-trigger" <?php tst_ga_event_data('tc_more');?>  title="<?php _e('Details', 'tst');?>">...</a>
+		</div>		
+	</div>
+	
+</div>	<!-- .border-card -->		
+</div><!-- #post-## -->
+<?php	
+}
+
+
 
 
 /** == Tasks counters == **/

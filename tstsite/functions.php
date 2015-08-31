@@ -283,7 +283,6 @@ require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-general.php';
 require get_template_directory().'/inc/functions-general.php';
 require get_template_directory().'/inc/extras.php';
-require get_template_directory().'/inc/home.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 require get_template_directory().'/inc/notifications.php';

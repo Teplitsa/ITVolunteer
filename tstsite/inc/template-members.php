@@ -367,7 +367,7 @@ function tst_get_member_summary($member_id = null, $more = false){
 	return $summary;
 }
 
-function tst_get_member_name($member = null){	
+function tst_get_member_name($member = null, $wrapper = false){	
 		
 	if(!$member){
 		$member = tst_get_current_member();
@@ -376,7 +376,13 @@ function tst_get_member_name($member = null){
 		$member = get_user_by('id', $member);
 	}
 	
-	$name = sanitize_text_field($member->first_name.' '.$member->last_name);	
+	if(!$wrapper){
+		$name = sanitize_text_field($member->first_name.' '.$member->last_name);
+	}
+	else {
+		$name = '<span class="f-name">'.sanitize_text_field($member->first_name)."</span> ";
+		$name .= '<span class="l-name">'.sanitize_text_field($member->last_name)."</span> ";
+	}		
 	
 	return $name;
 }
