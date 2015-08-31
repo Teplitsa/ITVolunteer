@@ -571,9 +571,9 @@ section[class |="data-section"] {
 	
 .task-summary-content  .reward.task-param  {
     max-width: 280px;}
-
+	
 .status-block-task .reward.task-param {
-    max-width: 350px;}
+    max-width: 350px; }
 
 .fb-widget {	
 	width:300px;
@@ -635,11 +635,26 @@ a.itv-avatar-action, a.itv-avatar-action:hover {
 	width:50px;
 }
 
-.skills_list .form-group {
-	width:30%;
-	float:left;
-	height: 50px;
-	overflow: hidden;
+.skills_list {
+	margin-bottom: 10px;
+	
+	.form-group {
+		margin-bottom: 8px;
+		@include for(small-screens) {
+			float: left;
+			width: 30%;
+			&:nth-of-type(3n+1) {
+				clear: left;
+			}
+		}
+	}
+	
+	.checkbox {
+		margin: 0;
+		@include for(small-screens) {
+			padding-right: 10px;
+		}
+	}
 }
 
 .itv-task-view-row {

@@ -119,16 +119,19 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 	$related = new WP_Query(array(
 		'post_type' => 'tasks',
 		'posts_per_page' => 2,
+		'post__not_in' => array(get_the_ID()),
 		'author' => (int)get_the_author_meta('ID')
 	)); 
 	if(!$related->have_posts()){
 		$tags = wp_get_object_terms(get_the_ID(), 'post_tag', array('fields' => 'ids', 'orderby' => 'count', 'order' => 'DESC'));
+		
 		$related = new WP_Query(array(
 			'post_type' => 'tasks',
 			'posts_per_page' => 2,
+			'post__not_in' => array(get_the_ID()),
 			'tax_query' => array(
 				array(
-					'tax_query' => 'post_tag',
+					'taxonomy' => 'post_tag',
 					'field' => 'id',
 					'terms' => $tags[0]
 				)
