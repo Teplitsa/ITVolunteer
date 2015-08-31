@@ -550,6 +550,14 @@ function tst_have_sharing(){
 	
 	if(is_single_member())
 		return true;
+	
+	if(is_front_page() || is_post_type_archive('tasks'))
+		return true;
+	
+	if(is_page('members'))
+		return true;
+	
+	return false;
 }
 
 add_action('tst_layout_footer', 'frl_social_share');

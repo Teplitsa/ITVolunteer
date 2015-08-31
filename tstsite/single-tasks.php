@@ -133,7 +133,7 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 				array(
 					'taxonomy' => 'post_tag',
 					'field' => 'id',
-					'terms' => $tags[0]
+					'terms' => $tags
 				)
 			)
 		));
@@ -142,7 +142,7 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 	if($related->have_posts()) {
 ?>
 <aside class="related-tasks">
-	<h5 class="task-section-title">Еще задачи</h5>
+	<h5 class="task-section-title"><?php _e('Related tasks', 'tst');?></h5>
 	<div class="row">
 	<?php
 		foreach($related->posts as $rp){

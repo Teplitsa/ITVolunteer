@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 16:25+0300\n"
-"PO-Revision-Date: 2015-08-31 18:13+0300\n"
+"POT-Creation-Date: 2015-08-31 19:15+0300\n"
+"PO-Revision-Date: 2015-08-31 19:15+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -2284,6 +2284,10 @@ msgstr "Об организации / проекте"
 #: single-tasks.php:102
 msgid "Comments"
 msgstr "Комментарии"
+
+#: single-tasks.php:145
+msgid "Related tasks"
+msgstr "Похожие задачи"
 
 # @ tst
 #~ msgid "Participate"
