@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-31 19:15+0300\n"
-"PO-Revision-Date: 2015-08-31 19:15+0300\n"
+"POT-Creation-Date: 2015-09-01 07:36+0200\n"
+"PO-Revision-Date: 2015-09-01 07:48+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.1\n"
+"X-Generator: Poedit 1.7.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -376,7 +376,6 @@ msgid "%1$s-%2$s"
 msgstr "%1$s в %2$s"
 
 # @ default
-#. translators: 1: month input, 2: day input, 3: year input, 4: hour input, 5: minute input
 #: inc/admin.php:442
 #, php-format
 msgid "%1$s%2$s, %3$s @ %4$s : %5$s"
@@ -1089,75 +1088,172 @@ msgstr ""
 "команда it-волонтёра,\n"
 "<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
-#: inc/itv_log.php:148
+#: inc/itv_email_templates.php:62
+msgid "ITVolunteer - your task has been moved to archive!"
+msgstr "it-волонтёр - ваша задача была перемещена в архив"
+
+#: inc/itv_email_templates.php:63
+#, php-format
+msgid ""
+"Greetings!\n"
+"\n"
+"Your task has been moved to archive because no doers have been approved for "
+"it.\n"
+"Task page: %s.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Здравствуйте!\n"
+"\n"
+"Ваша задача была перемещена в архив, так как волонтер для нее не найден.\n"
+"Страница задачи: %s\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра."
+
+#: inc/itv_email_templates.php:66
+msgid "ITVolunteer - your task will be moved to archive soon!"
+msgstr "it-волонтёр - скоро ваша задача будет перемещена в архив"
+
+#: inc/itv_email_templates.php:67
+#, php-format
+msgid ""
+"Greetings!\n"
+"\n"
+"Your task will be moved to archive in %d days because no doers have been "
+"approved for it.\n"
+"Task page: %s.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Здравствуйте!\n"
+"\n"
+"Ваша задача будет перемещена в архив через %d дней, так как волонтер для нее "
+"еще не выбран.\n"
+"Страница задачи: %s\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра."
+
+#: inc/itv_email_templates.php:70
+msgid "ITVolunteer - your task will be moved to archive tomorrow!"
+msgstr "it-волонтёр - завтра ваша задача будет перемещена в архив"
+
+#: inc/itv_email_templates.php:71
+#, php-format
+msgid ""
+"Greetings!\n"
+"\n"
+"Your task will be moved to archive tomorrow because no doers have been "
+"approved for it.\n"
+"Task page: %s.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Здравствуйте!\n"
+"\n"
+"Ваша задача завтра будет перемещена в архив, так как волонтер для нее еще не "
+"выбран.\n"
+"Страница задачи: %s\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра."
+
+#: inc/itv_email_templates.php:74
+msgid "ITVolunteer - no doer has been approved for your task yet!"
+msgstr "it-волонтёр - волонтер для вашей задачи все еще не выбран!"
+
+#: inc/itv_email_templates.php:75
+#, php-format
+msgid ""
+"Greetings!\n"
+"\n"
+"%d days left but still no doer has been approved for your task.\n"
+"Task page: %s.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Здравствуйте!\n"
+"\n"
+"Прошло уже %d дней, а волонтер для вашей задачи еще не выбран.\n"
+"Страница задачи: %s\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра."
+
+#: inc/itv_log.php:149
 msgid "itv_task_actions_log_"
 msgstr ""
 
-#: inc/itv_log.php:152
+#: inc/itv_log.php:153
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
 
-#: inc/itv_log.php:153
+#: inc/itv_log.php:154
 msgid "itv_task_actions_log_delete"
 msgstr "Задача удалена пользователем %s"
 
-#: inc/itv_log.php:154
+#: inc/itv_log.php:155
 msgid "itv_task_actions_log_edit"
 msgstr "Изменена пользователем %s"
 
-#: inc/itv_log.php:155
+#: inc/itv_log.php:156
 msgid "itv_task_actions_log_add_candidate"
 msgstr "Добавлен кандидат %s"
 
-#: inc/itv_log.php:156
+#: inc/itv_log.php:157
 msgid "itv_task_actions_log_refuse_candidate"
 msgstr "Отклонен кандидат %s"
 
-#: inc/itv_log.php:157
+#: inc/itv_log.php:158
 msgid "itv_task_actions_log_approve_candidate"
 msgstr "Одобрен кандидат %s"
 
-#: inc/itv_log.php:158
+#: inc/itv_log.php:159
 msgid "itv_task_actions_log_remove_candidate"
 msgstr "Удален кандидат %s"
 
-#: inc/itv_log.php:159
+#: inc/itv_log.php:160
 msgid "itv_task_actions_log_publish"
 msgstr "Задача опубликована пользователем %s"
 
-#: inc/itv_log.php:160
+#: inc/itv_log.php:161
 msgid "itv_task_actions_log_unpublish"
 msgstr "Задача снята с публикации %s"
 
-#: inc/itv_log.php:161
+#: inc/itv_log.php:162
 msgid "itv_task_actions_log_inwork"
 msgstr "Задача поставлена в работу пользователем %s"
 
-#: inc/itv_log.php:162
+#: inc/itv_log.php:163
 msgid "itv_task_actions_log_close"
 msgstr "Задача закрыта пользователем %s"
 
-#: inc/itv_log.php:164
+#: inc/itv_log.php:165
 msgid "itv_task_actions_log_user_register"
 msgstr "Новый пользователь %s зарегистрирован"
 
-#: inc/itv_log.php:165
+#: inc/itv_log.php:166
 msgid "itv_task_actions_log_user_update"
 msgstr "Пользователь %s обновил свой профиль"
 
-#: inc/itv_log.php:166
+#: inc/itv_log.php:167
 msgid "itv_task_actions_log_user_delete_profile"
 msgstr "Пользователь %s удалил свой профиль"
 
-#: inc/itv_log.php:167
+#: inc/itv_log.php:168
 msgid "itv_task_actions_log_user_login_login"
 msgstr "Авторизация по логину"
 
-#: inc/itv_log.php:168
+#: inc/itv_log.php:169
 msgid "itv_task_actions_log_user_login_email"
 msgstr "Авторизация по email"
 
-#: inc/itv_log.php:169
+#: inc/itv_log.php:170
 msgid "itv_task_actions_log_user_login_failed"
 msgstr "Ошибка входа на сайт!"
 

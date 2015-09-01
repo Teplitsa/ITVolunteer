@@ -58,6 +58,22 @@ class ItvEmailTemplates {
 		        'title' => __('it-volunteer - new message from contact form', 'tst'),
 		        'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: %s\nName: %s\nEmail: %s\nMessage:\n%s\n\nBest,\nit-volunteer", 'tst'),
 		    ),
+			'task_moved_to_archive' => array(
+					'title' => __('ITVolunteer - your task has been moved to archive!', 'tst'),
+					'text' => __("Greetings!\n\nYour task has been moved to archive because no doers have been approved for it.\nTask page: %s.\n\nBest,\nITVolunteer", 'tst'),
+			),
+			'task_archive_soon_notif' => array(
+					'title' => __('ITVolunteer - your task will be moved to archive soon!', 'tst'),
+					'text' => __("Greetings!\n\nYour task will be moved to archive in %d days because no doers have been approved for it.\nTask page: %s.\n\nBest,\nITVolunteer", 'tst'),
+			),
+			'task_will_be_moved_to_archive_tomorrow' => array(
+					'title' => __('ITVolunteer - your task will be moved to archive tomorrow!', 'tst'),
+					'text' => __("Greetings!\n\nYour task will be moved to archive tomorrow because no doers have been approved for it.\nTask page: %s.\n\nBest,\nITVolunteer", 'tst'),
+			),
+			'task_no_doer_notif' => array(
+					'title' => __('ITVolunteer - no doer has been approved for your task yet!', 'tst'),
+					'text' => __("Greetings!\n\n%d days left but still no doer has been approved for your task.\nTask page: %s.\n\nBest,\nITVolunteer", 'tst'),
+			),
 		//    '' => array(
 		//        'title' => ,
 		//        'text' => ,

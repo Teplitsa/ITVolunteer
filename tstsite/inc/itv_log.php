@@ -12,6 +12,7 @@ class ItvLog {
 	public static $ACTION_TASK_UNPUBLISH = 'unpublish';
 	public static $ACTION_TASK_INWORK = 'inwork';
 	public static $ACTION_TASK_CLOSE = 'close';
+	public static $ACTION_TASK_ARCHIVE = 'archive';
 	
 	public static $ACTION_USER_REGISTER = 'user_register';
 	public static $ACTION_USER_UPDATE = 'user_update';
