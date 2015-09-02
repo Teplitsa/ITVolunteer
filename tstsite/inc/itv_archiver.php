@@ -68,7 +68,7 @@ class ItvArchiver {
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
 			echo '$task=' . $task->ID . "\n";
-// 			echo $task->post_date . "\n";
+ 			echo $task->post_date . "\n";
 			$this->move_task_to_archive($task);
 		}
 		$this->print_counters();

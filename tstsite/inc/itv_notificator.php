@@ -55,8 +55,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-// 			echo '$task=' . $task->ID . "\n";
-// 			echo $task->post_date . "\n";
+			echo '$task=' . $task->ID . "\n";
+			echo $task->post_date . "\n";
 			$this->tomorrow_move_task_to_archive($task);
 		}
 		$this->print_counters();
@@ -145,8 +145,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-// 			echo '$task=' . $task->ID . "\n";
-// 			echo $task->post_date . "\n";
+			echo '$task=' . $task->ID . "\n";
+			echo $task->post_date . "\n";
 			$this->notif_archive_soon_task($task);
 		}
 		$this->print_counters();
@@ -245,8 +245,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-// 			echo '$task=' . $task->ID . "\n";
-// 			echo $task->post_date . "\n";
+			echo '$task=' . $task->ID . "\n";
+			echo $task->post_date . "\n";
 			$this->notif_no_task_doer_yet($task);
 		}
 		$this->print_counters();
