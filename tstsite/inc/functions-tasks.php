@@ -203,10 +203,23 @@ function tst_move_task_to_archive($task){
 	
 	wp_update_post($postarr);
 	
-	//may be some stats need to be updated here or some logs
-	//notify user
+	// log archive action
+	ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ARCHIVE);
+	
+	// send email notification to owner
+	$email_templates = ItvEmailTemplates::instance();
+	$task_permalink = get_permalink($task);
+	try {
+		wp_mail(
+			get_user_by('id', $task->post_author)->user_email,
+			$email_templates->get_title('task_moved_to_archive'),
+			nl2br(sprintf($email_templates->get_text('task_moved_to_archive'), $task_permalink))
+		);
+	}
+	catch(Exception $ex) {
+		error_log($ex);
+	}
 }
-
 
 /** Correct tags calculations for tasks */
 add_action('edited_term_taxonomy', 'tst_correct_tag_count', 2, 2);

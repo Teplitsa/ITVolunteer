@@ -13,6 +13,9 @@ class ItvConfig {
 			'CONSULT_EMAILS' => array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com'),
 			'EMAIL_FROM' => 'info@itv.te-st.ru',
 			'CONSULT_EMAIL_FROM' => 'anna.ladoshkina@te-st.ru',
+			'TASK_ARCHIVE_DAYS' => 31,
+			'TASK_ARCHIVE_SOON_NOTIF_DAYS' => 24,
+			'TASK_NO_DOER_NOTIF_DAYS' => 7,
 		);
 		
 	}

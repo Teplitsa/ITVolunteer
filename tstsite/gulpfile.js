@@ -46,8 +46,7 @@ gulp.task('build-js', function() {
             }
         }),        
         appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
-                    basePaths.bower+'masonry/dist/masonry.pkgd.min.js',
-                    basePaths.bower+'social-likes/social-likes.min.js',
+                    basePaths.bower+'masonry/dist/masonry.pkgd.min.js',                    
                     basePaths.src+'js/*']; //our own JS files
 
     return gulp.src(vendorFiles.concat(appFiles)) //join them
@@ -96,8 +95,14 @@ gulp.task('copy-b-css', function(){
 });
 
 gulp.task('copy-b-js', function(){
-
-    return gulp.src('bower_components/bootstrap/dist/js/bootstrap.min.js')
+    
+    var vendor = ['bower_components/jquery/dist/jquery.min.js',
+                  'bower_components/bootstrap/dist/js/bootstrap.min.js'];
+    
+    return gulp.src(vendor)
+        .pipe(plugins.concat('vendor.js'))//combine them into vendor.js        
+        .pipe(plugins.size()) //print size for log
+        .on('error', console.log) //log
         .pipe(gulp.dest(basePaths.dest+'js'));
 });
 

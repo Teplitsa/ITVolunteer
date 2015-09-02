@@ -560,7 +560,7 @@ function tst_have_sharing(){
 	return false;
 }
 
-add_action('tst_layout_footer', 'frl_social_share');
+//add_action('tst_layout_footer', 'frl_social_share');
 function frl_social_share() {
 	
 	if(!tst_have_sharing())
@@ -573,6 +573,60 @@ function frl_social_share() {
 	<div class="odnoklassniki" title="Поделиться ссылкой в Одноклассниках">Одноклассники</div>
 	<div class="twitter" title="Поделиться ссылкой в Твиттере">Twitter</div>	
 </div></div>
+<?php
+}
+
+add_action('tst_layout_footer', 'frl_social_share_no_js');
+function frl_social_share_no_js() {
+	
+	if(!tst_have_sharing())
+		return;
+	
+$title = (class_exists('WPSEO_Frontend')) ? WPSEO_Frontend::get_instance()->title( '' ) : '';
+$link = frl_current_url();
+
+	$data = array(
+		'vkontakte' => array(
+			'label' => 'Поделиться во Вконтакте',
+			'url' => 'https://vk.com/share.php?url='.$link.'&title='.$title,
+			'txt' => 'Вконтакте'
+		),
+		'facebook' => array(
+			'label' => 'Поделиться на Фейсбуке',
+			'url' => 'https://www.facebook.com/sharer/sharer.php?u='.$link,
+			'txt' => 'Facebook'
+		),
+		
+		'odnoklassniki' => array(
+			'label' => 'Поделиться ссылкой в Одноклассниках',
+			'url' => 'http://connect.ok.ru/dk?st.cmd=WidgetSharePreview&service=odnoklassniki&st.shareUrl='.$link,
+			'txt' => 'Одноклассники'
+		),
+		'twitter' => array(
+			'label' => 'Поделиться ссылкой в Твиттере',
+			'url' => 'https://twitter.com/intent/tweet?url='.$link.'&text='.$title,
+			'txt' => 'Twitter'
+		)
+	);
+	
+?>
+<div class="social-likes-wrapper">
+<div class="social-likes social-likes_visible social-likes_ready">
+
+<?php
+	foreach($data as $key => $obj){
+?>
+	<div title="<?php echo esc_attr($obj['label']);?>" class="social-likes__widget social-likes__widget_<?php echo $key;?>">
+		<a href="<?php echo $obj['url'];?>" class="social-likes__button social-likes__button_<?php echo $key;?>" target="_blank" onClick="window.open('<?php echo $obj['url'];?>','<?php echo $obj['label'];?>','top=320,left=325,width=650,height=430,status=no,scrollbars=no,menubar=no,tollbars=no');return false;">
+			<span class="social-likes__icon social-likes__icon_<?php echo $key;?>"></span><?php echo $obj['txt'];?>
+		</a>
+	</div>
+<?php
+	}
+?>
+
+</div>
+</div>
 <?php
 }
 
