@@ -55,8 +55,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-			echo '$task=' . $task->ID . "\n";
-			echo $task->post_date . "\n";
+// 			echo '$task=' . $task->ID . "\n";
+// 			echo $task->post_date . "\n";
 			$this->tomorrow_move_task_to_archive($task);
 		}
 		$this->print_counters();
@@ -87,6 +87,9 @@ class ItvNotificator {
 		$task_permalink = get_permalink($task);
 		$user_email = get_user_by('id', $task->post_author)->user_email;
 		echo sprintf("%s\n", $user_email);
+		echo 'task=' . $task->ID . "\n";
+		echo $task->post_date . "\n";
+		
 		$this->notif_to_send_count += 1;
 		
 		if(!$this->is_skip_sending) {				
@@ -145,8 +148,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-			echo '$task=' . $task->ID . "\n";
-			echo $task->post_date . "\n";
+// 			echo '$task=' . $task->ID . "\n";
+// 			echo $task->post_date . "\n";
 			$this->notif_archive_soon_task($task);
 		}
 		$this->print_counters();
@@ -188,6 +191,9 @@ class ItvNotificator {
 		$days_till_archive = $itv_config->get('TASK_ARCHIVE_DAYS') - $itv_config->get('TASK_ARCHIVE_SOON_NOTIF_DAYS');
 		$user_email = get_user_by('id', $task->post_author)->user_email;
 		echo sprintf("%s\n", $user_email);
+		echo 'task=' . $task->ID . "\n";
+		echo $task->post_date . "\n";
+		
 		$this->notif_to_send_count += 1;
 		
 		if(!$this->is_skip_sending) {
@@ -245,8 +251,8 @@ class ItvNotificator {
 		$this->reset_counters();
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-			echo '$task=' . $task->ID . "\n";
-			echo $task->post_date . "\n";
+// 			echo '$task=' . $task->ID . "\n";
+// 			echo $task->post_date . "\n";
 			$this->notif_no_task_doer_yet($task);
 		}
 		$this->print_counters();
@@ -289,6 +295,9 @@ class ItvNotificator {
 		$days_left = $itv_config->get('TASK_NO_DOER_NOTIF_DAYS');
 		$user_email = get_user_by('id', $task->post_author)->user_email;
 		echo sprintf("%s\n", $user_email);
+		echo 'task=' . $task->ID . "\n";
+		echo $task->post_date . "\n";
+		
 		$this->notif_to_send_count += 1;
 		
 		if(!$this->is_skip_sending) {

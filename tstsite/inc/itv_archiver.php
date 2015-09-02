@@ -67,8 +67,8 @@ class ItvArchiver {
 		$query = new WP_Query($args);
 		foreach($query->posts as $task){
 			$this->tasks_to_check_count += 1;
-			echo '$task=' . $task->ID . "\n";
- 			echo $task->post_date . "\n";
+// 			echo '$task=' . $task->ID . "\n";
+// 			echo $task->post_date . "\n";
 			$this->move_task_to_archive($task);
 		}
 		$this->print_counters();
@@ -110,6 +110,8 @@ class ItvArchiver {
 		$task_permalink = get_permalink($task);
 		$user_email = get_user_by('id', $task->post_author)->user_email;
 		echo sprintf("%s\n", $user_email);
+		echo 'task=' . $task->ID . "\n";
+		echo $task->post_date . "\n";
 		
 		if(!$this->is_skip_sending) {				
 			try {
