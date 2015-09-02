@@ -43,14 +43,13 @@ class ItvArchiver {
 	
 		$itv_config = ItvConfig::instance();
 		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
-		$before_days += 1;
 		$limit = strtotime(sprintf('-%d days', $before_days));
 		
 		echo 'before_limit=' . date('d.m.Y', $limit) . "\n";
 	
 		$args = array(
 			'post_type' => 'tasks',
-			'post_per_page' => -1,
+			'nopaging' => true,
 			'post_status' => 'publish',
 			'date_query' => array(
 				array(
@@ -84,7 +83,9 @@ class ItvArchiver {
 			return; //only open task could be archived
 	
 		//check
-		$limit = date('Y-m-d', strtotime('-1 month'));
+		$itv_config = ItvConfig::instance();
+		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
+		$limit = strtotime(sprintf('-%d days', $before_days));
 		if(date('Y-m-d', strtotime($task->post_date)) >= $limit)
 			return; //not too old
 	

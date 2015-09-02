@@ -37,7 +37,7 @@ class ItvNotificator {
 		
 		$args = array(
 			'post_type' => 'tasks',
-			'post_per_page' => -1,
+			'nopaging' => true,
 			'post_status' => 'publish',
 			'date_query' => array(
 				array(
@@ -125,7 +125,7 @@ class ItvNotificator {
 		
 		$args = array(
 			'post_type' => 'tasks',
-			'post_per_page' => -1,
+			'nopaging' => true,				
 			'post_status' => 'publish',
 			'date_query' => array(
 				array(
@@ -228,7 +228,7 @@ class ItvNotificator {
 	
 		$args = array(
 			'post_type' => 'tasks',
-			'post_per_page' => -1,
+			'nopaging' => true,
 			'post_status' => 'publish',
 			'date_query' => array(
 				array(
