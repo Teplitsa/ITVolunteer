@@ -20,16 +20,19 @@ if(php_sapi_name() !== 'cli') {
 	throw new ItvNotCLIRunException("Should be run from command line!");
 }
 
-if(!isset($argv[1]) || empty($argv[1])) {
+$options = getopt("", array('host:'));
+$host = isset($options['host']) ? $options['host'] : '';
+
+if(empty($host)) {
 	throw new ItvNotCLIRunException("Host must be defined!");
 }
 else {
-	echo "HOST: " . $argv[1] . "\n";
+	echo "HOST: " . $host . "\n";
 }
 
 $_SERVER = array(
-	"HTTP_HOST" => $argv[1],
-	"SERVER_NAME" => $argv[1],
+	"HTTP_HOST" => $host,
+	"SERVER_NAME" => $host,
 	"REQUEST_URI" => "/",
 	"REQUEST_METHOD" => "GET",
 );
