@@ -3,9 +3,9 @@
 require_once('itv_notificator.php');
 
 class ItvArchiver extends ItvNotificator {
-	private $tasks_to_archive_count;
-	private $tasks_archived_count;
-	private $is_skip_archiving = false;
+	protected $tasks_to_archive_count;
+	protected $tasks_archived_count;
+	protected $is_skip_archiving = false;
 	
 	public function disable_archiving() {
 		$this->is_skip_archiving = true;

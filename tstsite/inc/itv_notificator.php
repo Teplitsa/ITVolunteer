@@ -1,11 +1,11 @@
 <?php
 
 class ItvNotificator {
-	private $notif_to_send_count;
-	private $notif_sent_count;
-	private $tasks_to_check_count;
-	private $already_sent_count;
-	private $is_skip_sending = false;
+	protected $notif_to_send_count;
+	protected $notif_sent_count;
+	protected $tasks_to_check_count;
+	protected $already_sent_count;
+	protected $is_skip_sending = false;
 	
 	public function __construct() {
 		global $wpdb;
