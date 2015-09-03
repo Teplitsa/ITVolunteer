@@ -1,6 +1,6 @@
 <?php
 /**
- * The Header for our theme.
+ * The Header for our theme
  */
 ?><!doctype html>
 <!--[if lt IE 7 ]> <html <?php language_attributes(); ?> class="no-js ie6" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
