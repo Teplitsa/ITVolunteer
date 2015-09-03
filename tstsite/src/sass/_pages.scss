@@ -89,9 +89,11 @@
 	}
 	
 	a {
+		display: inline-block;
 		margin-left: 10px;
 		@include transition(all 0.35s);
 		white-space: nowrap;
+		padding: 5px;
 		
 		&:hover, &:focus, &:active {
 			text-decoration: underline;			
@@ -101,6 +103,7 @@
 	.publish { color: $color-label-green-normal; }
 	.in_work { color: $color-label-work; }
 	.closed { color: $color-label-closed; }
+	.tags { color: $color-text; }
 }
 
 //news item

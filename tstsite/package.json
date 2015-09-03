@@ -12,7 +12,11 @@
   "author": "Teplitsa",
   "license": "GPL-3.0",
   "devDependencies": {
+    "clean-css": "^3.4.1",
+    "critical": "^0.6.0",
+    "criticalcss": "^0.6.1",
     "event-stream": "^3.3.1",
+    "fs": "0.0.2",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-clean": "^0.3.1",
@@ -29,6 +33,7 @@
     "gulp-util": "^3.0.6",
     "main-bower-files": "^2.9.0",
     "node-bourbon": "^4.2.3",
+    "penthouse": "^0.3.6",
     "relative-path": "^1.0.0",
     "run-sequence": "^1.1.2"
   },
