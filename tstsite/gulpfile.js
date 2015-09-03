@@ -37,6 +37,7 @@ var changeEvent = function(evt) {
     gutil.log('File', gutil.colors.cyan(evt.path.replace(new RegExp('/.*(?=/' + basePaths.src + ')/'), '')), 'was', gutil.colors.magenta(evt.type));
 };
 
+
 //js
 gulp.task('build-js', function() {
     var vendorFiles = mainBowerFiles({ //files from bower_components
@@ -79,15 +80,36 @@ gulp.task('build-css', function() {
             .pipe(!isProduction ? plugins.sourcemaps.write() : gutil.noop()) //add the map to modified source
             .on('error', console.log); //log
 
-    return es.concat(appFiles, vendorFiles) //combine vendor CSS files and our files after-SASS
+    return es.concat(appFiles, vendorFiles) //combine vendor CSS files and our files after-SASS        
         .pipe(plugins.concat('bundle.css')) //combine into file
         .pipe(isProduction ? plugins.cssmin() : gutil.noop()) //minification on production
-        .pipe(plugins.size()) //display size
-        .pipe(gulp.dest(basePaths.dest+'css')) //write file
-        .on('error', console.log); //log
+        .pipe(plugins.size()) //display size        
+        .pipe(gulp.dest(basePaths.dest+'css'))  // write rev'd assets to build dir          
+        .on('error', console.log); //log    
+    
 });
 
-//copy bootstrap for local fallback
+//revision
+gulp.task('revision-clean', function(){
+    
+    return gulp.src(basePaths.dest+'rev/*', {read: false})
+            .pipe(plugins.clean())
+            .on('error', console.log); //log   
+});
+
+gulp.task('revision', function(){    
+    
+    return gulp.src([basePaths.dest+'css/*.css', basePaths.dest+'js/*.js'])
+        .pipe(plugins.rev())
+        .pipe(gulp.dest( basePaths.dest+'rev' ))
+        .pipe(plugins.rev.manifest())        
+        .pipe(gulp.dest(basePaths.dest+'rev')) // write manifest to build dir        
+        .on('error', console.log); //log   
+});
+
+
+
+// copy bootstrap for local fallback 
 gulp.task('copy-b-css', function(){
 
     return gulp.src('bower_components/bootstrap/dist/css/bootstrap.min.css')
@@ -120,17 +142,50 @@ gulp.task('copy-files', function(callback) {
 });
 
 
+//type of builds
+gulp.task('init-build', function(callback) {
+    runSequence('copy-files',
+        'build-css',
+        'build-js',
+        'revision-clean',
+        'revision',
+        callback);
+});
+
+gulp.task('full-build', function(callback) {
+    runSequence('build-css',
+        'build-js',
+        'revision-clean',
+        'revision',
+        callback);
+});
+
+gulp.task('full-build-css', function(callback) {
+    runSequence('build-css',        
+        'revision-clean',
+        'revision',
+        callback);
+});
+
+gulp.task('full-build-js', function(callback) {
+    runSequence('build-js',
+        'revision-clean',
+        'revision',
+        callback);
+});
+
+
 
 //watchers
 gulp.task('watch', function(){
-    gulp.watch(basePaths.src+'sass/*.scss', ['build-css']).on('change', function(evt) {
+    gulp.watch(basePaths.src+'sass/*.scss', ['full-build-css']).on('change', function(evt) {
         changeEvent(evt);
     });
-    gulp.watch(basePaths.src+'js/*.js', ['build-js']).on('change', function(evt) {
+    gulp.watch(basePaths.src+'js/*.js', ['full-build-js']).on('change', function(evt) {
         changeEvent(evt);
     });
 });
 
 
 //default
-gulp.task('default', ['build-js', 'build-css', 'watch', 'copy-bootstrap']);
+gulp.task('default', ['init-build', 'watch']);

@@ -1,6 +1,6 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.9');
-require get_template_directory().'/inc/acf_keys.php';
+define('TST_WORKING_VERSION', '1.9.8');
+//require get_template_directory().'/inc/acf_keys.php';
 
 /**
  * Blank functions and definitions
@@ -151,21 +151,120 @@ add_action('widgets_init', 'tst_widgets_init');
 /**
  * Enqueue scripts and styles
  */
-add_action('wp_enqueue_scripts', 'tst_load_local_scripts', 30); 
+class TST_CSSJS {
+	
+	private static $_instance = null;	
+	private $manifest = null;
+	
+	private function __construct() {
+		
+		add_action('wp_enqueue_scripts', array($this, 'load_scripts'), 30); 
+	}
+	
+	public static function get_instance() {
+
+        // If the single instance hasn't been set, set it now.
+        if( !self::$_instance ) {
+            self::$_instance = new self;
+        }
+		
+        return self::$_instance;
+    }
+	
+	public function load_scripts() {
+		
+		$url = get_template_directory_uri();		
+		
+		wp_dequeue_style('dashicons');
+		wp_dequeue_style('post-views-counter-frontend');
+		
+		wp_enqueue_style('bootstrap', $url.'/assets/rev/'.$this->get_rev_filename('bootstrap.min.css'), array(), null);	
+		wp_enqueue_style('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.css'), array('bootstrap'), null);
+		
+		wp_enqueue_script('itv-vendor', $url.'/assets/rev/'.$this->get_rev_filename('vendor.js'), array(), null, true);	   
+		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array('itv-vendor'), null, true);		
+	
+		wp_localize_script('front', 'frontend', array(
+			'ajaxurl'                        => admin_url('admin-ajax.php'),
+			'site_url'                       => site_url('/'),
+			'chosen_no_results_text'         => __('No such tags found...', 'tst'),
+			'user_login_too_short'           => __('User login must have 4 or more symbols.', 'tst'),
+			'user_login_incorrect'           => __('User login contains incorrect symbols.', 'tst'),
+			'user_email_empty'               => __('Email is required.', 'tst'),
+			'user_email_incorrect'           => __('Email is incorrect.', 'tst'),
+			'passes_are_inequal'             => __('Passwords are inconsistent.', 'tst'),
+			'user_pass_empty'                => __('Password is required.', 'tst'),
+			'first_name_too_short'           => __('First name must be at least 3 symbols long.', 'tst'),
+			'last_name_too_short'            => __('Last name must be at least 3 symbols long.', 'tst'),
+			'task_delete_confirm'            => __('This task will be deleted. Are you sure?', 'tst'),
+			'profile_delete_confirm'         => __('Your profile will be deleted. Are you sure?', 'tst'),
+			'task_title_is_required'         => __('Please, set a title for the task.', 'tst'),
+			'deadline_is_required'           => __('Please, set a deadline date for the task.', 'tst'),
+			'task_descr_is_required'         => __('Please, set a small description for the task.', 'tst'),
+			'expecting_is_required'          => __('Please, give a few words about what you are expecting from a task doer.', 'tst'),
+			'about_reward_is_required'       => __('Please, note a few words about a reward that you are willing to give for a task.', 'tst'),
+			'about_author_org_is_required'   => __('Please, tell something about your project, initiative or an organization.', 'tst'),
+			'some_tags_are_required'         => __('Please, set at least one thematic tag for your task.', 'tst'),
+			'reward_is_required'             => __('Please, select your reward for a task doer.', 'tst'),
+			'contactor_name_empty'           => __('Your name is required.', 'tst'),
+			'contactor_message_empty'        => __('Your message is required.', 'tst'),
+			'user_company_logo_upload_error' => __('Company logo upload failed', 'tst'),
+			'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
+			'user_avatar_upload_error'       => __('Avatar upload failed', 'tst'),
+			'user_avatar_delete_error'       => __('Avatar delete failed', 'tst'),
+			//        '' => __('.', 'tst'),
+		));
+	
+		//comments
+		if(is_singular('tasks') && get_option('thread_comments')) {
+			wp_enqueue_script('comment-reply');
+		}
+		
+	}
+	
+	
+	private function get_manifest() {
+		
+		if(null === $this->manifest) {
+			$manifest_path = get_template_directory().'/assets/rev/rev-manifest.json';
+
+			if (file_exists($manifest_path)) {
+				$this->manifest = json_decode(file_get_contents($manifest_path), TRUE);
+			} else {
+				$this->manifest = [];
+			}
+		}
+		
+		return $this->manifest;
+	}
+	
+	
+	public function get_rev_filename($filename) {
+		
+		$manifest = $this->get_manifest();
+		if (array_key_exists($filename, $manifest)) {
+			return $manifest[$filename];
+		}
+	
+		return $filename;
+	}
+	
+} //class
+TST_CSSJS::get_instance();
+
+ 
+ 
+//add_action('wp_enqueue_scripts', 'tst_load_local_scripts', 30); 
 function tst_load_local_scripts(){
 
     $url = get_template_directory_uri();
 	$version = tst_get_version_num();
 	
-	wp_dequeue_style('dashicons');
-	wp_dequeue_style('post-views-counter-frontend');
-	
     wp_enqueue_style('bootstrap', $url.'/assets/css/bootstrap.min.css', array());	
-	wp_enqueue_style('front', $url.'/assets/css/bundle.css', array('bootstrap'), $version);
-	
-	wp_enqueue_script('itv-vendor', $url.'/assets/js/vendor.js', array(), '1.0', true);	   
-    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('itv-vendor'), $version, true);
-	
+    wp_enqueue_style('front', $url.'/assets/css/bundle.css', array(), $version);
+
+    wp_enqueue_script('bootstrap', $url.'/assets/js/bootstrap.min.js', array('jquery'), '1.0', true);   
+    wp_enqueue_script('front', $url.'/assets/js/bundle.js', array('jquery'), $version, true);
 
     wp_localize_script('front', 'frontend', array(
         'ajaxurl'                        => admin_url('admin-ajax.php'),
