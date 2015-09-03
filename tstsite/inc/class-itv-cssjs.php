@@ -9,7 +9,8 @@ class TST_CSSJS {
 	private $manifest = null;
 	
 	private function __construct() {
-				
+		
+		add_action('wp_head', array($this, 'print_critical_loader'), 29);
 		add_action('wp_head', array($this, 'print_css_loader'), 30);
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'), 30);
 		add_action( 'init', array($this, 'disable_wp_emojicons'));
@@ -57,7 +58,17 @@ class TST_CSSJS {
 	
 	/* load css */
 	function print_critical_loader() {
-		
+	?>
+	<style>
+		body {
+			background-color: #e6e6e6;
+			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			color: #333;
+			font-size: 14px;
+		}
+		a { color: #0095c7; }
+	</style>
+	<?php
 	}
 	
 	function print_css_loader() {
@@ -109,8 +120,8 @@ class TST_CSSJS {
 				});
 				return ss;
 			}
-			loadCSS('<?php echo $vendor;?>', window.document.getElementById('loadCss-target'));
-			loadCSS('<?php echo $bundle;?>', window.document.getElementById('loadCss-target'));
+			loadCSS('<?php echo $vendor;?>', window.document.getElementById('loadCSS'));
+			loadCSS('<?php echo $bundle;?>', window.document.getElementById('loadCSS'));
 		</script>
 		<noscript>
 			<link href="<?php echo $vendor;?>" rel="stylesheet">
