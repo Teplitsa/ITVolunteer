@@ -10,10 +10,10 @@ class TST_CSSJS {
 	
 	private function __construct() {
 		
-		add_action('wp_head', array($this, 'print_critical_loader'), 29);
-		add_action('wp_head', array($this, 'print_css_loader'), 30);
+		
+		add_action('wp_enqueue_scripts', array($this, 'load_styles'), 30);
 		add_action('wp_enqueue_scripts', array($this, 'load_scripts'), 30);
-		add_action( 'init', array($this, 'disable_wp_emojicons'));
+		add_action('init', array($this, 'disable_wp_emojicons'));
 		
 		add_action('admin_enqueue_scripts',  array($this, 'load_admin_scripts'), 30);
 		add_action('login_enqueue_scripts',  array($this, 'load_login_scripts'), 30);
@@ -57,6 +57,15 @@ class TST_CSSJS {
 	}
 	
 	/* load css */
+	function load_styles() {
+		
+		$url = get_template_directory_uri();
+		
+		wp_enqueue_style('itv-vendor', $url.'/assets/rev/'.$this->get_rev_filename('bootstrap.min.css'), array(), null);	   
+		wp_enqueue_style('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.css'), array(), null);	
+	}
+	
+	/** Critical CSS should be build manually - after that we can use loadCSS */
 	function print_critical_loader() {
 	?>
 	<style>
