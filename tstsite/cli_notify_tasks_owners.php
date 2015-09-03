@@ -17,7 +17,7 @@ try {
 	}
 	
 	echo "   notif_archive_soon_tasks\n";
-	$itv_notificator->notif_archive_soon_tasks();
+	$itv_notificator->notify_about_tomorrow_archive();
 	
 	echo "   notif_no_tasks_doer_yet\n";
 	$itv_notificator->notif_no_tasks_doer_yet();

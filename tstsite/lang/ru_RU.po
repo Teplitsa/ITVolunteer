@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-02 17:53+0200\n"
-"PO-Revision-Date: 2015-09-02 18:01+0200\n"
+"POT-Creation-Date: 2015-09-03 22:45+0200\n"
+"PO-Revision-Date: 2015-09-03 22:50+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -78,137 +78,6 @@ msgstr "Задач решено:"
 #, php-format
 msgid "All materials of the site are avaliabe under license %s"
 msgstr "Материалы сайта доступны по лицензии %s"
-
-# @ tst
-#: functions.php:173
-msgid "No such tags found..."
-msgstr "Нам очень жаль, но мы не нашли таких тегов :("
-
-# @ tst
-#: functions.php:174
-msgid "User login must have 4 or more symbols."
-msgstr "Логин должен содержать не менее 4-х символов."
-
-# @ tst
-#: functions.php:175
-msgid "User login contains incorrect symbols."
-msgstr "Логин содержит некорректные символы."
-
-# @ tst
-#: functions.php:176
-msgid "Email is required."
-msgstr "Пожалуйста, укажите email"
-
-# @ tst
-#: functions.php:177
-msgid "Email is incorrect."
-msgstr "Некорректный email."
-
-# @ tst
-#: functions.php:178
-msgid "Passwords are inconsistent."
-msgstr "Пароли не совпадают."
-
-# @ tst
-#: functions.php:179
-msgid "Password is required."
-msgstr "Обязательно укажите пароль"
-
-# @ tst
-#: functions.php:180
-msgid "First name must be at least 3 symbols long."
-msgstr "Не менее 3 знаков"
-
-# @ tst
-#: functions.php:181
-msgid "Last name must be at least 3 symbols long."
-msgstr "Не менее 3 знаков"
-
-# @ tst
-#: functions.php:182
-msgid "This task will be deleted. Are you sure?"
-msgstr "Задача будет удалена. Вы уверены?"
-
-# @ tst
-#: functions.php:183
-msgid "Your profile will be deleted. Are you sure?"
-msgstr "Ваш профиль будет удален. Вы уверены?"
-
-# @ tst
-#: functions.php:184
-msgid "Please, set a title for the task."
-msgstr "Как называется ваша задача? Нам правда важно это знать :)"
-
-# @ tst
-#: functions.php:185
-msgid "Please, set a deadline date for the task."
-msgstr "Когда вы планируете завершить задачу? Это важная информация."
-
-# @ tst
-#: functions.php:186
-msgid "Please, set a small description for the task."
-msgstr ""
-"Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, "
-"пожалуйста, краткое, но исчерпывающее описание."
-
-# @ tst
-#: functions.php:187
-msgid "Please, give a few words about what you are expecting from a task doer."
-msgstr "Что вы ожидаете от исполнителя задачи?"
-
-# @ tst
-#: functions.php:188
-msgid ""
-"Please, note a few words about a reward that you are willing to give for a "
-"task."
-msgstr "Как вы хотите отблагодарить исполнителя?"
-
-# @ tst
-#: functions.php:189
-msgid ""
-"Please, tell something about your project, initiative or an organization."
-msgstr ""
-"Пожалуйста, расскажите немного о проекте, гражданской инициативе или "
-"организации, которую вы представляете."
-
-# @ tst
-#: functions.php:190
-msgid "Please, set at least one thematic tag for your task."
-msgstr "Пожалуйста, добавьте хотя бы один тематический тег для вашей задачи."
-
-# @ tst
-#: functions.php:191
-msgid "Please, select your reward for a task doer."
-msgstr "Пожалуйста, выберите награду для исполнителя вашей задачи."
-
-# @ tst
-#: functions.php:192
-msgid "Your name is required."
-msgstr "Обязательно укажите ваше имя."
-
-# @ tst
-#: functions.php:193
-msgid "Your message is required."
-msgstr ""
-"Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
-
-# @ tst
-#: functions.php:194
-msgid "Company logo upload failed"
-msgstr "При загрузке логотипа произошла ошибка."
-
-# @ tst
-#: functions.php:195
-msgid "Company logo delete failed"
-msgstr "При удалении логотипа произошла ошибка."
-
-#: functions.php:196
-msgid "Avatar upload failed"
-msgstr "При загрузке фоторграфии произошла ошибка"
-
-#: functions.php:197
-msgid "Avatar delete failed"
-msgstr "При удалении фоторграфии произошла ошибка!"
 
 # @ tst
 #: homepage.php:12
@@ -437,6 +306,137 @@ msgstr "Лог изменений задач"
 #: inc/admin.php:777
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
+
+# @ tst
+#: inc/class-itv-cssjs.php:156
+msgid "No such tags found..."
+msgstr "Нам очень жаль, но мы не нашли таких тегов :("
+
+# @ tst
+#: inc/class-itv-cssjs.php:157
+msgid "User login must have 4 or more symbols."
+msgstr "Логин должен содержать не менее 4-х символов."
+
+# @ tst
+#: inc/class-itv-cssjs.php:158
+msgid "User login contains incorrect symbols."
+msgstr "Логин содержит некорректные символы."
+
+# @ tst
+#: inc/class-itv-cssjs.php:159
+msgid "Email is required."
+msgstr "Пожалуйста, укажите email"
+
+# @ tst
+#: inc/class-itv-cssjs.php:160
+msgid "Email is incorrect."
+msgstr "Некорректный email."
+
+# @ tst
+#: inc/class-itv-cssjs.php:161
+msgid "Passwords are inconsistent."
+msgstr "Пароли не совпадают."
+
+# @ tst
+#: inc/class-itv-cssjs.php:162
+msgid "Password is required."
+msgstr "Обязательно укажите пароль"
+
+# @ tst
+#: inc/class-itv-cssjs.php:163
+msgid "First name must be at least 3 symbols long."
+msgstr "Не менее 3 знаков"
+
+# @ tst
+#: inc/class-itv-cssjs.php:164
+msgid "Last name must be at least 3 symbols long."
+msgstr "Не менее 3 знаков"
+
+# @ tst
+#: inc/class-itv-cssjs.php:165
+msgid "This task will be deleted. Are you sure?"
+msgstr "Задача будет удалена. Вы уверены?"
+
+# @ tst
+#: inc/class-itv-cssjs.php:166
+msgid "Your profile will be deleted. Are you sure?"
+msgstr "Ваш профиль будет удален. Вы уверены?"
+
+# @ tst
+#: inc/class-itv-cssjs.php:167
+msgid "Please, set a title for the task."
+msgstr "Как называется ваша задача? Нам правда важно это знать :)"
+
+# @ tst
+#: inc/class-itv-cssjs.php:168
+msgid "Please, set a deadline date for the task."
+msgstr "Когда вы планируете завершить задачу? Это важная информация."
+
+# @ tst
+#: inc/class-itv-cssjs.php:169
+msgid "Please, set a small description for the task."
+msgstr ""
+"Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, "
+"пожалуйста, краткое, но исчерпывающее описание."
+
+# @ tst
+#: inc/class-itv-cssjs.php:170
+msgid "Please, give a few words about what you are expecting from a task doer."
+msgstr "Что вы ожидаете от исполнителя задачи?"
+
+# @ tst
+#: inc/class-itv-cssjs.php:171
+msgid ""
+"Please, note a few words about a reward that you are willing to give for a "
+"task."
+msgstr "Как вы хотите отблагодарить исполнителя?"
+
+# @ tst
+#: inc/class-itv-cssjs.php:172
+msgid ""
+"Please, tell something about your project, initiative or an organization."
+msgstr ""
+"Пожалуйста, расскажите немного о проекте, гражданской инициативе или "
+"организации, которую вы представляете."
+
+# @ tst
+#: inc/class-itv-cssjs.php:173
+msgid "Please, set at least one thematic tag for your task."
+msgstr "Пожалуйста, добавьте хотя бы один тематический тег для вашей задачи."
+
+# @ tst
+#: inc/class-itv-cssjs.php:174
+msgid "Please, select your reward for a task doer."
+msgstr "Пожалуйста, выберите награду для исполнителя вашей задачи."
+
+# @ tst
+#: inc/class-itv-cssjs.php:175
+msgid "Your name is required."
+msgstr "Обязательно укажите ваше имя."
+
+# @ tst
+#: inc/class-itv-cssjs.php:176
+msgid "Your message is required."
+msgstr ""
+"Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
+
+# @ tst
+#: inc/class-itv-cssjs.php:177
+msgid "Company logo upload failed"
+msgstr "При загрузке логотипа произошла ошибка."
+
+# @ tst
+#: inc/class-itv-cssjs.php:178
+msgid "Company logo delete failed"
+msgstr "При удалении логотипа произошла ошибка."
+
+#: inc/class-itv-cssjs.php:179
+msgid "Avatar upload failed"
+msgstr "При загрузке фоторграфии произошла ошибка"
+
+#: inc/class-itv-cssjs.php:180
+msgid "Avatar delete failed"
+msgstr "При удалении фоторграфии произошла ошибка!"
 
 # @ tst
 #: inc/customizer.php:11 inc/customizer.php:879 inc/customizer.php:913
@@ -687,6 +687,10 @@ msgstr "Неизвестная роль"
 #: inc/extras.php:283
 msgid "LogIn"
 msgstr "Войти"
+
+#: inc/functions-general.php:179
+msgid "Close"
+msgstr "Закрыть"
 
 #: inc/functions-members.php:11
 msgid "Beneficiary"
@@ -1089,101 +1093,56 @@ msgstr ""
 "<a href=\\\"http://te-st.ru/\\\">Теплица социальных технологий</a>"
 
 #: inc/itv_email_templates.php:62
-msgid "ITVolunteer - your task has been moved to archive!"
-msgstr "it-волонтёр - ваша задача была перемещена в архив"
+msgid "ITVolunteer - your task will be moved to archive soon!"
+msgstr "it-волонтёр - ваша задача будет перемещена в архив"
 
 #: inc/itv_email_templates.php:63
-#, php-format
 msgid ""
-"Greetings!\n"
+"Greetings, {{username}}!\n"
 "\n"
-"Your task has been moved to archive because no doers have been approved for "
-"it.\n"
-"Task page: %s.\n"
+"Your task will be moved to archive soon because no doers have been approved "
+"for it.\n"
+"Task page: {{task_link}}.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
 msgstr ""
-"Здравствуйте!\n"
+"Добрый день, {{username}}!\n"
 "\n"
-"Ваша задача была перемещена в архив, так как волонтер для нее не найден.\n"
-"Страница задачи: %s\n"
+"Прошел месяц, но волонтеры пока не откликнулись на вашу задачу, поэтому "
+"завтра она будет перемещена в архив. \n"
 "\n"
-"С уважением,\n"
-"команда it-волонтёра."
+"Если вы хотите попробовать еще раз - пожалуйста отредактируйте текст или "
+"заголовок вашей задачи.\n"
+"<a href=\"{{task_link}}\">{{task_link}}</a>\n"
+"\n"
+"С уважением, команда сервиса IT-волонтер\n"
+"Теплица социальных технологий"
 
 #: inc/itv_email_templates.php:66
-msgid "ITVolunteer - your task will be moved to archive soon!"
-msgstr "it-волонтёр - скоро ваша задача будет перемещена в архив"
+msgid "ITVolunteer - no doer has been approved for your task yet!"
+msgstr "it-волонтёр - ваша задача будет перемещена в архив"
 
 #: inc/itv_email_templates.php:67
-#, php-format
 msgid ""
-"Greetings!\n"
+"Greetings, {{username}}!\n"
 "\n"
-"Your task will be moved to archive in %d days because no doers have been "
-"approved for it.\n"
-"Task page: %s.\n"
+"Week left but still no doer has been approved for your task.\n"
+"Task page: {{task_link}}.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
 msgstr ""
-"Здравствуйте!\n"
+"Добрый день, {{username}}.\n"
 "\n"
-"Ваша задача будет перемещена в архив через %d дней, так как волонтер для нее "
-"еще не выбран.\n"
-"Страница задачи: %s\n"
+"Спасибо, что опубликовали задачу на сервисе It-волонтер. \n"
 "\n"
-"С уважением,\n"
-"команда it-волонтёра."
-
-#: inc/itv_email_templates.php:70
-msgid "ITVolunteer - your task will be moved to archive tomorrow!"
-msgstr "it-волонтёр - завтра ваша задача будет перемещена в архив"
-
-#: inc/itv_email_templates.php:71
-#, php-format
-msgid ""
-"Greetings!\n"
+"Прошла неделя, но заявок от волонтеров пока нет. Пожалуйста проверьте "
+"заголовок и описание вашей задачи - возможно их стоит отредактировать.\n"
+"<a href=\"{{task_link}}\">{{task_link}}</a>\n"
 "\n"
-"Your task will be moved to archive tomorrow because no doers have been "
-"approved for it.\n"
-"Task page: %s.\n"
-"\n"
-"Best,\n"
-"ITVolunteer"
-msgstr ""
-"Здравствуйте!\n"
-"\n"
-"Ваша задача завтра будет перемещена в архив, так как волонтер для нее еще не "
-"выбран.\n"
-"Страница задачи: %s\n"
-"\n"
-"С уважением,\n"
-"команда it-волонтёра."
-
-#: inc/itv_email_templates.php:74
-msgid "ITVolunteer - no doer has been approved for your task yet!"
-msgstr "it-волонтёр - волонтер для вашей задачи все еще не выбран!"
-
-#: inc/itv_email_templates.php:75
-#, php-format
-msgid ""
-"Greetings!\n"
-"\n"
-"%d days left but still no doer has been approved for your task.\n"
-"Task page: %s.\n"
-"\n"
-"Best,\n"
-"ITVolunteer"
-msgstr ""
-"Здравствуйте!\n"
-"\n"
-"Прошло уже %d дней, а волонтер для вашей задачи еще не выбран.\n"
-"Страница задачи: %s\n"
-"\n"
-"С уважением,\n"
-"команда it-волонтёра."
+"С уважением, команда сервиса IT-волонтер\n"
+"Теплица социальных технологий"
 
 #: inc/itv_log.php:149
 msgid "itv_task_actions_log_"
@@ -1260,10 +1219,6 @@ msgstr "Авторизация по email"
 #: inc/itv_log.php:171
 msgid "itv_task_actions_log_user_login_failed"
 msgstr "Ошибка входа на сайт!"
-
-#: inc/notifications.php:25
-msgid "Close"
-msgstr "Закрыть"
 
 #: inc/post-types.php:28 inc/post-types.php:30
 msgid "Rewards"
@@ -1611,7 +1566,7 @@ msgstr "В работе:"
 msgid "Closed tasks:"
 msgstr "Решено:"
 
-#: inc/template-tasks.php:145
+#: inc/template-tasks.php:145 partials/home-well.php:65
 msgid "By tags"
 msgstr "По тегам"
 
@@ -2387,6 +2342,88 @@ msgstr "Комментарии"
 #: single-tasks.php:145
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid ""
+#~ "Greetings!\n"
+#~ "\n"
+#~ "%d days left but still no doer has been approved for your task.\n"
+#~ "Task page: %s.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Здравствуйте!\n"
+#~ "\n"
+#~ "Прошло уже %d дней, а волонтер для вашей задачи еще не выбран.\n"
+#~ "Страница задачи: %s\n"
+#~ "\n"
+#~ "С уважением,\n"
+#~ "команда it-волонтёра."
+
+#~ msgid ""
+#~ "Greetings!\n"
+#~ "\n"
+#~ "Your task will be moved to archive in %d days because no doers have been "
+#~ "approved for it.\n"
+#~ "Task page: %s.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Добрый день, %username%!\n"
+#~ "\n"
+#~ "Прошел месяц, но волонтеры пока не откликнулись на вашу задачу, поэтому "
+#~ "завтра она будет перемещена в архив. \n"
+#~ "\n"
+#~ "Если вы хотите попробовать еще раз - пожалуйста отредактируйте текст или "
+#~ "заголовок вашей задачи.\n"
+#~ "<a href=\"task_link\">task_link</a>\n"
+#~ "\n"
+#~ "С уважением, команда сервиса IT-волонтер\n"
+#~ "Теплица социальных технологий"
+
+#~ msgid "ITVolunteer - your task has been moved to archive!"
+#~ msgstr "it-волонтёр - ваша задача была перемещена в архив"
+
+#~ msgid ""
+#~ "Greetings!\n"
+#~ "\n"
+#~ "Your task has been moved to archive because no doers have been approved "
+#~ "for it.\n"
+#~ "Task page: %s.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Здравствуйте!\n"
+#~ "\n"
+#~ "Ваша задача была перемещена в архив, так как волонтер для нее не найден.\n"
+#~ "Страница задачи: %s\n"
+#~ "\n"
+#~ "С уважением,\n"
+#~ "команда it-волонтёра."
+
+#~ msgid "ITVolunteer - your task will be moved to archive tomorrow!"
+#~ msgstr "it-волонтёр - завтра ваша задача будет перемещена в архив"
+
+#~ msgid ""
+#~ "Greetings!\n"
+#~ "\n"
+#~ "Your task will be moved to archive tomorrow because no doers have been "
+#~ "approved for it.\n"
+#~ "Task page: %s.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Здравствуйте!\n"
+#~ "\n"
+#~ "Ваша задача завтра будет перемещена в архив, так как волонтер для нее еще "
+#~ "не выбран.\n"
+#~ "Страница задачи: %s\n"
+#~ "\n"
+#~ "С уважением,\n"
+#~ "команда it-волонтёра."
 
 # @ tst
 #~ msgid "Participate"
