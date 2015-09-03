@@ -13,7 +13,11 @@ var es = require('event-stream'),
     mainBowerFiles = require('main-bower-files'),
     bourbon = require('node-bourbon'),
     path = require('relative-path'),
-    runSequence = require('run-sequence');
+    runSequence = require('run-sequence'),
+    critical = require('critical'),
+    penthouse = require('penthouse'),
+    cleanCSS = require('clean-css'),
+    fs = require('fs');
 
 //plugins - load gulp-* plugins without direct calls
 var plugins = require("gulp-load-plugins")({
@@ -173,7 +177,6 @@ gulp.task('full-build-js', function(callback) {
         'revision',
         callback);
 });
-
 
 
 //watchers

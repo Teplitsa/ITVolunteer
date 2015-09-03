@@ -60,6 +60,9 @@ add_action('wp_footer', function(){
 		</a>
 		<a href="<?php echo tst_tasks_filters_link('closed'); ?>" class="closed ga-event-trigger" <?php tst_ga_event_data('hp_tf_close');?>>
 			<?php _e('Closed tasks:', 'tst')?>&nbsp;<?php echo tst_get_closed_tasks_count();?>
+		</a>
+		<a href="<?php echo home_url('tags'); ?>" class="tags ga-event-trigger" <?php tst_ga_event_data('hp_tf_tags');?>>
+			<?php _e('By tags', 'tst')?>
 		</a>	
 	</div>
 	

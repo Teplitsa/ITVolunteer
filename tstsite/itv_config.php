@@ -1,6 +1,7 @@
 <?php
 
 class ItvConfig {
+	
 	private $_config;
 	private static $_instance = NULL;
 
@@ -30,5 +31,6 @@ class ItvConfig {
 	public function get($option_name) {
 		return isset($this->_config[$option_name]) ? $this->_config[$option_name] : null;
 	}
+	
 	
 }

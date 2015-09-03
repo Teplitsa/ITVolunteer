@@ -123,6 +123,12 @@ $events_data['hp_tf_close'] = array(
 	'ga_label' => tst_detect_page_type()
 );
 
+$events_data['hp_tf_tags'] = array(
+	'ga_category' => 'Фильтр задач - по тегам',
+	'ga_action' => 'Ссылка по тегам на главной',
+	'ga_label' => tst_detect_page_type()
+);
+
 $events_data['hp_ntask_bottom'] = array(
 	'ga_category' => 'Создать задачу',
 	'ga_action' => 'Кнопка создать задачу на главной (низ)',
