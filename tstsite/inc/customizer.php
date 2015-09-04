@@ -978,10 +978,17 @@ function tst_task_saved( $task_id, WP_Post $task ) {
 	}
 		
     remove_action( 'save_post', 'tst_task_saved' );
-    $post = get_post( $task_id );
-    if($post) {       
-		do_action('update_member_stats', array($post->post_author));
-    }
+	do_action('update_member_stats', array($task->post_author));
+	
+	if($task->post_author == get_current_user_id()) {
+		if ( $task->post_status == 'archived' ) {
+			$update_args = array(
+					'ID' => $task->ID,
+					'post_status' => 'publish',
+				);
+			wp_update_post($update_args);
+		}
+	}
 }
 add_action( 'save_post', 'tst_task_saved', 10, 2 );
 

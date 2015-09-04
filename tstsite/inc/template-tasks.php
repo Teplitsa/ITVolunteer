@@ -60,7 +60,8 @@ function tst_task_fixed_meta_in_card($task = null){
 		$meta[] = "<span class='workplace'>{$user_workplace}</span>";
 	}
 	
-	$meta[] = "<time>".get_the_date('', $task)."</time>";
+	#$meta[] = "<time>".get_the_date('', $task)."</time>";
+	$meta[] = "<time>".get_the_modified_date('', $task)."</time>";
 	
 	return implode(', ', $meta);
 }
