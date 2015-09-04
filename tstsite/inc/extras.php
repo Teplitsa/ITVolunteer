@@ -285,7 +285,7 @@ function tst_login_avatar(){
 }
 
 function tst_task_modified_date($task) {
-	if((int)$task == $task) {
+	if(!is_object($task)) {
 		$task = get_post($task);
 	}
 	
