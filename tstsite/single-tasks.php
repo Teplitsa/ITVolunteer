@@ -43,7 +43,7 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 		
 		<div class="col-md-4 col-lg-3">
 			<div class="row task-top-meta">
-				<div class="col-xs-4 col-sm-2 col-md-8"><time><?php echo get_the_date('');?></time></div>
+				<div class="col-xs-4 col-sm-2 col-md-8"><time><?php echo tst_task_modified_date(get_the_ID());?></time></div>
 				<div class="col-xs-8 col-sm-10 col-md-4"><?php tst_tasks_view_counter();?></div>
 			</div>
 			

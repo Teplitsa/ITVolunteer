@@ -283,3 +283,15 @@ function tst_login_avatar(){
 	<img src="<?php echo get_template_directory_uri();?>/assets/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
 <?php
 }
+
+function tst_task_modified_date($task) {
+	if((int)$task == $task) {
+		$task = get_post($task);
+	}
+	
+	$ret = '';
+	if($task) {
+		$ret = date( get_option( 'date_format' ), strtotime($task->post_modified) );
+	}
+	return $ret;
+}
