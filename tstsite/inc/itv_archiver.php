@@ -32,7 +32,7 @@ class ItvArchiver extends ItvNotificator {
 	public function archive_tasks(){
 	
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
+		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS');
 		$limit = strtotime(sprintf('-%d days', $before_days));
 		
 		echo 'before_limit=' . date('d.m.Y', $limit) . "\n";
@@ -75,7 +75,7 @@ class ItvArchiver extends ItvNotificator {
 	
 		//check
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
+		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS');
 		$limit = strtotime(sprintf('-%d days', $before_days));
 		if(date('Y-m-d', strtotime($task->post_modified)) >= $limit) {
 			$this->pring_debug("NOT_FIT: by date\n");

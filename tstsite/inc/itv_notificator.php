@@ -86,7 +86,7 @@ class ItvNotificator {
 	public function notify_about_tomorrow_archive(){
 	
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
+		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS');
 		$before_days -= 1;
 		$limit = strtotime(sprintf('-%d days', $before_days));
 		
@@ -131,8 +131,8 @@ class ItvNotificator {
 	
 		//check
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS') - 2;
-		$before_days += 1;
+		$before_days = $itv_config->get('TASK_ARCHIVE_DAYS');
+		$before_days -= 1;
 		$limit = date('Y-m-d', strtotime(sprintf('-%d days', $before_days)));
 		if(date('Y-m-d', strtotime($task->post_modified)) >= $limit) {
 			$this->pring_debug("NOT_FIT: by date\n");
@@ -187,7 +187,7 @@ class ItvNotificator {
 	public function notif_no_tasks_doer_yet(){
 	
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_NO_DOER_NOTIF_DAYS') - 2;
+		$before_days = $itv_config->get('TASK_NO_DOER_NOTIF_DAYS');
 		if($before_days < 0) {
 			$before_days = 0;
 		}
@@ -242,7 +242,7 @@ class ItvNotificator {
 	
 		//check
 		$itv_config = ItvConfig::instance();
-		$before_days = $itv_config->get('TASK_NO_DOER_NOTIF_DAYS') - 2;
+		$before_days = $itv_config->get('TASK_NO_DOER_NOTIF_DAYS');
 		if($before_days < 0) {
 			$before_days = 0;
 		}
