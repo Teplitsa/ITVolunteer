@@ -152,7 +152,7 @@ function tst_task_reward_in_card($task = null){
 }
 
 function tst_task_modified_date($task = null) {
-	
+			
 	$task_id = ($task) ? $task->ID : get_the_ID();
 	return get_post_modified_time('d.m.Y', null, $task_id, true);	
 }
