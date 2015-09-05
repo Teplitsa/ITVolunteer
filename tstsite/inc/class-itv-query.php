@@ -15,7 +15,7 @@ class ITV_Query {
 		add_action('init', array($this, 'custom_query_vars'));
 		add_action('parse_request', array($this, 'request_corrections'));
 		add_action('parse_query', array($this, 'query_corrections'));
-		add_filter('request',  array($this, 'rss_feed_request'));
+		//add_filter('request',  array($this, 'rss_feed_request'));
 		
 		add_filter('the_posts', array($this, 'query_posts_adder'), 2,2);
 		
@@ -69,15 +69,6 @@ class ITV_Query {
 		}
 	}
 	
-	/** Customize RSS feed post types **/ 	
-	function rss_feed_request($qv) {
-		if(isset($qv['feed'])) {
-			if(!isset($qv['post_type'])) {
-				$qv['post_type'] = 'tasks';
-			}
-		}
-		return $qv;
-	}
 	
 	/* WP_Query modificatinos */
 	function query_corrections(WP_Query $query){
@@ -86,17 +77,24 @@ class ITV_Query {
 			return;
 		
 		
+		if(is_feed() && !$query->get('post_type')){
+			$query->set('post_type', 'tasks'); //tasks in feed by default
+		}
+		
+		if(is_archive())
+			$query->set('author__not_in', array(ACCOUNT_DELETED_ID)); //don't include content of deleted users
+		
 		if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
-			$redirect = home_url('registration');
+			$redirect = home_url('registration'); //redirect old login page
 			wp_redirect($redirect);
 			exit;
 			
 		}
 		elseif(is_tag() && !$query->get('post_type')) {
-			$query->set('post_type', 'tasks');
+			$query->set('post_type', 'tasks'); //tasks post type in tags page
 			
 		}
-		elseif($query->get('task_status')){
+		elseif($query->get('task_status')){ //by status archives for tasks
 			
 			if($query->get('task_status') == 'all'){ //fix for archive
 				$query->set('task_status', '');
@@ -111,10 +109,11 @@ class ITV_Query {
 				$query->set('paged', intval($query->get('navpage')));
 			}
 		}
-			
+		
 	}
 	
 	
+	/* Cache additional posts info by request */
 	function query_posts_adder($posts, &$query){
 						
 		if('yes' == $query->get('set_users')){
@@ -156,13 +155,14 @@ class ITV_Query {
 		
 		$ids = array();
 		if(!empty($users)){ foreach($users as $u) {
-			$ids[] = $$u->ID;
+			$ids[] = $u->ID;
 		}}
 		
 		return $ids;
 	}
 	
-	/** Options cache - too late to run here may be will be moved into mu-plugins */
+	
+	/** Options cache - too late to call it here, (may be) will be moved into mu-plugins */
 	public static function options_cache(){
 		global $wpdb;
 		

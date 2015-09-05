@@ -7,9 +7,9 @@ function tst_task_in_tab($task){
 	
 	if($task->post_author == ACCOUNT_DELETED_ID) {
 ?>
-	<span><?php echo get_the_title($task);?></span> / <time><?php echo date('d.m.Y', strtotime($task->post_modified) );?></time>
+	<span><?php echo get_the_title($task);?></span> / <time><?php echo tst_task_modified_date($task);?></time>
 <?php }	else { ?>
-	<a href="<?php echo get_permalink($task);?>"><?php echo get_the_title($task);?></a> / <time><?php echo date('d.m.Y', strtotime($task->post_modified) );?></time>
+	<a href="<?php echo get_permalink($task);?>"><?php echo get_the_title($task);?></a> / <time><?php echo tst_task_modified_date($task);?></time>
 <?php
 	}
 }

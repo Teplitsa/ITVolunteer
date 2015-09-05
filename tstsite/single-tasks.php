@@ -13,7 +13,6 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 //$doers = tst_get_task_doers(get_the_ID(), true);
 
 
-
 ?>
 <article <?php post_class('tpl-task-full'); ?>>
 <header class="page-heading">

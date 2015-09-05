@@ -175,6 +175,8 @@ function wp_admin_block() {
 }
 add_action('admin_menu', 'wp_admin_block');
 
+
+
 /**
  * Custom additions.
  */
@@ -182,23 +184,28 @@ if(is_admin()) {
     require get_template_directory().'/inc/admin.php';
 }
 
+//refactor config into config class with all related items inside
 require get_template_directory().'/itv_config.php';
 
+//classes
 require get_template_directory().'/inc/class-itv-cssjs.php';
 require get_template_directory().'/inc/class-itv-query.php';
 
-require get_template_directory().'/inc/customizer.php';
+//templates and funcitons
 require get_template_directory().'/inc/template-general.php';
 require get_template_directory().'/inc/functions-general.php';
-require get_template_directory().'/inc/extras.php';
+require get_template_directory().'/inc/template-tasks.php';
+require get_template_directory().'/inc/template-members.php';
+require get_template_directory().'/inc/functions-members.php';
+require get_template_directory().'/inc/functions-tasks.php';
+
+//compot
+require get_template_directory().'/inc/customizer.php';
+//require get_template_directory().'/inc/extras.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 
 require get_template_directory().'/inc/itv_log.php';
 require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
-require get_template_directory().'/inc/template-tasks.php';
-require get_template_directory().'/inc/template-members.php';
-require get_template_directory().'/inc/functions-members.php';
-require get_template_directory().'/inc/functions-tasks.php';
 require get_template_directory().'/inc/stats-events.php';

@@ -3,8 +3,6 @@
  * Template Name: MembersPage
  **/
 
-global $wp_query;
-
 
 if(is_single_member()) {
 	
@@ -45,11 +43,11 @@ if(is_single_member()) {
 
 	$per_page = get_option('posts_per_page');
 	
-	if(isset($wp_query->query_vars['navpage']) && $wp_query->query_vars['navpage']) {
-		$current = ($wp_query->query_vars['navpage'] > 1) ? $wp_query->query_vars['navpage'] : 1;
+	if(get_query_var('navpage')) {
+		$current = (get_query_var('navpage') > 1) ? get_query_var('navpage') : 1;
 	}
 	else {
-		$current = ($wp_query->query_vars['paged'] > 1) ? $wp_query->query_vars['paged'] : 1;
+		$current = (get_query_var('paged')) ? get_query_var('paged') : 1;
 	}
 	
 	$offset = ($current > 1) ? ($current-1)*$per_page : 0;
@@ -96,18 +94,17 @@ if(is_single_member()) {
 	
 	
 	$user_query = new WP_User_Query($users_query_params);
-	$u_ids = ITV_Query::get_user_id_from_users($users);
-	update_meta_cache('user', $ids); //meta cache
+	$u_ids = ITV_Query::get_user_id_from_users($user_query->results);
+	update_meta_cache('user', $u_ids); //meta cache
 	
 	if($user_query->results) {
 ?>
 	
 	<div class="row in-loop members-list">
 	<?php
-		foreach($user_query->results as $u){
-			$tst_member = $u;
+		foreach($user_query->results as $u){		
 			
-			include(get_template_directory().'/partials/content-member.php');
+			tst_member_in_loop($u);
 		}
 	?>
 	</div><!-- .row -->
@@ -117,9 +114,7 @@ if(is_single_member()) {
 	</div></nav>       
 
 	<?php } else {?>
-
-		<?php get_template_part( 'no-results', 'index' ); ?>
-
+		<div class="">К сожалению участники не найдены</div>
 	<?php }?>
 
 </div><!-- .page-body -->

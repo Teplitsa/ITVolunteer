@@ -89,13 +89,14 @@ function tst_tast_status_tip($task = null){ //opt
 function tst_task_meta_in_card($task = null){
 	    
 	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
-    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
-   
 	$meta = array();
-	$meta[] = tst_get_task_author_link($task);
 	
-	if(!empty($user_workplace)) {
-		$meta[] = "<span class='workplace'>{$user_workplace}</span>";
+	if($author_id) {
+		$user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
+		$meta[] = tst_get_task_author_link($task);
+		if(!empty($user_workplace)) {
+			$meta[] = "<span class='workplace'>{$user_workplace}</span>";
+		}
 	}
 	
 	$meta[] = "<time>".tst_task_modified_date($task) . "</time>";
@@ -149,6 +150,13 @@ function tst_task_reward_in_card($task = null){
 </span>
 <?php
 }
+
+function tst_task_modified_date($task = null) {
+	
+	$task_id = ($task) ? $task->ID : get_the_ID();
+	return get_post_modified_time('d.m.Y', null, $task_id, true);	
+}
+
 
 
 /** == Task card == **/
