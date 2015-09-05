@@ -13,16 +13,18 @@ if(isset($_GET['t'])) {
         default:
     }
 }
+
 ?>
 
 <section class="home-section tasks">
 	<div class="section-content">
 <?php 
 	$tasks_query = new WP_Query(array(
-		'post_type' => 'tasks',
-		'post_status' => array('publish'),
-		'nopaging' => 1,
-		'author' => '-'.ACCOUNT_DELETED_ID,
+		'post_type'      => 'tasks',
+		'post_status'    => array('publish'),
+		'nopaging'       => 1,
+		'author__not_in' => array(ACCOUNT_DELETED_ID),
+		'set_users'      => 'yes'		
 	));
 	
 	$tasks_per_page = get_option('posts_per_page');
@@ -30,12 +32,9 @@ if(isset($_GET['t'])) {
 	
 		<div class="row in-loop tasks-list">
 		<?php
-			while($tasks_query->have_posts()) {
-						
+			foreach($tasks_query->posts as $qp) {
 				$count++;
-				$tasks_query->the_post();
-	
-				tst_task_card_in_loop();
+				tst_task_card_in_loop($qp);
 				
 				if($count == 4){
 					//news item
@@ -45,43 +44,18 @@ if(isset($_GET['t'])) {
 						'order'            => 'DESC',
 						'post_type'        => 'post',
 						'post_status'      => 'publish',
-						'suppress_filters' => true 
+						'suppress_filters' => true						
 					);
 					
-					$news_posts = new WP_Query( $args );
-					
-					?>
-					
-					<?php
-					if($news_posts->have_posts()): while($news_posts->have_posts()) : $news_posts->the_post();
-					?>
-					<article <?php post_class('col-md-6 home-news item-masonry'); ?>>
-					<div class="border-card">
-						<h2>Новости проекта</h2>
-						
-						<h4>				
-							<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a>
-						</h4>	
-						
-						<div class="home-news-content">
-							<?php $thumbnail = get_the_post_thumbnail(get_the_ID(), 'embed')?>
-							<?php if ( $thumbnail ): ?>
-								<a href="<?php the_permalink(); ?>" class="thumb-link"><?php echo $thumbnail ?></a>
-							<?php endif?>
-							
-							<?php echo the_excerpt(); ?>
-							
-						</div>
-					
-					</div>
-					</article>					
-					<?php endwhile; endif; wp_reset_postdata();
-					//news item end
+					$news_posts = new WP_Query( $args );								
+					if($news_posts->have_posts()) {						
+						tst_news_item_in_loop($news_posts->posts[0]);
+					} 
 				}
-				
-			} //enwhile
+			}			
 		?>
-		</div><!-- .row -->		
+		</div><!-- .row -->
+		
 		<?php if($tasks_query->post_count > $tasks_per_page) { ?>
 		<div class="home-nav">
 			<a href="<?php echo home_url('/tasks/page/2/');?>" class="btn btn-default ga-event-trigger" <?php tst_ga_event_data('hp_more_nav');?>>
@@ -91,10 +65,10 @@ if(isset($_GET['t'])) {
 		<?php } ?>
 
 	<?php } else { // have posts ?>
-
-		<?php get_template_part('no-results', 'index');?>
-
-	<?php } wp_reset_postdata(); ?>
+		
+		<div class="no-results">К сожалению, задач не найдено.</div>
+		
+	<?php } ?>
 	</div>
 </section><!-- .home-section -->
 

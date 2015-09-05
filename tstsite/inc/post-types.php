@@ -22,6 +22,7 @@ if(!function_exists('itv_custom_content')) {
 function itv_custom_content(){
 	
 	deregister_taxonomy_for_object_type('post_tag', 'post');
+	add_post_type_support('page', 'excerpt');
 	
 	register_taxonomy('reward', array('tasks'), array(
         'labels' => array(

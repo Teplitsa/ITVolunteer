@@ -14,7 +14,6 @@ var es = require('event-stream'),
     bourbon = require('node-bourbon'),
     path = require('relative-path'),
     runSequence = require('run-sequence'),
-    critical = require('critical'),
     penthouse = require('penthouse'),
     cleanCSS = require('clean-css'),
     fs = require('fs');

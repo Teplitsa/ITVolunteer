@@ -3,7 +3,7 @@
  * Class for general ITV tasks and configurations
  **/
 
-class TST_CSSJS {
+class ITV_CssJs {
 	
 	private static $_instance = null;	
 	private $manifest = null;
@@ -233,4 +233,4 @@ class TST_CSSJS {
 	
 } //class
 
-TST_CSSJS::get_instance();
+ITV_CssJs::get_instance();

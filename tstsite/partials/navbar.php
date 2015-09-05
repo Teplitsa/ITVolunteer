@@ -7,11 +7,8 @@
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="logo"><?php bloginfo( 'name' ); ?></a>				
 	</div>
 
-<?php
-	if(!is_page('registration')) {
-		$p = get_page(get_option('page_for_posts'));
-		$news_title = apply_filters('the_title', $p->post_title);	
-?>		
+<?php if(!is_page('registration')) { ?>
+
 <div id="menu-trigger" class="menu-toggle"><span class="glyphicon glyphicon-menu-hamburger"></span></div>	
 <div class="site-navigation-area">
 	<ul id="content_menu" class="content-menu">
@@ -30,7 +27,7 @@
           <a href="<?php echo home_url('about');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_about');?>><?php _e('About', 'tst');?> <b class="caret"></b></a>
           <ul class="submenu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
-            <li><a href="<?php echo home_url('news');?>"><?php echo $news_title;?></a></li>
+            <li><a href="<?php echo home_url('news');?>"><?php _e('News', 'tst');?></a></li>
             <li><a href="<?php echo home_url('sovety-dlya-nko-uspeshnye-zadachi');?>"><?php _e('Advices', 'tst');?></a></li>
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>

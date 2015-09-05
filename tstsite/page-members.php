@@ -58,7 +58,8 @@ if(is_single_member()) {
 		'number' => $per_page,
 		'offset' => $offset,
 		'exclude' => ACCOUNT_DELETED_ID,
-		'query_id' => 'get_members_for_members_page'			
+		'query_id' => 'get_members_for_members_page',
+		'fields' => 'all_with_meta' 
 	);
 	
 	if(isset($wp_query->query_vars['member_role']) && $wp_query->query_vars['member_role']) {			
@@ -95,6 +96,8 @@ if(is_single_member()) {
 	
 	
 	$user_query = new WP_User_Query($users_query_params);
+	$u_ids = ITV_Query::get_user_id_from_users($users);
+	update_meta_cache('user', $ids); //meta cache
 	
 	if($user_query->results) {
 ?>

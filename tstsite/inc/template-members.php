@@ -334,8 +334,7 @@ function tst_correct_contactmethods($contactmethods) {
 }
 
 
-function is_single_member(){
-	global $wp_query;
+function is_single_member(){	
 	
 	$qv = get_query_var('membername');
 	if(!empty($qv))
@@ -602,7 +601,8 @@ class TST_Current_Member {
 	
 	private function __construct() {
 		
-		$this->user_object = get_user_by('slug', get_query_var('membername'));	
+		$this->user_object = get_user_by('slug', get_query_var('membername'));
+		update_meta_cache('user', array($this->user_object->ID));
 	}
 	
 	public static function get_instance() {

@@ -119,15 +119,13 @@
 		color: $color-white;
 		font-weight: bold;
 		text-transform: uppercase;
-		margin: 0 0 0 -15px;
-		padding: 7px 0 7px 15px;
+		margin: 0;
+		padding: 7px 15px;
 		font-size: 1em;
 		width: 90%;
 		
 		@include for(small-screens) {
-			width: 45%;
-			padding-left: 30px;
-			margin-left: -30px;
+			width: 45%;			
 		}
 		
 	}
@@ -171,25 +169,7 @@
 
 /** Recent News **/
 .tpl-post {	
-		
-	.border-card {
-		border-bottom: 1px solid $color-border-light;
-		padding: $measure-columns-gut/2 0 $measure-columns-gut;
-	}
 	
-	&:nth-of-type(1) {
-		.border-card {
-			padding-top: 0;
-		}
-	}
-	
-	@include for(medium-screens) {
-		&:nth-of-type(2) {
-			.border-card {
-				padding-top: 0;
-			}
-		}
-	}
 	
 	h4 {
 		@include post-title;
@@ -200,10 +180,10 @@
 		font-size: 0.857em;		
 	}
 	
-	.post-preview {
+	.thumb-link {
+		display: block;
 		margin: $measure-columns-gut/2 0;
-		a { display: block; }
-	}
+	}	
 	
 	.post-summary p {
 		margin: 0;
@@ -211,15 +191,11 @@
 	
 }
 
-.blog .tpl-post {
-	
-	@include for(medium-screens) {
-		&:nth-of-type(even) {
-			padding-left: $measure-columns-gut*1.5;
-		}
-		&:nth-of-type(odd) {
-			padding-right: $measure-columns-gut*1.5;
-		}
+.blog {
+	.tpl-post .border-card {
+		border-bottom: 1px solid $color-border-light;
+		padding-bottom: $measure-columns-gut /2 ;
+		padding-top: $measure-columns-gut /2 ;
 	}
 }
 

@@ -185,6 +185,7 @@ if(is_admin()) {
 require get_template_directory().'/itv_config.php';
 
 require get_template_directory().'/inc/class-itv-cssjs.php';
+require get_template_directory().'/inc/class-itv-query.php';
 
 require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/template-general.php';

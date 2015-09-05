@@ -222,7 +222,7 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 			 )
 		),
 		'post_status'     => array('closed'),
-		'posts_per_page' => ($num) ? (int)$num : -1
+		'posts_per_page' => ($num) ? (int)$num : -1,		
     );
 
     $query = new WP_Query($params);

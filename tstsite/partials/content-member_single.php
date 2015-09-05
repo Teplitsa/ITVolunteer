@@ -2,8 +2,18 @@
 /**
  * Single member profile
  **/
- 
-global $post, $wp_query;
+
+function tst_task_in_tab($task){
+	
+	if($task->post_author == ACCOUNT_DELETED_ID) {
+?>
+	<span><?php echo get_the_title($task);?></span> / <time><?php echo date('d.m.Y', strtotime($task->post_modified) );?></time>
+<?php }	else { ?>
+	<a href="<?php echo get_permalink($task);?>"><?php echo get_the_title($task);?></a> / <time><?php echo date('d.m.Y', strtotime($task->post_modified) );?></time>
+<?php
+	}
+}
+
 
 $tst_member = tst_get_current_member();
 if(isset($_GET['update']) && $_GET['update']) {	
@@ -15,11 +25,11 @@ $user_login = $tst_member->user_login;
 $activity = tst_get_member_activity($tst_member->user_object);
 
 ?>
-<header class="page-heading member-header">
+<header class="page-heading member-header no-breadcrumbs">
 	
 	<div class="row">
 		<div class="col-md-8">
-		<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+		
 			<h1 class="page-title member-title"><?php echo frl_page_title();?>
 					
 			<?php if(current_user_can('edit_user', $tst_member->ID)): ?>
@@ -138,29 +148,21 @@ $activity = tst_get_member_activity($tst_member->user_object);
 					</section>
 					<?php endif;?>
 									
-					<?php
+					<?php //solved tasks
 						$solved_tasks = tst_calculate_member_tasks_solved($tst_member, 20, false);
 						if($solved_tasks->have_posts()) {
 					?>
 					<section class="data-section-member">
 						<h4><?php _e('Closed tasks', 'tst');?></h4>
+						
 						<ul class="member-tasks-list">
 						<?php foreach($solved_tasks->posts as $task) {?>
-                        <li>
-                            <div class="mt-title">
-                            <?php if($task->post_author != ACCOUNT_DELETED_ID) {?>
-                                <a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
-                            <?php } else {
-                                echo $task->post_title;
-                            }?>
-
-                            </div>
-                            <div class="mt-meta"><time><?php echo date('d.m.Y', strtotime($task->post_modified) );?></time></div>                            
-                        </li>
-                    <?php } //endforeach ?>
+							<li><?php tst_task_in_tab($task); ?></li>
+						<?php } //endforeach ?>
 						</ul>
 					</section>
-					<?php } ?>
+					<?php } //solved tasks ?>
+					
 				</div><!-- .col-md-9 -->
 			</div>
 			
@@ -232,7 +234,8 @@ $activity = tst_get_member_activity($tst_member->user_object);
 				
 				<div class="tab-content">
 					<div class="tab-pane active" id="joined"><ul class="member-tasks-list">
-					<?php
+					
+					<?php //tasks in work
 						$task_working = tst_calculate_member_tasks_joined($tst_member, array('publish', 'in_work'), 5, false);
 						if(!$task_working->have_posts()) {
 					?>
@@ -241,19 +244,8 @@ $activity = tst_get_member_activity($tst_member->user_object);
 						} else {
 
                         foreach($task_working->posts as $task) {?>
-                        <li>
-                            <div class="mt-title">
-                            <?php if($task->post_author != ACCOUNT_DELETED_ID) {?>
-                                <a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
-                            <?php } else {
-                                echo $task->post_title;
-                            }?>
-
-                            </div>
-                            <div class="mt-meta"><?php echo tst_task_fixed_meta_in_card($task);?></div>                            
-                            
-                        </li>
-                    <?php } //endforeach
+							<li><?php tst_task_in_tab($task); ?></li>
+						<?php } //endforeach
 				        }
                     ?></ul>
                     <?php if(wp_get_current_user()->user_login == $user_login && $task_working->have_posts()) {?>
@@ -264,7 +256,7 @@ $activity = tst_get_member_activity($tst_member->user_object);
                     </div>
 					
 					<div class="tab-pane" id="created"><ul class="member-tasks-list">
-					<?php
+					<?php //tasks created
 						$tasks_created = tst_query_member_tasks_created($tst_member, array('publish', 'in_work', 'closed'), 5, false);
 						if(!$tasks_created->have_posts()) {
 					?>
@@ -273,16 +265,8 @@ $activity = tst_get_member_activity($tst_member->user_object);
 						}
 						else {
 						foreach($tasks_created->posts as $task) {?>
-							<li>
-								<div class="mt-title">
-									<a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a>
-								</div>							
-								<div class="mt-meta">
-									<span class="reward-icon glyphicon glyphicon-gift"></span> <?php echo tst_get_task_meta($task, 'reward');?>
-								</div>
-							</li>
-                    <?php } //endforeach
-					
+							<li><?php tst_task_in_tab($task); ?></li>
+						<?php } //endforeach					
 						}
                     ?></ul>
                         <?php if(wp_get_current_user()->user_login == $user_login && $tasks_created->have_posts()) {?>
@@ -291,6 +275,7 @@ $activity = tst_get_member_activity($tst_member->user_object);
 							<?php _e('All tasks', 'tst');?> &raquo;</a>
                         <?php }?>
                     </div>
+					
 				</div>
 			</div><!-- .member-tasks -->
 		</div>

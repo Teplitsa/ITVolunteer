@@ -1,12 +1,8 @@
 <?php
 /* well on homepage **/
+
 global $post;
-
-$ga_label = 'Главная';
-
-$video = get_post_meta($post->ID, 'video', true);
-if(empty($video))
-	$video = '#';
+$video = ($post->post_excerpt) ? $post->post_excerpt : '#';
 
 //print modal	
 add_action('wp_footer', function(){

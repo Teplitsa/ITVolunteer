@@ -35,15 +35,13 @@ get_header(); ?>
 <div class="page-body">
 	<?php if ( have_posts() ) : ?>
 	<div class="row in-loop <?php echo $css;?>-list">
-		<?php		
-			while(have_posts()) {
-				the_post();
-				$pt = get_post_type();
-				if($pt == 'tasks')
-					tst_task_card_in_loop();
+		<?php
+			foreach($wp_query->posts as $qp){
+				if($qp->post_type == 'tasks')
+					tst_task_card_in_loop($qp);
 				else
-					tst_news_item_in_loop();
-			}
+					tst_news_item_in_loop($qp);
+			}			
 		?>		
 	</div><!-- .row -->
 

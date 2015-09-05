@@ -42,4 +42,4 @@
 		get_template_part('partials/home', 'well');
 	}
 ?>	
-<div class="page-decor"><?php echo apply_filters('itv_notification_bar', '');?>
+<div class="page-decor"><?php //echo apply_filters('itv_notification_bar', '');?>
