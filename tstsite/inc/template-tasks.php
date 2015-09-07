@@ -143,6 +143,7 @@ function tst_task_reward_in_card($task = null){
 	
 	$reward = get_the_terms($task_id, 'reward'); 
 ?>
+<span style="display:none;"><?php var_dump($reward); ?></span>
 <span class="reward-icon glyphicon glyphicon-gift"></span>
 <span class="reward-name" title="<?php _e('Reward', 'tst');?>">
 <?php echo apply_filters('frl_the_title', $reward[0]->name); ?>
