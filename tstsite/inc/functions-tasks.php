@@ -100,7 +100,7 @@ function ajax_add_edit_task(){
         
 		//update_field doesn't work for some reason - use native functions
 		update_post_meta((int)$_POST['id'], 'about-author-org', htmlentities(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : '')));
-        update_post_meta((int)$_POST['id'], 'reward', (int)$_POST['reward']);
+		wp_set_post_terms( (int)$_POST['id'], (int)$_POST['reward'], 'reward');
 		update_post_meta((int)$_POST['id'], 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
 		
