@@ -4,112 +4,7 @@
  * moved here after adoption in redesign
  **/
 
-/** == Tasks in loop ==**/
-function tst_get_task_status_list() {
-    return array(
-        'draft'   => __('Draft', 'tst'),
-        'publish' => __('Opened', 'tst'),
-        'in_work' => __('In work', 'tst'),
-        'closed'  => __('Closed', 'tst'),
-		'archived'  => __('Archived', 'tst')
-    );
-}
-
-function tst_get_task_status_label($status = false) {
-
-    if( !$status ) {
-        global $post;
-
-        if( !$post || $post->post_type != 'tasks')
-            return false;
-
-        $status = $post->post_status;
-    }
-
-    $status_list = tst_get_task_status_list();
-    return isset($status_list[$status]) ? $status_list[$status] : false;
-}
-
-function tst_tast_status_tip($task = null){
-		
-	$label = array();
-	$task_id = ($task) ? $task->ID : get_the_ID();
-    $status = get_post_status($task_id);
-	$status_list = tst_get_task_status_list();
-	
-    $label[] = isset($status_list[$status]) ? $status_list[$status] : '';
-	
-	if($status != 'closed' && function_exists('get_field')){
-		$deadline = date_from_yymmdd_to_dd_mm_yy(get_field('deadline', $task_id));
-		$deadline = date('d.m.Y', strtotime($deadline));
-		$label[] = sprintf(__('deadline: %s', 'tst'), $deadline);
-	}
-
-	return implode(', ', $label);
-}
-
-function tst_task_fixed_meta_in_card($task = null){
-	    
-	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
-    $user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
-   
-	$meta = array();
-	$meta[] = tst_get_task_author_link($task);
-	
-	if(!empty($user_workplace)) {
-		$meta[] = "<span class='workplace'>{$user_workplace}</span>";
-	}
-	
-	$meta[] = "<time>".get_the_date('', $task)."</time>";
-	
-	return implode(', ', $meta);
-}
-
-
-function tst_get_task_author_link($task = null, $name_wrapper = false){	
-	
-	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
-	$author = get_user_by('id', $author_id);
-	if( !$author )
-		return '';
-
-	$name = tst_get_member_name($author, $name_wrapper);
-	$url = tst_get_member_url($author);
-	
-	return "<a href='{$url}'>{$name}</a>";
-}
-
-function tst_get_task_author_avatar($task = null){	
-	
-	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
-	return tst_temp_avatar($author_id, false);	
-}
-
-function tst_get_task_author_org($task = null){	
-	
-	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
-	$user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
-	
-	return $user_workplace;
-}
-
-
-function tst_task_reward_in_card($task = null){
-	
-	$task_id = ($task) ? $task->ID : get_the_ID();
-	$reward = get_term(get_field('reward', $task_id), 'reward');
-	if(is_wp_error($reward))
-		return;
-	
-?>
-<span class="reward-icon glyphicon glyphicon-gift"></span>
-<span class="reward-name" title="<?php _e('Reward', 'tst');?>">
-<?php echo apply_filters('frl_the_title', $reward->name); ?>
-</span>
-</span>
-<?php
-}
-
+/** == Tasks Menu == **/
 
 function tst_tasks_filters_menu(){
 	global $wp_query;
@@ -158,51 +53,121 @@ function tst_tasks_filters_link($status = 'publish') {
 	$url = home_url("/tasks/$status/"); //alter for pretty permalink support
 	
 	return $url;
+} 
+ 
+ 
+/** == Tasks in loop ==**/
+
+function tst_get_task_status_list() { //opt
+    return array(
+        'draft'   => __('Draft', 'tst'),
+        'publish' => __('Opened', 'tst'),
+        'in_work' => __('In work', 'tst'),
+        'closed'  => __('Closed', 'tst'),
+		'archived'  => __('Archived', 'tst')
+    );
+}
+
+function tst_get_task_status_label($status = false, $task_id = null) { //opt
+
+    if( !$status )
+        $status = get_post_status($task_id);    
+
+    $status_list = tst_get_task_status_list();
+    return isset($status_list[$status]) ? $status_list[$status] : false;
+}
+
+function tst_tast_status_tip($task = null){ //opt
+	
+	$label = array();	
+	$label[] = tst_get_task_status_label(false, $task);	
+	$label[] = sprintf(__('published: %s', 'tst'), get_the_date('d.m.Y', $task));
+	
+	return implode(', ', $label);
+}
+
+function tst_task_meta_in_card($task = null){
+	    
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	$meta = array();
+	
+	if($author_id) {
+		$user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
+		$meta[] = tst_get_task_author_link($task);
+		if(!empty($user_workplace)) {
+			$meta[] = "<span class='workplace'>{$user_workplace}</span>";
+		}
+	}
+	
+	$meta[] = "<time>".tst_task_modified_date($task) . "</time>";
+	
+	return implode(', ', $meta);
+}
+
+function tst_get_task_author_link($task = null, $name_wrapper = false){	
+	
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	$author = get_user_by('id', $author_id);
+	if( !$author )
+		return '';
+
+	$name = tst_get_member_name($author, $name_wrapper);
+	$url = tst_get_member_url($author);
+	
+	return "<a href='{$url}'>{$name}</a>";
+}
+
+function tst_get_task_author_avatar($task = null){	
+	
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	return tst_temp_avatar($author_id, false);	
+}
+
+function tst_get_task_author_org($task = null){	
+	
+	$author_id = ($task) ? $task->post_author : get_the_author_meta('ID');
+	$user_workplace = trim(sanitize_text_field(tst_get_member_field('user_workplace', $author_id)));
+	
+	return $user_workplace;
+}
+
+function tst_task_reward_in_card($task = null){
+	
+	$task_id = ($task) ? $task->ID : get_the_ID();
+	
+	if(isset($_GET['update']) && $_GET['update'] == 1){ 
+		//fix for incorrect data storage
+		$reward = get_term(get_field('reward', $task_id), 'reward');
+		wp_set_object_terms($task_id, $reward->term_id, 'reward'); 
+	}
+	
+	$reward = get_the_terms($task_id, 'reward'); 
+?>
+<span class="reward-icon glyphicon glyphicon-gift"></span>
+<span class="reward-name" title="<?php _e('Reward', 'tst');?>">
+<?php echo apply_filters('frl_the_title', $reward[0]->name); ?>
+</span>
+</span>
+<?php
+}
+
+function tst_task_modified_date($task = null) {
+			
+	$task_id = ($task) ? $task->ID : get_the_ID();
+	return get_post_modified_time('d.m.Y', null, $task_id, true);	
 }
 
 
-function tst_task_card_in_loop(){
-	
+
+/** == Task card == **/
+function tst_task_card_in_loop($task){
+		
 ?>	
-<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 item-masonry tpl-task'); ?>>
+<article <?php post_class('col-md-6 item-masonry tpl-task', $task); ?>>
 <div class="border-card">
 	<div class="status-wrap">
 		<?php
-			$status_label = tst_get_task_status_label();
-			if($status_label) {
-		?>
-		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());?>">&nbsp;</span>
-		<?php } ?>
-	</div>
-	
-	<header class="task-header">	
-		<h4 class="task-title">				
-			<a href="<?php the_permalink(); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php the_title(); ?></a>
-		</h4>							
-		<div class="task-meta"><?php echo tst_task_fixed_meta_in_card();?></div>
-		<?php echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
-	</header><!-- .entry-header -->
-
-	<div class="task-summary">	
-		<div class="task-reward"><?php tst_task_reward_in_card();?></div>
-		<div class="task-more">
-			<a href="<?php the_permalink(); ?>" class="more-link ga-event-trigger" <?php tst_ga_event_data('tc_more');?>  title="<?php _e('Details', 'tst');?>">...</a>
-		</div>		
-	</div>
-	
-</div>	<!-- .border-card -->		
-</article><!-- #post-## -->
-<?php	
-}
-
-function tst_task_related_card($task){
-	
-?>	
-<div class="tpl-task related-task col-md-6">
-<div class="border-card">
-	<div class="status-wrap">
-		<?php
-			$status_label = tst_get_task_status_label($task->post_status);
+			$status_label = tst_get_task_status_label(false, $task);
 			if($status_label) {
 		?>
 		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip($task));?>">&nbsp;</span>
@@ -211,11 +176,9 @@ function tst_task_related_card($task){
 	
 	<header class="task-header">	
 		<h4 class="task-title">				
-			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark">
-				<?php echo get_the_title($task->ID); ?>
-			</a>
+			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php echo get_the_title($task); ?></a>
 		</h4>							
-		<div class="task-meta"><?php echo tst_task_fixed_meta_in_card($task);?></div>
+		<div class="task-meta"><?php echo tst_task_meta_in_card($task);?></div>
 		<?php echo get_the_term_list($task->ID, 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
 	</header><!-- .entry-header -->
 
@@ -227,7 +190,45 @@ function tst_task_related_card($task){
 	</div>
 	
 </div>	<!-- .border-card -->		
-</div><!-- #post-## -->
+</article><!-- #post-## -->
+<?php	
+}
+
+
+
+
+
+function tst_task_related_card($task){
+	
+?>	
+<div class="tpl-task related-task col-md-6">
+<div class="border-card">
+	<div class="status-wrap">
+		<?php
+			$status_label = tst_get_task_status_label(false, $task);
+			if($status_label) {
+		?>
+		<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip($task));?>">&nbsp;</span>
+		<?php } ?>
+	</div>
+	
+	<header class="task-header">	
+		<h4 class="task-title">				
+			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php echo get_the_title($task); ?></a>
+		</h4>							
+		<div class="task-meta"><?php echo tst_task_meta_in_card($task);?></div>
+		<?php echo get_the_term_list($task->ID, 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
+	</header><!-- .entry-header -->
+
+	<div class="task-summary">	
+		<div class="task-reward"><?php tst_task_reward_in_card($task);?></div>
+		<div class="task-more">
+			<a href="<?php echo get_permalink($task); ?>" class="more-link ga-event-trigger" <?php tst_ga_event_data('tc_more');?>  title="<?php _e('Details', 'tst');?>">...</a>
+		</div>		
+	</div>
+	
+</div>	<!-- .border-card -->		
+</div><!-- #tpl-task -->
 <?php	
 }
 
@@ -238,75 +239,35 @@ function tst_task_related_card($task){
 /* count tasks by statuses */
 function tst_get_new_tasks_count() {
 	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_NEW)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'publish',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,			
-		);
-		$wp_query = new WP_Query($args);
-		ItvSiteStats::$ITV_TASKS_COUNT_NEW = $wp_query->found_posts;
+		ItvSiteStats::perform_calculations();
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_NEW;
 }
 
 function tst_get_all_tasks_count() {
 	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_ALL)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => array('publish', 'in_work', 'closed'),
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,			
-		);
-		$wp_query = new WP_Query($args);
-		ItvSiteStats::$ITV_TASKS_COUNT_ALL = $wp_query->found_posts;
+		ItvSiteStats::perform_calculations();
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_ALL;
 }
 
 function tst_get_work_tasks_count() {
 	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_WORK)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'in_work',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,
-		);
-		$wp_query = new WP_Query($args);
-		ItvSiteStats::$ITV_TASKS_COUNT_WORK = $wp_query->found_posts;
+		ItvSiteStats::perform_calculations();
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_WORK;
 }
 
 function tst_get_closed_tasks_count() {
 	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_CLOSED)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'closed',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,
-		);
-		$wp_query = new WP_Query($args);
-		ItvSiteStats::$ITV_TASKS_COUNT_CLOSED = $wp_query->found_posts;
+		ItvSiteStats::perform_calculations();
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_CLOSED;
 }
 
 function tst_get_archived_tasks_count() {
 	if(is_null(ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED)) {
-		$args = array(
-			'post_type' => 'tasks',
-			'post_status' => 'archived',
-			'query_id' => 'count_tasks_by_status',
-			'nopaging' => 1,
-			'exclude' => ACCOUNT_DELETED_ID,
-		);
-		$wp_query = new WP_Query($args);
-		ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED = $wp_query->found_posts;
+		ItvSiteStats::perform_calculations();
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED;
 }

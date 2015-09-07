@@ -1,6 +1,6 @@
 <?php
 /**
- * The Header for our theme.
+ * The Header for our theme
  */
 ?><!doctype html>
 <!--[if lt IE 7 ]> <html <?php language_attributes(); ?> class="no-js ie6" xmlns:fb="http://ogp.me/ns/fb#"> <![endif]-->
@@ -42,4 +42,4 @@
 		get_template_part('partials/home', 'well');
 	}
 ?>	
-<div class="page-decor"><?php echo apply_filters('itv_notification_bar', '');?>
+<div class="page-decor"><?php //echo apply_filters('itv_notification_bar', '');?>

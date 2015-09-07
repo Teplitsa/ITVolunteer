@@ -23,7 +23,7 @@ function tst_get_role_name($role) {
 }
 
 
-/* Role interation */
+/* Role  */
 function tst_user_object($user){
 	
 	if(is_object($user))
@@ -63,10 +63,7 @@ function tst_update_data_for_users($users = array()){
 }
 
 
-
-
-
-/* role actions */
+/* Role actions */
 function tst_calculate_member_role($user) {
 	
 	//user object
@@ -113,7 +110,7 @@ function tst_set_member_role($user) {
 }
 
 
-/* activity stats */
+/* Activity stats */
 function tst_calculate_member_activity($user, $type = 'all') {
 	
 	//user object
@@ -173,9 +170,15 @@ function tst_set_member_activity($user, $type = 'all') {
 	}	
 }
 
+function tst_get_user_rating($user) {
+	
+    $user = tst_user_object($user);
+	$activ = tst_get_member_activity($user, 'solved');	
+    return (int)$active['solved'];
+}
 
 
-/* related tasks queries */
+/* Related tasks queries */
 function tst_query_member_tasks_created($user, $status = null, $num = null, $only_count = false) {
 	
 	$params = array(
@@ -222,7 +225,7 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 			 )
 		),
 		'post_status'     => array('closed'),
-		'posts_per_page' => ($num) ? (int)$num : -1
+		'posts_per_page' => ($num) ? (int)$num : -1,		
     );
 
     $query = new WP_Query($params);

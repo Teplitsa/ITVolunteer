@@ -100,7 +100,7 @@ function ajax_add_edit_task(){
         
 		//update_field doesn't work for some reason - use native functions
 		update_post_meta((int)$_POST['id'], 'about-author-org', htmlentities(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : '')));
-        update_post_meta((int)$_POST['id'], 'reward', (int)$_POST['reward']);
+		wp_set_post_terms( (int)$_POST['id'], (int)$_POST['reward'], 'reward');
 		update_post_meta((int)$_POST['id'], 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
 		
@@ -151,76 +151,6 @@ add_action('wp_ajax_add-edit-task', 'ajax_add_edit_task');
 add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
 
 
-/**  Archived tasks manipulations **/
-function tst_archive_tasks(){
-	
-	$limit = strtotime('-1 month');
-	$args = array(
-		'post_type' => 'tasks',
-		'post_per_page' => -1,
-		'post_status' => 'publish',
-		'date_query' => array(
-			array(
-				'before'    => array(
-					'year'  => date('Y', $limit),
-					'month' => date('n', $limit),
-					'day'   => date('j', $limit)
-				)
-			)
-		)
-	);
-	
-	$query = new WP_Query($args);
-	if(!$query->have_posts())
-		return;
-	
-	foreach($query->posts as $task){
-		tst_move_task_to_archive($task);
-	}
-}
-
-//add_action('save_post_tasks', 'tst_move_task_to_archive');
-function tst_move_task_to_archive($task){
-	
-	if(is_int($task))
-		$task = get_post($task);
-	
-	if($task->post_status != 'publish')
-		return; //only open task could be archived
-	
-	//check
-	$limit = date('Y-m-d', strtotime('-1 month'));
-	if(date('Y-m-d', strtotime($task->post_date)) >= $limit)
-		return; //not too old
-		
-	$doers = tst_get_task_doers_count($task->ID);
-	if($doers > 0)
-		return; //only task without doers ??
-	
-	//update
-	$postarr['ID'] = $task->ID;
-	$postarr['post_status'] = 'archived';
-	
-	wp_update_post($postarr);
-	
-	// log archive action
-	ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ARCHIVE);
-	
-	// send email notification to owner
-	$email_templates = ItvEmailTemplates::instance();
-	$task_permalink = get_permalink($task);
-	try {
-		wp_mail(
-			get_user_by('id', $task->post_author)->user_email,
-			$email_templates->get_title('task_moved_to_archive'),
-			nl2br(sprintf($email_templates->get_text('task_moved_to_archive'), $task_permalink))
-		);
-	}
-	catch(Exception $ex) {
-		error_log($ex);
-	}
-}
-
 /** Correct tags calculations for tasks */
 add_action('edited_term_taxonomy', 'tst_correct_tag_count', 2, 2);
 function tst_correct_tag_count($term_taxonomy_id, $taxonomy){
@@ -236,4 +166,68 @@ function tst_correct_tag_count($term_taxonomy_id, $taxonomy){
 	$count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status IN ('publish', 'in_work', 'closed', 'archived') AND post_type IN ('tasks') AND term_taxonomy_id = %d", $term_taxonomy_id ));
 		
 	$wpdb->update($wpdb->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term_taxonomy_id ) );
+}
+
+
+
+/* Update task metas when number of volunteers changed volunteers */
+function tst_get_task_doers($task_id, $only_approved = false) {
+
+    $arr = array(
+        'connected_type' => 'task-doers',
+        'connected_items' => $task_id,
+    );
+	
+    if($only_approved) {
+        $arr['connected_meta'] = array('is_approved' => true);
+        $result = get_users($arr);
+		
+    } else {
+		
+		$total = get_users($arr);
+		$result = $queue = array();
+		
+		foreach($total as $i => $user){ 
+			if(p2p_get_meta($user->p2p_id, 'is_approved', true)){
+				$result[$user->ID] = $user;
+			}
+			else {
+				$queue[$user->ID] = $user;
+			}
+		}
+		
+        $result = array_merge($result, $queue);
+    }
+
+    return $result;
+}
+
+function tst_get_task_doers_count($task_id, $only_approved = false, $update = false) {
+	
+	if(isset($_GET['update']) && $_GET['update'] == 1)
+		$update = true;
+	
+	$key = ($only_approved) ? 'upproved_candidates_number' : 'candidates_number';
+	
+	if(!$update){ //try to get from meta				
+		$num = get_post_meta($task_id, $key, true);
+		if(false !== $num)
+			return (int)$num;
+	}
+		
+	$num = count(tst_get_task_doers($task_id, $only_approved));
+	
+	if($update) {
+		update_post_meta($task_id, $key, $num);
+	}	
+	
+    return $num;
+}
+
+
+add_action('update_task_stats', 'tst_actualize_task_stats'); //store numbers as metas
+function tst_actualize_task_stats($task) {
+	
+	tst_get_task_doers_count($task->ID, false, true);
+	tst_get_task_doers_count($task->ID, true, true);
 }

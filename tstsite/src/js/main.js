@@ -389,8 +389,7 @@ jQuery(function($){
 		var $this = $(this),
 			$checked = $this.prop('checked'),
 			action = ($checked) ? 'approve-candidate' : 'refuse-candidate',
-			msgCode = ($checked) ? 't=5' : 't=6';
-		
+			msgCode = ($checked) ? 't=5' : 't=6';		
 				
 		$('#task-action-message').html('').hide();
 		

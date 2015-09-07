@@ -1,12 +1,8 @@
 <?php
 /* well on homepage **/
+
 global $post;
-
-$ga_label = 'Главная';
-
-$video = get_post_meta($post->ID, 'video', true);
-if(empty($video))
-	$video = '#';
+$video = ($post->post_excerpt) ? $post->post_excerpt : '#';
 
 //print modal	
 add_action('wp_footer', function(){
@@ -60,6 +56,9 @@ add_action('wp_footer', function(){
 		</a>
 		<a href="<?php echo tst_tasks_filters_link('closed'); ?>" class="closed ga-event-trigger" <?php tst_ga_event_data('hp_tf_close');?>>
 			<?php _e('Closed tasks:', 'tst')?>&nbsp;<?php echo tst_get_closed_tasks_count();?>
+		</a>
+		<a href="<?php echo home_url('tags'); ?>" class="tags ga-event-trigger" <?php tst_ga_event_data('hp_tf_tags');?>>
+			<?php _e('By tags', 'tst')?>
 		</a>	
 	</div>
 	

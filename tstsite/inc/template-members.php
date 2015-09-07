@@ -334,8 +334,7 @@ function tst_correct_contactmethods($contactmethods) {
 }
 
 
-function is_single_member(){
-	global $wp_query;
+function is_single_member(){	
 	
 	$qv = get_query_var('membername');
 	if(!empty($qv))
@@ -593,6 +592,76 @@ function tst_get_member_action_title(){
 	return $title;
 }
 
+/** Member in Loop **/
+function tst_member_in_loop($tst_member){
+	
+$img_folder = get_template_directory_uri().'/assets/img/';
+?>
+
+<article class="member col-md-6">
+	
+	<div class="border-card">
+		
+	<header class="member-header">
+		<div class="row">
+			<div class="col-md-3">
+				<a href="<?php echo tst_get_member_url($tst_member);?>" class="thumbnail">
+					<?php tst_temp_avatar($tst_member->ID);?>
+				</a>
+			</div>
+			<div class="col-md-9">
+
+                <?php
+                    $is_user_test_employee = get_user_meta($tst_member->ID, 'user_test_employee', true);
+					$is_user_test_partner = get_user_meta($tst_member->ID, 'user_test_partner', true);
+                    $role = tst_get_member_role_key($tst_member);
+					
+					$activity = tst_get_member_activity($tst_member);					
+                ?>
+				<div class="member-status">
+					<span class="label <?php echo esc_attr($role); ?>"><?php echo tst_get_role_name($role); ?></span>
+					<span class="label-from"> <?php _e('from', 'tst');?> <?php echo date("d.m.Y", strtotime(get_userdata($tst_member->ID)->user_registered)); ?></span>
+					
+					<?php if($is_user_test_employee):?><img class="itv-test-employee" title="<?php _e('Te-st employee', 'tst');?>" alt="<?php _e('Te-st employee', 'tst');?>" src="<?php echo $img_folder.'/te-st-logo.jpg'; ?>" /><?php endif; ?>
+					<?php if($is_user_test_partner):?><img class="itv-test-partner" title="<?php _e('Te-st partner', 'tst');?>" alt="<?php _e('Te-st partner', 'tst');?>" src="<?php echo $img_folder.'logo-v.png'; ?>" /><?php endif; ?>
+				</div>
+				<h4 class="member-title"><a href="<?php echo tst_get_member_url($tst_member);?>"><?php echo tst_get_member_name($tst_member);?></a></h4>
+				
+				<!-- metas -->
+				<div class="member-meta">
+					<span class="member-points">
+						<?php if($place_of_work = tst_get_member_field('user_workplace', $tst_member->ID)): ?>
+						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?php echo $place_of_work; ?></b><br />
+						<?php endif; ?>
+						
+						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo (int)$activity['solved'];?></b>
+						
+						<span><?php _e('Tasks', 'tst');?>:</span>
+						<b title="<?php _e('Participating in tasks / completed tasks', 'tst');?>"><?php echo (int)$activity['joined'].'(<span>'.(int)$activity['solved'].'</span>)';?></b>
+						<?php echo ' / '; ?>
+						<span title="<?php _e('Created tasks / completed tasks', 'tst');?>"><?php echo (int)$activity['created'].'('.(int)$activity['created_closed'].')';?></span>
+			
+					</span>
+			
+					<?php $city = sanitize_text_field(tst_get_member_field('user_city', $tst_member->ID));					
+					if($city) {?>
+						<span class='city'><?php echo $city;?></span>
+					<?php }?>
+				</div>
+							
+			</div><!-- .col-md-9 -->
+		</div>
+	</header>
+	<div class="member-summary">
+		<?php echo html_entity_decode(tst_get_member_summary($tst_member->ID, true), ENT_QUOTES, 'UTF-8'); ?>
+	</div>
+	
+	</div>
+</article><!-- .member -->
+
+<?php	
+}
+
 
 /** Singleton replacement for global $tst_member **/
 class TST_Current_Member {
@@ -600,9 +669,11 @@ class TST_Current_Member {
 	private static $_instance = null;
 	private $user_object = null;
 	
-	private function __construct() {
+	private function __construct() {		
 		
-		$this->user_object = get_user_by('slug', get_query_var('membername'));	
+		$this->user_object = get_user_by('slug', get_query_var('membername'));
+		update_meta_cache('user', array($this->user_object->ID));
+		
 	}
 	
 	public static function get_instance() {

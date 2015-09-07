@@ -1,6 +1,7 @@
 <?php
 
 class ItvConfig {
+	
 	private $_config;
 	private static $_instance = NULL;
 
@@ -13,9 +14,8 @@ class ItvConfig {
 			'CONSULT_EMAILS' => array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com'),
 			'EMAIL_FROM' => 'info@itv.te-st.ru',
 			'CONSULT_EMAIL_FROM' => 'anna.ladoshkina@te-st.ru',
-			'TASK_ARCHIVE_DAYS' => 31,
-			'TASK_ARCHIVE_SOON_NOTIF_DAYS' => 24,
-			'TASK_NO_DOER_NOTIF_DAYS' => 7,
+			'TASK_ARCHIVE_DAYS' => 40,
+			'TASK_NO_DOER_NOTIF_DAYS' => 9,
 		);
 		
 	}
@@ -30,5 +30,6 @@ class ItvConfig {
 	public function get($option_name) {
 		return isset($this->_config[$option_name]) ? $this->_config[$option_name] : null;
 	}
+	
 	
 }

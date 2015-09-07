@@ -15,6 +15,13 @@ class ItvSiteStats {
 	
 	private static $_instance = NULL;
 	
+	
+	private function __construct() {
+		
+		add_action('wp_head', 'ItvSiteStats::perform_calculations');		
+	}
+	
+	
 	public static function instance() {
 		if(ItvSiteStats::$_instance == NULL) {
 			ItvSiteStats::$_instance = new ItvSiteStats();
@@ -26,6 +33,7 @@ class ItvSiteStats {
 		$value = get_option($key);
 		return $value ? $value : 0;
 	}
+	
 	public function refresh_users_role_stats($per_page = 100) {
 		
 		$USERS_ROLE_BENEFICIARY_COUNT = 0;
@@ -95,4 +103,37 @@ class ItvSiteStats {
 		update_option(ItvSiteStats::$USERS_TOTAL, $USERS_COUNT);		
 	}
 	
-}
+	
+	/** Common calculations on all pages **/
+	public static function perform_calculations(){
+		global $wpdb;
+		
+		$calc = $wpdb->get_results("SELECT post_status, COUNT(ID) as num FROM $wpdb->posts WHERE post_type = 'tasks' AND post_status IN ('publish', 'in_work', 'closed', 'archived') GROUP BY post_status", OBJECT_K);
+		
+		if(empty($calc))
+			return;
+		
+		$total = 0; 
+		if(isset($calc['publish'])){
+			self::$ITV_TASKS_COUNT_NEW = (int)$calc['publish']->num;
+			$total += (int)$calc['publish']->num;
+		}
+		if(isset($calc['in_work'])){
+			self::$ITV_TASKS_COUNT_WORK = (int)$calc['in_work']->num;
+			$total += (int)$calc['in_work']->num;
+		}
+		if(isset($calc['closed'])){
+			self::$ITV_TASKS_COUNT_CLOSED = (int)$calc['closed']->num;
+			$total += (int)$calc['closed']->num;
+		}
+		if(isset($calc['archived'])){
+			self::$ITV_TASKS_COUNT_ARCHIVED = (int)$calc['archived']->num;
+			$total += (int)$calc['archived']->num;
+		}
+		
+		self::$ITV_TASKS_COUNT_ALL = $total;		
+	}
+	
+} //class
+
+ItvSiteStats::instance();

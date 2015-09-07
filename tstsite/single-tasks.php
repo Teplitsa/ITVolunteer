@@ -13,7 +13,6 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 //$doers = tst_get_task_doers(get_the_ID(), true);
 
 
-
 ?>
 <article <?php post_class('tpl-task-full'); ?>>
 <header class="page-heading">
@@ -24,26 +23,26 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 			<h1 class="page-title task-title">
 				<div class="status-wrap">
 				<?php
-					$status_label = tst_get_task_status_label();
+					$status_label = tst_get_task_status_label('', $post);
 					if($status_label) {
 				?>
-					<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip());?>">&nbsp;</span>
+					<span class="status-label" title="<?php echo esc_attr(tst_tast_status_tip($post));?>">&nbsp;</span>
 				<?php } ?>	
 				</div>
 				
 				<?php echo frl_page_title();?>
 				<?php if(current_user_can('edit_post', get_the_ID())): ?>
-					<small class="edit-item"> <a href="<?php echo tst_get_edit_task_url();?>"><?php _e('Edit', 'tst');?></a></small>		
+					<small class="edit-item"> <a href="<?php echo tst_get_edit_task_url($post);?>"><?php _e('Edit', 'tst');?></a></small>		
 				<?php endif; ?>
 			</h1>
 			
 			<?php echo get_the_term_list(get_the_ID(), 'post_tag', '<div class="tags">', '', '</div>'); ?>
-			<div class="task-reward"><?php  tst_task_reward_in_card(); ?></div>
+			<div class="task-reward"><?php  tst_task_reward_in_card($post); ?></div>
 		</div>
 		
 		<div class="col-md-4 col-lg-3">
 			<div class="row task-top-meta">
-				<div class="col-xs-4 col-sm-2 col-md-8"><time><?php echo get_the_date('');?></time></div>
+				<div class="col-xs-4 col-sm-2 col-md-8"><time><?php echo tst_task_modified_date($post);?></time></div>
 				<div class="col-xs-8 col-sm-10 col-md-4"><?php tst_tasks_view_counter();?></div>
 			</div>
 			
@@ -120,10 +119,14 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 		'post_type' => 'tasks',
 		'posts_per_page' => 2,
 		'post__not_in' => array(get_the_ID()),
-		'author' => (int)get_the_author_meta('ID')
+		'author' => $author_id
 	)); 
-	if(!$related->have_posts()){
-		$tags = wp_get_object_terms(get_the_ID(), 'post_tag', array('fields' => 'ids', 'orderby' => 'count', 'order' => 'DESC'));
+	if(!$related->have_posts()){		
+		$tags = get_the_terms($post, 'post_tag');
+		$t_ids = array();
+		if(!empty($tags)){ foreach($tags as $t) {
+			$t_ids[] = $t->term_id;
+		}}
 		
 		$related = new WP_Query(array(
 			'post_type' => 'tasks',
@@ -133,7 +136,7 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 				array(
 					'taxonomy' => 'post_tag',
 					'field' => 'id',
-					'terms' => $tags
+					'terms' => $t_ids
 				)
 			)
 		));

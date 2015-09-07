@@ -42,6 +42,8 @@ if( !empty($_GET['task']) ){
 			'is_tst_consult_needed' => get_field('is_tst_consult_needed', $task->ID),
 		); 
 	}
+	$reward = get_the_terms($task->ID, 'reward'); 
+	$task_data['reward'] = $reward ? $reward[0] : null;
 } else {
     $task_data = array(
         'task_status' => 'draft',
@@ -153,7 +155,7 @@ get_header();?>
 				<?php
 					$terms = get_terms('reward', array('hide_empty' => false));
 					$default_reward = get_term_by('slug', 'link', 'reward');
-					$selected = (isset($task_data['reward_id'])) ? $task_data['reward_id'] : $default_reward->term_id;
+					$selected = (isset($task_data['reward'])) ? $task_data['reward']->term_id : $default_reward->term_id;
 					foreach($terms as $reward) {
 				?>
 					<option value="<?php echo (int)$reward->term_id;?>" <?php selected($reward->term_id, $selected); ?>>

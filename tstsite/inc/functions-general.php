@@ -4,16 +4,7 @@
  * (code wiil be modevd here from customizer.php and extras.php)
  ***/
 
-/** Customize RSS feed post types **/
-add_filter('request', 'rss_feed_request');
-function rss_feed_request($qv) {
-	if(isset($qv['feed'])) {
-		if(!isset($qv['post_type'])) {
-			$qv['post_type'] = 'tasks';
-		}
-	}
-	return $qv;
-}
+
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -82,38 +73,24 @@ function tst_custom_widgets(){
 add_action('widgets_init', 'tst_custom_widgets', 11);
 
 
-/** Query manipulations **/
- 
-/*  Custom query vars and rewrites */
-add_action('init', 'tst_custom_query_vars');
-function tst_custom_query_vars(){
-	global $wp;
+/** Notification about KMS **/
+add_filter('itv_notification_badge', 'itv_notification_badge_screen');
+function itv_notification_badge_screen(){
 	
-	$wp->add_query_var('navpage');
+	$content = apply_filters('itv_notification_badge_content', '');
 	
-	//Pretty permalinks for tasks
-	$wp->add_query_var('task_status');	
+	if(empty($content))
+		return '';
 	
-		
-	add_rewrite_rule('^tasks/(publish|in_work|closed|archived)/page/([0-9]{1,})/?$', 'index.php?post_type=tasks&task_status=$matches[1]&navpage=$matches[2]', 'top');	
-	add_rewrite_rule('^tasks/(publish|in_work|closed|archived)/?$', 'index.php?post_type=tasks&task_status=$matches[1]', 'top');
-	
-	
-	//Pretty permalinks for members
-	$wp->add_query_var('member_role');
-	$wp->add_query_var('membername');
-	
-	add_rewrite_rule('^members/(donee|activist|hero|volunteer)/page/([0-9]{1,})/?$', 'index.php?pagename=members&member_role=$matches[1]&navpage=$matches[2]', 'top');
-	add_rewrite_rule('^members/(donee|activist|hero|volunteer)/?$', 'index.php?pagename=members&member_role=$matches[1]', 'top');	
-	add_rewrite_rule('^members/([^/]+)/?$', 'index.php?pagename=members&membername=$matches[1]', 'top');
-	// [^/]+/([^/]+)/?$  pagename=members
-
+	return "<span class='badge'>{$content}</span>";	
 }
 
-
-/* Request customization */
-add_action('parse_request', 'tst_request_corrections');
-function tst_request_corrections(WP $request){
+add_filter('itv_notification_bar', 'itv_notification_bar_screen');
+function itv_notification_bar_screen(){
+	
+	$content = apply_filters('itv_notification_bar_content', '');
+	if(empty($content))
+		return '';
 	
 	if($request->request == 'tasks') {
 		$redirect = get_post_type_archive_link('tasks');

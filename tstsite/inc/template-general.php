@@ -48,12 +48,13 @@ function frl_page_title(){
     }
 	elseif(is_page() || is_single())
         $title = apply_filters('the_title', $post->post_title);
+		
     elseif(is_search()){
         $title = __('Search results', 'tst');
+		
     }
-	elseif(is_home()){
-		$p = get_page(get_option('page_for_posts'));
-		$title = apply_filters('the_title', $p->post_title);
+	elseif(is_home()){		
+		$title = __('News', 'tst');
 	}
     elseif(is_404())
 		$title = __('Page not found', 'tst');
@@ -541,8 +542,14 @@ function tst_get_user_closed_tasks($user) {
 
 /** Sharing buttons **/
 function tst_have_sharing(){
+		
+	if(is_front_page() || is_post_type_archive('tasks'))
+		return true;
 	
 	if(is_singular(array('tasks', 'post')))
+		return true;
+	
+	if(is_page('members'))
 		return true;
 	
 	if(is_about())
@@ -551,12 +558,7 @@ function tst_have_sharing(){
 	if(is_single_member())
 		return true;
 	
-	if(is_front_page() || is_post_type_archive('tasks'))
-		return true;
-	
-	if(is_page('members'))
-		return true;
-	
+		
 	return false;
 }
 
@@ -647,10 +649,10 @@ function is_about(){
 	if(is_page('sovety-dlya-nko-uspeshnye-zadachi'))
 		return true;
 	
-	$parents = get_post_ancestors($post);
-	$test = get_page_by_path('about');
-	if(in_array($test->ID, $parents))
-		return true;
+	//$parents = get_post_ancestors($post);
+	//$test = get_page_by_path('about');
+	//if(in_array($test->ID, $parents))
+	//	return true;
 	
 	return false;
 }
@@ -708,26 +710,38 @@ function is_news() {
 
 
 /** News item in loop **/
-function tst_news_item_in_loop(){
+function tst_news_item_in_loop($news){
+	
+	$css = (is_front_page()) ? 'col-md-6 home-news item-masonry' : 'col-md-6 tpl-post';
 ?>
-<article id="post-<?php the_ID(); ?>" <?php post_class('col-md-6 tpl-post'); ?>>
+<article <?php post_class($css, $news); ?>>
 
 	<div class="border-card">
+		<?php if(is_front_page()) { ?><h2>Новости проекта</h2><?php } ;?>
 		
-		<h4><a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title(); ?></a></h4>
+		<h4><a href="<?php echo get_permalink($news); ?>" rel="bookmark"><?php echo get_the_title($news); ?></a></h4>
 		
+		<?php
+			$size = (is_front_page()) ? 'embed' : 'post-thumbnail';			
+			$thumbnail = get_the_post_thumbnail($news->ID, $size); //2 queries
+			if($thumbnail) {
+		?>
+			<a href="<?php echo get_permalink($news); ?>" class="thumb-link"><?php echo $thumbnail;?></a>
+		<?php } ?>
 		
-		<div class="post-preview"><a href="<?php the_permalink(); ?>" class="thumb-link">
-			<?php the_post_thumbnail();?>
-		</a></div>
-		
+		<?php if(!is_front_page()) { ?>
 		<div class="post-summary">
-			<div class="post-meta"><time><?php echo get_the_date();?></time></div>
-			<?php the_excerpt(); ?>
-			
+			<div class="post-meta"><time><?php echo get_the_date('d.m.Y', $news);?></time></div>
+			<?php
+				$e = (!empty($news->post_excerpt)) ? $news->post_excerpt : wp_trim_words($news->post_content, 30);
+				echo apply_filters('frl_the_content', $e);
+			?>			
 		</div>
+		<?php }?>
 	</div>	
 		
 </article><!-- #post-## -->	
 <?php	
 }
+
+

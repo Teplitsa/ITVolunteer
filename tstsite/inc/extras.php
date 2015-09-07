@@ -3,14 +3,12 @@
  * Utility functions
  **/
 
-/* OLD filteting for query
- * @to_do: move from  pre_get_posts into parse_query with custom qv */
-add_action('pre_get_posts', 'tst_main_query_mods');
+/* actually we don't need all this stuff - let's test and remove it */
+//add_action('pre_get_posts', 'tst_main_query_mods');
 function tst_main_query_mods(WP_Query $query) {
 
     // exclude account_deleted's tasks:
-    if( !is_admin() && $query->is_main_query() ) {
-        
+    if( !is_admin() && $query->is_main_query() ) {        
         $query->set('author', '-'.ACCOUNT_DELETED_ID);
     }
 
@@ -102,7 +100,7 @@ function tst_main_query_mods(WP_Query $query) {
 /**
  * Tasks actions
  **/
-function tst_get_task_author($task = null){
+function tst_get_task_author($task = null){ //u
 	global $post;
 	
 	if(!$task)
@@ -116,16 +114,7 @@ function tst_get_task_author($task = null){
 }
 
 
-# count task candidates
-function tst_get_task_candidates_number($task_id) {
-	$arr = array(
-		'connected_type' => 'task-doers',
-		'connected_items' => $task_id,
-	);
-	return count(get_users($arr));
-}
-
-function tst_get_task_status_order($task_id) {
+function tst_get_task_status_order($task_id) { //u
 	$task = get_post($task_id);
 	$task_status_order = array('publish', 'in_work', 'closed', 'future', 'draft', 'pending', 'private', 'trash', 'auto-draft', 'inherit');
 	$order = 100;
@@ -138,14 +127,8 @@ function tst_get_task_status_order($task_id) {
 	return $order;
 }
 
-function tst_actualize_task_stats($task_id) {
-	update_post_meta($task_id, 'candidates_number', tst_get_task_candidates_number($task_id));
-	update_post_meta($task_id, 'status_order', tst_get_task_status_order($task_id));
-}
 
-
-
-function tst_task_fixed_meta($task = null){
+function tst_task_fixed_meta($task = null){ //u
 	global $post;
 	
 	if( !$task )
@@ -163,7 +146,7 @@ function tst_task_fixed_meta($task = null){
 <?php
 }
 
-function tst_newtask_fixed_meta(){
+function tst_newtask_fixed_meta(){ //u
 	global $current_user;
 	
 	$name = $url = '';
@@ -182,7 +165,7 @@ function tst_newtask_fixed_meta(){
 <?php
 }
 
-function tst_get_task_meta($task, $field) {
+function tst_get_task_meta($task, $field) { //u
     $task = is_object($task) ? $task->ID : $task;
 
     switch($field) {
@@ -197,7 +180,7 @@ function tst_get_task_meta($task, $field) {
 }
 
 /** Role calculations === old **/
-function tst_get_member_role($user) {
+function tst_get_member_role($user) { // u
     $user = is_object($user) ? $user : (int)$user;
 
     $tasks_created = tst_get_user_created_tasks($user->user_login);
@@ -211,7 +194,7 @@ function tst_get_member_role($user) {
         return 3;
 }
 
-function tst_get_member_role_label($role) {
+function tst_get_member_role_label($role) {//u
     switch($role) {
         case 1: return __('Client', 'tst');
         case 2: return __('Volunteer', 'tst');
@@ -220,31 +203,15 @@ function tst_get_member_role_label($role) {
     }
 }
 
-function set_user_order_data($user_id, $order_data) {	
+function set_user_order_data($user_id, $order_data) {//u
 	update_user_meta($user_id, 'member_order_data', $order_data);
 }
 
 
-function tst_get_user_rating($user) {
-    if(is_object($user)) {
-    	;
-    }
-    elseif(preg_match('/^\d+$/', $user) && (int)$user > 0) {
-        $user = get_user_by('id', $user);
-        if(!$user) {
-        	$user = get_user_by('login', $user);
-        }
-    }
-    else {
-        $user = get_user_by('login', $user);
-    }
-    
 
-    return $user ? count(tst_get_user_closed_tasks($user)) : 0;
-}
 
 /** Old task params - to be reworked */
-function tst_task_params(){	
+function tst_task_params(){	//u
 ?>
 <div class="row task-params">
 	<div class="col-md-4">
@@ -264,7 +231,7 @@ function tst_task_params(){
 <?php
 }
 
-function tst_task_reward($reward) {
+function tst_task_reward($reward) { //u
 ?>
 <div class="col-md-8">
 	<span class="reward task-param btn btn-default" <?php if(!is_wp_error($reward)):?>title="<?php echo $reward->name; ?>"<?php endif; ?>>
@@ -278,8 +245,9 @@ function tst_task_reward($reward) {
 }
 
 
-function tst_login_avatar(){
+function tst_login_avatar(){ //u
 ?>
 	<img src="<?php echo get_template_directory_uri();?>/assets/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
 <?php
 }
+

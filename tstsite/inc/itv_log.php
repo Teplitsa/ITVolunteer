@@ -161,6 +161,7 @@ __('itv_task_actions_log_publish', 'tst');
 __('itv_task_actions_log_unpublish', 'tst');
 __('itv_task_actions_log_inwork', 'tst');
 __('itv_task_actions_log_close', 'tst');
+__('itv_task_actions_log_archive', 'tst');
 
 __('itv_task_actions_log_user_register', 'tst');
 __('itv_task_actions_log_user_update', 'tst');

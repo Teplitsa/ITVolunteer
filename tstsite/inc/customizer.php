@@ -383,14 +383,14 @@ function ajax_add_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
 
-    p2p_type('task-doers')->connect($task_id, $task_doer_id, array());    
-    tst_actualize_task_stats($task_id);
+    p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
 		
 	if($task) {
 		$users = tst_get_task_doers($task->ID);
-		$users[] = get_user_by('id', $task->post_author);;	
+		$users[] = get_user_by('id', $task->post_author);	
 		do_action('update_member_stats', $users);
+		do_action('update_task_stats', $task);	
 	}	
 	
 	
@@ -438,11 +438,11 @@ function ajax_remove_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
 
-    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
-	tst_actualize_task_stats($task_id);
+    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
     
 	if($task){
+		do_action('update_task_stats', $task);	
 		do_action('update_member_stats', array($task_doer_id, $task->post_author));
 	}
 	
@@ -809,41 +809,7 @@ function tst_get_days_until_deadline($deadline) {
 
 }
 
-function tst_get_task_doers($task_id, $only_approved = false) {
 
-    $arr = array(
-        'connected_type' => 'task-doers',
-        'connected_items' => $task_id,
-    );
-	
-    if($only_approved) {
-        $arr['connected_meta'] = array('is_approved' => true);
-        $result = get_users($arr);
-		
-    } else {
-		
-		$total = get_users($arr);
-		$result = $queue = array();
-		
-		foreach($total as $i => $user){ 
-			if(p2p_get_meta($user->p2p_id, 'is_approved', true)){
-				$result[$user->ID] = $user;
-			}
-			else {
-				$queue[$user->ID] = $user;
-			}
-		}
-		
-        $result = array_merge($result, $queue);
-    }
-
-    return $result;
-}
-
-function tst_get_task_doers_count($task_id = false, $only_approved = false) {
-
-    return count(tst_get_task_doers($task_id, $only_approved));
-}
 
 
 function tst_send_admin_notif_new_task($post_id) {
@@ -978,10 +944,17 @@ function tst_task_saved( $task_id, WP_Post $task ) {
 	}
 		
     remove_action( 'save_post', 'tst_task_saved' );
-    $post = get_post( $task_id );
-    if($post) {       
-		do_action('update_member_stats', array($post->post_author));
-    }
+	do_action('update_member_stats', array($task->post_author));
+	
+	if($task->post_author == get_current_user_id()) {
+		if ( $task->post_status == 'archived' ) {
+			$update_args = array(
+					'ID' => $task->ID,
+					'post_status' => 'publish',
+				);
+			wp_update_post($update_args);
+		}
+	}
 }
 add_action( 'save_post', 'tst_task_saved', 10, 2 );
 

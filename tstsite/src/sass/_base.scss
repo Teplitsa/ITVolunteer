@@ -342,41 +342,6 @@ section[class |="data-section"] {
 	}
 }
 
-.member-tasks {
-	.nav-tabs {
-		font-size: 12px;
-		li > a {
-			padding: 6px 9px;
-		}
-	}
-	.tab-pane {
-		padding: 25px 15px;
-		border-bottom: 1px solid #ddd;
-	}
-	.well { font-size: 13px; }
-}
-
-.member-tasks-list {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	li {
-		@include smart-margin(15px);
-		padding: 0;
-	}
-	
-	.mt-meta {
-		font-size: 0.85em;
-		color: $color-text-meta;
-		a {
-			color: $color-text-meta;
-		}
-		strong {
-			font-weight: normal;
-			color: $color-text-meta;
-		}
-	}
-}
 
 
 

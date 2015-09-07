@@ -123,6 +123,12 @@ $events_data['hp_tf_close'] = array(
 	'ga_label' => tst_detect_page_type()
 );
 
+$events_data['hp_tf_tags'] = array(
+	'ga_category' => 'Фильтр задач - по тегам',
+	'ga_action' => 'Ссылка по тегам на главной',
+	'ga_label' => tst_detect_page_type()
+);
+
 $events_data['hp_ntask_bottom'] = array(
 	'ga_category' => 'Создать задачу',
 	'ga_action' => 'Кнопка создать задачу на главной (низ)',
@@ -243,3 +249,22 @@ $events_data['ml_mf_volunteer'] = array(
 	
 }, 20);
 
+add_action('wp_footer', 'tst_ga_tracking');
+function tst_ga_tracking(){
+	
+	if(false !== strpos('itv.te-st.ru', $_SERVER['HTTP_HOST'])) {
+?>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-39184963-27', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<?php
+	}
+	
+}
