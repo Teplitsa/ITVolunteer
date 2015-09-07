@@ -8,14 +8,6 @@ try {
 	$itv_archiver = new ItvArchiver();
 	
 	$options = getopt("", array("skip_sending", "skip_archiving"));
-	if(isset($options['skip_sending'])) {
-		$itv_archiver->disable_sending();
-		echo "!!!skip sending emails\n";
-	}
-	else {
-		echo "!!!emails will be sent!\n";
-	}
-	
 	if(isset($options['skip_archiving'])) {
 		$itv_archiver->disable_archiving();
 		echo "!!!skip archiving\n";
