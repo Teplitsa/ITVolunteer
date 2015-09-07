@@ -141,7 +141,7 @@ function tst_task_reward_in_card($task = null){
 		wp_set_object_terms($task_id, $reward->term_id, 'reward'); 
 	}
 	
-	$reward = get_the_terms($task->ID, 'reward'); 
+	$reward = get_the_terms($task_id, 'reward'); 
 ?>
 <span class="reward-icon glyphicon glyphicon-gift"></span>
 <span class="reward-name" title="<?php _e('Reward', 'tst');?>">
