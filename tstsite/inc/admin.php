@@ -732,7 +732,7 @@ function itv_all_tasks_log_box_content() {
 			$user_text = '';
 			if($user) {
 				$user_link = tst_get_member_url($user);
-				$edit_user_link = get_edit_user_link( $user_id );
+				$edit_user_link = get_edit_user_link( $user->ID );
 				$user_text = "<a href='".$user_link."'>" . $user->display_name . "</a>";
 				$user_text .= "<a href='".$edit_user_link."' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";;
 			}

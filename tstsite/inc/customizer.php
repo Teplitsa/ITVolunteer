@@ -938,13 +938,12 @@ function tst_send_user_notif_consult_needed($post_id) {
 }
 
 
-function tst_task_saved( $task_id, WP_Post $task ) {
+function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 	if ( $task->post_type != 'tasks' ) {
 		return;
 	}
 		
     remove_action( 'save_post', 'tst_task_saved' );
-	do_action('update_member_stats', array($task->post_author));
 	
 	if($task->post_author == get_current_user_id()) {
 		if ( $task->post_status == 'archived' ) {
@@ -955,28 +954,18 @@ function tst_task_saved( $task_id, WP_Post $task ) {
 			wp_update_post($update_args);
 		}
 	}
-}
-add_action( 'save_post', 'tst_task_saved', 10, 2 );
-
-
-function tst_task_updated( $task_id, WP_Post $task, $is_update) {
-	if ( $task->post_type != 'tasks' ) {
-		return;
-	}
 	
-	if(is_admin()) {
-		$itv_log = ItvLog::instance();
-		if($is_update) {
-			$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_EDIT, get_current_user_id());
-		}
-		else {
-			$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
-		}
-		
-		do_action('update_member_stats', array($task->post_author));
+	$itv_log = ItvLog::instance();
+	if($is_update) {
+		$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_EDIT, get_current_user_id());
 	}
+	else {
+		$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
+	}
+		
+	do_action('update_member_stats', array($task->post_author));
 }
-add_action( 'wp_insert_post', 'tst_task_updated', 10, 3);
+add_action( 'save_post', 'tst_task_saved', 10, 3 );
 
 
 function tst_consult_column( $column, $post_id ) {

@@ -105,11 +105,7 @@ function ajax_add_edit_task(){
 		
 		
         if($is_new_task) {
-        	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
             tst_send_admin_notif_new_task($_POST['id']);
-        }
-        else {
-        	$itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_EDIT, get_current_user_id());
         }
         
         if($new_is_tst_consult_needed) {
