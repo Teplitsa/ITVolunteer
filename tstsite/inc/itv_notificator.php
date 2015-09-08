@@ -172,6 +172,9 @@ class ItvNotificator {
 					$this->pring_debug("SENT\n");
 					$this->notif_sent_count += 1;
 					$this->save_notification_fact('tomorrow_move_task_to_archive', $this->get_task_last_edit_notif_key($task), $user_email);
+					
+					$itv_log = ItvLog::instance();
+					$itv_log->log_task_action($task->ID, ItvLog::$ACTION_TASK_NOTIF_ARCHIVE_SOON, $user ? $user->ID : 0);
 				}
 				catch(Exception $ex) {
 					error_log($ex);
@@ -294,6 +297,10 @@ class ItvNotificator {
 					);
 					$this->pring_debug("SENT\n");
 					$this->save_notification_fact('notif_no_task_doer_yet', $this->get_task_notif_key($task), $user_email);
+					
+					$itv_log = ItvLog::instance();
+					$itv_log->log_task_action($task->ID, ItvLog::$ACTION_TASK_NOTIF_NO_DOER_YET, $user ? $user->ID : 0);
+					
 					$this->notif_sent_count += 1;
 				}
 				catch(Exception $ex) {

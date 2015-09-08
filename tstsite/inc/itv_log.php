@@ -14,6 +14,9 @@ class ItvLog {
 	public static $ACTION_TASK_CLOSE = 'close';
 	public static $ACTION_TASK_ARCHIVE = 'archive';
 	
+	public static $ACTION_TASK_NOTIF_NO_DOER_YET = 'no_doer_yes';
+	public static $ACTION_TASK_NOTIF_ARCHIVE_SOON = 'archive_soon';
+	
 	public static $ACTION_USER_REGISTER = 'user_register';
 	public static $ACTION_USER_UPDATE = 'user_update';
 	public static $ACTION_USER_DELETE_PROFILE = 'user_delete_profile';
@@ -162,6 +165,9 @@ __('itv_task_actions_log_unpublish', 'tst');
 __('itv_task_actions_log_inwork', 'tst');
 __('itv_task_actions_log_close', 'tst');
 __('itv_task_actions_log_archive', 'tst');
+
+__('itv_task_actions_log_no_doer_yes', 'tst');
+__('itv_task_actions_log_archive_soon', 'tst');
 
 __('itv_task_actions_log_user_register', 'tst');
 __('itv_task_actions_log_user_update', 'tst');
