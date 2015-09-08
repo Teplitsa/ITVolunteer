@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-08 20:04+0200\n"
-"PO-Revision-Date: 2015-09-08 20:06+0200\n"
+"PO-Revision-Date: 2015-09-08 20:23+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1194,11 +1194,11 @@ msgstr "Задача перемещена в архив"
 
 #: inc/itv_log.php:169
 msgid "itv_task_actions_log_no_doer_yes"
-msgstr "Уведомление о долгом отсутствии исполнителя."
+msgstr "Уведомление о долгом отсутствии исполнителя для %s"
 
 #: inc/itv_log.php:170
 msgid "itv_task_actions_log_archive_soon"
-msgstr "Уведомление о скором перемещении в архив."
+msgstr "Уведомление о скором перемещении в архив для %s"
 
 #: inc/itv_log.php:172
 msgid "itv_task_actions_log_user_register"
