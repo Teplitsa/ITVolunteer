@@ -18,16 +18,17 @@ if(isset($_GET['t'])) {
 
 <section class="home-section tasks">
 	<div class="section-content">
-<?php 
+<?php
+	$tasks_per_page = get_option('posts_per_page');
 	$tasks_query = new WP_Query(array(
 		'post_type'      => 'tasks',
 		'post_status'    => array('publish'),
-		'nopaging'       => 1,
+		'posts_per_page' => $tasks_per_page,
 		'author__not_in' => array(ACCOUNT_DELETED_ID),
 		'set_users'      => 'yes'		
 	));
 	
-	$tasks_per_page = get_option('posts_per_page');
+	
 	if($tasks_query->have_posts()) { $count = 0; ?>
 	
 		<div class="row in-loop tasks-list">
@@ -56,9 +57,9 @@ if(isset($_GET['t'])) {
 		?>
 		</div><!-- .row -->
 		
-		<?php if($tasks_query->post_count > $tasks_per_page) { ?>
+		<?php if($tasks_query->found_posts > $tasks_per_page) { ?>
 		<div class="home-nav">
-			<a href="<?php echo home_url('/tasks/page/2/');?>" class="btn btn-default ga-event-trigger" <?php tst_ga_event_data('hp_more_nav');?>>
+			<a href="<?php echo home_url('tasks/publish/page/2/');?>" class="btn btn-default ga-event-trigger" <?php tst_ga_event_data('hp_more_nav');?>>
 				<?php _e('More tasks', 'tst');?> &raquo;
 			</a>
 		</div>
