@@ -59,7 +59,7 @@ if(isset($_GET['t'])) {
 		
 		<?php if($tasks_query->found_posts > $tasks_per_page) { ?>
 		<div class="home-nav">
-			<a href="<?php echo home_url('tasks/publish/page/2/');?>" class="btn btn-default ga-event-trigger" <?php tst_ga_event_data('hp_more_nav');?>>
+			<a href="<?php echo home_url('/tasks/publish/page/2/');?>" class="btn btn-default ga-event-trigger" <?php tst_ga_event_data('hp_more_nav');?>>
 				<?php _e('More tasks', 'tst');?> &raquo;
 			</a>
 		</div>
