@@ -174,7 +174,7 @@ function tst_get_user_rating($user) {
 	
     $user = tst_user_object($user);
 	$activ = tst_get_member_activity($user, 'solved');	
-    return (int)$active['solved'];
+    return (isset($active['solved'])) ? (int)$active['solved'] : 0;
 }
 
 
