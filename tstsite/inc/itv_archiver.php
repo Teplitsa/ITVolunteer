@@ -64,6 +64,7 @@ class ItvArchiver extends ItvNotificator {
 	}
 	
 	public function move_task_to_archive($task){
+		global $wpdb;
 	
 		if(is_int($task))
 			$task = get_post($task);
@@ -92,9 +93,10 @@ class ItvArchiver extends ItvNotificator {
 		
 		if(!$this->is_skip_archiving) {		
 			//update
-			$postarr['ID'] = $task->ID;
-			$postarr['post_status'] = 'archived';
-		
+			$wpdb->update( $wpdb->posts, array( 'post_status' => 'archived' ),
+				array( 'ID' => $task->ID )
+			);
+			
 			wp_update_post($postarr);
 			$this->pring_debug("ARCHIVED\n");
 			// log archive action
