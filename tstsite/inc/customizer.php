@@ -29,62 +29,6 @@ function my_task_function() {
     wp_mail('your@email.com', 'Automatic email', 'Automatic scheduled email from WordPress.');
 }
 
-if( !wp_next_scheduled('tst_deadline_reminder_hook') ) { // For production
-    wp_schedule_event(time(), 'daily', 'tst_deadline_reminder_hook');
-}
-
-add_action('tst_deadline_reminder_hook', function(){
-	
-	$email_templates = ItvEmailTemplates::instance();
-
-    foreach(get_posts(array(
-        'post_type' => 'tasks',
-        'post_status' => 'any', //array('draft', 'publish', 'in_work', 'closed'),
-        'nopaging' => true,
-    )) as $task) {
-        $deadline = get_field('deadline', $task->ID); // 'field_533bef200fe90'
-        $days_till_deadline = date_diff(date_create(), date_create($deadline))->days;
-
-        if($days_till_deadline == 1 && ($task->post_status == 'publish' || $task->post_status == 'in_work')) {
-
-            $task_permalink = get_permalink($task);
-            wp_mail(
-                get_user_by('id', $task->post_author)->user_email,
-                $email_templates->get_title('deadline_coming_author_notification'),
-                nl2br(sprintf($email_templates->get_text('deadline_coming_author_notification'), $task_permalink))
-            );
-
-            foreach(tst_get_task_doers($task->ID, false) as $doer) {
-
-                if( !$doer ) // If doer deleted his account
-                    continue;
-                wp_mail(
-                    $doer->user_email,
-                    $email_templates->get_title('deadline_coming_doer_notification'),
-                    nl2br(sprintf($email_templates->get_text('deadline_coming_doer_notification'), $task_permalink))
-                );
-            }
-        } else if( !$days_till_deadline && $task->post_status == 'publish' && !tst_get_task_doers($task->ID, false) ) {
-
-            wp_update_post(array('ID' => $task->ID, 'post_status' => 'draft'));
-        }
-    }
-});
-
-
-
-function tst_get_deadline_class($days) {
-    $days = (int)$days;
-    if($days < 10)
-        return 'urgent';
-    else if($days >= 10 && $days < 30)
-        return 'low-urgency';
-    else if($days >= 30 && $days < 90)
-        return 'no-urgency';
-    else
-        return 'all-time-of-world';
-}
-
 function date_from_dd_mm_yy_to_yymmdd($date) {
     if(preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $date)) {
         $date_arr = date_parse_from_format ( "d.m.Y" , $date );
