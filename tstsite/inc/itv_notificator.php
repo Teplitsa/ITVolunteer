@@ -139,7 +139,7 @@ class ItvNotificator {
 			return; //not too old
 		}
 	
-		$doers = tst_get_task_doers_count($task->ID, true);
+		$doers = tst_get_task_doers_count($task->ID, true, true);
 		if($doers > 0) {
 			$this->pring_debug("NOT_FIT: doers found\n");
 			return; //only task without doers ??
@@ -264,7 +264,7 @@ class ItvNotificator {
 			return; //not in period
 		}
 	
-		$doers = tst_get_task_doers_count($task->ID, true);
+		$doers = tst_get_task_doers_count($task->ID, true, true);
 		if($doers > 0) {
 			$this->pring_debug("NOT_FIT: doers found\n");
 			return; //only task without doers ??
