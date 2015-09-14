@@ -196,7 +196,7 @@ require get_template_directory().'/inc/template-general.php';
 require get_template_directory().'/inc/functions-general.php';
 require get_template_directory().'/inc/template-tasks.php';
 require get_template_directory().'/inc/template-members.php';
-require get_template_directory().'/inc/functions-members.php';
+require_once(get_template_directory().'/inc/functions-members.php');
 require get_template_directory().'/inc/functions-tasks.php';
 
 //compot
