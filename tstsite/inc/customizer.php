@@ -541,7 +541,7 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 
 
 /** Register a new user */
-function ajax_user_register() {
+function ajax_user_register_old() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
     $user_login = itv_get_unique_user_login(itv_translit_sanitize($_POST['first_name']), itv_translit_sanitize($_POST['last_name']));
 
@@ -601,6 +601,55 @@ function ajax_user_register() {
             )));
         }
     }
+}
+
+function ajax_user_register() {
+	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+	if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+		)));
+	} else {
+		$user_params = array(
+				'email' => $_POST['email'],
+				'pass' => $_POST['pass'],
+				'first_name' => $_POST['first_name'],
+				'last_name' => $_POST['last_name'],
+		);
+		$reg_result = tst_register_user($user_params);
+		
+		if(is_wp_error($reg_result)) {
+			wp_die(json_encode(array(
+				'status' => 'fail',
+				'message' => '<div class="alert alert-danger">' . $reg_result->get_error_message() . '</div>',
+			)));
+		}
+		else {
+			$user_id = $reg_result;
+			$user = get_user_by( 'id', $user_id );
+			
+			if(!function_exists('tstmu_save_user_reg_source')) {
+				require_once(get_template_directory().'/../../themes/mu-tst-all/inc/tstmu-users.php');
+			}
+			tstmu_save_user_reg_source($user_id, get_current_blog_id());
+			
+			$itv_log = ItvLog::instance();
+			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
+				
+			$email_templates = ItvEmailTemplates::instance();
+			$email_subject = $email_templates->get_title('activate_account_notice');
+			$email_body_template = $email_templates->get_text('activate_account_notice');
+			
+			tst_send_activation_email($user, $email_subject, $email_body_template);
+			
+			wp_die(json_encode(array(
+				'status' => 'ok',
+				'message' => '<div class="alert alert-success">'.__('Your registration is complete! Please check out the email you gave us for our activation message.', 'tst').'</div>',
+			)));
+		}
+	}
 }
 add_action('wp_ajax_user-register', 'ajax_user_register');
 add_action('wp_ajax_nopriv_user-register', 'ajax_user_register');
