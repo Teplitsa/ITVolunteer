@@ -232,6 +232,111 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 	return ($only_count) ? $query->found_posts : $query;	
 }
 
+function tst_register_user($user_params) {
+	$error_message = '';
+	$is_error = false;
+	$error_sub_code = '';
+	$result = false;
+	
+	if(tst_is_valid_register_user_params($user_params)) {
+		if(!isset($user_params['login']) || username_exists($user_params['login'])) {
+			$user_params['login'] = itv_get_unique_user_login(itv_translit_sanitize($user_params['first_name']), itv_translit_sanitize($user_params['last_name']));
+		}
+		
+		if(username_exists($user_params['login'])) {
+			$is_error = true;
+			$error_message = __('Username already exists!', 'tst');
+		} else if(email_exists($user_params['email'])) {
+			$is_error = true;
+			$error_message = __('Email already exists!', 'tst');
+		}
+		
+		if(!$is_error) {
+			$insert_user_params = array(
+					'user_login' => $user_params['login'],
+					'user_email' => $user_params['email'],
+					'user_pass' => $user_params['pass'],
+					'first_name' => $user_params['first_name'],
+					'last_name' => $user_params['last_name'],
+					'role' => 'author',
+			);
+			
+			// process extra params
+			if(isset($user_params['website']) && trim($user_params['website'])) {
+				$insert_user_params['user_url'] = $user_params['website'];
+			}
+			elseif(isset($user_params['user_url']) && trim($user_params['user_url'])) {
+				$insert_user_params['user_url'] = $user_params['user_url'];
+			}
+			
+			$user_id = wp_insert_user($insert_user_params);
+		
+			if(is_wp_error($user_id)) {
+				$is_error = true;
+				$error_message = __('We are very sorry :( Some error occured while registering your account.', 'tst');
+			}
+			elseif($user_id) {
+				$result = $user_id;
+			}
+			else {
+				$is_error = true;
+				$error_message = __('We are very sorry :( Some error occured while registering your account.', 'tst');
+			}
+		}
+	}
+	else {
+		$is_error = true;
+		$error_sub_code = 'invalid_params';
+		$error_message = __('We are very sorry :( Some error occured while registering your account.', 'tst');
+	}
+	
+	if($is_error) {
+		$error_code = 'user_reg_failed';
+		if($error_sub_code) {
+			$error_code .= '-' . $error_sub_code;
+		}
+		$result = new WP_Error( $error_code, $error_message );
+	}
+	
+	return $result;	 
+}
+
+function tst_is_valid_register_user_params($user_params) {
+	$is_valid = true;
+	if(!isset($user_params['email']) || !trim($user_params['email'])) {
+		$is_valid = false;
+	}
+	elseif(!isset($user_params['pass']) || !trim($user_params['pass'])) {
+		$is_valid = false;
+	}
+	elseif(!isset($user_params['first_name']) || !trim($user_params['first_name'])) {
+		$is_valid = false;
+	}
+	elseif(!isset($user_params['last_name']) || !trim($user_params['last_name'])) {
+		$is_valid = false;
+	}
+	
+	return $is_valid;
+}
+
+function tst_send_activation_email($user, $email_subject, $email_body_template) {
+	$user_id = $user->ID;
+	$user_email = $user->user_email;
+	$user_login = $user->user_login;
+		
+	$activation_code = sha1($user_id.'-activation-'.time());
+	update_user_meta($user_id, 'activation_code', $activation_code);
+	do_action('update_member_stats', array($user_id));
+	
+	$account_activation_url = "/account-activation/?uid=$user_id&code=$activation_code";
+	$link = is_multisite() ? network_site_url($account_activation_url) : home_url($account_activation_url);
+	
+	wp_mail(
+		$user_email,
+		$email_subject,
+		nl2br(sprintf($email_body_template, $link, $user_login))
+	);
+}
 
 /* Last login data */
 function save_user_last_login_time($user) {
