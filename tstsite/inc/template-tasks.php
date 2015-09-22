@@ -134,13 +134,6 @@ function tst_get_task_author_org($task = null){
 function tst_task_reward_in_card($task = null){
 	
 	$task_id = ($task) ? $task->ID : get_the_ID();
-	
-	if(isset($_GET['update']) && $_GET['update'] == 1){ 
-		//fix for incorrect data storage
-		$reward = get_term(get_field('reward', $task_id), 'reward');
-		wp_set_object_terms($task_id, $reward->term_id, 'reward'); 
-	}
-	
 	$reward = get_the_terms($task_id, 'reward'); 
 ?>
 <span class="reward-icon glyphicon glyphicon-gift"></span>
