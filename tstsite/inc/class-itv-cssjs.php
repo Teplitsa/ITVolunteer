@@ -167,7 +167,6 @@ class ITV_CssJs {
 			'task_title_is_required'         => __('Please, set a title for the task.', 'tst'),
 			'deadline_is_required'           => __('Please, set a deadline date for the task.', 'tst'),
 			'task_descr_is_required'         => __('Please, set a small description for the task.', 'tst'),
-			'expecting_is_required'          => __('Please, give a few words about what you are expecting from a task doer.', 'tst'),
 			'about_reward_is_required'       => __('Please, note a few words about a reward that you are willing to give for a task.', 'tst'),
 			'about_author_org_is_required'   => __('Please, tell something about your project, initiative or an organization.', 'tst'),
 			'some_tags_are_required'         => __('Please, set at least one thematic tag for your task.', 'tst'),

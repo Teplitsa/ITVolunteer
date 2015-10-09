@@ -134,11 +134,16 @@ function tst_get_task_author_org($task = null){
 function tst_task_reward_in_card($task = null){
 	
 	$task_id = ($task) ? $task->ID : get_the_ID();
-	$reward = get_the_terms($task_id, 'reward'); 
+	$reward = get_the_terms($task_id, 'reward');
+	$reward = is_array($reward) ? array_shift($reward) : null;
+	$reward_name = '';
+	if($reward) {
+		$reward_name = $reward->name;
+	}
 ?>
 <span class="reward-icon glyphicon glyphicon-gift"></span>
 <span class="reward-name" title="<?php _e('Reward', 'tst');?>">
-<?php echo apply_filters('frl_the_title', $reward[0]->name); ?>
+<?php echo apply_filters('frl_the_title', $reward_name); ?>
 </span>
 </span>
 <?php
