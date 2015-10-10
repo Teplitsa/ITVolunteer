@@ -490,8 +490,7 @@ function tst_get_member_field($field, $member_id = null){
             break;
 	
 		case 'user_website':
-            #$value = get_userdata($member_id)->user_url;
-			$value = get_user_meta($member_id, 'user_website', true);
+            $value = get_userdata($member_id)->user_url;
             $value = (!empty($value)) ? untrailingslashit(esc_url($value)) : $value;
             break;
 	

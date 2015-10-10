@@ -78,7 +78,7 @@ class ItvUserReportGenerator {
 							$is_uploaded_company_logo,
 							get_user_meta($user->ID, 'user_speciality', true),
 							get_user_meta($user->ID, 'description', true),
-							get_user_meta($user->ID, 'user_website', true),
+							$user->user_url,
 							get_user_meta($user->ID, 'user_skype', true),
 							get_user_meta($user->ID, 'twitter', true),
 							get_user_meta($user->ID, 'facebook', true),

@@ -676,6 +676,7 @@ function ajax_update_profile() {
             'user_email' => $_POST['email'],
             'first_name' => $_POST['first_name'],
             'last_name' => $_POST['last_name'],
+        	'user_url' => $_POST['user_website'],
         );
         if( !empty($_POST['pass']) )
             $params['user_pass'] = $_POST['pass'];
@@ -694,7 +695,6 @@ function ajax_update_profile() {
 			update_user_meta($member->ID, 'user_workplace_desc', htmlentities(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));            
             update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_website', htmlentities($_POST['user_website'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'user_skype', htmlentities($_POST['user_skype'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'twitter', htmlentities($_POST['twitter'], ENT_QUOTES, 'UTF-8'));
             update_user_meta($member->ID, 'facebook', htmlentities($_POST['facebook'], ENT_QUOTES, 'UTF-8'));
