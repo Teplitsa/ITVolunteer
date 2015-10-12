@@ -76,7 +76,6 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 	<?php } ?>
 			<div class="task-summary task-section">
 				<?php the_content(); ?>
-				<?php echo apply_filters('frl_the_content', htmlspecialchars_decode(get_field('expecting'), ENT_QUOTES));?>
 			</div>
 
 			<div class="task-author task-section">

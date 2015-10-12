@@ -476,6 +476,8 @@ add_action('add_meta_boxes', function($post_type){
         'side',
         'high'
     );
+    
+    add_meta_box( 'task_reward_meta_box', __('Reward', 'tst'), 'post_categories_meta_box', 'tasks', 'side', 'high', array( 'taxonomy' => 'reward' ) );
 });
 
 
@@ -540,13 +542,16 @@ add_action('manage_posts_custom_column', 'itv_common_columns_content', 2, 2);
 function itv_common_columns_content($column_name, $post_id) {
 		
 	if($column_name == 'rewards') {
-		
-        $term_id = get_field('reward', $post_id);
-        if($term_id){
-            $term = get_term($term_id, 'reward');
-            if($term)
-                echo apply_filters('single_cat_title', $term->name);
-        }
+		$reward = get_the_terms($post_id, 'reward');
+        if($reward) {
+        	$reward = is_array($reward) ? array_shift($reward) : null;
+            $reward_name = '';
+            if($reward) {
+            	$reward_name = $reward->name;
+            }
+            	 
+            echo apply_filters('single_cat_title', $reward_name);
+		}
 	}
     elseif($column_name == 'thumbnail'){
         $img = get_the_post_thumbnail($post_id, 'thumbnail');

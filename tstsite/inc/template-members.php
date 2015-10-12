@@ -258,7 +258,51 @@ function tst_localize_gravatar($user_id) {
 	}
 }
 
+add_filter( 'get_avatar' , 'itv_custom_avatar' , 1 , 5 );
+function itv_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
+	$user_id = 0;
+	if ( is_numeric( $id_or_email ) ) {
+		$user_id = (int) $id_or_email;
 
+	} elseif ( is_object( $id_or_email ) ) {
+		if ( ! empty( $id_or_email->user_id ) ) {
+			$user_id = (int) $id_or_email->user_id;
+		}
+	} else {
+		$user = get_user_by( 'email', $id_or_email );
+		$user_id = $user->ID;
+	}
+
+	if( $user_id ) {
+		$user_avatar = tst_get_member_user_avatar($user_id);
+		$fallback = tst_get_avatar_fallback($user_id);
+		
+		if(!$user_avatar) {
+			$user_avatar = $fallback;
+		}
+		
+		if($user_avatar) {
+			$doc = new DOMDocument();
+			@$doc->loadHTML($user_avatar);
+			$tags = $doc->getElementsByTagName('img');
+			
+			$user_avatar = null;
+			foreach ($tags as $tag) {
+				$user_avatar = $tag;
+				break;
+			}			
+		} 
+		
+		if($user_avatar) {
+			$avatar_src = $user_avatar->getAttribute('src');
+			if($avatar_src) {
+				$avatar = "<img alt='{$alt}' src='{$avatar_src}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+			}
+		}
+	}
+
+	return $avatar;
+}
 
 /** Profile tags **/
 function tst_member_profile_infoblock($user_id) {
@@ -487,7 +531,7 @@ function tst_get_member_links_list($member_id){
 	
 	$links = array();
 	
-	$website = tst_get_member_field('user_website', $member_id);	
+	$website = tst_get_member_field('user_website', $member_id);
 	if(!empty($website)){
 		$links['website'] = array(
 			'label' => __('Website', 'tst'),

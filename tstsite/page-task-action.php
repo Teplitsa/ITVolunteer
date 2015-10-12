@@ -42,8 +42,8 @@ if( !empty($_GET['task']) ){
 			'is_tst_consult_needed' => get_field('is_tst_consult_needed', $task->ID),
 		); 
 	}
-	$reward = get_the_terms($task->ID, 'reward'); 
-	$task_data['reward'] = $reward ? $reward[0] : null;
+	$reward = get_the_terms($task->ID, 'reward');
+	$task_data['reward'] = is_array($reward) ? array_shift($reward) : null;
 } else {
     $task_data = array(
         'task_status' => 'draft',
