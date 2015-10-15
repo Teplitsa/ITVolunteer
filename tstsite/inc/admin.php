@@ -490,9 +490,11 @@ add_action('admin_init', function(){
 	}
 	
 	if(isset($GLOBALS['wpseo_admin'])){
-		$wp_seo = $GLOBALS['wpseo_admin'];	
+		$wp_seo = $GLOBALS['wpseo_admin'];
 		remove_action('show_user_profile', array($wp_seo, 'user_profile'));
 		remove_action('edit_user_profile', array($wp_seo, 'user_profile'));
+		global $wp_filter; unset($wp_filter['edit_user_profile_update']); # dirty hack
+		# remove_action('edit_user_profile_update', array($wp_seo, 'process_user_option_update')); # this way does not work properly
 	}	
 	
 }, 100);
