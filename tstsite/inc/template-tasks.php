@@ -304,7 +304,7 @@ function tst_is_user_candidate($user_id = false, $task_id = false) {
         $task_id = $post->ID;
     }
 
-    $p2p_id = p2p_type('task-doers')->get_p2p_id($user_id, $task_id);
+    $p2p_id = p2p_type('task-doers')->get_p2p_id($task_id, $user_id);
 
     if($p2p_id) // connection exists
         return (int)p2p_get_meta($p2p_id, 'is_approved', true) ? 2 : 1;
