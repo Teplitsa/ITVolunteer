@@ -31,13 +31,19 @@ get_header(); ?>
 				$tags = get_terms('post_tag', array('hide_empty' => 1, 'orderby' => 'count', 'order' => 'DESC'));
 				if(!empty($tags)){
 				
+				$tasks_stats_by_tags = ItvTasksStatsByTags::instance();
+				$max_tasks_by_tag = $tasks_stats_by_tags->get_max_posts_count_by_tags();
+					
 				echo "<ul class='task-tags-list'>";
 				foreach($tags as $tag){ 
 					if(isset($_GET['update']) && $_GET['update'] == 1)
 						tst_correct_tag_count($tag->term_taxonomy_id, $tag->taxonomy);
 				
+					$tasks_stats = $tasks_stats_by_tags->get_tag_stats($tag->term_taxonomy_id);
+					
 					echo "<li>";
 					echo "<a href='".get_term_link($tag)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tag->count."</i>";
+					echo itv_show_tasks_stats_by_tag($tasks_stats, $max_tasks_by_tag);
 					echo "</li>";
 				}
 				echo "</ul>";	

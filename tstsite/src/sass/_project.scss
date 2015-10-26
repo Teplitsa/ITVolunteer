@@ -374,7 +374,19 @@ a {
 	padding: 0;
 	
 	li {
-		margin-bottom: 3px;
+		margin-bottom: 5px;
+		break-inside: avoid-column;
+		-webkit-column-break-inside: avoid;
+	}
+	
+	.itv-tasks-by-tags-total {
+	    width:300px;
+	}
+	
+	.itv-tasks-by-tags-total .itv-tasks-by-tags-percent {
+	    display:block;
+	    float:left;
+	    height:8px;
 	}
 	
 	@include for(medium-screens){

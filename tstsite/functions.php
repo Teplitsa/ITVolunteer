@@ -208,3 +208,4 @@ require get_template_directory().'/inc/itv_site_stats.php';
 require get_template_directory().'/inc/itv_reviews.php';
 require get_template_directory().'/inc/stats-events.php';
 require get_template_directory().'/inc/itv_notificator.php';
+require get_template_directory().'/inc/itv_tasks_stats.php';
