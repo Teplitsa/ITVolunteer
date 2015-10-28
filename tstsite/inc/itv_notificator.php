@@ -312,4 +312,30 @@ class ItvNotificator {
 			$this->already_sent_count += 1;
 		}
 	}
+	
+	/* notify candidate about task status change */
+	function notif_candidate_about_task_status_change($user, $task) {
+	
+		$task_status_message = __('Task status become ' . $task->post_status, 'tst');
+	
+		$email_templates = ItvEmailTemplates::instance();
+		$task_permalink = get_permalink($task);
+	
+		/* notice to candidate: */
+		wp_mail(
+			$user->user_email,
+			$email_templates->get_title('task_status_changed'),
+			nl2br($this->fill_template(
+				$email_templates->get_text('task_status_changed'),
+				array('username' => $user->user_nicename, 'task_title' => $task->post_title, 'status_message' => $task_status_message, 'task_link' => $task_permalink)
+			))
+		);
+	}	
 }
+
+__('Task status become publish', 'tst');
+__('Task status become in_work', 'tst');
+__('Task status become closed', 'tst');
+__('Task status become archived', 'tst');
+__('Task status become draft', 'tst');
+__('Task status become trash', 'tst');

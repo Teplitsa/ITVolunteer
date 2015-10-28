@@ -1,7 +1,6 @@
 <?php
 /** Multibutton **/
 
-
 ?>
 <div id="multibutton">
 <?php if( !$cur_user_id ) {?>
@@ -77,7 +76,7 @@
 	<form id="task-leave-review-form" style="display: none;" class="task-message widefat">
 		<p><?php _e('Leave a review to the task doer just to thank him.', 'tst');?></p>
 		<div class="form-group">
-			<textarea id="review-message" class="form-control" rows="6"></textarea>
+			<textarea id="review-message" class="form-control" rows="6">Задача успешно закрыта. Был рад сотрудничеству. Рекомендую этого пользователя.</textarea>
 			<input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
 			<input type="hidden" id="doer-id" value="" />
 			<input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-leave-review');?>" />

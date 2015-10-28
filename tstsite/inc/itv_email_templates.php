@@ -66,6 +66,10 @@ class ItvEmailTemplates {
 					'title' => __('ITVolunteer - no doer has been approved for your task yet!', 'tst'),
 					'text' => __("Greetings, {{username}}!\n\nWeek left but still no doer has been approved for your task.\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
 			),
+			'task_status_changed' => array(
+					'title' => __('ITVolunteer - linked task status changed!', 'tst'),
+					'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} status changed!\n{{status_message}}\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+			),
 		//    '' => array(
 		//        'title' => ,
 		//        'text' => ,

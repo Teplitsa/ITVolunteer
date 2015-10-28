@@ -960,6 +960,20 @@ function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 }
 add_action( 'save_post', 'tst_task_saved', 10, 3 );
 
+function on_all_status_transitions( $new_status, $old_status, $task ) {
+	if( !$task || $task->post_type != 'tasks' ) {
+		return;
+	}
+	
+	if ( $new_status != $old_status ) {
+		$candidates = tst_get_task_doers($task->ID);
+		$itv_notificator = new ItvNotificator();
+		foreach($candidates as $candidate) {
+			$itv_notificator->notif_candidate_about_task_status_change($candidate, $task);
+		}
+	}
+}
+add_action('transition_post_status',  'on_all_status_transitions', 10, 3);
 
 function tst_consult_column( $column, $post_id ) {
     switch ( $column ) {

@@ -304,9 +304,23 @@ function tst_is_user_candidate($user_id = false, $task_id = false) {
         $task_id = $post->ID;
     }
 
-    $p2p_id = p2p_type('task-doers')->get_p2p_id($user_id, $task_id);
+    $p2p_id = p2p_type('task-doers')->get_p2p_id($task_id, $user_id);
 
     if($p2p_id) // connection exists
         return (int)p2p_get_meta($p2p_id, 'is_approved', true) ? 2 : 1;
     return 0;
+}
+
+function itv_show_tasks_stats_by_tag($stats, $max_tasks_by_tag) {
+	ob_start();
+?>
+	<p class="itv-tasks-by-tags-total clearfix">
+		<span class="itv-tasks-by-tags-percent" title="<?php echo __("New tasks:", 'tst') . ' ' . $stats->publish?>" style="background-color:#5cb85c;width:<?php echo round(100 * $stats->publish / $max_tasks_by_tag)?>%;"></span>
+		<span class="itv-tasks-by-tags-percent" title="<?php echo __("In work tasks:", 'tst') . ' ' . $stats->in_work?>" style="background-color:#ffab00;width:<?php echo round(100 * $stats->in_work / $max_tasks_by_tag)?>%;"></span>
+		<span class="itv-tasks-by-tags-percent" title="<?php echo __("Closed tasks:", 'tst') . ' ' . $stats->closed?>" style="background-color:#566672;width:<?php echo round(100 * $stats->closed / $max_tasks_by_tag)?>%;"></span>
+		<span class="itv-tasks-by-tags-percent" title="<?php echo __("Archived", 'tst') . ': ' . $stats->archived?>" style="background-color:#0095c7;width:<?php echo round(100 * $stats->archived / $max_tasks_by_tag)?>%;"></span>
+	</p>
+<?php 
+	$ret = ob_get_clean();
+	return $ret; 
 }
