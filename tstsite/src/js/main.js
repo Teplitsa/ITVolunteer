@@ -1007,13 +1007,13 @@ jQuery(function($){
 	}
 	
 	// author review
-	$form = $('#task-leave-review-author-form');
+	var $form_author = $('#task-leave-review-author-form');
 	$('.review-author-rating-container').rating(function(vote, event){
-		$form.find('#review-author-rating').val(vote);
+		$form_author.find('#review-author-rating').val(vote);
 	});	
-	var current_rating = $form.find('#review-author-rating').val();
-	if(current_rating) {
-		$form.find('.stars').find('a[title='+current_rating+']').click();
+	var current_rating_author = $form_author.find('#review-author-rating').val();
+	if(current_rating_author) {
+		$form_author.find('.stars').find('a[title='+current_rating_author+']').click();
 	}
 
 	// read only review
