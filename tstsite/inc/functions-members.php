@@ -357,3 +357,181 @@ function tst_remove_admin_bar($show){
 	
 	return $show;
 }
+
+
+/** Leave a review for task doer */
+function ajax_leave_review() {
+	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+	if(
+			empty($_POST['task-id'])
+			|| empty($_POST['doer-id'])
+			|| empty($_POST['nonce'])
+			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
+	) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = $_POST['task-id'];
+	$doer_id = $_POST['doer-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+
+	if(!$task) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+
+	if($author_id != $task->post_author) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+		)));
+	}
+
+	$task_doer = null;
+
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		if( !$doer ) // If doer deleted his account
+			continue;
+		if($doer_id == $doer->ID) {
+			$task_doer = $doer;
+			break;
+		}
+	}
+
+	if(!$task_doer) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+		)));
+	}
+
+	$message = htmlentities(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), ENT_QUOTES, 'UTF-8');
+	if(!$message) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> empty message.', 'tst'),
+		)));
+	}
+
+	$rating = (int)trim(isset($_POST['review-rating']) ? $_POST['review-rating'] : '');
+	if(!$rating) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('Please rate doer work result', 'tst'),
+		)));
+	}
+
+	if($task_doer) {
+		$itv_reviews = ItvReviews::instance();
+		if($itv_reviews->is_review_for_doer_and_task($task_doer->ID, $task->ID)) {
+			wp_die(json_encode(array(
+			'status' => 'fail',
+			'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
+			)));
+		}
+		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
+	}
+
+	wp_die(json_encode(array(
+	'status' => 'ok',
+	'message' => __('Review saved', 'tst'),
+	)));
+}
+add_action('wp_ajax_leave-review', 'ajax_leave_review');
+add_action('wp_ajax_nopriv_leave-review', 'ajax_leave_review');
+
+
+/** Leave a review for author */
+function ajax_leave_review_author() {
+	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+	if(
+			empty($_POST['task-id'])
+			|| empty($_POST['author-id'])
+			|| empty($_POST['nonce'])
+			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review-author')
+	) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = $_POST['task-id'];
+	$author_id = $_POST['author-id'];
+	$task = get_post($task_id);
+	$doer_id = get_current_user_id();
+
+	if(!$task) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+
+	if($author_id != $task->post_author) {
+		wp_die(json_encode(array(
+			'status' => 'fail',
+			'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+		)));
+	}
+
+	$task_doer = null;
+
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		if( !$doer ) // If doer deleted his account
+			continue;
+		if($doer_id == $doer->ID) {
+			$task_doer = $doer;
+			break;
+		}
+	}
+
+	if(!$task_doer) {
+		wp_die(json_encode(array(
+			'status' => 'fail',
+			'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+		)));
+	}
+
+	$message = htmlentities(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), ENT_QUOTES, 'UTF-8');
+	if(!$message) {
+		wp_die(json_encode(array(
+			'status' => 'fail',
+			'message' => __('<strong>Error:</strong> empty message.', 'tst'),
+		)));
+	}
+
+	$rating = (int)trim(isset($_POST['review-rating']) ? $_POST['review-rating'] : '');
+	if(!$rating) {
+		wp_die(json_encode(array(
+			'status' => 'fail',
+			'message' => __('Please rate doer work result', 'tst'),
+		)));
+	}
+
+	if($task_doer) {
+		$itv_reviews = ItvReviewsAuthor::instance();
+		if($itv_reviews->is_review_for_author_and_task($author_id, $task->ID)) {
+			wp_die(json_encode(array(
+				'status' => 'fail',
+				'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
+			)));
+		}
+		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
+	}
+
+	wp_die(json_encode(array(
+		'status' => 'ok',
+		'message' => __('Review saved', 'tst'),
+	)));
+}
+add_action('wp_ajax_leave-review-author', 'ajax_leave_review_author');
+add_action('wp_ajax_nopriv_leave-review-author', 'ajax_leave_review_author');

@@ -7,6 +7,7 @@ if(!$candidates || empty($candidates))
 function frl_task_candidate_markup(WP_User $candidate, $actionable = false, $response = false) {
 $activity = tst_get_member_activity($candidate, 'solved');	
 $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
+$itv_reviews = ItvReviews::instance();
 ?>
 <div class="c-img">
 	<?php tst_temp_avatar($candidate);?>
@@ -14,8 +15,12 @@ $member_url = trailingslashit(site_url('/members/'.$candidate->user_login));
 
 <div class="c-name">
 	<a href="<?php echo $member_url;?>"><?php echo $candidate->first_name.' '.$candidate->last_name;?></a>
-	<?php if($response && p2p_get_meta($candidate->p2p_id, 'is_approved', true)) { ?>		
-		<div class="leave-review" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>"><?php _e('Leave review', 'tst');?></div>		
+	<?php if($response && p2p_get_meta($candidate->p2p_id, 'is_approved', true)) { ?>	
+		<?php if($review = $itv_reviews->get_review_for_doer_and_task($candidate->ID, get_the_ID())):?>
+			<div class="rating-in-candidates-list pull-left"><?php itv_show_review_rating_readonly($review->rating); ?></div>
+		<?php else:?>	
+			<div class="leave-review" data-doer-id="<?php echo $candidate->ID;?>" data-task-id="<?php the_ID();?>"><?php _e('Leave review', 'tst');?></div>
+		<?php endif?>		
 	<?php } else { ?>
 		<div class="user-rating"><?php echo __('Rating', 'tst').': <span>'.(int)$activity['solved'].'</span>';?></div>
 	<?php } ?>
