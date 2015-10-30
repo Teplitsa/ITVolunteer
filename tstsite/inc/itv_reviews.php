@@ -123,6 +123,20 @@ class ItvReviewsAuthor {
 		return ItvReviewsAuthor::$_instance;
 	}
 
+	public function add_review($author_id, $doer_id, $task_id, $message, $rating) {
+		global $wpdb;
+	
+		$wpdb->query(
+				$wpdb->prepare(
+						"
+						INSERT INTO $this->db_table
+						SET author_id = %d, doer_id = %d, task_id = %d, message = %s, rating = %d, time_add = NOW()
+						",
+						$author_id, $doer_id, $task_id, $message, (int)$rating
+				)
+		);
+	}
+	
 	public function get_author_reviews_short_list($author_id) {
 		global $wpdb;
 
