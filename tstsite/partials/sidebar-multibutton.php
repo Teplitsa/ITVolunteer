@@ -76,7 +76,20 @@
 	<form id="task-leave-review-form" style="display: none;" class="task-message widefat">
 		<p><?php _e('Leave a review to the task doer just to thank him.', 'tst');?></p>
 		<div class="form-group">
-			<textarea id="review-message" class="form-control" rows="6">Задача успешно закрыта. Был рад сотрудничеству. Рекомендую этого пользователя.</textarea>
+			<textarea id="review-message" class="form-control review-message" rows="6"><?php _e('Problem solved. Glad to work with him. Recomend this doer.', 'tst')?></textarea>
+			<div class="form-field-validation-message review-text-validation-message" style="display:none;"><?php _e('Please input review text', 'tst') ?></div>
+			<div class="itv-rating clearfix">
+				<div class="pull-left review-rating-label"><?php _e('Your mark:', 'tst')?></div> 
+				<div class="review-rating-container">
+				    <input type="radio" name="review-rating" class="rating" value="1" />
+				    <input type="radio" name="review-rating" class="rating" value="2" />
+				    <input type="radio" name="review-rating" class="rating" value="3" />
+				    <input type="radio" name="review-rating" class="rating" value="4" />
+				    <input type="radio" name="review-rating" class="rating" value="5" />
+				</div>
+			</div>
+			<div class="form-field-validation-message review-rating-validation-message" style="display:none;"><?php _e('Please rate doer work result', 'tst') ?></div>
+			<input type="hidden" id="review-rating" value="" class="review-rating"/>
 			<input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
 			<input type="hidden" id="doer-id" value="" />
 			<input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-leave-review');?>" />

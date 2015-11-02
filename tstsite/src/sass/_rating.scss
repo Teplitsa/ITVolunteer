@@ -1,0 +1,79 @@
+.itv-rating {
+	
+    .star{background-image:url('../img/rating-stars.png');
+	    background-position:left -2px;
+	    display:block;
+	    width:20px;
+	    height:16px;
+	    line-height:16px;
+	    float:left;
+	    cursor:pointer;
+	    zoom:1;
+    }
+    .fullStar {
+        background-position:left -59px;
+    }
+    
+    .stars {
+        overflow:hidden;
+    }
+    
+    .tmp_es {
+        background-position:left -21px;
+    }
+    
+    .tmp_fs {
+        background-position:left -40px;
+    }
+
+    padding-top:7px;
+
+	.review-rating-container {
+	    float:left;
+	}
+    
+    .review-rating-label {
+        margin-right:5px;
+    }
+}
+
+.itv-rating.review-rating-readonly {
+	padding-top:0px;
+	width:30%;
+	min-width:100px;
+	
+	a.star {
+	   cursor: default;
+	}
+}
+
+.form-field-validation-message {
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: bold;
+    color: $color-label-red-normal;
+    padding: 4px 0 0 0px;
+}
+
+.rating-in-candidates-list {
+	padding-top:3px;
+}
+
+.rating-author-list {
+	padding-top:3px;
+}
+
+.leave-review-author {
+    background: transparentize($color-text-meta, 0.3);
+    color: $color-white;
+    font-size: 11px;
+    padding: 3px 11px 4px;
+    display: inline-block;
+    margin-top: 4px;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+        background: darken($color-text-meta, 10%);
+    }
+}

@@ -750,3 +750,36 @@ class TST_Current_Member {
 function tst_get_current_member() {
     return TST_Current_Member::get_instance();
 }
+
+function itv_show_review_rating_readonly($rating) {
+	?>
+<div class="itv-rating review-rating-readonly pull-left clearfix">
+	<div class="review-rating-container-readonly">
+		<?php foreach(array(1, 2, 3, 4, 5) as $v):?>
+		<input type="radio" class="rating" value="<?php echo $v?>" <?php if($rating == $v):?>checked="true"<?php endif?> />
+		<?php endforeach ?>
+	</div>
+</div>
+<?php 							
+}
+
+function itv_show_review($review, $review_author) {
+	$review_author_url = $review_author ? trailingslashit(site_url('/members/'.$review_author->user_login)) : '';
+?>
+	<div class="itv-user-review-item clearfix">
+		<div class="itv-user-review-message">
+		<?php echo apply_filters('frl_the_content', stripslashes($review->message))?>
+		</div>
+		
+		<?php itv_show_review_rating_readonly($review->rating); ?>
+		
+		<?php if($review_author):?>
+		<div class="itv-user-review-author pull-right">
+			<a href="<?php echo $review_author_url;?>"><?php echo $review_author->first_name.' '.$review_author->last_name;?></a>
+			<br />
+			<small><i><?php echo date("d.m.Y", strtotime($review->time_add)); ?></i></small>
+		</div>
+		<?php endif?>
+	</div>
+<?php 
+}

@@ -168,37 +168,45 @@ $activity = tst_get_member_activity($tst_member->user_object);
 			
 			<?php
 				$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews_short_list($tst_member->ID); 
+				$latest_author_reviews = ItvReviewsAuthor::instance()->get_author_reviews_short_list($tst_member->ID);
 			?>
-			<?php if(count($latest_doer_reviews) > 0):?>
+			<?php if(count($latest_doer_reviews) > 0 || count($latest_author_reviews) > 0):?>
 			<div class="row">
 		        <div id="task-tabs" class="itv-reviews-tabs">
 		            <ul class="nav nav-tabs">
-		                <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
+		            	<?php if(count($latest_doer_reviews) > 0):?>
+		                	<li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
+		                <?php endif?>
+		                
+		                <?php if(count($latest_author_reviews) > 0):?>
+		                	<li <?php if(count($latest_doer_reviews) == 0):?> class="active"<?php endif?>><a href="#author-reviews-list" data-toggle="tab"><?php _e('Author reviews', 'tst');?></a></li>
+		                <?php endif?>
 		            </ul>
 		            <div class="tab-content">
-		                <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
-		                <?php foreach($latest_doer_reviews as $review):?>
-		                	<?php 
-		                		$review_author = get_user_by('id', $review->author_id);
-		                		$review_author_url = $review_author ? trailingslashit(site_url('/members/'.$review_author->user_login)) : '';
-		                	?>
-		                	<div class="itv-user-review-item clearfix">
-		                		<div class="itv-user-review-message">
-		                		<?php echo apply_filters('frl_the_content', stripslashes($review->message))?>
-		                		</div>
-		                		<?php if($review_author):?>
-		                		<div class="itv-user-review-author pull-right">
-		                			<a href="<?php echo $review_author_url;?>"><?php echo $review_author->first_name.' '.$review_author->last_name;?></a>
-		                			<br />
-		                			<small><i><?php echo date("d.m.Y", strtotime($review->time_add)); ?></i></small>
-		                		</div>
-		                		<?php endif?>
-		                	</div>
-		                	
-		                <?php endforeach;?>
-						<a href="<?php echo home_url("doer-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All doer reviews', 'tst');?> &raquo;</a>
-		                </div>
-					</div>
+		            	<?php if(count($latest_doer_reviews) > 0):?>
+			                <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
+			                <?php foreach($latest_doer_reviews as $review):?>
+			                	<?php 
+			                		$review_author = get_user_by('id', $review->author_id);
+									itv_show_review($review, $review_author);
+								?>                	
+			                <?php endforeach;?>
+							<a href="<?php echo home_url("doer-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All doer reviews', 'tst');?> &raquo;</a>
+			                </div>
+		                <?php endif;?>
+		                
+		                <?php if(count($latest_author_reviews) > 0):?>
+			                <div class="tab-pane fade in <?php if(count($latest_doer_reviews) == 0):?>active<?php endif; ?> itv-user-reviews-list" id="author-reviews-list">
+			                <?php foreach($latest_author_reviews as $review):?>
+			                	<?php 
+			                		$review_author = get_user_by('id', $review->doer_id);
+									itv_show_review($review, $review_author);
+								?>                	
+                			<?php endforeach;?>
+							<a href="<?php echo home_url("author-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All author reviews', 'tst');?> &raquo;</a>
+			                </div>
+		                <?php endif;?>
+	                </div>
 				</div>			
 			</div>
 			<?php endif?>

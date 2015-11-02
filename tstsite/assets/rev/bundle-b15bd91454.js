@@ -612,7 +612,7 @@ jQuery(function($){
 	});
 
     
-    
+    // doers review (is doer's work good or bad etc...)
     $('.leave-review').click(function(e){
         e.preventDefault();
 
@@ -629,15 +629,19 @@ jQuery(function($){
     $('#task-leave-review-form').submit(function(e){
         e.preventDefault();
 
-        $('#add_review_loading').show();
-        
         var $form = $(this),
             $buttons = $form.find('input[type="submit"][type="reset"]');
+        
+        if(!validate_review_form($form)) {
+        	return;
+        }
 
         $buttons.attr('disabled', 'disabled');
+        $('#add_review_loading').show();
 
         $.post(frontend.ajaxurl, {
             'action': 'leave-review',
+            'review-rating': $form.find('#review-rating').val(),
             'task-id': $form.find('#task-id').val(),
             'doer-id': $form.find('#doer-id').val(),
             'review-message': $form.find('#review-message').val(),
@@ -660,6 +664,59 @@ jQuery(function($){
         });
     });
 
+    // authors review (is author is good or bad)
+    $('.leave-review-author').click(function(e){
+        e.preventDefault();
+
+        $(this).hide();
+        $('#task-leave-review-author-form').slideDown(200);
+        $('#task-leave-review-leave-review-authorform').find('#author-id').val($(this).data('author-id'));
+    });
+
+    $('#cancel-leave-review-author').click(function(e){
+        $('.leave-review-author').show();
+        $('#task-leave-review-author-form').slideUp(200);
+    });
+    
+    $('#task-leave-review-author-form').submit(function(e){
+        e.preventDefault();
+
+        var $form = $(this),
+            $buttons = $form.find('input[type="submit"][type="reset"]');
+        
+        if(!validate_review_form($form)) {
+        	return;
+        }
+
+        $buttons.attr('disabled', 'disabled');
+        $('#add_review_author_loading').show();
+
+        $.post(frontend.ajaxurl, {
+            'action': 'leave-review-author',
+            'review-rating': $form.find('#review-author-rating').val(),
+            'task-id': $form.find('#task-id').val(),
+            'author-id': $form.find('#author-id').val(),
+            'review-message': $form.find('#review-author-message').val(),
+            'nonce': $form.find('#nonce').val()
+        }, function(resp){
+
+            resp = jQuery.parseJSON(resp);
+
+            if(resp.status == 'ok') {
+            	$('#add_review_author_loading').hide();
+                $('#task-leave-review-author-form').remove();
+                $('#task-review-author-message-ok-message').html(resp.message);
+                $('#task-review-author-message-ok-message').show();
+            } else {
+            	$('#add_review_author_loading').hide();            	
+                $buttons.removeAttr('disabled');
+                $form.find('#task-review-author-message').html(resp.message);
+            }
+
+        });
+    });
+
+    // offer help
     $('#task-offer-help').click(function(e){
         e.preventDefault();
 
@@ -1127,3 +1184,185 @@ jQuery(function($){
 jQuery(function($){
 	$('#subscribe-reloaded').prop('checked', 'checked');
 });
+
+// review rating
+jQuery(function($){
+	// doer review
+	var $form = $('#task-leave-review-form');
+	$('.review-rating-container').rating(function(vote, event){
+		$form.find('#review-rating').val(vote);
+	});	
+	var current_rating = $form.find('#review-rating').val();
+	if(current_rating) {
+		$form.find('.stars').find('a[title='+current_rating+']').click();
+	}
+	
+	// author review
+	var $form_author = $('#task-leave-review-author-form');
+	$('.review-author-rating-container').rating(function(vote, event){
+		$form_author.find('#review-author-rating').val(vote);
+	});	
+	var current_rating_author = $form_author.find('#review-author-rating').val();
+	if(current_rating_author) {
+		$form_author.find('.stars').find('a[title='+current_rating_author+']').click();
+	}
+
+	// read only review
+	$('.review-rating-container-readonly').rating();
+	$('.review-rating-container-readonly').find('.stars a').unbind('click').unbind('mouseenter').unbind('mouseleave').unbind('mouseout').unbind('mouseover');
+});
+
+function validate_review_form($form) {
+	var ret = true;
+	
+	var review_text = $form.find('textarea.review-message').val();
+	if(!jQuery.trim(review_text)) {
+		$form.find('.review-text-validation-message').show();
+		ret = false;
+	}
+	else {
+		$form.find('.review-text-validation-message').hide();
+	}
+	
+	var review_rating = $form.find('input.review-rating').val();
+	if(!review_rating) {
+		$form.find('.review-rating-validation-message').show();
+		ret = false;
+	}
+	else {
+		$form.find('.review-rating-validation-message').hide();
+	}
+	
+	return ret;
+}
+/* jQuery Star Rating Plugin
+ * 
+ * @Author
+ * Copyright Nov 02 2010, Irfan Durmus - http://irfandurmus.com/
+ *
+ * @Version
+ * 0.3b
+ *
+ * @License
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ *
+ * Visit the plugin page for more information.
+ * http://irfandurmus.com/projects/jquery-star-rating-plugin/
+ *
+ */
+
+;(function($){
+    $.fn.rating = function(callback){
+        
+        callback = callback || function(){};
+
+        // each for all item
+        this.each(function(i, v){
+            
+            $(v).data('rating', {callback:callback})
+                .bind('init.rating', $.fn.rating.init)
+                .bind('set.rating', $.fn.rating.set)
+                .bind('hover.rating', $.fn.rating.hover)
+                .trigger('init.rating');
+        });
+    };
+    
+    $.extend($.fn.rating, {
+        init: function(e){
+            var el = $(this),
+                list = '',
+                isChecked = null,
+                childs = el.children(),
+                i = 0,
+                l = childs.length;
+            
+            for (; i < l; i++) {
+                list = list + '<a class="star" title="' + $(childs[i]).val() + '" />';
+                if ($(childs[i]).is(':checked')) {
+                    isChecked = $(childs[i]).val();
+                };
+            };
+            
+            childs.hide();
+            
+            el
+                .append('<div class="stars">' + list + '</div>')
+                .trigger('set.rating', isChecked);
+            
+            $('a', el).bind('click', $.fn.rating.click);            
+            el.trigger('hover.rating');
+        },
+        set: function(e, val) {
+            var el = $(this),
+                item = $('a', el),
+                input = undefined;
+            
+            if (val) {
+                item.removeClass('fullStar');
+                
+                input = item.filter(function(i){
+                    if ($(this).attr('title') == val)
+                        return $(this);
+                    else
+                        return false;
+                });
+                
+                input
+                    .addClass('fullStar')
+                    .prevAll()
+                    .addClass('fullStar');
+            }
+            
+            return;
+        },
+        hover: function(e){
+            var el = $(this),
+                stars = $('a', el);
+            
+            stars.bind('mouseenter', function(e){
+                // add tmp class when mouse enter
+                $(this)
+                    .addClass('tmp_fs')
+                    .prevAll()
+                    .addClass('tmp_fs');
+                
+                $(this).nextAll()
+                    .addClass('tmp_es');
+            });
+            
+            stars.bind('mouseleave', function(e){
+                // remove all tmp class when mouse leave
+                $(this)
+                    .removeClass('tmp_fs')
+                    .prevAll()
+                    .removeClass('tmp_fs');
+                
+                $(this).nextAll()
+                    .removeClass('tmp_es');
+            });
+        },
+        click: function(e){
+            e.preventDefault();
+            var el = $(e.target),
+                container = el.parent().parent(),
+                inputs = container.children('input'),
+                rate = el.attr('title');
+                
+            matchInput = inputs.filter(function(i){
+                if ($(this).val() == rate)
+                    return true;
+                else
+                    return false;
+            });
+            
+            matchInput
+                .attr('checked', true)
+				.siblings('input').attr('checked', false);
+            
+            container
+                .trigger('set.rating', matchInput.val())
+                .data('rating').callback(rate, e);
+        }
+    });
+    
+})(jQuery);

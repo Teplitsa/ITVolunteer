@@ -55,7 +55,7 @@ get_header();?>
 	<div class="row">
         <div id="task-tabs" class="itv-reviews-tabs">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
+                <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Author reviews', 'tst');?></a></li>
             </ul>
             
 	<?php
@@ -65,14 +65,14 @@ get_header();?>
 		}
 		$per_page = get_option('posts_per_page');
 		$offset = ($current_page - 1) * $per_page;
-		$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews($member->ID, $offset, $per_page); 
+		$latest_doer_reviews = ItvReviewsAuthor::instance()->get_author_reviews($member->ID, $offset, $per_page); 
 	?>
 	<?php if(count($latest_doer_reviews) > 0):?>
             <div class="tab-content">
                 <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
                 <?php foreach($latest_doer_reviews as $review):?>
                 	<?php 
-                		$review_author = get_user_by('id', $review->author_id);
+                		$review_author = get_user_by('id', $review->doer_id);
 						itv_show_review($review, $review_author);
 					?>                	
                 <?php endforeach;?>
@@ -92,7 +92,7 @@ get_header();?>
                 	$base = str_replace('http:', 'https:', $base);
                 }
                 
-                $total_pages = ceil(ItvReviews::instance()->count_reviews_for_doer($member->ID) / $per_page);
+                $total_pages = ceil(ItvReviewsAuthor::instance()->count_reviews_for_author($member->ID) / $per_page);
                 
 				$pagination = array(
 			        'base' => $base.'%_%',

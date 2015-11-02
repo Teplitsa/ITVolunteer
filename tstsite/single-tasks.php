@@ -10,6 +10,7 @@ $cur_user_id = get_current_user_id();
 $author_id = get_the_author_meta('ID');
 $is_curr_users_task = (bool)($cur_user_id == $author_id);
 $candidates = tst_get_task_doers(get_the_ID(), false);
+$itv_author_reviews = ItvReviewsAuthor::instance();
 //$doers = tst_get_task_doers(get_the_ID(), true);
 
 
@@ -82,8 +83,47 @@ $candidates = tst_get_task_doers(get_the_ID(), false);
 				<h5 class="task-section-title"><?php _e('Need help', 'tst');?></h5>
 				<div class="task-author-avatar"><?php echo tst_get_task_author_avatar();?></div>
 				<h4 class="task-author-name"><?php echo tst_get_task_author_link(null, true) ;?></h4>
-				
 			</div>
+			
+			<form id="task-leave-review-author-form" style="display: none;" class="task-message widefat">
+				<p><?php _e('Leave a review to the task author.', 'tst');?></p>
+				<div class="form-group">
+					<textarea id="review-author-message" class="form-control review-message" rows="6"><?php _e('Good author. Gives clean task description. Communicative. Recommend this author.', 'tst')?></textarea>
+					<div class="form-field-validation-message review-text-validation-message" style="display:none;"><?php _e('Please input review text', 'tst') ?></div>
+					<div class="itv-rating clearfix">
+						<div class="pull-left review-rating-label"><?php _e('Your mark:', 'tst')?></div> 
+						<div class="review-author-rating-container">
+						    <input type="radio" name="review-rating" class="rating" value="1" />
+						    <input type="radio" name="review-rating" class="rating" value="2" />
+						    <input type="radio" name="review-rating" class="rating" value="3" />
+						    <input type="radio" name="review-rating" class="rating" value="4" />
+						    <input type="radio" name="review-rating" class="rating" value="5" />
+						</div>
+					</div>
+					<div class="form-field-validation-message review-rating-validation-message" style="display:none;"><?php _e('Please rate author work result', 'tst') ?></div>
+					<input type="hidden" id="review-author-rating" value="" class="review-rating"/>
+					<input type="hidden" id="task-id" value="<?php echo get_the_ID();?>" />
+					<input type="hidden" id="author-id" value="<?php echo $author_id; ?>" />
+					<input type="hidden" id="nonce" value="<?php echo wp_create_nonce('task-leave-review-author');?>" />
+				 </div>
+				<div class="form-group">
+					<input type="reset" id="cancel-leave-review-author" value="<?php _e('Cancel', 'tst');?>" class="btn btn-default btn-sm"/>
+					<input type="submit" value="<?php _e('Send', 'tst');?>" class="btn btn-success btn-sm"/>
+					<img id="add_review_author_loading" style="display:none;" src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' )?>" />
+				</div>
+				<div id="task-review-author-message"></div>
+			</form>
+			<div id="task-review-author-message-ok-message" class="alert alert-success" style="display:none;"></div>
+			
+			<?php if($post->post_status == 'closed' && tst_is_user_candidate() > 1): ?>	
+				<?php if($review = $itv_author_reviews->get_review_for_author_and_task($author_id, $post->ID)):?>
+					<div class="clearfix">
+						<div class="pull-left"><?php _e('Your mark:', 'tst') ?></div><div class="rating-author-list pull-left"><?php itv_show_review_rating_readonly($review->rating); ?></div>
+					</div>
+				<?php else:?>	
+					<div class="leave-review-author" data-author-id="<?php echo $cur_user_id;?>" data-task-id="<?php $post->ID;?>"><?php _e('Leave review', 'tst');?></div>
+				<?php endif?>		
+			<?php endif; ?>
 			
 			<div class="task-details task-section">
 				<h5 class="task-section-title"><?php _e('About organization/project', 'tst');?></h5>
