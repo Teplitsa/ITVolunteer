@@ -493,7 +493,9 @@ add_action('admin_init', function(){
 		$wp_seo = $GLOBALS['wpseo_admin'];
 		remove_action('show_user_profile', array($wp_seo, 'user_profile'));
 		remove_action('edit_user_profile', array($wp_seo, 'user_profile'));
-		global $wp_filter; unset($wp_filter['edit_user_profile_update']); # dirty hack
+		global $wp_filter;
+		unset($wp_filter['edit_user_profile_update']); # dirty hack
+		unset($wp_filter['personal_options_update']);
 		# remove_action('edit_user_profile_update', array($wp_seo, 'process_user_option_update')); # this way does not work properly
 	}	
 	
