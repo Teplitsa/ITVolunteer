@@ -711,7 +711,6 @@ add_filter('retrieve_password_message', function($message, $key){
 });
 
 
-
 function tst_get_days_until_deadline($deadline) {
 
     if(date_create($deadline) > date_create())
@@ -720,8 +719,6 @@ function tst_get_days_until_deadline($deadline) {
         return 0;
 
 }
-
-
 
 
 function tst_send_admin_notif_new_task($post_id) {
@@ -761,94 +758,6 @@ function tst_send_admin_notif_task_complete($post_id) {
 		wp_mail($to, $subject, $message, $headers);
 	}
 }
-
-
-function tst_send_admin_notif_consult_needed($post_id) {
-    $itv_config = ItvConfig::instance();
-	
-    $consult_emails = $itv_config->get('CONSULT_EMAILS');
-    $email_from = $itv_config->get('EMAIL_FROM');
-    
-    $task = get_post($post_id);
-    
-    if($task && count($consult_emails) > 0) {
-            $to = $consult_emails[0];
-            $other_emails = array_slice($consult_emails, 1);
-            $message = __('itv_email_test_consult_needed_message', 'tst');
-            $data = array(
-                    '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-                    '{{task_title}}' => get_the_title($post_id),
-                    '{{task_content}}' => $task->post_content
-            );
-            $message = str_replace(array_keys($data), $data, $message);
-            $message = str_replace("\\", "", $message);
-            $message = nl2br($message);
-            
-            $subject = __('itv_email_test_consult_needed_subject', 'tst');
-            
-            $headers  = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
-            if(count($other_emails) > 0) {
-                    $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
-            }
-            wp_mail($to, $subject, $message, $headers);
-    }
-}
-
-function tst_send_user_notif_consult_needed($post_id) {
-    $itv_config = ItvConfig::instance();
-
-    $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
-    $consult_emails = $itv_config->get('CONSULT_EMAILS');
-    
-    $task = get_post($post_id);
-    $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
-    if($task_author) {
-        $to = $task_author->user_email;
-        
-        $consult_week_day = (int)date('w');
-        
-        $consult_date_dif = 0;
-        if($consult_week_day >= 0 && $consult_week_day < 5) {
-        	$consult_date_dif = 1;
-        }
-        else {
-        	$consult_date_dif = 8 - $consult_week_day;
-        }
-        $consult_date = date('d.m.Y', time() + $consult_date_dif * 24 * 3600);
-        
-        if($consult_week_day >=5) {
-        	$consult_week_day = 1;
-        }
-        else {
-        	$consult_week_day += 1;
-        }
-        $consult_week_day_str =  __('itv_week_day_' . $consult_week_day, 'tst');
-        
-        $message = __('itv_email_test_consult_needed_notification', 'tst');
-        $data = array(
-        		'{{consult_week_day}}' => $consult_week_day_str,
-        		'{{consult_date}}' => $consult_date,
-        		'{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-                '{{task_title}}' => get_the_title($post_id),
-        );
-        $message = str_replace(array_keys($data), $data, $message);
-        $message = str_replace("\\", "", $message);
-        $message = nl2br($message);
-        
-        $subject = __('itv_email_test_consult_needed_notification_subject', 'tst');
-        
-        $headers  = 'MIME-Version: 1.0' . "\r\n";
-        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
-        $headers .= 'Bcc: ' . implode(', ', $consult_emails) . "\r\n";
-        
-        wp_mail($to, $subject, $message, $headers);
-    }
-    
-}
-
 
 function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 	if ( $task->post_type != 'tasks' ) {

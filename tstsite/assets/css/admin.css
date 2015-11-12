@@ -54,3 +54,23 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
 	text-decoration:none;
 	margin-left:3px;
 } 
+
+.column-p2p-from-consult-consultant ul {
+    display:none;
+}
+
+.column-taxonomy-consult_source {
+    width:120px;
+}
+
+.column-p2p-from-consult-consultant {
+    width:200px;
+}
+
+.manage-consult-loader {
+    vertical-align:middle;
+}
+
+.itv-admin-action-done-icon {
+    vertical-align:middle;
+}
