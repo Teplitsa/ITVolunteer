@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-13 01:14+0200\n"
-"PO-Revision-Date: 2015-11-13 01:25+0200\n"
+"PO-Revision-Date: 2015-11-13 01:32+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1591,7 +1591,7 @@ msgstr "Консультации"
 #: inc/post-types.php:186 inc/post-types.php:187 inc/post-types.php:223
 #: inc/post-types.php:233 inc/post-types.php:248 inc/post-types.php:251
 msgid "Consult"
-msgstr "Консультация"
+msgstr "Консультации"
 
 #: inc/post-types.php:188 inc/post-types.php:190
 msgid "Add consult"
