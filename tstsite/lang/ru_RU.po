@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-13 01:14+0200\n"
-"PO-Revision-Date: 2015-11-13 01:32+0200\n"
+"POT-Creation-Date: 2015-11-17 00:56+0300\n"
+"PO-Revision-Date: 2015-11-17 00:57+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -250,7 +250,7 @@ msgstr "%1$s в %2$s"
 #: inc/admin.php:442
 #, php-format
 msgid "%1$s%2$s, %3$s @ %4$s : %5$s"
-msgstr ""
+msgstr "%1$s%2$s, %3$s @ %4$s : %5$s"
 
 # @ tst
 #: inc/admin.php:473
@@ -733,7 +733,7 @@ msgstr "Требуется консультация на ИТВ"
 
 #: inc/itv_consult.php:214
 msgid "itv_week_day_"
-msgstr ""
+msgstr "итв_день_недели"
 
 #: inc/itv_consult.php:216
 msgid "itv_email_test_consult_needed_notification"
@@ -1199,7 +1199,7 @@ msgstr ""
 
 #: inc/itv_log.php:152
 msgid "itv_task_actions_log_"
-msgstr ""
+msgstr "тв_лог_событий_задачи"
 
 #: inc/itv_log.php:156
 msgid "itv_task_actions_log_create"
@@ -1390,7 +1390,7 @@ msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:65 inc/template-general.php:37 partials/navbar.php:58
+#: inc/post-types.php:65 inc/template-general.php:37 partials/navbar.php:59
 msgid "New task"
 msgstr "Новая задача"
 
@@ -1666,7 +1666,7 @@ msgstr "Все задачи"
 msgid "Search results"
 msgstr "Результаты поиска"
 
-#: inc/template-general.php:57 partials/navbar.php:30
+#: inc/template-general.php:57 partials/navbar.php:31
 msgid "News"
 msgstr "Новости"
 
@@ -1797,7 +1797,7 @@ msgstr "Google+"
 
 # @ tst
 # @ default
-#: inc/template-members.php:624 page-registration.php:47 partials/navbar.php:53
+#: inc/template-members.php:624 page-registration.php:47 partials/navbar.php:54
 msgid "Log In"
 msgstr "Войти"
 
@@ -2369,27 +2369,31 @@ msgstr "Участники"
 msgid "About"
 msgstr "О проекте"
 
-#: partials/navbar.php:31
+#: partials/navbar.php:30
+msgid "terms_conditions"
+msgstr "Правила участия"
+
+#: partials/navbar.php:32
 msgid "Advices"
 msgstr "Советы НКО"
 
 # @ tst
-#: partials/navbar.php:32
+#: partials/navbar.php:33
 msgid "Contacts"
 msgstr "Контакты"
 
 # @ tst
-#: partials/navbar.php:46
+#: partials/navbar.php:47
 msgid "My tasks"
 msgstr "Мои задачи"
 
 # @ tst
-#: partials/navbar.php:47
+#: partials/navbar.php:48
 msgid "My profile"
 msgstr "Мой профиль"
 
 # @ tst
-#: partials/navbar.php:49
+#: partials/navbar.php:50
 msgid "Log out"
 msgstr "Выйти"
 
@@ -2632,6 +2636,9 @@ msgstr "Комментарии"
 #: single-tasks.php:187
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid "conditions"
+#~ msgstr "условия"
 
 #~ msgid "No consults found."
 #~ msgstr "Консультации не найдены."
