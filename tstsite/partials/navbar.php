@@ -27,7 +27,8 @@
           <a href="<?php echo home_url('about');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_about');?>><?php _e('About', 'tst');?> <b class="caret"></b></a>
           <ul class="submenu">
             <li><a href="<?php echo home_url('about');?>"><?php _e('About', 'tst');?></a></li>
-            <li><a href="<?php echo home_url('news');?>"><?php _e('News', 'tst');?></a></li>
+              <li><a href="<?php echo home_url('conditions');?>"><?php _e('terms_conditions', 'tst');?></a></li>
+              <li><a href="<?php echo home_url('news');?>"><?php _e('News', 'tst');?></a></li>
             <li><a href="<?php echo home_url('sovety-dlya-nko-uspeshnye-zadachi');?>"><?php _e('Advices', 'tst');?></a></li>
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>

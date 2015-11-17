@@ -111,8 +111,7 @@ function ajax_add_edit_task(){
         if($new_is_tst_consult_needed) {
             if($is_new_task || !$old_is_tst_consult_needed) {
                 update_field('is_tst_consult_done', false, $_POST['id']);
-                tst_send_admin_notif_consult_needed($_POST['id']);
-                tst_send_user_notif_consult_needed($_POST['id']);
+                ItvConsult::create($_POST['id']);
             }
         }
 				

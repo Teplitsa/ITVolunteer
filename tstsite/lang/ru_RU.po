@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-30 21:48+0200\n"
-"PO-Revision-Date: 2015-10-30 21:51+0200\n"
+"POT-Creation-Date: 2015-11-17 15:08+0300\n"
+"PO-Revision-Date: 2015-11-17 15:16+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -250,7 +250,7 @@ msgstr "%1$s в %2$s"
 #: inc/admin.php:442
 #, php-format
 msgid "%1$s%2$s, %3$s @ %4$s : %5$s"
-msgstr ""
+msgstr "%1$s%2$s, %3$s @ %4$s : %5$s"
 
 # @ tst
 #: inc/admin.php:473
@@ -263,55 +263,55 @@ msgstr "Статус задачи"
 msgid "Reward"
 msgstr "Награда"
 
-#: inc/admin.php:606
+#: inc/admin.php:608
 msgid "Participation"
 msgstr "Участие"
 
-#: inc/admin.php:643 inc/admin.php:711
+#: inc/admin.php:645 inc/admin.php:713
 msgid "Activity time"
 msgstr "Время"
 
-#: inc/admin.php:644 inc/admin.php:712
+#: inc/admin.php:646 inc/admin.php:714
 msgid "Status become"
 msgstr "Статус стал"
 
-#: inc/admin.php:645 inc/admin.php:713
+#: inc/admin.php:647 inc/admin.php:715
 msgid "Activity details"
 msgstr "Детали"
 
-#: inc/admin.php:655 inc/admin.php:747
+#: inc/admin.php:657 inc/admin.php:749
 msgid "Unknown user"
 msgstr "Неизвестный пользователь"
 
-#: inc/admin.php:668
+#: inc/admin.php:670
 msgid "Task Changes Log"
 msgstr "Лог изменений задачи"
 
-#: inc/admin.php:697
+#: inc/admin.php:699
 msgid "« Previous"
 msgstr "« Назад"
 
-#: inc/admin.php:698
+#: inc/admin.php:700
 msgid "Next »"
 msgstr "Далее »"
 
-#: inc/admin.php:710
+#: inc/admin.php:712
 msgid "Log record title"
 msgstr "Заголовок"
 
-#: inc/admin.php:756
+#: inc/admin.php:758
 msgid "Unknown task"
 msgstr "Неизвестная задача"
 
-#: inc/admin.php:777
+#: inc/admin.php:779
 msgid "Itv General Log"
 msgstr "Общий лог сайта"
 
-#: inc/admin.php:781
+#: inc/admin.php:783
 msgid "All Tasks Changes Log"
 msgstr "Лог изменений задач"
 
-#: inc/admin.php:784
+#: inc/admin.php:786
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
@@ -441,9 +441,13 @@ msgstr "При загрузке фоторграфии произошла оши
 msgid "Avatar delete failed"
 msgstr "При удалении фоторграфии произошла ошибка!"
 
+#: inc/class-itv-cssjs.php:216
+msgid "Error!"
+msgstr "Произошла ошибка!"
+
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:757 inc/customizer.php:791
-#: inc/customizer.php:844
+#: inc/customizer.php:11 inc/customizer.php:754 inc/itv_consult.php:178
+#: inc/itv_consult.php:231
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -458,7 +462,7 @@ msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 # @ tst
-#: inc/customizer.php:421 inc/customizer.php:967 inc/customizer.php:990
+#: inc/customizer.php:421 inc/customizer.php:876 inc/customizer.php:899
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
@@ -521,7 +525,7 @@ msgstr ""
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
-#: inc/customizer.php:743
+#: inc/customizer.php:740
 msgid "itv_email_task_complete_message"
 msgstr ""
 "Еще одна задача выполнена: \n"
@@ -532,100 +536,50 @@ msgstr ""
 "\n"
 "Описание: {{task_content}}"
 
-#: inc/customizer.php:753
+#: inc/customizer.php:750
 msgid "itv_email_task_complete_subject"
 msgstr "Очередная задача выполнена"
 
 # @ tst
-#: inc/customizer.php:777
-msgid "itv_email_test_consult_needed_message"
-msgstr ""
-"Требуется консультация по задаче: \n"
-"\n"
-"Ссылка: {{task_url}}\n"
-"\n"
-"Название: {{task_title}}\n"
-"\n"
-"Описание: {{task_content}}"
-
-# @ tst
-#: inc/customizer.php:787
-msgid "itv_email_test_consult_needed_subject"
-msgstr "Требуется консультация на ИТВ"
-
-#: inc/customizer.php:827
-msgid "itv_week_day_"
-msgstr ""
-
-#: inc/customizer.php:829
-msgid "itv_email_test_consult_needed_notification"
-msgstr ""
-"Добрый день! \n"
-"\n"
-"При публикации вашей задачи \n"
-"\n"
-"ссылка: {{task_url}}\n"
-"название: {{task_title}}\n"
-"\n"
-"на платформе it-волонтер вы указали, что вам необходима дополнительная "
-"консультация специалистов Теплицы социальных технологий.\n"
-"\n"
-"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
-"12:00 московского времени по скайпу.\n"
-"Для этого вам необходимо добавить в ваш скайп контакт foralien.\n"
-"\n"
-"Скорректировать время вы можете, связавшись с Анной Ладошкиной по почте или "
-"скайпу.\n"
-"Почта: anna.ladoshkina@te-st.ru\n"
-"Скайп: foralien\n"
-"\n"
-"Команда it-волонтер"
-
-#: inc/customizer.php:840
-msgid "itv_email_test_consult_needed_notification_subject"
-msgstr ""
-"Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
-
-# @ tst
-#: inc/customizer.php:904
+#: inc/customizer.php:813
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-#: inc/customizer.php:907
+#: inc/customizer.php:816
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-#: inc/customizer.php:919
+#: inc/customizer.php:828
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:1013
+#: inc/customizer.php:922
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:1014
+#: inc/customizer.php:923
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:1015
+#: inc/customizer.php:924
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:1016
+#: inc/customizer.php:925
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:1017
+#: inc/customizer.php:926
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:1018
+#: inc/customizer.php:927
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:1019
+#: inc/customizer.php:928
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -739,14 +693,98 @@ msgid "The task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: inc/functions-tasks.php:141
+#: inc/functions-tasks.php:140
 msgid "<strong>Error:</strong> something occured due to the task addition."
 msgstr "Во время добавления задачи произошли ошибки."
 
 # @ tst
-#: inc/functions-tasks.php:142
+#: inc/functions-tasks.php:141
 msgid "<strong>Error:</strong> something occured due to task edition."
 msgstr "Во время редактирования задачи произошли ошибки"
+
+#: inc/itv_consult.php:18
+msgid "Show All Consult States"
+msgstr "Показать все статусы"
+
+#: inc/itv_consult.php:37
+msgid "Show All Consult Sources"
+msgstr "Показать все источники"
+
+#: inc/itv_consult.php:91
+msgid "Show All Consultants"
+msgstr "Показать всех консультантов"
+
+# @ tst
+#: inc/itv_consult.php:164
+msgid "itv_email_test_consult_needed_message"
+msgstr ""
+"Требуется консультация по задаче: \n"
+"\n"
+"Ссылка: {{task_url}}\n"
+"\n"
+"Название: {{task_title}}\n"
+"\n"
+"Описание: {{task_content}}"
+
+# @ tst
+#: inc/itv_consult.php:174
+msgid "itv_email_test_consult_needed_subject"
+msgstr "Требуется консультация на ИТВ"
+
+#: inc/itv_consult.php:214
+msgid "itv_week_day_"
+msgstr "итв_день_недели"
+
+#: inc/itv_consult.php:216
+msgid "itv_email_test_consult_needed_notification"
+msgstr ""
+"Добрый день! \n"
+"\n"
+"При публикации вашей задачи \n"
+"\n"
+"ссылка: {{task_url}}\n"
+"название: {{task_title}}\n"
+"\n"
+"на платформе it-волонтер вы указали, что вам необходима дополнительная "
+"консультация специалистов Теплицы социальных технологий.\n"
+"\n"
+"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
+"12:00 московского времени по скайпу.\n"
+"Для этого вам необходимо добавить в ваш скайп контакт {{consultant_skype}}.\n"
+"\n"
+"Скорректировать время вы можете, связавшись с нашим консультантом по почте "
+"или скайпу.\n"
+"Имя консультанта: {{consultant_name}}\n"
+"Почта: {{consultant_email}}\n"
+"Скайп: {{consultant_skype}}\n"
+"\n"
+"Команда it-волонтер"
+
+#: inc/itv_consult.php:227
+msgid "itv_email_test_consult_needed_notification_subject"
+msgstr ""
+"Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
+
+#: inc/itv_consult.php:267
+msgid "Consult state custom column"
+msgstr "Статус"
+
+#: inc/itv_consult.php:304
+msgid "Consult task title"
+msgstr "Заголовок"
+
+# @ tst
+#: inc/itv_consult.php:320 inc/post-types.php:66
+msgid "Edit task"
+msgstr "Редактировать задачу"
+
+#: inc/itv_consult.php:321
+msgid "Consult settings"
+msgstr "Параметры консультации"
+
+#: inc/itv_consult.php:437
+msgid "Show All Consult states"
+msgstr "Показать все статусы"
 
 # @ tst
 #: inc/itv_email_templates.php:9
@@ -773,10 +811,14 @@ msgstr ""
 "Вы были утверждены как участник задачи: %s.\n"
 "\n"
 "\n"
+"Это очень здорово и мы верим в вас! \n"
+"\n"
 "Вы можете связаться с автором задачи по email: <a href='mailto:%s'>%s</a> "
 "или другим удобным для вас способом (посмотреть <a href='%s'>профиль автора</"
 "a>).\n"
 "\n"
+"\n"
+"Спасибо, что вы решили помочь! Удачи! \n"
 "\n"
 "С уважением,\n"
 "команда it-волонтёра,\n"
@@ -1168,14 +1210,24 @@ msgid ""
 msgstr ""
 "Добрый день, {{username}}!\n"
 "\n"
+"\n"
+"Хорошие новости!\n"
+"\n"
 "Задача <a href='{{task_link}}'>{{task_title}}</a> {{status_message}}.\n"
+"\n"
+"\n"
+"Пожалуйста, не забудьте проконтролировать закрытие задачи заказчиком, когда "
+"работа завершена. \n"
+"\n"
+"\n"
+"Мы очень рады, что лед тронулся! \n"
 "\n"
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
 #: inc/itv_log.php:152
 msgid "itv_task_actions_log_"
-msgstr ""
+msgstr "тв_лог_событий_задачи"
 
 #: inc/itv_log.php:156
 msgid "itv_task_actions_log_create"
@@ -1329,7 +1381,7 @@ msgstr "Поиск"
 msgid "Popular rewards"
 msgstr "Часто используемые"
 
-#: inc/post-types.php:42
+#: inc/post-types.php:42 inc/post-types.php:142 inc/post-types.php:170
 msgid "Separate with commas"
 msgstr "Разделять запятыми"
 
@@ -1352,7 +1404,8 @@ msgid "Tasks"
 msgstr "Задачи"
 
 # @ tst
-#: inc/post-types.php:60 inc/post-types.php:111
+#: inc/post-types.php:60 inc/post-types.php:111 inc/post-types.php:224
+#: inc/post-types.php:227
 msgid "Task"
 msgstr "Задача"
 
@@ -1365,7 +1418,7 @@ msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:65 inc/template-general.php:37 partials/navbar.php:58
+#: inc/post-types.php:65 inc/template-general.php:37 partials/navbar.php:59
 msgid "New task"
 msgstr "Новая задача"
 
@@ -1381,13 +1434,13 @@ msgid "View task"
 msgstr "Страница задачи"
 
 # @ tst
-#: inc/post-types.php:68 partials/content-member_single.php:256
-#: partials/content-member_single.php:277
+#: inc/post-types.php:68 partials/content-member_single.php:262
+#: partials/content-member_single.php:283
 msgid "All tasks"
 msgstr "Все задачи"
 
 # @ tst
-#: inc/post-types.php:69 inc/post-types.php:112
+#: inc/post-types.php:69 inc/post-types.php:112 inc/post-types.php:228
 msgid "Search tasks"
 msgstr "Поиск задач"
 
@@ -1395,7 +1448,7 @@ msgstr "Поиск задач"
 msgid "Parent task"
 msgstr "Родительская"
 
-#: inc/post-types.php:71
+#: inc/post-types.php:71 inc/post-types.php:229
 msgid "No tasks found"
 msgstr "Задачи не найдены"
 
@@ -1419,7 +1472,8 @@ msgid "No tasks found."
 msgstr "Задачи не найдены."
 
 # @ tst
-#: inc/post-types.php:114 inc/post-types.php:120
+#: inc/post-types.php:114 inc/post-types.php:120 inc/post-types.php:230
+#: inc/post-types.php:236 inc/post-types.php:254 inc/post-types.php:260
 msgid "Create connections"
 msgstr "Создать взаимосвязь"
 
@@ -1437,6 +1491,187 @@ msgstr "Поиск исполнителей"
 #: inc/post-types.php:119
 msgid "No doers found."
 msgstr "Исполнители не найдены."
+
+#: inc/post-types.php:129 inc/post-types.php:131
+msgid "Consult sources"
+msgstr "Источники"
+
+#: inc/post-types.php:130
+msgid "Consult source"
+msgstr "Источник"
+
+#: inc/post-types.php:132
+msgid "All consult sources"
+msgstr "Все источники"
+
+#: inc/post-types.php:133
+msgid "Edit consult source"
+msgstr "Редактировать"
+
+#: inc/post-types.php:134
+msgid "View consult source"
+msgstr "Просмотреть"
+
+#: inc/post-types.php:135
+msgid "Update consult source"
+msgstr "Обновить"
+
+#: inc/post-types.php:136
+msgid "Add new consult source"
+msgstr "Добавить источник"
+
+#: inc/post-types.php:137
+msgid "New consult source name"
+msgstr "Новый источник"
+
+#: inc/post-types.php:138
+msgid "Parent consult source"
+msgstr "Родитель"
+
+#: inc/post-types.php:139
+msgid "Parent consult source:"
+msgstr "Родитель:"
+
+#: inc/post-types.php:140
+msgid "Search consult sources"
+msgstr "Поиск источников"
+
+#: inc/post-types.php:141
+msgid "Popular consult sources"
+msgstr "Популярные источники"
+
+#: inc/post-types.php:143
+msgid "Add or remove consult source"
+msgstr "Добавить или удалить источник"
+
+#: inc/post-types.php:144
+msgid "Choose from most used consult sources"
+msgstr "Выбрать из популярных"
+
+#: inc/post-types.php:145
+msgid "Not found consult sources"
+msgstr "Источники не найдены"
+
+#: inc/post-types.php:157 inc/post-types.php:159
+msgid "Consult states"
+msgstr "Статусы"
+
+#: inc/post-types.php:158
+msgid "Consult state"
+msgstr "Источник"
+
+#: inc/post-types.php:160
+msgid "All consult states"
+msgstr "Все статусы"
+
+#: inc/post-types.php:161
+msgid "Edit consult state"
+msgstr "Редактировать"
+
+#: inc/post-types.php:162
+msgid "View consult state"
+msgstr "Просмотреть"
+
+#: inc/post-types.php:163
+msgid "Update consult state"
+msgstr "Обновить"
+
+#: inc/post-types.php:164
+msgid "Add new consult state"
+msgstr "Добавить статус"
+
+#: inc/post-types.php:165
+msgid "New consult state name"
+msgstr "Новый статус"
+
+#: inc/post-types.php:166
+msgid "Parent consult state"
+msgstr "Родитель"
+
+#: inc/post-types.php:167
+msgid "Parent consult state:"
+msgstr "Родитель:"
+
+#: inc/post-types.php:168
+msgid "Search consult states"
+msgstr "Поиск статусов"
+
+#: inc/post-types.php:169
+msgid "Popular consult states"
+msgstr "Популярные статусы"
+
+#: inc/post-types.php:171
+msgid "Add or remove consult state"
+msgstr "Добавить или удалить статус"
+
+#: inc/post-types.php:172
+msgid "Choose from most used consult states"
+msgstr "Выбрать из популярных"
+
+#: inc/post-types.php:173
+msgid "Not found consult states"
+msgstr "Статусы не найдены"
+
+#: inc/post-types.php:185
+msgid "Consults"
+msgstr "Консультации"
+
+#: inc/post-types.php:186 inc/post-types.php:187 inc/post-types.php:223
+#: inc/post-types.php:233 inc/post-types.php:248 inc/post-types.php:251
+msgid "Consult"
+msgstr "Консультации"
+
+#: inc/post-types.php:188 inc/post-types.php:190
+msgid "Add consult"
+msgstr "Добавить консультацию"
+
+#: inc/post-types.php:189
+msgid "Add new consult"
+msgstr "Добавить консультацию"
+
+#: inc/post-types.php:191
+msgid "New consult"
+msgstr "Новая консультация"
+
+#: inc/post-types.php:192
+msgid "Edit consult"
+msgstr "Редактировать"
+
+#: inc/post-types.php:193
+msgid "View consult"
+msgstr "Просмотреть"
+
+#: inc/post-types.php:194
+msgid "All consults"
+msgstr "Все консультации"
+
+#: inc/post-types.php:195 inc/post-types.php:234 inc/post-types.php:252
+msgid "Search consults"
+msgstr "Поиск консультаций"
+
+#: inc/post-types.php:196
+msgid "Parent consult"
+msgstr "Родитель"
+
+#: inc/post-types.php:197 inc/post-types.php:235 inc/post-types.php:253
+msgid "No consults found"
+msgstr "Консультации не найдены."
+
+#: inc/post-types.php:198
+msgid "No consults found in Trash"
+msgstr "Консультации не найдены."
+
+#: inc/post-types.php:247 inc/post-types.php:257
+msgid "Consultant"
+msgstr "Консультант"
+
+#: inc/post-types.php:258
+msgid "Search consultants"
+msgstr "Поиск консультантов"
+
+#: inc/post-types.php:259
+msgid "No consultants found"
+msgstr "Консультанты не найдены"
 
 #: inc/template-general.php:21
 #, php-format
@@ -1459,7 +1694,7 @@ msgstr "Все задачи"
 msgid "Search results"
 msgstr "Результаты поиска"
 
-#: inc/template-general.php:57 partials/navbar.php:30
+#: inc/template-general.php:57 partials/navbar.php:31
 msgid "News"
 msgstr "Новости"
 
@@ -1484,19 +1719,19 @@ msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
 # @ tst
-#: inc/template-general.php:249 partials/content-member_single.php:294
+#: inc/template-general.php:249 partials/content-member_single.php:300
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
 # @ tst
 #: inc/template-general.php:304 inc/template-members.php:129
-#: page-doer-reviews.php:99
+#: page-author-reviews.php:102 page-doer-reviews.php:102
 msgid "&laquo; prev."
 msgstr "&laquo; пред."
 
 # @ tst
 #: inc/template-general.php:305 inc/template-members.php:130
-#: page-doer-reviews.php:100
+#: page-author-reviews.php:103 page-doer-reviews.php:103
 msgid "next. &raquo;"
 msgstr "след. &raquo;"
 
@@ -1590,7 +1825,7 @@ msgstr "Google+"
 
 # @ tst
 # @ default
-#: inc/template-members.php:624 page-registration.php:47 partials/navbar.php:53
+#: inc/template-members.php:624 page-registration.php:47 partials/navbar.php:54
 msgid "Log In"
 msgstr "Войти"
 
@@ -1625,7 +1860,7 @@ msgid "Place of work"
 msgstr "Организация"
 
 # @ tst
-#: inc/template-members.php:681 partials/content-member_single.php:215
+#: inc/template-members.php:681 partials/content-member_single.php:221
 #: partials/sidebar-doers.php:25
 msgid "Rating"
 msgstr "Рейтинг"
@@ -1714,17 +1949,21 @@ msgid "Your account is active now! Please %s."
 msgstr "Ваша учетная запись активирована. Пожалуйста, %s."
 
 # @ tst
-#: page-doer-reviews.php:39 page-member-tasks.php:48
+#: page-author-reviews.php:39 page-doer-reviews.php:39 page-member-tasks.php:48
 msgid "Back to profile"
 msgstr "Возврат к просмотру профиля"
+
+#: page-author-reviews.php:58 partials/content-member_single.php:182
+msgid "Author reviews"
+msgstr "Отзывы автора"
+
+#: page-author-reviews.php:121 page-doer-reviews.php:121
+msgid "Members has no any reviews yet"
+msgstr "У пользователя еще нет отзывов"
 
 #: page-doer-reviews.php:58 partials/content-member_single.php:178
 msgid "Doer reviews"
 msgstr "Отзывы исполнителя"
-
-#: page-doer-reviews.php:118
-msgid "Members has no any reviews yet"
-msgstr "У пользователя еще нет отзывов"
 
 # @ tst
 #: page-member-action.php:69
@@ -1898,7 +2137,7 @@ msgid "Your task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: page-member-tasks.php:71 partials/content-member_single.php:223
+#: page-member-tasks.php:71 partials/content-member_single.php:229
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
@@ -2094,46 +2333,42 @@ msgstr "Еще"
 msgid "Closed tasks"
 msgstr "Завершенные задачи"
 
-#: partials/content-member_single.php:182
-msgid "Author reviews"
-msgstr "Отзывы автора"
-
-#: partials/content-member_single.php:191
+#: partials/content-member_single.php:194
 msgid "All doer reviews"
 msgstr "Все отзывы исполнителя"
 
-#: partials/content-member_single.php:200
+#: partials/content-member_single.php:206
 msgid "All author reviews"
 msgstr "Все отзывы автора"
 
 # @ tst
-#: partials/content-member_single.php:219
+#: partials/content-member_single.php:225
 msgid "Tasks joined"
 msgstr "Участие в задачах"
 
 # @ tst
-#: partials/content-member_single.php:220
-#: partials/content-member_single.php:224
+#: partials/content-member_single.php:226
+#: partials/content-member_single.php:230
 msgid "Closed from them"
 msgstr "Из них решено"
 
 # @ tst
-#: partials/content-member_single.php:233
+#: partials/content-member_single.php:239
 msgid "Tasks in progress"
 msgstr "Задачи в работе"
 
 # @ tst
-#: partials/content-member_single.php:234
+#: partials/content-member_single.php:240
 msgid "Created tasks"
 msgstr "Созданные задачи"
 
 # @ tst
-#: partials/content-member_single.php:244
+#: partials/content-member_single.php:250
 msgid "No tasks in progress"
 msgstr "Нет задач в работе"
 
 # @ tst
-#: partials/content-member_single.php:265
+#: partials/content-member_single.php:271
 msgid "No tasks created"
 msgstr "Нет созданных задач"
 
@@ -2162,27 +2397,31 @@ msgstr "Участники"
 msgid "About"
 msgstr "О проекте"
 
-#: partials/navbar.php:31
+#: partials/navbar.php:30
+msgid "terms_conditions"
+msgstr "Правила участия"
+
+#: partials/navbar.php:32
 msgid "Advices"
 msgstr "Советы НКО"
 
 # @ tst
-#: partials/navbar.php:32
+#: partials/navbar.php:33
 msgid "Contacts"
 msgstr "Контакты"
 
 # @ tst
-#: partials/navbar.php:46
+#: partials/navbar.php:47
 msgid "My tasks"
 msgstr "Мои задачи"
 
 # @ tst
-#: partials/navbar.php:47
+#: partials/navbar.php:48
 msgid "My profile"
 msgstr "Мой профиль"
 
 # @ tst
-#: partials/navbar.php:49
+#: partials/navbar.php:50
 msgid "Log out"
 msgstr "Выйти"
 
@@ -2425,6 +2664,15 @@ msgstr "Комментарии"
 #: single-tasks.php:187
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid "conditions"
+#~ msgstr "условия"
+
+#~ msgid "No consults found."
+#~ msgstr "Консультации не найдены."
+
+#~ msgid "No consultants found."
+#~ msgstr "Консультанты не найдены."
 
 # @ tst
 #~ msgid ""

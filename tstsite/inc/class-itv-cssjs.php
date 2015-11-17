@@ -213,6 +213,7 @@ class ITV_CssJs {
 		wp_localize_script('tst-admin', 'adminend', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'site_url' => site_url('/'),
+			'common_ajax_error' => __('Error!'),
 		));    
 	
 		
