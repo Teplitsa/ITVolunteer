@@ -74,3 +74,7 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
 .itv-admin-action-done-icon {
     vertical-align:middle;
 }
+
+#acf-is_tst_consult_done {
+    display:none;
+}

@@ -11,7 +11,8 @@ class ItvConfig {
 		$this->_config = array(
 			'ADMIN_EMAILS' => array('support@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com'),
 			'TASK_COMLETE_NOTIF_EMAILS' => array('vlad@te-st.ru', 'suvorov@te-st.ru', 'denis.cherniatev@gmail.com'),
-			'CONSULT_EMAILS' => array('anna.ladoshkina@te-st.ru', 'denis.cherniatev@gmail.com'),
+		    # ITV consultants emails list (for automatic consultation choose)
+			'CONSULT_EMAILS' => array('anna.ladoshkina@te-st.ru', 'suvorov@te-st.ru'),
 			'EMAIL_FROM' => 'info@itv.te-st.ru',
 			'CONSULT_EMAIL_FROM' => 'anna.ladoshkina@te-st.ru',
 			'TASK_ARCHIVE_DAYS' => 40,

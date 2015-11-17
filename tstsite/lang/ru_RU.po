@@ -750,12 +750,13 @@ msgstr ""
 "\n"
 "Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
 "12:00 московского времени по скайпу.\n"
-"Для этого вам необходимо добавить в ваш скайп контакт foralien.\n"
+"Для этого вам необходимо добавить в ваш скайп контакт {{consultant_skype}}.\n"
 "\n"
-"Скорректировать время вы можете, связавшись с Анной Ладошкиной по почте или "
-"скайпу.\n"
-"Почта: anna.ladoshkina@te-st.ru\n"
-"Скайп: foralien\n"
+"Скорректировать время вы можете, связавшись с нашим консультантом по почте "
+"или скайпу.\n"
+"Имя консультанта: {{consultant_name}}\n"
+"Почта: {{consultant_email}}\n"
+"Скайп: {{consultant_skype}}\n"
 "\n"
 "Команда it-волонтер"
 
@@ -768,7 +769,20 @@ msgstr ""
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:333
+#: inc/itv_consult.php:304
+msgid "Consult task title"
+msgstr "Заголовок"
+
+# @ tst
+#: inc/itv_consult.php:320 inc/post-types.php:66
+msgid "Edit task"
+msgstr "Редактировать задачу"
+
+#: inc/itv_consult.php:321
+msgid "Consult settings"
+msgstr "Параметры консультации"
+
+#: inc/itv_consult.php:437
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 

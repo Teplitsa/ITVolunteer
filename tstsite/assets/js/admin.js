@@ -72,8 +72,19 @@
         var $loader = $('<img />')
         .attr('src', adminend.site_url + 'wp-includes/images/spinner.gif')
         .addClass('manage-consult-loader');
+        
+        var consult_id = $select.attr('id');
+        consult_id = consult_id.match( /(\d+)$/i)
+        if(consult_id) {
+            consult_id = parseInt(consult_id[1], 10);
+        }
+        else {
+            consult_id = 0;
+        }
+        var consultant_id = $select.val();
+        
         $loader.insertAfter($select);
-        $.post(ajaxurl, {action: 'change-consult-consultant'})
+        $.post(ajaxurl, {action: 'change-consult-consultant', consult_id: consult_id, consultant_id: consultant_id})
             .done(function(){
             })
             .fail(function(){

@@ -145,12 +145,44 @@ class ItvConsult {
         if($consultant) {
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
             
-            static::tst_send_admin_notif_consult_needed($task_id);
-            static::tst_send_user_notif_consult_needed($task_id);
+            static::tst_send_admin_notif_consult_needed($task_id, $consultant);
+            static::tst_send_user_notif_consult_needed($task_id, $consultant);
+        }
+    }
+    
+    public static function create_external($consult_data) {
+        $params = array(
+            'post_type' => 'consult',
+            'post_title' => $consult_data['post_title'],
+            'post_status' => 'publish',
+        );
+        
+        $consult_id = wp_insert_post($params);
+        
+        update_post_meta($consult_id, 'external_user_name', $consult_data['user_name']);
+        update_post_meta($consult_id, 'external_user_email', $consult_data['user_email']);
+        update_post_meta($consult_id, 'external_post_link', $consult_data['post_link']);
+        
+        $term = get_term_by('slug', 'new', 'consult_state');
+        if($term) {
+            wp_set_post_terms( $consult_id, $term->term_id, 'consult_state' );
+        }
+        
+        $term = get_term_by('slug', 'itv', 'consult_source');
+        if($term) {
+            wp_set_post_terms( $consult_id, $term->term_id, 'consult_source' );
+        }
+        
+        $consultant = static::get_consultant_user();
+        if($consultant) {
+            p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
+        
+            static::tst_send_admin_notif_consult_needed($task_id, $consultant);
+            #static::tst_send_user_notif_consult_needed($task_id, $consultant);
         }
     }
 
-    function tst_send_admin_notif_consult_needed($post_id) {
+    function tst_send_admin_notif_consult_needed($post_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
@@ -159,7 +191,7 @@ class ItvConsult {
         $task = get_post($post_id);
     
         if($task && count($consult_emails) > 0) {
-            $to = $consult_emails[0];
+            $to = $consultant->user_email;
             $other_emails = array_slice($consult_emails, 1);
             $message = __('itv_email_test_consult_needed_message', 'tst');
             $data = array(
@@ -183,7 +215,7 @@ class ItvConsult {
         }
     }
     
-    function tst_send_user_notif_consult_needed($post_id) {
+    function tst_send_user_notif_consult_needed($post_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
@@ -219,6 +251,9 @@ class ItvConsult {
                             '{{consult_date}}' => $consult_date,
                             '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
                             '{{task_title}}' => get_the_title($post_id),
+                            '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                            '{{consultant_email}}' => $consultant->user_email,
+                            '{{consultant_skype}}' => get_user_meta($consultant->ID, 'user_skype', true)
             );
             $message = str_replace(array_keys($data), $data, $message);
             $message = str_replace("\\", "", $message);
@@ -264,14 +299,35 @@ function itv_consult_manage_columns($columns) {
         unset($columns['p2p-to-task-consult']);
         unset($columns['taxonomy-consult_state']);
         unset($columns['subscribe-reloaded']);
+        unset($columns['title']);
         $columns = array_push_after($columns, array('custom-consult-state' => __('Consult state custom column', 'tst')), 'taxonomy-consult_source');
+        $columns = array_push_after($columns, array('consult-task-title' => __('Consult task title', 'tst')), 'cb');
     }
     return $columns;
 }
 
 function itv_consult_manage_custom_columns($column) {
     global $post;
-    if($column == 'p2p-from-consult-consultant') {
+    if($column == 'consult-task-title') {
+        $tasks = get_posts( array(
+            'connected_type' => 'task-consult',
+            'connected_items' => $post->ID
+        ));
+        $task = count($tasks) > 0 ? $tasks[0] : null;
+        
+        if($task) {
+            $view_task_link = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $post->post_title . "</a>";
+            $edit_task_link = " <a title='".__('Edit task', 'tst')."' href='".get_edit_post_link($task->ID)."' target='_blank' class='dashicons-before dashicons-edit'></a>";
+            $edit_consult_link = " <a title='".__('Consult settings', 'tst')."' href='".get_edit_post_link($post->ID)."' target='_blank' class='dashicons-before dashicons-admin-generic'></a>";
+            echo $view_task_link . $edit_task_link . $edit_consult_link;
+        }
+        else {
+            $external_post_link = get_post_meta($post->ID, 'external_post_link', true);
+            $view_task_link = "<a href='".$external_post_link."' target='_blank'>" . $post->post_title . "</a>";
+            echo $view_task_link;
+        }
+    }
+    elseif($column == 'p2p-from-consult-consultant') {
         $users = get_users( array(
             'connected_type' => 'consult-consultant',
             'connected_items' => $post
@@ -310,10 +366,27 @@ function itv_consult_change_state() {
     $res = array('status' => 'error');
     try {
         wp_set_post_terms( $_POST['consult_id'], $_POST['state_term_id'], 'consult_state', false );
+        
+        // update old type consultation request
+        $tasks = get_posts( array(
+            'connected_type' => 'task-consult',
+            'connected_items' => $_POST['consult_id']
+        ));
+        $task = count($tasks) > 0 ? $tasks[0] : null;
+        if($task) {
+            $term = get_term($_POST['state_term_id'], 'consult_state');
+            if($term && $term->slug == 'done') {
+                update_field('is_tst_consult_done', true, $task->ID);
+            }
+            else {
+                update_field('is_tst_consult_done', false, $task->ID);
+            }
+        }
+        
         $res = array('status' => 'ok');
     }
     catch(Exception $ex) {}
-    sleep(1);
+    
     wp_die(json_encode($res));
 }
 add_action('wp_ajax_change-consult-state', 'itv_consult_change_state');
@@ -321,13 +394,44 @@ add_action('wp_ajax_change-consult-state', 'itv_consult_change_state');
 function itv_consult_change_consultant() {
     $res = array('status' => 'error');
     try {
-        #wp_set_post_terms( $_POST['consult_id'], $_POST['consultant_term_id'], 'consult_state' );
+        $users = get_users( array(
+            'connected_type' => 'consult-consultant',
+            'connected_items' => $_POST['consult_id']
+        ));
+        foreach($users as $user) {
+            p2p_type('consult-consultant')->disconnect( $_POST['consult_id'], $user->ID );
+        }
+        p2p_type('consult-consultant')->connect( $_POST['consult_id'], $_POST['consultant_id'], array());
+        
         $res = array('status' => 'ok');
     }
     catch(Exception $ex) {}
-    sleep(1);
+    
     wp_die(json_encode($res));
 }
 add_action('wp_ajax_change-consult-consultant', 'itv_consult_change_consultant');
+
+function itv_consult_custom_author( $author_link ) {
+    global $typenow;
+    global $post;
+    if($typenow == 'consult') {
+        $external_user_name = get_post_meta($post->ID, 'external_user_name', true);
+        $external_user_email = get_post_meta($post->ID, 'external_user_email', true);
+        if($external_user_email || $external_user_email) {
+            $author_link = $external_user_name . '<br />' . $external_user_email;
+        }
+    }
+    return $author_link;
+}
+
+function itv_change_consult_author_in_list() {
+    add_filter(
+        'the_author',
+        'itv_consult_custom_author',
+        100,
+        1
+    );
+}
+add_action('admin_head-edit.php', 'itv_change_consult_author_in_list');
 
 __("Show All Consult states", 'tst');

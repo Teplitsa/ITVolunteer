@@ -769,9 +769,9 @@ function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 	if($task->post_author == get_current_user_id()) {
 		if ( $task->post_status == 'archived' ) {
 			$update_args = array(
-					'ID' => $task->ID,
-					'post_status' => 'publish',
-				);
+				'ID' => $task->ID,
+				'post_status' => 'publish',
+			);
 			wp_update_post($update_args);
 		}
 	}
