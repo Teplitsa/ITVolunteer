@@ -147,7 +147,7 @@ class ITV_CssJs {
 		wp_dequeue_style('dashicons');
 		wp_dequeue_style('post-views-counter-frontend');
 				
-		wp_enqueue_script('itv-vendor', $url.'/assets/rev/'.$this->get_rev_filename('vendor.js'), array(), null, true);	   
+		wp_enqueue_script('itv-vendor', $url.'/assets/rev/'.$this->get_rev_filename('vendor.js'), array(), null, true);
 		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array('itv-vendor'), null, true);		
 	
 		wp_localize_script('front', 'frontend', array(
@@ -210,13 +210,15 @@ class ITV_CssJs {
 		wp_enqueue_style('tst-admin', $url.'/assets/css/admin.css', array(), $version);
 		wp_enqueue_script('tst-admin', $url.'/assets/js/admin.js', array('jquery'), $version);
 		
+		wp_enqueue_style('tst-admin-datetimepicker', $url.'/assets/css/jquery.datetimepicker.min.css', array(), null);
+		wp_enqueue_script('tst-admin-datetimepicker', $url.'/assets/js/jquery.datetimepicker.min.js', array(), null, true);
+		
 		wp_localize_script('tst-admin', 'adminend', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'site_url' => site_url('/'),
 			'common_ajax_error' => __('Error!'),
-		));    
-	
-		
+		));   
+
 	}
 	
 	/* login style - make it inline ? */
