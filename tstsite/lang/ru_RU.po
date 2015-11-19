@@ -2,18 +2,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-17 15:08+0300\n"
-"PO-Revision-Date: 2015-11-18 00:55+0200\n"
+"POT-Creation-Date: 2015-11-19 02:05+0200\n"
+"PO-Revision-Date: 2015-11-19 02:06+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.8.4\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -90,7 +92,9 @@ msgstr "Больше задач"
 # @ tst
 #: homepage.php:77
 msgid "Need help with site?"
-msgstr "Нужна помощь с созданием сайта, продвижением сайта в социальных сетях или созданием дизайна?"
+msgstr ""
+"Нужна помощь с созданием сайта, продвижением сайта в социальных сетях или "
+"созданием дизайна?"
 
 # @ tst
 #: homepage.php:79 partials/home-well.php:43
@@ -379,17 +383,24 @@ msgstr "Когда вы планируете завершить задачу? Э
 # @ tst
 #: inc/class-itv-cssjs.php:169
 msgid "Please, set a small description for the task."
-msgstr "Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, пожалуйста, краткое, но исчерпывающее описание."
+msgstr ""
+"Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, "
+"пожалуйста, краткое, но исчерпывающее описание."
 
 # @ tst
 #: inc/class-itv-cssjs.php:170
-msgid "Please, note a few words about a reward that you are willing to give for a task."
+msgid ""
+"Please, note a few words about a reward that you are willing to give for a "
+"task."
 msgstr "Как вы хотите отблагодарить исполнителя?"
 
 # @ tst
 #: inc/class-itv-cssjs.php:171
-msgid "Please, tell something about your project, initiative or an organization."
-msgstr "Пожалуйста, расскажите немного о проекте, гражданской инициативе или организации, которую вы представляете."
+msgid ""
+"Please, tell something about your project, initiative or an organization."
+msgstr ""
+"Пожалуйста, расскажите немного о проекте, гражданской инициативе или "
+"организации, которую вы представляете."
 
 # @ tst
 #: inc/class-itv-cssjs.php:172
@@ -409,7 +420,8 @@ msgstr "Обязательно укажите ваше имя."
 # @ tst
 #: inc/class-itv-cssjs.php:175
 msgid "Your message is required."
-msgstr "Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
+msgstr ""
+"Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
 
 # @ tst
 #: inc/class-itv-cssjs.php:176
@@ -429,13 +441,13 @@ msgstr "При загрузке фоторграфии произошла оши
 msgid "Avatar delete failed"
 msgstr "При удалении фоторграфии произошла ошибка!"
 
-#: inc/class-itv-cssjs.php:216
+#: inc/class-itv-cssjs.php:219
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:754 inc/itv_consult.php:178
-#: inc/itv_consult.php:231
+#: inc/customizer.php:11 inc/customizer.php:754 inc/itv_consult.php:239
+#: inc/itv_consult.php:285 inc/itv_consult.php:337 inc/itv_consult.php:392
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -452,7 +464,9 @@ msgstr "<strong>Ошибка:</strong> переданы неправильные
 # @ tst
 #: inc/customizer.php:421 inc/customizer.php:876 inc/customizer.php:899
 msgid "Your account is not active yet! Please check out your email."
-msgstr "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
+msgstr ""
+"Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
+"Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
 
 # @ tst
 #: inc/customizer.php:475 inc/functions-members.php:248
@@ -468,12 +482,19 @@ msgstr "Данный email уже зарегистрирован."
 #: inc/customizer.php:495 inc/functions-members.php:276
 #: inc/functions-members.php:283 inc/functions-members.php:290
 msgid "We are very sorry :( Some error occured while registering your account."
-msgstr "К сожалению, во время регистрации произошла ошибка. Пробуйте повторить регистрацию позже."
+msgstr ""
+"К сожалению, во время регистрации произошла ошибка. Пробуйте повторить "
+"регистрацию позже."
 
 # @ tst
 #: inc/customizer.php:519 inc/customizer.php:568
-msgid "Your registration is complete! Please check out the email you gave us for our activation message."
-msgstr "Да! Вы почти сделали это! Ваша регистрация практически завершена – осталось только активировать вашу учетную запись! Пожалуйста, сделайте это, следуя инструкциям в отправленном вам письме."
+msgid ""
+"Your registration is complete! Please check out the email you gave us for "
+"our activation message."
+msgstr ""
+"Да! Вы почти сделали это! Ваша регистрация практически завершена – осталось "
+"только активировать вашу учетную запись! Пожалуйста, сделайте это, следуя "
+"инструкциям в отправленном вам письме."
 
 # @ tst
 #: inc/customizer.php:607
@@ -483,13 +504,21 @@ msgstr "К сожалению, во время обновления вашего
 # @ tst
 #: inc/customizer.php:631
 #, php-format
-msgid "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link\">View it</a>"
-msgstr "Ваш профиль успешно обновлен <a href=\"%s\" class=\"alert-link\">Просмотреть</a>."
+msgid ""
+"Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
+"\">View it</a>"
+msgstr ""
+"Ваш профиль успешно обновлен <a href=\"%s\" class=\"alert-link"
+"\">Просмотреть</a>."
 
 # @ tst
 #: inc/customizer.php:668
-msgid "<strong>Error:</strong> something wrong happens when we deleted your account. We are already looking to it."
-msgstr "Упс! Что-то пошло не так во время удаления вашего аккаунта. Мы уже решаем эту проблему."
+msgid ""
+"<strong>Error:</strong> something wrong happens when we deleted your "
+"account. We are already looking to it."
+msgstr ""
+"Упс! Что-то пошло не так во время удаления вашего аккаунта. Мы уже решаем "
+"эту проблему."
 
 # @ tst
 #: inc/customizer.php:698
@@ -498,7 +527,8 @@ msgstr "Ваше сообщение отправлено! Спасибо вам 
 
 #: inc/customizer.php:740
 msgid "itv_email_task_complete_message"
-msgstr "Еще одна задача выполнена: \n"
+msgstr ""
+"Еще одна задача выполнена: \n"
 "\n"
 "Ссылка: {{task_url}}\n"
 "\n"
@@ -685,9 +715,14 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:164
+#: inc/itv_consult.php:219 inc/itv_consult.php:317
 msgid "itv_email_test_consult_needed_message"
-msgstr "Требуется консультация по задаче: \n"
+msgstr ""
+"Требуется консультация по задаче: \n"
+"\n"
+"Источник: {{consult_source}}\n"
+"\n"
+"Консультант: {{consultant_name}}\n"
 "\n"
 "Ссылка: {{task_url}}\n"
 "\n"
@@ -696,59 +731,117 @@ msgstr "Требуется консультация по задаче: \n"
 "Описание: {{task_content}}"
 
 # @ tst
-#: inc/itv_consult.php:174
+#: inc/itv_consult.php:234 inc/itv_consult.php:332
 msgid "itv_email_test_consult_needed_subject"
-msgstr "Требуется консультация на ИТВ"
+msgstr ""
+"{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:214
-msgid "itv_week_day_"
-msgstr "итв_день_недели"
-
-#: inc/itv_consult.php:216
+#: inc/itv_consult.php:267
 msgid "itv_email_test_consult_needed_notification"
-msgstr "Добрый день! \n"
+msgstr ""
+"Добрый день! \n"
 "\n"
 "При публикации вашей задачи \n"
 "\n"
 "ссылка: {{task_url}}\n"
 "название: {{task_title}}\n"
 "\n"
-"на платформе it-волонтер вы указали, что вам необходима дополнительная консультация специалистов Теплицы социальных технологий.\n"
+"на платформе it-волонтер вы указали, что вам необходима дополнительная "
+"консультация специалистов Теплицы социальных технологий.\n"
 "\n"
-"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в 12:00 московского времени по скайпу.\n"
+"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
+"12:00 московского времени по скайпу.\n"
 "Для этого вам необходимо добавить в ваш скайп контакт {{consultant_skype}}.\n"
 "\n"
-"Скорректировать время вы можете, связавшись с нашим консультантом по почте или скайпу.\n"
+"Скорректировать время вы можете, связавшись с нашим консультантом по почте "
+"или скайпу.\n"
 "Имя консультанта: {{consultant_name}}\n"
 "Почта: {{consultant_email}}\n"
 "Скайп: {{consultant_skype}}\n"
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:227
+#: inc/itv_consult.php:281
 msgid "itv_email_test_consult_needed_notification_subject"
-msgstr "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
+msgstr ""
+"Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:267
+#: inc/itv_consult.php:366
+msgid "itv_email_test_consult_needed_notification_"
+msgstr "itv_email_test_consult_needed_notification_"
+
+#: inc/itv_consult.php:368
+msgid "itv_email_test_consult_needed_notification_ext"
+msgstr ""
+"{{author_name}}, добрый день! \n"
+"\n"
+"Спасибо, что обратились к консультационной поддержке Теплицы социальных "
+"технологий.\n"
+"\n"
+"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
+"12:00 московского времени по скайпу.\n"
+"Для этого вам необходимо добавить в ваш скайп контакт {{consultant_skype}}.\n"
+"\n"
+"Скорректировать время вы можете, связавшись с нашим консультантом по почте "
+"или скайпу.\n"
+"Имя консультанта: {{consultant_name}}\n"
+"Почта: {{consultant_email}}\n"
+"Скайп: {{consultant_skype}}\n"
+"\n"
+"Команда Теплицы социальных технологий te-st.tu"
+
+#: inc/itv_consult.php:385
+msgid "itv_email_test_consult_needed_notification_subject_"
+msgstr "itv_email_test_consult_needed_notification_subject_"
+
+#: inc/itv_consult.php:387
+msgid "itv_email_test_consult_needed_notification_subject_ext"
+msgstr "Теплица социальных технологий. Консультация"
+
+#: inc/itv_consult.php:431
+msgid "itv_week_day_"
+msgstr "итв_день_недели"
+
+#: inc/itv_consult.php:466
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:304
+#: inc/itv_consult.php:467
 msgid "Consult task title"
 msgstr "Заголовок "
 
+#: inc/itv_consult.php:468
+msgid "Consult Date"
+msgstr "Время консультации"
+
 # @ tst
-#: inc/itv_consult.php:320 inc/post-types.php:66
+#: inc/itv_consult.php:484 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:321
+#: inc/itv_consult.php:485 inc/itv_consult.php:491
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:437
+#: inc/itv_consult.php:622
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
+
+#: inc/itv_consult.php:623
+msgid "itv_email_test_consult_needed_notification_subject_audit"
+msgstr "Теплица социальных технологий. Консультация"
+
+#: inc/itv_consult.php:624
+msgid "itv_email_test_consult_needed_notification_audit"
+msgstr ""
+"{{author_name}}, добрый день! \n"
+"\n"
+"Спасибо, что обратились к консультационной поддержке Теплицы социальных "
+"технологий.\n"
+"Ваш вопрос успешно передан и наши специалисты свяжутся с вами в течение 7 "
+"дней. \n"
+"\n"
+"Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
 # @ tst
 #: inc/itv_email_templates.php:9
@@ -757,23 +850,29 @@ msgstr "it-волонтёр: вы были утверждены в качест�
 
 #: inc/itv_email_templates.php:10
 #, php-format
-msgid "Greetings, %s!\n"
+msgid ""
+"Greetings, %s!\n"
 "\n"
 "You have been approved to participate in task: %s.\n"
 "\n"
 "\n"
-"\t\t            You can contact the task author for details with email: <a href='mailto:%s'>%s</a> or in some other ways (see <a href='%s'>author's profile</a>).\n"
+"\t\t            You can contact the task author for details with email: <a "
+"href='mailto:%s'>%s</a> or in some other ways (see <a href='%s'>author's "
+"profile</a>).\n"
 "\t\t            \n"
 "\n"
 "Have a nice day!"
-msgstr "Добрый день, %s!\n"
+msgstr ""
+"Добрый день, %s!\n"
 "\n"
 "Вы были утверждены как участник задачи: %s.\n"
 "\n"
 "\n"
 "Это очень здорово и мы верим в вас! \n"
 "\n"
-"Вы можете связаться с автором задачи по email: <a href='mailto:%s'>%s</a> или другим удобным для вас способом (посмотреть <a href='%s'>профиль автора</a>).\n"
+"Вы можете связаться с автором задачи по email: <a href='mailto:%s'>%s</a> "
+"или другим удобным для вас способом (посмотреть <a href='%s'>профиль автора</"
+"a>).\n"
 "\n"
 "\n"
 "Спасибо, что вы решили помочь! Удачи! \n"
@@ -789,21 +888,26 @@ msgstr "it-волонтёр: кандидат одобрен!"
 
 #: inc/itv_email_templates.php:16
 #, php-format
-msgid "Greetings, %s!\n"
+msgid ""
+"Greetings, %s!\n"
 "\n"
 "You have approved some volunteer to participate in task: %s.\n"
 "\n"
 "\n"
-"\t\t            You can contact the task doer for details with email: <a href='mailto:%s'>%s</a> or in some other ways (see <a href='%s'>doer's profile</a>).\n"
+"\t\t            You can contact the task doer for details with email: <a "
+"href='mailto:%s'>%s</a> or in some other ways (see <a href='%s'>doer's "
+"profile</a>).\n"
 "\t\t            \n"
 "\n"
 "Have a nice day!"
-msgstr "Добрый день, %s!\n"
+msgstr ""
+"Добрый день, %s!\n"
 "\n"
 "Вы утвердили волонтера как исполнителя задачи: %s.\n"
 "\n"
 "\n"
-" Вы можете связаться с ним по email: <a href='mailto:%s'>%s</a> или другим удобным для вас способом (посмотреть <a href='%s'>профиль исполнителя</a>).\n"
+" Вы можете связаться с ним по email: <a href='mailto:%s'>%s</a> или другим "
+"удобным для вас способом (посмотреть <a href='%s'>профиль исполнителя</a>).\n"
 " \n"
 "\n"
 "С уважением,\n"
@@ -818,12 +922,14 @@ msgstr "it-волонтёр: вы были исключены из исполн�
 # @ tst
 #: inc/itv_email_templates.php:22
 #, php-format
-msgid "Hello, %s.\n"
+msgid ""
+"Hello, %s.\n"
 "\n"
 "You have been disapproved to participate in task: %s.\n"
 "\n"
 "Have a nice day!"
-msgstr "Добрый день, %s.\n"
+msgstr ""
+"Добрый день, %s.\n"
 "\n"
 "Вы были исключены из исполнителей задачи: %s.\n"
 "\n"
@@ -834,12 +940,15 @@ msgstr "Добрый день, %s.\n"
 # @ tst
 #: inc/itv_email_templates.php:25
 msgid "IT-Volunteer: a volunteer for your task removed himself!"
-msgstr "it-волонтёр: один из волонтёров, желающих выполнить ваше задание, отказался от этого!"
+msgstr ""
+"it-волонтёр: один из волонтёров, желающих выполнить ваше задание, отказался "
+"от этого!"
 
 # @ tst
 #: inc/itv_email_templates.php:26
 #, php-format
-msgid "Hello, %s.\n"
+msgid ""
+"Hello, %s.\n"
 "\n"
 "Someone has been removed himself from a volunteers for your task: %s.\n"
 "\n"
@@ -847,7 +956,8 @@ msgid "Hello, %s.\n"
 "%s\n"
 "\n"
 "Have a nice day!"
-msgstr "Добрый день, %s.\n"
+msgstr ""
+"Добрый день, %s.\n"
 "\n"
 "Один из волонтёров отказался от выполнения вашего задания: %s.\n"
 "\n"
@@ -866,7 +976,8 @@ msgstr "it-волонтёр: новый волонтёр для вашего з�
 # @ tst
 #: inc/itv_email_templates.php:30
 #, php-format
-msgid "Hello, %s.\n"
+msgid ""
+"Hello, %s.\n"
 "\n"
 "Someone is wishing to participate in your task: %s.\n"
 "This volunteer is writing to you this: %s.\n"
@@ -874,7 +985,8 @@ msgid "Hello, %s.\n"
 "You can approve him if you wish on the task page: %s.\n"
 "\n"
 "Have a nice day!"
-msgstr "Добрый день, %s.\n"
+msgstr ""
+"Добрый день, %s.\n"
 "\n"
 "Один из волонтёров желает присоединиться к выполнению вашего задания: %s.\n"
 "Он пишет вам: %s.\n"
@@ -892,16 +1004,21 @@ msgstr "it-волонтёр - активация учетной записи"
 
 #: inc/itv_email_templates.php:34
 #, php-format
-msgid "Greerings!\n"
+msgid ""
+"Greerings!\n"
 "\n"
-"Your registration is almost done. To complete it, please <a href='%s'>click here</a>.\n"
+"Your registration is almost done. To complete it, please <a href='%s'>click "
+"here</a>.\n"
 "Your login is %s\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Здравствуйте!\n"
+msgstr ""
+"Здравствуйте!\n"
 "\n"
-"Ваша регистрация в it-волонтёре почти завершена. Осталось только активировать ваш аккаунт. Для этого, пожалуйста, пройдите по следующей <a href='%s'>ссылке</a>.\n"
+"Ваша регистрация в it-волонтёре почти завершена. Осталось только "
+"активировать ваш аккаунт. Для этого, пожалуйста, пройдите по следующей <a "
+"href='%s'>ссылке</a>.\n"
 "Ваш логин: %s\n"
 "\n"
 "С уважением,\n"
@@ -919,7 +1036,8 @@ msgstr "it-волонтёр - добро пожаловать!"
 
 #: inc/itv_email_templates.php:39
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
 "Your account is active now, welcome to it-volunteering ranks.\n"
 "\n"
@@ -930,7 +1048,8 @@ msgid "Greetings!\n"
 "\n"
 "Best,\n"
 "it-volunteer"
-msgstr "Добрый день!\n"
+msgstr ""
+"Добрый день!\n"
 "\n"
 "Ваш аккаунт теперь успешно активирован. Добро пожаловать в it-волонтёры!\n"
 "\n"
@@ -951,7 +1070,8 @@ msgstr "it-волонтёр - новый комментарий к вашей з
 # @ tst
 #: inc/itv_email_templates.php:43
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
 "Your task was commented by someone.\n"
 "\n"
@@ -959,7 +1079,8 @@ msgid "Greetings!\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Здравствуйте!\n"
+msgstr ""
+"Здравствуйте!\n"
 "\n"
 "Кто-то только что оставил комментарий к вашей задаче: %s\n"
 "\n"
@@ -974,15 +1095,19 @@ msgstr "it-волонтёр - ваша задача близится к свое
 # @ tst
 #: inc/itv_email_templates.php:47
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
-"Your task deadline will come in one day from now. You can monitor task activity on its page: %s.\n"
+"Your task deadline will come in one day from now. You can monitor task "
+"activity on its page: %s.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день!\n"
+msgstr ""
+"Добрый день!\n"
 "\n"
-"Дедлайн вашей задачи наступит уже послезавтра. Вы можете увидеть активность по этой задаче на её странице: %s.\n"
+"Дедлайн вашей задачи наступит уже послезавтра. Вы можете увидеть активность "
+"по этой задаче на её странице: %s.\n"
 "\n"
 "С уважением,\n"
 "команда it-волонтёра,\n"
@@ -996,13 +1121,16 @@ msgstr "it-волонтёр - дедлайн вашей задачи совсе�
 # @ tst
 #: inc/itv_email_templates.php:51
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
-"The task you are participate in has a deadline coming in one day from now. You can review the task on its page: %s.\n"
+"The task you are participate in has a deadline coming in one day from now. "
+"You can review the task on its page: %s.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день!\n"
+msgstr ""
+"Добрый день!\n"
 "\n"
 "Уже послезавтра наступит дедлайн задачи, в которой вы заняты: %s.\n"
 "\n"
@@ -1013,19 +1141,23 @@ msgstr "Добрый день!\n"
 # @ tst
 #: inc/itv_email_templates.php:55
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
 "Someone requested that the password be reset for the following account: %s\n"
 "\n"
-"If this was a mistake, just ignore this email and nothing will happen. To reset your password, visit the following address: %s\n"
+"If this was a mistake, just ignore this email and nothing will happen. To "
+"reset your password, visit the following address: %s\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день!\n"
+msgstr ""
+"Добрый день!\n"
 "\n"
 "Был запрошен сброс пароля для следующего аккаунта: %s\n"
 "\n"
-"Если это была ошибка, просто проигнорируйте это письмо, пожалуйста. Чтобы сбросить ваш пароль, пройдите по следующей ссылке: %s\n"
+"Если это была ошибка, просто проигнорируйте это письмо, пожалуйста. Чтобы "
+"сбросить ваш пароль, пройдите по следующей ссылке: %s\n"
 "\n"
 "С уважением,\n"
 "команда it-волонтёра,\n"
@@ -1039,7 +1171,8 @@ msgstr "it-волонтёр- новое сообщение с формы обр�
 # @ tst
 #: inc/itv_email_templates.php:59
 #, php-format
-msgid "Greetings!\n"
+msgid ""
+"Greetings!\n"
 "\n"
 "Someone leaved a message on the contact form.\n"
 "\\Page URL: %s\n"
@@ -1050,7 +1183,8 @@ msgid "Greetings!\n"
 "\n"
 "Best,\n"
 "it-volunteer"
-msgstr "Добрый день!\n"
+msgstr ""
+"Добрый день!\n"
 "\n"
 "Кто-то отправил сообщение с помощью формы обратной связи.\n"
 "\n"
@@ -1069,18 +1203,23 @@ msgid "ITVolunteer - your task will be moved to archive soon!"
 msgstr "it-волонтёр - ваша задача будет перемещена в архив"
 
 #: inc/itv_email_templates.php:63
-msgid "Greetings, {{username}}!\n"
+msgid ""
+"Greetings, {{username}}!\n"
 "\n"
-"Your task will be moved to archive soon because no doers have been approved for it.\n"
+"Your task will be moved to archive soon because no doers have been approved "
+"for it.\n"
 "Task page: {{task_link}}.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день, {{username}}!\n"
+msgstr ""
+"Добрый день, {{username}}!\n"
 "\n"
-"Прошел месяц, но волонтеры пока не откликнулись на вашу задачу, поэтому завтра она будет перемещена в архив.\n"
+"Прошел месяц, но волонтеры пока не откликнулись на вашу задачу, поэтому "
+"завтра она будет перемещена в архив.\n"
 "\n"
-"Если вы хотите попробовать еще раз - пожалуйста отредактируйте текст или заголовок вашей задачи.\n"
+"Если вы хотите попробовать еще раз - пожалуйста отредактируйте текст или "
+"заголовок вашей задачи.\n"
 "<a href='{{task_link}}'>{{task_link}}</a>\n"
 "\n"
 "С уважением, команда сервиса IT-волонтер\n"
@@ -1091,18 +1230,21 @@ msgid "ITVolunteer - no doer has been approved for your task yet!"
 msgstr "it-волонтёр - пожалуйста проверьте текст вашей задачи"
 
 #: inc/itv_email_templates.php:67
-msgid "Greetings, {{username}}!\n"
+msgid ""
+"Greetings, {{username}}!\n"
 "\n"
 "Week left but still no doer has been approved for your task.\n"
 "Task page: {{task_link}}.\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день, {{username}}!\n"
+msgstr ""
+"Добрый день, {{username}}!\n"
 "\n"
 "Спасибо, что опубликовали задачу на сервисе It-волонтер.\n"
 "\n"
-"Прошла неделя, но заявок от волонтеров пока нет. Пожалуйста проверьте заголовок и описание вашей задачи - возможно их стоит отредактировать.\n"
+"Прошла неделя, но заявок от волонтеров пока нет. Пожалуйста проверьте "
+"заголовок и описание вашей задачи - возможно их стоит отредактировать.\n"
 "<a href='{{task_link}}'>{{task_link}}</a>\n"
 "\n"
 "С уважением, команда сервиса IT-волонтер\n"
@@ -1113,7 +1255,8 @@ msgid "ITVolunteer - linked task status changed!"
 msgstr "it-волонтёр - статус задачи изменился"
 
 #: inc/itv_email_templates.php:71
-msgid "Greetings, {{username}}!\n"
+msgid ""
+"Greetings, {{username}}!\n"
 "\n"
 "Task {{task_title}} status changed!\n"
 "{{status_message}}\n"
@@ -1121,7 +1264,8 @@ msgid "Greetings, {{username}}!\n"
 "\n"
 "Best,\n"
 "ITVolunteer"
-msgstr "Добрый день, {{username}}!\n"
+msgstr ""
+"Добрый день, {{username}}!\n"
 "\n"
 "\n"
 "Хорошие новости!\n"
@@ -1129,7 +1273,8 @@ msgstr "Добрый день, {{username}}!\n"
 "Задача <a href='{{task_link}}'>{{task_title}}</a> {{status_message}}.\n"
 "\n"
 "\n"
-"Пожалуйста, не забудьте проконтролировать закрытие задачи заказчиком, когда работа завершена. \n"
+"Пожалуйста, не забудьте проконтролировать закрытие задачи заказчиком, когда "
+"работа завершена. \n"
 "\n"
 "\n"
 "Мы очень рады, что лед тронулся! \n"
@@ -1905,8 +2050,12 @@ msgstr "Новый пароль"
 
 # @ tst
 #: page-member-action.php:109
-msgid "If you would like to change the password type a new one. Otherwise leave this blank."
-msgstr "Если вы хотите изменить пароль, укажите здесь новое значение. В противном случае оставьте пустым."
+msgid ""
+"If you would like to change the password type a new one. Otherwise leave "
+"this blank."
+msgstr ""
+"Если вы хотите изменить пароль, укажите здесь новое значение. В противном "
+"случае оставьте пустым."
 
 # @ tst
 #: page-member-action.php:113 page-registration.php:119
@@ -2099,14 +2248,20 @@ msgstr "Краткое описание задачи (140 символов)"
 
 #: page-task-action.php:93
 #, php-format
-msgid "Information about your task was published! Now it's open for a new volunteers to do it. <a href='%s'>Check it out</a>"
-msgstr "Информация о вашей задаче опубликована. Она открыта для новых волонтеров. <a href='%s'>Просмотр</a>"
+msgid ""
+"Information about your task was published! Now it's open for a new "
+"volunteers to do it. <a href='%s'>Check it out</a>"
+msgstr ""
+"Информация о вашей задаче опубликована. Она открыта для новых волонтеров. <a "
+"href='%s'>Просмотр</a>"
 
 # @ tst
 #: page-task-action.php:94
 #, php-format
 msgid "Your data was successfully saved. <a href=\"%s\">Check it out</a>"
-msgstr "Информация была успешно сохранена. <a href=\"%s\">Перейти на страницу задачи</a>"
+msgstr ""
+"Информация была успешно сохранена. <a href=\"%s\">Перейти на страницу "
+"задачи</a>"
 
 # @ tst
 #: page-task-action.php:101
@@ -2120,7 +2275,10 @@ msgstr "Инструкция"
 # @ tst
 #: page-task-action.php:103
 msgid "itv_task_description_more_info"
-msgstr "Больше деталей, конкретики - что бы задачу можно было выполнить не задавая вам дополнительных вопросов. Что ожидаем от исполнителя - разработка, дизайн, верстка, правки на существующем сайте."
+msgstr ""
+"Больше деталей, конкретики - что бы задачу можно было выполнить не задавая "
+"вам дополнительных вопросов. Что ожидаем от исполнителя - разработка, "
+"дизайн, верстка, правки на существующем сайте."
 
 # @ tst
 #: page-task-action.php:108
@@ -2130,7 +2288,9 @@ msgstr "Об организации / проекте"
 # @ tst
 #: page-task-action.php:117
 msgid "itv_task_about_author_org_more_info"
-msgstr "Краткое и понятное описание проекта, почему волонтерам следует помочь именно вам."
+msgstr ""
+"Краткое и понятное описание проекта, почему волонтерам следует помочь именно "
+"вам."
 
 #: page-task-action.php:122
 msgid "Task's author"
@@ -2159,7 +2319,8 @@ msgstr "Дополнительная консультация"
 # @ tst
 #: page-task-action.php:174
 msgid "itv_task_consult_needed_more_info"
-msgstr "получить бесплатную консультацию сотрудника Теплицы социальных технологий"
+msgstr ""
+"получить бесплатную консультацию сотрудника Теплицы социальных технологий"
 
 # @ tst
 #: page-task-action.php:184
@@ -2395,7 +2556,9 @@ msgstr "Оставьте отзыв или слова благодарности
 
 #: partials/sidebar-multibutton.php:79
 msgid "Problem solved. Glad to work with him. Recomend this doer."
-msgstr "Задача успешно закрыта. Был рад сотрудничеству. Рекомендую этого пользователя."
+msgstr ""
+"Задача успешно закрыта. Был рад сотрудничеству. Рекомендую этого "
+"пользователя."
 
 #: partials/sidebar-multibutton.php:80 single-tasks.php:92
 msgid "Please input review text"
@@ -2418,7 +2581,8 @@ msgstr "Вы еще не предложили помощь"
 
 # @ tst
 #: partials/sidebar-multibutton.php:113
-msgid "The task are already in work! Please try offering your help on another one"
+msgid ""
+"The task are already in work! Please try offering your help on another one"
 msgstr "Задача уже в работе! Помогите кому-нибудь еще :)"
 
 # @ tst
@@ -2429,7 +2593,8 @@ msgstr "Задача закрыта для предложений помощи"
 # @ tst
 #: partials/sidebar-multibutton.php:116
 msgid "The task is not open yet, so you cannot offer your help for now"
-msgstr "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
+msgstr ""
+"Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
 # @ tst
 #: partials/sidebar-multibutton.php:120
@@ -2454,12 +2619,16 @@ msgstr "Вы предложили помощь, но пока она еще не
 # @ tst
 #: partials/sidebar-multibutton.php:143
 msgid "The task is not open yet, so your help offering is impossible for now"
-msgstr "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
+msgstr ""
+"Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
 # @ tst
 #: partials/sidebar-multibutton.php:147
-msgid "Send a little message to the task author about why you wish to refuse your help."
-msgstr "Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
+msgid ""
+"Send a little message to the task author about why you wish to refuse your "
+"help."
+msgstr ""
+"Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
 
 # @ tst
 #: search.php:33
@@ -2503,8 +2672,12 @@ msgstr "Волонтёру было отказано."
 
 # @ tst
 #: single-tasks.php:70
-msgid "<strong>You have been added to the task as a volunteer to help with it!</strong> A task author is already noted."
-msgstr "<strong>Вы были добавлены в качестве возможного исполнителя этого задания!</strong> Автор задания уже уведомлён."
+msgid ""
+"<strong>You have been added to the task as a volunteer to help with it!</"
+"strong> A task author is already noted."
+msgstr ""
+"<strong>Вы были добавлены в качестве возможного исполнителя этого задания!</"
+"strong> Автор задания уже уведомлён."
 
 # @ tst
 #: single-tasks.php:71
@@ -2520,8 +2693,12 @@ msgid "Leave a review to the task author."
 msgstr "Оставьте отзыв об авторе задачи"
 
 #: single-tasks.php:91
-msgid "Good author. Gives clean task description. Communicative. Recommend this author."
-msgstr "Был рад сотрудничеству. Автор очень детально и понятно описывает задачи. Быстро отвечает на вопросы."
+msgid ""
+"Good author. Gives clean task description. Communicative. Recommend this "
+"author."
+msgstr ""
+"Был рад сотрудничеству. Автор очень детально и понятно описывает задачи. "
+"Быстро отвечает на вопросы."
 
 #: single-tasks.php:103
 msgid "Please rate author work result"

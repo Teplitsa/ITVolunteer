@@ -129,6 +129,8 @@ class ItvConsult {
         
         $consult_id = wp_insert_post($params);
         
+        update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime());
+        
         $term = get_term_by('slug', 'new', 'consult_state');
         if($term) {
             wp_set_post_terms( $consult_id, $term->term_id, 'consult_state' );
@@ -150,10 +152,11 @@ class ItvConsult {
         }
     }
     
-    public static function create_external($consult_data) {
+    public static function create_external($consult_data, $source_slug) {
         $params = array(
             'post_type' => 'consult',
             'post_title' => $consult_data['post_title'],
+            'post_content' => $consult_data['post_content'],
             'post_status' => 'publish',
         );
         
@@ -162,13 +165,14 @@ class ItvConsult {
         update_post_meta($consult_id, 'external_user_name', $consult_data['user_name']);
         update_post_meta($consult_id, 'external_user_email', $consult_data['user_email']);
         update_post_meta($consult_id, 'external_post_link', $consult_data['post_link']);
+        update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime());
         
         $term = get_term_by('slug', 'new', 'consult_state');
         if($term) {
             wp_set_post_terms( $consult_id, $term->term_id, 'consult_state' );
         }
         
-        $term = get_term_by('slug', 'itv', 'consult_source');
+        $term = get_term_by('slug', $source_slug, 'consult_source');
         if($term) {
             wp_set_post_terms( $consult_id, $term->term_id, 'consult_source' );
         }
@@ -177,8 +181,8 @@ class ItvConsult {
         if($consultant) {
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
         
-            static::tst_send_admin_notif_consult_needed($task_id, $consultant);
-            #static::tst_send_user_notif_consult_needed($task_id, $consultant);
+            static::tst_send_admin_notif_consult_needed_external($consult_id, $consultant);
+            static::tst_send_user_notif_consult_needed_external($consult_id, $consultant);
         }
     }
 
@@ -189,21 +193,46 @@ class ItvConsult {
         $email_from = $itv_config->get('EMAIL_FROM');
     
         $task = get_post($post_id);
-    
+        
+        $consult = get_posts( array(
+            'connected_type' => 'task-consult',
+            'connected_items' => $post_id
+        ));
+        $consult = count($consult) > 0 ? $consult[0] : null;
+        
+        $consult_source = wp_get_post_terms( $consult->ID, 'consult_source');
+        $consult_source = count($consult_source) ? $consult_source[0] : null;
+        $consult_source_name = $consult_source ? $consult_source->name : '';
+        $consult_source_slug = $consult_source ? $consult_source->slug : '';
+        
+        $consult_moment = get_post_meta($consult->ID, 'consult_moment', true);
+        $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
+        
         if($task && count($consult_emails) > 0) {
+            $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
+            
             $to = $consultant->user_email;
             $other_emails = array_slice($consult_emails, 1);
+            
+            $consult_moment = static::get_consult_moment();
+            
             $message = __('itv_email_test_consult_needed_message', 'tst');
             $data = array(
-                            '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-                            '{{task_title}}' => get_the_title($post_id),
-                            '{{task_content}}' => $task->post_content
+                '{{consult_week_day}}' => $consult_moment['week_day_str'],
+                '{{consult_date}}' => $consult_moment['date_str'],
+                '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+                '{{task_title}}' => get_the_title($post_id),
+                '{{task_content}}' => $task->post_content,
+                '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                '{{consult_source}}' => $consult_source_name,
+                '{{author_name}}' => $task_author ? $task_author->user_firstname . ' ' . $task_author->user_lastname : '',
             );
             $message = str_replace(array_keys($data), $data, $message);
             $message = str_replace("\\", "", $message);
             $message = nl2br($message);
     
             $subject = __('itv_email_test_consult_needed_subject', 'tst');
+            $subject = str_replace(array_keys($data), $data, $subject);
     
             $headers  = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
@@ -220,40 +249,30 @@ class ItvConsult {
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
-    
+        
         $task = get_post($post_id);
         $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
         if($task_author) {
             $to = $task_author->user_email;
-    
-            $consult_week_day = (int)date('w');
-    
-            $consult_date_dif = 0;
-            if($consult_week_day >= 0 && $consult_week_day < 5) {
-                $consult_date_dif = 1;
-            }
-            else {
-                $consult_date_dif = 8 - $consult_week_day;
-            }
-            $consult_date = date('d.m.Y', time() + $consult_date_dif * 24 * 3600);
-    
-            if($consult_week_day >=5) {
-                $consult_week_day = 1;
-            }
-            else {
-                $consult_week_day += 1;
-            }
-            $consult_week_day_str =  __('itv_week_day_' . $consult_week_day, 'tst');
-    
+            
+            $consult = get_posts( array(
+                'connected_type' => 'task-consult',
+                'connected_items' => $post_id
+            ));
+            $consult = count($consult) > 0 ? $consult[0] : null;
+            
+            $consult_moment = get_post_meta($consult->ID, 'consult_moment', true);
+            $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
+            
             $message = __('itv_email_test_consult_needed_notification', 'tst');
             $data = array(
-                            '{{consult_week_day}}' => $consult_week_day_str,
-                            '{{consult_date}}' => $consult_date,
-                            '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-                            '{{task_title}}' => get_the_title($post_id),
-                            '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
-                            '{{consultant_email}}' => $consultant->user_email,
-                            '{{consultant_skype}}' => get_user_meta($consultant->ID, 'user_skype', true)
+                '{{consult_week_day}}' => $consult_moment['week_day_str'],
+                '{{consult_date}}' => $consult_moment['date_str'],
+                '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+                '{{task_title}}' => get_the_title($post_id),
+                '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                '{{consultant_email}}' => $consultant->user_email,
+                '{{consultant_skype}}' => get_user_meta($consultant->ID, 'user_skype', true)
             );
             $message = str_replace(array_keys($data), $data, $message);
             $message = str_replace("\\", "", $message);
@@ -269,6 +288,149 @@ class ItvConsult {
             wp_mail($to, $subject, $message, $headers);
         }
     
+    }
+    
+    function tst_send_admin_notif_consult_needed_external($consult_id, $consultant) {
+        $itv_config = ItvConfig::instance();
+    
+        $consult_emails = $itv_config->get('CONSULT_EMAILS');
+        $email_from = $itv_config->get('EMAIL_FROM');
+    
+        $consult_source = wp_get_post_terms( $consult_id, 'consult_source');
+        $consult_source = count($consult_source) ? $consult_source[0] : null;
+        $consult_source_name = $consult_source ? $consult_source->name : '';
+        $consult_source_slug = $consult_source ? $consult_source->slug : '';
+        
+        $external_user_name = get_post_meta($consult_id, 'external_user_name', true);
+        $external_user_email = get_post_meta($consult_id, 'external_user_email', true);
+        $external_post_link = get_post_meta($consult_id, 'external_post_link', true);
+        
+        $consult = get_post($consult_id);
+        
+        if(count($consult_emails) > 0) {
+            $to = $consultant->user_email;
+            $other_emails = array_slice($consult_emails, 1);
+            
+            $consult_moment = get_post_meta($consult_id, 'consult_moment', true);
+            $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
+            
+            $message = __('itv_email_test_consult_needed_message', 'tst');
+            $data = array(
+                '{{consult_week_day}}' => $consult_moment['week_day_str'],
+                '{{consult_date}}' => $consult_moment['date_str'],
+                '{{task_url}}' => '<a href="' . $external_post_link . '">' . $external_post_link . '</a>',
+                '{{task_title}}' => get_the_title($consult_id),
+                '{{task_content}}' => $consult ? $consult->post_content : '',
+                '{{consult_source}}' => $consult_source_name,
+                '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                '{{author_name}}' => $external_user_name,
+            );
+            $message = str_replace(array_keys($data), $data, $message);
+            $message = str_replace("\\", "", $message);
+            $message = nl2br($message);
+    
+            $subject = __('itv_email_test_consult_needed_subject', 'tst');
+            $subject = str_replace(array_keys($data), $data, $subject);
+    
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
+            if(count($other_emails) > 0) {
+                $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+            }
+            wp_mail($to, $subject, $message, $headers);
+        }
+    }
+    
+    function tst_send_user_notif_consult_needed_external($consult_id, $consultant) {
+        $itv_config = ItvConfig::instance();
+    
+        $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
+        $consult_emails = $itv_config->get('CONSULT_EMAILS');
+        
+        $consult_source = wp_get_post_terms( $consult_id, 'consult_source');
+        $consult_source = count($consult_source) ? $consult_source[0] : null;
+        $consult_source_name = $consult_source ? $consult_source->name : '';
+        $consult_source_slug = $consult_source ? $consult_source->slug : '';
+        
+        $external_user_name = get_post_meta($consult_id, 'external_user_name', true);
+        $external_user_email = get_post_meta($consult_id, 'external_user_email', true);
+        $external_post_link = get_post_meta($consult_id, 'external_post_link', true);
+        
+        if($external_user_email) {
+            $to = $external_user_email;
+    
+            $consult_moment = get_post_meta($consult_id, 'consult_moment', true);
+            $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
+    
+            $message = __('itv_email_test_consult_needed_notification_' . $consult_source_slug, 'tst');
+            if('itv_email_test_consult_needed_notification_' . $consult_source_slug == $message) {
+                $message = __('itv_email_test_consult_needed_notification_ext', 'tst');
+            }
+            
+            $data = array(
+                '{{consult_week_day}}' => $consult_moment['week_day_str'],
+                '{{consult_date}}' => $consult_moment['date_str'],
+                '{{task_url}}' => '<a href="' . $external_post_link . '">' . $external_post_link . '</a>',
+                '{{task_title}}' => get_the_title($post_id),
+                '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                '{{consultant_email}}' => $consultant->user_email,
+                '{{consultant_skype}}' => get_user_meta($consultant->ID, 'user_skype', true),
+                '{{author_name}}' => $external_user_name,
+            );
+            $message = str_replace(array_keys($data), $data, $message);
+            $message = str_replace("\\", "", $message);
+            $message = nl2br($message);
+    
+            $subject = __('itv_email_test_consult_needed_notification_subject_' . $consult_source_slug, 'tst');
+            if('itv_email_test_consult_needed_notification_subject_' . $consult_source_slug == $message) {
+                $subject = __('itv_email_test_consult_needed_notification_subject_ext', 'tst');
+            }
+            
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
+            $headers .= 'Bcc: ' . implode(', ', $consult_emails) . "\r\n";
+    
+            wp_mail($to, $subject, $message, $headers);
+        }
+    
+    }
+    
+    public static function get_consult_moment() {
+        $datetime = static::get_consult_datetime();
+        return static::get_consult_moment_by_datetime($datetime);
+    }
+    
+    public static function get_consult_datetime($date = '', $time = '') {
+        if(!$date) {
+            $date = date('Y-m-d', time() + 24 * 3600);
+        }
+        
+        if($time) {
+            $date .= ' ' . $time;
+        }
+        else {
+            $date .= ' 12:00:00';
+        }
+        
+        return $date;
+    }
+    
+    public static function get_consult_moment_by_datetime($datetime) {
+        $phptime = strtotime($datetime);
+        $consult_date = date('d.m.Y', $phptime);
+        
+        $consult_week_day = (int)date('w', $phptime);
+        if($consult_week_day >=5) {
+            $consult_week_day = 1;
+        }
+        else {
+            $consult_week_day += 1;
+        }
+        $consult_week_day_str = __('itv_week_day_' . $consult_week_day, 'tst');
+        
+        return array('week_day_str' => $consult_week_day_str, 'date_str' => $consult_date);
     }
 }
 
@@ -300,8 +462,10 @@ function itv_consult_manage_columns($columns) {
         unset($columns['taxonomy-consult_state']);
         unset($columns['subscribe-reloaded']);
         unset($columns['title']);
+        unset($columns['date']);
         $columns = array_push_after($columns, array('custom-consult-state' => __('Consult state custom column', 'tst')), 'taxonomy-consult_source');
         $columns = array_push_after($columns, array('consult-task-title' => __('Consult task title', 'tst')), 'cb');
+        $columns['consult-datetime'] = __('Consult Date', 'tst');
     }
     return $columns;
 }
@@ -324,7 +488,8 @@ function itv_consult_manage_custom_columns($column) {
         else {
             $external_post_link = get_post_meta($post->ID, 'external_post_link', true);
             $view_task_link = "<a href='".$external_post_link."' target='_blank'>" . $post->post_title . "</a>";
-            echo $view_task_link;
+            $edit_consult_link = " <a title='".__('Consult settings', 'tst')."' href='".get_edit_post_link($post->ID)."' target='_blank' class='dashicons-before dashicons-admin-generic'></a>";
+            echo $view_task_link . ' ' . $edit_consult_link;
         }
     }
     elseif($column == 'p2p-from-consult-consultant') {
@@ -354,6 +519,14 @@ function itv_consult_manage_custom_columns($column) {
             'class' => 'one_consult_state',
         ));
     }
+    elseif($column == 'consult-datetime') {
+        $datetime = get_post_meta($post->ID, 'consult_moment', true);
+        if(!preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', ''.$datetime)) {
+            $datetime = '';
+        }
+        $datetime = preg_replace('/:\d{2}$/', '', $datetime);
+        echo '<input type="text" value="'. $datetime . '" class="consult-datetime-input-field" id="'.'one_consult_datetime' . $post->ID.'" />';
+    }
 }
 
 function itv_consult_admin_init() {
@@ -361,6 +534,18 @@ function itv_consult_admin_init() {
     add_action("manage_posts_custom_column", "itv_consult_manage_custom_columns");
 }
 add_action('admin_init' , 'itv_consult_admin_init');
+
+function itv_consult_change_datetime() {
+    $res = array('status' => 'error');
+    try {
+        update_post_meta( $_POST['consult_id'], 'consult_moment', $_POST['datetime'] . ':00' );
+        $res = array('status' => 'ok');
+    }
+    catch(Exception $ex) {}
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_change-consult-datetime', 'itv_consult_change_datetime');
 
 function itv_consult_change_state() {
     $res = array('status' => 'error');
@@ -418,7 +603,7 @@ function itv_consult_custom_author( $author_link ) {
         $external_user_name = get_post_meta($post->ID, 'external_user_name', true);
         $external_user_email = get_post_meta($post->ID, 'external_user_email', true);
         if($external_user_email || $external_user_email) {
-            $author_link = $external_user_name . '<br />' . $external_user_email;
+            $author_link = '<span class="consult-external-author">'.$external_user_name . '<br />' . $external_user_email.'</span>';
         }
     }
     return $author_link;
@@ -435,3 +620,5 @@ function itv_change_consult_author_in_list() {
 add_action('admin_head-edit.php', 'itv_change_consult_author_in_list');
 
 __("Show All Consult states", 'tst');
+__('itv_email_test_consult_needed_notification_subject_audit', 'tst');
+__('itv_email_test_consult_needed_notification_audit', 'tst');
