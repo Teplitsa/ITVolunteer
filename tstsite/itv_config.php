@@ -21,9 +21,9 @@ class ItvConfig {
             
             // ITV consultants emails list (for automatic consultation choose)
             'CONSULT_EMAILS' => array (
-//                 'anna.ladoshkina@te-st.ru',
-//                 'suvorov@te-st.ru',
-                'denis.cherniatev@gmail.com',
+                'anna.ladoshkina@te-st.ru',
+                'suvorov@te-st.ru',
+//                 'denis.cherniatev@gmail.com',
             ),
             
             'EMAIL_FROM' => 'info@itv.te-st.ru',

@@ -17,10 +17,6 @@
             itv_consult_change_consultant($(this));
         });
         
-        jQuery('.consult-datetime-input-field').change(function(){
-            itv_consult_change_datetime($(this));
-        });
-
         // remove links for external consult authors
         $('.consult-external-author').each(function(){
             var $author_link = $(this).parent();
@@ -34,7 +30,10 @@
             maxTime: '23:00',
             defaultTime: '12:00',
             inline:false,
-            lang: 'ru'
+            lang: 'ru',
+            onSelectTime: function(current_time, $input) {
+                itv_consult_change_datetime($input);
+            }
         });
         
     var is_tst_consult_needed_init_val = $('#acf-field-is_tst_consult_needed-1').prop('checked');
