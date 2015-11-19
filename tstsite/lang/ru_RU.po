@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-18 22:07+0200\n"
-"PO-Revision-Date: 2015-11-18 22:19+0200\n"
+"POT-Creation-Date: 2015-11-19 02:05+0200\n"
+"PO-Revision-Date: 2015-11-19 02:06+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -441,13 +441,13 @@ msgstr "При загрузке фоторграфии произошла оши
 msgid "Avatar delete failed"
 msgstr "При удалении фоторграфии произошла ошибка!"
 
-#: inc/class-itv-cssjs.php:216
+#: inc/class-itv-cssjs.php:219
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:754 inc/itv_consult.php:232
-#: inc/itv_consult.php:270 inc/itv_consult.php:319 inc/itv_consult.php:372
+#: inc/customizer.php:11 inc/customizer.php:754 inc/itv_consult.php:239
+#: inc/itv_consult.php:285 inc/itv_consult.php:337 inc/itv_consult.php:392
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -715,7 +715,7 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:212 inc/itv_consult.php:299
+#: inc/itv_consult.php:219 inc/itv_consult.php:317
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -731,12 +731,12 @@ msgstr ""
 "Описание: {{task_content}}"
 
 # @ tst
-#: inc/itv_consult.php:227 inc/itv_consult.php:314
+#: inc/itv_consult.php:234 inc/itv_consult.php:332
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:252
+#: inc/itv_consult.php:267
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -761,16 +761,16 @@ msgstr ""
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:266
+#: inc/itv_consult.php:281
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:347
+#: inc/itv_consult.php:366
 msgid "itv_email_test_consult_needed_notification_"
-msgstr ""
+msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:349
+#: inc/itv_consult.php:368
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -790,44 +790,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:365
+#: inc/itv_consult.php:385
 msgid "itv_email_test_consult_needed_notification_subject_"
-msgstr ""
+msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:367
+#: inc/itv_consult.php:387
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:398
+#: inc/itv_consult.php:431
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:432
+#: inc/itv_consult.php:466
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:433
+#: inc/itv_consult.php:467
 msgid "Consult task title"
 msgstr "Заголовок "
 
+#: inc/itv_consult.php:468
+msgid "Consult Date"
+msgstr "Время консультации"
+
 # @ tst
-#: inc/itv_consult.php:449 inc/post-types.php:66
+#: inc/itv_consult.php:484 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:450 inc/itv_consult.php:456
+#: inc/itv_consult.php:485 inc/itv_consult.php:491
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:567
+#: inc/itv_consult.php:622
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:568
+#: inc/itv_consult.php:623
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:569
+#: inc/itv_consult.php:624
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
