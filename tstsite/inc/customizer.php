@@ -25,10 +25,6 @@ add_filter('get_comment_link', function($link, $comment, $args){
     return stristr($link, '-'.$comment->comment_ID) ? $link : $link.'-'.$comment->comment_ID;
 }, 10, 3);
 
-function my_task_function() {
-    wp_mail('your@email.com', 'Automatic email', 'Automatic scheduled email from WordPress.');
-}
-
 function date_from_dd_mm_yy_to_yymmdd($date) {
     if(preg_match('/^\d{2}\.\d{2}\.\d{4}$/', $date)) {
         $date_arr = date_parse_from_format ( "d.m.Y" , $date );
@@ -789,17 +785,39 @@ function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 add_action( 'save_post', 'tst_task_saved', 10, 3 );
 
 function on_all_status_transitions( $new_status, $old_status, $task ) {
-	if( !$task || $task->post_type != 'tasks' ) {
-		return;
-	}
-	
-	if ( $new_status != $old_status ) {
-		$candidates = tst_get_task_doers($task->ID);
-		$itv_notificator = new ItvNotificator();
-		foreach($candidates as $candidate) {
-			$itv_notificator->notif_candidate_about_task_status_change($candidate, $task);
-		}
-	}
+    if (! $task || $task->post_type != 'tasks') {
+        return;
+    }
+    
+    if ($new_status != $old_status) {
+        $itv_notificator = new ItvNotificator ();
+        
+        $doers_id = array();
+        if ($task->post_status == 'closed') {
+            $author = get_user_by('id', $task->post_author);
+            $itv_notificator->notif_author_about_task_closed( $author, $task );
+            
+            $doers = tst_get_task_doers ( $task->ID, true );
+            foreach ( $doers as $doer ) {
+                $doers_id[] = $doer->ID;
+                $itv_notificator->notif_doer_about_task_closed( $doer, $task );
+            }
+        }
+        else {
+            $doers = tst_get_task_doers ( $task->ID, true );
+            foreach ( $doers as $doer ) {
+                $doers_id[] = $doer->ID;
+                $itv_notificator->notif_doer_about_task_status_change( $doer, $task );
+            }
+        }
+        
+        $candidates = tst_get_task_doers ( $task->ID );
+        foreach ( $candidates as $candidate ) {
+            if(!count($doers) || !in_array($candidate->ID, $doers_id)) {
+                $itv_notificator->notif_candidate_about_task_status_change ( $candidate, $task );
+            }
+        }
+    }
 }
 add_action('transition_post_status',  'on_all_status_transitions', 10, 3);
 

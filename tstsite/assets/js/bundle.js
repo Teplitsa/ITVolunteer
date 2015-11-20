@@ -1210,7 +1210,59 @@ jQuery(function($){
 	// read only review
 	$('.review-rating-container-readonly').rating();
 	$('.review-rating-container-readonly').find('.stars a').unbind('click').unbind('mouseenter').unbind('mouseleave').unbind('mouseout').unbind('mouseover');
+	
+	itv_init_revew_forms_highlight($);
 });
+
+function itv_init_revew_forms_highlight($) {
+    var ITV_HIGHLIGHT_REVIEW_FORM_TIMEOUT = null;
+    
+    // auto show review forms
+    var hash = window.location.hash;
+    if(hash == '#leave_review_for_doer') {
+        $('.leave-review').click();
+        var $review_form = $('#review-message');
+        $('#task-leave-review-form input, #task-leave-review-form a').click(function() {
+            itv_stop_highlight_review_form($review_form);
+        });
+        $review_form.click(function(){
+            itv_stop_highlight_review_form($review_form);
+        });
+        itv_highlight_review_form($review_form);
+        $('#review-exist-alert').show();
+    }
+    else if(hash == '#leave_review_for_author') {
+        $('.leave-review-author').click();
+        var $review_form = $('#review-author-message');
+        $('#task-leave-review-author-form input, #task-leave-review-author-form a').click(function() {
+            itv_stop_highlight_review_form($review_form);
+        });
+        $review_form.click(function(){
+            itv_stop_highlight_review_form($review_form);
+        });
+        itv_highlight_review_form($review_form);
+        $('#author-review-exist-alert').show();
+    }
+    
+    function itv_stop_highlight_review_form($review_form) {
+        $review_form.data('stop-highlight', true);
+        clearTimeout(ITV_HIGHLIGHT_REVIEW_FORM_TIMEOUT);
+        $review_form.removeClass('leave-review-highlight');
+    }
+
+    function itv_highlight_review_form($review_form) {
+        if($review_form.data('stop-highlight')) {
+            return;
+        }
+        ITV_HIGHLIGHT_REVIEW_FORM_TIMEOUT = setTimeout(function(){
+            $review_form.addClass('leave-review-highlight');
+            ITV_HIGHLIGHT_REVIEW_FORM_TIMEOUT = setTimeout(function(){
+                $review_form.removeClass('leave-review-highlight');
+                itv_highlight_review_form($review_form);
+            }, 1000);
+        }, 1000);
+    }
+}
 
 function validate_review_form($form) {
 	var ret = true;
