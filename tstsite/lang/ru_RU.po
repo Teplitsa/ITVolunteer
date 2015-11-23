@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-23 16:33+0200\n"
-"PO-Revision-Date: 2015-11-23 16:34+0200\n"
+"PO-Revision-Date: 2015-11-23 19:43+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -2109,7 +2109,7 @@ msgstr "Возврат к просмотру профиля"
 
 #: page-author-reviews.php:58 partials/content-member_single.php:182
 msgid "Author reviews"
-msgstr "Отзывы автора"
+msgstr "Отзывы про автора"
 
 #: page-author-reviews.php:121 page-doer-reviews.php:121
 msgid "Members has no any reviews yet"
@@ -2117,7 +2117,7 @@ msgstr "У пользователя еще нет отзывов"
 
 #: page-doer-reviews.php:58 partials/content-member_single.php:178
 msgid "Doer reviews"
-msgstr "Отзывы исполнителя"
+msgstr "Отзывы про волонтера"
 
 # @ tst
 #: page-member-action.php:69
