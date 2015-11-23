@@ -73,7 +73,9 @@ class ItvNotificator {
     }
     
     public function fill_template($template, $data) {
-        return preg_replace ( '/\{\{(\w+)\}\}/ie', '$data["$1"]', $template );
+        return preg_replace_callback ( '/\{\{(\w+)\}\}/i', function($matches) use($data) {
+            return isset($matches[1]) && isset($data[$matches[1]]) ? $data[$matches[1]] : '';
+        }, $template );
     }
     
     public function notify_about_tomorrow_archive() {
