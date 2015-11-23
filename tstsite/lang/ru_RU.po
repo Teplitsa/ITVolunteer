@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-20 23:48+0200\n"
-"PO-Revision-Date: 2015-11-20 23:48+0200\n"
+"POT-Creation-Date: 2015-11-23 16:33+0200\n"
+"PO-Revision-Date: 2015-11-23 16:34+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -279,7 +279,8 @@ msgstr "Статус стал"
 msgid "Activity details"
 msgstr "Детали"
 
-#: inc/admin.php:657 inc/admin.php:749
+#: inc/admin.php:657 inc/itv_log.php:183 inc/itv_log.php:191
+#: inc/itv_log.php:209 inc/itv_log.php:232
 msgid "Unknown user"
 msgstr "Неизвестный пользователь"
 
@@ -299,19 +300,15 @@ msgstr "Далее »"
 msgid "Log record title"
 msgstr "Заголовок"
 
-#: inc/admin.php:758
-msgid "Unknown task"
-msgstr "Неизвестная задача"
-
-#: inc/admin.php:779
+#: inc/admin.php:733
 msgid "Itv General Log"
 msgstr "Общий лог сайта"
 
-#: inc/admin.php:783
+#: inc/admin.php:737
 msgid "All Tasks Changes Log"
 msgstr "Лог изменений задач"
 
-#: inc/admin.php:786
+#: inc/admin.php:740
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
@@ -446,40 +443,40 @@ msgid "Error!"
 msgstr "Произошла ошибка!"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:750 inc/itv_consult.php:239
+#: inc/customizer.php:11 inc/customizer.php:752 inc/itv_consult.php:239
 #: inc/itv_consult.php:285 inc/itv_consult.php:337 inc/itv_consult.php:392
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
 # @ tst
 #: inc/customizer.php:62 inc/customizer.php:93 inc/customizer.php:123
-#: inc/customizer.php:158 inc/customizer.php:195 inc/customizer.php:268
-#: inc/customizer.php:317 inc/customizer.php:372 inc/customizer.php:434
-#: inc/customizer.php:466 inc/customizer.php:527 inc/customizer.php:581
-#: inc/customizer.php:642 inc/customizer.php:676 inc/functions-members.php:374
+#: inc/customizer.php:158 inc/customizer.php:195 inc/customizer.php:270
+#: inc/customizer.php:319 inc/customizer.php:374 inc/customizer.php:436
+#: inc/customizer.php:468 inc/customizer.php:529 inc/customizer.php:583
+#: inc/customizer.php:644 inc/customizer.php:678 inc/functions-members.php:374
 #: inc/functions-members.php:463
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 # @ tst
-#: inc/customizer.php:417 inc/customizer.php:894 inc/customizer.php:917
+#: inc/customizer.php:419 inc/customizer.php:896 inc/customizer.php:919
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
 "Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
 
 # @ tst
-#: inc/customizer.php:471 inc/functions-members.php:248
+#: inc/customizer.php:473 inc/functions-members.php:248
 msgid "Username already exists!"
 msgstr "Такой логин уже существует."
 
 # @ tst
-#: inc/customizer.php:476 inc/customizer.php:586 inc/functions-members.php:251
+#: inc/customizer.php:478 inc/customizer.php:588 inc/functions-members.php:251
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
 # @ tst
-#: inc/customizer.php:491 inc/functions-members.php:276
+#: inc/customizer.php:493 inc/functions-members.php:276
 #: inc/functions-members.php:283 inc/functions-members.php:290
 msgid "We are very sorry :( Some error occured while registering your account."
 msgstr ""
@@ -487,7 +484,7 @@ msgstr ""
 "регистрацию позже."
 
 # @ tst
-#: inc/customizer.php:515 inc/customizer.php:564
+#: inc/customizer.php:517 inc/customizer.php:566
 msgid ""
 "Your registration is complete! Please check out the email you gave us for "
 "our activation message."
@@ -497,12 +494,12 @@ msgstr ""
 "инструкциям в отправленном вам письме."
 
 # @ tst
-#: inc/customizer.php:603
+#: inc/customizer.php:605
 msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
 # @ tst
-#: inc/customizer.php:627
+#: inc/customizer.php:629
 #, php-format
 msgid ""
 "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
@@ -512,7 +509,7 @@ msgstr ""
 "\">Просмотреть</a>."
 
 # @ tst
-#: inc/customizer.php:664
+#: inc/customizer.php:666
 msgid ""
 "<strong>Error:</strong> something wrong happens when we deleted your "
 "account. We are already looking to it."
@@ -521,11 +518,11 @@ msgstr ""
 "эту проблему."
 
 # @ tst
-#: inc/customizer.php:694
+#: inc/customizer.php:696
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
-#: inc/customizer.php:736
+#: inc/customizer.php:738
 msgid "itv_email_task_complete_message"
 msgstr ""
 "Еще одна задача выполнена: \n"
@@ -536,50 +533,50 @@ msgstr ""
 "\n"
 "Описание: {{task_content}}"
 
-#: inc/customizer.php:746
+#: inc/customizer.php:748
 msgid "itv_email_task_complete_subject"
 msgstr "Очередная задача выполнена"
 
 # @ tst
-#: inc/customizer.php:831
+#: inc/customizer.php:833
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-#: inc/customizer.php:834
+#: inc/customizer.php:836
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-#: inc/customizer.php:846
+#: inc/customizer.php:848
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:940
+#: inc/customizer.php:942
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:941
+#: inc/customizer.php:943
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:942
+#: inc/customizer.php:944
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:943
+#: inc/customizer.php:945
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:944
+#: inc/customizer.php:946
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:945
+#: inc/customizer.php:947
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:946
+#: inc/customizer.php:948
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -1351,89 +1348,125 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_log.php:152
+#: inc/itv_log.php:157
 msgid "itv_task_actions_log_"
 msgstr "тв_лог_событий_задачи"
 
-#: inc/itv_log.php:156
+#: inc/itv_log.php:200
+#, php-format
+msgid "Review log from %s to %s"
+msgstr "Отзыв от %s для %s"
+
+#: inc/itv_log.php:201
+#, php-format
+msgid "Vote: %s"
+msgstr "Оценка: %s"
+
+#: inc/itv_log.php:218
+#, php-format
+msgid "Email for task: %s"
+msgstr "Email по задаче: %s"
+
+#: inc/itv_log.php:218
+msgid "Email log item"
+msgstr "Email для пользователя"
+
+#: inc/itv_log.php:221
+#, php-format
+msgid "Email for user %s"
+msgstr "Адресат: %s"
+
+#: inc/itv_log.php:252
+msgid "Unknown task"
+msgstr "Неизвестная задача"
+
+#: inc/itv_log.php:258
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
 
-#: inc/itv_log.php:157
+#: inc/itv_log.php:259
 msgid "itv_task_actions_log_delete"
 msgstr "Задача удалена пользователем %s"
 
-#: inc/itv_log.php:158
+#: inc/itv_log.php:260
 msgid "itv_task_actions_log_edit"
 msgstr "Изменена пользователем %s"
 
-#: inc/itv_log.php:159
+#: inc/itv_log.php:261
 msgid "itv_task_actions_log_add_candidate"
 msgstr "Добавлен кандидат %s"
 
-#: inc/itv_log.php:160
+#: inc/itv_log.php:262
 msgid "itv_task_actions_log_refuse_candidate"
 msgstr "Отклонен кандидат %s"
 
-#: inc/itv_log.php:161
+#: inc/itv_log.php:263
 msgid "itv_task_actions_log_approve_candidate"
 msgstr "Одобрен кандидат %s"
 
-#: inc/itv_log.php:162
+#: inc/itv_log.php:264
 msgid "itv_task_actions_log_remove_candidate"
 msgstr "Удален кандидат %s"
 
-#: inc/itv_log.php:163
+#: inc/itv_log.php:265
 msgid "itv_task_actions_log_publish"
 msgstr "Задача опубликована пользователем %s"
 
-#: inc/itv_log.php:164
+#: inc/itv_log.php:266
 msgid "itv_task_actions_log_unpublish"
 msgstr "Задача снята с публикации %s"
 
-#: inc/itv_log.php:165
+#: inc/itv_log.php:267
 msgid "itv_task_actions_log_inwork"
 msgstr "Задача поставлена в работу пользователем %s"
 
-#: inc/itv_log.php:166
+#: inc/itv_log.php:268
 msgid "itv_task_actions_log_close"
 msgstr "Задача закрыта пользователем %s"
 
-#: inc/itv_log.php:167
+#: inc/itv_log.php:269
 msgid "itv_task_actions_log_archive"
 msgstr "Задача перемещена в архив"
 
-#: inc/itv_log.php:169
+#: inc/itv_log.php:271
 msgid "itv_task_actions_log_no_doer_yes"
 msgstr "Уведомление о долгом отсутствии исполнителя для %s"
 
-#: inc/itv_log.php:170
+#: inc/itv_log.php:272
 msgid "itv_task_actions_log_archive_soon"
 msgstr "Уведомление о скором перемещении в архив для %s"
 
-#: inc/itv_log.php:172
+#: inc/itv_log.php:274
 msgid "itv_task_actions_log_user_register"
 msgstr "Новый пользователь %s зарегистрирован"
 
-#: inc/itv_log.php:173
+#: inc/itv_log.php:275
 msgid "itv_task_actions_log_user_update"
 msgstr "Пользователь %s обновил свой профиль"
 
-#: inc/itv_log.php:174
+#: inc/itv_log.php:276
 msgid "itv_task_actions_log_user_delete_profile"
 msgstr "Пользователь %s удалил свой профиль"
 
-#: inc/itv_log.php:175
+#: inc/itv_log.php:277
 msgid "itv_task_actions_log_user_login_login"
 msgstr "Авторизация по логину"
 
-#: inc/itv_log.php:176
+#: inc/itv_log.php:278
 msgid "itv_task_actions_log_user_login_email"
 msgstr "Авторизация по email"
 
-#: inc/itv_log.php:177
+#: inc/itv_log.php:279
 msgid "itv_task_actions_log_user_login_failed"
 msgstr "Ошибка входа на сайт!"
+
+#: inc/itv_log.php:280
+msgid "itv_task_actions_log_review_for_doer"
+msgstr "Отзыв об исполнителе задачи %s"
+
+#: inc/itv_log.php:281
+msgid "itv_task_actions_log_review_for_author"
+msgstr "Отзыв об авторе задачи %s"
 
 #: inc/itv_notificator.php:303 inc/itv_notificator.php:321
 msgid "Task status become "

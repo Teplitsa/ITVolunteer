@@ -226,6 +226,7 @@ function ajax_approve_candidate() {
             home_url('members/'.$task_author->user_login.'/')
         ))
     );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_DOER, $doer->ID, $email_templates->get_title('approve_candidate_doer_notice'), $task ? $task->ID : 0);
 
     // Notice to author:
     wp_mail(
@@ -240,6 +241,7 @@ function ajax_approve_candidate() {
             home_url('members/'.$doer->user_login.'/')
         ))
     );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('approve_candidate_author_notice'), $task ? $task->ID : 0);
 
     // Task is automatically switched "to work":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
@@ -282,8 +284,9 @@ function ajax_refuse_candidate() {
 		
     $email_templates = ItvEmailTemplates::instance();
 	
+    $user = get_user_by('id', $_POST['doer-id']);
     wp_mail(
-        get_user_by('id', $_POST['doer-id'])->user_email,
+        $user->user_email,
         $email_templates->get_title('refuse_candidate_doer_notice'),
         nl2br(sprintf(
             $email_templates->get_text('refuse_candidate_doer_notice'),
@@ -291,6 +294,7 @@ function ajax_refuse_candidate() {
             $task->post_title
         ))
     );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $user->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
@@ -348,6 +352,7 @@ function ajax_add_candidate() {
             get_permalink($task_id)
         ))
     );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
 
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -399,6 +404,7 @@ function ajax_remove_candidate() {
             $_POST['candidate-message']
         ))
     );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
 
     // Task is automatically switched "publish":
     wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));

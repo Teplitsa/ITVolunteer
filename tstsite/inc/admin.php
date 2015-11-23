@@ -639,7 +639,7 @@ function itv_tasks_log_box_content(WP_Post $task) {
 	$itv_log = ItvLog::instance();
 	$log_records = $itv_log->get_task_log($task->ID);
 	
-	echo "<table>";
+	echo "<table class='wp-list-table'>";
 	
 	echo "<tr class='itv-stats-header'>";
 	echo "<th>".__("Activity time", 'tst')."</th>";
@@ -717,55 +717,9 @@ function itv_all_tasks_log_box_content() {
 	echo "</tr>";
 	
 	foreach ($log_records as $k => $log) {
-		if($itv_log->is_user_action($log->action)) {
-			$user_id = $log->assoc_user_id;
-			$user_login = $log->task_status;
-			
-			$user = $user_id ? get_user_by( 'id', $user_id ) : NULL;
-			$user_link = $user ? tst_get_member_url($user) : get_edit_user_link( $user_id );
-			$edit_user_link = get_edit_user_link( $user_id );
-			
-			$user_text = "<a href='".$user_link."' title='".get_user_last_login_time($user)."'>" . $user_login . "</a>";
-			$user_text .= "<a href='".$edit_user_link."' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";;
-				
-			echo "<tr>";
-			echo "<td class='itv-stats-task-title' title='".get_user_meta($user->ID, 'last_login_time', true)."'>".$itv_log->humanize_action($log->action, $user_text)."</td>";
-			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-			echo "<td class='itv-stats-time'>"."</td>";
-			echo "<td>".$user_text."</td>";
-			echo "<td>".$log->data."</td>";
-			echo "</tr>";
-		}
-		else {
-			$user = $log->assoc_user_id ? get_user_by( 'id', $log->assoc_user_id ) : NULL;
-			$user_text = '';
-			if($user) {
-				$user_link = tst_get_member_url($user);
-				$edit_user_link = get_edit_user_link( $user->ID );
-				$user_text = "<a href='".$user_link."'>" . $user->display_name . "</a>";
-				$user_text .= "<a href='".$edit_user_link."' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";
-			}
-			else {
-				$user_text = __('Unknown user', 'tst');
-			}
-			
-			$task = get_post($log->task_id);
-			$task_text = '';
-			if($task) {
-				$task_text = "<a href='".get_post_permalink($task->ID)."' target='_blank'>" . $task->post_title . "</a>";
-			}
-			else {
-				$task_text = __('Unknown task', 'tst');
-			}
-	
-			echo "<tr>";
-			echo "<td class='itv-stats-task-title'>".$task_text."</td>";
-			echo "<td class='itv-stats-time'>".$log->action_time."</td>";
-			echo "<td class='itv-stats-time'>".tst_get_task_status_label($log->task_status)."</td>";
-			echo "<td>".$itv_log->humanize_action($log->action, $user_text)."</td>";
-			echo "<td>".$log->data."</td>";
-			echo "</tr>";
-		}
+	    echo '<tr class="'.($k % 2 == 0 ? 'alternate' : '').'">';
+	    $itv_log->show_log_record($log);
+	    echo '</tr>';
 	}
 	echo "</table>";
 	

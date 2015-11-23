@@ -315,6 +315,7 @@ class ItvNotificator {
             'status_message' => $task_status_message,
             'task_link' => $task_permalink 
         ) ) ) );
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_CANDIDATE_ABOUT_TASK_STATUS_CHANGED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
     
     function notif_doer_about_task_status_change($user, $task) {
@@ -333,6 +334,7 @@ class ItvNotificator {
             'status_message' => $task_status_message,
             'task_link' => $task_permalink
         ) ) ) );
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_STATUS_CHANGED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
     
     /* notify author about task status change */
@@ -349,6 +351,7 @@ class ItvNotificator {
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
         ) ) ) );
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_AUTHOR_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
     
     /* notify doer about task status change */
@@ -365,6 +368,8 @@ class ItvNotificator {
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
         ) ) ) );
+        
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
 }
 
