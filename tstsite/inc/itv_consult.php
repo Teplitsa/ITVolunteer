@@ -186,7 +186,7 @@ class ItvConsult {
         }
     }
 
-    function tst_send_admin_notif_consult_needed($post_id, $consultant) {
+    public static function tst_send_admin_notif_consult_needed($post_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
@@ -244,7 +244,7 @@ class ItvConsult {
         }
     }
     
-    function tst_send_user_notif_consult_needed($post_id, $consultant) {
+    public static function tst_send_user_notif_consult_needed($post_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
@@ -290,7 +290,7 @@ class ItvConsult {
     
     }
     
-    function tst_send_admin_notif_consult_needed_external($consult_id, $consultant) {
+    public static function tst_send_admin_notif_consult_needed_external($consult_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
@@ -342,7 +342,7 @@ class ItvConsult {
         }
     }
     
-    function tst_send_user_notif_consult_needed_external($consult_id, $consultant) {
+    public static function tst_send_user_notif_consult_needed_external($consult_id, $consultant) {
         $itv_config = ItvConfig::instance();
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
