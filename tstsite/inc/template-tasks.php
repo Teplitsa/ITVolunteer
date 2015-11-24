@@ -64,7 +64,8 @@ function tst_get_task_status_list() { //opt
         'publish' => __('Opened', 'tst'),
         'in_work' => __('In work', 'tst'),
         'closed'  => __('Closed', 'tst'),
-		'archived'  => __('Archived', 'tst')
+        'archived'  => __('Archived', 'tst'),
+        'trash'  => __('Trash', 'tst'),
     );
 }
 
