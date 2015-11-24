@@ -173,40 +173,35 @@ $activity = tst_get_member_activity($tst_member->user_object);
 			<?php if(count($latest_doer_reviews) > 0 || count($latest_author_reviews) > 0):?>
 			<div class="row">
 		        <div id="task-tabs" class="itv-reviews-tabs">
-		            <ul class="nav nav-tabs">
-		            	<?php if(count($latest_doer_reviews) > 0):?>
-		                	<li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
-		                <?php endif?>
-		                
-		                <?php if(count($latest_author_reviews) > 0):?>
-		                	<li <?php if(count($latest_doer_reviews) == 0):?> class="active"<?php endif?>><a href="#author-reviews-list" data-toggle="tab"><?php _e('Author reviews', 'tst');?></a></li>
-		                <?php endif?>
-		            </ul>
-		            <div class="tab-content">
-		            	<?php if(count($latest_doer_reviews) > 0):?>
-			                <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
-			                <?php foreach($latest_doer_reviews as $review):?>
-			                	<?php 
-			                		$review_author = get_user_by('id', $review->author_id);
-									itv_show_review($review, $review_author);
-								?>                	
-			                <?php endforeach;?>
-							<a href="<?php echo home_url("doer-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All doer reviews', 'tst');?> &raquo;</a>
-			                </div>
-		                <?php endif;?>
-		                
-		                <?php if(count($latest_author_reviews) > 0):?>
-			                <div class="tab-pane fade in <?php if(count($latest_doer_reviews) == 0):?>active<?php endif; ?> itv-user-reviews-list" id="author-reviews-list">
-			                <?php foreach($latest_author_reviews as $review):?>
-			                	<?php 
-			                		$review_author = get_user_by('id', $review->doer_id);
-									itv_show_review($review, $review_author);
-								?>                	
-                			<?php endforeach;?>
-							<a href="<?php echo home_url("author-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All author reviews', 'tst');?> &raquo;</a>
-			                </div>
-		                <?php endif;?>
-	                </div>
+	            	<?php if(count($latest_doer_reviews) > 0):?>
+	                	<h4><?php _e('Doer reviews', 'tst');?></h4>
+	                	
+		                <div class="tab-pane" id="doer-reviews-list">
+		                <?php foreach($latest_doer_reviews as $review):?>
+		                	<?php 
+		                		$review_author = get_user_by('id', $review->author_id);
+								itv_show_review($review, $review_author);
+							?>                	
+		                <?php endforeach;?>
+						<a href="<?php echo home_url("doer-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All doer reviews', 'tst');?> &raquo;</a>
+		                </div>
+	                <?php endif?>
+	                
+	                <br />
+	                <?php if(count($latest_author_reviews) > 0):?>
+	                	<h4><?php _e('Author reviews', 'tst');?></h4>
+	                	
+		                <div class="tab-pane" id="author-reviews-list">
+		                <?php foreach($latest_author_reviews as $review):?>
+		                	<?php 
+		                		$review_author = get_user_by('id', $review->doer_id);
+								itv_show_review($review, $review_author);
+							?>                	
+            			<?php endforeach;?>
+						<a href="<?php echo home_url("author-reviews/?membername=" . $tst_member->user_login);?>" class="btn btn-primary btn-xs"><?php _e('All author reviews', 'tst');?> &raquo;</a>
+		                </div>
+	                	
+	                <?php endif?>
 				</div>			
 			</div>
 			<?php endif?>

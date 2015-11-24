@@ -117,6 +117,7 @@ $itv_author_reviews = ItvReviewsAuthor::instance();
 			
 			<?php if($post->post_status == 'closed' && tst_is_user_candidate() > 1): ?>	
 				<?php if($review = $itv_author_reviews->get_review_for_author_and_task($author_id, $post->ID)):?>
+					<div class="alert alert-warning" id="author-review-exist-alert" style="display:none;"><?php _e('You have already left a review', 'tst') ?></div>
 					<div class="clearfix">
 						<div class="pull-left"><?php _e('Your mark:', 'tst') ?></div><div class="rating-author-list pull-left"><?php itv_show_review_rating_readonly($review->rating); ?></div>
 					</div>

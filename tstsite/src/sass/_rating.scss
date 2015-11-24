@@ -77,3 +77,16 @@
         background: darken($color-text-meta, 10%);
     }
 }
+
+.leave-review-highlight {
+    background-color:#fce46d;
+    -webkit-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+}
+
+.itv-review4doer-alert {
+    display:none;
+    margin:3px 0px 7px 0px;
+    padding:2px 2px 2px 3px;
+}
