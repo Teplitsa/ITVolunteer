@@ -23,7 +23,10 @@ class ItvConfig {
             'CONSULT_EMAILS' => array (
                 'anna.ladoshkina@te-st.ru',
                 'suvorov@te-st.ru',
-//                 'denis.cherniatev@gmail.com',
+            ),
+            'CONSULT_BCC_EMAILS' => array (
+                'denis.cherniatev@gmail.com',
+                'sidorenko.a@gmail.com',
             ),
             
             'EMAIL_FROM' => 'info@itv.te-st.ru',
