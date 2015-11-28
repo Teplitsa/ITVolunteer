@@ -30,7 +30,7 @@ class ItvConfig {
             ),
             
             'EMAIL_FROM' => 'info@itv.te-st.ru',
-            'CONSULT_EMAIL_FROM' => 'anna.ladoshkina@te-st.ru',
+            'CONSULT_EMAIL_FROM' => 'support@te-st.ru',
             'TASK_ARCHIVE_DAYS' => 40,
             'TASK_NO_DOER_NOTIF_DAYS' => 9 
         );
