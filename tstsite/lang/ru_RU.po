@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-24 14:56+0200\n"
-"PO-Revision-Date: 2015-11-24 14:56+0200\n"
+"POT-Creation-Date: 2015-11-28 02:20+0200\n"
+"PO-Revision-Date: 2015-11-28 02:21+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -444,7 +444,7 @@ msgstr "Произошла ошибка!"
 
 # @ tst
 #: inc/customizer.php:11 inc/customizer.php:756 inc/itv_consult.php:239
-#: inc/itv_consult.php:285 inc/itv_consult.php:337 inc/itv_consult.php:392
+#: inc/itv_consult.php:286 inc/itv_consult.php:338 inc/itv_consult.php:394
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -712,7 +712,7 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:219 inc/itv_consult.php:317
+#: inc/itv_consult.php:219 inc/itv_consult.php:318
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -728,12 +728,12 @@ msgstr ""
 "Описание: {{task_content}}"
 
 # @ tst
-#: inc/itv_consult.php:234 inc/itv_consult.php:332
+#: inc/itv_consult.php:234 inc/itv_consult.php:333
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:267
+#: inc/itv_consult.php:268
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -758,16 +758,16 @@ msgstr ""
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:281
+#: inc/itv_consult.php:282
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:366
+#: inc/itv_consult.php:368
 msgid "itv_email_test_consult_needed_notification_"
 msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:368
+#: inc/itv_consult.php:370
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -787,48 +787,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:385
+#: inc/itv_consult.php:387
 msgid "itv_email_test_consult_needed_notification_subject_"
 msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:387
+#: inc/itv_consult.php:389
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:431
+#: inc/itv_consult.php:433
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:466
+#: inc/itv_consult.php:468
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:467
+#: inc/itv_consult.php:469
 msgid "Consult task title"
 msgstr "Заголовок "
 
-#: inc/itv_consult.php:468
+#: inc/itv_consult.php:470
 msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:484 inc/post-types.php:66
+#: inc/itv_consult.php:486 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:485 inc/itv_consult.php:491
+#: inc/itv_consult.php:487 inc/itv_consult.php:493
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:622
+#: inc/itv_consult.php:624
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:623
+#: inc/itv_consult.php:625
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:624
+#: inc/itv_consult.php:626
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -839,6 +839,16 @@ msgstr ""
 "дней. \n"
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
+
+#: inc/itv_consult.php:627
+#, php-format
+msgid "Consult request from audit (consult form) #%s"
+msgstr "Запрос консультации из Аудита (форма) #%s"
+
+#: inc/itv_consult.php:628
+#, php-format
+msgid "Consult request from audit (audit) #%s"
+msgstr "Запрос консультации из Аудита (аудит) #%s"
 
 # @ tst
 #: inc/itv_email_templates.php:8

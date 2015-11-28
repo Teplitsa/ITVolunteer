@@ -249,6 +249,7 @@ class ItvConsult {
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
+        $consult_bcc_emails = array_unique(array_merge($consult_emails, $itv_config->get('CONSULT_BCC_EMAILS')));
         
         $task = get_post($post_id);
         $task_author = (isset($task->post_author)) ? get_user_by('id', $task->post_author) : false;
@@ -283,7 +284,7 @@ class ItvConsult {
             $headers  = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
             $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
-            $headers .= 'Bcc: ' . implode(', ', $consult_emails) . "\r\n";
+            $headers .= 'Bcc: ' . implode(', ', $consult_bcc_emails) . "\r\n";
     
             wp_mail($to, $subject, $message, $headers);
         }
@@ -347,6 +348,7 @@ class ItvConsult {
     
         $consult_email_from = $itv_config->get('CONSULT_EMAIL_FROM');
         $consult_emails = $itv_config->get('CONSULT_EMAILS');
+        $consult_bcc_emails = array_unique(array_merge($consult_emails, $itv_config->get('CONSULT_BCC_EMAILS')));
         
         $consult_source = wp_get_post_terms( $consult_id, 'consult_source');
         $consult_source = count($consult_source) ? $consult_source[0] : null;
@@ -390,7 +392,7 @@ class ItvConsult {
             $headers  = 'MIME-Version: 1.0' . "\r\n";
             $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
             $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
-            $headers .= 'Bcc: ' . implode(', ', $consult_emails) . "\r\n";
+            $headers .= 'Bcc: ' . implode(', ', $consult_bcc_emails) . "\r\n";
     
             wp_mail($to, $subject, $message, $headers);
         }
@@ -622,3 +624,5 @@ add_action('admin_head-edit.php', 'itv_change_consult_author_in_list');
 __("Show All Consult states", 'tst');
 __('itv_email_test_consult_needed_notification_subject_audit', 'tst');
 __('itv_email_test_consult_needed_notification_audit', 'tst');
+__('Consult request from audit (consult form) #%s', 'tst');
+__('Consult request from audit (audit) #%s', 'tst');
