@@ -405,8 +405,18 @@ class ItvConsult {
     }
     
     public static function get_consult_datetime($date = '', $time = '') {
+        $phptime = time() + 24 * 3600;
+        
+        $consult_week_day = (int)date('w', $phptime);
+        if($consult_week_day == 0) {
+            $phptime += 24 * 3600;
+        }
+        elseif($consult_week_day == 6) {
+            $phptime += 2 * 24 * 3600;
+        }
+        
         if(!$date) {
-            $date = date('Y-m-d', time() + 24 * 3600);
+            $date = date('Y-m-d', $phptime);
         }
         
         if($time) {
@@ -424,12 +434,6 @@ class ItvConsult {
         $consult_date = date('d.m.Y', $phptime);
         
         $consult_week_day = (int)date('w', $phptime);
-        if($consult_week_day >=5) {
-            $consult_week_day = 1;
-        }
-        else {
-            $consult_week_day += 1;
-        }
         $consult_week_day_str = __('itv_week_day_' . $consult_week_day, 'tst');
         
         return array('week_day_str' => $consult_week_day_str, 'date_str' => $consult_date);
