@@ -276,6 +276,9 @@ function ajax_refuse_candidate() {
     // Send email to the task doer:
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
+    
+    $task_doers = tst_get_task_doers($task_id, $true);
+    $is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
 	if($task){
@@ -296,9 +299,11 @@ function ajax_refuse_candidate() {
     );
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $user->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 
-    // Task is automatically switched "publish":
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
-	
+    if($task && $task->post_status == 'in_work' && $is_doer_remove) {
+        // Task is automatically switched "publish":
+        wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+    }
+    
     wp_die(json_encode(array(
         'status' => 'ok',
     )));
@@ -382,8 +387,11 @@ function ajax_remove_candidate() {
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
+	
+	$task_doers = tst_get_task_doers($task_id, $true);
+	$is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
 
-    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);	
+    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
     
 	if($task){
@@ -406,8 +414,10 @@ function ajax_remove_candidate() {
     );
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
 
-    // Task is automatically switched "publish":
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+    if($task && $task->post_status == 'in_work' && $is_doer_remove) {
+        // Task is automatically switched "publish":
+        wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+    }
 	
     wp_die(json_encode(array(
         'status' => 'ok',
