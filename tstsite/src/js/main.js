@@ -528,6 +528,10 @@ jQuery(function($){
     // offer help
     $('#task-offer-help').click(function(e){
         e.preventDefault();
+        
+        if($(this).attr('disabled') == 'disabled') {
+            return false;
+        }
 
         $(this).slideUp(200);
         $('#task-status').slideUp(200);
@@ -542,7 +546,7 @@ jQuery(function($){
 
     $('#task-offer-help-form').submit(function(e){
         e.preventDefault();
-
+        
         var $form = $(this),
             $buttons = $form.find('input[type="submit"][type="reset"]');
 
@@ -570,6 +574,10 @@ jQuery(function($){
 
     $('#task-remove-offer').click(function(e){
         e.preventDefault();
+        
+        if($(this).attr('disabled') == 'disabled') {
+            return false;
+        }
 
         $(this).slideUp(200);
         $('#task-status').slideUp(200);

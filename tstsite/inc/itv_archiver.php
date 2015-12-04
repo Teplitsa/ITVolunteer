@@ -97,7 +97,6 @@ class ItvArchiver extends ItvNotificator {
 				array( 'ID' => $task->ID )
 			);
 			
-			wp_update_post($postarr);
 			$this->pring_debug("ARCHIVED\n");
 			// log archive action
 			ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ARCHIVE);
