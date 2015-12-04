@@ -109,7 +109,7 @@ class ItvLog {
         $actions = $wpdb->get_results ( $wpdb->prepare ( "
             SELECT * FROM $this->task_action_table
             WHERE task_id = %d AND `type` = %s
-            ORDER BY action_time DESC
+            ORDER BY action_time DESC, id DESC
             ", $task_id, static::$TYPE_TASK ) );
         
         return $actions;
@@ -124,7 +124,7 @@ class ItvLog {
         $actions = $wpdb->get_results ( "
             SELECT * FROM $this->task_action_table
             WHERE 1
-            ORDER BY action_time DESC
+            ORDER BY action_time DESC, id DESC
             LIMIT $offset, $limit
             " );
         
