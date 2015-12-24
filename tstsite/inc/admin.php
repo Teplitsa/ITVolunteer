@@ -687,8 +687,10 @@ function itv_all_tasks_log_box_content() {
 	$log_records = $itv_log->get_all_tasks_log($offset, $limit);
 	$all_records_count = $itv_log->get_all_tasks_log_records_count();
 	
+	$pn_url = urldecode($_SERVER['REQUEST_URI']);
+	$pn_url = preg_replace('/&pn=\d+/', '', $pn_url);
 	$pn_args = array(
-			'base'               => 'tools.php?page=itv_all_tasks_log_page%_%',
+			'base'               => $pn_url . '%_%',
 			'format'             => '&pn=%#%',
 			'total'              => ceil($all_records_count / $limit),
 			'current'            => $page,
@@ -705,27 +707,35 @@ function itv_all_tasks_log_box_content() {
 			'after_page_number'  => ''
 	);
 	
-	echo paginate_links( $pn_args ) . "<br /><br />";
-	echo "<table>";
-	
-	echo "<tr class='itv-stats-header'>";
-	echo "<th>".__("Log record title", 'tst')."</th>";
-	echo "<th>".__("Activity time", 'tst')."</th>";
-	echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
-	echo "<th>".__("Activity details", 'tst')."</th>";
-	echo "<th></th>";
-	echo "</tr>";
-	
-	foreach ($log_records as $k => $log) {
-	    echo '<tr class="'.($k % 2 == 0 ? 'alternate' : '').'">';
-	    $itv_log->show_log_record($log);
-	    echo '</tr>';
+	echo $itv_log->get_filters() . "<br /><br />";
+	echo sprintf(__('Log records found: %s', 'tst'), $all_records_count) . "<br /><br />";
+
+	if($all_records_count > 0) {
+	    echo paginate_links( $pn_args ) . "<br /><br />";
+	    echo "<table>";
+	    
+	    echo "<tr class='itv-stats-header'>";
+	    echo "<th>".__("Log record title", 'tst')."</th>";
+	    echo "<th>".__("Activity time", 'tst')."</th>";
+	    echo "<th class='itv-stats-header-status'>".__("Status become", 'tst')."</th>";
+	    echo "<th>".__("Activity details", 'tst')."</th>";
+	    echo "<th></th>";
+	    echo "</tr>";
+	    
+	    foreach ($log_records as $k => $log) {
+	        echo '<tr class="'.($k % 2 == 0 ? 'alternate' : '').'">';
+	        $itv_log->show_log_record($log);
+	        echo '</tr>';
+	    }
+	    echo "</table>";
+	    echo "<br />".paginate_links( $pn_args );
 	}
-	echo "</table>";
-	
-	echo "<br />".paginate_links( $pn_args );
 }
 
+function itv_actions_log_general_stats() {
+    $itv_log = ItvLog::instance();
+    $itv_log->show_general_stats();
+}
 
 #	add tasks log page in admin panel
 add_action('admin_menu', 'register_itv_tasks_log_submenu_page');
@@ -735,6 +745,7 @@ function register_itv_tasks_log_submenu_page() {
 
 function itv_tasks_log_page_callback() {
 	add_meta_box( 'itv_all_task_actions_log', __( 'All Tasks Changes Log', 'tst' ), 'itv_all_tasks_log_box_content', 'itv_all_tasks_log_page', 'normal' );
+	add_meta_box( 'itv_actions_log_general_stats', __( 'Actions Log Stats', 'tst' ), 'itv_actions_log_general_stats', 'itv_actions_log_sidebar', 'normal' );
 	
 	echo '<div class="wrap"><div id="icon-tools" class="icon32"></div>';
 	echo '<h2>' . __('Itv Tasks Log', 'tst') . '</h2>';
@@ -745,6 +756,9 @@ function itv_tasks_log_page_callback() {
 				<div id="postbox-container-2" class="postbox-container">
 					<?php do_meta_boxes("itv_all_tasks_log_page", "normal", null); ?>
 				</div>
+				<div id="postbox-container-1" class="postbox-container">
+			        <?php do_meta_boxes("itv_actions_log_sidebar", "normal", null); ?>
+			    </div>
 			</div>
 		</div>
 	</div>

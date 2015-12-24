@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-28 02:20+0200\n"
-"PO-Revision-Date: 2015-11-28 02:21+0200\n"
+"POT-Creation-Date: 2015-12-24 15:13+0200\n"
+"PO-Revision-Date: 2015-12-24 15:13+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -267,20 +267,20 @@ msgstr "Награда"
 msgid "Participation"
 msgstr "Участие"
 
-#: inc/admin.php:645 inc/admin.php:713
+#: inc/admin.php:645 inc/admin.php:719
 msgid "Activity time"
 msgstr "Время"
 
-#: inc/admin.php:646 inc/admin.php:714
+#: inc/admin.php:646 inc/admin.php:720
 msgid "Status become"
 msgstr "Статус стал"
 
-#: inc/admin.php:647 inc/admin.php:715
+#: inc/admin.php:647 inc/admin.php:721
 msgid "Activity details"
 msgstr "Детали"
 
-#: inc/admin.php:657 inc/itv_log.php:192 inc/itv_log.php:200
-#: inc/itv_log.php:218 inc/itv_log.php:241
+#: inc/admin.php:657 inc/itv_log.php:204 inc/itv_log.php:212
+#: inc/itv_log.php:230 inc/itv_log.php:253
 msgid "Unknown user"
 msgstr "Неизвестный пользователь"
 
@@ -288,27 +288,36 @@ msgstr "Неизвестный пользователь"
 msgid "Task Changes Log"
 msgstr "Лог изменений задачи"
 
-#: inc/admin.php:699
+#: inc/admin.php:701
 msgid "« Previous"
 msgstr "« Назад"
 
-#: inc/admin.php:700
+#: inc/admin.php:702
 msgid "Next »"
 msgstr "Далее »"
 
-#: inc/admin.php:712
+#: inc/admin.php:711
+#, php-format
+msgid "Log records found: %s"
+msgstr "Найдено записей: %s"
+
+#: inc/admin.php:718
 msgid "Log record title"
 msgstr "Заголовок"
 
-#: inc/admin.php:733
+#: inc/admin.php:743
 msgid "Itv General Log"
 msgstr "Общий лог сайта"
 
-#: inc/admin.php:737
+#: inc/admin.php:747
 msgid "All Tasks Changes Log"
 msgstr "Лог изменений задач"
 
-#: inc/admin.php:740
+#: inc/admin.php:748
+msgid "Actions Log Stats"
+msgstr "Статистика активности"
+
+#: inc/admin.php:751
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
@@ -443,40 +452,40 @@ msgid "Error!"
 msgstr "Произошла ошибка!"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:756 inc/itv_consult.php:239
-#: inc/itv_consult.php:286 inc/itv_consult.php:338 inc/itv_consult.php:394
+#: inc/customizer.php:11 inc/customizer.php:766 inc/itv_consult.php:397
+#: inc/itv_consult.php:444 inc/itv_consult.php:496 inc/itv_consult.php:552
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
 # @ tst
 #: inc/customizer.php:62 inc/customizer.php:93 inc/customizer.php:123
 #: inc/customizer.php:158 inc/customizer.php:195 inc/customizer.php:270
-#: inc/customizer.php:321 inc/customizer.php:377 inc/customizer.php:440
-#: inc/customizer.php:472 inc/customizer.php:533 inc/customizer.php:587
-#: inc/customizer.php:648 inc/customizer.php:682 inc/functions-members.php:374
+#: inc/customizer.php:326 inc/customizer.php:382 inc/customizer.php:450
+#: inc/customizer.php:482 inc/customizer.php:543 inc/customizer.php:597
+#: inc/customizer.php:658 inc/customizer.php:692 inc/functions-members.php:374
 #: inc/functions-members.php:463
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 # @ tst
-#: inc/customizer.php:423 inc/customizer.php:900 inc/customizer.php:923
+#: inc/customizer.php:433 inc/customizer.php:910 inc/customizer.php:933
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
 "Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
 
 # @ tst
-#: inc/customizer.php:477 inc/functions-members.php:248
+#: inc/customizer.php:487 inc/functions-members.php:248
 msgid "Username already exists!"
 msgstr "Такой логин уже существует."
 
 # @ tst
-#: inc/customizer.php:482 inc/customizer.php:592 inc/functions-members.php:251
+#: inc/customizer.php:492 inc/customizer.php:602 inc/functions-members.php:251
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
 # @ tst
-#: inc/customizer.php:497 inc/functions-members.php:276
+#: inc/customizer.php:507 inc/functions-members.php:276
 #: inc/functions-members.php:283 inc/functions-members.php:290
 msgid "We are very sorry :( Some error occured while registering your account."
 msgstr ""
@@ -484,7 +493,7 @@ msgstr ""
 "регистрацию позже."
 
 # @ tst
-#: inc/customizer.php:521 inc/customizer.php:570
+#: inc/customizer.php:531 inc/customizer.php:580
 msgid ""
 "Your registration is complete! Please check out the email you gave us for "
 "our activation message."
@@ -494,12 +503,12 @@ msgstr ""
 "инструкциям в отправленном вам письме."
 
 # @ tst
-#: inc/customizer.php:609
+#: inc/customizer.php:619
 msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
 # @ tst
-#: inc/customizer.php:633
+#: inc/customizer.php:643
 #, php-format
 msgid ""
 "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
@@ -509,7 +518,7 @@ msgstr ""
 "\">Просмотреть</a>."
 
 # @ tst
-#: inc/customizer.php:670
+#: inc/customizer.php:680
 msgid ""
 "<strong>Error:</strong> something wrong happens when we deleted your "
 "account. We are already looking to it."
@@ -518,11 +527,11 @@ msgstr ""
 "эту проблему."
 
 # @ tst
-#: inc/customizer.php:700
+#: inc/customizer.php:710
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
-#: inc/customizer.php:742
+#: inc/customizer.php:752
 msgid "itv_email_task_complete_message"
 msgstr ""
 "Еще одна задача выполнена: \n"
@@ -533,50 +542,78 @@ msgstr ""
 "\n"
 "Описание: {{task_content}}"
 
-#: inc/customizer.php:752
+#: inc/customizer.php:762
 msgid "itv_email_task_complete_subject"
 msgstr "Очередная задача выполнена"
 
 # @ tst
-#: inc/customizer.php:837
+#: inc/customizer.php:847
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-#: inc/customizer.php:840
+#: inc/customizer.php:850
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-#: inc/customizer.php:852
+#: inc/customizer.php:862
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:946
+#: inc/customizer.php:977
+msgid "Filter"
+msgstr "Фильтровать"
+
+#: inc/customizer.php:978
+msgid "All users"
+msgstr "Все"
+
+#: inc/customizer.php:979
+msgid "Activated users"
+msgstr "Активированные"
+
+#: inc/customizer.php:980
+msgid "Not activated users"
+msgstr "Не активированные"
+
+#: inc/customizer.php:992
+msgid "Is activated"
+msgstr "Активирован"
+
+#: inc/customizer.php:1000
+msgid "No"
+msgstr ""
+
+#: inc/customizer.php:1000
+msgid "Yes"
+msgstr ""
+
+#: inc/customizer.php:1006
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:947
+#: inc/customizer.php:1007
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:948
+#: inc/customizer.php:1008
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:949
+#: inc/customizer.php:1009
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:950
+#: inc/customizer.php:1010
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:951
+#: inc/customizer.php:1011
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:952
+#: inc/customizer.php:1012
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -699,20 +736,226 @@ msgstr "Во время добавления задачи произошли о�
 msgid "<strong>Error:</strong> something occured due to task edition."
 msgstr "Во время редактирования задачи произошли ошибки"
 
+#: inc/itv_consult.php:10 inc/itv_consult.php:12
+msgid "Consult sources"
+msgstr "Источники"
+
+#: inc/itv_consult.php:11
+msgid "Consult source"
+msgstr "Источник"
+
+#: inc/itv_consult.php:13
+msgid "All consult sources"
+msgstr "Все источники"
+
+#: inc/itv_consult.php:14
+msgid "Edit consult source"
+msgstr "Редактировать"
+
+#: inc/itv_consult.php:15
+msgid "View consult source"
+msgstr "Просмотреть"
+
+#: inc/itv_consult.php:16
+msgid "Update consult source"
+msgstr "Обновить"
+
+#: inc/itv_consult.php:17
+msgid "Add new consult source"
+msgstr "Добавить источник"
+
 #: inc/itv_consult.php:18
+msgid "New consult source name"
+msgstr "Новый источник"
+
+#: inc/itv_consult.php:19
+msgid "Parent consult source"
+msgstr "Родитель"
+
+#: inc/itv_consult.php:20
+msgid "Parent consult source:"
+msgstr "Родитель:"
+
+#: inc/itv_consult.php:21
+msgid "Search consult sources"
+msgstr "Поиск источников"
+
+#: inc/itv_consult.php:22
+msgid "Popular consult sources"
+msgstr "Популярные источники"
+
+#: inc/itv_consult.php:23 inc/itv_consult.php:56 inc/post-types.php:42
+msgid "Separate with commas"
+msgstr "Разделять запятыми"
+
+#: inc/itv_consult.php:24
+msgid "Add or remove consult source"
+msgstr "Добавить или удалить источник"
+
+#: inc/itv_consult.php:25
+msgid "Choose from most used consult sources"
+msgstr "Выбрать из популярных"
+
+#: inc/itv_consult.php:26
+msgid "Not found consult sources"
+msgstr "Источники не найдены"
+
+#: inc/itv_consult.php:43 inc/itv_consult.php:45
+msgid "Consult states"
+msgstr "Статусы"
+
+#: inc/itv_consult.php:44
+msgid "Consult state"
+msgstr "Источник"
+
+#: inc/itv_consult.php:46
+msgid "All consult states"
+msgstr "Все статусы"
+
+#: inc/itv_consult.php:47
+msgid "Edit consult state"
+msgstr "Редактировать"
+
+#: inc/itv_consult.php:48
+msgid "View consult state"
+msgstr "Просмотреть"
+
+#: inc/itv_consult.php:49
+msgid "Update consult state"
+msgstr "Обновить"
+
+#: inc/itv_consult.php:50
+msgid "Add new consult state"
+msgstr "Добавить статус"
+
+#: inc/itv_consult.php:51
+msgid "New consult state name"
+msgstr "Новый статус"
+
+#: inc/itv_consult.php:52
+msgid "Parent consult state"
+msgstr "Родитель"
+
+#: inc/itv_consult.php:53
+msgid "Parent consult state:"
+msgstr "Родитель:"
+
+#: inc/itv_consult.php:54
+msgid "Search consult states"
+msgstr "Поиск статусов"
+
+#: inc/itv_consult.php:55
+msgid "Popular consult states"
+msgstr "Популярные статусы"
+
+#: inc/itv_consult.php:57
+msgid "Add or remove consult state"
+msgstr "Добавить или удалить статус"
+
+#: inc/itv_consult.php:58
+msgid "Choose from most used consult states"
+msgstr "Выбрать из популярных"
+
+#: inc/itv_consult.php:59
+msgid "Not found consult states"
+msgstr "Статусы не найдены"
+
+#: inc/itv_consult.php:74
+msgid "Consults"
+msgstr "Консультации"
+
+#: inc/itv_consult.php:75 inc/itv_consult.php:76 inc/itv_consult.php:118
+#: inc/itv_consult.php:128 inc/itv_consult.php:143 inc/itv_consult.php:146
+msgid "Consult"
+msgstr "Консультации"
+
+#: inc/itv_consult.php:77 inc/itv_consult.php:79
+msgid "Add consult"
+msgstr "Добавить консультацию"
+
+#: inc/itv_consult.php:78
+msgid "Add new consult"
+msgstr "Добавить консультацию"
+
+#: inc/itv_consult.php:80
+msgid "New consult"
+msgstr "Новая консультация"
+
+#: inc/itv_consult.php:81
+msgid "Edit consult"
+msgstr "Редактировать"
+
+#: inc/itv_consult.php:82
+msgid "View consult"
+msgstr "Просмотреть"
+
+#: inc/itv_consult.php:83
+msgid "All consults"
+msgstr "Все консультации"
+
+#: inc/itv_consult.php:84 inc/itv_consult.php:129 inc/itv_consult.php:147
+msgid "Search consults"
+msgstr "Поиск консультаций"
+
+#: inc/itv_consult.php:85
+msgid "Parent consult"
+msgstr "Родитель"
+
+#: inc/itv_consult.php:86 inc/itv_consult.php:130 inc/itv_consult.php:148
+msgid "No consults found"
+msgstr "Консультации не найдены."
+
+#: inc/itv_consult.php:87
+msgid "No consults found in Trash"
+msgstr "Консультации не найдены."
+
+# @ tst
+#: inc/itv_consult.php:119 inc/itv_consult.php:122 inc/post-types.php:60
+#: inc/post-types.php:111
+msgid "Task"
+msgstr "Задача"
+
+# @ tst
+#: inc/itv_consult.php:123 inc/post-types.php:69 inc/post-types.php:112
+msgid "Search tasks"
+msgstr "Поиск задач"
+
+#: inc/itv_consult.php:124 inc/post-types.php:71
+msgid "No tasks found"
+msgstr "Задачи не найдены"
+
+# @ tst
+#: inc/itv_consult.php:125 inc/itv_consult.php:131 inc/itv_consult.php:149
+#: inc/itv_consult.php:155 inc/post-types.php:114 inc/post-types.php:120
+msgid "Create connections"
+msgstr "Создать взаимосвязь"
+
+#: inc/itv_consult.php:142 inc/itv_consult.php:152
+msgid "Consultant"
+msgstr "Консультант"
+
+#: inc/itv_consult.php:153
+msgid "Search consultants"
+msgstr "Поиск консультантов"
+
+#: inc/itv_consult.php:154
+msgid "No consultants found"
+msgstr "Консультанты не найдены"
+
+#: inc/itv_consult.php:176
 msgid "Show All Consult States"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:37
+#: inc/itv_consult.php:195
 msgid "Show All Consult Sources"
 msgstr "Показать все источники"
 
-#: inc/itv_consult.php:91
+#: inc/itv_consult.php:249
 msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:219 inc/itv_consult.php:318
+#: inc/itv_consult.php:377 inc/itv_consult.php:476
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -728,12 +971,12 @@ msgstr ""
 "Описание: {{task_content}}"
 
 # @ tst
-#: inc/itv_consult.php:234 inc/itv_consult.php:333
+#: inc/itv_consult.php:392 inc/itv_consult.php:491
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:268
+#: inc/itv_consult.php:426
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -758,16 +1001,16 @@ msgstr ""
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:282
+#: inc/itv_consult.php:440
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:368
+#: inc/itv_consult.php:526
 msgid "itv_email_test_consult_needed_notification_"
 msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:370
+#: inc/itv_consult.php:528
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -787,48 +1030,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:387
+#: inc/itv_consult.php:545
 msgid "itv_email_test_consult_needed_notification_subject_"
 msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:389
+#: inc/itv_consult.php:547
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:433
+#: inc/itv_consult.php:595
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:468
+#: inc/itv_consult.php:630
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:469
+#: inc/itv_consult.php:631
 msgid "Consult task title"
 msgstr "Заголовок "
 
-#: inc/itv_consult.php:470
+#: inc/itv_consult.php:632
 msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:486 inc/post-types.php:66
+#: inc/itv_consult.php:648 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:487 inc/itv_consult.php:493
+#: inc/itv_consult.php:649 inc/itv_consult.php:655
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:624
+#: inc/itv_consult.php:794
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:625
+#: inc/itv_consult.php:795
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:626
+#: inc/itv_consult.php:796
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -840,12 +1083,12 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
-#: inc/itv_consult.php:627
+#: inc/itv_consult.php:797
 #, php-format
 msgid "Consult request from audit (consult form) #%s"
 msgstr "Запрос консультации из Аудита (форма) #%s"
 
-#: inc/itv_consult.php:628
+#: inc/itv_consult.php:798
 #, php-format
 msgid "Consult request from audit (audit) #%s"
 msgstr "Запрос консультации из Аудита (аудит) #%s"
@@ -1358,125 +1601,206 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_log.php:166
+#: inc/itv_log.php:178 inc/itv_log.php:388 inc/itv_log.php:433
 msgid "itv_task_actions_log_"
 msgstr "тв_лог_событий_задачи"
 
-#: inc/itv_log.php:209
+#: inc/itv_log.php:221
 #, php-format
 msgid "Review log from %s to %s"
 msgstr "Отзыв от %s для %s"
 
-#: inc/itv_log.php:210
+#: inc/itv_log.php:222
 #, php-format
 msgid "Vote: %s"
 msgstr "Оценка: %s"
 
-#: inc/itv_log.php:227
+#: inc/itv_log.php:239
 #, php-format
 msgid "Email for task: %s"
 msgstr "Email по задаче: %s"
 
-#: inc/itv_log.php:227
+#: inc/itv_log.php:239
 msgid "Email log item"
 msgstr "Email для пользователя"
 
-#: inc/itv_log.php:230
+#: inc/itv_log.php:242
 #, php-format
 msgid "Email for user %s"
 msgstr "Адресат: %s"
 
-#: inc/itv_log.php:261
+#: inc/itv_log.php:273
 msgid "Unknown task"
 msgstr "Неизвестная задача"
 
-#: inc/itv_log.php:267
+# @ tst
+#: inc/itv_log.php:365
+msgid "Task title"
+msgstr "Заголовок задачи"
+
+#: inc/itv_log.php:370
+msgid "Username or email"
+msgstr "Имя или email"
+
+#: inc/itv_log.php:378
+msgid "Any log action"
+msgstr "Любое действие"
+
+#: inc/itv_log.php:400
+msgid "Any log record type"
+msgstr "Любой тип записи"
+
+#: inc/itv_log.php:410
+msgid "itv_log_record_type_"
+msgstr ""
+
+#: inc/itv_log.php:445 inc/itv_log.php:453
+msgid "For a day"
+msgstr "За день"
+
+#: inc/itv_log.php:446 inc/itv_log.php:454
+msgid "For all time"
+msgstr "За все время"
+
+#: inc/itv_log.php:461
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
 
-#: inc/itv_log.php:268
+#: inc/itv_log.php:462
 msgid "itv_task_actions_log_delete"
 msgstr "Задача удалена пользователем %s"
 
-#: inc/itv_log.php:269
+#: inc/itv_log.php:463
 msgid "itv_task_actions_log_edit"
 msgstr "Изменена пользователем %s"
 
-#: inc/itv_log.php:270
+#: inc/itv_log.php:464
 msgid "itv_task_actions_log_add_candidate"
 msgstr "Добавлен кандидат %s"
 
-#: inc/itv_log.php:271
+#: inc/itv_log.php:465
 msgid "itv_task_actions_log_refuse_candidate"
 msgstr "Отклонен кандидат %s"
 
-#: inc/itv_log.php:272
+#: inc/itv_log.php:466
 msgid "itv_task_actions_log_approve_candidate"
 msgstr "Одобрен кандидат %s"
 
-#: inc/itv_log.php:273
+#: inc/itv_log.php:467
 msgid "itv_task_actions_log_remove_candidate"
 msgstr "Удален кандидат %s"
 
-#: inc/itv_log.php:274
+#: inc/itv_log.php:468
 msgid "itv_task_actions_log_publish"
 msgstr "Задача опубликована пользователем %s"
 
-#: inc/itv_log.php:275
+#: inc/itv_log.php:469
 msgid "itv_task_actions_log_unpublish"
 msgstr "Задача снята с публикации %s"
 
-#: inc/itv_log.php:276
+#: inc/itv_log.php:470
 msgid "itv_task_actions_log_inwork"
 msgstr "Задача поставлена в работу пользователем %s"
 
-#: inc/itv_log.php:277
+#: inc/itv_log.php:471
 msgid "itv_task_actions_log_close"
 msgstr "Задача закрыта пользователем %s"
 
-#: inc/itv_log.php:278
+#: inc/itv_log.php:472
 msgid "itv_task_actions_log_archive"
 msgstr "Задача перемещена в архив"
 
-#: inc/itv_log.php:280
+#: inc/itv_log.php:474
 msgid "itv_task_actions_log_no_doer_yes"
 msgstr "Уведомление о долгом отсутствии исполнителя для %s"
 
-#: inc/itv_log.php:281
+#: inc/itv_log.php:475
 msgid "itv_task_actions_log_archive_soon"
 msgstr "Уведомление о скором перемещении в архив для %s"
 
-#: inc/itv_log.php:283
+#: inc/itv_log.php:477
 msgid "itv_task_actions_log_user_register"
 msgstr "Новый пользователь %s зарегистрирован"
 
-#: inc/itv_log.php:284
+#: inc/itv_log.php:478
 msgid "itv_task_actions_log_user_update"
 msgstr "Пользователь %s обновил свой профиль"
 
-#: inc/itv_log.php:285
+#: inc/itv_log.php:479
 msgid "itv_task_actions_log_user_delete_profile"
 msgstr "Пользователь %s удалил свой профиль"
 
-#: inc/itv_log.php:286
+#: inc/itv_log.php:480
 msgid "itv_task_actions_log_user_login_login"
 msgstr "Авторизация по логину"
 
-#: inc/itv_log.php:287
+#: inc/itv_log.php:481
 msgid "itv_task_actions_log_user_login_email"
 msgstr "Авторизация по email"
 
-#: inc/itv_log.php:288
+#: inc/itv_log.php:482
 msgid "itv_task_actions_log_user_login_failed"
 msgstr "Ошибка входа на сайт!"
 
-#: inc/itv_log.php:289
+#: inc/itv_log.php:483
 msgid "itv_task_actions_log_review_for_doer"
 msgstr "Отзыв об исполнителе задачи %s"
 
-#: inc/itv_log.php:290
+#: inc/itv_log.php:484
 msgid "itv_task_actions_log_review_for_author"
 msgstr "Отзыв об авторе задачи %s"
+
+#: inc/itv_log.php:486
+msgid "itv_task_actions_log_email_approve_candidate_doer"
+msgstr "Сообщение кандидату об утверждении"
+
+#: inc/itv_log.php:487
+msgid "itv_task_actions_log_email_approve_candidate_author"
+msgstr "Сообщение автору об утверждении кандидата"
+
+#: inc/itv_log.php:488
+msgid "itv_task_actions_log_email_refuse_candidate_author"
+msgstr "Сообщение кандидату об отказе"
+
+#: inc/itv_log.php:489
+msgid "itv_task_actions_log_email_add_candidate_author"
+msgstr "Сообщение автору о появлении кандидата"
+
+#: inc/itv_log.php:490
+msgid "itv_task_actions_log_email_remove_candidate_author"
+msgstr "Сообщение автору об отказе кандидата"
+
+#: inc/itv_log.php:491
+msgid "itv_task_actions_log_email_doer_about_task_closed"
+msgstr "Сообщение исполнителю о закрытии задачи"
+
+#: inc/itv_log.php:492
+msgid "itv_task_actions_log_email_author_about_task_closed"
+msgstr "Сообщение автору о закрытии задачи"
+
+#: inc/itv_log.php:493
+msgid "itv_task_actions_log_email_doer_about_task_status_changed"
+msgstr "Сообщение исполнителю о смене статуса задачи"
+
+#: inc/itv_log.php:494
+msgid "itv_task_actions_log_email_candidate_about_task_status_changed"
+msgstr "Сообщение кандидату о смене статуса задачи"
+
+#: inc/itv_log.php:496
+msgid "itv_log_record_type_task"
+msgstr "Операция с задачей"
+
+#: inc/itv_log.php:497
+msgid "itv_log_record_type_user"
+msgstr "Действие пользователя"
+
+#: inc/itv_log.php:498
+msgid "itv_log_record_type_review"
+msgstr "Отзыв"
+
+#: inc/itv_log.php:499
+msgid "itv_log_record_type_email"
+msgstr "Отправка письма"
 
 #: inc/itv_notificator.php:305 inc/itv_notificator.php:324
 msgid "Task status become "
@@ -1550,10 +1874,6 @@ msgstr "Поиск"
 msgid "Popular rewards"
 msgstr "Часто используемые"
 
-#: inc/post-types.php:42 inc/post-types.php:142 inc/post-types.php:170
-msgid "Separate with commas"
-msgstr "Разделять запятыми"
-
 #: inc/post-types.php:43
 msgid "Add or remove reward"
 msgstr "Добавить или удалить награду"
@@ -1571,12 +1891,6 @@ msgstr "Награды не найдены"
 #: inc/template-members.php:683 partials/navbar.php:17
 msgid "Tasks"
 msgstr "Задачи"
-
-# @ tst
-#: inc/post-types.php:60 inc/post-types.php:111 inc/post-types.php:224
-#: inc/post-types.php:227
-msgid "Task"
-msgstr "Задача"
 
 #: inc/post-types.php:62 inc/post-types.php:64
 msgid "Add task"
@@ -1603,18 +1917,9 @@ msgstr "Страница задачи"
 msgid "All tasks"
 msgstr "Все задачи"
 
-# @ tst
-#: inc/post-types.php:69 inc/post-types.php:112 inc/post-types.php:228
-msgid "Search tasks"
-msgstr "Поиск задач"
-
 #: inc/post-types.php:70
 msgid "Parent task"
 msgstr "Родительская"
-
-#: inc/post-types.php:71 inc/post-types.php:229
-msgid "No tasks found"
-msgstr "Задачи не найдены"
 
 #: inc/post-types.php:72
 msgid "No tasks found in Trash"
@@ -1636,12 +1941,6 @@ msgid "No tasks found."
 msgstr "Задачи не найдены."
 
 # @ tst
-#: inc/post-types.php:114 inc/post-types.php:120 inc/post-types.php:230
-#: inc/post-types.php:236 inc/post-types.php:254 inc/post-types.php:260
-msgid "Create connections"
-msgstr "Создать взаимосвязь"
-
-# @ tst
 #: inc/post-types.php:117
 msgid "Doer"
 msgstr "Исполнитель"
@@ -1655,187 +1954,6 @@ msgstr "Поиск исполнителей"
 #: inc/post-types.php:119
 msgid "No doers found."
 msgstr "Исполнители не найдены."
-
-#: inc/post-types.php:129 inc/post-types.php:131
-msgid "Consult sources"
-msgstr "Источники"
-
-#: inc/post-types.php:130
-msgid "Consult source"
-msgstr "Источник"
-
-#: inc/post-types.php:132
-msgid "All consult sources"
-msgstr "Все источники"
-
-#: inc/post-types.php:133
-msgid "Edit consult source"
-msgstr "Редактировать"
-
-#: inc/post-types.php:134
-msgid "View consult source"
-msgstr "Просмотреть"
-
-#: inc/post-types.php:135
-msgid "Update consult source"
-msgstr "Обновить"
-
-#: inc/post-types.php:136
-msgid "Add new consult source"
-msgstr "Добавить источник"
-
-#: inc/post-types.php:137
-msgid "New consult source name"
-msgstr "Новый источник"
-
-#: inc/post-types.php:138
-msgid "Parent consult source"
-msgstr "Родитель"
-
-#: inc/post-types.php:139
-msgid "Parent consult source:"
-msgstr "Родитель:"
-
-#: inc/post-types.php:140
-msgid "Search consult sources"
-msgstr "Поиск источников"
-
-#: inc/post-types.php:141
-msgid "Popular consult sources"
-msgstr "Популярные источники"
-
-#: inc/post-types.php:143
-msgid "Add or remove consult source"
-msgstr "Добавить или удалить источник"
-
-#: inc/post-types.php:144
-msgid "Choose from most used consult sources"
-msgstr "Выбрать из популярных"
-
-#: inc/post-types.php:145
-msgid "Not found consult sources"
-msgstr "Источники не найдены"
-
-#: inc/post-types.php:157 inc/post-types.php:159
-msgid "Consult states"
-msgstr "Статусы"
-
-#: inc/post-types.php:158
-msgid "Consult state"
-msgstr "Источник"
-
-#: inc/post-types.php:160
-msgid "All consult states"
-msgstr "Все статусы"
-
-#: inc/post-types.php:161
-msgid "Edit consult state"
-msgstr "Редактировать"
-
-#: inc/post-types.php:162
-msgid "View consult state"
-msgstr "Просмотреть"
-
-#: inc/post-types.php:163
-msgid "Update consult state"
-msgstr "Обновить"
-
-#: inc/post-types.php:164
-msgid "Add new consult state"
-msgstr "Добавить статус"
-
-#: inc/post-types.php:165
-msgid "New consult state name"
-msgstr "Новый статус"
-
-#: inc/post-types.php:166
-msgid "Parent consult state"
-msgstr "Родитель"
-
-#: inc/post-types.php:167
-msgid "Parent consult state:"
-msgstr "Родитель:"
-
-#: inc/post-types.php:168
-msgid "Search consult states"
-msgstr "Поиск статусов"
-
-#: inc/post-types.php:169
-msgid "Popular consult states"
-msgstr "Популярные статусы"
-
-#: inc/post-types.php:171
-msgid "Add or remove consult state"
-msgstr "Добавить или удалить статус"
-
-#: inc/post-types.php:172
-msgid "Choose from most used consult states"
-msgstr "Выбрать из популярных"
-
-#: inc/post-types.php:173
-msgid "Not found consult states"
-msgstr "Статусы не найдены"
-
-#: inc/post-types.php:185
-msgid "Consults"
-msgstr "Консультации"
-
-#: inc/post-types.php:186 inc/post-types.php:187 inc/post-types.php:223
-#: inc/post-types.php:233 inc/post-types.php:248 inc/post-types.php:251
-msgid "Consult"
-msgstr "Консультации"
-
-#: inc/post-types.php:188 inc/post-types.php:190
-msgid "Add consult"
-msgstr "Добавить консультацию"
-
-#: inc/post-types.php:189
-msgid "Add new consult"
-msgstr "Добавить консультацию"
-
-#: inc/post-types.php:191
-msgid "New consult"
-msgstr "Новая консультация"
-
-#: inc/post-types.php:192
-msgid "Edit consult"
-msgstr "Редактировать"
-
-#: inc/post-types.php:193
-msgid "View consult"
-msgstr "Просмотреть"
-
-#: inc/post-types.php:194
-msgid "All consults"
-msgstr "Все консультации"
-
-#: inc/post-types.php:195 inc/post-types.php:234 inc/post-types.php:252
-msgid "Search consults"
-msgstr "Поиск консультаций"
-
-#: inc/post-types.php:196
-msgid "Parent consult"
-msgstr "Родитель"
-
-#: inc/post-types.php:197 inc/post-types.php:235 inc/post-types.php:253
-msgid "No consults found"
-msgstr "Консультации не найдены."
-
-#: inc/post-types.php:198
-msgid "No consults found in Trash"
-msgstr "Консультации не найдены."
-
-#: inc/post-types.php:247 inc/post-types.php:257
-msgid "Consultant"
-msgstr "Консультант"
-
-#: inc/post-types.php:258
-msgid "Search consultants"
-msgstr "Поиск консультантов"
-
-#: inc/post-types.php:259
-msgid "No consultants found"
-msgstr "Консультанты не найдены"
 
 #: inc/template-general.php:21
 #, php-format
@@ -3056,10 +3174,6 @@ msgstr "Похожие задачи"
 #~ msgstr ""
 #~ "Ваше задание было успешно опубликовано! Теперь оно открыто для новых "
 #~ "волонтёров, <a href='%s'>взгляните сами</a>."
-
-# @ tst
-#~ msgid "Task title"
-#~ msgstr "Заголовок задачи"
 
 # @ tst
 #~ msgid "What we are expecting from you"

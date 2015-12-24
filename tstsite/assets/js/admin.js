@@ -3,6 +3,13 @@
 (function($) {
  
 	$(document).ready(function(){
+	    var $p2p_users_by_task_filter = $('body.wp-admin.users-php select[name="p2p[task-doers][from]"]');
+	    var $users_filter_div = $p2p_users_by_task_filter.closest('div');
+	    $p2p_users_by_task_filter.hide();
+	    var $activated_status_filter = $('#users_activation_status');
+	    $users_filter_div.append($activated_status_filter);
+	    $users_filter_div.find('input[type=submit]').val($activated_status_filter.data('filter-button-title'));
+	    
         $('#save-task-status').click(function(e){
             e.preventDefault();
 						
