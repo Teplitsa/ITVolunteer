@@ -40,7 +40,16 @@ class ItvLog {
     public static $TYPE_REVIEW = 'review';
     public static $TYPE_EMAIL = 'email';
     
+    private $list_log_record_types = array('task', 'user', 'review', 'email');
+    private $list_log_actions = array('create', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 'inwork', 
+        'close', 'archive', 'no_doer_yes', 'archive_soon', 'user_register', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
+        'review_for_doer', 'review_for_author',
+        'email_approve_candidate_doer', 'email_approve_candidate_author', 'email_refuse_candidate_author', 'email_add_candidate_author', 'email_remove_candidate_author', 'email_doer_about_task_closed', 
+        'email_author_about_task_closed', 'email_doer_about_task_status_changed', 'email_candidate_about_task_status_changed', 
+    );
+    
     private $task_action_table;
+    private $filter = null;
     private static $_instance = NULL;
     
     public function __construct() {
@@ -120,10 +129,11 @@ class ItvLog {
         
         $offset = ( int ) $offset;
         $limit = ( int ) $limit;
+        $extra_where = $this->get_all_log_extra_where();
         
         $actions = $wpdb->get_results ( "
             SELECT * FROM $this->task_action_table
-            WHERE 1
+            WHERE 1 $extra_where
             ORDER BY action_time DESC, id DESC
             LIMIT $offset, $limit
             " );
@@ -155,8 +165,10 @@ class ItvLog {
     public function get_all_tasks_log_records_count() {
         global $wpdb;
         
+        $extra_where = $this->get_all_log_extra_where();
+        
         $actions = $wpdb->get_var ( "
-				SELECT COUNT(*) FROM $this->task_action_table
+				SELECT COUNT(*) FROM $this->task_action_table WHERE 1 $extra_where
 				" );
         
         return $actions;
@@ -262,29 +274,226 @@ class ItvLog {
         }
         return $task_text;
     }
+    
+    public function get_filters() {
+        $ret = '<form action="" method="get">';
+        $ret .= '<input type="hidden" name="page" value="itv_all_tasks_log_page" />';
+        $ret .= $this->get_filter_by_action();
+        $ret .= $this->get_filter_by_type();
+        $ret .= $this->get_filter_by_user();
+        $ret .= $this->get_filter_by_task();
+        $ret .= '<input type="submit" name="filter" value="Выбрать" />';
+        $ret .= '</form>';
+        return $ret;
+    }
+    
+    private function set_filter_from_request_params() {
+        if($this->filter === null && isset($_GET['filter'])) {
+            $this->filter = array();
+            if(isset($_GET['log_action']) && in_array($_GET['log_action'], $this->list_log_actions)) {
+                $this->filter['log_action'] = $_GET['log_action'];
+            }
+    
+            if(isset($_GET['log_record_type']) && in_array($_GET['log_record_type'], $this->list_log_record_types)) {
+                $this->filter['log_record_type'] = $_GET['log_record_type'];
+            }
+    
+            if(isset($_GET['log_user_name']) && trim($_GET['log_user_name'])) {
+                $this->filter['log_user_name'] = trim($_GET['log_user_name']);
+            }
+    
+            if(isset($_GET['log_task_title']) && trim($_GET['log_task_title'])) {
+                $this->filter['log_task_title'] = trim($_GET['log_task_title']);
+            }
+            
+            if(isset($_GET['from_date']) && trim($_GET['from_date'])) {
+                $this->filter['from_date'] = trim($_GET['from_date']);
+            }
+        }
+    
+        return $extra_where;
+    }
+    
+    private function get_all_log_extra_where() {
+        global $wpdb;
+        
+        $this->set_filter_from_request_params();
+        $extra_where = '';
+        if(is_array($this->filter)) {
+            if(isset($this->filter['log_action'])) {
+                $extra_where .= " AND action = '".esc_sql($this->filter['log_action'])."' ";
+            }
+            
+            if(isset($this->filter['log_record_type'])) {
+                $extra_where .= " AND `type` = '".esc_sql($this->filter['log_record_type'])."' ";
+            }
+            
+            if(isset($this->filter['log_user_name'])) {
+                $users = get_users( array('search' => trim($this->filter['log_user_name']), 'fields' => array('ID')) );
+                $users_id = array();
+                foreach($users as $user) {
+                    $users_id[] = (int)$user->ID;
+                }
+                if(!count($users_id)) {
+                    $users_id[] = '-1';
+                }
+                $extra_where .= " AND (assoc_user_id IN (".implode(', ', $users_id).") OR to_user_id IN (".implode(', ', $users_id).")) ";
+            }
+            
+            if(isset($this->filter['log_task_title'])) {
+                $sql_title = esc_sql(trim($this->filter['log_task_title']));
+                $sql_title = preg_replace('/^\*/', '%', $sql_title);
+                $sql_title = preg_replace('/\*$/', '%', $sql_title);
+                
+                $tasks_id = $wpdb->get_col("select ID from $wpdb->posts where post_title like '".$sql_title."' AND post_type = 'tasks' AND post_status IN ('publish', 'draft', 'in_work', 'closed', 'trash') ");
+                if(!count($tasks_id)) {
+                    $tasks_id[] = '-1';
+                }
+                $extra_where .= " AND task_id IN (".implode(', ', $tasks_id).") ";
+            }
+            
+            if(isset($this->filter['from_date'])) {
+                $extra_where .= " AND action_time >= '".esc_sql($this->filter['from_date'])." 00:00:00' ";
+            }
+            
+        }
+        
+        return $extra_where;
+    }
+    
+    public function get_filter_by_task() {
+        $ret = '<input type="text" name="log_task_title" placeholder="'.__('Task title', 'tst').'" value="'.(isset($_GET['log_task_title']) ? $_GET['log_task_title'] : '').'" />';
+        return $ret;
+    }
+    
+    public function get_filter_by_user() {
+        $ret = '<input type="text" name="log_user_name" placeholder="'.__('Username or email', 'tst').'" value="'.(isset($_GET['log_user_name']) ? $_GET['log_user_name'] : '').'" />';
+        return $ret;
+    }
+    
+    public function get_filter_by_action() {
+        $screen = get_current_screen();
+        $ret = '';
+        if($screen && $screen->id == 'tools_page_itv_all_tasks_log_page') {
+            $ret = '<select name="log_action" class="itv-log-select-filter"><option>'.__('Any log action', 'tst').'</option>';
+            
+            $log_action = '';
+            if(isset($_GET['filter'])) {
+                if(isset($_GET['log_action']) && in_array($_GET['log_action'], $this->list_log_actions)) {
+                    $log_action = $_GET['log_action'];
+                }
+            }
+            
+            foreach($this->list_log_actions as $type) {
+                $ret .= '<option value="'.$type.'" '.($log_action == $type ? 'selected="selected" ' : '').'>' . str_replace(' %s', '', __( 'itv_task_actions_log_' . $type, 'tst' )) . '</option>';
+            }
+            $ret .= '</select>';
+        }
+        
+        return $ret;
+    }
+    
+    public function get_filter_by_type() {
+        $screen = get_current_screen();
+        $ret = '';
+        if($screen && $screen->id == 'tools_page_itv_all_tasks_log_page') {
+            $ret = '<select name="log_record_type" class="itv-log-select-filter"><option>'.__('Any log record type', 'tst').'</option>';
+    
+            $log_record_type = '';
+            if(isset($_GET['filter'])) {
+                if(isset($_GET['log_record_type']) && in_array($_GET['log_record_type'], $this->list_log_record_types)) {
+                    $log_record_type = $_GET['log_record_type'];
+                }
+            }
+    
+            foreach($this->list_log_record_types as $type) {
+                $ret .= '<option value="'.$type.'" '.($log_record_type == $type ? 'selected="selected" ' : '').'>' . str_replace(' %s', '', __( 'itv_log_record_type_' . $type, 'tst' )) . '</option>';
+            }
+            $ret .= '</select>';
+        }
+        
+        return $ret;
+    }
+    
+    public function get_general_stats() {
+        $stats = array();
+        foreach($this->list_log_actions as $log_action) {
+            $this->filter = array('log_action' => $log_action);
+            $all_count = $this->get_all_tasks_log_records_count();
+            
+            $now_date = date('Y-m-d');
+            $this->filter = array('log_action' => $log_action, 'from_date' => $now_date);
+            $day_count = $this->get_all_tasks_log_records_count();
+            
+            $stats[$log_action] = array(
+                'all' => $all_count,
+                'all_link' => 'tools.php?page=itv_all_tasks_log_page&filter=1&log_action='.$log_action,
+                'day' => $day_count,
+                'day_link' => 'tools.php?page=itv_all_tasks_log_page&filter=1&log_action='.$log_action.'&from_date=' . $now_date,
+                'title' => str_replace(' %s', '', __( 'itv_task_actions_log_' . $log_action, 'tst' )),
+                'action' => $log_action,
+            );
+        }
+        return $stats;
+    }
+    
+    public function show_general_stats() {
+        $stats = $this->get_general_stats();
+        echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
+        echo '<tr>';
+        echo "<th></th>";
+        echo "<th>".__('For a day', 'tst')."</th>";
+        echo "<th>".__('For all time', 'tst')."</th>";
+        echo '</tr>';
+        $i = 0;
+        foreach($stats as $stats_item) {
+            $i++;
+            echo '<tr class="'.($i % 2 == 0 ? "alternate" : '').'">';
+            echo '<td class="log-stats-title">'.$stats_item['title'].'</td>';
+            echo '<td><a href="'.$stats_item['day_link'].'" title="'.__('For a day', 'tst').'">'.$stats_item['day'].'</a></td>';
+            echo '<td><a href="'.$stats_item['all_link'].'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a></td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
 }
 
-__ ( 'itv_task_actions_log_create', 'tst' );
-__ ( 'itv_task_actions_log_delete', 'tst' );
-__ ( 'itv_task_actions_log_edit', 'tst' );
-__ ( 'itv_task_actions_log_add_candidate', 'tst' );
-__ ( 'itv_task_actions_log_refuse_candidate', 'tst' );
-__ ( 'itv_task_actions_log_approve_candidate', 'tst' );
-__ ( 'itv_task_actions_log_remove_candidate', 'tst' );
-__ ( 'itv_task_actions_log_publish', 'tst' );
-__ ( 'itv_task_actions_log_unpublish', 'tst' );
-__ ( 'itv_task_actions_log_inwork', 'tst' );
-__ ( 'itv_task_actions_log_close', 'tst' );
-__ ( 'itv_task_actions_log_archive', 'tst' );
+__( 'itv_task_actions_log_create', 'tst' );
+__( 'itv_task_actions_log_delete', 'tst' );
+__( 'itv_task_actions_log_edit', 'tst' );
+__( 'itv_task_actions_log_add_candidate', 'tst' );
+__( 'itv_task_actions_log_refuse_candidate', 'tst' );
+__( 'itv_task_actions_log_approve_candidate', 'tst' );
+__( 'itv_task_actions_log_remove_candidate', 'tst' );
+__( 'itv_task_actions_log_publish', 'tst' );
+__( 'itv_task_actions_log_unpublish', 'tst' );
+__( 'itv_task_actions_log_inwork', 'tst' );
+__( 'itv_task_actions_log_close', 'tst' );
+__( 'itv_task_actions_log_archive', 'tst' );
 
-__ ( 'itv_task_actions_log_no_doer_yes', 'tst' );
-__ ( 'itv_task_actions_log_archive_soon', 'tst' );
+__( 'itv_task_actions_log_no_doer_yes', 'tst' );
+__( 'itv_task_actions_log_archive_soon', 'tst' );
 
-__ ( 'itv_task_actions_log_user_register', 'tst' );
-__ ( 'itv_task_actions_log_user_update', 'tst' );
-__ ( 'itv_task_actions_log_user_delete_profile', 'tst' );
-__ ( 'itv_task_actions_log_user_login_login', 'tst' );
-__ ( 'itv_task_actions_log_user_login_email', 'tst' );
-__ ( 'itv_task_actions_log_user_login_failed', 'tst' );
-__ ( 'itv_task_actions_log_review_for_doer', 'tst' );
-__ ( 'itv_task_actions_log_review_for_author', 'tst' );
+__( 'itv_task_actions_log_user_register', 'tst' );
+__( 'itv_task_actions_log_user_update', 'tst' );
+__( 'itv_task_actions_log_user_delete_profile', 'tst' );
+__( 'itv_task_actions_log_user_login_login', 'tst' );
+__( 'itv_task_actions_log_user_login_email', 'tst' );
+__( 'itv_task_actions_log_user_login_failed', 'tst' );
+__( 'itv_task_actions_log_review_for_doer', 'tst' );
+__( 'itv_task_actions_log_review_for_author', 'tst' );
+
+__( 'itv_task_actions_log_email_approve_candidate_doer', 'tst' );
+__( 'itv_task_actions_log_email_approve_candidate_author', 'tst' );
+__( 'itv_task_actions_log_email_refuse_candidate_author', 'tst' );
+__( 'itv_task_actions_log_email_add_candidate_author', 'tst' );
+__( 'itv_task_actions_log_email_remove_candidate_author', 'tst' );
+__( 'itv_task_actions_log_email_doer_about_task_closed', 'tst' );
+__( 'itv_task_actions_log_email_author_about_task_closed', 'tst' );
+__( 'itv_task_actions_log_email_doer_about_task_status_changed', 'tst' );
+__( 'itv_task_actions_log_email_candidate_about_task_status_changed', 'tst' );
+
+__('itv_log_record_type_task', 'tst');
+__('itv_log_record_type_user', 'tst');
+__('itv_log_record_type_review', 'tst');
+__('itv_log_record_type_email', 'tst');

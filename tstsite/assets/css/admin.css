@@ -78,3 +78,16 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
 #acf-is_tst_consult_done {
     display:none;
 }
+
+.itv-log-select-filter {
+    width:170px;
+}
+
+.log-stats-title {
+    font-size:0.9em;
+}
+
+.log-stats-table th {
+    text-align:left;
+}
+
