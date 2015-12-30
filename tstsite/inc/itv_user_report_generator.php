@@ -15,7 +15,7 @@ class ItvUserReportGenerator {
 			$is_uploaded_company_logo = $company_logo ? 1 : 0;
 		
 			$skills = tst_get_member_user_skills_string($user->ID);
-			$role = tst_get_member_role_name(get_user_meta($user->ID, 'member_role', true));
+			$role = tst_get_member_role_name($user);
 		
 			$user_activity = tst_get_member_activity($user);
 			$created_tasks =  $user_activity['created'];
