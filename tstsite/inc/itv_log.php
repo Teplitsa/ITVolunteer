@@ -310,8 +310,6 @@ class ItvLog {
                 $this->filter['from_date'] = trim($_GET['from_date']);
             }
         }
-    
-        return $extra_where;
     }
     
     private function get_all_log_extra_where() {
