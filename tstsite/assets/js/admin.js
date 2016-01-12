@@ -43,19 +43,26 @@
             }
         });
         
-    var is_tst_consult_needed_init_val = $('#acf-field-is_tst_consult_needed-1').prop('checked');
-	$('#acf-field-is_tst_consult_needed-1').change(function(){
-		$('#acf-field-is_tst_consult_needed-1').prop('checked', is_tst_consult_needed_init_val);
-	});	
-	
-	if($('#acf-field-is_tst_consult_needed-1').prop('checked') == false) {
-		$('div#acf-is_tst_consult_done').hide();
-	}
-	else {
-		var tst_logo = $('<img src="'+adminend.site_url+'/wp-content/themes/tstsite/img/te-st-logo.jpg" />');
-		tst_logo.css({'vertical-align': 'middle'});
-		$('div#acf-is_tst_consult_needed li').append(tst_logo);
-	}
+        var is_tst_consult_needed_init_val = $('#acf-field-is_tst_consult_needed-1').prop('checked');
+        $('#acf-field-is_tst_consult_needed-1')
+        .change(function() {
+            $('#acf-field-is_tst_consult_needed-1').prop('checked', is_tst_consult_needed_init_val);
+        });
+        
+        if ($('#acf-field-is_tst_consult_needed-1').prop('checked') == false) {
+            $('div#acf-is_tst_consult_done').hide();
+        } else {
+            var tst_logo = $('<img src="' + adminend.site_url + '/wp-content/themes/tstsite/img/te-st-logo.jpg" />');
+            tst_logo.css({
+                'vertical-align' : 'middle'
+            });
+            $('div#acf-is_tst_consult_needed li').append(tst_logo);
+        }
+        
+        move_activation_email_button_to_top();
+        $('#itv-resend-activation-email').click(function(){
+            return itv_resend_activation_email($(this));
+        });
     });
 	
 	function itv_consult_change_datetime($select) {
@@ -165,6 +172,39 @@
                 $(this).remove();
             });
         }, 2000);
+    }
+    
+    function move_activation_email_button_to_top() {
+        var $tr = $('#itv-is-activated-user-option');
+        var $current_parent = $tr.parent();
+        $tr.insertBefore('.user-rich-editing-wrap');
+        $current_parent.remove();
+    }
+    
+    function itv_resend_activation_email($button) {
+        var user_id = $('#user_id').val();
+        
+        var $tr = $('#itv-is-activated-user-option');
+        var $loader = itv_get_loader();
+        $loader.insertAfter($tr.find('#itv-resend-activation-email'));
+        
+        $.post(ajaxurl, {action: 'resend-activation-email', user_id: user_id})
+        .done(function(){
+            $tr.find('#itv-user-activated-yes-no-box').hide();
+            $tr.find('#itv-user-activation-mail-sent-box').show();
+        })
+        .fail(function(){
+        })
+        .always(function(){
+            $loader.remove();
+        });
+        return false;
+    }
+    
+    function itv_get_loader() {
+        return $('<img />')
+        .attr('src', adminend.site_url + 'wp-includes/images/spinner.gif')
+        .addClass('manage-consult-loader');
     }
 	
 })(jQuery);

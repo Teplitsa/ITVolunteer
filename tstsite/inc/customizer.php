@@ -574,6 +574,7 @@ function ajax_user_register() {
 			$email_body_template = $email_templates->get_text('activate_account_notice');
 			
 			tst_send_activation_email($user, $email_subject, $email_body_template);
+			update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
 			
 			wp_die(json_encode(array(
 				'status' => 'ok',
@@ -995,9 +996,8 @@ function itv_add_user_custom_columns($columns) {
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
-    $user = get_userdata( $user_id );
     if('is_activated' == $column_name) {
-        return get_user_meta($user_id, 'activation_code', true) ? __('No') : __('Yes');
+        return itv_is_user_activated($user_id) ? __('Yes') : __('No');
     }
     return $value;
 }

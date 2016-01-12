@@ -535,3 +535,15 @@ function ajax_leave_review_author() {
 }
 add_action('wp_ajax_leave-review-author', 'ajax_leave_review_author');
 add_action('wp_ajax_nopriv_leave-review-author', 'ajax_leave_review_author');
+
+function itv_is_user_activated($user_id) {
+    return get_user_meta($user_id, 'activation_code', true) ? false : true;
+}
+
+function itv_get_user_activation_email_datetime($user) {
+    $activation_email_time = get_user_meta($user->ID, 'activation_email_time', true);
+    if(!$activation_email_time) {
+        $activation_email_time = $user->user_registered;
+    }
+    return $activation_email_time;
+}
