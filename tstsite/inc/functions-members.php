@@ -536,6 +536,7 @@ function ajax_leave_review_author() {
 add_action('wp_ajax_leave-review-author', 'ajax_leave_review_author');
 add_action('wp_ajax_nopriv_leave-review-author', 'ajax_leave_review_author');
 
+# member activation button
 function itv_is_user_activated($user_id) {
     return get_user_meta($user_id, 'activation_code', true) ? false : true;
 }
@@ -547,3 +548,206 @@ function itv_get_user_activation_email_datetime($user) {
     }
     return $activation_email_time;
 }
+
+function itv_extra_user_profile_fields( $user ) {
+    $is_user_activated = itv_is_user_activated($user->ID);
+    ?>
+<table class="form-table">
+<tr id="itv-is-activated-user-option">
+<th><label><?php _e("Is activated", 'tst'); ?></label></th>
+<td>
+<span id="itv-user-activated-yes-no-box">
+<?php if($is_user_activated):?>
+    <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
+<?php else: ?>
+    <font class="itv-option-bad-label"><?php _e('No'); ?></font>
+    <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email"><?php _e('Resend activation email', 'tst'); ?></button>
+    <?php echo itv_get_confirm_email_date($user);?>
+<?php endif; ?>
+</span>
+<span id="itv-user-activation-mail-sent-box" style="display: none;">
+    <font class="itv-option-ok-label"><?php _e('Activation mail sent', 'tst'); ?></font>
+</span>
+</td>
+</tr>
+</table>
+
+<?php 
+}
+add_action( 'edit_user_profile', 'itv_extra_user_profile_fields' );
+
+function itv_get_confirm_email_date($user, $is_short = false) {
+    $activation_email_time = itv_get_user_activation_email_datetime($user);
+    $activation_email_delta = floor((time() - strtotime($activation_email_time)) / (3600*24));
+    $activation_email_date = date('d.m.Y', strtotime($activation_email_time));
+    
+    $itv_config = ItvConfig::instance();
+    
+    ob_start();
+?>
+    <p class="itv-activation-email-time <?php if($activation_email_delta > $itv_config->get('USER_NOT_ACTIVATED_ALERT_TIME')):?>itv-activation-email-long-time-ago<?php endif;?>">
+        <?php echo $is_short ? $activation_email_date : sprintf(__('Activation email time: %s', 'tst'), $activation_email_date);?>
+    </p>
+<?php
+    return ob_get_clean();
+}
+
+function itv_resend_activation_email_core($user) {
+    $email_templates = ItvEmailTemplates::instance();
+    $email_subject = $email_templates->get_title('activate_account_notice');
+    $email_body_template = $email_templates->get_text('activate_account_notice');
+    
+    tst_send_activation_email($user, $email_subject, $email_body_template);
+    update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
+}
+
+function itv_resend_activation_email() {
+    $res = array('status' => 'error');
+    $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : 0;
+    try {
+        $user = get_user_by('id', $user_id);
+        
+        if($user) {
+            itv_resend_activation_email_core($user);
+            $res = array('status' => 'ok');
+        }
+    }
+    catch(Exception $ex) {}
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_resend-activation-email', 'itv_resend_activation_email');
+# end activation process
+
+function itv_user_reg_date($user_id) {
+    $user = get_user_by('id', $user_id);
+    $reg_date = '';
+    if($user) {
+        $reg_date = date('d.m.Y', strtotime($user->user_registered));
+    }
+    return $reg_date;
+}
+
+// activated/not activated users filter
+function admin_users_filter( $query ){
+    global $pagenow, $wpdb;
+
+    if ( is_admin() && $pagenow=='users.php' && isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
+        if($_GET['users_activation_status'] == 'activated') {
+            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+            "{$wpdb->users}.ID=um_activated.user_id AND " .
+            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+        }
+        elseif($_GET['users_activation_status'] == 'not_activated') {
+            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+            "{$wpdb->users}.ID=um_activated.user_id AND " .
+            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != ''";
+        }
+    }
+}
+add_filter( 'pre_user_query', 'admin_users_filter' );
+
+function show_users_filter_by_activation() {
+    $current_filter_val = isset($_GET['users_activation_status']) ? $current_filter_val = $_GET['users_activation_status'] : '';
+    $ret = '<select name="users_activation_status" id="users_activation_status" data-filter-button-title="'.__('Filter', 'tst').'">';
+    $ret .= '<option value="" '.(!$current_filter_val ? 'selected="selected"' : '').'>'.__('All users', 'tst').'</option>';
+    $ret .= '<option value="activated" '.($current_filter_val == 'activated' ? 'selected="selected"' : '').'>'.__('Activated users', 'tst').'</option>';
+    $ret .= '<option value="not_activated" '.($current_filter_val == 'not_activated' ? 'selected="selected"' : '').'>'.__('Not activated users', 'tst').'</option>';
+    $ret .= '</select>';
+
+    echo  $ret;
+}
+
+function itv_filter_users_by_activation() {
+    show_users_filter_by_activation();
+}
+add_action('restrict_manage_users', 'itv_filter_users_by_activation');
+
+function itv_add_user_custom_columns($columns) {
+    $columns['is_activated'] = __('Is activated', 'tst');
+    $columns['reg_date'] = __('Registration date', 'tst');
+    return $columns;
+}
+add_filter('manage_users_columns', 'itv_add_user_custom_columns');
+
+function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
+    if('is_activated' == $column_name) {
+        $user = get_user_by('id', $user_id);
+        return itv_is_user_activated($user_id) ? __('Yes') : __('No') . itv_get_confirm_email_date($user, true);
+    }
+    elseif('reg_date' == $column_name) {
+        return itv_user_reg_date($user_id);
+    }
+    return $value;
+}
+add_action('manage_users_custom_column',  'itv_show_user_custom_columns_content', 10, 3);
+
+# batch activation mail resend
+function itv_get_users_to_resend_activation($limit = 0, $count = false) {
+    global $wpdb;
+    $itv_config = ItvConfig::instance();
+    
+    $sql = "";
+    if($count) {
+        $sql = "SELECT COUNT(*) ";
+    }
+    else {
+        $sql = "SELECT {$wpdb->users}.* ";
+    }
+    
+    $min_time = time() - $itv_config->get('USER_NOT_ACTIVATED_ALERT_TIME') * 3600 * 24;
+    $min_time_str = date('Y-m-d H:i:s', $min_time);
+    
+    $sql .= " FROM {$wpdb->users} INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+            " {$wpdb->users}.ID=um_activated.user_id AND " .
+            " um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != '' " .
+            " LEFT JOIN {$wpdb->usermeta} AS um_activation_email ON " .
+            " {$wpdb->users}.ID=um_activation_email.user_id AND " .
+            " um_activation_email.meta_key='activation_email_time' ";
+    
+    $sql .= " WHERE um_activation_email.meta_value < '{$min_time_str}' OR (um_activation_email.meta_value IS NULL AND {$wpdb->users}.user_registered  < '{$min_time_str}') ";
+    $sql .= " ORDER BY {$wpdb->users}.user_registered ASC ";
+    
+    $res = null;
+    if($count) {
+        $ret = $wpdb->get_var($sql);
+    }
+    else {
+        if($limit) {
+            $sql .= " LIMIT " . (int)$limit;
+        }
+        $ret = $wpdb->get_results($sql);
+    }
+    
+    return $ret;
+}
+
+function itv_show_users_bulk_actions() {
+    $remain_to_resend = itv_get_users_to_resend_activation(0, true);
+?>
+    <div class="tablenav itv-users-bulk-actions" id="itv-users-bulk-actions">
+    <input type="button" class="button itv-bulk-resend-activation-email" id="itv-bulk-resend-activation-email" data-count="<?php echo $remain_to_resend;?>" value="<?php echo sprintf(__('Resend activation email (remains %s)', 'tst'), $remain_to_resend);?>"/>
+    </div>
+<?php 
+}
+add_action('restrict_manage_users', 'itv_show_users_bulk_actions');
+
+function itv_bulk_resend_activation_email() {
+    $res = array('status' => 'error');
+    $itv_config = ItvConfig::instance();
+    try {
+        
+        $users = itv_get_users_to_resend_activation($itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT'));
+
+        foreach($users as $user) {
+            itv_resend_activation_email_core($user);
+        }
+        
+        $res = array('status' => 'ok');
+        $res['remain_count'] = itv_get_users_to_resend_activation(0, true);
+    }
+    catch(Exception $ex) {}
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_bulk-resend-activation-email', 'itv_bulk_resend_activation_email');

@@ -63,6 +63,11 @@
         $('#itv-resend-activation-email').click(function(){
             return itv_resend_activation_email($(this));
         });
+        
+        $('#itv-users-bulk-actions').insertBefore('.tablenav.top')
+        $('#itv-bulk-resend-activation-email').click(function(){
+            return itv_bult_resend_activation_email($(this));
+        });
     });
 	
 	function itv_consult_change_datetime($select) {
@@ -194,6 +199,7 @@
             $tr.find('#itv-user-activation-mail-sent-box').show();
         })
         .fail(function(){
+            alert(adminend.common_ajax_error);
         })
         .always(function(){
             $loader.remove();
@@ -205,6 +211,34 @@
         return $('<img />')
         .attr('src', adminend.site_url + 'wp-includes/images/spinner.gif')
         .addClass('manage-consult-loader');
+    }
+    
+    function itv_bult_resend_activation_email($button) {
+        if(!parseInt($button.data('count'), 10)) {
+            alert(adminend.no_expired_activation_users);
+            return false;
+        }
+        
+        var $loader = itv_get_loader();
+        $loader.insertAfter($button);
+        
+        $.post(ajaxurl, {action: 'bulk-resend-activation-email'}, null, 'json')
+        .done(function(json){
+            if(json.status == 'ok') {
+                $button.val(adminend.bulk_resend_activation_email_button.replace(/\{count\}/, json.remain_count));
+                $button.data('count', json.remain_count);
+            }
+            else {
+                alert(adminend.common_ajax_error);
+            }
+        })
+        .fail(function(){
+            alert(adminend.common_ajax_error);
+        })
+        .always(function(){
+            $loader.remove();
+        });
+        return false;
     }
 	
 })(jQuery);
