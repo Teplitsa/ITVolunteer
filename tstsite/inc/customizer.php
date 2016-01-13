@@ -954,55 +954,6 @@ function itv_email_login_authenticate($user, $username, $password) {
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
 
-// activated/not activated users filter
-function admin_users_filter( $query ){
-    global $pagenow, $wpdb;
-
-    if ( is_admin() && $pagenow=='users.php' && isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
-        if($_GET['users_activation_status'] == 'activated') {
-            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
-            "{$wpdb->users}.ID=um_activated.user_id AND " .
-            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
-        }
-        elseif($_GET['users_activation_status'] == 'not_activated') {
-            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
-            "{$wpdb->users}.ID=um_activated.user_id AND " .
-            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != ''";
-        }
-    }
-}
-add_filter( 'pre_user_query', 'admin_users_filter' );
-
-function show_users_filter_by_activation() {
-    $current_filter_val = isset($_GET['users_activation_status']) ? $current_filter_val = $_GET['users_activation_status'] : '';
-    $ret = '<select name="users_activation_status" id="users_activation_status" data-filter-button-title="'.__('Filter', 'tst').'">';
-    $ret .= '<option value="" '.(!$current_filter_val ? 'selected="selected"' : '').'>'.__('All users', 'tst').'</option>';
-    $ret .= '<option value="activated" '.($current_filter_val == 'activated' ? 'selected="selected"' : '').'>'.__('Activated users', 'tst').'</option>';
-    $ret .= '<option value="not_activated" '.($current_filter_val == 'not_activated' ? 'selected="selected"' : '').'>'.__('Not activated users', 'tst').'</option>';
-    $ret .= '</select>';
-    
-    echo  $ret;
-}
-
-function itv_filter_users_by_activation() {
-    show_users_filter_by_activation();
-}
-add_action('restrict_manage_users', 'itv_filter_users_by_activation');
-
-function itv_add_user_custom_columns($columns) {
-    $columns['is_activated'] = __('Is activated', 'tst');
-    return $columns;
-}
-add_filter('manage_users_columns', 'itv_add_user_custom_columns');
-
-function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
-    if('is_activated' == $column_name) {
-        return itv_is_user_activated($user_id) ? __('Yes') : __('No');
-    }
-    return $value;
-}
-add_action('manage_users_custom_column',  'itv_show_user_custom_columns_content', 10, 3);
-
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
 __('itv_week_day_2', 'tst');

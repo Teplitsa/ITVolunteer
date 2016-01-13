@@ -107,12 +107,16 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
     color:#cc0000;
 }
 
-.itv-activation-email-time {
+p.itv-activation-email-time {
     font-size:0.8em;
     color:#008000;
 }
 
-.itv-activation-email-long-time-ago {
+p.itv-activation-email-time.itv-activation-email-long-time-ago {
     font-weight:bold;
     color:#cc0000;
+}
+
+.itv-bulk-resend-activation-email {
+    width:260px;
 }

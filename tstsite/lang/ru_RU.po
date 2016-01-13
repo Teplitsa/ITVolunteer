@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-11 22:52+0200\n"
-"PO-Revision-Date: 2016-01-11 22:54+0200\n"
+"POT-Creation-Date: 2016-01-14 00:05+0200\n"
+"PO-Revision-Date: 2016-01-14 00:07+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -321,31 +321,6 @@ msgstr "Статистика активности"
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
-#: inc/admin.php:771 inc/admin.php:785 inc/customizer.php:1000
-msgid "No"
-msgstr "Нет"
-
-#: inc/admin.php:771 inc/admin.php:783 inc/customizer.php:1000
-msgid "Yes"
-msgstr "Да"
-
-#: inc/admin.php:779 inc/customizer.php:993
-msgid "Is activated"
-msgstr "Активирован"
-
-#: inc/admin.php:786
-msgid "Resend activation email"
-msgstr "Выслать письмо активации"
-
-#: inc/admin.php:788
-#, php-format
-msgid "Activation email time: %s"
-msgstr "Время последнего письма: %s"
-
-#: inc/admin.php:793
-msgid "Activation mail sent"
-msgstr "Письмо активации отправлено"
-
 # @ tst
 #: inc/class-itv-cssjs.php:156
 msgid "No such tags found..."
@@ -476,6 +451,15 @@ msgstr "При удалении фоторграфии произошла оши
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
+#: inc/class-itv-cssjs.php:220
+msgid "No expired activation users"
+msgstr "Нет пользователей, просрочивших активацию."
+
+#: inc/class-itv-cssjs.php:221 inc/functions-members.php:729
+#, php-format
+msgid "Resend activation email (remains %s)"
+msgstr "Отправить активацию (осталось %s)"
+
 # @ tst
 #: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:397
 #: inc/itv_consult.php:444 inc/itv_consult.php:496 inc/itv_consult.php:552
@@ -586,47 +570,31 @@ msgstr "Требуется!"
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:978
-msgid "Filter"
-msgstr "Фильтровать"
-
-#: inc/customizer.php:979
-msgid "All users"
-msgstr "Все"
-
-#: inc/customizer.php:980
-msgid "Activated users"
-msgstr "Активированные"
-
-#: inc/customizer.php:981
-msgid "Not activated users"
-msgstr "Не активированные"
-
-#: inc/customizer.php:1006
+#: inc/customizer.php:957
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:1007
+#: inc/customizer.php:958
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:1008
+#: inc/customizer.php:959
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:1009
+#: inc/customizer.php:960
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:1010
+#: inc/customizer.php:961
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:1011
+#: inc/customizer.php:962
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:1012
+#: inc/customizer.php:963
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -715,6 +683,51 @@ msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 #: inc/functions-members.php:444 inc/functions-members.php:533
 msgid "Review saved"
 msgstr "Отзыв сохранен"
+
+#: inc/functions-members.php:557 inc/functions-members.php:667
+msgid "Is activated"
+msgstr "Активирован"
+
+#: inc/functions-members.php:561 inc/functions-members.php:676
+msgid "Yes"
+msgstr "Да"
+
+#: inc/functions-members.php:563 inc/functions-members.php:676
+msgid "No"
+msgstr "Нет"
+
+#: inc/functions-members.php:564
+msgid "Resend activation email"
+msgstr "Выслать письмо активации"
+
+#: inc/functions-members.php:569
+msgid "Activation mail sent"
+msgstr "Письмо активации отправлено"
+
+#: inc/functions-members.php:589
+#, php-format
+msgid "Activation email time: %s"
+msgstr "Время последнего письма: %s"
+
+#: inc/functions-members.php:652
+msgid "Filter"
+msgstr "Фильтровать"
+
+#: inc/functions-members.php:653
+msgid "All users"
+msgstr "Все"
+
+#: inc/functions-members.php:654
+msgid "Activated users"
+msgstr "Активированные"
+
+#: inc/functions-members.php:655
+msgid "Not activated users"
+msgstr "Не активированные"
+
+#: inc/functions-members.php:668
+msgid "Registration date"
+msgstr "Регистрация"
 
 # @ tst
 #: inc/functions-tasks.php:24
