@@ -257,7 +257,18 @@ class ItvConsult {
     }
     
     public static function get_consultants_id_list() {
-        $consultant_emails = ItvConfig::instance()->get('CONSULT_EMAILS');
+        #$consultant_emails = ItvConfig::instance()->get('CONSULT_EMAILS');
+        
+        $consultant_email_groups = ItvConfig::instance()->get('CONSULT_EMAILS_GROUPS');
+        $consultant_emails = array();
+        foreach($consultant_email_groups as $emails) {
+            foreach ($emails as $email) {
+                $consultant_emails[] = $email;
+            }
+        }
+        $consultant_emails = array_unique($consultant_emails);
+        sort($consultant_emails);
+        
         $users_id_list = array();
         foreach($consultant_emails as $email) {
             $user = get_user_by('email', $email);
@@ -268,8 +279,14 @@ class ItvConsult {
         return $users_id_list;
     }
     
-    public static function get_consultant_user() {
+    public static function get_consultant_user($project_name = 'itv') {
         $consultant_emails = ItvConfig::instance()->get('CONSULT_EMAILS');
+        
+        $consultant_email_groups = ItvConfig::instance()->get('CONSULT_EMAILS_GROUPS');
+        if(isset($consultant_email_groups[$project_name])) {
+            $consultant_emails = $consultant_email_groups[$project_name];
+        }
+        
         $max_index = count($consultant_emails) - 1;
         $rand_index = rand(0, $max_index);
         $rand_email = $consultant_emails[$rand_index];
@@ -301,7 +318,7 @@ class ItvConsult {
         
         p2p_type('task-consult')->connect($task_id, $consult_id, array());
         
-        $consultant = static::get_consultant_user();
+        $consultant = static::get_consultant_user('itv');
         if($consultant) {
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
             
@@ -335,7 +352,7 @@ class ItvConsult {
             wp_set_post_terms( $consult_id, $term->term_id, 'consult_source' );
         }
         
-        $consultant = static::get_consultant_user();
+        $consultant = static::get_consultant_user($source_slug);
         if($consultant) {
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
         

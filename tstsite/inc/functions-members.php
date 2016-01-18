@@ -632,17 +632,21 @@ function itv_user_reg_date($user_id) {
 function admin_users_filter( $query ){
     global $pagenow, $wpdb;
 
-    if ( is_admin() && $pagenow=='users.php' && isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
-        if($_GET['users_activation_status'] == 'activated') {
-            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
-            "{$wpdb->users}.ID=um_activated.user_id AND " .
-            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+    if(is_admin() && $pagenow=='users.php') {
+        if ( isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
+            if($_GET['users_activation_status'] == 'activated') {
+                $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+                "{$wpdb->users}.ID=um_activated.user_id AND " .
+                "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+            }
+            elseif($_GET['users_activation_status'] == 'not_activated') {
+                    $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+                    "{$wpdb->users}.ID=um_activated.user_id AND " .
+                    "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != ''";
+            }
         }
-        elseif($_GET['users_activation_status'] == 'not_activated') {
-            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
-            "{$wpdb->users}.ID=um_activated.user_id AND " .
-            "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != ''";
-        }
+        
+        $query->query_orderby = 'ORDER BY user_registered DESC, user_login ASC';
     }
 }
 add_filter( 'pre_user_query', 'admin_users_filter' );
