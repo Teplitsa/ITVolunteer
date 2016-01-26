@@ -401,6 +401,13 @@ class ItvConsult {
                 '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
                 '{{consult_source}}' => $consult_source_name,
                 '{{author_name}}' => $task_author ? $task_author->user_firstname . ' ' . $task_author->user_lastname : '',
+                '{{author_contact_email}}' => $task_author ? $task_author->user_email : '',
+                '{{author_contact_skype}}' => $task_author ? get_user_meta($task_author->ID, 'user_skype', true) : '',
+                '{{author_contact_user_contacts}}' => $task_author ? get_user_meta($task_author->ID, 'user_contacts', true) : '',
+                '{{author_contact_twitter}}' => $task_author ? get_user_meta($task_author->ID, 'twitter', true) : '',
+                '{{author_contact_facebook}}' => $task_author ? get_user_meta($task_author->ID, 'facebook', true) : '',
+                '{{author_contact_vk}}' => $task_author ? get_user_meta($task_author->ID, 'vk', true) : '',
+                '{{author_contact_googleplus}}' => $task_author ? get_user_meta($task_author->ID, 'googleplus', true) : '',
             );
             $message = str_replace(array_keys($data), $data, $message);
             $message = str_replace("\\", "", $message);
@@ -500,6 +507,13 @@ class ItvConsult {
                 '{{consult_source}}' => $consult_source_name,
                 '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
                 '{{author_name}}' => $external_user_name,
+                '{{author_contact_email}}' => $external_user_email,
+                '{{author_contact_skype}}' => '',
+                '{{author_contact_user_contacts}}' => '',
+                '{{author_contact_twitter}}' => '',
+                '{{author_contact_facebook}}' => '',
+                '{{author_contact_vk}}' => '',
+                '{{author_contact_googleplus}}' => '',
             );
             $message = str_replace(array_keys($data), $data, $message);
             $message = str_replace("\\", "", $message);
