@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-26 10:18+0200\n"
-"PO-Revision-Date: 2016-01-26 10:32+0200\n"
+"POT-Creation-Date: 2016-01-27 00:33+0200\n"
+"PO-Revision-Date: 2016-01-27 00:34+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -461,8 +461,8 @@ msgid "Resend activation email (remains %s)"
 msgstr "Отправить активацию (осталось %s)"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:414
-#: inc/itv_consult.php:461 inc/itv_consult.php:513 inc/itv_consult.php:569
+#: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:421
+#: inc/itv_consult.php:468 inc/itv_consult.php:527 inc/itv_consult.php:583
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -985,7 +985,7 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:394 inc/itv_consult.php:493
+#: inc/itv_consult.php:394 inc/itv_consult.php:500
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -1007,15 +1007,15 @@ msgstr ""
 "twitter: {{author_contact_twitter}}\n"
 "facebook: {{author_contact_facebook}}\n"
 "ВКонтакте: {{author_contact_vk}}\n"
-"Google+: {{author_contact_googleplus}}"
+"Телефон: {{author_contact_googleplus}}"
 
 # @ tst
-#: inc/itv_consult.php:409 inc/itv_consult.php:508
+#: inc/itv_consult.php:416 inc/itv_consult.php:522
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:443
+#: inc/itv_consult.php:450
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -1040,16 +1040,16 @@ msgstr ""
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:457
+#: inc/itv_consult.php:464
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:543
+#: inc/itv_consult.php:557
 msgid "itv_email_test_consult_needed_notification_"
 msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:545
+#: inc/itv_consult.php:559
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1069,48 +1069,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:562
+#: inc/itv_consult.php:576
 msgid "itv_email_test_consult_needed_notification_subject_"
 msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:564
+#: inc/itv_consult.php:578
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:612
+#: inc/itv_consult.php:626
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:647
+#: inc/itv_consult.php:661
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:648
+#: inc/itv_consult.php:662
 msgid "Consult task title"
 msgstr "Заголовок "
 
-#: inc/itv_consult.php:649
+#: inc/itv_consult.php:663
 msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:665 inc/post-types.php:66
+#: inc/itv_consult.php:679 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:666 inc/itv_consult.php:672
+#: inc/itv_consult.php:680 inc/itv_consult.php:686
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:811
+#: inc/itv_consult.php:825
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:812
+#: inc/itv_consult.php:826
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:813
+#: inc/itv_consult.php:827
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1122,12 +1122,12 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
-#: inc/itv_consult.php:814
+#: inc/itv_consult.php:828
 #, php-format
 msgid "Consult request from audit (consult form) #%s"
 msgstr "Запрос консультации из Аудита (форма) #%s"
 
-#: inc/itv_consult.php:815
+#: inc/itv_consult.php:829
 #, php-format
 msgid "Consult request from audit (audit) #%s"
 msgstr "Запрос консультации из Аудита (аудит) #%s"
@@ -1927,7 +1927,7 @@ msgstr "Награды не найдены"
 
 # @ tst
 #: inc/post-types.php:59 inc/post-types.php:61 inc/post-types.php:108
-#: inc/template-members.php:683 partials/navbar.php:17
+#: inc/template-members.php:682 partials/navbar.php:17
 msgid "Tasks"
 msgstr "Задачи"
 
@@ -2139,60 +2139,59 @@ msgstr "Facebook"
 msgid "VKontakte"
 msgstr "ВКонтакте"
 
-# @ tst
 #: inc/template-members.php:574
-msgid "Google+"
-msgstr "Google+"
+msgid "Phone"
+msgstr "Телефон"
 
 # @ tst
 # @ default
-#: inc/template-members.php:624 page-registration.php:47 partials/navbar.php:54
+#: inc/template-members.php:623 page-registration.php:47 partials/navbar.php:54
 msgid "Log In"
 msgstr "Войти"
 
 # @ tst
-#: inc/template-members.php:628
+#: inc/template-members.php:627
 msgid "New Member"
 msgstr "Новый участник"
 
 # @ tst
-#: inc/template-members.php:632
+#: inc/template-members.php:631
 msgid "Edit profile"
 msgstr "Редактировать профиль"
 
 # @ tst
-#: inc/template-members.php:667
+#: inc/template-members.php:666
 msgid "from"
 msgstr "с"
 
 # @ tst
-#: inc/template-members.php:669 partials/content-member_single.php:66
+#: inc/template-members.php:668 partials/content-member_single.php:66
 msgid "Te-st employee"
 msgstr "Сотрудник Теплицы социальных технологий"
 
 # @ tst
-#: inc/template-members.php:670 partials/content-member_single.php:73
+#: inc/template-members.php:669 partials/content-member_single.php:73
 msgid "Te-st partner"
 msgstr "Партнер Теплицы социальных технологий"
 
 # @ tst
-#: inc/template-members.php:678
+#: inc/template-members.php:677
 msgid "Place of work"
 msgstr "Организация"
 
 # @ tst
-#: inc/template-members.php:681 partials/content-member_single.php:216
+#: inc/template-members.php:680 partials/content-member_single.php:216
 #: partials/sidebar-doers.php:26
 msgid "Rating"
 msgstr "Рейтинг"
 
 # @ tst
-#: inc/template-members.php:684
+#: inc/template-members.php:683
 msgid "Participating in tasks / completed tasks"
 msgstr "Участие в задачах / завершенных задач"
 
 # @ tst
-#: inc/template-members.php:686
+#: inc/template-members.php:685
 msgid "Created tasks / completed tasks"
 msgstr "Созданных задач / завершенных задач"
 
@@ -2993,6 +2992,13 @@ msgstr "Комментарии"
 #: single-tasks.php:188
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid "Phone number"
+#~ msgstr "Номер телефона"
+
+# @ tst
+#~ msgid "Google+"
+#~ msgstr "Google+"
 
 #~ msgid ""
 #~ "Greetings, %s!\n"
