@@ -561,7 +561,7 @@ function itv_extra_user_profile_fields( $user ) {
     <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
 <?php else: ?>
     <font class="itv-option-bad-label"><?php _e('No'); ?></font>
-    <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email"><?php _e('Resend activation email', 'tst'); ?></button>
+    <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email" <?php if(!itv_is_resend_activation_available($user->ID)):?>disabled="disabled"<?php endif;?>><?php _e('Resend activation email', 'tst'); ?></button>
     <?php echo itv_get_confirm_email_date($user);?>
 <?php endif; ?>
 </span>
@@ -580,6 +580,7 @@ function itv_get_confirm_email_date($user, $is_short = false) {
     $activation_email_time = itv_get_user_activation_email_datetime($user);
     $activation_email_delta = floor((time() - strtotime($activation_email_time)) / (3600*24));
     $activation_email_date = date('d.m.Y', strtotime($activation_email_time));
+    $is_resend_activation_available = itv_is_resend_activation_available($user->ID);
     
     $itv_config = ItvConfig::instance();
     
@@ -587,18 +588,35 @@ function itv_get_confirm_email_date($user, $is_short = false) {
 ?>
     <p class="itv-activation-email-time <?php if($activation_email_delta > $itv_config->get('USER_NOT_ACTIVATED_ALERT_TIME')):?>itv-activation-email-long-time-ago<?php endif;?>">
         <?php echo $is_short ? $activation_email_date : sprintf(__('Activation email time: %s', 'tst'), $activation_email_date);?>
+        <?php if(!$is_resend_activation_available):?><span class="itv-reactivation-limit" title="<?php _e('Reactivation sent 2 times!', 'tst')?>"><b> ! </b></span><?php endif;?>
     </p>
 <?php
     return ob_get_clean();
 }
 
+function itv_is_resend_activation_available($user_id) {
+    $activation_email_counter = get_user_meta($user_id, 'activation_email_counter', true);
+    return (int)$activation_email_counter < 2 ? true : false;
+}
+
 function itv_resend_activation_email_core($user) {
+    if(!itv_is_resend_activation_available($user->ID)) {
+        return;
+    }
+    
     $email_templates = ItvEmailTemplates::instance();
     $email_subject = $email_templates->get_title('activate_account_notice');
     $email_body_template = $email_templates->get_text('activate_account_notice');
     
     tst_send_activation_email($user, $email_subject, $email_body_template);
     update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
+    
+    $activation_email_counter = get_user_meta($user->ID, 'activation_email_counter', true);
+    if(!$activation_email_counter) {
+        $activation_email_counter = 0;
+    }
+    $activation_email_counter += 1;
+    update_user_meta($user->ID, 'activation_email_counter', $activation_email_counter);
 }
 
 function itv_resend_activation_email() {

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-14 00:05+0200\n"
-"PO-Revision-Date: 2016-01-14 00:07+0200\n"
+"POT-Creation-Date: 2016-01-26 10:18+0200\n"
+"PO-Revision-Date: 2016-01-26 10:32+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -455,14 +455,14 @@ msgstr "Произошла ошибка!"
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:221 inc/functions-members.php:729
+#: inc/class-itv-cssjs.php:221 inc/functions-members.php:751
 #, php-format
 msgid "Resend activation email (remains %s)"
 msgstr "Отправить активацию (осталось %s)"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:397
-#: inc/itv_consult.php:444 inc/itv_consult.php:496 inc/itv_consult.php:552
+#: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:414
+#: inc/itv_consult.php:461 inc/itv_consult.php:513 inc/itv_consult.php:569
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -684,15 +684,15 @@ msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 msgid "Review saved"
 msgstr "Отзыв сохранен"
 
-#: inc/functions-members.php:557 inc/functions-members.php:667
+#: inc/functions-members.php:557 inc/functions-members.php:689
 msgid "Is activated"
 msgstr "Активирован"
 
-#: inc/functions-members.php:561 inc/functions-members.php:676
+#: inc/functions-members.php:561 inc/functions-members.php:698
 msgid "Yes"
 msgstr "Да"
 
-#: inc/functions-members.php:563 inc/functions-members.php:676
+#: inc/functions-members.php:563 inc/functions-members.php:698
 msgid "No"
 msgstr "Нет"
 
@@ -704,28 +704,32 @@ msgstr "Выслать письмо активации"
 msgid "Activation mail sent"
 msgstr "Письмо активации отправлено"
 
-#: inc/functions-members.php:589
+#: inc/functions-members.php:590
 #, php-format
 msgid "Activation email time: %s"
 msgstr "Время последнего письма: %s"
 
-#: inc/functions-members.php:652
+#: inc/functions-members.php:591
+msgid "Reactivation sent 2 times!"
+msgstr "Письмо активации высылалось дополнительно 2 раза!"
+
+#: inc/functions-members.php:674
 msgid "Filter"
 msgstr "Фильтровать"
 
-#: inc/functions-members.php:653
+#: inc/functions-members.php:675
 msgid "All users"
 msgstr "Все"
 
-#: inc/functions-members.php:654
+#: inc/functions-members.php:676
 msgid "Activated users"
 msgstr "Активированные"
 
-#: inc/functions-members.php:655
+#: inc/functions-members.php:677
 msgid "Not activated users"
 msgstr "Не активированные"
 
-#: inc/functions-members.php:668
+#: inc/functions-members.php:690
 msgid "Registration date"
 msgstr "Регистрация"
 
@@ -981,7 +985,7 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:377 inc/itv_consult.php:476
+#: inc/itv_consult.php:394 inc/itv_consult.php:493
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -994,15 +998,24 @@ msgstr ""
 "\n"
 "Название: {{task_title}}\n"
 "\n"
-"Описание: {{task_content}}"
+"Описание: {{task_content}}\n"
+"\n"
+"Пользователь: {{author_name}}\n"
+"Email: {{author_contact_email}}\n"
+"Skype: {{author_contact_skype}}\n"
+"Доп. контакты: {{author_contact_user_contacts}}\n"
+"twitter: {{author_contact_twitter}}\n"
+"facebook: {{author_contact_facebook}}\n"
+"ВКонтакте: {{author_contact_vk}}\n"
+"Google+: {{author_contact_googleplus}}"
 
 # @ tst
-#: inc/itv_consult.php:392 inc/itv_consult.php:491
+#: inc/itv_consult.php:409 inc/itv_consult.php:508
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:426
+#: inc/itv_consult.php:443
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -1027,16 +1040,16 @@ msgstr ""
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:440
+#: inc/itv_consult.php:457
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:526
+#: inc/itv_consult.php:543
 msgid "itv_email_test_consult_needed_notification_"
 msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:528
+#: inc/itv_consult.php:545
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1056,48 +1069,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:545
+#: inc/itv_consult.php:562
 msgid "itv_email_test_consult_needed_notification_subject_"
 msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:547
+#: inc/itv_consult.php:564
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:595
+#: inc/itv_consult.php:612
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:630
+#: inc/itv_consult.php:647
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:631
+#: inc/itv_consult.php:648
 msgid "Consult task title"
 msgstr "Заголовок "
 
-#: inc/itv_consult.php:632
+#: inc/itv_consult.php:649
 msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:648 inc/post-types.php:66
+#: inc/itv_consult.php:665 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:649 inc/itv_consult.php:655
+#: inc/itv_consult.php:666 inc/itv_consult.php:672
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:794
+#: inc/itv_consult.php:811
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:795
+#: inc/itv_consult.php:812
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:796
+#: inc/itv_consult.php:813
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1109,12 +1122,12 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
-#: inc/itv_consult.php:797
+#: inc/itv_consult.php:814
 #, php-format
 msgid "Consult request from audit (consult form) #%s"
 msgstr "Запрос консультации из Аудита (форма) #%s"
 
-#: inc/itv_consult.php:798
+#: inc/itv_consult.php:815
 #, php-format
 msgid "Consult request from audit (audit) #%s"
 msgstr "Запрос консультации из Аудита (аудит) #%s"

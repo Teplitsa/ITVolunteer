@@ -120,3 +120,9 @@ p.itv-activation-email-time.itv-activation-email-long-time-ago {
 .itv-bulk-resend-activation-email {
     width:260px;
 }
+
+p.itv-activation-email-time .itv-reactivation-limit {
+    color:#ffffff;
+    background-color:#cc0000;
+    padding:1px 5px 1px 5px;
+}
