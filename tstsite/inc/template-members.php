@@ -372,7 +372,7 @@ function tst_correct_contactmethods($contactmethods) {
 	$contactmethods['twitter'] = __('Twitter (username without @)', 'tst');
 	$contactmethods['facebook'] = __('Facebook profile (link)', 'tst');	
 	$contactmethods['vk'] = __('VKontakte profile (link)', 'tst');
-	$contactmethods['googleplus'] = __('Google+ (link)', 'tst');
+	$contactmethods['googleplus'] = __('Phone', 'tst');
 		 
 	return $contactmethods;
 }
@@ -571,12 +571,11 @@ function tst_get_member_links_list($member_id){
 	$google = get_user_meta($member_id, 'googleplus', true);
 	if(!empty($google)){		
 		$links['googleplus'] = array(
-			'label' => __('Google+', 'tst'),
+			'label' => __('Phone', 'tst'),
 			'txt' => str_replace(array('http://', 'https://'), '', $google),
 			'url' => esc_url($google)
 		);
 	}
-	
 	
 	if(empty($links))
 		return '';
