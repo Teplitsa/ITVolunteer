@@ -572,8 +572,8 @@ function tst_get_member_links_list($member_id){
 	if(!empty($google)){		
 		$links['googleplus'] = array(
 			'label' => __('Phone', 'tst'),
-			'txt' => str_replace(array('http://', 'https://'), '', $google),
-			'url' => esc_url($google)
+			'txt' => $google,
+			'url' => 'tel:'.$google
 		);
 	}
 	

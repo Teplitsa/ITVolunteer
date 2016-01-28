@@ -566,6 +566,8 @@ function ajax_user_register() {
 			}
 			tstmu_save_user_reg_source($user_id, get_current_blog_id());
 			
+			itv_save_reg_ip($user_id);
+				
 			$itv_log = ItvLog::instance();
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
 				
@@ -913,6 +915,7 @@ function itv_email_login_authenticate($user, $username, $password) {
 			else {
 				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_LOGIN, $user->ID, $user->user_login);
 				save_user_last_login_time($user);
+				itv_save_login_ip($user->ID);
 			}
 		}
 		return $auth_result;
@@ -936,6 +939,7 @@ function itv_email_login_authenticate($user, $username, $password) {
 			else {
 				$itv_log->log_user_action(ItvLog::$ACTION_USER_LOGIN_EMAIL, $user->ID, $user->user_login);
 				save_user_last_login_time($user);
+				itv_save_login_ip($user->ID);
 			}
 		}
 	}

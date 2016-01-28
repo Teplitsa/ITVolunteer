@@ -688,6 +688,7 @@ add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 function itv_add_user_custom_columns($columns) {
     $columns['is_activated'] = __('Is activated', 'tst');
     $columns['reg_date'] = __('Registration date', 'tst');
+    $columns['access_ip'] = __('Access IP', 'tst');
     return $columns;
 }
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
@@ -699,6 +700,20 @@ function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
     }
     elseif('reg_date' == $column_name) {
         return itv_user_reg_date($user_id);
+    }
+    elseif('access_ip' == $column_name) {
+        $res = '';
+        $reg_ip = get_user_meta($user_id, 'itv_reg_ip', true);
+        if($reg_ip) {
+            $res .= __('Reg IP:', 'tst') . ' ' . $reg_ip;
+        }
+        
+        $login_ip = get_user_meta($user_id, 'itv_login_ip', true);
+        if($login_ip) {
+            $res .= $res ? '<br />' : '';
+            $res .= __('Last login IP:', 'tst') . ' ' . $login_ip;
+        }
+        return $res;
     }
     return $value;
 }
@@ -773,3 +788,19 @@ function itv_bulk_resend_activation_email() {
     wp_die(json_encode($res));
 }
 add_action('wp_ajax_bulk-resend-activation-email', 'itv_bulk_resend_activation_email');
+
+function itv_save_reg_ip($user_id) {
+    update_user_meta($user_id, 'itv_reg_ip', itv_get_client_ip());
+}
+
+function itv_save_login_ip($user_id) {
+    update_user_meta($user_id, 'itv_login_ip', itv_get_client_ip());
+}
+
+function itv_get_client_ip() {
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    }
+    return $ip;
+}
