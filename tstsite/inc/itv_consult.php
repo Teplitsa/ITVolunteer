@@ -304,8 +304,6 @@ class ItvConsult {
         
         $consult_id = wp_insert_post($params);
         
-        update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime());
-        
         $term = get_term_by('slug', 'new', 'consult_state');
         if($term) {
             wp_set_post_terms( $consult_id, $term->term_id, 'consult_state' );
@@ -320,11 +318,25 @@ class ItvConsult {
         
         $consultant = static::get_consultant_user('itv');
         if($consultant) {
+            $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
+            update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime('', $consult_time));
+            
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
             
             static::tst_send_admin_notif_consult_needed($task_id, $consultant);
             static::tst_send_user_notif_consult_needed($task_id, $consultant);
         }
+    }
+    
+    public static function get_consultant_cfg_val($email, $key) {
+        $consultant_cfg = ItvConfig::instance()->get('CONSULTANT_CONFIG');
+        if(isset($consultant_cfg[$email])) {
+            $consultant_cfg = $consultant_cfg[$email];
+        }
+        else {
+            $consultant_cfg = $consultant_cfg['default'];
+        }
+        return isset($consultant_cfg[$key]) ? $consultant_cfg[$key] : null;
     }
     
     public static function create_external($consult_data, $source_slug) {
@@ -340,7 +352,6 @@ class ItvConsult {
         update_post_meta($consult_id, 'external_user_name', $consult_data['user_name']);
         update_post_meta($consult_id, 'external_user_email', $consult_data['user_email']);
         update_post_meta($consult_id, 'external_post_link', $consult_data['post_link']);
-        update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime());
         
         $term = get_term_by('slug', 'new', 'consult_state');
         if($term) {
@@ -354,6 +365,9 @@ class ItvConsult {
         
         $consultant = static::get_consultant_user($source_slug);
         if($consultant) {
+            $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
+            update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime('', $consult_time));
+            
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
         
             static::tst_send_admin_notif_consult_needed_external($consult_id, $consultant);
@@ -389,12 +403,11 @@ class ItvConsult {
             $to = $consultant->user_email;
             $other_emails = array_slice($consult_emails, 1);
             
-            $consult_moment = static::get_consult_moment();
-            
             $message = __('itv_email_test_consult_needed_message', 'tst');
             $data = array(
                 '{{consult_week_day}}' => $consult_moment['week_day_str'],
                 '{{consult_date}}' => $consult_moment['date_str'],
+                '{{consult_time}}' => $consult_moment['time_str'],
                 '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
                 '{{task_title}}' => get_the_title($post_id),
                 '{{task_content}}' => $task->post_content,
@@ -451,6 +464,7 @@ class ItvConsult {
             $data = array(
                 '{{consult_week_day}}' => $consult_moment['week_day_str'],
                 '{{consult_date}}' => $consult_moment['date_str'],
+                '{{consult_time}}' => $consult_moment['time_str'],
                 '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
                 '{{task_title}}' => get_the_title($post_id),
                 '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
@@ -501,6 +515,7 @@ class ItvConsult {
             $data = array(
                 '{{consult_week_day}}' => $consult_moment['week_day_str'],
                 '{{consult_date}}' => $consult_moment['date_str'],
+                '{{consult_time}}' => $consult_moment['time_str'],
                 '{{task_url}}' => '<a href="' . $external_post_link . '">' . $external_post_link . '</a>',
                 '{{task_title}}' => get_the_title($consult_id),
                 '{{task_content}}' => $consult ? $consult->post_content : '',
@@ -562,6 +577,7 @@ class ItvConsult {
             $data = array(
                 '{{consult_week_day}}' => $consult_moment['week_day_str'],
                 '{{consult_date}}' => $consult_moment['date_str'],
+                '{{consult_time}}' => $consult_moment['time_str'],
                 '{{task_url}}' => '<a href="' . $external_post_link . '">' . $external_post_link . '</a>',
                 '{{task_title}}' => get_the_title($post_id),
                 '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
@@ -609,6 +625,9 @@ class ItvConsult {
         }
         
         if($time) {
+            if(preg_match('/^\d{2}:\d{2}$/', $time)) {
+                $time .= ':00';
+            }
             $date .= ' ' . $time;
         }
         else {
@@ -625,7 +644,9 @@ class ItvConsult {
         $consult_week_day = (int)date('w', $phptime);
         $consult_week_day_str = __('itv_week_day_' . $consult_week_day, 'tst');
         
-        return array('week_day_str' => $consult_week_day_str, 'date_str' => $consult_date);
+        $time_str = date('H:i', $phptime);
+        
+        return array('week_day_str' => $consult_week_day_str, 'date_str' => $consult_date, 'time_str' => $time_str);
     }
 }
 
