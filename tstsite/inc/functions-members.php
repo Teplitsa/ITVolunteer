@@ -802,7 +802,7 @@ function itv_get_client_ip() {
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
         $ip_list = preg_split('/\s*,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
         if(count($ip_list)) {
-            $ip = array_pop($ip_list);
+            $ip = array_shift($ip_list);
         }
         else {
             $ip = $ip_list;
