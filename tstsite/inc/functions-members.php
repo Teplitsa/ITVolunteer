@@ -800,7 +800,7 @@ function itv_save_login_ip($user_id) {
 function itv_get_client_ip() {
     $ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        $ip_list = preg_split('/\s+,\s+/', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        $ip_list = preg_split('/\s*,\s*/', $_SERVER['HTTP_X_FORWARDED_FOR']);
         if(count($ip_list)) {
             $ip = array_pop($ip_list);
         }
