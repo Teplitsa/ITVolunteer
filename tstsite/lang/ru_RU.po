@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-28 02:26+0200\n"
-"PO-Revision-Date: 2016-01-28 02:27+0200\n"
+"POT-Creation-Date: 2016-01-27 00:33+0200\n"
+"PO-Revision-Date: 2016-01-28 02:17+0300\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.6\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
@@ -455,14 +455,14 @@ msgstr "Произошла ошибка!"
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:221 inc/functions-members.php:766
+#: inc/class-itv-cssjs.php:221 inc/functions-members.php:751
 #, php-format
 msgid "Resend activation email (remains %s)"
 msgstr "Отправить активацию (осталось %s)"
 
 # @ tst
-#: inc/customizer.php:11 inc/customizer.php:769 inc/itv_consult.php:434
-#: inc/itv_consult.php:482 inc/itv_consult.php:542 inc/itv_consult.php:599
+#: inc/customizer.php:11 inc/customizer.php:767 inc/itv_consult.php:421
+#: inc/itv_consult.php:468 inc/itv_consult.php:527 inc/itv_consult.php:583
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -470,14 +470,14 @@ msgstr "it-волонтёр"
 #: inc/customizer.php:62 inc/customizer.php:93 inc/customizer.php:123
 #: inc/customizer.php:158 inc/customizer.php:195 inc/customizer.php:270
 #: inc/customizer.php:326 inc/customizer.php:382 inc/customizer.php:450
-#: inc/customizer.php:482 inc/customizer.php:543 inc/customizer.php:600
-#: inc/customizer.php:661 inc/customizer.php:695 inc/functions-members.php:374
+#: inc/customizer.php:482 inc/customizer.php:543 inc/customizer.php:598
+#: inc/customizer.php:659 inc/customizer.php:693 inc/functions-members.php:374
 #: inc/functions-members.php:463
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 # @ tst
-#: inc/customizer.php:433 inc/customizer.php:913 inc/customizer.php:937
+#: inc/customizer.php:433 inc/customizer.php:911 inc/customizer.php:934
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
@@ -489,7 +489,7 @@ msgid "Username already exists!"
 msgstr "Такой логин уже существует."
 
 # @ tst
-#: inc/customizer.php:492 inc/customizer.php:605 inc/functions-members.php:251
+#: inc/customizer.php:492 inc/customizer.php:603 inc/functions-members.php:251
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
@@ -502,7 +502,7 @@ msgstr ""
 "регистрацию позже."
 
 # @ tst
-#: inc/customizer.php:531 inc/customizer.php:583
+#: inc/customizer.php:531 inc/customizer.php:581
 msgid ""
 "Your registration is complete! Please check out the email you gave us for "
 "our activation message."
@@ -512,12 +512,12 @@ msgstr ""
 "инструкциям в отправленном вам письме."
 
 # @ tst
-#: inc/customizer.php:622
+#: inc/customizer.php:620
 msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
 # @ tst
-#: inc/customizer.php:646
+#: inc/customizer.php:644
 #, php-format
 msgid ""
 "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
@@ -527,7 +527,7 @@ msgstr ""
 "\">Просмотреть</a>."
 
 # @ tst
-#: inc/customizer.php:683
+#: inc/customizer.php:681
 msgid ""
 "<strong>Error:</strong> something wrong happens when we deleted your "
 "account. We are already looking to it."
@@ -536,11 +536,11 @@ msgstr ""
 "эту проблему."
 
 # @ tst
-#: inc/customizer.php:713
+#: inc/customizer.php:711
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
-#: inc/customizer.php:755
+#: inc/customizer.php:753
 msgid "itv_email_task_complete_message"
 msgstr ""
 "Еще одна задача выполнена: \n"
@@ -551,50 +551,50 @@ msgstr ""
 "\n"
 "Описание: {{task_content}}"
 
-#: inc/customizer.php:765
+#: inc/customizer.php:763
 msgid "itv_email_task_complete_subject"
 msgstr "Очередная задача выполнена"
 
 # @ tst
-#: inc/customizer.php:850
+#: inc/customizer.php:848
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-#: inc/customizer.php:853
+#: inc/customizer.php:851
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-#: inc/customizer.php:865
+#: inc/customizer.php:863
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:961
+#: inc/customizer.php:957
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:962
+#: inc/customizer.php:958
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:963
+#: inc/customizer.php:959
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:964
+#: inc/customizer.php:960
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:965
+#: inc/customizer.php:961
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:966
+#: inc/customizer.php:962
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:967
+#: inc/customizer.php:963
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -656,7 +656,7 @@ msgstr "Пользователь"
 
 #: inc/functions-members.php:386 inc/functions-members.php:475
 msgid "<strong>Error:</strong> task not found."
-msgstr "<strong>Ошибка:</strong> задача не найден."
+msgstr "<strong>Ошибка:</strong> задача не найдена."
 
 #: inc/functions-members.php:393 inc/functions-members.php:482
 #: inc/functions-members.php:500
@@ -688,11 +688,11 @@ msgstr "Отзыв сохранен"
 msgid "Is activated"
 msgstr "Активирован"
 
-#: inc/functions-members.php:561 inc/functions-members.php:699
+#: inc/functions-members.php:561 inc/functions-members.php:698
 msgid "Yes"
 msgstr "Да"
 
-#: inc/functions-members.php:563 inc/functions-members.php:699
+#: inc/functions-members.php:563 inc/functions-members.php:698
 msgid "No"
 msgstr "Нет"
 
@@ -732,18 +732,6 @@ msgstr "Не активированные"
 #: inc/functions-members.php:690
 msgid "Registration date"
 msgstr "Регистрация"
-
-#: inc/functions-members.php:691
-msgid "Access IP"
-msgstr "IP доступа"
-
-#: inc/functions-members.php:708
-msgid "Reg IP:"
-msgstr "IP рег."
-
-#: inc/functions-members.php:714
-msgid "Last login IP:"
-msgstr "IP входа:"
 
 # @ tst
 #: inc/functions-tasks.php:24
@@ -997,7 +985,7 @@ msgid "Show All Consultants"
 msgstr "Показать всех консультантов"
 
 # @ tst
-#: inc/itv_consult.php:406 inc/itv_consult.php:514
+#: inc/itv_consult.php:394 inc/itv_consult.php:500
 msgid "itv_email_test_consult_needed_message"
 msgstr ""
 "Требуется консультация по задаче: \n"
@@ -1005,9 +993,6 @@ msgstr ""
 "Источник: {{consult_source}}\n"
 "\n"
 "Консультант: {{consultant_name}}\n"
-"\n"
-"Дата и время консультации: {{consult_date}} ({{consult_week_day}}) в "
-"{{consult_time}} московского времени\n"
 "\n"
 "Ссылка: {{task_url}}\n"
 "\n"
@@ -1025,12 +1010,12 @@ msgstr ""
 "Телефон: {{author_contact_googleplus}}"
 
 # @ tst
-#: inc/itv_consult.php:429 inc/itv_consult.php:537
+#: inc/itv_consult.php:416 inc/itv_consult.php:522
 msgid "itv_email_test_consult_needed_subject"
 msgstr ""
 "{{consult_source}}, запрос консультации, {{author_name}}, {{consult_date}}"
 
-#: inc/itv_consult.php:463
+#: inc/itv_consult.php:450
 msgid "itv_email_test_consult_needed_notification"
 msgstr ""
 "Добрый день! \n"
@@ -1043,28 +1028,30 @@ msgstr ""
 "на платформе it-волонтер вы указали, что вам необходима дополнительная "
 "консультация специалистов Теплицы социальных технологий.\n"
 "\n"
-"Ваша консультация состоится в {{consult_week_day}} ({{consult_date}}) в "
-"{{consult_time}} московского времени по скайпу.\n"
-"Для этого вам необходимо добавить в ваш скайп контакт {{consultant_skype}}.\n"
+"Мы хотели бы предложить следующее время консультации: {{consult_week_day}} "
+"({{consult_date}}) в 12:00 московского времени по скайпу. Удобно ли вам?\n"
 "\n"
-"Скорректировать время вы можете, связавшись с нашим консультантом по почте "
-"или скайпу.\n"
+"Если нет, свяжитесь, пожалуйста заранее, с вашим консультантом по почте или "
+"скайпу\n"
+"\n"
+"Для этого вам необходимо добавить в скайп контакт {{consultant_skype}}.\n"
+"\n"
 "Имя консультанта: {{consultant_name}}\n"
 "Почта: {{consultant_email}}\n"
 "Скайп: {{consultant_skype}}\n"
 "\n"
 "Команда it-волонтер"
 
-#: inc/itv_consult.php:478
+#: inc/itv_consult.php:464
 msgid "itv_email_test_consult_needed_notification_subject"
 msgstr ""
 "Теплица социальных технологий. Запрос консультации на платформе it-волонтер"
 
-#: inc/itv_consult.php:572
+#: inc/itv_consult.php:557
 msgid "itv_email_test_consult_needed_notification_"
 msgstr "itv_email_test_consult_needed_notification_"
 
-#: inc/itv_consult.php:574
+#: inc/itv_consult.php:559
 msgid "itv_email_test_consult_needed_notification_ext"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1084,48 +1071,48 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu"
 
-#: inc/itv_consult.php:592
+#: inc/itv_consult.php:576
 msgid "itv_email_test_consult_needed_notification_subject_"
 msgstr "itv_email_test_consult_needed_notification_subject_"
 
-#: inc/itv_consult.php:594
+#: inc/itv_consult.php:578
 msgid "itv_email_test_consult_needed_notification_subject_ext"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:645
+#: inc/itv_consult.php:626
 msgid "itv_week_day_"
 msgstr "итв_день_недели"
 
-#: inc/itv_consult.php:682
+#: inc/itv_consult.php:661
 msgid "Consult state custom column"
 msgstr "Статус"
 
-#: inc/itv_consult.php:683
+#: inc/itv_consult.php:662
 msgid "Consult task title"
 msgstr "Заголовок "
 
-#: inc/itv_consult.php:684
+#: inc/itv_consult.php:663
 msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:700 inc/post-types.php:66
+#: inc/itv_consult.php:679 inc/post-types.php:66
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
-#: inc/itv_consult.php:701 inc/itv_consult.php:707
+#: inc/itv_consult.php:680 inc/itv_consult.php:686
 msgid "Consult settings"
 msgstr "Параметры консультации"
 
-#: inc/itv_consult.php:846
+#: inc/itv_consult.php:825
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_consult.php:847
+#: inc/itv_consult.php:826
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_consult.php:848
+#: inc/itv_consult.php:827
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1137,12 +1124,12 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
-#: inc/itv_consult.php:849
+#: inc/itv_consult.php:828
 #, php-format
 msgid "Consult request from audit (consult form) #%s"
 msgstr "Запрос консультации из Аудита (форма) #%s"
 
-#: inc/itv_consult.php:850
+#: inc/itv_consult.php:829
 #, php-format
 msgid "Consult request from audit (audit) #%s"
 msgstr "Запрос консультации из Аудита (аудит) #%s"
@@ -1545,6 +1532,11 @@ msgstr ""
 "заголовок и описание вашей задачи - возможно их стоит отредактировать.\n"
 "<a href='{{task_link}}'>{{task_link}}</a>\n"
 "\n"
+"Как только вас добавил волонтер, его следует либо утвердить в задаче, либо "
+"отклонить. \n"
+"\n"
+"После завершения задачи необходимо оставить отзыв. \n"
+"\n"
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
@@ -1620,13 +1612,26 @@ msgstr ""
 "Добрый день, {{username}}!\n"
 "\n"
 "\n"
-"Хорошие новости!\n"
+"Хорошие новости!  Вы выполнили задание! \n"
 "\n"
 "Задача <a href='{{task_link}}'>{{task_title}}</a> закрыта.\n"
 "\n"
 "\n"
-"Оставьте пожалуйста отзыв про автора задачи, перейдя по <a "
-"href='{{task_link}}'>ссылке</a>. Это очень важно!\n"
+"Вам понравилось работать с автором задачи? Пожалуйста, не забудьте оставить "
+"отзыв о человеке, с которым вы работали <a href='{{task_link}}'>тут</a>. Это "
+"очень важно!\n"
+"\n"
+"Удачи! Желаем новых побед! \n"
+"В целом, как все прошло? Платформа работает нормально? \n"
+"\n"
+"Если вы сделали для некоммерческой организации сложный продукт (логотип, "
+"сайт, дизайн печатных материалов, серию баннеров) - добавляйте кейс на \"<a "
+"href=“https://paseka.te-st.ru”>Пасеку</a>\". Программа \"Пасека\" -  это "
+"система поиска, отбора и рекомендации лучших веб-студий и креативных "
+"агентств. Добавление кейса занимает пять минут, но может принести вам много "
+"пользы: мы пишем о волонтерах и студиях на ресурсах Теплицы и делимся "
+"заказами. Мы уверены, что вместе с вами сделаем \"третий сектор\" "
+"эффективнее.\n"
 "\n"
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
@@ -2125,9 +2130,10 @@ msgstr "Профиль Facebook (ссылка)"
 msgid "VKontakte profile (link)"
 msgstr "Профиль ВКонтакте (ссылка)"
 
-#: inc/template-members.php:375 inc/template-members.php:574
-msgid "Phone"
-msgstr "Телефон"
+# @ tst
+#: inc/template-members.php:375
+msgid "Google+ (link)"
+msgstr "Google+ (ссылка)"
 
 #: inc/template-members.php:406
 msgid "Detailed"
@@ -2152,6 +2158,10 @@ msgstr "Facebook"
 #: inc/template-members.php:565
 msgid "VKontakte"
 msgstr "ВКонтакте"
+
+#: inc/template-members.php:574
+msgid "Phone"
+msgstr "Телефон"
 
 # @ tst
 # @ default
@@ -2535,7 +2545,10 @@ msgid ""
 "volunteers to do it. <a href='%s'>Check it out</a>"
 msgstr ""
 "Информация о вашей задаче опубликована. Она открыта для новых волонтеров. <a "
-"href='%s'>Просмотр</a>"
+"href='%s'>Просмотр</a>  Ждите, пока вас добавит волонтёр \n"
+"Как только вас добавил волонтер, его следует либо утвердить в задаче, либо "
+"отклонить. \n"
+"После завершения задачи необходимо оставить отзыв. "
 
 # @ tst
 #: page-task-action.php:94
@@ -3002,10 +3015,6 @@ msgstr "Комментарии"
 #: single-tasks.php:188
 msgid "Related tasks"
 msgstr "Похожие задачи"
-
-# @ tst
-#~ msgid "Google+ (link)"
-#~ msgstr "Google+ (ссылка)"
 
 #~ msgid "Phone number"
 #~ msgstr "Номер телефона"
