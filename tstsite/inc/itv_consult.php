@@ -676,6 +676,8 @@ class ItvConsult {
         $ret = false;
         while ($query->have_posts()) { 
             $query->the_post();
+            $post = $query->post;
+            
             if($post && $post->post_author == $users_id) {
                 $ret = true;
             }
