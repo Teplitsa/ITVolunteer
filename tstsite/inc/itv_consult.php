@@ -653,7 +653,7 @@ class ItvConsult {
         $datetime = '';
         $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
         $datetime = static::get_consult_datetime('', $consult_time);
-        while(static::is_consultant_time_buzy($consult_time->ID, $datetime)) {
+        while(static::is_consultant_time_buzy($consultant->ID, $datetime)) {
             $date = new DateTime($datetime);
             $date->add(new DateInterval('PT1H'));
             $datetime = static::get_consult_datetime($date->format('Y-m-d'), $date->format('H:i'));
@@ -676,7 +676,7 @@ class ItvConsult {
         $ret = false;
         while ($query->have_posts()) { 
             $query->the_post();
-            if($post->post_author == $users_id) {
+            if($post && $post->post_author == $users_id) {
                 $ret = true;
             }
         }
