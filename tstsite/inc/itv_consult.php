@@ -661,7 +661,7 @@ class ItvConsult {
         return $datetime;
     }
     
-    public static function is_consultant_time_buzy($users_id, $datetime_str) {
+    public static function is_consultant_time_buzy($user_id, $datetime_str) {
         $args = array(
             'post_type' => 'consult',
             'meta_query' => array(
@@ -677,12 +677,21 @@ class ItvConsult {
         while ($query->have_posts()) { 
             $query->the_post();
             $post = $query->post;
-            
-            if($post && $post->post_author == $users_id) {
+            $consultant = $post ? ItvConsult::get_consult_consultant($post) : null;
+            if($consultant && $consultant->ID == $user_id) {
                 $ret = true;
+                break;
             }
         }
         return $ret;
+    }
+    
+    public static function get_consult_consultant($post) {
+        $users = get_users( array(
+            'connected_type' => 'consult-consultant',
+            'connected_items' => $post
+        ));
+        return count($users) ? $users[0] : null;
     }
 }
 
@@ -745,11 +754,8 @@ function itv_consult_manage_custom_columns($column) {
         }
     }
     elseif($column == 'p2p-from-consult-consultant') {
-        $users = get_users( array(
-            'connected_type' => 'consult-consultant',
-            'connected_items' => $post
-        ));
-        $consultant_id = count($users) ? $users[0]->ID : false;
+        $consultant = ItvConsult::get_consult_consultant($post);
+        $consultant_id = $consultant ? $consultant->ID : false;
         ItvConsult::show_consultants_dropdown($consultant_id, true, array(
             'name' => 'one_consult_consultant', 
             'id' => 'one_consult_consultant' . $post->ID, 
