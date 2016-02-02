@@ -318,8 +318,8 @@ class ItvConsult {
         
         $consultant = static::get_consultant_user('itv');
         if($consultant) {
-            $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
-            update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime('', $consult_time));
+            $consult_datetime = static::get_consultant_consult_datetime($consultant);
+            update_post_meta($consult_id, 'consult_moment', $consult_datetime);
             
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
             
@@ -365,8 +365,8 @@ class ItvConsult {
         
         $consultant = static::get_consultant_user($source_slug);
         if($consultant) {
-            $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
-            update_post_meta($consult_id, 'consult_moment', static::get_consult_datetime('', $consult_time));
+            $consult_datetime = static::get_consultant_consult_datetime($consultant);
+            update_post_meta($consult_id, 'consult_moment', $consult_datetime);
             
             p2p_type('consult-consultant')->connect($consult_id, $consultant->ID, array());
         
@@ -647,6 +647,40 @@ class ItvConsult {
         $time_str = date('H:i', $phptime);
         
         return array('week_day_str' => $consult_week_day_str, 'date_str' => $consult_date, 'time_str' => $time_str);
+    }
+    
+    public static function get_consultant_consult_datetime($consultant) {
+        $datetime = '';
+        $consult_time = self::get_consultant_cfg_val($consultant->user_email, 'time');
+        $datetime = static::get_consult_datetime('', $consult_time);
+        while(static::is_consultant_time_buzy($consult_time->ID, $datetime)) {
+            $date = new DateTime($datetime);
+            $date->add(new DateInterval('PT1H'));
+            $datetime = static::get_consult_datetime($date->format('Y-m-d'), $date->format('H:i'));
+        }
+        return $datetime;
+    }
+    
+    public static function is_consultant_time_buzy($users_id, $datetime_str) {
+        $args = array(
+            'post_type' => 'consult',
+            'meta_query' => array(
+                array(
+                    'key' => 'consult_moment',
+                    'value' => $datetime_str,
+                    'compare' => '=',
+                )
+            )
+        );
+        $query = new WP_Query($args);
+        $ret = false;
+        while ($query->have_posts()) { 
+            $query->the_post();
+            if($post->post_author == $users_id) {
+                $ret = true;
+            }
+        }
+        return $ret;
     }
 }
 
