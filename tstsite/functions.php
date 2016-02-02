@@ -188,6 +188,7 @@ require get_template_directory().'/itv_config.php';
 //classes
 require get_template_directory().'/inc/class-itv-cssjs.php';
 require get_template_directory().'/inc/class-itv-query.php';
+require get_template_directory().'/inc/itv_ipgeo.php';
 
 //templates and funcitons
 require get_template_directory().'/inc/template-general.php';

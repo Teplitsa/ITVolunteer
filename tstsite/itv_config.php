@@ -26,9 +26,11 @@ class ItvConfig {
             ),
             'CONSULT_EMAILS_GROUPS' => array (
                 'audit' => array('anna.ladoshkina@te-st.ru', 'suvorov@te-st.ru'),
+                #'audit' => array('denis.cherniatev@gmail.com'),
                 'itv' => array('suvorov@te-st.ru', 'anna.ladoshkina@te-st.ru', 'support@te-st.ru'),
                 #'itv' => array('support@te-st.ru'),
                 #'itv' => array('suvorov@te-st.ru'),
+                #'itv' => array('denis.cherniatev@gmail.com'),
             ),
             'CONSULTANT_CONFIG' => array(
                 'default' => array('time' => '12:00'),
