@@ -180,7 +180,6 @@ class ItvConsult {
                 'selected'        => $selected,
                 'show_count'      => true,
                 'hide_empty'      => false,
-                #'value_field'     => 'slug', // this option does not work properly
             ));
             
             # add consult_source filter
@@ -257,8 +256,6 @@ class ItvConsult {
     }
     
     public static function get_consultants_id_list() {
-        #$consultant_emails = ItvConfig::instance()->get('CONSULT_EMAILS');
-        
         $consultant_email_groups = ItvConfig::instance()->get('CONSULT_EMAILS_GROUPS');
         $consultant_emails = array();
         foreach($consultant_email_groups as $emails) {

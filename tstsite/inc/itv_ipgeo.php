@@ -1,5 +1,4 @@
 <?php
-require( get_template_directory() . '/ipgeo/ipgeobase.php' );
 
 class ItvIPGeo {
     private $_config;
