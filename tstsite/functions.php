@@ -188,7 +188,6 @@ require get_template_directory().'/itv_config.php';
 //classes
 require get_template_directory().'/inc/class-itv-cssjs.php';
 require get_template_directory().'/inc/class-itv-query.php';
-require get_template_directory().'/inc/itv_ipgeo.php';
 
 //templates and funcitons
 require get_template_directory().'/inc/template-general.php';
@@ -211,3 +210,7 @@ require get_template_directory().'/inc/stats-events.php';
 require get_template_directory().'/inc/itv_notificator.php';
 require get_template_directory().'/inc/itv_tasks_stats.php';
 require get_template_directory().'/inc/itv_consult.php';
+
+// ipgeo lib and wrapper
+require get_template_directory().'/ipgeo/ipgeobase.php';
+require get_template_directory().'/inc/itv_ipgeo.php';
