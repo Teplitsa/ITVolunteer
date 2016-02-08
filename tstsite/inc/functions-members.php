@@ -795,10 +795,11 @@ function itv_save_reg_ip($user_id) {
 
 function itv_save_login_ip($user_id) {
     $user_city = get_user_meta($user_id, 'user_city', true);
+    $user_ip = itv_get_client_ip();
     if(!trim($user_city)) {
-        ItvIPGeo::instance()->save_location_by_ip($user_id);
+        ItvIPGeo::instance()->save_location_by_ip($user_id, $user_ip);
     }
-    update_user_meta($user_id, 'itv_login_ip', itv_get_client_ip());
+    update_user_meta($user_id, 'itv_login_ip', $user_ip);
 }
 
 function itv_get_client_ip() {

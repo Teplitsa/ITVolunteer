@@ -567,7 +567,7 @@ function ajax_user_register() {
 			tstmu_save_user_reg_source($user_id, get_current_blog_id());
 			
 			itv_save_reg_ip($user_id);
-			ItvIPGeo::instance()->save_location_by_ip($user_id);
+			ItvIPGeo::instance()->save_location_by_ip($user_id, itv_get_client_ip());
 				
 			$itv_log = ItvLog::instance();
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);

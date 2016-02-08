@@ -15,13 +15,17 @@ class ItvIPGeo {
         return ItvIPGeo::$_instance;
     }
     
-    public function save_location_by_ip($user_id) {
+    private function _get_ipgeo() {
+        if(!$this->_ipgeo) {
+            $this->_ipgeo = new IPGeoBase();
+        }
+        return $this->_ipgeo;
+    }
+    
+    public function save_location_by_ip($user_id, $ip) {
         try {
-            if(!$this->_ipgeo) {
-                $this->_ipgeo = new IPGeoBase();
-            }
             
-            $city = $this->_ipgeo->getRecord(itv_get_client_ip());
+            $city = $this->_get_ipgeo()->getRecord($ip);
             $city = $this->fix_region($city);
             
             if($city) {
@@ -31,6 +35,21 @@ class ItvIPGeo {
         }
         catch (Exception $ex) {
         }
+    }
+
+    public function get_city_by_ip($ip) {
+        $city_str = '';
+        try {
+            $city = $this->_get_ipgeo()->getRecord($ip);
+            $city = $this->fix_region($city);
+    
+            if($city) {
+                $city_str = isset($city['city']) ? $city['city'] : '';
+            }
+        }
+        catch (Exception $ex) {
+        }
+        return $city_str;
     }
     
     public function get_geo_region($user_id) {
