@@ -221,7 +221,8 @@ class ITV_CssJs {
 			'site_url' => site_url('/'),
 			'common_ajax_error' => __('Error!'),
 			'no_expired_activation_users' => __('No expired activation users', 'tst'),
-			'bulk_resend_activation_email_button' => sprintf(__('Resend activation email next %s (remains %s)', 'tst'), $reactivation_emails_portion, '{count}'),
+			'bulk_resend_activation_email_button' => sprintf(__('Resend activation email next %s (remains %s)', 'tst'), '{portion}', '{count}'),
+			'reactivation_emails_portion' => $reactivation_emails_portion,
 		));   
 
 	}
