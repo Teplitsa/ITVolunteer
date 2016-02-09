@@ -595,8 +595,19 @@ function itv_get_confirm_email_date($user, $is_short = false) {
 }
 
 function itv_is_resend_activation_available($user_id) {
+    $itv_config = ItvConfig::instance();
     $activation_email_counter = get_user_meta($user_id, 'activation_email_counter', true);
-    return (int)$activation_email_counter < 2 ? true : false;
+    
+    # hack to process correctly users with no activation_email_counter
+    if(!$activation_email_counter) {
+        $activation_email_time = get_user_meta($user_id, 'activation_email_time', true);
+        if($activation_email_time) {
+            update_user_meta($user_id, 'activation_email_counter', 1);
+        }
+        $activation_email_counter = 1;
+    }
+    
+    return (int)$activation_email_counter < $itv_config->get('REACTIVATION_EMAILS_LIMIT') ? true : false;
 }
 
 function itv_resend_activation_email_core($user) {
@@ -734,15 +745,22 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
     
     $min_time = time() - $itv_config->get('USER_NOT_ACTIVATED_ALERT_TIME') * 3600 * 24;
     $min_time_str = date('Y-m-d H:i:s', $min_time);
+    $resend_activation_email_limit = $itv_config->get('REACTIVATION_EMAILS_LIMIT');
+    $resend_activation_email_limit = $resend_activation_email_limit ? $resend_activation_email_limit : 0;
     
     $sql .= " FROM {$wpdb->users} INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
             " {$wpdb->users}.ID=um_activated.user_id AND " .
             " um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != '' " .
             " LEFT JOIN {$wpdb->usermeta} AS um_activation_email ON " .
             " {$wpdb->users}.ID=um_activation_email.user_id AND " .
-            " um_activation_email.meta_key='activation_email_time' ";
+            " um_activation_email.meta_key='activation_email_time' " .
+            
+            " LEFT JOIN {$wpdb->usermeta} AS um_activation_email_counter ON " .
+            " {$wpdb->users}.ID=um_activation_email_counter.user_id AND " .
+            " um_activation_email.meta_key='activation_email_counter' ";
     
-    $sql .= " WHERE um_activation_email.meta_value < '{$min_time_str}' OR (um_activation_email.meta_value IS NULL AND {$wpdb->users}.user_registered  < '{$min_time_str}') ";
+    $sql .= " WHERE (um_activation_email.meta_value < '{$min_time_str}' OR (um_activation_email.meta_value IS NULL AND {$wpdb->users}.user_registered  < '{$min_time_str}')) ";
+    $sql .= " AND (um_activation_email_counter.meta_value IS NULL OR CAST(um_activation_email_counter.meta_value AS DECIMAL) < {$resend_activation_email_limit}) ";
     $sql .= " ORDER BY {$wpdb->users}.user_registered ASC ";
     
     $res = null;
@@ -761,9 +779,11 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
 
 function itv_show_users_bulk_actions() {
     $remain_to_resend = itv_get_users_to_resend_activation(0, true);
+    $itv_config = ItvConfig::instance();
+    $reactivation_emails_portion = $itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT');
 ?>
     <div class="tablenav itv-users-bulk-actions" id="itv-users-bulk-actions">
-    <input type="button" class="button itv-bulk-resend-activation-email" id="itv-bulk-resend-activation-email" data-count="<?php echo $remain_to_resend;?>" value="<?php echo sprintf(__('Resend activation email (remains %s)', 'tst'), $remain_to_resend);?>"/>
+    <input type="button" class="button itv-bulk-resend-activation-email" id="itv-bulk-resend-activation-email" data-count="<?php echo $remain_to_resend;?>" value="<?php echo sprintf(__('Resend activation email next %s (remains %s)', 'tst'), $reactivation_emails_portion, $remain_to_resend);?>"/>
     </div>
 <?php 
 }

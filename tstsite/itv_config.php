@@ -47,6 +47,7 @@ class ItvConfig {
             'TASK_NO_DOER_NOTIF_DAYS' => 9,
             'USER_NOT_ACTIVATED_ALERT_TIME' => 9,
             'BULK_ACTIVATION_EMAIL_SEND_LIMIT' => 50,
+            'REACTIVATION_EMAILS_LIMIT' => 2,
         );
     }
     

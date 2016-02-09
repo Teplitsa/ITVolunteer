@@ -213,12 +213,15 @@ class ITV_CssJs {
 		wp_enqueue_style('tst-admin-datetimepicker', $url.'/assets/css/jquery.datetimepicker.min.css', array(), null);
 		wp_enqueue_script('tst-admin-datetimepicker', $url.'/assets/js/jquery.datetimepicker.min.js', array(), null, true);
 		
+		$itv_config = ItvConfig::instance();
+		$reactivation_emails_portion = $itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT');
+		
 		wp_localize_script('tst-admin', 'adminend', array(
 			'ajaxurl' => admin_url('admin-ajax.php'),
 			'site_url' => site_url('/'),
 			'common_ajax_error' => __('Error!'),
 			'no_expired_activation_users' => __('No expired activation users', 'tst'),
-			'bulk_resend_activation_email_button' => sprintf(__('Resend activation email (remains %s)', 'tst'), '{count}'),
+			'bulk_resend_activation_email_button' => sprintf(__('Resend activation email next %s (remains %s)', 'tst'), $reactivation_emails_portion, '{count}'),
 		));   
 
 	}
