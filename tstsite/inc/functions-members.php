@@ -781,6 +781,9 @@ function itv_show_users_bulk_actions() {
     $remain_to_resend = itv_get_users_to_resend_activation(0, true);
     $itv_config = ItvConfig::instance();
     $reactivation_emails_portion = $itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT');
+    if($remain_to_resend < $reactivation_emails_portion) {
+        $reactivation_emails_portion = $remain_to_resend;
+    }
 ?>
     <div class="tablenav itv-users-bulk-actions" id="itv-users-bulk-actions">
     <input type="button" class="button itv-bulk-resend-activation-email" id="itv-bulk-resend-activation-email" data-count="<?php echo $remain_to_resend;?>" value="<?php echo sprintf(__('Resend activation email next %s (remains %s)', 'tst'), $reactivation_emails_portion, $remain_to_resend);?>"/>
