@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.95');
+define('TST_WORKING_VERSION', '1.9.96');
 //require get_template_directory().'/inc/acf_keys.php';
 
 /**

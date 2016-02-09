@@ -225,8 +225,8 @@
         $.post(ajaxurl, {action: 'bulk-resend-activation-email'}, null, 'json')
         .done(function(json){
             if(json.status == 'ok') {
-                var portion = adminend.reactivation_emails_portion;
-                if(json.remain_count < portion) {
+                var portion = parseInt(adminend.reactivation_emails_portion, 10);
+                if(parseInt(json.remain_count, 10) < portion) {
                     portion = json.remain_count;
                 }
                 var button_label = adminend.bulk_resend_activation_email_button;
