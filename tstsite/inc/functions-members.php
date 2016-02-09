@@ -602,9 +602,9 @@ function itv_is_resend_activation_available($user_id) {
     if(!$activation_email_counter) {
         $activation_email_time = get_user_meta($user_id, 'activation_email_time', true);
         if($activation_email_time) {
-            update_user_meta($user_id, 'activation_email_counter', 1);
+            $activation_email_counter = 1;
+            update_user_meta($user_id, 'activation_email_counter', $activation_email_counter);
         }
-        $activation_email_counter = 1;
     }
     
     return (int)$activation_email_counter < $itv_config->get('REACTIVATION_EMAILS_LIMIT') ? true : false;
@@ -757,7 +757,7 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
             
             " LEFT JOIN {$wpdb->usermeta} AS um_activation_email_counter ON " .
             " {$wpdb->users}.ID=um_activation_email_counter.user_id AND " .
-            " um_activation_email.meta_key='activation_email_counter' ";
+            " um_activation_email_counter.meta_key='activation_email_counter' ";
     
     $sql .= " WHERE (um_activation_email.meta_value < '{$min_time_str}' OR (um_activation_email.meta_value IS NULL AND {$wpdb->users}.user_registered  < '{$min_time_str}')) ";
     $sql .= " AND (um_activation_email_counter.meta_value IS NULL OR CAST(um_activation_email_counter.meta_value AS DECIMAL) < {$resend_activation_email_limit}) ";
