@@ -1324,7 +1324,17 @@ jQuery(function($){
     $('#itv_agree_process_data_label').readmore({
         collapsedHeight: 30, 
         moreLink: '<a href="#" class="itv-reg-more-link">...</a>',
-        lessLink: ''
+        lessLink: '',
+        afterToggle: function(trigger, element, expanded) {
+            if(expanded) {
+                $(element).readmore('destroy');
+            }
+        }
+    });
+    
+    $('#itv_agree_process_data_label').click(function(){
+        $(this).readmore('destroy');
+        return true;
     });
 });
 /* jQuery Star Rating Plugin
