@@ -674,6 +674,9 @@ jQuery(function($){
 			form_is_valid = false;
 			$form.find('#user_pass_vm').html(frontend.user_pass_empty).show();
 		}
+		else {
+		    $form.find('#user_pass_vm').html('').hide();
+		}
         
         val = $form.find('#first_name').val();
         if(val.length < 3) {
@@ -688,6 +691,15 @@ jQuery(function($){
             $form.find('#last_name_vm').html(frontend.last_name_too_short).show();
         } else
             $form.find('#last_name_vm').html('').hide();
+        
+        var $agree_checkbox = $form.find('#agree_personal_data');
+        if(!$agree_checkbox.prop('checked')) {
+            form_is_valid = false;
+            $form.find('#agree_personal_data_vm').html(frontend.check_agree_data_process_checkbox).show();
+        } else {
+            $form.find('#agree_personal_data_vm').html('').hide();
+        }
+        
 
         if(form_is_valid) {
 //            $submit.attr('disabled', 'disabled');
