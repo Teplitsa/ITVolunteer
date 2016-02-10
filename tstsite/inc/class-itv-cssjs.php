@@ -177,6 +177,7 @@ class ITV_CssJs {
 			'user_company_logo_delete_error' => __('Company logo delete failed', 'tst'),
 			'user_avatar_upload_error'       => __('Avatar upload failed', 'tst'),
 			'user_avatar_delete_error'       => __('Avatar delete failed', 'tst'),
+			'check_agree_data_process_checkbox' => __('Please check agree process data checkbox', 'tst'),
 			//        '' => __('.', 'tst'),
 		));
 	

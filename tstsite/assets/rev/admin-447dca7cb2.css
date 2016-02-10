@@ -78,3 +78,51 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
 #acf-is_tst_consult_done {
     display:none;
 }
+
+.itv-log-select-filter {
+    width:170px;
+}
+
+.log-stats-title {
+    font-size:0.9em;
+}
+
+.log-stats-table th {
+    text-align:left;
+}
+
+.wp-core-ui .button-primary.itv-resend-activation-email {
+    vertical-align:middle;
+    margin-left:20px;
+    margin-right:10px;
+}
+
+.itv-option-ok-label {
+    font-weight:bold;
+    color:#008000;
+}
+
+.itv-option-bad-label {
+    font-weight:bold;
+    color:#cc0000;
+}
+
+p.itv-activation-email-time {
+    font-size:0.8em;
+    color:#008000;
+}
+
+p.itv-activation-email-time.itv-activation-email-long-time-ago {
+    font-weight:bold;
+    color:#cc0000;
+}
+
+.itv-bulk-resend-activation-email {
+    width:380px;
+}
+
+p.itv-activation-email-time .itv-reactivation-limit {
+    color:#ffffff;
+    background-color:#cc0000;
+    padding:1px 5px 1px 5px;
+}
