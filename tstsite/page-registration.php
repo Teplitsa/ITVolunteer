@@ -118,9 +118,9 @@ get_header();?>
 				    <label id="itv_agree_process_data_label">
     					<input type="checkbox" name="agree_personal_data" id="agree_personal_data" value="agree" />
     					 <?php _e('Agree process personal data', 'tst');?>
-    					<div id="agree_personal_data_vm" class="validation-message rl-error" style="display: none"></div>
 				    </label>
-				</div>
+    				<div id="agree_personal_data_vm" class="validation-message rl-error" style="display: none"></div>
+			    </div>
 				
 				<!--<div class="form-group">
 					<label for="pass2"><?php _e('Repeat password', 'tst');?></label>			
