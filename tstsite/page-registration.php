@@ -115,7 +115,7 @@ get_header();?>
 				</div>
 				
 				<div class="checkbox">
-				    <label>
+				    <label id="itv_agree_process_data_label">
     					<input type="checkbox" name="agree_personal_data" id="agree_personal_data" value="agree" />
     					 <?php _e('Agree process personal data', 'tst');?>
     					<div id="agree_personal_data_vm" class="validation-message rl-error" style="display: none"></div>

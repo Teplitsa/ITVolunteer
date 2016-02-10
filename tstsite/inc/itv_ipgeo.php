@@ -26,9 +26,9 @@ class ItvIPGeo {
         try {
             
             $city = $this->_get_ipgeo()->getRecord($ip);
-            $city = $this->fix_region($city);
             
             if($city) {
+                $city = $this->fix_region($city);
                 #update_user_meta($user_id, 'user_region', isset($city['region']) ? $city['region'] : '');
                 update_user_meta($user_id, 'user_city', isset($city['city']) ? $city['city'] : '');
             }
@@ -68,8 +68,10 @@ class ItvIPGeo {
     }
     
     private function fix_region($city) {
-        if($city['region'] == 'Крым') {
-            $city['region'] = 'Республика Крым';
+        if(isset($city['region'])) {
+            if($city['region'] == 'Крым') {
+                $city['region'] = 'Республика Крым';
+            }
         }
         return $city;
     }

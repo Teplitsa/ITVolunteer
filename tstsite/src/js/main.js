@@ -1116,3 +1116,12 @@ function validate_review_form($form) {
 	
 	return ret;
 }
+
+//customize comments subscriptions
+jQuery(function($){
+    $('#itv_agree_process_data_label').readmore({
+        collapsedHeight: 30, 
+        moreLink: '<a href="#" class="itv-reg-more-link">...</a>',
+        lessLink: ''
+    });
+});

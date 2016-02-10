@@ -23,7 +23,8 @@
     "imagesloaded": "~3.1.8",
     "loadcss": "https://github.com/filamentgroup/loadCSS.git#~0.1.8",
     "masonry": "https://github.com/desandro/masonry.git#~3.3.2",
-    "social-likes": "~3.0.14"
+    "social-likes": "~3.0.14",
+    "readmore": "~2.0.0"
   },
   "overrides": {
     "jquery": {
@@ -39,6 +40,9 @@
       "ignore": true
     },
     "social-likes": {
+      "ignore": true
+    },
+    "readmore": {
       "ignore": true
     }
   }

@@ -51,6 +51,7 @@ gulp.task('build-js', function() {
         }),        
         appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
                     basePaths.bower+'masonry/dist/masonry.pkgd.min.js',                    
+                    basePaths.bower+'readmore/readmore.min.js',
                     basePaths.src+'js/*']; //our own JS files
 
     return gulp.src(vendorFiles.concat(appFiles)) //join them
