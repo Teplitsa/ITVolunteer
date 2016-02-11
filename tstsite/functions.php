@@ -203,14 +203,14 @@ require get_template_directory().'/inc/customizer.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
 
-require get_template_directory().'/inc/itv_log.php';
-require get_template_directory().'/inc/itv_site_stats.php';
-require get_template_directory().'/inc/itv_reviews.php';
-require get_template_directory().'/inc/stats-events.php';
-require get_template_directory().'/inc/itv_notificator.php';
-require get_template_directory().'/inc/itv_tasks_stats.php';
-require get_template_directory().'/inc/itv_consult.php';
+require_once get_template_directory().'/inc/itv_log.php';
+require_once get_template_directory().'/inc/itv_site_stats.php';
+require_once get_template_directory().'/inc/itv_reviews.php';
+require_once get_template_directory().'/inc/stats-events.php';
+require_once get_template_directory().'/inc/itv_notificator.php';
+require_once get_template_directory().'/inc/itv_tasks_stats.php';
+require_once get_template_directory().'/inc/itv_consult.php';
 
 // ipgeo lib and wrapper
-require get_template_directory().'/ipgeo/ipgeobase.php';
-require get_template_directory().'/inc/itv_ipgeo.php';
+require_once get_template_directory().'/ipgeo/ipgeobase.php';
+require_once get_template_directory().'/inc/itv_ipgeo.php';

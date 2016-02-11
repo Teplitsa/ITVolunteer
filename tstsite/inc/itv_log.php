@@ -131,12 +131,14 @@ class ItvLog {
         $limit = ( int ) $limit;
         $extra_where = $this->get_all_log_extra_where();
         
-        $actions = $wpdb->get_results ( "
+        $sql = "
             SELECT * FROM $this->task_action_table
             WHERE 1 $extra_where
             ORDER BY action_time DESC, id DESC
             LIMIT $offset, $limit
-            " );
+        ";
+        
+        $actions = $wpdb->get_results ( $sql );
         
         return $actions;
     }
@@ -167,9 +169,11 @@ class ItvLog {
         
         $extra_where = $this->get_all_log_extra_where();
         
-        $actions = $wpdb->get_var ( "
-				SELECT COUNT(*) FROM $this->task_action_table WHERE 1 $extra_where
-				" );
+        $sql = "
+			SELECT COUNT(*) FROM $this->task_action_table WHERE 1 $extra_where
+		";
+        
+        $actions = $wpdb->get_var ( $sql );
         
         return $actions;
     }
@@ -309,6 +313,11 @@ class ItvLog {
             if(isset($_GET['from_date']) && trim($_GET['from_date'])) {
                 $this->filter['from_date'] = trim($_GET['from_date']);
             }
+            
+            if(isset($_GET['to_date']) && trim($_GET['to_date'])) {
+                $this->filter['to_date'] = trim($_GET['to_date']);
+            }
+            
         }
     }
     
@@ -352,6 +361,10 @@ class ItvLog {
             
             if(isset($this->filter['from_date'])) {
                 $extra_where .= " AND action_time >= '".esc_sql($this->filter['from_date'])." 00:00:00' ";
+            }
+            
+            if(isset($this->filter['to_date'])) {
+                $extra_where .= " AND action_time < '".esc_sql($this->filter['to_date'])." 00:00:00' ";
             }
             
         }
@@ -435,6 +448,27 @@ class ItvLog {
         return $stats;
     }
     
+    public function get_weekly_stats_for_email($from_date, $to_date) {
+        $stats = array();
+        foreach($this->list_log_actions as $log_action) {
+            $this->filter = array('log_action' => $log_action);
+            $all_count = $this->get_all_tasks_log_records_count();
+    
+            $this->filter = array('log_action' => $log_action, 'from_date' => $from_date, 'to_date' => $to_date);
+            $week_count = $this->get_all_tasks_log_records_count();
+    
+            $stats[$log_action] = array(
+                'all' => $all_count,
+                'all_link' => 'tools.php?page=itv_all_tasks_log_page&filter=1&log_action='.$log_action,
+                'week' => $week_count,
+                'week_link' => 'tools.php?page=itv_all_tasks_log_page&filter=1&log_action='.$log_action.'&from_date=' . $from_date . '&to_date=' . $to_date,
+                'title' => str_replace(' %s', '', __( 'itv_task_actions_log_' . $log_action, 'tst' )),
+                'action' => $log_action,
+            );
+        }
+        return $stats;
+    }
+    
     public function show_general_stats() {
         $stats = $this->get_general_stats();
         echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
@@ -448,50 +482,67 @@ class ItvLog {
             $i++;
             echo '<tr class="'.($i % 2 == 0 ? "alternate" : '').'">';
             echo '<td class="log-stats-title">'.$stats_item['title'].'</td>';
-            echo '<td><a href="'.$stats_item['day_link'].'" title="'.__('For a day', 'tst').'">'.$stats_item['day'].'</a></td>';
-            echo '<td><a href="'.$stats_item['all_link'].'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a></td>';
+            echo '<td><a href="'.admin_url($stats_item['day_link']).'" title="'.__('For a day', 'tst').'">'.$stats_item['day'].'</a></td>';
+            echo '<td><a href="'.admin_url($stats_item['all_link']).'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a></td>';
             echo '</tr>';
         }
         echo '</table>';
     }
+    
+    public function show_weekly_stats($from_date, $to_date) {
+        $stats = $this->get_weekly_stats_for_email($from_date, $to_date);
+        echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
+        echo '<tr>';
+        echo "<th></th>";
+        echo "<th>".__('For last week', 'tst')."</th>";
+        echo "<th>".__('For all time', 'tst')."</th>";
+        echo '</tr>';
+        $i = 0;
+        foreach($stats as $stats_item) {
+            $i++;
+            echo '<tr class="'.($i % 2 == 0 ? "alternate" : '').'">';
+            echo '<td class="log-stats-title">'.$stats_item['title'].'</td>';
+            echo '<td><a href="'.admin_url($stats_item['week_link']).'" title="'.__('For a day', 'tst').'">'.$stats_item['week'].'</a></td>';
+            echo '<td><a href="'.admin_url($stats_item['all_link']).'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a></td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
+    
+    public function send_weekly_stats_email() {
+        $itv_config = ItvConfig::instance ();
+        $last_sunday_time = strtotime('last Sunday');
+        $from_date = date( 'Y-m-d', $last_sunday_time - ($itv_config->get('WEEKLY_STATS_EMAIL')['PERIOD_DAYS'] - 1) * 3600 * 24 );
+        $to_date = date( 'Y-m-d', $last_sunday_time + 3600 * 24 );
+        $last_sunday_date = date( 'Y-m-d', $last_sunday_time );
+        
+        ob_start();
+        $this->show_weekly_stats($from_date, $to_date);
+        $stats_html = ob_get_clean();
+        
+        $email_from = $itv_config->get('EMAIL_FROM');
+        $to = $itv_config->get('WEEKLY_STATS_EMAIL')['TO_EMAIL'];
+        $other_emails = $itv_config->get('WEEKLY_STATS_EMAIL')['CC_EMAILS'];
+        
+        $subject = __('itv_email_weekly_stats_subject', 'tst');
+        $message = __('itv_email_weekly_stats_message', 'tst');
+        
+        $data = array(
+            'stats_html' => $stats_html,
+            'from_date' => $from_date,
+            'to_date' => $last_sunday_date
+        );
+        $message = nl2br($message);
+        $message = itv_fill_template($message, $data);
+        
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
+        if(count($other_emails) > 0) {
+            $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+        }
+        
+        wp_mail($to, $subject, $message, $headers);
+    }
+    
 }
-
-__( 'itv_task_actions_log_create', 'tst' );
-__( 'itv_task_actions_log_delete', 'tst' );
-__( 'itv_task_actions_log_edit', 'tst' );
-__( 'itv_task_actions_log_add_candidate', 'tst' );
-__( 'itv_task_actions_log_refuse_candidate', 'tst' );
-__( 'itv_task_actions_log_approve_candidate', 'tst' );
-__( 'itv_task_actions_log_remove_candidate', 'tst' );
-__( 'itv_task_actions_log_publish', 'tst' );
-__( 'itv_task_actions_log_unpublish', 'tst' );
-__( 'itv_task_actions_log_inwork', 'tst' );
-__( 'itv_task_actions_log_close', 'tst' );
-__( 'itv_task_actions_log_archive', 'tst' );
-
-__( 'itv_task_actions_log_no_doer_yes', 'tst' );
-__( 'itv_task_actions_log_archive_soon', 'tst' );
-
-__( 'itv_task_actions_log_user_register', 'tst' );
-__( 'itv_task_actions_log_user_update', 'tst' );
-__( 'itv_task_actions_log_user_delete_profile', 'tst' );
-__( 'itv_task_actions_log_user_login_login', 'tst' );
-__( 'itv_task_actions_log_user_login_email', 'tst' );
-__( 'itv_task_actions_log_user_login_failed', 'tst' );
-__( 'itv_task_actions_log_review_for_doer', 'tst' );
-__( 'itv_task_actions_log_review_for_author', 'tst' );
-
-__( 'itv_task_actions_log_email_approve_candidate_doer', 'tst' );
-__( 'itv_task_actions_log_email_approve_candidate_author', 'tst' );
-__( 'itv_task_actions_log_email_refuse_candidate_author', 'tst' );
-__( 'itv_task_actions_log_email_add_candidate_author', 'tst' );
-__( 'itv_task_actions_log_email_remove_candidate_author', 'tst' );
-__( 'itv_task_actions_log_email_doer_about_task_closed', 'tst' );
-__( 'itv_task_actions_log_email_author_about_task_closed', 'tst' );
-__( 'itv_task_actions_log_email_doer_about_task_status_changed', 'tst' );
-__( 'itv_task_actions_log_email_candidate_about_task_status_changed', 'tst' );
-
-__('itv_log_record_type_task', 'tst');
-__('itv_log_record_type_user', 'tst');
-__('itv_log_record_type_review', 'tst');
-__('itv_log_record_type_email', 'tst');

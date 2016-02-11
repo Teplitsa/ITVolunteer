@@ -48,6 +48,12 @@ class ItvConfig {
             'USER_NOT_ACTIVATED_ALERT_TIME' => 9,
             'BULK_ACTIVATION_EMAIL_SEND_LIMIT' => 50,
             'REACTIVATION_EMAILS_LIMIT' => 2,
+            'WEEKLY_STATS_EMAIL' => array(
+                'PERIOD_DAYS' => 7,
+                'TO_EMAIL' => 'suvorov@te-st.ru',
+                'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'sidorenko.a@gmail.com', 'vlad@te-st.ru'),
+            ),
+            
         );
     }
     

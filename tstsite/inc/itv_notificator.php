@@ -73,9 +73,7 @@ class ItvNotificator {
     }
     
     public function fill_template($template, $data) {
-        return preg_replace_callback ( '/\{\{(\w+)\}\}/i', function($matches) use($data) {
-            return isset($matches[1]) && isset($data[$matches[1]]) ? $data[$matches[1]] : '';
-        }, $template );
+        return itv_fill_template($template, $data);
     }
     
     public function notify_about_tomorrow_archive() {
@@ -374,10 +372,3 @@ class ItvNotificator {
         ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
 }
-
-__ ( 'Task status become publish', 'tst' );
-__ ( 'Task status become in_work', 'tst' );
-__ ( 'Task status become closed', 'tst' );
-__ ( 'Task status become archived', 'tst' );
-__ ( 'Task status become draft', 'tst' );
-__ ( 'Task status become trash', 'tst' );
