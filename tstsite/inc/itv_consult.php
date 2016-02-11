@@ -881,9 +881,3 @@ function itv_change_consult_author_in_list() {
     );
 }
 add_action('admin_head-edit.php', 'itv_change_consult_author_in_list');
-
-__("Show All Consult states", 'tst');
-__('itv_email_test_consult_needed_notification_subject_audit', 'tst');
-__('itv_email_test_consult_needed_notification_audit', 'tst');
-__('Consult request from audit (consult form) #%s', 'tst');
-__('Consult request from audit (audit) #%s', 'tst');
