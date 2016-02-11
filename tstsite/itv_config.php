@@ -50,7 +50,7 @@ class ItvConfig {
             'REACTIVATION_EMAILS_LIMIT' => 2,
             'WEEKLY_STATS_EMAIL' => array(
                 'PERIOD_DAYS' => 7,
-                'TO_EMAIL' => 'wantprog@mail.ru',
+                'TO_EMAIL' => 'suvorov@te-st.ru',
                 'CC_EMAILS' => array('denis.cherniatev@gmail.com'),
             ),
             
