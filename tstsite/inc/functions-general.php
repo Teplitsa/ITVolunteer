@@ -133,3 +133,9 @@ function tst_query_corrections(WP_Query $query){
 	}
 		
 }
+
+function itv_fill_template($template, $data) {
+    return preg_replace_callback ( '/\{\{(\w+)\}\}/i', function($matches) use($data) {
+        return isset($matches[1]) && isset($data[$matches[1]]) ? $data[$matches[1]] : '';
+    }, $template );
+}
