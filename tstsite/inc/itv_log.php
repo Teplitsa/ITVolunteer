@@ -41,8 +41,8 @@ class ItvLog {
     public static $TYPE_EMAIL = 'email';
     
     private $list_log_record_types = array('task', 'user', 'review', 'email');
-    private $list_log_actions = array('create', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 'inwork', 
-        'close', 'archive', 'no_doer_yes', 'archive_soon', 'user_register', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
+    private $list_log_actions = array('create', 'inwork', 'close', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
+        'archive', 'no_doer_yes', 'archive_soon', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
         'review_for_doer', 'review_for_author',
         'email_approve_candidate_doer', 'email_approve_candidate_author', 'email_refuse_candidate_author', 'email_add_candidate_author', 'email_remove_candidate_author', 'email_doer_about_task_closed', 
         'email_author_about_task_closed', 'email_doer_about_task_status_changed', 'email_candidate_about_task_status_changed', 
@@ -489,8 +489,7 @@ class ItvLog {
         echo '</table>';
     }
     
-    public function show_weekly_stats($from_date, $to_date) {
-        $stats = $this->get_weekly_stats_for_email($from_date, $to_date);
+    public function show_weekly_stats($stats) {
         echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
         echo '<tr>';
         echo "<th></th>";
@@ -516,8 +515,10 @@ class ItvLog {
         $to_date = date( 'Y-m-d', $last_sunday_time + 3600 * 24 );
         $last_sunday_date = date( 'Y-m-d', $last_sunday_time );
         
+        $week_stats = $this->get_weekly_stats_for_email($from_date, $to_date);
+        
         ob_start();
-        $this->show_weekly_stats($from_date, $to_date);
+        $this->show_weekly_stats($week_stats);
         $stats_html = ob_get_clean();
         
         $email_from = $itv_config->get('EMAIL_FROM');
@@ -527,10 +528,21 @@ class ItvLog {
         $subject = __('itv_email_weekly_stats_subject', 'tst');
         $message = __('itv_email_weekly_stats_message', 'tst');
         
+        $week_number = $this->get_project_live_week_number();
+        $week_closed_tasks_count = $this->get_closed_tasks_count_from_week_stats($week_stats);
+        
+        $data_subject = array(
+            'week_number' => $week_number,
+            'week_closed_tasks_count' => $week_closed_tasks_count,
+        );
+        $subject = itv_fill_template($subject, $data_subject);
+
         $data = array(
             'stats_html' => $stats_html,
             'from_date' => $from_date,
-            'to_date' => $last_sunday_date
+            'to_date' => $last_sunday_date,
+            'week_number' => $week_number,
+            'week_closed_tasks_count' => $week_closed_tasks_count,
         );
         $message = nl2br($message);
         $message = itv_fill_template($message, $data);
@@ -543,6 +555,34 @@ class ItvLog {
         }
         
         wp_mail($to, $subject, $message, $headers);
+    }
+    
+    public function get_project_live_week_number() {
+        global $wpdb;
+        
+        $sql = "
+        SELECT post_date FROM $wpdb->posts WHERE post_type = 'tasks' ORDER BY post_date ASC LIMIT 1
+        ";
+        $task_add_date = $wpdb->get_var ( $sql );
+        
+        $now_datetime = new DateTime();
+        $first_task_datetime = DateTime::createFromFormat('Y-m-d H:i:s', $task_add_date);
+        $datetime_diff = $now_datetime->diff($first_task_datetime);
+        
+        $days_number = $datetime_diff->format('%a');
+        $week_number = floor($days_number / 7);
+        
+        return $week_number;
+    }
+    
+    public function get_closed_tasks_count_from_week_stats($week_stats) {
+        $closed_tasks_count = 0;
+        try {
+            $closed_tasks_count = $week_stats['close']['week'];
+        }
+        catch(Exception $ex) {
+        }
+        return $closed_tasks_count;
     }
     
 }

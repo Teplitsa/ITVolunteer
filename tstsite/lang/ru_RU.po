@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-11 20:58+0200\n"
-"PO-Revision-Date: 2016-02-11 21:01+0200\n"
+"PO-Revision-Date: 2016-02-11 23:38+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1750,12 +1750,16 @@ msgstr "За неделю"
 
 #: inc/itv_log.php:527
 msgid "itv_email_weekly_stats_subject"
-msgstr "it-волонтёр - статистика за неделю"
+msgstr ""
+"ITV - статистика за {{week_number}}-ю неделю, решено "
+"{{week_closed_tasks_count}} задач"
 
 #: inc/itv_log.php:528
 msgid "itv_email_weekly_stats_message"
 msgstr ""
-"Статистика по IT-волонтеру за неделю с {{from_date}} по {{to_date}}.\n"
+"Статистика по IT-волонтеру за {{week_number}}-ю неделю с {{from_date}} по "
+"{{to_date}}.\n"
+"Решено {{week_closed_tasks_count}} задач.\n"
 "\n"
 "{{stats_html}}"
 
