@@ -47,7 +47,7 @@ class ItvConfig {
             'WEEKLY_STATS_EMAIL' => array(
                 'PERIOD_DAYS' => 7,
                 'TO_EMAIL' => 'suvorov@te-st.ru',
-                'CC_EMAILS' => array('denis.cherniatev@gmail.com'),
+                'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'vlad@te-st.ru', 'sidorenko.a@gmail.com'),
             ),
             
         );
