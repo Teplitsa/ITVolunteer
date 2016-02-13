@@ -41,6 +41,13 @@ __('itv_log_record_type_user', 'tst');
 __('itv_log_record_type_review', 'tst');
 __('itv_log_record_type_email', 'tst');
 
+__('itv_users_weekly_stats_total_count', 'tst');
+__('itv_users_weekly_stats_total_active_count', 'tst');
+__('itv_users_weekly_stats_new_count', 'tst');
+__('itv_users_weekly_stats_new_active_count', 'tst');
+__('itv_users_weekly_stats_hero_count', 'tst');
+__('itv_users_weekly_stats_donee_count', 'tst');
+
 // itv_notificator
 __ ( 'Task status become publish', 'tst' );
 __ ( 'Task status become in_work', 'tst' );
