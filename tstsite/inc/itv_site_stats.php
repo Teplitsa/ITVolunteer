@@ -35,6 +35,7 @@ class ItvSiteStats {
 	}
 	
 	public function refresh_users_role_stats($per_page = 100) {
+	    global $wpdb;
 		
 		$USERS_ROLE_BENEFICIARY_COUNT = 0;
 		$USERS_ROLE_SUPERHERO_COUNT = 0;
@@ -48,6 +49,7 @@ class ItvSiteStats {
 			echo 'offset=' . $offset . "\n";
 			
 			$users_query_params = array(
+			    'query_id' => 'itv_count_main_users_stats',
 				'number' => $per_page,
 				'offset' => $offset,
 				'exclude' => ACCOUNT_DELETED_ID,
@@ -55,7 +57,7 @@ class ItvSiteStats {
 				'order' => 'ASC'
 			);
 			$user_query = new WP_User_Query($users_query_params);
-		
+			
 			$users_count_portion = 0;
 					
 			foreach($user_query->results as $user) {
@@ -96,11 +98,11 @@ class ItvSiteStats {
 		
 		$USERS_COUNT += ($USERS_ROLE_BENEFICIARY_COUNT+$USERS_ROLE_SUPERHERO_COUNT+$USERS_ROLE_ACTIVIST_COUNT+$USERS_ROLE_VOLUNTEER_COUNT);
 		
-		update_option(ItvSiteStats::$USERS_ROLE_BENEFICIARY, $USERS_ROLE_BENEFICIARY_COUNT);		
-		update_option(ItvSiteStats::$USERS_ROLE_SUPERHERO, $USERS_ROLE_SUPERHERO_COUNT);		
+		update_option(ItvSiteStats::$USERS_ROLE_BENEFICIARY, $USERS_ROLE_BENEFICIARY_COUNT);
+		update_option(ItvSiteStats::$USERS_ROLE_SUPERHERO, $USERS_ROLE_SUPERHERO_COUNT);
 		update_option(ItvSiteStats::$USERS_ROLE_ACTIVIST, $USERS_ROLE_ACTIVIST_COUNT);
-		update_option(ItvSiteStats::$USERS_ROLE_VOLUNTEER, $USERS_ROLE_VOLUNTEER_COUNT);	
-		update_option(ItvSiteStats::$USERS_TOTAL, $USERS_COUNT);		
+		update_option(ItvSiteStats::$USERS_ROLE_VOLUNTEER, $USERS_ROLE_VOLUNTEER_COUNT);
+		update_option(ItvSiteStats::$USERS_TOTAL, $USERS_COUNT);
 	}
 	
 	

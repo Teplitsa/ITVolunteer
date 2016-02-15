@@ -469,8 +469,21 @@ class ItvLog {
         return $stats;
     }
     
+    public function get_users_stats($from_date, $to_date) {
+        $users_stats = [];
+        $result = count_users();
+        $users_stats['total_count'] = $result['total_users'];
+        $users_stats['total_active_count'] = tst_get_active_members_count();
+        $users_stats['new_count'] = tst_get_new_members_count($from_date, $to_date);
+        $users_stats['new_active_count'] = tst_get_new_active_members_count($from_date, $to_date);
+        $users_stats['hero_count'] = tst_get_members_counter('hero');
+        $users_stats['donee_count'] = tst_get_members_counter('donee');
+        return $users_stats;
+    }
+    
     public function show_general_stats() {
         $stats = $this->get_general_stats();
+        $users_stats = $this->get_users_stats('2016-02-01', '2016-02-07');
         echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
         echo '<tr>';
         echo "<th></th>";
@@ -508,6 +521,19 @@ class ItvLog {
         echo '</table>';
     }
     
+    public function show_weekly_users_stats($stats) {
+        echo '<table class="log-stats-table"><col width="85%"><col width="15%">';
+        $i = 0;
+        foreach($stats as $key => $stat_value) {
+            $i++;
+            echo '<tr class="'.($i % 2 == 0 ? "alternate" : '').'">';
+            echo '<td class="log-stats-title">'.__('itv_users_weekly_stats_' . $key, 'tst').'</td>';
+            echo '<td>'.$stat_value.'</td>';
+            echo '</tr>';
+        }
+        echo '</table>';
+    }
+    
     public function send_weekly_stats_email() {
         $itv_config = ItvConfig::instance ();
         $last_sunday_time = strtotime('last Sunday');
@@ -520,6 +546,11 @@ class ItvLog {
         ob_start();
         $this->show_weekly_stats($week_stats);
         $stats_html = ob_get_clean();
+        
+        $users_stats = $this->get_users_stats($from_date, $to_date);
+        ob_start();
+        $this->show_weekly_users_stats($users_stats);
+        $users_stats_html = ob_get_clean();
         
         $email_from = $itv_config->get('EMAIL_FROM');
         $to = $itv_config->get('WEEKLY_STATS_EMAIL')['TO_EMAIL'];
@@ -539,6 +570,7 @@ class ItvLog {
 
         $data = array(
             'stats_html' => $stats_html,
+            'users_stats_html' => $users_stats_html,
             'from_date' => $from_date,
             'to_date' => $last_sunday_date,
             'week_number' => $week_number,

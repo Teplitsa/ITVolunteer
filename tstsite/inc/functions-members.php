@@ -677,6 +677,16 @@ function admin_users_filter( $query ){
         
         $query->query_orderby = 'ORDER BY user_registered DESC, user_login ASC';
     }
+    
+    if(isset($query->query_vars['query_id']) && in_array($query->query_vars['query_id'], ['itv_count_all_users_for_period', 'itv_count_activated_users_for_period', ])) {
+        $query->query_where .= " AND user_registered >= '".esc_sql($query->query_vars['from_date'])." 00:00:00' AND user_registered < '".esc_sql($query->query_vars['to_date'])." 00:00:00' ";
+    }
+    
+    if(isset($query->query_vars['query_id']) && in_array($query->query_vars['query_id'], ['get_members_for_members_page', 'itv_count_activated_users_for_period', 'itv_count_main_users_stats'])) {
+        $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+        "{$wpdb->users}.ID=um_activated.user_id AND " .
+        "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+    }
 }
 add_filter( 'pre_user_query', 'admin_users_filter' );
 
@@ -837,4 +847,30 @@ function itv_get_client_ip() {
         }
     }
     return $ip;
+}
+
+function tst_get_new_members_count($from_date, $to_date) {
+    global $wpdb;
+    
+    $user_query = new WP_User_Query([
+        'count_total' => true, 
+        'query_id' => 'itv_count_all_users_for_period', 
+        'from_date' => $from_date, 
+        'to_date' => $to_date
+    ]);
+    
+    return $user_query->get_total();
+}
+
+function tst_get_new_active_members_count($from_date, $to_date) {
+    global $wpdb;
+    
+    $user_query = new WP_User_Query([
+        'count_total' => true, 
+        'query_id' => 'itv_count_activated_users_for_period', 
+        'from_date' => $from_date, 
+        'to_date' => $to_date
+    ]);
+    
+    return $user_query->get_total();
 }
