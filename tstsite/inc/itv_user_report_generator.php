@@ -33,7 +33,7 @@ class ItvUserReportGenerator {
 			$wpdb->query(
 					$wpdb->prepare(
 							"
-							INSERT INTO str_users_report
+							INSERT INTO ".$wpdb->prefix."users_report
 					SET
 					ID = %d,
 					user_login = %s,
@@ -77,7 +77,7 @@ class ItvUserReportGenerator {
 							get_user_meta($user->ID, 'user_workplace', true),
 							$is_uploaded_company_logo,
 							get_user_meta($user->ID, 'user_speciality', true),
-							get_user_meta($user->ID, 'description', true),
+							str_replace(array("\n","\r"), '', get_user_meta($user->ID, 'description', true)),
 							$user->user_url,
 							get_user_meta($user->ID, 'user_skype', true),
 							get_user_meta($user->ID, 'twitter', true),
@@ -85,7 +85,7 @@ class ItvUserReportGenerator {
 							get_user_meta($user->ID, 'vk', true),
 							get_user_meta($user->ID, 'googleplus', true),
 							$skills,
-							get_user_meta($user->ID, 'user_contacts', true),
+					        str_replace(array("\n","\r"), '', get_user_meta($user->ID, 'user_contacts', true)),
 							$role,
 							$created_tasks,
 							$working_tasks,
@@ -95,5 +95,23 @@ class ItvUserReportGenerator {
 					)
 			);
 		}
+	}
+	
+	public function export_csv($wpdb, $to_file) {
+	    $csv_file = "/tmp/itv_users_report_tmp_".microtime(true).".csv";
+	    $sql = "SELECT * INTO OUTFILE %s FIELDS TERMINATED BY ';' LINES TERMINATED BY \"\n\" FROM ".$wpdb->prefix."users_report";
+	    $wpdb->query($wpdb->prepare($sql, $csv_file));
+	    
+	    $sql = "describe ".$wpdb->prefix."users_report";
+	    $columns = $wpdb->get_results($sql);
+	    $column_names = [];
+	    foreach($columns as $k => $v) {
+	        $column_names[] = $v->Field;
+	    }
+	    $column_names = implode(';', $column_names);
+	    
+	    $tmp_file = "/tmp/itv_users_report_tmp.csv";
+	    `echo "$column_names" | cat - $csv_file > $tmp_file;`;
+	    `mv $tmp_file $to_file`;
 	}
 }
