@@ -82,7 +82,7 @@ class ItvUserReportGenerator {
         }
         
         $fp = fopen ( $to_file, 'w' );
-        fputcsv ( $fp, $column_names, ";", "\"", "\\" );
+        fputcsv ( $fp, $column_names, ";", "\"" );
         fclose ( $fp );
         
         $limit = 500;
@@ -93,7 +93,7 @@ class ItvUserReportGenerator {
             
             $fp = fopen ( $to_file, 'a' );
             foreach ( $records as $k => $row ) {
-                fputcsv ( $fp, $row, ";", "\"", "\\" );
+                fputcsv ( $fp, $row, ";", "\"" );
             }
             fclose ( $fp );
             $offset += $limit;
