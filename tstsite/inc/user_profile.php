@@ -1,4 +1,5 @@
 <?php
+use ITV\models\UserXPModel;
 
 // company logo
 function ajax_delete_user_company_logo() {
@@ -137,6 +138,8 @@ function ajax_upload_user_avatar() {
 				
 		if( $image_id ) {
 			update_user_meta($member->ID, 'user_avatar', $image_id);
+			UserXPModel::instance()->register_activity_if_no($member->ID, UserXPModel::$ACTION_UPLOAD_PHOTO);
+						
 			$res = array(
 					'status' => 'ok',
 					'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
