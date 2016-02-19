@@ -1,4 +1,6 @@
 <?php
+use ITV\models\UserXPModel;
+
 /**
  * Single member profile
  **/
@@ -221,6 +223,10 @@ $activity = tst_get_member_activity($tst_member->user_object);
 							<tr>
 								<th><?php _e('Rating', 'tst');?></th>
 								<td class="num"><span class="user-rating"><?php echo (int)$activity['solved'];?></span></td>
+							</tr>
+							<tr>
+								<th><?php _e('XP Rating', 'tst');?></th>
+								<td class="num"><span class="user-rating"><b><?php echo UserXPModel::instance()->get_user_xp($tst_member->ID);?></b></span></td>
 							</tr>
 							<tr>
 								<th><?php _e('Tasks joined', 'tst');?></th>
