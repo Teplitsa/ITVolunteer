@@ -128,6 +128,7 @@ class UserXPModel extends ITVSingletonModel {
             $db = DB::instance();
             $db->update('ALTER TABLE str_itv_user_activity RENAME ' . $new_table_name);
             $db->update('CREATE TABLE str_itv_user_activity LIKE ' . $new_table_name);
+            $db->update('TRUNCATE str_itv_user_xp');
             
             User::chunk(100, function($users) {
                 foreach ($users as $user) {
