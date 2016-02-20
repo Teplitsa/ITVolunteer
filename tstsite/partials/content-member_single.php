@@ -1,9 +1,9 @@
 <?php
-use ITV\models\UserXPModel;
-
 /**
  * Single member profile
  **/
+
+use ITV\models\UserXPModel;
 
 function tst_task_in_tab($task){
 	

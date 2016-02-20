@@ -3,7 +3,8 @@
  * Members related functions after review
  **/
 
- 
+use ITV\models\UserXPModel;
+
 /* Define  roles */
 function tst_get_roles_list() {
 	
@@ -675,7 +676,19 @@ function admin_users_filter( $query ){
             }
         }
         
-        $query->query_orderby = 'ORDER BY user_registered DESC, user_login ASC';
+        if(isset($_GET['orderby'])) {
+            if( $_GET['orderby'] == 'user_xp') {
+                $user_xp_order = 'DESC';
+                if(isset($_GET['order']) && $_GET['order'] == 'asc') {
+                    $user_xp_order = 'ASC';
+                }
+                $query->query_from .= " LEFT JOIN {$wpdb->prefix}itv_user_xp AS uxp ON {$wpdb->users}.ID=uxp.user_id ";
+                $query->query_orderby = " ORDER BY uxp.xp $user_xp_order, {$wpdb->users}.user_registered DESC, {$wpdb->users}.user_login ASC ";
+            }
+        }
+        else {
+            $query->query_orderby = 'ORDER BY user_registered DESC, user_login ASC';
+        }
     }
     
     if(isset($query->query_vars['query_id']) && in_array($query->query_vars['query_id'], ['itv_count_all_users_for_period', 'itv_count_activated_users_for_period', ])) {
@@ -686,6 +699,12 @@ function admin_users_filter( $query ){
         $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
         "{$wpdb->users}.ID=um_activated.user_id AND " .
         "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+    }
+    
+    // join user_xp
+    if(isset($query->query_vars['query_id']) && in_array($query->query_vars['query_id'], ['get_members_for_members_page'])) {
+        $query->query_from .= " LEFT JOIN {$wpdb->prefix}itv_user_xp AS uxp ON {$wpdb->users}.ID=uxp.user_id ";
+        $query->query_orderby = " ORDER BY uxp.xp DESC, {$wpdb->prefix}usermeta.meta_value DESC, {$wpdb->users}.user_registered DESC ";
     }
 }
 add_filter( 'pre_user_query', 'admin_users_filter' );
@@ -710,9 +729,16 @@ function itv_add_user_custom_columns($columns) {
     $columns['is_activated'] = __('Is activated', 'tst');
     $columns['reg_date'] = __('Registration date', 'tst');
     $columns['access_ip'] = __('Access IP', 'tst');
+    $columns['user_xp'] = __('XP Rating', 'tst');
     return $columns;
 }
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
+
+function itv_add_user_custom_sortable_columns($columns) {
+    $columns['user_xp'] = 'user_xp';
+    return $columns;
+}
+add_filter( 'manage_users_sortable_columns', 'itv_add_user_custom_sortable_columns' );
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
     if('is_activated' == $column_name) {
@@ -721,6 +747,9 @@ function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
     }
     elseif('reg_date' == $column_name) {
         return itv_user_reg_date($user_id);
+    }
+    elseif('user_xp' == $column_name) {
+        return UserXPModel::instance()->get_user_xp($user_id);
     }
     elseif('access_ip' == $column_name) {
         $res = '';
