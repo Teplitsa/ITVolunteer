@@ -10,8 +10,7 @@ try {
 	if(!empty($to_file)) {
 	    echo "creating report...\n";
 	    
-	    $table = $wpdb->prefix . $table;
-	    echo "from table: str_report_".$table. "\n";
+	    echo "from table: ".$table. "\n";
 	    
 	    $to_file = getcwd() . "/" . $to_file;
 	    echo "export to file: ".$to_file . "\n";
