@@ -59,6 +59,8 @@ if(is_single_member()) {
 		'query_id' => 'get_members_for_members_page',
 		'fields' => 'all_with_meta' 
 	);
+
+	$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 	
 	if(isset($wp_query->query_vars['member_role']) && $wp_query->query_vars['member_role']) {			
 		$users_query_params['meta_query'] = array(
@@ -71,27 +73,21 @@ if(is_single_member()) {
 		
 		//orderby
 		if($wp_query->query_vars['member_role'] == 'hero'){
-			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 		}
 		elseif($wp_query->query_vars['member_role'] == 'volunteer') {
-			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_joined';
 		}
 		elseif($wp_query->query_vars['member_role'] == 'donee') {
-			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_created_closed';
 		}
 		elseif($wp_query->query_vars['member_role'] == 'activist') {
-			$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 			$users_query_params['meta_key'] = 'tst_member_tasks_created';
 		}
 	}
 	else { //general ordrby	
-		$users_query_params['orderby'] = array('meta_value_num' => 'DESC', 'registered' => 'DESC');
 		$users_query_params['meta_key'] = 'tst_member_tasks_solved';
 	}
-	
 	
 	$user_query = new WP_User_Query($users_query_params);
 	$u_ids = ITV_Query::get_user_id_from_users($user_query->results);

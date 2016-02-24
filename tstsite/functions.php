@@ -214,3 +214,6 @@ require_once get_template_directory().'/inc/itv_consult.php';
 // ipgeo lib and wrapper
 require_once get_template_directory().'/ipgeo/ipgeobase.php';
 require_once get_template_directory().'/inc/itv_ipgeo.php';
+
+require_once get_template_directory() . '/vendor/autoload.php';
+require_once get_template_directory() . '/inc/models/UserXPModel.php';

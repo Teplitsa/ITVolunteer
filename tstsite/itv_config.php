@@ -50,6 +50,20 @@ class ItvConfig {
                 'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'vlad@te-st.ru', 'sidorenko.a@gmail.com'),
             ),
             
+            'USER_ACTION_XP' => [
+                'register' => 1,
+                'fill_field' => 1,
+                'upload_photo' => 5,
+                'add_comment' => 1,
+                'create_task' => 10,
+                // when restore activity suppose member connected as doer in 24 hours after task created date
+                'add_as_candidate' => 5,
+                // when restore activity suppose doer complete task in 14 days after task created date
+                'task_done' => 100,
+                'my_task_done' => 10,
+                'review_for_doer' => 5,
+                'review_for_author' => 5,
+            ],
         );
     }
     

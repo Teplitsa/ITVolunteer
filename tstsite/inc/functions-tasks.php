@@ -1,4 +1,5 @@
 <?php
+use ITV\models\UserXPModel;
 /**
  * Task related utilities and manipulations
  * (code wiil be modevd here from customizer.php and extras.php)
@@ -163,8 +164,6 @@ function tst_correct_tag_count($term_taxonomy_id, $taxonomy){
 	$wpdb->update($wpdb->term_taxonomy, compact( 'count' ), array( 'term_taxonomy_id' => $term_taxonomy_id ) );
 }
 
-
-
 /* Update task metas when number of volunteers changed volunteers */
 function tst_get_task_doers($task_id, $only_approved = false) {
 
@@ -225,4 +224,9 @@ function tst_actualize_task_stats($task) {
 	
 	tst_get_task_doers_count($task->ID, false, true);
 	tst_get_task_doers_count($task->ID, true, true);
+}
+
+add_action('wp_insert_comment','comment_inserted',99,2);
+function comment_inserted($comment_id, $comment_object) {
+    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_ADD_COMMENT);
 }

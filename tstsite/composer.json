@@ -1,0 +1,26 @@
+{
+    "name"        : "tst/itv/install",
+    "description" : "ITV website",
+    "authors"     : [
+        {
+            "name"    : "Teplitsa",
+            "email"   : "support@te-st.ru",
+            "homepage": "http://te-st.ru/"
+        }
+    ],
+    "type"        : "project",
+    "repositories": [
+    ],
+    "config"      : {
+        "vendor-dir": "vendor"
+    },
+   "require"     : {
+        "composer/installers": "~1.0",
+        "tareq1988/wp-eloquent": "dev-master"
+    },
+    "require-dev" : {
+    },
+    "extra"       : {
+    }
+}
+

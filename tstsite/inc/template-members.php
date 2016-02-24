@@ -3,7 +3,7 @@
  * Members related template tags
  **/
 
-
+use ITV\models\UserXPModel;
 
 function tst_members_filters_menu(){
 	global $wp_query;
@@ -677,6 +677,7 @@ $img_folder = get_template_directory_uri().'/assets/img/';
 						<span><?php _e('Place of work', 'tst');?>:</span> <b class="user-rating"><?php echo $place_of_work; ?></b><br />
 						<?php endif; ?>
 						
+						<span><?php _e('XP Rating', 'tst');?>:</span> <b class="user-rating"><?php echo UserXPModel::instance()->get_user_xp($tst_member->ID);?></b>
 						<span><?php _e('Rating', 'tst');?>:</span> <b class="user-rating"><?php echo (int)$activity['solved'];?></b>
 						
 						<span><?php _e('Tasks', 'tst');?>:</span>

@@ -1,4 +1,5 @@
 <?php
+use ITV\models\UserXPModel;
 /**
  * Code for ITV functions
  */
@@ -162,6 +163,14 @@ function ajax_close_task() {
     $task_id = $_POST['task-id'];
     wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
+    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    
+    $doers = tst_get_task_doers($task_id, true);
+    $doer = array_shift($doers);
+    if($doer) {
+        UserXPModel::instance()->register_activity($doer->ID, UserXPModel::$ACTION_TASK_DONE);
+    }
+    
     tst_send_admin_notif_task_complete($task_id);
     
     $task = get_post($task_id);	
@@ -277,7 +286,7 @@ function ajax_refuse_candidate() {
     $task = get_post($_POST['task-id']);
     $doer = get_user_by('id', $_POST['doer-id']);
     
-    $task_doers = tst_get_task_doers($task_id, $true);
+    $task_doers = tst_get_task_doers($task_id, true);
     $is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
@@ -334,6 +343,7 @@ function ajax_add_candidate() {
 
     p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
+    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
 		
 	if($task) {
 		$users = tst_get_task_doers($task->ID);
@@ -388,7 +398,7 @@ function ajax_remove_candidate() {
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
 	
-	$task_doers = tst_get_task_doers($task_id, $true);
+	$task_doers = tst_get_task_doers($task_id, true);
 	$is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
 
     p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
@@ -472,68 +482,6 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 
 
 /** Register a new user */
-function ajax_user_register_old() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
-    $user_login = itv_get_unique_user_login(itv_translit_sanitize($_POST['first_name']), itv_translit_sanitize($_POST['last_name']));
-
-    if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
-        )));
-    } else if(username_exists($user_login)) {
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => '<div class="alert alert-danger">'.__('Username already exists!', 'tst').'</div>',
-        )));
-    } else if(email_exists($_POST['email'])) {
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => '<div class="alert alert-danger">'.__('Email already exists!', 'tst').'</div>',
-        )));
-    } else {
-        $user_id = wp_insert_user(array(
-            'user_login' => $user_login,
-            'user_email' => $_POST['email'],
-            'user_pass' => $_POST['pass'],
-            'first_name' => $_POST['first_name'],
-            'last_name' => $_POST['last_name'],
-            'role' => 'author',
-        ));
-        
-        if(is_wp_error($user_id)) {
-            wp_die(json_encode(array(
-                'status' => 'fail',
-                'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while registering your account.', 'tst').'</div>',
-            )));
-        } else {
-        	tstmu_save_user_reg_source($user_id, get_current_blog_id());
-        	 
-        	$itv_log = ItvLog::instance();
-        	$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
-        		 
-            /** @var $user_id integer */
-            $activation_code = sha1($user_id.'-activation-'.time());
-            update_user_meta($user_id, 'activation_code', $activation_code);            
-			do_action('update_member_stats', array($user_id));	
-
-            
-            $email_templates = ItvEmailTemplates::instance();
-
-            wp_mail(
-                $_POST['email'],
-                $email_templates->get_title('activate_account_notice'),
-                nl2br(sprintf($email_templates->get_text('activate_account_notice'), home_url("/account-activation/?uid=$user_id&code=$activation_code"), $user_login))
-            );
-
-            wp_die(json_encode(array(
-                'status' => 'ok',
-                'message' => '<div class="alert alert-success">'.__('Your registration is complete! Please check out the email you gave us for our activation message.', 'tst').'</div>',
-            )));
-        }
-    }
-}
-
 function ajax_user_register() {
 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
@@ -571,6 +519,7 @@ function ajax_user_register() {
 				
 			$itv_log = ItvLog::instance();
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
+			UserXPModel::instance()->register_activity($user_id, UserXPModel::$ACTION_REGISTER);
 				
 			$email_templates = ItvEmailTemplates::instance();
 			$email_subject = $email_templates->get_title('activate_account_notice');
@@ -641,6 +590,7 @@ function ajax_update_profile() {
 
             $itv_log = ItvLog::instance();
             $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
+            UserXPModel::instance()->register_fill_profile_activity($user_id);
             
             wp_die(json_encode(array(
                 'status' => 'ok',
@@ -798,6 +748,7 @@ function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 	}
 	else {
 		$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
+		UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CREATE_TASK);
 	}
 		
 	do_action('update_member_stats', array($task->post_author));
