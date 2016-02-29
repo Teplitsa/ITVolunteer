@@ -52,7 +52,9 @@ class ItvConfig {
             
             'USER_ACTION_XP' => [
                 'register' => 30,
+                // once in profile lifeime per field
                 'fill_field' => 1,
+                // once in profile lifeime
                 'upload_photo' => 20,
                 'add_comment' => 1,
                 'create_task' => -10,
@@ -67,7 +69,7 @@ class ItvConfig {
             'USER_ACTION_XP_ALERT' => [
                 'always' => ['actions' => ['register', 'task_done', 'create_task', 'my_task_done']],
                 'less_only' => [
-                    ['value' => 100, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
+                    ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
                 ]
             ],
         );
