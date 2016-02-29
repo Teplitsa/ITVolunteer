@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-29 09:46+0200\n"
-"PO-Revision-Date: 2016-02-29 10:05+0200\n"
+"PO-Revision-Date: 2016-02-29 12:58+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1877,52 +1877,52 @@ msgstr "Запрос консультации из Аудита (аудит) #%s
 #: inc/itv_lang.php:67
 #, php-format
 msgid "user_xp_alert_%s_register"
-msgstr "Вы заработали %s единиц опыта за регистрацию"
+msgstr "Спасибо за регистрацию! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:68
 #, php-format
 msgid "user_xp_alert_%s_fill_field"
-msgstr "Вы заработали %s единиц опыта за заполнение профиля"
+msgstr "Спасибо за заполнение профиля! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:69
 #, php-format
 msgid "user_xp_alert_%s_upload_photo"
-msgstr "Вы заработали %s единиц опыта за загрузку фотографии"
+msgstr "Спасибо за загрузку фотографии! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:70
 #, php-format
 msgid "user_xp_alert_%s_add_comment"
-msgstr "Вы заработали %s единицу опыта за комментарий"
+msgstr "Спасибо за комментарий! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:71
 #, php-format
 msgid "user_xp_alert_%s_create_task"
-msgstr "Ваш опыт уменьшился на %s единиц"
+msgstr "Спасибо за создание задачи! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:72
 #, php-format
 msgid "user_xp_alert_%s_add_as_candidate"
-msgstr "Вы заработали %s единиц опыта"
+msgstr "Спасибо! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:73
 #, php-format
 msgid "user_xp_alert_%s_task_done"
-msgstr "Вы заработали %s единиц опыта за выполнение задачи"
+msgstr "Спасибо за выполнение задачи! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:74
 #, php-format
 msgid "user_xp_alert_%s_my_task_done"
-msgstr "Вы заработали %s единиц опыта за закрытие задачи"
+msgstr "Спасибо за закрытие задачи! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:75
 #, php-format
 msgid "user_xp_alert_%s_review_for_doer"
-msgstr "Вы заработали %s единиц опыта за отзыв"
+msgstr "Спасибо за отзыв! Вы заработали %s опыта."
 
 #: inc/itv_lang.php:76
 #, php-format
 msgid "user_xp_alert_%s_review_for_author"
-msgstr "Вы заработали %s единиц опыта за отзыв"
+msgstr "Спасибо за отзыв! Вы заработали %s опыта."
 
 #: inc/itv_log.php:182 inc/itv_log.php:399 inc/itv_log.php:444
 #: inc/itv_log.php:465
