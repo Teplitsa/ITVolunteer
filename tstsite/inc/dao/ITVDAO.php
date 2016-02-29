@@ -7,5 +7,3 @@ class ITVDAO extends Model {
     protected $prefix = 'str_';
 }
 
-?>
- 
