@@ -132,7 +132,7 @@ get_header();?>
             <select id="task-tags" multiple="10" data-placeholder="<?php _e('Choose a tags for the task...', 'tst');?>">
             <?php if( !$new_task ) {
                     $task_tags = wp_get_post_terms($task->ID, 'post_tag', array());
-                    function tag_in_array(stdClass $tag, $array) {
+                    function tag_in_array($tag, $array) {
                         foreach($array as $value) {
                             if($tag->term_id == $value->term_id)
                                 return true;
