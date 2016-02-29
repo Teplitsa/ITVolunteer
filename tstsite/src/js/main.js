@@ -1154,6 +1154,10 @@ function itv_show_user_xp_alert(action, index) {
     $('#page').append($new_xp_alert);
     $new_xp_alert.show();
     
+    if(typeof ga == 'function') {
+        ga('send', 'event', 'itv-user-xp-alert', 'показана всплывашка');
+    }
+    
     var top_offset = 58;
     var $adminbar = $('#wpadminbar');
     if($adminbar.length) {

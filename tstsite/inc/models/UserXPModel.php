@@ -14,6 +14,7 @@ use \ITV\dao\ReviewAuthor;
 use \WeDevs\ORM\WP\User as User; 
 use \WeDevs\ORM\WP\Post as Post; 
 use \WeDevs\ORM\Eloquent\Database as DB;
+use ITV\dao\UserXPAlerts;
 
 class UserXPModel extends ITVSingletonModel {
     public static $ACTION_REGISTER = 'register';
@@ -30,6 +31,7 @@ class UserXPModel extends ITVSingletonModel {
     private $is_benchmark_user = false;
     private $ACTION_XP = [];
     private $ONE_TIME_ACTIONS = [];
+    private $XP_ALERT_CONFIG = [];
     
     public static $USER_PROFILE_VAL_FIELDS = ['description', 'user_city', 'user_workplace', 'user_workplace_desc', 'user_speciality', 
         'user_contacts', 'user_skype', 'twitter', 'facebook', 'vk', 'googleplus', 'user_skills'];
@@ -37,7 +39,8 @@ class UserXPModel extends ITVSingletonModel {
     public function __construct() {
         $itv_config = \ItvConfig::instance();
         $this->ACTION_XP = $itv_config->get('USER_ACTION_XP');
-        $this->ONE_TIME_ACTIONS = [UserXPModel::$ACTION_FILL_FIELD];
+        $this->XP_ALERT_CONFIG = $itv_config->get('USER_ACTION_XP_ALERT');
+        $this->ONE_TIME_ACTIONS = [UserXPModel::$ACTION_FILL_FIELD, UserXPModel::$ACTION_UPLOAD_PHOTO];
     }
     
     public function get_user_xp($user_id) {
@@ -271,8 +274,12 @@ class UserXPModel extends ITVSingletonModel {
         $alert_list[] = ['action' => $action, 'xp' => $xp_value];
         $alert_list_json = json_encode($alert_list);
         
-        $cookie_name = $this->get_xp_alert_cookie_name($user_id);
-        setcookie( $cookie_name, $alert_list_json, 0, '/' );
+        if($this->is_show_xp_alert($user_id, $action)) {
+            $cookie_name = $this->get_xp_alert_cookie_name($user_id);
+            setcookie( $cookie_name, $alert_list_json, 0, '/' );
+            
+            $this->inc_xp_alerts_count($user_id);
+        }
     }
     
     public function get_xp_alert_list($user_id) {
@@ -306,5 +313,44 @@ class UserXPModel extends ITVSingletonModel {
             $action_xp[$action] = sprintf(__("user_xp_alert_%s_" . $action, 'tst'), abs($xp));
         } 
         return json_encode($action_xp);
+    }
+    
+    private function inc_xp_alerts_count($user_id) {
+        $user_xp_alerts = UserXPAlerts::find($user_id);
+        $alerts_count = 0;
+        if($user_xp_alerts) {
+            $alerts_count = $user_xp_alerts->alerts_count;
+        }
+        else {
+            $user_xp_alerts = new UserXPAlerts();
+            $user_xp_alerts->user_id = $user_id;
+        }
+        $user_xp_alerts->alerts_count = $alerts_count + 1;
+        $user_xp_alerts->save();
+    }
+    
+    private function get_xp_alerts_count($user_id) {
+        $user_xp_alerts = UserXPAlerts::find($user_id);
+        $alerts_count = 0;
+        if($user_xp_alerts) {
+            $alerts_count = $user_xp_alerts->alerts_count;
+        }
+        return $alerts_count;
+    }
+    
+    private function is_show_xp_alert($user_id, $action) {
+        $alerts_count = $this->get_xp_alerts_count($user_id);
+        $ret = true;
+        
+        if(!in_array($action, $this->XP_ALERT_CONFIG['always'])) {
+            foreach($this->XP_ALERT_CONFIG['less_only'] as $action_alert_settings) {
+                if(in_array($action, $action_alert_settings['actions']) && $alerts_count >= $action_alert_settings['limit']) {
+                    $ret = false;
+                    break;
+                }
+            }
+        }
+        
+        return $ret;
     }
 }
