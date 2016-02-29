@@ -90,3 +90,14 @@
     margin:3px 0px 7px 0px;
     padding:2px 2px 2px 3px;
 }
+
+.itv-xp-alert {
+    position:fixed;
+    z-index:100;
+    right: 20px;
+    top: -90px;
+}
+
+.itv-xp-alert .glyphicon {
+    margin-right:10px;
+}

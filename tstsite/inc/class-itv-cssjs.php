@@ -2,6 +2,7 @@
 /**
  * Class for general ITV tasks and configurations
  **/
+use ITV\models\UserXPModel;
 
 class ITV_CssJs {
 	
@@ -148,8 +149,8 @@ class ITV_CssJs {
 		wp_dequeue_style('post-views-counter-frontend');
 				
 		wp_enqueue_script('itv-vendor', $url.'/assets/rev/'.$this->get_rev_filename('vendor.js'), array(), null, true);
-		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array('itv-vendor'), null, true);		
-	
+		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array('itv-vendor'), null, true);
+
 		wp_localize_script('front', 'frontend', array(
 			'ajaxurl'                        => admin_url('admin-ajax.php'),
 			'site_url'                       => site_url('/'),
@@ -178,6 +179,8 @@ class ITV_CssJs {
 			'user_avatar_upload_error'       => __('Avatar upload failed', 'tst'),
 			'user_avatar_delete_error'       => __('Avatar delete failed', 'tst'),
 			'check_agree_data_process_checkbox' => __('Please check agree process data checkbox', 'tst'),
+			'xp_cookie_name'                 => UserXPModel::instance()->get_xp_alert_cookie_name(get_current_user_id()),
+			'xp_actions'                     => UserXPModel::instance()->get_xp_alert_strings_json(),
 			//        '' => __('.', 'tst'),
 		));
 	

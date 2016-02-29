@@ -163,12 +163,12 @@ function ajax_close_task() {
     $task_id = $_POST['task-id'];
     wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
-    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
     
     $doers = tst_get_task_doers($task_id, true);
     $doer = array_shift($doers);
     if($doer) {
-        UserXPModel::instance()->register_activity($doer->ID, UserXPModel::$ACTION_TASK_DONE);
+        UserXPModel::instance()->register_activity_from_gui($doer->ID, UserXPModel::$ACTION_TASK_DONE);
     }
     
     tst_send_admin_notif_task_complete($task_id);
@@ -343,7 +343,7 @@ function ajax_add_candidate() {
 
     p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
-    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
+    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
 		
 	if($task) {
 		$users = tst_get_task_doers($task->ID);
@@ -519,7 +519,7 @@ function ajax_user_register() {
 				
 			$itv_log = ItvLog::instance();
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
-			UserXPModel::instance()->register_activity($user_id, UserXPModel::$ACTION_REGISTER);
+			UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_REGISTER);
 				
 			$email_templates = ItvEmailTemplates::instance();
 			$email_subject = $email_templates->get_title('activate_account_notice');
@@ -590,7 +590,7 @@ function ajax_update_profile() {
 
             $itv_log = ItvLog::instance();
             $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
-            UserXPModel::instance()->register_fill_profile_activity($user_id);
+            UserXPModel::instance()->register_fill_profile_activity_from_gui($user_id);
             
             wp_die(json_encode(array(
                 'status' => 'ok',
@@ -748,7 +748,7 @@ function tst_task_saved( $task_id, WP_Post $task, $is_update ) {
 	}
 	else {
 		$itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_CREATE, get_current_user_id());
-		UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CREATE_TASK);
+		UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_CREATE_TASK);
 	}
 		
 	do_action('update_member_stats', array($task->post_author));

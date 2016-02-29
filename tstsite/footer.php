@@ -103,6 +103,7 @@ function tst_brand_banner() {
 	</div>
 </footer>
 
+<div class="alert alert-success itv-xp-alert" id="itv-xp-alert"><i class="glyphicon glyphicon-certificate"></i><span class="itv-xp-alert-text">Вы заработали 10 очков опыта!</span></div>
 
 </div><!-- #page -->
 </div><!-- .site-layout -->
@@ -110,7 +111,6 @@ function tst_brand_banner() {
 <!-- sharing -->
 <?php do_action('tst_layout_footer');?>
 </div><!-- .site-layout-container-->
-
 
 <?php wp_footer(); ?>
 

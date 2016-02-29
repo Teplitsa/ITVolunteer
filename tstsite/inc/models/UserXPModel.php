@@ -29,6 +29,7 @@ class UserXPModel extends ITVSingletonModel {
     
     private $is_benchmark_user = false;
     private $ACTION_XP = [];
+    private $ONE_TIME_ACTIONS = [];
     
     public static $USER_PROFILE_VAL_FIELDS = ['description', 'user_city', 'user_workplace', 'user_workplace_desc', 'user_speciality', 
         'user_contacts', 'user_skype', 'twitter', 'facebook', 'vk', 'googleplus', 'user_skills'];
@@ -36,6 +37,7 @@ class UserXPModel extends ITVSingletonModel {
     public function __construct() {
         $itv_config = \ItvConfig::instance();
         $this->ACTION_XP = $itv_config->get('USER_ACTION_XP');
+        $this->ONE_TIME_ACTIONS = [UserXPModel::$ACTION_FILL_FIELD];
     }
     
     public function get_user_xp($user_id) {
@@ -65,18 +67,17 @@ class UserXPModel extends ITVSingletonModel {
     }
     
     private function inc_user_xp($user_id, $action) {
+        $user_xp = $this->get_user_xp($user_id);
+        $this->set_user_xp($user_id, $user_xp + $this->get_action_xp($action));
+    }
+    
+    private function set_user_xp($user_id, $xp_val) {
         $user_xp = UserXP::find($user_id);
-        $xp_val = 0;
-        if($user_xp) {
-            $xp_val = $user_xp->xp;
-        }
-        else {
+        if(!$user_xp) {
             $user_xp = new UserXP();
             $user_xp->user_id = $user_id;
         }
-        $xp_val += $this->get_action_xp($action);
         $user_xp->xp = $xp_val;
-        
         $user_xp->save();
     }
     
@@ -98,24 +99,34 @@ class UserXPModel extends ITVSingletonModel {
         }
         
         $acitvity = $query->first();
+        $ret = false;
         if(!$acitvity) {
             $this->register_activity($user_id, $action, $meta);
+            $ret = true;
         }
+        
+        return $ret;
     }
     
-    function register_fill_profile_activity($user_id) {
+    public function register_fill_profile_activity($user_id) {
+        $new_filled_fields = 0;
         foreach(UserXPModel::$USER_PROFILE_VAL_FIELDS as $meta_key) {
             $value = get_user_meta($user_id, $meta_key, true);
+            $is_new_activity = false;
             if($value) {
-                $this->register_activity_if_no($user_id, UserXPModel::$ACTION_FILL_FIELD, $meta_key);
+                $is_new_activity = $this->register_activity_if_no($user_id, UserXPModel::$ACTION_FILL_FIELD, $meta_key);
+            }
+            if($is_new_activity) {
+                $new_filled_fields++;
             }
         }
+        return $new_filled_fields;
     }
     
     public function fill_users_activity($user_id = 0) {
         $start = microtime(true);
+        $db = DB::instance();
         if($user_id) {
-            $db = DB::instance();
             $db->update('DELETE FROM str_itv_user_activity WHERE user_id = ?', [$user_id]);
             
             $user = User::find($user_id);
@@ -125,7 +136,6 @@ class UserXPModel extends ITVSingletonModel {
         }
         else {
             $new_table_name = 'str_itv_user_activity_' . date('Ymd_His');
-            $db = DB::instance();
             $db->update('ALTER TABLE str_itv_user_activity RENAME ' . $new_table_name);
             $db->update('CREATE TABLE str_itv_user_activity LIKE ' . $new_table_name);
             $db->update('TRUNCATE str_itv_user_xp');
@@ -144,7 +154,7 @@ class UserXPModel extends ITVSingletonModel {
         
         $start = microtime(true);
         
-        UserXPModel::instance()->register_activity($user->ID, UserXPModel::$ACTION_REGISTER, '', strtotime($user->user_registered));
+        $this->register_activity($user->ID, UserXPModel::$ACTION_REGISTER, '', strtotime($user->user_registered));
         $step = microtime(true);if($this->is_benchmark_user) {echo "ACTION_REGISTER: ".($step - $start) . " sec.\n";}$start = $step;
          
         $meta_value = get_user_meta($user->ID, 'user_avatar', true);
@@ -154,7 +164,7 @@ class UserXPModel extends ITVSingletonModel {
         }
         $step = microtime(true);if($this->is_benchmark_user) {echo "ACTION_UPLOAD_PHOTO: ".($step - $start) . " sec.\n";}$start = $step;
         
-        UserXPModel::instance()->register_fill_profile_activity($user->ID);
+        $this->register_fill_profile_activity($user->ID);
         $step = microtime(true);if($this->is_benchmark_user) {echo "fill_profile_activity: ".($step - $start) . " sec.\n";}$start = $step;
         
         $user_comments = get_comments( ['user_id' => $user->ID, 'status' => 'approve'] );
@@ -191,14 +201,110 @@ class UserXPModel extends ITVSingletonModel {
         
         $reviews = ReviewAuthor::where(['doer_id' => $user->ID])->get();
         foreach($reviews as $review) {
-            UserXPModel::instance()->register_activity($user->ID, UserXPModel::$ACTION_REVIEW_FOR_AUTHOR, '', strtotime($review->time_add));
+            $this->register_activity($user->ID, UserXPModel::$ACTION_REVIEW_FOR_AUTHOR, '', strtotime($review->time_add));
         }
         $step = microtime(true);if($this->is_benchmark_user) {echo "ACTION_REVIEW_FOR_AUTHOR: ".($step - $start) . " sec.\n";}$start = $step;
         
         $reviews = Review::where(['author_id' => $user->ID])->get();
         foreach($reviews as $review) {
-            UserXPModel::instance()->register_activity($user->ID, UserXPModel::$ACTION_REVIEW_FOR_DOER, '', strtotime($review->time_add));
+            $this->register_activity($user->ID, UserXPModel::$ACTION_REVIEW_FOR_DOER, '', strtotime($review->time_add));
         }
         $step = microtime(true);if($this->is_benchmark_user) {echo "ACTION_REVIEW_FOR_DOER: ".($step - $start) . " sec.\n";}$start = $step;
+    }
+    
+    public function recalc_user_activity($user) {
+        $user_xp = 0;
+        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) {
+            foreach($activity_list as $action) {
+                $user_xp += $this->get_action_xp($action->action);
+            }
+        });
+        $this->set_user_xp();
+    }
+    
+    public function recalc_users_xp($user_id = 0) {
+        $start = microtime(true);
+        $db = DB::instance();
+        
+        if($user_id) {
+            $user = User::find($user_id);
+            $this->is_benchmark_user = true;
+            $this->recalc_user_activity($user);
+            $this->is_benchmark_user = false;
+        }
+        else {
+            $db->update('TRUNCATE str_itv_user_xp');
+            User::chunk(100, function($users) {
+                foreach ($users as $user) {
+                    $this->recalc_user_activity($user);
+                }
+            });
+        }
+        echo "total: ".(microtime(true) - $start) . " sec.\n";
+    }
+    
+    # register actions from GUI
+    public function register_activity_from_gui($user_id, $action, $meta = '') {
+        if(in_array($action, $this->ONE_TIME_ACTIONS)) {
+            $this->register_activity_if_no($user_id, $action, $meta);
+        }
+        else {
+            $this->register_activity($user_id, $action, $meta);
+        }
+        
+        $xp_value = $this->get_action_xp($action);
+        $this->push_xp_alert($user_id, $action, $xp_value);
+    }
+    
+    public function register_fill_profile_activity_from_gui($user_id) {
+        $new_filled_fields = $this->register_fill_profile_activity($user_id);
+
+        if($new_filled_fields > 0) {
+            $action = UserXPModel::$ACTION_FILL_FIELD;
+            $xp_value = $this->get_action_xp($action);
+            $this->push_xp_alert($user_id, $action, $xp_value);
+        }
+    }
+    
+    public function push_xp_alert($user_id, $action, $xp_value) {
+        $alert_list = $this->get_xp_alert_list($user_id);
+        $alert_list[] = ['action' => $action, 'xp' => $xp_value];
+        $alert_list_json = json_encode($alert_list);
+        
+        $cookie_name = $this->get_xp_alert_cookie_name($user_id);
+        setcookie( $cookie_name, $alert_list_json, 0, '/' );
+    }
+    
+    public function get_xp_alert_list($user_id) {
+        $cookie_name = $this->get_xp_alert_cookie_name($user_id);
+        $alert_list = [];
+        if(isset($_COOKIE[$cookie_name])) {
+            try {
+                $alert_list = json_decode($_COOKIE[$cookie_name]);
+            }
+            catch (Exception $ex) {
+                error_log($ex);
+            }
+        }
+        return $alert_list;
+    }
+    
+    public function empty_xp_alert_list($user_id) {
+        $cookie_name = $this->get_xp_alert_cookie_name($user_id);
+        unset( $_COOKIE[$cookie_name] );
+        setcookie( $cookie_name, '', time() - ( 15 * 60 ) );
+    }
+    
+    public function get_xp_alert_cookie_name($user_id) {
+        $user_data = get_userdata($user_id);
+        return 'itv_xp_alert_' . $user_data->user_nicename;
+    }
+    
+    public function get_xp_alert_strings_json() {
+        $action_xp = [];
+        foreach($this->ACTION_XP as $action => $xp) {
+            $action_xp[$action] = sprintf(__("user_xp_alert_%s_" . $action, 'tst'), abs($xp));
+        } 
+        return json_encode($action_xp);
     }
 }

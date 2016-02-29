@@ -834,6 +834,8 @@ jQuery(function($){
                 resp = jQuery.parseJSON(resp);
                 $submit.parents('.form-group').show();//.removeAttr('disabled');
                 $('#form_message').html(resp.message);
+                
+                itv_show_all_xp_alerts();
             });
         }
     });
@@ -859,9 +861,13 @@ jQuery(function($){
 		TPanels.find('#t-details').removeClass('active').addClass('fade');
 		TPanels.find('#t-comments').addClass('active').removeClass('fade');
 		
-		var STarget = $('.task-details').find('#'+hash).offset().top - 90;	
-		//$('html, body').animate({scrollTop:STarget}, 300);
-		$('html, body').scrollTop(STarget);
+		try {
+            var STarget = $('.task-details').find('#'+hash).offset().top - 90;  
+            //$('html, body').animate({scrollTop:STarget}, 300);
+            $('html, body').scrollTop(STarget);
+		}
+		catch(ex) {
+		}
 	}
 	
 	
@@ -1134,4 +1140,56 @@ jQuery(function($){
         $(this).readmore('destroy');
         return true;
     });
+});
+
+// user xp rating alert
+var ITV_USER_XP_ACTIONS = jQuery.parseJSON(frontend.xp_actions);
+
+function itv_show_user_xp_alert(action, index) {
+    var $new_xp_alert = $('#itv-xp-alert').clone();
+    var $new_xp_alert_text = $new_xp_alert.find('.itv-xp-alert-text');
+    $new_xp_alert.addClass('itv-xp-alert-item');
+    $new_xp_alert_text.html(ITV_USER_XP_ACTIONS[action]);
+    
+    $('#page').append($new_xp_alert);
+    $new_xp_alert.show();
+    
+    var top_offset = 58;
+    var $adminbar = $('#wpadminbar');
+    if($adminbar.length) {
+        top_offset += $adminbar.height();
+    }
+    
+    $new_xp_alert.animate({
+        'top': '' + (top_offset + index * 55) + 'px'
+    }, 800, 'linear', function(){
+        setTimeout(function(){
+            itv_hide_xp_alert_list();
+        }, 5000);
+    });
+}
+
+function itv_hide_xp_alert_list() {
+    $('.itv-xp-alert-item').first().fadeOut( "slow", function() {
+        $(this).remove();
+    });
+}
+
+function itv_get_xp_alerts_list() {
+    return Cookies.getJSON(frontend.xp_cookie_name);
+}
+
+function itv_show_all_xp_alerts() {
+    var xp_alert_list = itv_get_xp_alerts_list();
+    if(xp_alert_list && xp_alert_list.length) {
+        for(var i in xp_alert_list) {
+            var xp_alert = xp_alert_list[i];
+            itv_show_user_xp_alert(xp_alert['action'], i);
+        }
+        Cookies.remove(frontend.xp_cookie_name);
+    }
+}
+
+jQuery(function($){
+    itv_show_all_xp_alerts();
 });

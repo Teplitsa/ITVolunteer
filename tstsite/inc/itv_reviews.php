@@ -29,7 +29,7 @@ class ItvReviews {
 				)
 		);
 		ItvLog::instance()->log_review_action(ItvLog::$ACTION_REVIEW_FOR_DOER, $author_id, $doer_id, $task_id, $rating);
-		UserXPModel::instance()->register_activity($author_id, UserXPModel::$ACTION_REVIEW_FOR_DOER);
+		UserXPModel::instance()->register_activity_from_gui($author_id, UserXPModel::$ACTION_REVIEW_FOR_DOER);
 	}
 	
 	public function get_doer_reviews_short_list($doer_id) {
@@ -139,7 +139,7 @@ class ItvReviewsAuthor {
 				)
 		);
 		ItvLog::instance()->log_review_action(ItvLog::$ACTION_REVIEW_FOR_AUTHOR, $doer_id, $author_id, $task_id, $rating);
-		UserXPModel::instance()->register_activity($doer_id, UserXPModel::$ACTION_REVIEW_FOR_AUTHOR);
+		UserXPModel::instance()->register_activity_from_gui($doer_id, UserXPModel::$ACTION_REVIEW_FOR_AUTHOR);
 	}
 	
 	public function get_author_reviews_short_list($author_id) {
