@@ -310,7 +310,7 @@ class UserXPModel extends ITVSingletonModel {
     public function get_xp_alert_strings_json() {
         $action_xp = [];
         foreach($this->ACTION_XP as $action => $xp) {
-            $action_xp[$action] = sprintf(__("user_xp_alert_%s_" . $action, 'tst'), abs($xp));
+            $action_xp[$action] = sprintf(__("user_xp_alert_%s_" . $action, 'tst'), $xp);
         } 
         return json_encode($action_xp);
     }
