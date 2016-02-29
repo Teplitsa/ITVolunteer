@@ -228,5 +228,5 @@ function tst_actualize_task_stats($task) {
 
 add_action('wp_insert_comment','comment_inserted',99,2);
 function comment_inserted($comment_id, $comment_object) {
-    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_ADD_COMMENT);
+    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_COMMENT);
 }

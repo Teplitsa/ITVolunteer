@@ -62,3 +62,15 @@ __('itv_email_test_consult_needed_notification_subject_audit', 'tst');
 __('itv_email_test_consult_needed_notification_audit', 'tst');
 __('Consult request from audit (consult form) #%s', 'tst');
 __('Consult request from audit (audit) #%s', 'tst');
+
+// user xp
+__("user_xp_alert_%s_register", 'tst');
+__("user_xp_alert_%s_fill_field", 'tst');
+__("user_xp_alert_%s_upload_photo", 'tst');
+__("user_xp_alert_%s_add_comment", 'tst');
+__("user_xp_alert_%s_create_task", 'tst');
+__("user_xp_alert_%s_add_as_candidate", 'tst');
+__("user_xp_alert_%s_task_done", 'tst');
+__("user_xp_alert_%s_my_task_done", 'tst');
+__("user_xp_alert_%s_review_for_doer", 'tst');
+__("user_xp_alert_%s_review_for_author", 'tst');

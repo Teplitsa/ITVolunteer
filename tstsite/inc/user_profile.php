@@ -138,7 +138,7 @@ function ajax_upload_user_avatar() {
 				
 		if( $image_id ) {
 			update_user_meta($member->ID, 'user_avatar', $image_id);
-			UserXPModel::instance()->register_activity_if_no($member->ID, UserXPModel::$ACTION_UPLOAD_PHOTO);
+			UserXPModel::instance()->register_activity_from_gui($member->ID, UserXPModel::$ACTION_UPLOAD_PHOTO);
 						
 			$res = array(
 					'status' => 'ok',
