@@ -464,6 +464,7 @@ jQuery(function($){
                 $('#task-leave-review-form').remove();
                 $('#task-review-message-ok-message').html(resp.message);
                 $('#task-review-message-ok-message').show();
+                itv_show_all_xp_alerts();
             } else {
             	$('#add_review_loading').hide();            	
                 $buttons.removeAttr('disabled');
@@ -516,6 +517,7 @@ jQuery(function($){
                 $('#task-leave-review-author-form').remove();
                 $('#task-review-author-message-ok-message').html(resp.message);
                 $('#task-review-author-message-ok-message').show();
+                itv_show_all_xp_alerts();
             } else {
             	$('#add_review_author_loading').hide();            	
                 $buttons.removeAttr('disabled');

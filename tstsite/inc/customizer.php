@@ -287,7 +287,7 @@ function ajax_refuse_candidate() {
     $doer = get_user_by('id', $_POST['doer-id']);
     
     $task_doers = tst_get_task_doers($task_id, true);
-    $is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
+    $is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REFUSE_CANDIDATE, $doer->ID);
 	if($task){
@@ -399,7 +399,7 @@ function ajax_remove_candidate() {
 	$task_doer_id = get_current_user_id();
 	
 	$task_doers = tst_get_task_doers($task_id, true);
-	$is_doer_remove = $task_doers[0] && ($task_doers[0]->ID == $task_doer_id);
+	$is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
 
     p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());

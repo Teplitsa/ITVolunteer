@@ -11,5 +11,3 @@ class ReviewAuthor extends ITVDAO {
     protected $table = 'str_reviews_author';
 }
 
-?>
- 
