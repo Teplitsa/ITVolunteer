@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-29 09:46+0200\n"
-"PO-Revision-Date: 2016-02-29 12:58+0200\n"
+"POT-Creation-Date: 2016-03-01 20:27+0200\n"
+"PO-Revision-Date: 2016-03-01 20:35+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -57,24 +57,28 @@ msgstr "Комментариев пока нет."
 msgid "Leave a comment"
 msgstr "Оставить комментарий"
 
-#: footer.php:43
+#: footer.php:44
 msgid "Beta-version"
 msgstr "Beta-версия"
 
-#: footer.php:47
+#: footer.php:48
 msgid "Total members:"
 msgstr "Всего участников:"
 
-#: footer.php:48
+#: footer.php:49
+msgid "Total site users xp:"
+msgstr "Общий опыт:"
+
+#: footer.php:50
 msgid "Total tasks:"
 msgstr "Всего задач:"
 
-#: footer.php:49
+#: footer.php:51
 msgid "Tasks completed:"
 msgstr "Задач решено:"
 
 # @ tst
-#: footer.php:93
+#: footer.php:95
 #, php-format
 msgid "All materials of the site are avaliabe under license %s"
 msgstr "Материалы сайта доступны по лицензии %s"
@@ -467,7 +471,7 @@ msgstr "Отправить активацию для следующих %s (ос
 # @ tst
 #: inc/customizer.php:12 inc/customizer.php:720 inc/itv_consult.php:431
 #: inc/itv_consult.php:479 inc/itv_consult.php:539 inc/itv_consult.php:596
-#: inc/itv_log.php:584
+#: inc/itv_log.php:600
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -1978,30 +1982,34 @@ msgstr "Любой тип записи"
 msgid "itv_log_record_type_"
 msgstr ""
 
-#: inc/itv_log.php:490 inc/itv_log.php:498 inc/itv_log.php:517
+#: inc/itv_log.php:482
+msgid "Collected user xp"
+msgstr "Накопленный опыт"
+
+#: inc/itv_log.php:506 inc/itv_log.php:514 inc/itv_log.php:533
 msgid "For a day"
 msgstr "За день"
 
-#: inc/itv_log.php:491 inc/itv_log.php:499 inc/itv_log.php:510
-#: inc/itv_log.php:518
+#: inc/itv_log.php:507 inc/itv_log.php:515 inc/itv_log.php:526
+#: inc/itv_log.php:534
 msgid "For all time"
 msgstr "За все время"
 
-#: inc/itv_log.php:509
+#: inc/itv_log.php:525
 msgid "For last week"
 msgstr "За неделю"
 
-#: inc/itv_log.php:530
+#: inc/itv_log.php:546
 msgid "itv_users_weekly_stats_"
 msgstr ""
 
-#: inc/itv_log.php:559
+#: inc/itv_log.php:575
 msgid "itv_email_weekly_stats_subject"
 msgstr ""
 "ITV - статистика за {{week_number}}-ю неделю, решено "
 "{{week_closed_tasks_count}} задач"
 
-#: inc/itv_log.php:560
+#: inc/itv_log.php:576
 msgid "itv_email_weekly_stats_message"
 msgstr ""
 "Статистика по IT-волонтеру за {{week_number}}-ю неделю с {{from_date}} по "
@@ -2016,7 +2024,7 @@ msgstr ""
 msgid "Task status become "
 msgstr ""
 
-#: inc/models/UserXPModel.php:275
+#: inc/models/UserXPModel.php:313
 #, php-format
 msgid "user_xp_alert_%s_"
 msgstr ""

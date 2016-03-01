@@ -1,4 +1,6 @@
 <?php
+use ITV\models\UserXPModel;
+
 class ItvLog {
     public static $ACTION_TASK_CREATE = 'create';
     public static $ACTION_TASK_DELETE = 'delete';
@@ -445,6 +447,9 @@ class ItvLog {
                 'action' => $log_action,
             );
         }
+        
+        $stats = $this->add_user_xp_stats($stats, 'day', $now_date);
+        
         return $stats;
     }
     
@@ -466,6 +471,26 @@ class ItvLog {
                 'action' => $log_action,
             );
         }
+        
+        $stats = $this->add_user_xp_stats($stats, 'week', $from_date, $to_date);
+        
+        return $stats;
+    }
+    
+    public function add_user_xp_stats($stats, $period_name, $from_date, $to_date = '') {
+        $new_stats = [];
+        
+        $log_action = 'user_xp';
+        $new_stats[$log_action] = [
+            'all' => UserXPModel::instance()->get_site_total_xp(),
+            'all_link' => '',
+            $period_name => UserXPModel::instance()->get_xp_for_period($from_date, $to_date),
+            $period_name . '_link' => '',
+            'title' => __('Collected user xp', 'tst'),
+            'action' => $log_action,
+        ];
+        $stats = array_merge($new_stats, $stats);
+        
         return $stats;
     }
     
@@ -514,8 +539,8 @@ class ItvLog {
             $i++;
             echo '<tr class="'.($i % 2 == 0 ? "alternate" : '').'">';
             echo '<td class="log-stats-title">'.$stats_item['title'].'</td>';
-            echo '<td><a href="'.admin_url($stats_item['week_link']).'" title="'.__('For a day', 'tst').'">'.$stats_item['week'].'</a></td>';
-            echo '<td><a href="'.admin_url($stats_item['all_link']).'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a></td>';
+            echo '<td>'.($stats_item['week_link'] ? '<a href="'.admin_url($stats_item['week_link']).'" title="'.__('For a day', 'tst').'">'.$stats_item['week'].'</a>' : $stats_item['week']).'</td>';
+            echo '<td>'.($stats_item['all_link'] ? '<a href="'.admin_url($stats_item['all_link']).'" title="'.__('For all time', 'tst').'">'.$stats_item['all'].'</a>' : $stats_item['all']).'</td>';
             echo '</tr>';
         }
         echo '</table>';
