@@ -430,11 +430,11 @@ class ItvLog {
     
     public function get_general_stats() {
         $stats = array();
+        $now_date = date('Y-m-d');
         foreach($this->list_log_actions as $log_action) {
             $this->filter = array('log_action' => $log_action);
             $all_count = $this->get_all_tasks_log_records_count();
             
-            $now_date = date('Y-m-d');
             $this->filter = array('log_action' => $log_action, 'from_date' => $now_date);
             $day_count = $this->get_all_tasks_log_records_count();
             
