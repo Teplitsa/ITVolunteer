@@ -480,7 +480,7 @@ class ItvLog {
         
         $log_action = 'user_xp';
         $new_stats[$log_action] = [
-            'all' => UserXPModel::instance()->get_site_total_xp(),
+            'all' => UserXPModel::instance()->get_site_total_abs_xp(),
             'all_link' => '',
             $period_name => UserXPModel::instance()->get_xp_for_period($from_date, $to_date),
             $period_name . '_link' => '',
