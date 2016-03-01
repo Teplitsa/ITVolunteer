@@ -322,6 +322,19 @@ class UserXPModel extends ITVSingletonModel {
         return $result;
     }
     
+    public function get_site_total_abs_xp() {
+        $db = DB::instance();
+        $wpdb = $db->db;
+        
+        $activity = UserXPActivity::get();
+        $sum_xp = 0;
+        foreach($activity as $action) {
+            $sum_xp += abs($this->get_action_xp($action->action));
+        }
+        
+        return $sum_xp;
+    }
+    
     public function get_xp_for_period($from, $to) {
         $db = DB::instance();
         $wpdb = $db->db;
@@ -341,7 +354,7 @@ class UserXPModel extends ITVSingletonModel {
         $activity = $query->get();
         $sum_xp = 0;
         foreach($activity as $action) {
-            $sum_xp += $this->get_action_xp($action->action);
+            $sum_xp += abs($this->get_action_xp($action->action));
         }
         
         return $sum_xp;

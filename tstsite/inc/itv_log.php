@@ -472,8 +472,6 @@ class ItvLog {
             );
         }
         
-        $stats = $this->add_user_xp_stats($stats, 'week', $from_date, $to_date);
-        
         return $stats;
     }
     
@@ -503,6 +501,8 @@ class ItvLog {
         $users_stats['new_active_count'] = tst_get_new_active_members_count($from_date, $to_date);
         $users_stats['hero_count'] = tst_get_members_counter('hero');
         $users_stats['donee_count'] = tst_get_members_counter('donee');
+        $users_stats['week_user_xp'] = UserXPModel::instance()->get_xp_for_period($from_date, $to_date);
+        $users_stats['total_user_xp'] = UserXPModel::instance()->get_site_total_abs_xp();
         return $users_stats;
     }
     
