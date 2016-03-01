@@ -315,6 +315,51 @@ class UserXPModel extends ITVSingletonModel {
         return json_encode($action_xp);
     }
     
+    public function get_site_total_xp() {
+        $db = DB::instance();
+        $wpdb = $db->db;
+        $result = $wpdb->get_var('SELECT SUM(xp) as site_sum_xp FROM str_itv_user_xp');
+        return $result;
+    }
+    
+    public function get_site_total_abs_xp() {
+        $db = DB::instance();
+        $wpdb = $db->db;
+        
+        $activity = UserXPActivity::get();
+        $sum_xp = 0;
+        foreach($activity as $action) {
+            $sum_xp += abs($this->get_action_xp($action->action));
+        }
+        
+        return $sum_xp;
+    }
+    
+    public function get_xp_for_period($from, $to) {
+        $db = DB::instance();
+        $wpdb = $db->db;
+        
+        if($from && !preg_match('/.* \d{2}:\d{2}:\d{2}$/', $from)) {
+            $from .= ' 00:00:00';
+        }
+        
+        $query = UserXPActivity::where('created_at', '>=', $from);
+        if($to) {
+            if(!preg_match('/.* \d{2}:\d{2}:\d{2}$/', $to)) {
+                $to .= ' 00:00:00';
+            }
+            $query->where('created_at', '<', $to);
+        }
+        
+        $activity = $query->get();
+        $sum_xp = 0;
+        foreach($activity as $action) {
+            $sum_xp += abs($this->get_action_xp($action->action));
+        }
+        
+        return $sum_xp;
+    }
+    
     private function inc_xp_alerts_count($user_id) {
         $user_xp_alerts = UserXPAlerts::find($user_id);
         $alerts_count = 0;

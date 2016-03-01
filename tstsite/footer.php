@@ -1,4 +1,5 @@
 <?php
+use ITV\models\UserXPModel;
 /**
  * The template for displaying the footer.
  *
@@ -45,6 +46,7 @@ function tst_brand_banner() {
 				
 				<div class="footer-stat">
 					<p><?php _e('Total members:', 'tst') ?> <?php echo tst_get_active_members_count(); ?></p>
+					<p><?php _e('Total site users xp:', 'tst') ?> <?php echo UserXPModel::instance()->get_site_total_abs_xp(); ?></p>
 					<p><?php _e('Total tasks:', 'tst') ?> <?php echo tst_get_all_tasks_count(); ?></p>
 					<p><?php _e('Tasks completed:', 'tst') ?> <?php echo tst_get_closed_tasks_count(); ?></p>
 				</div>

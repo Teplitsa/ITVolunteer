@@ -47,6 +47,8 @@ __('itv_users_weekly_stats_new_count', 'tst');
 __('itv_users_weekly_stats_new_active_count', 'tst');
 __('itv_users_weekly_stats_hero_count', 'tst');
 __('itv_users_weekly_stats_donee_count', 'tst');
+__('itv_users_weekly_stats_week_user_xp', 'tst');
+__('itv_users_weekly_stats_total_user_xp', 'tst');
 
 // itv_notificator
 __ ( 'Task status become publish', 'tst' );
