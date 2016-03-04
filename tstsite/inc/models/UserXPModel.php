@@ -216,20 +216,7 @@ class UserXPModel extends ITVSingletonModel {
         $step = microtime(true);if($this->is_benchmark_user) {echo "ACTION_REVIEW_FOR_DOER: ".($step - $start) . " sec.\n";}$start = $step;
     }
     
-    public function recalc_user_activity($user) {
-        $start = microtime(true);
-        $user_xp = 0;
-        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) use($user_xp) {
-            foreach($activity_list as $action) {
-                $user_xp += $this->get_action_xp($action->action);
-            }
-        });
-        echo "collect userXP: " . (microtime(true) - $start) . " sec.\n";
-            
-        $start = microtime(true);
-        $this->set_user_xp($user->ID, $user_xp);
-        echo "set userXP: ".(microtime(true) - $start) . " sec.\n";
-        
+    private function test_script_speed() {
         $start = microtime(true);
         $db = DB::instance();
         $wpdb = $db->db;
@@ -238,7 +225,7 @@ class UserXPModel extends ITVSingletonModel {
         $sql = "SELECT * from str_itv_user_activity WHERE user_id = 75";
         
         $start = microtime(true);
-        $actions = UserXPActivity::where(['user_id' => $user->ID])->get();
+        $actions = UserXPActivity::where(['user_id' => 75])->get();
         echo "get user actions ELOQUENT: ".(microtime(true) - $start) . " sec.\n";
         echo "actions_count=" . count($actions) . "\n";
         
@@ -251,7 +238,7 @@ class UserXPModel extends ITVSingletonModel {
         $db_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
         mysql_select_db(DB_NAME, $db_link);
         echo "mysql_connect: ".(microtime(true) - $start) . " sec.\n";
-                
+        
         $start = microtime(true);
         $query_result = mysql_query($sql);
         $actions = [];
@@ -261,7 +248,35 @@ class UserXPModel extends ITVSingletonModel {
         echo "get user actions PHP_MYSQL: ".(microtime(true) - $start) . " sec.\n";
         echo "actions_count=" . count($actions) . "\n";
         
+        $start = microtime(true);
+        $query_result = mysql_query("TRUNCATE TABLE `str_report_users_xp`");
+        echo "TRUNCATE str_report_users_xp: ".(microtime(true) - $start) . " sec.\n";
+        
+        $start = microtime(true);
+        for($i = 0; $i < 1000; $i++) {
+            $result = mysql_query("INSERT INTO str_report_users_xp SET ID = '$i', user_nicename = 'user1', display_name = 'user_001', xp = '10'");
+            if (!$result) {
+                die('error: ' . mysql_error());
+            }
+        }
+        echo "INSERT INTO str_report_users_xp: ".(microtime(true) - $start) . " sec.\n";
+        
         mysql_close($db_link);
+    }
+    
+    public function recalc_user_activity($user) {
+        $start = microtime(true);
+        $user_xp = 0;
+        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) use($user_xp) {
+            foreach($activity_list as $action) {
+                $user_xp += $this->get_action_xp($action->action);
+            }
+        });
+        if($this->is_benchmark_user) { echo "collect userXP: " . (microtime(true) - $start) . " sec.\n"; }
+            
+        $start = microtime(true);
+        $this->set_user_xp($user->ID, $user_xp);
+        if($this->is_benchmark_user) { echo "set userXP: ".(microtime(true) - $start) . " sec.\n"; }
     }
     
     public function recalc_users_xp($user_id = 0) {
@@ -273,6 +288,8 @@ class UserXPModel extends ITVSingletonModel {
             $this->is_benchmark_user = true;
             $this->recalc_user_activity($user);
             $this->is_benchmark_user = false;
+            
+            $this->test_script_speed();
         }
         else {
             $db->update('TRUNCATE str_itv_user_xp');
