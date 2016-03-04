@@ -65,9 +65,11 @@ class ItvConfig {
                 'my_task_done' => 20,
                 'review_for_doer' => 10,
                 'review_for_author' => 10,
+                'login' => 1,
             ],
             'USER_ACTION_XP_ALERT' => [
                 'always' => ['actions' => ['register', 'task_done', 'create_task', 'my_task_done']],
+                'never' => ['actions' => ['login']],
                 'less_only' => [
                     ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
                 ]

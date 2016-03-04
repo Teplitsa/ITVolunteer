@@ -473,6 +473,10 @@ function ajax_login() {
         )));
     }
 
+    if($user) {
+        UserXPModel::instance()->register_activity_from_gui($user->ID, UserXPModel::$ACTION_LOGIN);
+    }
+    
     wp_die(json_encode(array(
         'status' => 'ok',
     )));

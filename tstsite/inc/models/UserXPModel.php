@@ -27,6 +27,7 @@ class UserXPModel extends ITVSingletonModel {
     public static $ACTION_MY_TASK_DONE = 'my_task_done';
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
     public static $ACTION_REVIEW_FOR_AUTHOR = 'review_for_author';
+    public static $ACTION_LOGIN = 'login';
     
     private $is_benchmark_user = false;
     private $ACTION_XP = [];
@@ -387,7 +388,10 @@ class UserXPModel extends ITVSingletonModel {
         $alerts_count = $this->get_xp_alerts_count($user_id);
         $ret = true;
         
-        if(!in_array($action, $this->XP_ALERT_CONFIG['always'])) {
+        if(in_array($action, $this->XP_ALERT_CONFIG['never']['actions'])) {
+            $ret = false;
+        }
+        elseif(!in_array($action, $this->XP_ALERT_CONFIG['always']['actions'])) {
             foreach($this->XP_ALERT_CONFIG['less_only'] as $action_alert_settings) {
                 if(in_array($action, $action_alert_settings['actions']) && $alerts_count >= $action_alert_settings['limit']) {
                     $ret = false;
