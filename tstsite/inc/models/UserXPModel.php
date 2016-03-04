@@ -217,13 +217,51 @@ class UserXPModel extends ITVSingletonModel {
     }
     
     public function recalc_user_activity($user) {
+        $start = microtime(true);
         $user_xp = 0;
-        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) {
+        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) use($user_xp) {
             foreach($activity_list as $action) {
                 $user_xp += $this->get_action_xp($action->action);
             }
         });
-        $this->set_user_xp();
+        echo "collect userXP: " . (microtime(true) - $start) . " sec.\n";
+            
+        $start = microtime(true);
+        $this->set_user_xp($user->ID, $user_xp);
+        echo "set userXP: ".(microtime(true) - $start) . " sec.\n";
+        
+        $start = microtime(true);
+        $db = DB::instance();
+        $wpdb = $db->db;
+        echo "get DB instance: ".(microtime(true) - $start) . " sec.\n";
+        
+        $sql = "SELECT * from str_itv_user_activity WHERE user_id = 75";
+        
+        $start = microtime(true);
+        $actions = UserXPActivity::where(['user_id' => $user->ID])->get();
+        echo "get user actions ELOQUENT: ".(microtime(true) - $start) . " sec.\n";
+        echo "actions_count=" . count($actions) . "\n";
+        
+        $start = microtime(true);
+        $actions = $wpdb->get_results($sql);
+        echo "get user actions WPDB: ".(microtime(true) - $start) . " sec.\n";
+        echo "actions_count=" . count($actions) . "\n";
+        
+        $start = microtime(true);
+        $db_link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD);
+        mysql_select_db(DB_NAME, $db_link);
+        echo "mysql_connect: ".(microtime(true) - $start) . " sec.\n";
+                
+        $start = microtime(true);
+        $query_result = mysql_query($sql);
+        $actions = [];
+        while($row = mysql_fetch_assoc($query_result)) {
+            $actions[] = $row;
+        }
+        echo "get user actions PHP_MYSQL: ".(microtime(true) - $start) . " sec.\n";
+        echo "actions_count=" . count($actions) . "\n";
+        
+        mysql_close($db_link);
     }
     
     public function recalc_users_xp($user_id = 0) {

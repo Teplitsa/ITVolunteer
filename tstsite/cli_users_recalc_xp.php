@@ -13,7 +13,7 @@ try {
 	$options = getopt("", array('user_id:'));
 	$user_id = isset($options['user_id']) ? $options['user_id'] : '';
 	
-	$uxp_model->fill_users_activity($user_id);
+	$uxp_model->recalc_users_xp($user_id);
 	
 }
 catch (ItvNotCLIRunException $ex) {
