@@ -70,13 +70,35 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
     }
     
     public function generate_users($amount) {
+        $db = DB::instance();
+        $wpdb = $db->db;
+        
         for($i = 0; $i < $amount; $i++) {
-            $userdata = array(
-                'user_login'  =>  'test' . sprintf("%'.09d", $i),
-                'user_url'    =>  "http://te-st.ru/",
-                'user_pass'   =>  NULL,
-            );
-            $user_id = wp_insert_user( $userdata );
+//             $userdata = array(
+//                 'user_login'  =>  'test' . sprintf("%'.09d", $i),
+//                 'user_url'    =>  "http://te-st.ru/",
+//                 'user_pass'   =>  NULL,
+//             );
+//             $user_id = wp_insert_user( $userdata );
+
+            $name = 'test' . sprintf("%'.09d", $i);
+            
+            $user = new User();
+            $user->timestamps = false;
+            
+            $user->user_login = $name;
+            $user->user_pass = '';
+            $user->user_nicename = $name;
+            $user->user_email = $name . '@ngo2.ru';
+            $user->user_url = "http://te-st.ru/";
+            $user->user_registered = current_time('mysql');
+            $user->user_activation_key = '';
+            $user->user_status = 0;
+            $user->display_name = $name;
+            $user->spam = 0;
+            $user->deleted = 0;
+            
+            $user->save();
         }
     }
     
@@ -218,18 +240,48 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
     }
     
     public function generate_task($rand_user) {
-        $task_rand_string = $this->get_rand_for_post(static::$TITLE, 'tasks');
-        wp_insert_post(
-            array(
-                'comment_status'    => 'open',
-                'ping_status'   => 'closed',
-                'post_author'   => $rand_user->ID,
-                'post_name'     => static::$SLUG . "_" . $task_rand_string,
-                'post_title'    => static::$TITLE . " " . $task_rand_string,
-                'post_status'   => 'publish',
-                'post_type'     => 'tasks',
-            )
-        );
+//         $task_rand_string = $this->get_rand_for_post(static::$TITLE, 'tasks');
+//         wp_insert_post(
+//             array(
+//                 'comment_status'    => 'open',
+//                 'ping_status'   => 'closed',
+//                 'post_author'   => $rand_user->ID,
+//                 'post_name'     => static::$SLUG . "_" . $task_rand_string,
+//                 'post_title'    => ,
+//                 'post_status'   => 'publish',
+//                 'post_type'     => 'tasks',
+//             )
+//         );
+
+        $task_rand_string = $this->generate_random_string();
+        
+        $time = current_time('mysql');
+        
+        $task = new Post();
+        $task->post_author = $rand_user->ID;
+        $task->post_date = $time;
+        $task->post_date_gmt = $time;
+        $task->post_content = static::$LONG_TEXT;
+        $task->post_title = static::$TITLE . " " . $task_rand_string;
+        $task->post_excerpt = '';
+        $task->post_status = 'publish';
+        $task->comment_status = 'open';
+        $task->ping_status = 'closed';
+        $task->post_password = '';
+        $task->post_name = static::$SLUG . "_" . $task_rand_string;
+        $task->to_ping = '';
+        $task->pinged = '';
+        $task->post_modified = $time;
+        $task->post_modified_gmt = $time;
+        $task->post_content_filtered = '';
+        $task->post_parent = 0;
+        $task->guid = '';
+        $task->menu_order = 0;
+        $task->post_type = 'tasks';
+        $task->post_mime_type = '';
+        $task->comment_count = 0;
+        
+        $task->save();
     }
     
     public function generate_tasks($amount) {
