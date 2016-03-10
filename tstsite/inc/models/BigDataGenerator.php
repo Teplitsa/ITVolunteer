@@ -32,7 +32,7 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
     private $COMMENTS_AMOUNT = 5;
     private $REVIEWS_AMOUNT = 5;
     
-    private $AMOUNT_K = 100;
+    private $AMOUNT_K = 100000;
     
     public function __construct() {
         $itv_config = \ItvConfig::instance();
