@@ -6,6 +6,8 @@ require_once dirname(__FILE__) . '/../dao/ITVDAO.php';
 require_once dirname(__FILE__) . '/../dao/UserXP.php';
 require_once dirname(__FILE__) . '/../dao/Review.php';
 
+require_once dirname(__FILE__) . '/../itv_log.php';
+
 use \ITV\models\ITVSingletonModel;
 use \ITV\dao\UserXP;
 use \ITV\dao\UserXPActivity;
@@ -32,7 +34,17 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
     private $COMMENTS_AMOUNT = 5;
     private $REVIEWS_AMOUNT = 5;
     
-    private $AMOUNT_K = 10000;
+    private $AMOUNT_K = 1;
+    
+    private $terms_rewards = [];
+    private $terms_rewards_count = 0;
+    
+    private $terms_tags = [];
+    private $terms_tags_count = 0;
+    
+    private $created_users_count = 0;
+    private $created_tasks_count = 0;
+    private $stats_step = 1000;
     
     public function __construct() {
         $itv_config = \ItvConfig::instance();
@@ -41,11 +53,40 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $this->TASKS_AMOUNT = $this->TASKS_AMOUNT * $this->AMOUNT_K;
         $this->COMMENTS_AMOUNT = $this->COMMENTS_AMOUNT * $this->AMOUNT_K;
         $this->REVIEWS_AMOUNT = $this->REVIEWS_AMOUNT * $this->AMOUNT_K;
+        
+        $this->terms_rewards = get_terms('reward');
+        $this->terms_rewards_count = count($this->terms_rewards);
+        
+        $this->terms_tags = get_terms('post_tag');
+        $this->terms_tags_count = count($this->terms_tags);
+    }
+    
+    public function set_stats_step($step) {
+        if((int)$step) {
+            $this->stats_step = (int)$step;
+        }
+    }
+    
+    public function set_amount($amount) {
+        $this->USERS_AMOUNT = (int)$amount;
+        $this->TASKS_AMOUNT = (int)$amount;
+        $this->COMMENTS_AMOUNT = floor((int)$amount / 2);
+        $this->REVIEWS_AMOUNT = floor((int)$amount / 2);
     }
     
     public function generate_data() {
         $start = microtime(true);
-
+        
+        echo "will generate:\n";
+        echo "users: " . $this->USERS_AMOUNT . "\n";
+        echo "tasks: " . $this->TASKS_AMOUNT . "\n";
+        echo "doer_connections: " . 5 * $this->TASKS_AMOUNT . "\n";
+        echo "comments: " . $this->COMMENTS_AMOUNT . "\n";
+        echo "reviews: " . 2 * $this->TASKS_AMOUNT . "\n";
+        
+        $this->created_tasks_count = 0;
+        $this->created_users_count = 0;
+        
         $start001 = microtime(true);
         $this->generate_users($this->USERS_AMOUNT);
         echo "users: ".(microtime(true) - $start001) . " sec.\n";
@@ -58,13 +99,13 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $this->generate_comments($this->COMMENTS_AMOUNT);
         echo "comments: ".(microtime(true) - $start001) . " sec.\n";
         
-        $start001 = microtime(true);
-        $this->generate_reviews_for_doer($this->REVIEWS_AMOUNT);
-        echo "review_for_doer: ".(microtime(true) - $start001) . " sec.\n";
+//         $start001 = microtime(true);
+//         $this->generate_reviews_for_doer($this->REVIEWS_AMOUNT);
+//         echo "review_for_doer: ".(microtime(true) - $start001) . " sec.\n";
         
-        $start001 = microtime(true);
-        $this->generate_reviews_for_author($this->REVIEWS_AMOUNT);
-        echo "review_for_author: ".(microtime(true) - $start001) . " sec.\n";
+//         $start001 = microtime(true);
+//         $this->generate_reviews_for_author($this->REVIEWS_AMOUNT);
+//         echo "review_for_author: ".(microtime(true) - $start001) . " sec.\n";
         
         echo "total: ".(microtime(true) - $start) . " sec.\n";
     }
@@ -73,14 +114,8 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $db = DB::instance();
         $wpdb = $db->db;
         
+        $start001 = microtime(true);
         for($i = 0; $i < $amount; $i++) {
-//             $userdata = array(
-//                 'user_login'  =>  'test' . sprintf("%'.09d", $i),
-//                 'user_url'    =>  "http://te-st.ru/",
-//                 'user_pass'   =>  NULL,
-//             );
-//             $user_id = wp_insert_user( $userdata );
-
             $name = 'test' . sprintf("%'.09d", $i);
             
             $user = new User();
@@ -99,6 +134,14 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
             $user->deleted = 0;
             
             $user->save();
+            
+            \ItvLog::instance()->log_user_action(\ItvLog::$ACTION_USER_REGISTER, $user->ID);
+            
+            $this->created_users_count += 1;
+            if($this->created_users_count % $this->stats_step == 0) {
+                echo "gen users: ".($this->created_users_count) . "\n";
+                echo "spent: ".(microtime(true) - $start001) . " sec.\n";
+            }
         }
     }
     
@@ -157,6 +200,32 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         );
         wp_insert_comment($data);
     }
+    
+    public function generate_review_for_doer($doer, $author, $task = null) {
+        
+        $author_id = 0;
+        if(is_object($author)) {
+            $author_id = $author->ID;
+        }
+        else {
+            $author_id = (int)$author;
+        }
+        
+        if($author_id) {
+            $rating = rand(0, 5);
+            
+            $review = new Review();
+            $review->task_id = $task ? $task->ID : 0;
+            $review->message = static::$SHORT_TEXT . " " . $this->generate_random_string();
+            $review->author_id = $author_id;
+            $review->doer_id = $doer->ID;
+            $review->time_add = current_time('mysql');
+            $review->rating = $rating;
+            $review->save();
+            
+            \ItvLog::instance()->log_review_action(\ItvLog::$ACTION_REVIEW_FOR_DOER, $author_id, $doer->ID, 0, $rating);
+        }
+    }
 
     public function generate_reviews_for_doer($amount) {
         $users_portion = static::$USERS_PORTION;
@@ -186,16 +255,33 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
                 $doer_index = rand(0, $users_portion_count - 1);
                 $rand_doer = $users[$doer_index];
                 
-                $review = new Review();
-                $review->task_id = 0;
-                $review->message = static::$SHORT_TEXT . " " . $this->generate_random_string();
-                $review->author_id = $rand_user->ID;
-                $review->doer_id = $rand_doer->ID;
-                $review->time_add = current_time('mysql');
-                $review->rating = rand(0, 5);
-                $review->save();
-                
+                $this->generate_review_for_doer($rand_doer, $rand_user);
             }
+        }
+    }
+    
+    public function generate_review_for_author($author, $doer, $task = null) {
+        
+        $author_id = 0;
+        if(is_object($author)) {
+            $author_id = $author->ID;
+        }
+        else {
+            $author_id = (int)$author;
+        }
+        
+        if($author_id) {
+            $rating = rand(0, 5);
+            $review = new ReviewAuthor();
+            $review->task_id = $task ? $task->ID : 0;
+            $review->message = static::$SHORT_TEXT . " " . $this->generate_random_string();
+            $review->author_id = $author_id;
+            $review->doer_id = $doer->ID;
+            $review->time_add = current_time('mysql');
+            $review->rating = $rating;
+            $review->save();
+            
+            \ItvLog::instance()->log_review_action(\ItvLog::$ACTION_REVIEW_FOR_AUTHOR, $doer->ID, $author_id, 0, $rating);
         }
     }
     
@@ -227,32 +313,49 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
                 $author_index = rand(0, $users_portion_count - 1);
                 $rand_author = $users[$author_index];
                 
-                $review = new ReviewAuthor();
-                $review->task_id = 0;
-                $review->message = static::$SHORT_TEXT . " " . $this->generate_random_string();
-                $review->author_id = $rand_author->ID;
-                $review->doer_id = $rand_user->ID;
-                $review->time_add = current_time('mysql');
-                $review->rating = rand(0, 5);
-                $review->save();
+                $this->generate_review_for_author($rand_author, $rand_user);
             }
         }
     }
     
-    public function generate_task($rand_user) {
-//         $task_rand_string = $this->get_rand_for_post(static::$TITLE, 'tasks');
-//         wp_insert_post(
-//             array(
-//                 'comment_status'    => 'open',
-//                 'ping_status'   => 'closed',
-//                 'post_author'   => $rand_user->ID,
-//                 'post_name'     => static::$SLUG . "_" . $task_rand_string,
-//                 'post_title'    => ,
-//                 'post_status'   => 'publish',
-//                 'post_type'     => 'tasks',
-//             )
-//         );
-
+    public function set_task_reward($task) {
+        $reward = $this->terms_rewards[rand(0, $this->terms_rewards_count - 1)];
+        wp_set_post_terms( (int)$task->ID, $reward->term_id, 'reward');
+    }
+    
+    public function set_task_tags($task) {
+        $tag1 = $this->terms_tags[rand(0, $this->terms_tags_count - 1)];
+        $tag2 = $this->terms_tags[rand(0, $this->terms_tags_count - 1)];
+        $tag3 = $this->terms_tags[rand(0, $this->terms_tags_count - 1)];
+        wp_set_post_terms( (int)$task->ID, [$tag1->term_id, $tag2->term_id, $tag3->term_id], 'post_tag');
+    }
+    
+    public function set_task_candidates($task, $users, $users_portion_count) {
+        $to_approve_index = rand(0, 4);
+        
+        for($i = 0; $i < 5; $i++) {
+            $user_index = rand(0, $users_portion_count - 1);
+            $rand_cand = $users[$user_index];
+            
+            if($to_approve_index == $i) {
+                p2p_type('task-doers')->connect($task->ID, $rand_cand->ID, array('is_approved' => true));
+                \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
+                \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $rand_cand->ID);
+                
+                $this->generate_review_for_author($task->post_author, $rand_cand, $task);
+                $this->generate_review_for_doer($rand_cand, $task->post_author, $task);
+            }
+            else {
+                p2p_type('task-doers')->connect($task->ID, $rand_cand->ID, array());
+                \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_ADD_CANDIDATE, $rand_cand->ID);
+            }
+        }
+    }
+    
+    public function generate_task($users, $users_portion_count) {
+        $user_index = rand(0, $users_portion_count - 1);
+        $rand_user = $users[$user_index];
+        
         $task_rand_string = $this->generate_random_string();
         
         $time = current_time('mysql');
@@ -282,6 +385,13 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $task->comment_count = 0;
         
         $task->save();
+        \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_CREATE, $rand_user->ID);
+        
+        $this->set_task_reward($task);
+        $this->set_task_tags($task);
+        $this->set_task_candidates($task, $users, $users_portion_count);
+        
+        $this->created_tasks_count += 1;
     }
     
     public function generate_tasks($amount) {
@@ -296,7 +406,7 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         
         $iterations += ceil(($amount - ($amount_portion * $iterations)) / $amount_portion);
         
-        remove_action( 'save_post', 'tst_task_saved' );
+        $start001 = microtime(true);
         for($iter = 0; $iter < $iterations; $iter++) {
             $users = $this->get_users($users_portion);
             $users_portion_count = count($users);
@@ -306,9 +416,12 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
                     break;
                 }
                 
-                $user_index = rand(0, $users_portion_count - 1);
-                $rand_user = $users[$user_index];
-                $this->generate_task($rand_user);
+                $this->generate_task($users, $users_portion_count);
+                
+                if($this->created_tasks_count % $this->stats_step == 0) {
+                    echo "gen tasks: ".($this->created_tasks_count) . "\n";
+                    echo "spent: ".(microtime(true) - $start001) . " sec.\n";
+                }
             }
         }
     }

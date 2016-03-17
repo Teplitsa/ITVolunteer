@@ -8,7 +8,15 @@ use ITV\models\BigDataGenerator;
 try {
 	include('cli_common.php');
 	
+	$options = getopt("", array('amount:', 'stats_step:'));
+	$amount = isset($options['amount']) ? $options['amount'] : '';
+	$stats_step = isset($options['stats_step']) ? $options['stats_step'] : '';
+	
 	$big_data_model = BigDataGenerator::instance();
+	$big_data_model->set_amount($amount);
+	if($stats_step) {
+	    $big_data_model->set_stats_step($stats_step);
+	}
 	$big_data_model->generate_data();
 	
 }
