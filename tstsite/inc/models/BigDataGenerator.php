@@ -319,7 +319,8 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
     }
     
     public function set_task_reward($task) {
-        $reward = $this->terms_rewards[rand(0, $this->terms_rewards_count - 1)];
+        $index = rand(0, $this->terms_rewards_count - 1);
+        $reward = $this->terms_rewards[$index] ? $this->terms_rewards[$index] : $this->terms_rewards[0];
         wp_set_post_terms( (int)$task->ID, $reward->term_id, 'reward');
     }
     
