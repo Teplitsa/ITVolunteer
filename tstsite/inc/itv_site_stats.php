@@ -58,24 +58,28 @@ class ItvSiteStats {
 			);
 			
 			$start001 = microtime(true);
-			$user_query = new WP_User_Query($users_query_params);
+			#$user_query = new WP_User_Query($users_query_params);
+			$sql = "SELECT * FROM str_users ORDER BY RAND() LIMIT $offset, $per_page";
+			$users_portion = $wpdb->get_results($sql);
+				
 			echo "get users portion: ".(microtime(true) - $start001) . " sec.\n";
 			
 			$users_count_portion = 0;
 					
 			$start002 = microtime(true);
-			foreach($user_query->results as $user) {
+			#foreach($user_query->results as $user) {
+			foreach($users_portion as $user) {
 				$is_count = true;
 										
 				if($is_count) {
 					
-				    $start001 = microtime(true);
+// 				    $start001 = microtime(true);
 				    tst_update_member_stat($user);
-				    echo "tst_update_member_stat: ".(microtime(true) - $start001) . " sec.\n";
+// 				    echo "tst_update_member_stat: ".(microtime(true) - $start001) . " sec.\n";
 				    
-				    $start001 = microtime(true);
+// 				    $start001 = microtime(true);
 				    $user_role = tst_get_member_role_key($user);
-				    echo "tst_get_member_role_key: ".(microtime(true) - $start001) . " sec.\n";
+// 				    echo "tst_get_member_role_key: ".(microtime(true) - $start001) . " sec.\n";
 				    
 					if($user_role == 'donee') {
 						$USERS_ROLE_BENEFICIARY_COUNT += 1;
@@ -97,7 +101,8 @@ class ItvSiteStats {
 				$users_count_portion += 1;
 			}
 			echo "process users portion: ".(microtime(true) - $start002) . " sec.\n";
-			
+			echo "timestamp: ". time() . "\n";
+				
 			if($users_count_portion < $per_page) {
 				$is_stop = true;
 			}
