@@ -56,18 +56,27 @@ class ItvSiteStats {
 				'orderby' => 'user_registered',
 				'order' => 'ASC'
 			);
+			
+			$start001 = microtime(true);
 			$user_query = new WP_User_Query($users_query_params);
+			echo "get users portion: ".(microtime(true) - $start001) . " sec.\n";
 			
 			$users_count_portion = 0;
 					
+			$start002 = microtime(true);
 			foreach($user_query->results as $user) {
 				$is_count = true;
 										
 				if($is_count) {
 					
-					tst_update_member_stat($user);
-					$user_role = tst_get_member_role_key($user);
-					
+				    $start001 = microtime(true);
+				    tst_update_member_stat($user);
+				    echo "tst_update_member_stat: ".(microtime(true) - $start001) . " sec.\n";
+				    
+				    $start001 = microtime(true);
+				    $user_role = tst_get_member_role_key($user);
+				    echo "tst_get_member_role_key: ".(microtime(true) - $start001) . " sec.\n";
+				    
 					if($user_role == 'donee') {
 						$USERS_ROLE_BENEFICIARY_COUNT += 1;
 					}
@@ -87,6 +96,7 @@ class ItvSiteStats {
 				
 				$users_count_portion += 1;
 			}
+			echo "process users portion: ".(microtime(true) - $start002) . " sec.\n";
 			
 			if($users_count_portion < $per_page) {
 				$is_stop = true;
