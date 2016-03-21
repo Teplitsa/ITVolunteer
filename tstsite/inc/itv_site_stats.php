@@ -15,12 +15,9 @@ class ItvSiteStats {
 	
 	private static $_instance = NULL;
 	
-	
 	private function __construct() {
-		
-		add_action('wp_head', 'ItvSiteStats::perform_calculations');		
+		add_action('wp_head', 'ItvSiteStats::perform_calculations');
 	}
-	
 	
 	public static function instance() {
 		if(ItvSiteStats::$_instance == NULL) {
@@ -102,6 +99,12 @@ class ItvSiteStats {
 			}
 			echo "process users portion: ".(microtime(true) - $start002) . " sec.\n";
 			echo "timestamp: ". time() . "\n";
+			echo "memory usage: " . round(memory_get_usage() / 1024) . "kB\n";
+			system('egrep --color \'Mem|Cache|Swap\' /proc/meminfo');
+			
+			$found_useless_links = gc_collect_cycles();
+			echo "useless memory links: " . $found_useless_links . "\n";
+			
 				
 			if($users_count_portion < $per_page) {
 				$is_stop = true;
