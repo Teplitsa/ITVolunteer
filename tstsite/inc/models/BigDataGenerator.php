@@ -87,9 +87,9 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $this->created_tasks_count = 0;
         $this->created_users_count = 0;
         
-#        $start001 = microtime(true);
-#        $this->generate_users($this->USERS_AMOUNT);
-#        echo "users: ".(microtime(true) - $start001) . " sec.\n";
+        $start001 = microtime(true);
+        $this->generate_users($this->USERS_AMOUNT);
+        echo "users: ".(microtime(true) - $start001) . " sec.\n";
         
         $start001 = microtime(true);
         $this->generate_tasks($this->TASKS_AMOUNT);
@@ -99,13 +99,16 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
 #        $this->generate_comments($this->COMMENTS_AMOUNT);
 #        echo "comments: ".(microtime(true) - $start001) . " sec.\n";
         
-//         $start001 = microtime(true);
-//         $this->generate_reviews_for_doer($this->REVIEWS_AMOUNT);
-//         echo "review_for_doer: ".(microtime(true) - $start001) . " sec.\n";
-        
-//         $start001 = microtime(true);
-//         $this->generate_reviews_for_author($this->REVIEWS_AMOUNT);
-//         echo "review_for_author: ".(microtime(true) - $start001) . " sec.\n";
+        # reviews generated right after task connected to doer and closed
+        if(false) {
+            $start001 = microtime(true);
+            $this->generate_reviews_for_doer($this->REVIEWS_AMOUNT);
+            echo "review_for_doer: ".(microtime(true) - $start001) . " sec.\n";
+            
+            $start001 = microtime(true);
+            $this->generate_reviews_for_author($this->REVIEWS_AMOUNT);
+            echo "review_for_author: ".(microtime(true) - $start001) . " sec.\n";
+        }
         
         echo "total: ".(microtime(true) - $start) . " sec.\n";
     }
@@ -341,6 +344,9 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
             $rand_cand = $users[$user_index];
             
             if($to_approve_index == $i) {
+//                 echo "doer_id=" . $rand_cand->ID . "\n";
+//                 echo "doer_name=" . $rand_cand->user_nicename . "\n";
+                
                 p2p_type('task-doers')->connect($task->ID, $rand_cand->ID, array('is_approved' => true));
                 \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
                 \ItvLog::instance()->log_task_action($task->ID, \ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $rand_cand->ID);
