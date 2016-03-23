@@ -56,7 +56,7 @@ class ItvSiteStats {
 			
 			$start001 = microtime(true);
 			#$user_query = new WP_User_Query($users_query_params);
-			$sql = "SELECT * FROM str_users ORDER BY RAND() LIMIT $offset, $per_page";
+			$sql = "SELECT * FROM {$wpdb->prefix}users AS u LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = u.ID AND um.meta_key = 'activation_code' WHERE um.meta_value = '' ORDER BY ID ASC LIMIT $offset, $per_page";
 			$users_portion = $wpdb->get_results($sql);
 				
 			echo "get users portion: ".(microtime(true) - $start001) . " sec.\n";

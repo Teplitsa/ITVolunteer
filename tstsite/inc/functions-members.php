@@ -233,7 +233,8 @@ function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $
 
 function tst_calculate_member_tasks_joined_count_raw_sql($user) {
     global $wpdb;
-    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d";
+    #$sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d ";
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d AND um.meta_value = '' ";
     return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
@@ -264,9 +265,11 @@ function tst_calculate_member_tasks_solved_count_raw_sql($user) {
     global $wpdb;
     
     $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta ON p2p.p2p_id = p2pmeta.p2p_id 
-        WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed' 
+        LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' 
+        WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+            AND um.meta_value = ''
             AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
-            AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved' 
+            AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
             AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
     
     return $wpdb->get_var($wpdb->prepare($sql, $user->ID));

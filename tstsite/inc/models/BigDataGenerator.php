@@ -138,6 +138,10 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
             
             $user->save();
             
+            $wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}usermeta VALUES (NULL, %d, 'member_role', FLOOR(1 + RAND() * (3)))", $user->ID));
+            $wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}usermeta VALUES (NULL, %d, 'activation_code', '')", $user->ID));
+            $wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}usermeta VALUES (NULL, %d, 'str_capabilities', 'a:1:{s:6:\"author\";b:1;}')", $user->ID));
+            
             \ItvLog::instance()->log_user_action(\ItvLog::$ACTION_USER_REGISTER, $user->ID);
             
             $this->created_users_count += 1;
@@ -395,21 +399,21 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         
         $start002 = microtime ( true );
         $task->save ();
-        echo "---task-save: " . (microtime ( true ) - $start002) . " sec.\n";
+//         echo "---task-save: " . (microtime ( true ) - $start002) . " sec.\n";
         
         \ItvLog::instance ()->log_task_action ( $task->ID, \ItvLog::$ACTION_TASK_CREATE, $rand_user->ID );
         
         $start002 = microtime ( true );
         $this->set_task_reward ( $task );
-        echo "---task-reward: " . (microtime ( true ) - $start002) . " sec.\n";
+//         echo "---task-reward: " . (microtime ( true ) - $start002) . " sec.\n";
         
         $start002 = microtime ( true );
         $this->set_task_tags ( $task );
-        echo "---task-tags: ".(microtime(true) - $start002) . " sec.\n";
+//         echo "---task-tags: ".(microtime(true) - $start002) . " sec.\n";
 
         $start002 = microtime(true);
         $this->set_task_candidates($task, $users, $users_portion_count);
-        echo "---task-doers: ".(microtime(true) - $start002) . " sec.\n";
+//         echo "---task-doers: ".(microtime(true) - $start002) . " sec.\n";
         
         $this->created_tasks_count += 1;
     }
@@ -429,9 +433,9 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $start001 = microtime(true);
         for($iter = 0; $iter < $iterations; $iter++) {
             $start002 = microtime(true);
-            echo "users_portion=" . $users_portion . "\n";
+//             echo "users_portion=" . $users_portion . "\n";
             $users = $this->get_users($users_portion);
-            echo "users for tasks: ".(microtime(true) - $start002) . " sec.\n";
+//             echo "users for tasks: ".(microtime(true) - $start002) . " sec.\n";
 
             $users_portion_count = count($users);
             for($i = 0; $i < $amount_portion; $i++) {
@@ -442,7 +446,7 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
                 
                 $start002 = microtime(true);
                 $this->generate_task($users, $users_portion_count);
-                echo "per task: ".(microtime(true) - $start002) . " sec.\n";
+//                 echo "per task: ".(microtime(true) - $start002) . " sec.\n";
                 
                 if($this->created_tasks_count % $this->stats_step == 0) {
                     echo "gen tasks: ".($this->created_tasks_count) . "\n";
