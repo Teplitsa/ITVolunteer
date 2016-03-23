@@ -95,9 +95,9 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
         $this->generate_tasks($this->TASKS_AMOUNT);
         echo "tasks: ".(microtime(true) - $start001) . " sec.\n";
         
-#        $start001 = microtime(true);
-#        $this->generate_comments($this->COMMENTS_AMOUNT);
-#        echo "comments: ".(microtime(true) - $start001) . " sec.\n";
+        $start001 = microtime(true);
+        $this->generate_comments($this->COMMENTS_AMOUNT);
+        echo "comments: ".(microtime(true) - $start001) . " sec.\n";
         
         # reviews generated right after task connected to doer and closed
         if(false) {
