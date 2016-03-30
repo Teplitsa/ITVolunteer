@@ -13,6 +13,9 @@ class ItvSiteStats {
 	public static $ITV_TASKS_COUNT_ARCHIVED = null;
 	public static $ITV_TASKS_COUNT_ALL = null;
 	
+	private $longrun_offset = 0;
+	private $app = null;
+	
 	private static $_instance = NULL;
 	
 	private function __construct() {
@@ -31,6 +34,13 @@ class ItvSiteStats {
 		return $value ? $value : 0;
 	}
 	
+	public function set_app($app) {
+	    $this->app = $app;
+	    
+	    $longrun_offset = $this->app->get_data('offset');
+	    $this->longrun_offset = $longrun_offset ? $longrun_offset : 0;
+	}
+	
 	public function refresh_users_role_stats($per_page = 100) {
 	    global $wpdb;
 		
@@ -40,7 +50,7 @@ class ItvSiteStats {
 		$USERS_ROLE_VOLUNTEER_COUNT = 0;
 		$USERS_COUNT = 0;
 			
-		$offset = 0;
+		$offset = $this->longrun_offset;
 		$is_stop = false;
 		while(!$is_stop) {
 			echo 'offset=' . $offset . "\n";
@@ -111,6 +121,7 @@ class ItvSiteStats {
 			}
 			
 			$offset += $per_page;
+			$this->app->save_data('offset', $offset);
 		}
 		
 		
