@@ -6,7 +6,10 @@ include('cli/ItvCliApp.php');
 
 use ITV\cli\ItvCliApp;
 
-$ITV_CLI_APP = new ItvCliApp($ITV_APP_FILE);
+$ITV_CLI_APP = null;
+if(isset($ITV_APP_FILE)) {
+    $ITV_CLI_APP = new ItvCliApp($ITV_APP_FILE);
+}
 
 define('BASE_PATH', find_wordpress_base_path()."/");
 define('WP_USE_THEMES', false);
