@@ -13,14 +13,14 @@ class ItvSiteStats {
 	public static $ITV_TASKS_COUNT_ARCHIVED = null;
 	public static $ITV_TASKS_COUNT_ALL = null;
 	
+	private $longrun_offset = 0;
+	private $app = null;
+	
 	private static $_instance = NULL;
 	
-	
 	private function __construct() {
-		
-		add_action('wp_head', 'ItvSiteStats::perform_calculations');		
+		add_action('wp_head', 'ItvSiteStats::perform_calculations');
 	}
-	
 	
 	public static function instance() {
 		if(ItvSiteStats::$_instance == NULL) {
@@ -34,6 +34,13 @@ class ItvSiteStats {
 		return $value ? $value : 0;
 	}
 	
+	public function set_app($app) {
+	    $this->app = $app;
+	    
+	    $longrun_offset = $this->app->get_data('offset');
+	    $this->longrun_offset = $longrun_offset ? $longrun_offset : 0;
+	}
+	
 	public function refresh_users_role_stats($per_page = 100) {
 	    global $wpdb;
 		
@@ -43,7 +50,7 @@ class ItvSiteStats {
 		$USERS_ROLE_VOLUNTEER_COUNT = 0;
 		$USERS_COUNT = 0;
 			
-		$offset = 0;
+		$offset = $this->longrun_offset;
 		$is_stop = false;
 		while(!$is_stop) {
 			echo 'offset=' . $offset . "\n";
@@ -56,18 +63,31 @@ class ItvSiteStats {
 				'orderby' => 'user_registered',
 				'order' => 'ASC'
 			);
-			$user_query = new WP_User_Query($users_query_params);
+			
+			$start001 = microtime(true);
+			#$user_query = new WP_User_Query($users_query_params);
+			$sql = "SELECT * FROM {$wpdb->prefix}users AS u LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = u.ID AND um.meta_key = 'activation_code' WHERE um.meta_value = '' ORDER BY ID ASC LIMIT $offset, $per_page";
+			$users_portion = $wpdb->get_results($sql);
+				
+			echo "get users portion: ".(microtime(true) - $start001) . " sec.\n";
 			
 			$users_count_portion = 0;
 					
-			foreach($user_query->results as $user) {
+			$start002 = microtime(true);
+			#foreach($user_query->results as $user) {
+			foreach($users_portion as $user) {
 				$is_count = true;
 										
 				if($is_count) {
 					
-					tst_update_member_stat($user);
-					$user_role = tst_get_member_role_key($user);
-					
+// 				    $start001 = microtime(true);
+				    tst_update_member_stat($user);
+// 				    echo "tst_update_member_stat: ".(microtime(true) - $start001) . " sec.\n";
+				    
+// 				    $start001 = microtime(true);
+				    $user_role = tst_get_member_role_key($user);
+// 				    echo "tst_get_member_role_key: ".(microtime(true) - $start001) . " sec.\n";
+				    
 					if($user_role == 'donee') {
 						$USERS_ROLE_BENEFICIARY_COUNT += 1;
 					}
@@ -87,12 +107,21 @@ class ItvSiteStats {
 				
 				$users_count_portion += 1;
 			}
+			echo "process users portion: ".(microtime(true) - $start002) . " sec.\n";
+			echo "timestamp: ". time() . "\n";
+			echo "memory usage: " . round(memory_get_usage() / 1024) . "kB\n";
+			system('egrep --color \'Mem|Cache|Swap\' /proc/meminfo');
 			
+			$found_useless_links = gc_collect_cycles();
+			echo "useless memory links: " . $found_useless_links . "\n";
+			
+				
 			if($users_count_portion < $per_page) {
 				$is_stop = true;
 			}
 			
 			$offset += $per_page;
+			$this->app->save_data('offset', $offset);
 		}
 		
 		

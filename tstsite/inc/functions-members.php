@@ -125,23 +125,31 @@ function tst_calculate_member_activity($user, $type = 'all') {
 	);	
 	
 	if($type = 'all'){
-		$activity['created'] = tst_query_member_tasks_created($user, null, null, true);
-		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
-		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
-		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
-		
+// 	    $activity['created'] = tst_query_member_tasks_created($user, null, null, true);
+// 		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
+// 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
+// 		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
+
+	    $activity['created'] = tst_query_member_tasks_created_count_raw_sql($user);
+	    $activity['created_closed'] = tst_query_member_tasks_created_closed_count_raw_sql($user);
+	    $activity['joined'] = tst_calculate_member_tasks_joined_count_raw_sql($user);
+	    $activity['solved'] = tst_calculate_member_tasks_solved_count_raw_sql($user);
 	}
 	elseif($type == 'created') {
-		$activity['created'] = tst_query_member_tasks_created($user, null, null, true);
+// 		$activity['created'] = tst_query_member_tasks_created($user, null, null, true);
+	    $activity['created'] = tst_query_member_tasks_created_count_raw_sql($user);
 	}
 	elseif($type == 'created_closed') {
-		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
+// 		$activity['created_closed'] = tst_query_member_tasks_created($user, array('closed'), null, true);
+	    $activity['created_closed'] = tst_query_member_tasks_created_closed_count_raw_sql($user);
 	}
 	elseif($type == 'joined') {
-		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
+// 		$activity['joined'] = tst_calculate_member_tasks_joined($user, null, null, true);
+		$activity['joined'] = tst_calculate_member_tasks_joined_count_raw_sql($user);		
 	}
 	elseif($type == 'solved') {
-		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
+// 		$activity['solved'] = tst_calculate_member_tasks_solved($user, null, true);
+	    $activity['solved'] = tst_calculate_member_tasks_solved_count_raw_sql($user);
 	}
 	
 	return $activity;
@@ -169,6 +177,7 @@ function tst_set_member_activity($user, $type = 'all') {
 	foreach($keys as $key) {		
 		update_user_meta($user->ID, 'tst_member_tasks_'.$key, $activity[$key]);
 	}	
+	unset($activity);
 }
 
 function tst_get_user_rating($user) {
@@ -194,6 +203,18 @@ function tst_query_member_tasks_created($user, $status = null, $num = null, $onl
 	return ($only_count) ? $query->found_posts : $query;	
 }
 
+function tst_query_member_tasks_created_count_raw_sql($user) {
+    global $wpdb;
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} as posts WHERE posts.post_author = %d AND posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed')";
+    return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
+}
+
+function tst_query_member_tasks_created_closed_count_raw_sql($user) {
+    global $wpdb;
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} as posts WHERE posts.post_author = %d AND posts.post_type = 'tasks' AND posts.post_status IN ('closed')";
+    return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
+}
+
 function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $only_count = false) {
 	
 	$params = array(
@@ -208,6 +229,13 @@ function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $
 
     $query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
+}
+
+function tst_calculate_member_tasks_joined_count_raw_sql($user) {
+    global $wpdb;
+    #$sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d ";
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d AND um.meta_value = '' ";
+    return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
 function tst_calculate_member_tasks_solved($user, $num = null, $only_count = false) {
@@ -231,6 +259,20 @@ function tst_calculate_member_tasks_solved($user, $num = null, $only_count = fal
 
     $query = new WP_Query($params);
 	return ($only_count) ? $query->found_posts : $query;	
+}
+
+function tst_calculate_member_tasks_solved_count_raw_sql($user) {
+    global $wpdb;
+    
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta ON p2p.p2p_id = p2pmeta.p2p_id 
+        LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' 
+        WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+            AND um.meta_value = ''
+            AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
+            AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
+            AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
+    
+    return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
 function tst_register_user($user_params) {
