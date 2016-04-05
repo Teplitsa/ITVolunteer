@@ -40,14 +40,19 @@ class ItvSiteStats {
         $USERS_ROLE_SUPERHERO_COUNT = 0;
         $USERS_ROLE_ACTIVIST_COUNT = 0;
         $USERS_ROLE_VOLUNTEER_COUNT = 0;
+        $USERS_OTHER_COUNT = 0;
         $USERS_COUNT = 0;
         
         if ($this->longrun_offset) {
-            $USERS_ROLE_BENEFICIARY_COUNT = get_option ( ItvSiteStats::$USERS_ROLE_BENEFICIARY );
-            $USERS_ROLE_SUPERHERO_COUNT = get_option ( ItvSiteStats::$USERS_ROLE_SUPERHERO );
-            $USERS_ROLE_ACTIVIST_COUNT = get_option ( ItvSiteStats::$USERS_ROLE_ACTIVIST );
-            $USERS_ROLE_VOLUNTEER_COUNT = get_option ( ItvSiteStats::$USERS_ROLE_VOLUNTEER );
-            $USERS_COUNT = get_option ( ItvSiteStats::$USERS_TOTAL );
+            $tmp_count = $this->app->get_data ( 'tmp_count' );
+            
+            if($tmp_count && is_array($tmp_count)) {
+                $USERS_ROLE_BENEFICIARY_COUNT = $tmp_count['USERS_ROLE_BENEFICIARY_COUNT'];
+                $USERS_ROLE_SUPERHERO_COUNT = $tmp_count['USERS_ROLE_SUPERHERO_COUNT'];
+                $USERS_ROLE_ACTIVIST_COUNT = $tmp_count['USERS_ROLE_ACTIVIST_COUNT'];
+                $USERS_ROLE_VOLUNTEER_COUNT = $tmp_count['USERS_ROLE_VOLUNTEER_COUNT'];
+                $USERS_OTHER_COUNT = $tmp_count['USERS_OTHER_COUNT'];
+            }
         }
         
         $offset = $this->longrun_offset;
@@ -99,7 +104,7 @@ class ItvSiteStats {
                     } elseif ($user_role == 'volunteer') {
                         $USERS_ROLE_VOLUNTEER_COUNT += 1;
                     } else {
-                        $USERS_COUNT += 1;
+                        $USERS_OTHER_COUNT += 1;
                     }
                 }
                 
@@ -119,11 +124,18 @@ class ItvSiteStats {
             
             $offset += $per_page;
             $this->app->save_data ( 'offset', $offset );
+            $this->app->save_data ( 'tmp_count', [
+                'USERS_ROLE_BENEFICIARY_COUNT' => $USERS_ROLE_BENEFICIARY_COUNT,
+                'USERS_ROLE_SUPERHERO_COUNT' => $USERS_ROLE_SUPERHERO_COUNT,
+                'USERS_ROLE_ACTIVIST_COUNT' => $USERS_ROLE_ACTIVIST_COUNT,
+                'USERS_ROLE_VOLUNTEER_COUNT' => $USERS_ROLE_VOLUNTEER_COUNT,
+                'USERS_OTHER_COUNT' => $USERS_OTHER_COUNT,
+            ] );
         }
         
-        $USERS_COUNT += ($USERS_ROLE_BENEFICIARY_COUNT + $USERS_ROLE_SUPERHERO_COUNT + $USERS_ROLE_ACTIVIST_COUNT + $USERS_ROLE_VOLUNTEER_COUNT);
-        
         if ($is_any_users_processed) {
+            $USERS_COUNT = $USERS_OTHER_COUNT + $USERS_ROLE_BENEFICIARY_COUNT + $USERS_ROLE_SUPERHERO_COUNT + $USERS_ROLE_ACTIVIST_COUNT + $USERS_ROLE_VOLUNTEER_COUNT;
+            
             update_option ( ItvSiteStats::$USERS_ROLE_BENEFICIARY, $USERS_ROLE_BENEFICIARY_COUNT );
             update_option ( ItvSiteStats::$USERS_ROLE_SUPERHERO, $USERS_ROLE_SUPERHERO_COUNT );
             update_option ( ItvSiteStats::$USERS_ROLE_ACTIVIST, $USERS_ROLE_ACTIVIST_COUNT );
