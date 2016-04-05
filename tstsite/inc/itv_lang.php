@@ -25,6 +25,7 @@ __( 'itv_task_actions_log_user_login_email', 'tst' );
 __( 'itv_task_actions_log_user_login_failed', 'tst' );
 __( 'itv_task_actions_log_review_for_doer', 'tst' );
 __( 'itv_task_actions_log_review_for_author', 'tst' );
+__( 'itv_task_actions_log_user_thankyou', 'tst' );
 
 __( 'itv_task_actions_log_email_approve_candidate_doer', 'tst' );
 __( 'itv_task_actions_log_email_approve_candidate_author', 'tst' );

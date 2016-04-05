@@ -28,6 +28,7 @@ class UserXPModel extends ITVSingletonModel {
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
     public static $ACTION_REVIEW_FOR_AUTHOR = 'review_for_author';
     public static $ACTION_LOGIN = 'login';
+    public static $ACTION_THANKYOU = 'thankyou';
     
     private $is_benchmark_user = false;
     private $ACTION_XP = [];
@@ -382,11 +383,12 @@ class UserXPModel extends ITVSingletonModel {
         $db = DB::instance();
         $wpdb = $db->db;
         
-        $activity = UserXPActivity::get();
         $sum_xp = 0;
-        foreach($activity as $action) {
-            $sum_xp += abs($this->get_action_xp($action->action));
-        }
+        UserXPActivity::chunk(1000, function($activity_list) use(&$sum_xp) {
+            foreach($activity_list as $action) {
+                $sum_xp += abs($this->get_action_xp($action->action));
+            }
+        });
         
         return $sum_xp;
     }

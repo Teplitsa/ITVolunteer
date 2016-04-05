@@ -181,6 +181,7 @@ class ITV_CssJs {
 			'check_agree_data_process_checkbox' => __('Please check agree process data checkbox', 'tst'),
 			'xp_cookie_name'                 => UserXPModel::instance()->get_xp_alert_cookie_name(get_current_user_id()),
 			'xp_actions'                     => UserXPModel::instance()->get_xp_alert_strings_json(),
+			'error'                          => __('Error!', 'tst'),
 			//        '' => __('.', 'tst'),
 		));
 	

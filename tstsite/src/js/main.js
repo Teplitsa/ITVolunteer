@@ -1196,6 +1196,41 @@ function itv_show_all_xp_alerts() {
     }
 }
 
+function itv_thank_you($button) {
+    var $loader = $button.parent().find('.thankyou-loader');
+    var $done_label = $button.parent().find('.itv-thankyou-done');
+    
+    $button.hide();
+    $loader.show();
+    
+    $.post(frontend.ajaxurl, {
+        action: 'thankyou',
+        'to-uid': $button.data('to_uid'),
+        'nonce': $button.parent().find('#_wpnonce').val()
+    }, null, 'json')
+    .done(function(json){
+        if(json.status == 'ok') {
+            $loader.hide();
+            $done_label.show();
+        }
+        else {
+            alert(frontend.error);
+            $loader.hide();
+            $button.show();
+        }
+    })
+    .fail(function(){
+        alert(frontend.error);
+        $loader.hide();
+        $button.show();
+    })
+}
+
 jQuery(function($){
     itv_show_all_xp_alerts();
+    
+    $('.itv-thankyou-btn').click(function(){
+        itv_thank_you($(this));
+        return false;
+    });
 });

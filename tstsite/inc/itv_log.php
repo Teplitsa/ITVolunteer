@@ -23,6 +23,7 @@ class ItvLog {
     public static $ACTION_USER_LOGIN_EMAIL = 'user_login_email';
     public static $ACTION_USER_LOGIN_LOGIN = 'user_login_login';
     public static $ACTION_USER_LOGIN_FAILED = 'user_login_failed';
+    public static $ACTION_USER_THANKYOU = 'user_thankyou';
     
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
     public static $ACTION_REVIEW_FOR_AUTHOR = 'review_for_author';
@@ -36,7 +37,7 @@ class ItvLog {
     public static $ACTION_EMAIL_AUTHOR_ABOUT_TASK_CLOSED = 'email_author_about_task_closed';
     public static $ACTION_EMAIL_DOER_ABOUT_TASK_STATUS_CHANGED = 'email_doer_about_task_status_changed';
     public static $ACTION_EMAIL_CANDIDATE_ABOUT_TASK_STATUS_CHANGED = 'email_candidate_about_task_status_changed';
-    
+
     public static $TYPE_TASK = 'task';
     public static $TYPE_USER = 'user';
     public static $TYPE_REVIEW = 'review';

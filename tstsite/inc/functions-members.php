@@ -4,6 +4,8 @@
  **/
 
 use ITV\models\UserXPModel;
+use ITV\dao\ThankYou;
+use \WeDevs\ORM\WP\User as User;
 
 /* Define  roles */
 function tst_get_roles_list() {
@@ -945,3 +947,48 @@ function tst_get_new_active_members_count($from_date, $to_date) {
     
     return $user_query->get_total();
 }
+
+/** Say thank you to member */
+function ajax_thankyou() {
+    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+    if(
+            empty($_POST['to-uid'])
+            || !wp_verify_nonce($_POST['nonce'], 'thankyou-action')
+    ) {
+        wp_die(json_encode(array(
+        'status' => 'fail',
+        'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+
+    $to_uid = $_POST['to-uid'];
+    $user_id = get_current_user_id();
+
+    if($to_uid && $user_id) {
+        
+        $query = ThankYou::where('from_uid', $user_id)->where('to_uid', $to_uid);
+        $thankyou = $query->first();
+        
+        if(!$thankyou) {
+            $thankyou = new ThankYou();
+            $thankyou->from_uid = $user_id;
+            $thankyou->to_uid = $to_uid;
+            $thankyou->counter = 0;
+        }
+        
+        $thankyou->counter += 1;
+        $thankyou->save();
+        
+        UserXPModel::instance()->register_activity($to_uid, UserXPModel::$ACTION_THANKYOU);
+        $to_user = User::find($to_uid);
+        ItvLog::instance()->log_user_action(ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'message' => __('Review saved', 'tst'),
+    )));
+}
+add_action('wp_ajax_thankyou', 'ajax_thankyou');
+add_action('wp_ajax_nopriv_thankyou', 'ajax_thankyou');
