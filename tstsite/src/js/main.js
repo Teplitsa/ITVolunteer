@@ -1203,6 +1203,10 @@ function itv_thank_you($button) {
     $button.hide();
     $loader.show();
     
+    if(typeof ga == 'function') {
+        ga('send', 'event', 'itv-thank-you', 'сказал спасибо');
+    }
+    
     $.post(frontend.ajaxurl, {
         action: 'thankyou',
         'to-uid': $button.data('to_uid'),
