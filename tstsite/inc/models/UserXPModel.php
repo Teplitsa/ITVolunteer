@@ -28,6 +28,7 @@ class UserXPModel extends ITVSingletonModel {
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
     public static $ACTION_REVIEW_FOR_AUTHOR = 'review_for_author';
     public static $ACTION_LOGIN = 'login';
+    public static $ACTION_THANKYOU = 'thankyou';
     
     private $is_benchmark_user = false;
     private $ACTION_XP = [];

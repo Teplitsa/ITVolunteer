@@ -13,3 +13,7 @@ class ReviewAuthor extends ITVDAO {
     protected $table = 'str_reviews_author';
 }
 
+class ThankYou extends ITVDAO {
+    public $timestamps = false;
+    protected $table = 'str_itv_thankyou';
+}

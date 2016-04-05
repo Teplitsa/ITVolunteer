@@ -66,6 +66,7 @@ class ItvConfig {
                 'review_for_doer' => 10,
                 'review_for_author' => 10,
                 'login' => 1,
+                'thankyou' => 1,
             ],
             'USER_ACTION_XP_ALERT' => [
                 'always' => ['actions' => ['register', 'task_done', 'create_task', 'my_task_done']],
