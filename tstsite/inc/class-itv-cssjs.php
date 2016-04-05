@@ -184,6 +184,8 @@ class ITV_CssJs {
 			'error'                          => __('Error!', 'tst'),
 			//        '' => __('.', 'tst'),
 		));
+		
+		wp_localize_script('front', 'ga_events', itv_get_ga_events());
 	
 		//comments
 		if(is_singular('tasks') && get_option('thread_comments')) {
