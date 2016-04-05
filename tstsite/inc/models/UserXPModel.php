@@ -383,11 +383,12 @@ class UserXPModel extends ITVSingletonModel {
         $db = DB::instance();
         $wpdb = $db->db;
         
-        $activity = UserXPActivity::get();
         $sum_xp = 0;
-        foreach($activity as $action) {
-            $sum_xp += abs($this->get_action_xp($action->action));
-        }
+        UserXPActivity::chunk(1000, function($activity_list) use(&$sum_xp) {
+            foreach($activity_list as $action) {
+                $sum_xp += abs($this->get_action_xp($action->action));
+            }
+        });
         
         return $sum_xp;
     }
