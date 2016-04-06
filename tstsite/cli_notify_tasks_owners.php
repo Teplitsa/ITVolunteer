@@ -22,7 +22,7 @@ try {
 	echo "   notif_no_tasks_doer_yet\n";
 	$itv_notificator->notif_no_tasks_doer_yet();
 	
-	echo "done: " . date('Y-m-d H:i:s'). "\n";
+	echo_end_text();
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
