@@ -30,8 +30,8 @@ if(empty($host)) {
 else {
 	echo "HOST: " . $host . "\n";
 }
-date_default_timezone_set('Europe/Moscow');
-echo "datetime: " . date('Y-m-d H:i:s'). "\n";
+
+echo_start_text();
 
 $_SERVER = array(
 	"HTTP_HOST" => $host,

@@ -20,8 +20,8 @@ try {
 	else {
 	    echo "data file delete ERROR!!!\n";
 	}
-	
-	echo "done: " . date('Y-m-d H:i:s'). "\n";
+
+	echo_end_text();
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";

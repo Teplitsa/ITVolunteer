@@ -3,6 +3,7 @@
 require_once('inc/itv_archiver.php');
 
 try {
+    date_default_timezone_set('Europe/Moscow');
 	include('cli_common.php');
 	
 	$itv_archiver = new ItvArchiver();
@@ -18,7 +19,7 @@ try {
 	
 	$itv_archiver->archive_tasks();
 	
-	echo "done: " . date('Y-m-d H:i:s'). "\n";
+	echo_end_text();
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
