@@ -74,4 +74,8 @@ class ItvCliApp {
         $this->app_data[$param_name] = $param_value;
         file_put_contents($this->app_data_filename, json_encode( $this->app_data ));
     }
+    
+    public function delete_data_file() {
+        return unlink($this->app_data_filename);
+    }
 }
