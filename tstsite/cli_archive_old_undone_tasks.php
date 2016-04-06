@@ -17,6 +17,8 @@ try {
 	}
 	
 	$itv_archiver->archive_tasks();
+	
+	echo "done: " . date('Y-m-d H:i:s'). "\n";
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
