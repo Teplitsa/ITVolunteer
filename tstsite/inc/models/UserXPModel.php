@@ -268,7 +268,7 @@ class UserXPModel extends ITVSingletonModel {
     public function recalc_user_activity($user) {
         $start = microtime(true);
         $user_xp = 0;
-        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) use($user_xp) {
+        UserXPActivity::where(['user_id' => $user->ID])->chunk(100, function($activity_list) use(&$user_xp) {
             foreach($activity_list as $action) {
                 $user_xp += $this->get_action_xp($action->action);
             }
