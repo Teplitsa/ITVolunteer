@@ -14,6 +14,13 @@ try {
 	$itv_site_stats->refresh_users_role_stats(100);
 	echo "process all users: ".(microtime(true) - $start002) . " sec.\n";
 	
+	if($ITV_CLI_APP->delete_data_file()) {
+	    echo "data file delete OK\n";
+	}
+	else {
+	    echo "data file delete ERROR!!!\n";
+	}
+	
 	echo "done: " . date('Y-m-d H:i:s'). "\n";
 }
 catch (ItvNotCLIRunException $ex) {
