@@ -22,12 +22,15 @@ if(php_sapi_name() !== 'cli') {
 $options = getopt("", array('host:'));
 $host = isset($options['host']) ? $options['host'] : '';
 
+echo "=======start=======\n";
+
 if(empty($host)) {
 	throw new ItvNotCLIRunException("Host must be defined!");
 }
 else {
 	echo "HOST: " . $host . "\n";
 }
+echo "datetime: " . date('Y-m-d H:i:s'). "\n";
 
 $_SERVER = array(
 	"HTTP_HOST" => $host,

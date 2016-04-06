@@ -31,23 +31,8 @@ class ItvTasksStats {
 				$posts_count['archived'] = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status = 'archived' AND post_type IN ('tasks') AND term_taxonomy_id = %d", $tag->term_taxonomy_id ));
 				
 				$tasks_stats_by_tags->update_tag_stats($tag->term_taxonomy_id, $posts_count);
-				
+				echo $tag->slug . ": publish=" . $posts_count['publish'] . "; in_work=".$posts_count['in_work']."; closed=".$posts_count['closed']."; archived=".$posts_count['archived']."\n";
 			}
-		}
-		
-		$query_params = array(
-			'post_type' => 'tasks',
-			'post_status' => 'closed',
-		);
-		
-		$query = new WP_Query($query_params);
-		
-		$no_doer_tasks = array();
-		$several_doers_tasks = array();
-		
-		$counter = 0;
-		while($query->have_posts()) {
-			$query->the_post();
 		}
 	}
 }

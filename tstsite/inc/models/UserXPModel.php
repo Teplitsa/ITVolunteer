@@ -278,6 +278,8 @@ class UserXPModel extends ITVSingletonModel {
         $start = microtime(true);
         $this->set_user_xp($user->ID, $user_xp);
         if($this->is_benchmark_user) { echo "set userXP: ".(microtime(true) - $start) . " sec.\n"; }
+        
+        return $user_xp;
     }
     
     public function recalc_users_xp($user_id = 0) {
@@ -293,13 +295,16 @@ class UserXPModel extends ITVSingletonModel {
             $this->test_script_speed();
         }
         else {
+            $sum_recalc_xp = 0;
             $db->update('TRUNCATE str_itv_user_xp');
-            User::chunk(100, function($users) {
+            User::chunk(100, function($users) use(&$sum_recalc_xp) {
                 foreach ($users as $user) {
-                    $this->recalc_user_activity($user);
+                    $sum_recalc_xp += $this->recalc_user_activity($user);
                 }
             });
         }
+        
+        echo "sum_recalc_xp=" . $sum_recalc_xp . "\n";
         echo "total: ".(microtime(true) - $start) . " sec.\n";
     }
     

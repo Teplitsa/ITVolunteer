@@ -141,6 +141,12 @@ class ItvSiteStats {
             update_option ( ItvSiteStats::$USERS_ROLE_ACTIVIST, $USERS_ROLE_ACTIVIST_COUNT );
             update_option ( ItvSiteStats::$USERS_ROLE_VOLUNTEER, $USERS_ROLE_VOLUNTEER_COUNT );
             update_option ( ItvSiteStats::$USERS_TOTAL, $USERS_COUNT );
+            
+            echo "USERS_ROLE_BENEFICIARY_COUNT: " . $USERS_ROLE_BENEFICIARY_COUNT . "\n";
+            echo "USERS_ROLE_SUPERHERO: " . $USERS_ROLE_SUPERHERO . "\n";
+            echo "USERS_ROLE_ACTIVIST: " . $USERS_ROLE_ACTIVIST . "\n";
+            echo "USERS_ROLE_VOLUNTEER: " . $USERS_ROLE_VOLUNTEER . "\n";
+            echo "USERS_TOTAL: " . $USERS_COUNT . "\n";
         }
     }
     

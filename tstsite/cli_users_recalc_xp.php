@@ -15,6 +15,7 @@ try {
 	
 	$uxp_model->recalc_users_xp($user_id);
 	
+	echo "done: " . date('Y-m-d H:i:s'). "\n";
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";

@@ -13,6 +13,8 @@ try {
 	$itv_site_stats->set_app($ITV_CLI_APP);
 	$itv_site_stats->refresh_users_role_stats(100);
 	echo "process all users: ".(microtime(true) - $start002) . " sec.\n";
+	
+	echo "done: " . date('Y-m-d H:i:s'). "\n";
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
