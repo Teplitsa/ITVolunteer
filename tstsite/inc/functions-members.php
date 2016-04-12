@@ -961,6 +961,13 @@ function ajax_thankyou() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
+    
+    if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> Access denied!', 'tst'),
+        )));
+    }
 
     $to_uid = $_POST['to-uid'];
     $user_id = get_current_user_id();
