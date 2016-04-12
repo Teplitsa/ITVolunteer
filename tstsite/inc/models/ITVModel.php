@@ -9,7 +9,7 @@ abstract class ITVSingletonModel {
     protected static $_instance = null;
     
     public static function instance() {
-        if(self::$_instance == null) {
+        if(self::$_instance === null) {
             self::$_instance = new static();
         }
         return self::$_instance;

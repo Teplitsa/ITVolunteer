@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-05 02:01+0200\n"
-"PO-Revision-Date: 2016-04-05 02:01+0200\n"
+"POT-Creation-Date: 2016-04-12 08:53+0200\n"
+"PO-Revision-Date: 2016-04-12 09:00+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -455,15 +455,15 @@ msgstr "При удалении фоторграфии произошла оши
 msgid "Please check agree process data checkbox"
 msgstr "Пожалуйста, дайте согласие на обработку персональных данных"
 
-#: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:227
+#: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:229
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
-#: inc/class-itv-cssjs.php:228
+#: inc/class-itv-cssjs.php:230
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:229 inc/functions-members.php:872
+#: inc/class-itv-cssjs.php:231 inc/functions-members.php:872
 #, php-format
 msgid "Resend activation email next %s (remains %s)"
 msgstr "Отправить активацию для следующих %s (осталось %s)"
@@ -690,7 +690,7 @@ msgid "<strong>Error:</strong> review for the task already exists."
 msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 
 #: inc/functions-members.php:489 inc/functions-members.php:578
-#: inc/functions-members.php:990
+#: inc/functions-members.php:999
 msgid "Review saved"
 msgstr "Отзыв сохранен"
 
@@ -748,7 +748,7 @@ msgid "Access IP"
 msgstr "IP доступа"
 
 #: inc/functions-members.php:776 inc/template-members.php:680
-#: partials/content-member_single.php:233
+#: partials/content-member_single.php:236
 msgid "XP Rating"
 msgstr "Опыт"
 
@@ -1661,6 +1661,27 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
+#: inc/itv_email_templates.php:81
+msgid "ITVolunteer - thank you for your work!"
+msgstr "it-волонтёр - вам сказали спасибо!"
+
+#: inc/itv_email_templates.php:82
+msgid ""
+"Greetings, {{to_username}}!\n"
+"\n"
+"User {{from_username}} said thank you for your work!\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Добрый день, {{to_username}}!\n"
+"\n"
+"Хорошие новости! Пользователь {{from_username}} поблагодарил вас за работу и "
+"добавил вам +{{thankyou_xp}} опыта!\n"
+"\n"
+"С уважением, команда сервиса IT-волонтер\n"
+"Теплица социальных технологий"
+
 #: inc/itv_lang.php:4
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
@@ -2037,7 +2058,7 @@ msgstr ""
 msgid "Task status become "
 msgstr ""
 
-#: inc/models/UserXPModel.php:370
+#: inc/models/UserXPModel.php:375
 #, php-format
 msgid "user_xp_alert_%s_"
 msgstr ""
@@ -2124,8 +2145,8 @@ msgid "View task"
 msgstr "Страница задачи"
 
 # @ tst
-#: inc/post-types.php:68 partials/content-member_single.php:274
-#: partials/content-member_single.php:295
+#: inc/post-types.php:68 partials/content-member_single.php:277
+#: partials/content-member_single.php:298
 msgid "All tasks"
 msgstr "Все задачи"
 
@@ -2213,7 +2234,7 @@ msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
 # @ tst
-#: inc/template-general.php:249 partials/content-member_single.php:312
+#: inc/template-general.php:249 partials/content-member_single.php:315
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
@@ -2333,12 +2354,12 @@ msgid "from"
 msgstr "с"
 
 # @ tst
-#: inc/template-members.php:668 partials/content-member_single.php:73
+#: inc/template-members.php:668 partials/content-member_single.php:76
 msgid "Te-st employee"
 msgstr "Сотрудник Теплицы социальных технологий"
 
 # @ tst
-#: inc/template-members.php:669 partials/content-member_single.php:80
+#: inc/template-members.php:669 partials/content-member_single.php:83
 msgid "Te-st partner"
 msgstr "Партнер Теплицы социальных технологий"
 
@@ -2348,7 +2369,7 @@ msgid "Place of work"
 msgstr "Организация"
 
 # @ tst
-#: inc/template-members.php:681 partials/content-member_single.php:229
+#: inc/template-members.php:681 partials/content-member_single.php:232
 #: partials/sidebar-doers.php:26
 msgid "Rating"
 msgstr "Рейтинг"
@@ -2445,7 +2466,7 @@ msgstr "Ваша учетная запись активирована. Пожа�
 msgid "Back to profile"
 msgstr "Возврат к просмотру профиля"
 
-#: page-author-reviews.php:58 partials/content-member_single.php:205
+#: page-author-reviews.php:58 partials/content-member_single.php:208
 msgid "Author reviews"
 msgstr "Отзывы про автора"
 
@@ -2453,7 +2474,7 @@ msgstr "Отзывы про автора"
 msgid "Members has no any reviews yet"
 msgstr "У пользователя еще нет отзывов"
 
-#: page-doer-reviews.php:58 partials/content-member_single.php:190
+#: page-doer-reviews.php:58 partials/content-member_single.php:193
 msgid "Doer reviews"
 msgstr "Отзывы про волонтера"
 
@@ -2535,7 +2556,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 # @ tst
-#: page-member-action.php:158 partials/content-member_single.php:97
+#: page-member-action.php:158 partials/content-member_single.php:100
 msgid "City"
 msgstr "Город"
 
@@ -2563,7 +2584,7 @@ msgstr "Биография"
 msgid "Please provide a brief information about yourself"
 msgstr "Пожалуйста, укажите краткую информацию о себе"
 
-#: page-member-action.php:173 partials/content-member_single.php:104
+#: page-member-action.php:173 partials/content-member_single.php:107
 msgid "Organization"
 msgstr "Организация"
 
@@ -2595,12 +2616,12 @@ msgid "Delete company logo"
 msgstr "Удалить логотип"
 
 # @ tst
-#: page-member-action.php:196 partials/content-member_single.php:127
+#: page-member-action.php:196 partials/content-member_single.php:130
 msgid "Skills list"
 msgstr "Я умею делать"
 
 # @ tst
-#: page-member-action.php:205 partials/content-member_single.php:142
+#: page-member-action.php:205 partials/content-member_single.php:145
 msgid "Contact details"
 msgstr "Контактная информация"
 
@@ -2629,7 +2650,7 @@ msgid "Your task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: page-member-tasks.php:71 partials/content-member_single.php:241
+#: page-member-tasks.php:71 partials/content-member_single.php:244
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
@@ -2818,74 +2839,74 @@ msgstr "Ваше сообщение:"
 msgid "Submit"
 msgstr "Отправить"
 
-#: partials/content-member_single.php:64
+#: partials/content-member_single.php:66
 msgid "Say thank you"
 msgstr "Сказать спасибо"
 
-#: partials/content-member_single.php:66
+#: partials/content-member_single.php:68
 msgid "You said thank you"
 msgstr "Благодарность отправлена!"
 
 # @ tst
-#: partials/content-member_single.php:87
+#: partials/content-member_single.php:90
 msgid "About me"
 msgstr "Обо мне"
 
 # @ tst
-#: partials/content-member_single.php:90
+#: partials/content-member_single.php:93
 msgid "No data."
 msgstr "Не указано."
 
 # @ tst
-#: partials/content-member_single.php:135
+#: partials/content-member_single.php:138
 msgid "In the web"
 msgstr "В сети"
 
 # @ tst
-#: partials/content-member_single.php:155
+#: partials/content-member_single.php:158
 msgid "Additional"
 msgstr "Еще"
 
-#: partials/content-member_single.php:169
+#: partials/content-member_single.php:172
 msgid "Closed tasks"
 msgstr "Завершенные задачи"
 
-#: partials/content-member_single.php:199
+#: partials/content-member_single.php:202
 msgid "All doer reviews"
 msgstr "Все отзывы исполнителя"
 
-#: partials/content-member_single.php:214
+#: partials/content-member_single.php:217
 msgid "All author reviews"
 msgstr "Все отзывы автора"
 
 # @ tst
-#: partials/content-member_single.php:237
+#: partials/content-member_single.php:240
 msgid "Tasks joined"
 msgstr "Участие в задачах"
 
 # @ tst
-#: partials/content-member_single.php:238
-#: partials/content-member_single.php:242
+#: partials/content-member_single.php:241
+#: partials/content-member_single.php:245
 msgid "Closed from them"
 msgstr "Из них решено"
 
 # @ tst
-#: partials/content-member_single.php:251
+#: partials/content-member_single.php:254
 msgid "Tasks in progress"
 msgstr "Задачи в работе"
 
 # @ tst
-#: partials/content-member_single.php:252
+#: partials/content-member_single.php:255
 msgid "Created tasks"
 msgstr "Созданные задачи"
 
 # @ tst
-#: partials/content-member_single.php:262
+#: partials/content-member_single.php:265
 msgid "No tasks in progress"
 msgstr "Нет задач в работе"
 
 # @ tst
-#: partials/content-member_single.php:283
+#: partials/content-member_single.php:286
 msgid "No tasks created"
 msgstr "Нет созданных задач"
 

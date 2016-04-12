@@ -957,8 +957,8 @@ function ajax_thankyou() {
             || !wp_verify_nonce($_POST['nonce'], 'thankyou-action')
     ) {
         wp_die(json_encode(array(
-        'status' => 'fail',
-        'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
 
@@ -983,6 +983,15 @@ function ajax_thankyou() {
         UserXPModel::instance()->register_activity($to_uid, UserXPModel::$ACTION_THANKYOU);
         $to_user = User::find($to_uid);
         ItvLog::instance()->log_user_action(ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
+        
+        $from_user = User::find($user_id);
+        $email_subject = ItvEmailTemplates::instance()->get_title('thankyou_notification');
+        $email_body_template = ItvEmailTemplates::instance()->get_text('thankyou_notification');
+        wp_mail(
+            $to_user->user_email,
+            $email_subject,
+            nl2br(itv_fill_template($email_body_template, ['to_username' => $to_user->display_name, 'from_username' => $from_user->display_name, 'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU)]))
+        );
     }
 
     wp_die(json_encode(array(

@@ -103,35 +103,7 @@ function itv_notification_bar_screen(){
 /* Query customization */
 add_action('parse_query', 'tst_query_corrections');
 function tst_query_corrections(WP_Query $query){
-	
-	if(is_admin() || !$query->is_main_query())
-		return;
-	
-	if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
-		$redirect = home_url('registration');
-		wp_redirect($redirect);
-		exit;
-		
-	}
-	elseif(is_tag() && !$query->get('post_type')) {
-		$query->set('post_type', 'tasks');
-		
-	}
-	elseif($query->get('task_status')){
-		
-		if($query->get('task_status') == 'all'){ //fix for archive
-			$query->set('task_status', '');
-		}
-		else {
-			$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed', 'archived'))) ? $query->get('task_status') : 'publish';
-			$query->set('post_status', $status);
-		}
-		
-		if($query->get('navpage')){
-			$query->set('paged', intval($query->get('navpage')));
-		}
-	}
-		
+    return ITV_Query::get_instance()->query_corrections($query);
 }
 
 function itv_fill_template($template, $data) {
