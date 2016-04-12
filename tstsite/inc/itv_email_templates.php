@@ -77,6 +77,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - linked task closed!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} closed!\nPlease go to task page and leave a review for the doer: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
             ),
+            'thankyou_notification' => [
+                'title' => __('ITVolunteer - thank you for your work!', 'tst'),
+                'text' => __("Greetings, {{to_username}}!\n\nUser {{from_username}} said thank you for your work!\n\nBest,\nITVolunteer", 'tst'),
+            ],
 		)
         ;
     }

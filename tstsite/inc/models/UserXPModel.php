@@ -86,7 +86,7 @@ class UserXPModel extends ITVSingletonModel {
         $user_xp->save();
     }
     
-    private function get_action_xp($action) {
+    public function get_action_xp($action) {
         $xp = 0;
         if(isset($this->ACTION_XP[$action])) {
             $xp = $this->ACTION_XP[$action];

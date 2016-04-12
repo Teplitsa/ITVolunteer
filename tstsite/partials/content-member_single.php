@@ -60,14 +60,12 @@ $activity = tst_get_member_activity($tst_member->user_object);
 				<div class="col-md-3">					
 					<?php tst_temp_avatar();?>
 					
-					<?php if(is_user_logged_in()):?>
 					<div class="itv-10x-btn-wrapper">
 					    <?php wp_nonce_field('thankyou-action');?>
-					    <button class="btn btn-primary btn-xs itv-thankyou-btn" data-to_uid="<?php echo $tst_member->ID?>"><i class="glyphicon glyphicon-thumbs-up"></i> <?php echo __('Say thank you', 'tst')?></button>
+					    <button class="btn btn-primary btn-xs itv-thankyou-btn" data-to_uid="<?php echo $tst_member->ID?>" data-from_uid="<?php echo get_current_user_id()?>"><i class="glyphicon glyphicon-thumbs-up"></i> <?php echo __('Say thank you', 'tst')?></button>
 					    <img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" class="thankyou-loader" style="display:none;" />
 					    <span class="label label-success itv-thankyou-done" style="display:none;"><?php echo __('You said thank you', 'tst')?></span>
 					</div>
-					<?php endif;?>
 				</div>
 				<div class="col-md-9">
 				

@@ -25,6 +25,8 @@ $member_data = array(
 		'last_name' => $member->last_name,
 );
 
+$current_page_slug = get_post_field( 'post_name', get_post() );
+
 get_header();?>
 
 <article class="member-actions">
@@ -55,9 +57,12 @@ get_header();?>
 	<div class="row">
         <div id="task-tabs" class="itv-reviews-tabs">
             <ul class="nav nav-tabs">
+            <?php if($current_page_slug == 'author-reviews'): ?>
                 <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Author reviews', 'tst');?></a></li>
+            <?php else: ?>
+                <li class="active"><a href="#doer-reviews-list" data-toggle="tab"><?php _e('Doer reviews', 'tst');?></a></li>
+            <?php endif ?>
             </ul>
-            
 	<?php
 		$current_page = get_query_var( 'paged', 1 );
 		if(!$current_page) {
@@ -65,17 +70,27 @@ get_header();?>
 		}
 		$per_page = get_option('posts_per_page');
 		$offset = ($current_page - 1) * $per_page;
-		$latest_doer_reviews = ItvReviewsAuthor::instance()->get_author_reviews($member->ID, $offset, $per_page); 
+		if($current_page_slug == 'author-reviews') {
+			$latest_doer_reviews = ItvReviewsAuthor::instance()->get_author_reviews($member->ID, $offset, $per_page); 
+		}
+		else {
+			$latest_doer_reviews = ItvReviews::instance()->get_doer_reviews($member->ID, $offset, $per_page);
+		}
 	?>
 	<?php if(count($latest_doer_reviews) > 0):?>
             <div class="tab-content">
                 <div class="tab-pane fade in active itv-user-reviews-list" id="doer-reviews-list">
-                <?php foreach($latest_doer_reviews as $review):?>
-                	<?php 
-                		$review_author = get_user_by('id', $review->doer_id);
-						itv_show_review($review, $review_author);
-					?>                	
-                <?php endforeach;?>
+                <?php
+                foreach($latest_doer_reviews as $review) {
+                    if($current_page_slug == 'author-reviews') {
+                        $review_author = get_user_by('id', $review->doer_id);
+                    }
+                    else {
+                        $review_author = get_user_by('id', $review->author_id);
+                    }
+                    itv_show_review($review, $review_author);
+                }
+                ?>
                 </div>
                 <?php 
                 
@@ -92,7 +107,12 @@ get_header();?>
                 	$base = str_replace('http:', 'https:', $base);
                 }
                 
-                $total_pages = ceil(ItvReviewsAuthor::instance()->count_reviews_for_author($member->ID) / $per_page);
+		if($current_page_slug == 'author-reviews') {
+	                $total_pages = ceil(ItvReviewsAuthor::instance()->count_reviews_for_author($member->ID) / $per_page);
+		}
+		else {
+			$total_pages = ceil(ItvReviews::instance()->count_reviews_for_doer($member->ID) / $per_page);
+		}	
                 
 				$pagination = array(
 			        'base' => $base.'%_%',

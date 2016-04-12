@@ -88,7 +88,7 @@ class ItvUserReportGenerator {
         $limit = 500;
         $offset = 0;
         while ( true ) {
-            $sql = "SELECT * FROM " . $wpdb->prefix . "users_report LIMIT $offset, $limit";
+            $sql = "SELECT * FROM str_users_report LIMIT $offset, $limit";
             $records = $wpdb->get_results ( $sql, ARRAY_A );
             
             $fp = fopen ( $to_file, 'a' );

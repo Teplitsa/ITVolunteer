@@ -1551,8 +1551,18 @@ function itv_thank_you($button) {
     $button.hide();
     $loader.show();
     
-    if(typeof ga == 'function') {
-        ga('send', 'event', 'itv-thank-you', 'сказал спасибо');
+    if($button.data('from_uid') == '0') {
+        if(typeof ga == 'function') {
+            ga('send', 'event', 'itv-thank-you-anonymous', 'аноним хотел сказать спасибо');
+        }
+        
+        window.location.href = frontend.site_url + 'registration/';
+        return false;
+    }
+    else {
+        if(typeof ga == 'function') {
+            ga('send', 'event', 'itv-thank-you', 'сказал спасибо');
+        }
     }
     
     $.post(frontend.ajaxurl, {
