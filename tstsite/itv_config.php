@@ -41,6 +41,8 @@ class ItvConfig {
             'CONSULT_EMAIL_FROM' => 'support@te-st.ru',
             'TASK_ARCHIVE_DAYS' => 40,
             'TASK_NO_DOER_NOTIF_DAYS' => 9,
+            'TASK_LONG_WORK_NOTIF_DAYS' => 90,
+            'TASK_LONG_WORK_ARCHIVE_DAYS' => 99,
             'USER_NOT_ACTIVATED_ALERT_TIME' => 9,
             'BULK_ACTIVATION_EMAIL_SEND_LIMIT' => 50,
             'REACTIVATION_EMAILS_LIMIT' => 2,

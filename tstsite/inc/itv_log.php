@@ -16,6 +16,8 @@ class ItvLog {
     public static $ACTION_TASK_ARCHIVE = 'archive';
     public static $ACTION_TASK_NOTIF_NO_DOER_YET = 'no_doer_yes';
     public static $ACTION_TASK_NOTIF_ARCHIVE_SOON = 'archive_soon';
+    public static $ACTION_TASK_LONG_WORK_ARCHIVE_NOTIF = 'long_work_archive_soon';
+    public static $ACTION_TASK_LONG_WORK_ARCHIVE = 'long_work_archive';
     
     public static $ACTION_USER_REGISTER = 'user_register';
     public static $ACTION_USER_UPDATE = 'user_update';
