@@ -378,7 +378,7 @@ class ItvNotificator {
                     wp_mail ( $user_email, $email_templates->get_title ( $notif_key ), nl2br ( $this->fill_template ( $email_templates->get_text ( $notif_key ), array (
                         'username' => $user_nicename,
                         'task_link' => $task_permalink,
-                        'days_in_status' => $before_days,
+                        'days_in_status' => $task_notif_days,
                     ) ) ) );
                     $this->pring_debug ( "SENT\n" );
                     $this->notif_sent_count += 1;

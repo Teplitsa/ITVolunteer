@@ -19,7 +19,7 @@ try {
 	$itv_config = ItvConfig::instance ();
 	
 	echo "   notif_no_tasks_doer_yet\n";
-// 	$itv_notificator->notif_no_tasks_doer_yet();
+	$itv_notificator->notif_no_tasks_doer_yet();
 	
 	echo "   notif_archive_soon_tasks\n";
 	$log_action = ItvLog::$ACTION_TASK_NOTIF_ARCHIVE_SOON;
@@ -28,7 +28,7 @@ try {
 	$is_check_doers = true;
 	$task_notif_days = $itv_config->get ( 'TASK_ARCHIVE_DAYS' );
 	
-// 	$itv_notificator->notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers);
+	$itv_notificator->notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers);
 	
 	
 	echo "   notif_long_work_tasks\n";
