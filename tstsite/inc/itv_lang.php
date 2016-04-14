@@ -17,6 +17,9 @@ __( 'itv_task_actions_log_archive', 'tst' );
 __( 'itv_task_actions_log_no_doer_yes', 'tst' );
 __( 'itv_task_actions_log_archive_soon', 'tst' );
 
+__( 'itv_task_actions_log_long_work_archive_soon', 'tst' );
+__( 'itv_task_actions_log_long_work_archive', 'tst' );
+
 __( 'itv_task_actions_log_user_register', 'tst' );
 __( 'itv_task_actions_log_user_update', 'tst' );
 __( 'itv_task_actions_log_user_delete_profile', 'tst' );

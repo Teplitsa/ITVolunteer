@@ -7,6 +7,7 @@ class ItvNotificator {
     protected $already_sent_count;
     protected $is_skip_sending = false;
     protected $is_debug = false;
+    protected $stats_by_actions = [];
     
     public function __construct() {
         global $wpdb;
@@ -39,6 +40,12 @@ class ItvNotificator {
         echo sprintf ( "notif_to_send_count=%d\n", $this->notif_to_send_count );
         echo sprintf ( "notif_sent_count=%d\n", $this->notif_sent_count );
         echo sprintf ( "already_sent_count=%d\n", $this->already_sent_count );
+        
+        foreach ( $this->stats_by_actions as $action_key => $stats ) {
+            foreach ( $stats as $stats_key => $stats_val) {
+                echo sprintf("$action_key - $stats_key=%d\n", $stats_val);
+            }
+        }
     }
     
     public function save_notification_fact($notif_type, $notif_id, $email) {
@@ -74,104 +81,6 @@ class ItvNotificator {
     
     public function fill_template($template, $data) {
         return itv_fill_template($template, $data);
-    }
-    
-    public function notify_about_tomorrow_archive() {
-        $itv_config = ItvConfig::instance ();
-        $before_days = $itv_config->get ( 'TASK_ARCHIVE_DAYS' );
-        $before_days -= 1;
-        $limit = strtotime ( sprintf ( '-%d days', $before_days ) );
-        
-        echo 'before_limit=' . date ( 'd.m.Y', $limit ) . "\n";
-        
-        $args = array (
-            'post_type' => 'tasks',
-            'nopaging' => true,
-            'post_status' => 'publish',
-            'date_query' => array (
-                array (
-                    'column' => 'post_modified',
-                    'before' => array (
-                        'year' => date ( 'Y', $limit ),
-                        'month' => date ( 'n', $limit ),
-                        'day' => date ( 'j', $limit ) 
-                    ) 
-                ) 
-            ) 
-        );
-        
-        $query = new WP_Query ( $args );
-        
-        $this->reset_counters ();
-        foreach ( $query->posts as $task ) {
-            $this->tasks_to_check_count += 1;
-            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
-            $this->tomorrow_move_task_to_archive ( $task );
-        }
-        $this->print_counters ();
-    }
-    
-    public function tomorrow_move_task_to_archive($task) {
-        if (is_int ( $task ))
-            $task = get_post ( $task );
-        
-        if ($task->post_status != 'publish') {
-            $this->pring_debug ( "NOT_FIT: not publish\n" );
-            return; // only open task could be archived
-        }
-        
-        // check
-        $itv_config = ItvConfig::instance ();
-        $before_days = $itv_config->get ( 'TASK_ARCHIVE_DAYS' );
-        $before_days -= 1;
-        $limit = date ( 'Y-m-d', strtotime ( sprintf ( '-%d days', $before_days ) ) );
-        if (date ( 'Y-m-d', strtotime ( $task->post_modified ) ) >= $limit) {
-            $this->pring_debug ( "NOT_FIT: by date\n" );
-            return; // not too old
-        }
-        
-        $doers = tst_get_task_doers_count ( $task->ID, true, true );
-        if ($doers > 0) {
-            $this->pring_debug ( "NOT_FIT: doers found\n" );
-            return; // only task without doers ??
-        }
-        
-        // send email notification to owner
-        $email_templates = ItvEmailTemplates::instance ();
-        $task_permalink = get_permalink ( $task );
-        
-        $user = get_user_by ( 'id', $task->post_author );
-        if (! $user) {
-            $this->pring_debug ( "NOT_FIT: author not found\n" );
-            return;
-        }
-        $user_email = $user->user_email;
-        $user_nicename = $user->user_nicename;
-        
-        $this->pring_debug ( sprintf ( "%s\n", $user_email ) );
-        
-        $this->notif_to_send_count += 1;
-        
-        if (! $this->is_notification_sent ( 'tomorrow_move_task_to_archive', $this->get_task_last_edit_notif_key ( $task ), $user_email )) {
-            if (! $this->is_skip_sending) {
-                try {
-                    wp_mail ( $user_email, $email_templates->get_title ( 'task_archive_soon_notif' ), nl2br ( $this->fill_template ( $email_templates->get_text ( 'task_archive_soon_notif' ), array (
-                        'username' => $user_nicename,
-                        'task_link' => $task_permalink 
-                    ) ) ) );
-                    $this->pring_debug ( "SENT\n" );
-                    $this->notif_sent_count += 1;
-                    $this->save_notification_fact ( 'tomorrow_move_task_to_archive', $this->get_task_last_edit_notif_key ( $task ), $user_email );
-                    
-                    $itv_log = ItvLog::instance ();
-                    $itv_log->log_task_action ( $task->ID, ItvLog::$ACTION_TASK_NOTIF_ARCHIVE_SOON, $user ? $user->ID : 0 );
-                } catch ( Exception $ex ) {
-                    error_log ( $ex );
-                }
-            }
-        } else {
-            $this->already_sent_count += 1;
-        }
     }
     
     /**
@@ -371,4 +280,122 @@ class ItvNotificator {
         
         ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
     }
+    
+    /**
+     * Notify about move to archive
+     */
+    public function notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers) {
+        
+        $this->stats_by_actions[$notif_key] = [];
+        $this->stats_by_actions[$notif_key]['notif_to_send_count'] = 0;
+        $this->stats_by_actions[$notif_key]['notif_sent_count'] = 0;
+        $this->stats_by_actions[$notif_key]['already_sent_count'] = 0;
+        $this->stats_by_actions[$notif_key]['tasks_to_check_count'] = 0;
+        
+        $before_days = $task_notif_days;
+        $before_days -= 1;
+        $limit = strtotime ( sprintf ( '-%d days', $before_days ) );
+    
+        echo 'before_limit=' . date ( 'd.m.Y', $limit ) . "\n";
+    
+        $args = array (
+            'post_type' => 'tasks',
+            'nopaging' => true,
+            'post_status' => $task_status,
+            'date_query' => array (
+                array (
+                    'column' => 'post_modified',
+                    'before' => array (
+                        'year' => date ( 'Y', $limit ),
+                        'month' => date ( 'n', $limit ),
+                        'day' => date ( 'j', $limit )
+                    )
+                )
+            )
+        );
+    
+        $query = new WP_Query ( $args );
+    
+        $this->reset_counters ();
+        foreach ( $query->posts as $task ) {
+            $this->tasks_to_check_count += 1;
+            $this->stats_by_actions[$notif_key]['tasks_to_check_count'] += 1;
+            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
+            $this->task_soon_archive ( $task, $task_status, $task_notif_days, $notif_key, $log_action, $is_check_doers );
+        }
+        $this->print_counters ();
+    }
+    
+    /*
+     * general notif task author method
+     */
+    public function task_soon_archive($task, $task_status, $task_notif_days, $notif_key, $log_action, $is_check_doers = true) {
+        if (is_int ( $task ))
+            $task = get_post ( $task );
+    
+        if ($task->post_status != $task_status) {
+            $this->pring_debug ( "NOT_FIT: not $task_status\n" );
+            return; // check task status
+        }
+    
+        // check
+        $before_days = $task_notif_days;
+        $before_days -= 1;
+        $limit = date ( 'Y-m-d', strtotime ( sprintf ( '-%d days', $before_days ) ) );
+        if (date ( 'Y-m-d', strtotime ( $task->post_modified ) ) >= $limit) {
+            $this->pring_debug ( "NOT_FIT: by date\n" );
+            return; // not too old
+        }
+        
+        if($is_check_doers) {
+            $doers = tst_get_task_doers_count ( $task->ID, true, true );
+            if ($doers > 0) {
+                $this->pring_debug ( "NOT_FIT: doers found\n" );
+                return; // only task without doers ??
+            }
+        }
+        
+        // send email notification to owner
+        $email_templates = ItvEmailTemplates::instance ();
+        $task_permalink = get_permalink ( $task );
+    
+        $user = get_user_by ( 'id', $task->post_author );
+        if (! $user) {
+            $this->pring_debug ( "NOT_FIT: author not found\n" );
+            return;
+        }
+        $user_email = $user->user_email;
+        $user_nicename = $user->user_nicename;
+    
+        $this->pring_debug ( sprintf ( "%s\n", $user_email ) );
+    
+        $this->notif_to_send_count += 1;
+        $this->stats_by_actions[$notif_key]['notif_to_send_count'] += 1;
+    
+        if (! $this->is_notification_sent ( $notif_key, $this->get_task_last_edit_notif_key ( $task ), $user_email )) {
+            if (! $this->is_skip_sending) {
+                try {
+                    wp_mail ( $user_email, $email_templates->get_title ( $notif_key ), nl2br ( $this->fill_template ( $email_templates->get_text ( $notif_key ), array (
+                        'username' => $user_nicename,
+                        'task_link' => $task_permalink,
+                        'days_in_status' => $before_days,
+                    ) ) ) );
+                    $this->pring_debug ( "SENT\n" );
+                    $this->notif_sent_count += 1;
+                    $this->stats_by_actions[$notif_key]['notif_sent_count'] += 1;
+                    
+                    $this->save_notification_fact ( $notif_key, $this->get_task_last_edit_notif_key ( $task ), $user_email );
+    
+                    $itv_log = ItvLog::instance ();
+                    $itv_log->log_task_action ( $task->ID, $log_action, $user ? $user->ID : 0 );
+                } catch ( Exception $ex ) {
+                    error_log ( $ex );
+                }
+            }
+        } else {
+            $this->already_sent_count += 1;
+            $this->stats_by_actions[$notif_key]['already_sent_count'] += 1;
+        }
+    }
+    
 }

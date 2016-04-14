@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-12 08:53+0200\n"
-"PO-Revision-Date: 2016-04-12 09:00+0200\n"
+"POT-Creation-Date: 2016-04-14 02:30+0200\n"
+"PO-Revision-Date: 2016-04-14 02:31+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -283,8 +283,8 @@ msgstr "Статус стал"
 msgid "Activity details"
 msgstr "Детали"
 
-#: inc/admin.php:657 inc/itv_log.php:211 inc/itv_log.php:219
-#: inc/itv_log.php:237 inc/itv_log.php:260
+#: inc/admin.php:657 inc/itv_log.php:213 inc/itv_log.php:221
+#: inc/itv_log.php:239 inc/itv_log.php:262
 msgid "Unknown user"
 msgstr "Неизвестный пользователь"
 
@@ -471,7 +471,7 @@ msgstr "Отправить активацию для следующих %s (ос
 # @ tst
 #: inc/customizer.php:12 inc/customizer.php:724 inc/itv_consult.php:431
 #: inc/itv_consult.php:479 inc/itv_consult.php:539 inc/itv_consult.php:596
-#: inc/itv_log.php:610
+#: inc/itv_log.php:612
 msgid "ITVounteer"
 msgstr "it-волонтёр"
 
@@ -690,7 +690,7 @@ msgid "<strong>Error:</strong> review for the task already exists."
 msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 
 #: inc/functions-members.php:489 inc/functions-members.php:578
-#: inc/functions-members.php:999
+#: inc/functions-members.php:1006
 msgid "Review saved"
 msgstr "Отзыв сохранен"
 
@@ -748,7 +748,7 @@ msgid "Access IP"
 msgstr "IP доступа"
 
 #: inc/functions-members.php:776 inc/template-members.php:680
-#: partials/content-member_single.php:236
+#: partials/content-member_single.php:234
 msgid "XP Rating"
 msgstr "Опыт"
 
@@ -759,6 +759,10 @@ msgstr "IP рег."
 #: inc/functions-members.php:808
 msgid "Last login IP:"
 msgstr "IP входа:"
+
+#: inc/functions-members.php:968
+msgid "<strong>Error:</strong> Access denied!"
+msgstr "<strong>Ошибка:</strong> доступ запрещен!"
 
 # @ tst
 #: inc/functions-tasks.php:25
@@ -1682,6 +1686,34 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
+#: inc/itv_email_templates.php:85
+msgid "ITVolunteer - long work on task with no result!"
+msgstr ""
+"it-волонтёр - ваша задача уже давно в работе и будет перемещена в архив"
+
+#: inc/itv_email_templates.php:86
+msgid ""
+"Greetings, {{username}}!\n"
+"\n"
+"Task is in work for {{days_in_status}} days, but still no result. It will be "
+"moved to archive soon!\n"
+"Task page: {{task_link}}.\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Добрый день, {{username}}!\n"
+"\n"
+"Ваша задача в работе уже {{days_in_status}}  дней - если она решена - "
+"пожалуйста закройте её, если она не решена, но вы продолжаете над ней "
+"работать - обновите статус, если задача зависла - не делайте ничего, мы "
+"перенесем ее в архив автоматически.\n"
+"\n"
+"Ссылка на страницу задачи: <a href='{{task_link}}'>{{task_link}}</a>\n"
+"\n"
+"С уважением, команда сервиса IT-волонтер\n"
+"Теплица социальных технологий"
+
 #: inc/itv_lang.php:4
 msgid "itv_task_actions_log_create"
 msgstr "Создана пользователем %s"
@@ -1739,158 +1771,166 @@ msgid "itv_task_actions_log_archive_soon"
 msgstr "Уведомление о скором перемещении в архив для %s"
 
 #: inc/itv_lang.php:20
+msgid "itv_task_actions_log_long_work_archive_soon"
+msgstr "Уведомление о долгой работе и скорой архивации для %s"
+
+#: inc/itv_lang.php:21
+msgid "itv_task_actions_log_long_work_archive"
+msgstr "Задача долго была в работе и перемещена в архив"
+
+#: inc/itv_lang.php:23
 msgid "itv_task_actions_log_user_register"
 msgstr "Новый пользователь %s зарегистрирован"
 
-#: inc/itv_lang.php:21
+#: inc/itv_lang.php:24
 msgid "itv_task_actions_log_user_update"
 msgstr "Пользователь %s обновил свой профиль"
 
-#: inc/itv_lang.php:22
+#: inc/itv_lang.php:25
 msgid "itv_task_actions_log_user_delete_profile"
 msgstr "Пользователь %s удалил свой профиль"
 
-#: inc/itv_lang.php:23
+#: inc/itv_lang.php:26
 msgid "itv_task_actions_log_user_login_login"
 msgstr "Авторизация по логину"
 
-#: inc/itv_lang.php:24
+#: inc/itv_lang.php:27
 msgid "itv_task_actions_log_user_login_email"
 msgstr "Авторизация по email"
 
-#: inc/itv_lang.php:25
+#: inc/itv_lang.php:28
 msgid "itv_task_actions_log_user_login_failed"
 msgstr "Ошибка входа на сайт!"
 
-#: inc/itv_lang.php:26
+#: inc/itv_lang.php:29
 msgid "itv_task_actions_log_review_for_doer"
 msgstr "Отзыв об исполнителе задачи %s"
 
-#: inc/itv_lang.php:27
+#: inc/itv_lang.php:30
 msgid "itv_task_actions_log_review_for_author"
 msgstr "Отзыв об авторе задачи %s"
 
-#: inc/itv_lang.php:28
+#: inc/itv_lang.php:31
 msgid "itv_task_actions_log_user_thankyou"
 msgstr "Пользователь %s сказал спасибо"
 
-#: inc/itv_lang.php:30
+#: inc/itv_lang.php:33
 msgid "itv_task_actions_log_email_approve_candidate_doer"
 msgstr "Сообщение кандидату об утверждении"
 
-#: inc/itv_lang.php:31
+#: inc/itv_lang.php:34
 msgid "itv_task_actions_log_email_approve_candidate_author"
 msgstr "Сообщение автору об утверждении кандидата"
 
-#: inc/itv_lang.php:32
+#: inc/itv_lang.php:35
 msgid "itv_task_actions_log_email_refuse_candidate_author"
 msgstr "Сообщение кандидату об отказе"
 
-#: inc/itv_lang.php:33
+#: inc/itv_lang.php:36
 msgid "itv_task_actions_log_email_add_candidate_author"
 msgstr "Сообщение автору о появлении кандидата"
 
-#: inc/itv_lang.php:34
+#: inc/itv_lang.php:37
 msgid "itv_task_actions_log_email_remove_candidate_author"
 msgstr "Сообщение автору об отказе кандидата"
 
-#: inc/itv_lang.php:35
+#: inc/itv_lang.php:38
 msgid "itv_task_actions_log_email_doer_about_task_closed"
 msgstr "Сообщение исполнителю о закрытии задачи"
 
-#: inc/itv_lang.php:36
+#: inc/itv_lang.php:39
 msgid "itv_task_actions_log_email_author_about_task_closed"
 msgstr "Сообщение автору о закрытии задачи"
 
-#: inc/itv_lang.php:37
+#: inc/itv_lang.php:40
 msgid "itv_task_actions_log_email_doer_about_task_status_changed"
 msgstr "Сообщение исполнителю о смене статуса задачи"
 
-#: inc/itv_lang.php:38
+#: inc/itv_lang.php:41
 msgid "itv_task_actions_log_email_candidate_about_task_status_changed"
 msgstr "Сообщение кандидату о смене статуса задачи"
 
-#: inc/itv_lang.php:40
+#: inc/itv_lang.php:43
 msgid "itv_log_record_type_task"
 msgstr "Операция с задачей"
 
-#: inc/itv_lang.php:41
+#: inc/itv_lang.php:44
 msgid "itv_log_record_type_user"
 msgstr "Действие пользователя"
 
-#: inc/itv_lang.php:42
+#: inc/itv_lang.php:45
 msgid "itv_log_record_type_review"
 msgstr "Отзыв"
 
-#: inc/itv_lang.php:43
+#: inc/itv_lang.php:46
 msgid "itv_log_record_type_email"
 msgstr "Отправка письма"
 
-#: inc/itv_lang.php:45
+#: inc/itv_lang.php:48
 msgid "itv_users_weekly_stats_total_count"
 msgstr "Всего юзеров"
 
-#: inc/itv_lang.php:46
+#: inc/itv_lang.php:49
 msgid "itv_users_weekly_stats_total_active_count"
 msgstr "Всего активированных юзеров"
 
-#: inc/itv_lang.php:47
+#: inc/itv_lang.php:50
 msgid "itv_users_weekly_stats_new_count"
 msgstr "На этой неделе новых юзеров"
 
-#: inc/itv_lang.php:48
+#: inc/itv_lang.php:51
 msgid "itv_users_weekly_stats_new_active_count"
 msgstr "Новых активированных"
 
-#: inc/itv_lang.php:49
+#: inc/itv_lang.php:52
 msgid "itv_users_weekly_stats_hero_count"
 msgstr "Всего супергероев"
 
-#: inc/itv_lang.php:50
+#: inc/itv_lang.php:53
 msgid "itv_users_weekly_stats_donee_count"
 msgstr "Всего бенефициаров"
 
-#: inc/itv_lang.php:51
+#: inc/itv_lang.php:54
 msgid "itv_users_weekly_stats_week_user_xp"
 msgstr "Общий опыт за неделю"
 
-#: inc/itv_lang.php:52
+#: inc/itv_lang.php:55
 msgid "itv_users_weekly_stats_total_user_xp"
 msgstr "Общий опыт за все время"
 
-#: inc/itv_lang.php:55
+#: inc/itv_lang.php:58
 msgid "Task status become publish"
 msgstr "опубликована и открыта для предложений от исполнителей"
 
-#: inc/itv_lang.php:56
+#: inc/itv_lang.php:59
 msgid "Task status become in_work"
 msgstr "переведена в работу"
 
-#: inc/itv_lang.php:57
+#: inc/itv_lang.php:60
 msgid "Task status become closed"
 msgstr "закрыта"
 
-#: inc/itv_lang.php:58
+#: inc/itv_lang.php:61
 msgid "Task status become archived"
 msgstr "перемещена в архив"
 
-#: inc/itv_lang.php:59
+#: inc/itv_lang.php:62
 msgid "Task status become draft"
 msgstr "перемещена в черновики"
 
-#: inc/itv_lang.php:60
+#: inc/itv_lang.php:63
 msgid "Task status become trash"
 msgstr "удалена"
 
-#: inc/itv_lang.php:63
+#: inc/itv_lang.php:66
 msgid "Show All Consult states"
 msgstr "Показать все статусы"
 
-#: inc/itv_lang.php:64
+#: inc/itv_lang.php:67
 msgid "itv_email_test_consult_needed_notification_subject_audit"
 msgstr "Теплица социальных технологий. Консультация"
 
-#: inc/itv_lang.php:65
+#: inc/itv_lang.php:68
 msgid "itv_email_test_consult_needed_notification_audit"
 msgstr ""
 "{{author_name}}, добрый день! \n"
@@ -1902,148 +1942,148 @@ msgstr ""
 "\n"
 "Команда Теплицы социальных технологий te-st.tu / audit.te-st.ru "
 
-#: inc/itv_lang.php:66
+#: inc/itv_lang.php:69
 #, php-format
 msgid "Consult request from audit (consult form) #%s"
 msgstr "Запрос консультации из Аудита (форма) #%s"
 
-#: inc/itv_lang.php:67
+#: inc/itv_lang.php:70
 #, php-format
 msgid "Consult request from audit (audit) #%s"
 msgstr "Запрос консультации из Аудита (аудит) #%s"
 
-#: inc/itv_lang.php:70
+#: inc/itv_lang.php:73
 #, php-format
 msgid "user_xp_alert_%s_register"
 msgstr "Спасибо за регистрацию! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:71
+#: inc/itv_lang.php:74
 #, php-format
 msgid "user_xp_alert_%s_fill_field"
 msgstr "Спасибо за заполнение профиля! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:72
+#: inc/itv_lang.php:75
 #, php-format
 msgid "user_xp_alert_%s_upload_photo"
 msgstr "Спасибо за загрузку фотографии! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:73
+#: inc/itv_lang.php:76
 #, php-format
 msgid "user_xp_alert_%s_add_comment"
 msgstr "Спасибо за комментарий! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:74
+#: inc/itv_lang.php:77
 #, php-format
 msgid "user_xp_alert_%s_create_task"
 msgstr "Спасибо за создание задачи! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:75
+#: inc/itv_lang.php:78
 #, php-format
 msgid "user_xp_alert_%s_add_as_candidate"
 msgstr "Спасибо! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:76
+#: inc/itv_lang.php:79
 #, php-format
 msgid "user_xp_alert_%s_task_done"
 msgstr "Спасибо за выполнение задачи! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:77
+#: inc/itv_lang.php:80
 #, php-format
 msgid "user_xp_alert_%s_my_task_done"
 msgstr "Спасибо за закрытие задачи! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:78
+#: inc/itv_lang.php:81
 #, php-format
 msgid "user_xp_alert_%s_review_for_doer"
 msgstr "Спасибо за отзыв! Вы заработали %s опыта."
 
-#: inc/itv_lang.php:79
+#: inc/itv_lang.php:82
 #, php-format
 msgid "user_xp_alert_%s_review_for_author"
 msgstr "Спасибо за отзыв! Вы заработали %s опыта."
 
-#: inc/itv_log.php:185 inc/itv_log.php:402 inc/itv_log.php:447
-#: inc/itv_log.php:471
+#: inc/itv_log.php:187 inc/itv_log.php:404 inc/itv_log.php:449
+#: inc/itv_log.php:473
 msgid "itv_task_actions_log_"
 msgstr "тв_лог_событий_задачи"
 
-#: inc/itv_log.php:228
+#: inc/itv_log.php:230
 #, php-format
 msgid "Review log from %s to %s"
 msgstr "Отзыв от %s для %s"
 
-#: inc/itv_log.php:229
+#: inc/itv_log.php:231
 #, php-format
 msgid "Vote: %s"
 msgstr "Оценка: %s"
 
-#: inc/itv_log.php:246
+#: inc/itv_log.php:248
 #, php-format
 msgid "Email for task: %s"
 msgstr "Email по задаче: %s"
 
-#: inc/itv_log.php:246
+#: inc/itv_log.php:248
 msgid "Email log item"
 msgstr "Email для пользователя"
 
-#: inc/itv_log.php:249
+#: inc/itv_log.php:251
 #, php-format
 msgid "Email for user %s"
 msgstr "Адресат: %s"
 
-#: inc/itv_log.php:280
+#: inc/itv_log.php:282
 msgid "Unknown task"
 msgstr "Неизвестная задача"
 
 # @ tst
-#: inc/itv_log.php:379
+#: inc/itv_log.php:381
 msgid "Task title"
 msgstr "Заголовок задачи"
 
-#: inc/itv_log.php:384
+#: inc/itv_log.php:386
 msgid "Username or email"
 msgstr "Имя или email"
 
-#: inc/itv_log.php:392
+#: inc/itv_log.php:394
 msgid "Any log action"
 msgstr "Любое действие"
 
-#: inc/itv_log.php:414
+#: inc/itv_log.php:416
 msgid "Any log record type"
 msgstr "Любой тип записи"
 
-#: inc/itv_log.php:424
+#: inc/itv_log.php:426
 msgid "itv_log_record_type_"
 msgstr ""
 
-#: inc/itv_log.php:488
+#: inc/itv_log.php:490
 msgid "Collected user xp"
 msgstr "Накопленный опыт"
 
-#: inc/itv_log.php:516 inc/itv_log.php:524 inc/itv_log.php:543
+#: inc/itv_log.php:518 inc/itv_log.php:526 inc/itv_log.php:545
 msgid "For a day"
 msgstr "За день"
 
-#: inc/itv_log.php:517 inc/itv_log.php:525 inc/itv_log.php:536
-#: inc/itv_log.php:544
+#: inc/itv_log.php:519 inc/itv_log.php:527 inc/itv_log.php:538
+#: inc/itv_log.php:546
 msgid "For all time"
 msgstr "За все время"
 
-#: inc/itv_log.php:535
+#: inc/itv_log.php:537
 msgid "For last week"
 msgstr "За неделю"
 
-#: inc/itv_log.php:556
+#: inc/itv_log.php:558
 msgid "itv_users_weekly_stats_"
 msgstr ""
 
-#: inc/itv_log.php:585
+#: inc/itv_log.php:587
 msgid "itv_email_weekly_stats_subject"
 msgstr ""
 "ITV - статистика за {{week_number}}-ю неделю, решено "
 "{{week_closed_tasks_count}} задач"
 
-#: inc/itv_log.php:586
+#: inc/itv_log.php:588
 msgid "itv_email_weekly_stats_message"
 msgstr ""
 "Статистика по IT-волонтеру за {{week_number}}-ю неделю с {{from_date}} по "
@@ -2054,7 +2094,7 @@ msgstr ""
 "\n"
 "{{stats_html}}"
 
-#: inc/itv_notificator.php:303 inc/itv_notificator.php:322
+#: inc/itv_notificator.php:212 inc/itv_notificator.php:231
 msgid "Task status become "
 msgstr ""
 
@@ -2145,8 +2185,8 @@ msgid "View task"
 msgstr "Страница задачи"
 
 # @ tst
-#: inc/post-types.php:68 partials/content-member_single.php:277
-#: partials/content-member_single.php:298
+#: inc/post-types.php:68 partials/content-member_single.php:275
+#: partials/content-member_single.php:296
 msgid "All tasks"
 msgstr "Все задачи"
 
@@ -2234,19 +2274,19 @@ msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
 # @ tst
-#: inc/template-general.php:249 partials/content-member_single.php:315
+#: inc/template-general.php:249 partials/content-member_single.php:313
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
 # @ tst
 #: inc/template-general.php:304 inc/template-members.php:129
-#: page-author-reviews.php:102 page-doer-reviews.php:102
+#: page-author-reviews.php:122
 msgid "&laquo; prev."
 msgstr "&laquo; пред."
 
 # @ tst
 #: inc/template-general.php:305 inc/template-members.php:130
-#: page-author-reviews.php:103 page-doer-reviews.php:103
+#: page-author-reviews.php:123
 msgid "next. &raquo;"
 msgstr "след. &raquo;"
 
@@ -2354,12 +2394,12 @@ msgid "from"
 msgstr "с"
 
 # @ tst
-#: inc/template-members.php:668 partials/content-member_single.php:76
+#: inc/template-members.php:668 partials/content-member_single.php:74
 msgid "Te-st employee"
 msgstr "Сотрудник Теплицы социальных технологий"
 
 # @ tst
-#: inc/template-members.php:669 partials/content-member_single.php:83
+#: inc/template-members.php:669 partials/content-member_single.php:81
 msgid "Te-st partner"
 msgstr "Партнер Теплицы социальных технологий"
 
@@ -2369,7 +2409,7 @@ msgid "Place of work"
 msgstr "Организация"
 
 # @ tst
-#: inc/template-members.php:681 partials/content-member_single.php:232
+#: inc/template-members.php:681 partials/content-member_single.php:230
 #: partials/sidebar-doers.php:26
 msgid "Rating"
 msgstr "Рейтинг"
@@ -2462,21 +2502,21 @@ msgid "Your account is active now! Please %s."
 msgstr "Ваша учетная запись активирована. Пожалуйста, %s."
 
 # @ tst
-#: page-author-reviews.php:39 page-doer-reviews.php:39 page-member-tasks.php:48
+#: page-author-reviews.php:41 page-member-tasks.php:48
 msgid "Back to profile"
 msgstr "Возврат к просмотру профиля"
 
-#: page-author-reviews.php:58 partials/content-member_single.php:208
+#: page-author-reviews.php:61 partials/content-member_single.php:206
 msgid "Author reviews"
 msgstr "Отзывы про автора"
 
-#: page-author-reviews.php:121 page-doer-reviews.php:121
-msgid "Members has no any reviews yet"
-msgstr "У пользователя еще нет отзывов"
-
-#: page-doer-reviews.php:58 partials/content-member_single.php:193
+#: page-author-reviews.php:63 partials/content-member_single.php:191
 msgid "Doer reviews"
 msgstr "Отзывы про волонтера"
+
+#: page-author-reviews.php:141
+msgid "Members has no any reviews yet"
+msgstr "У пользователя еще нет отзывов"
 
 # @ tst
 #: page-member-action.php:69
@@ -2556,7 +2596,7 @@ msgid "Last name"
 msgstr "Фамилия"
 
 # @ tst
-#: page-member-action.php:158 partials/content-member_single.php:100
+#: page-member-action.php:158 partials/content-member_single.php:98
 msgid "City"
 msgstr "Город"
 
@@ -2584,7 +2624,7 @@ msgstr "Биография"
 msgid "Please provide a brief information about yourself"
 msgstr "Пожалуйста, укажите краткую информацию о себе"
 
-#: page-member-action.php:173 partials/content-member_single.php:107
+#: page-member-action.php:173 partials/content-member_single.php:105
 msgid "Organization"
 msgstr "Организация"
 
@@ -2616,12 +2656,12 @@ msgid "Delete company logo"
 msgstr "Удалить логотип"
 
 # @ tst
-#: page-member-action.php:196 partials/content-member_single.php:130
+#: page-member-action.php:196 partials/content-member_single.php:128
 msgid "Skills list"
 msgstr "Я умею делать"
 
 # @ tst
-#: page-member-action.php:205 partials/content-member_single.php:145
+#: page-member-action.php:205 partials/content-member_single.php:143
 msgid "Contact details"
 msgstr "Контактная информация"
 
@@ -2650,7 +2690,7 @@ msgid "Your task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: page-member-tasks.php:71 partials/content-member_single.php:244
+#: page-member-tasks.php:71 partials/content-member_single.php:242
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
@@ -2839,74 +2879,74 @@ msgstr "Ваше сообщение:"
 msgid "Submit"
 msgstr "Отправить"
 
-#: partials/content-member_single.php:66
+#: partials/content-member_single.php:65
 msgid "Say thank you"
 msgstr "Сказать спасибо"
 
-#: partials/content-member_single.php:68
+#: partials/content-member_single.php:67
 msgid "You said thank you"
 msgstr "Благодарность отправлена!"
 
 # @ tst
-#: partials/content-member_single.php:90
+#: partials/content-member_single.php:88
 msgid "About me"
 msgstr "Обо мне"
 
 # @ tst
-#: partials/content-member_single.php:93
+#: partials/content-member_single.php:91
 msgid "No data."
 msgstr "Не указано."
 
 # @ tst
-#: partials/content-member_single.php:138
+#: partials/content-member_single.php:136
 msgid "In the web"
 msgstr "В сети"
 
 # @ tst
-#: partials/content-member_single.php:158
+#: partials/content-member_single.php:156
 msgid "Additional"
 msgstr "Еще"
 
-#: partials/content-member_single.php:172
+#: partials/content-member_single.php:170
 msgid "Closed tasks"
 msgstr "Завершенные задачи"
 
-#: partials/content-member_single.php:202
+#: partials/content-member_single.php:200
 msgid "All doer reviews"
 msgstr "Все отзывы исполнителя"
 
-#: partials/content-member_single.php:217
+#: partials/content-member_single.php:215
 msgid "All author reviews"
 msgstr "Все отзывы автора"
 
 # @ tst
-#: partials/content-member_single.php:240
+#: partials/content-member_single.php:238
 msgid "Tasks joined"
 msgstr "Участие в задачах"
 
 # @ tst
-#: partials/content-member_single.php:241
-#: partials/content-member_single.php:245
+#: partials/content-member_single.php:239
+#: partials/content-member_single.php:243
 msgid "Closed from them"
 msgstr "Из них решено"
 
 # @ tst
-#: partials/content-member_single.php:254
+#: partials/content-member_single.php:252
 msgid "Tasks in progress"
 msgstr "Задачи в работе"
 
 # @ tst
-#: partials/content-member_single.php:255
+#: partials/content-member_single.php:253
 msgid "Created tasks"
 msgstr "Созданные задачи"
 
 # @ tst
-#: partials/content-member_single.php:265
+#: partials/content-member_single.php:263
 msgid "No tasks in progress"
 msgstr "Нет задач в работе"
 
 # @ tst
-#: partials/content-member_single.php:286
+#: partials/content-member_single.php:284
 msgid "No tasks created"
 msgstr "Нет созданных задач"
 
