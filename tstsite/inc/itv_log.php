@@ -47,7 +47,7 @@ class ItvLog {
     
     private $list_log_record_types = array('task', 'user', 'review', 'email');
     private $list_log_actions = array('create', 'inwork', 'close', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
-        'archive', 'no_doer_yes', 'archive_soon', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
+        'archive', 'long_work_archive', 'no_doer_yes', 'archive_soon', 'long_work_archive_soon', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
         'review_for_doer', 'review_for_author', 'user_thankyou',
         'email_approve_candidate_doer', 'email_approve_candidate_author', 'email_refuse_candidate_author', 'email_add_candidate_author', 'email_remove_candidate_author', 'email_doer_about_task_closed', 
         'email_author_about_task_closed', 'email_doer_about_task_status_changed', 'email_candidate_about_task_status_changed', 

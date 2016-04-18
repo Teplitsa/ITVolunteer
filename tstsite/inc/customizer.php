@@ -343,7 +343,11 @@ function ajax_add_candidate() {
 
     p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
-    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
+    
+    if(!UserXPModel::instance()->is_reg_candidate_activity_exist(get_current_user_id(), $task->ID)) {
+        UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
+        UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
+    }
 		
 	if($task) {
 		$users = tst_get_task_doers($task->ID);

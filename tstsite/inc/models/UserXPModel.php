@@ -15,6 +15,7 @@ use \WeDevs\ORM\WP\User as User;
 use \WeDevs\ORM\WP\Post as Post; 
 use \WeDevs\ORM\Eloquent\Database as DB;
 use ITV\dao\UserXPAlerts;
+use ITV\dao\UserXPActivityCandidate;
 
 class UserXPModel extends ITVSingletonModel {
     public static $ACTION_REGISTER = 'register';
@@ -69,6 +70,18 @@ class UserXPModel extends ITVSingletonModel {
         $user_xp_activity->save();
         
         $this->inc_user_xp($user_id, $action);
+    }
+    
+    public static function is_reg_candidate_activity_exist($user_id, $task_id) {
+        $is_ref_candidate_activity = UserXPActivityCandidate::where(['user_id' => $user_id, 'task_id' => $task_id])->first();
+        return $is_ref_candidate_activity ? true : false;
+    }
+    
+    public static function reg_candidate_activity_exist($user_id, $task_id) {
+        $is_ref_candidate_activity = new UserXPActivityCandidate();
+        $is_ref_candidate_activity->user_id = $user_id;
+        $is_ref_candidate_activity->task_id = $task_id;
+        $is_ref_candidate_activity->save();
     }
     
     private function inc_user_xp($user_id, $action) {
