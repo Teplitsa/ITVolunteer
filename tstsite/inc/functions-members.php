@@ -4,6 +4,8 @@
  **/
 
 use ITV\models\UserXPModel;
+use ITV\models\ThankyouModel;
+use ITV\models\ItvThankyouRecentlySaidException;
 use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
 
@@ -972,39 +974,38 @@ function ajax_thankyou() {
     $to_uid = $_POST['to-uid'];
     $user_id = get_current_user_id();
 
+    $is_error = true;
     if($to_uid && $user_id) {
+        $error_message = __('Error!', 'tst');
         
-        $query = ThankYou::where('from_uid', $user_id)->where('to_uid', $to_uid);
-        $thankyou = $query->first();
-        
-        if(!$thankyou) {
-            $thankyou = new ThankYou();
-            $thankyou->from_uid = $user_id;
-            $thankyou->to_uid = $to_uid;
-            $thankyou->counter = 0;
+        try {
+            ThankyouModel::instance()->do_thankyou($user_id, $to_uid);
+            $is_error = false;
         }
-        
-        $thankyou->counter += 1;
-        $thankyou->save();
-        
-        UserXPModel::instance()->register_activity($to_uid, UserXPModel::$ACTION_THANKYOU);
-        $to_user = User::find($to_uid);
-        ItvLog::instance()->log_user_action(ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
-        
-        $from_user = User::find($user_id);
-        $email_subject = ItvEmailTemplates::instance()->get_title('thankyou_notification');
-        $email_body_template = ItvEmailTemplates::instance()->get_text('thankyou_notification');
-        wp_mail(
-            $to_user->user_email,
-            $email_subject,
-            nl2br(itv_fill_template($email_body_template, ['to_username' => $to_user->display_name, 'from_username' => $from_user->display_name, 'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU)]))
-        );
+        catch(\ITV\models\ItvThankyouRecentlySaidException $ex) {
+            error_log($ex);
+            $error_message = __('<strong>Error:</strong> Recently said thank you!', 'tst');
+        }
+        catch(\Exception $ex) {
+            error_log($ex);
+        }
     }
 
-    wp_die(json_encode(array(
-        'status' => 'ok',
-        'message' => __('Review saved', 'tst'),
-    )));
+    $ret;
+    if($is_error) {
+        $ret = [
+            'status' => 'fail',
+            'message' => $error_message,
+        ];
+    }
+    else {
+        $ret = [
+            'status' => 'ok',
+            'message' => __('Review saved', 'tst'),
+        ];
+    }
+    
+    wp_die(json_encode($ret));
 }
 add_action('wp_ajax_thankyou', 'ajax_thankyou');
 add_action('wp_ajax_nopriv_thankyou', 'ajax_thankyou');

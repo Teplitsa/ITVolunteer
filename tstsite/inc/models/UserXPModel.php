@@ -18,6 +18,8 @@ use ITV\dao\UserXPAlerts;
 use ITV\dao\UserXPActivityCandidate;
 
 class UserXPModel extends ITVSingletonModel {
+    protected static $_instance = null;
+    
     public static $ACTION_REGISTER = 'register';
     public static $ACTION_FILL_FIELD = 'fill_field';
     public static $ACTION_UPLOAD_PHOTO = 'upload_photo';
