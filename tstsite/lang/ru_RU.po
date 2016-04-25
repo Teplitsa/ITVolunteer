@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-04-25 12:36+0200\n"
-"PO-Revision-Date: 2016-04-25 12:49+0200\n"
+"PO-Revision-Date: 2016-04-25 13:07+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -638,7 +638,7 @@ msgstr "Войти"
 #: inc/functions-general.php:133
 #, php-format
 msgid "User can do %s"
-msgstr ""
+msgstr "Умеет делать %s"
 
 #: inc/functions-members.php:16
 msgid "Beneficiary"
