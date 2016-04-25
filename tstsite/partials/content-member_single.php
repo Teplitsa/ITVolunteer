@@ -25,6 +25,7 @@ if(isset($_GET['update']) && $_GET['update']) {
 
 $user_login = $tst_member->user_login;
 $activity = tst_get_member_activity($tst_member->user_object);
+$is_thankyou_said_recently = \ITV\models\ThankyouModel::instance()->is_said_recently(get_current_user_id(), $tst_member->ID);
 
 ?>
 <header class="page-heading member-header no-breadcrumbs">
@@ -62,9 +63,11 @@ $activity = tst_get_member_activity($tst_member->user_object);
 					
 					<div class="itv-10x-btn-wrapper">
 					    <?php wp_nonce_field('thankyou-action');?>
-					    <button class="btn btn-primary btn-xs itv-thankyou-btn" data-to_uid="<?php echo $tst_member->ID?>" data-from_uid="<?php echo get_current_user_id()?>"><i class="glyphicon glyphicon-thumbs-up"></i> <?php echo __('Say thank you', 'tst')?></button>
+					    <?php if(!$is_thankyou_said_recently):?>
+					        <button class="btn btn-primary btn-xs itv-thankyou-btn" data-to_uid="<?php echo $tst_member->ID?>" data-from_uid="<?php echo get_current_user_id()?>"><i class="glyphicon glyphicon-thumbs-up"></i> <?php echo __('Say thank you', 'tst')?></button>
+					    <?php endif ?>
+				        <span class="label label-success itv-thankyou-done" <?php if(!$is_thankyou_said_recently): ?>style="display:none;"<?php endif;?>><?php echo __('You said thank you', 'tst')?></span>
 					    <img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" class="thankyou-loader" style="display:none;" />
-					    <span class="label label-success itv-thankyou-done" style="display:none;"><?php echo __('You said thank you', 'tst')?></span>
 					</div>
 				</div>
 				<div class="col-md-9">

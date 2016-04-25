@@ -77,7 +77,21 @@ class ItvConfig {
                     ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
                 ]
             ],
+            
+            'ALERT_TEAM' => array (
+                'vlad@te-st.ru',
+                'suvorov@te-st.ru',
+                'denis.cherniatev@gmail.com'
+            ),
+            
         );
+        
+        $this->_config['THANKYOU'] = [
+            'MIN_INTERVAL' => 1, # minutes
+            'TOO_MUCH' => 30,
+            'TOO_MUCH_ALERT_TEAM' => $this->_config['ALERT_TEAM'],
+        ];
+        
     }
     
     public static function instance() {

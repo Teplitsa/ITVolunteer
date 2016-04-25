@@ -85,6 +85,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - long work on task with no result!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nTask is in work for {{days_in_status}} days, but still no result. It will be moved to archive soon!\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
             ],
+            'too_much_thankyou' => [
+                'title' => __('ITVolunteer - too much thank you clicked!', 'tst'),
+                'text' => __("Hello!\n\nUser <a href=\"{{from_user_url}}\">{{from_username}}</a> said thank you to <a href=\"{{to_user_url}}\">{{to_username}}</a> more {{limit}} times!\n\nLast moment is {{last_moment}}\n\n", 'tst'),
+            ],
 		)
         ;
     }

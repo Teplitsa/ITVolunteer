@@ -111,3 +111,64 @@ function itv_fill_template($template, $data) {
         return isset($matches[1]) && isset($data[$matches[1]]) ? $data[$matches[1]] : '';
     }, $template );
 }
+
+/* seo meta fixes */
+add_filter( 'wpseo_canonical', 'itv_wpseo_canonical', 10, 1 );
+function itv_wpseo_canonical( $canonical ) {
+    if( is_single_member() ) {
+        $tst_member = tst_get_current_member();
+        if($tst_member) {
+            $canonical = tst_get_member_url($tst_member);
+        }
+    }
+    return $canonical;
+}
+
+add_filter( 'wpseo_metadesc', 'itv_wpseo_metadesc', 10, 1 );
+function itv_wpseo_metadesc( $desc ) {
+    if( is_single_member() ) {
+        $tst_member = tst_get_current_member();
+        if($tst_member) {
+            $desc = trim(tst_get_member_field('user_bio', $tst_member));
+            $desc .= ' ' . sprintf(__('User can do %s', 'tst'), tst_get_member_user_skills_string($tst_member->ID));
+            $desc = trim($desc);
+        }
+    }
+    return $desc;
+}
+
+add_filter( 'wpseo_opengraph_author_facebook', 'itv_wpseo_author_link', 10, 1 );
+function itv_wpseo_author_link( $link ) {
+    $author_url = false;
+    if( is_single_member() ) {
+        $tst_member = tst_get_current_member();
+        if($tst_member) {
+            $author_url = get_user_meta($tst_member->ID, 'facebook', true);
+            if(!$author_url) {
+                $author_url = tst_get_member_url($tst_member);
+            }
+        }
+    }
+    return $author_url;
+}
+
+/* html email with cc */
+function itv_html_email_with_cc($to, $subject, $message, $other_emails = [], $email_from = '') {
+    if(!$email_from) {
+        $email_from = \ItvConfig::instance()->get('EMAIL_FROM');
+    }
+    $headers  = 'MIME-Version: 1.0' . "\r\n";
+    $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+    $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$email_from.'>' . "\r\n";
+    
+    if(is_array($to)) {
+        $other_emails = array_slice($to, 1);
+        $to = $to[0];
+    }
+    
+    if(count($other_emails) > 0) {
+        $headers .= 'Cc: ' . implode(', ', $other_emails) . "\r\n";
+    }
+    
+    return wp_mail($to, $subject, $message, $headers);
+}
