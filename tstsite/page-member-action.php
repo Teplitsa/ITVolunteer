@@ -4,7 +4,6 @@
  *
  **/
 
-global $tst_member;
 
 $member_data = array();
 $social_ids =  wp_get_user_contact_methods();
@@ -14,17 +13,16 @@ if(empty($_GET['member'])) {
     $back_url = $refer ? $refer : home_url();
 
     wp_redirect($back_url);
-    die();
+    exit;
 }
 		
 $member_id = (int)$_GET['member'];
 $member = get_user_by('id', $member_id);
 if(empty($member) || !current_user_can('edit_user', $member_id)) {
     wp_redirect(home_url('member-actions'));
-    die();
+    exit;
 }
 
-$tst_member = $member;
 $member_data = array(
     'member_id' =>  $member_id,
     'user_login' => $member->user_login,
@@ -33,11 +31,12 @@ $member_data = array(
     'last_name' => $member->last_name,
     'user_city' => tst_get_member_field('user_city', $member),
     'user_speciality' => tst_get_member_field('user_speciality', $member),
-    'user_bio' => tst_get_member_field('user_bio', $member),
-    'user_professional' => tst_get_member_field('user_professional', $member),
+    'user_bio' => tst_get_member_field('user_bio', $member),    
     'user_contacts' => tst_get_member_field('user_contacts', $member),
     'user_website' => tst_get_member_field('user_website', $member),
-    'user_workplace' => tst_get_member_field('user_workplace', $member),
+    'user_skype' => tst_get_member_field('user_skype', $member),
+	'user_workplace' => tst_get_member_field('user_workplace', $member),
+	'user_workplace_desc' => tst_get_member_field('user_workplace_desc', $member),
 );
 
 $social = array();
@@ -60,14 +59,14 @@ get_header();?>
 <?php while ( have_posts() ) : the_post();?>
 
 
-<header class="page-heading">
+<header class="page-heading no-breadcrumbs">
 
 	<div class="row">
 		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
+			
 			<h1 class="page-title">
 				<?php echo frl_page_title();?>
-				 <small class="edit-item"><a href="<?php echo tst_get_member_url($member);?>"><?php _e('Back to Preview mode', 'tst');?></a></small>
+				 <a href="<?php echo tst_get_member_url($member);?>" class="edit-item"><?php _e('Back to Preview mode', 'tst');?></a>
 			</h1>			
 		</div>
 		
@@ -127,60 +126,76 @@ get_header();?>
 	</div><!-- .col-md-4 -->
 
 	<div class="col-md-8">
-		<h4><?php _e('Profile data', 'tst');?></h4>	
+		<h4><?php _e('Profile data', 'tst');?></h4>
+		
+		<div class="form-group avatar-group">			
+			<?php
+				$user_avatar = tst_get_member_user_avatar($member_data['member_id']);
+				$fallback = tst_get_avatar_fallback($member_data['member_id']);
+			?>
+			<div class="user_avatar-show"><?php echo $fallback;?></div>			
+			<!--<label for="user_avatar"><?php _e('Member avatar', 'tst');?></label>-->	
+			<a id="upload_user_avatar" href="javascript:void(0);" class="btn btn-primary btn-xs itv-avatar-action"><?php _e('Upload user avatar', 'tst');?></a>
+			&nbsp;<a id="delete_user_avatar" href="javascript:void(0);" class="btn btn-default btn-xs itv-avatar-action" <?php if(!$user_avatar):?>style="display:none;"<?php endif?>><?php _e('Delete avatar', 'tst');?></a>
+			
+			<div id="upload_user_avatar_info"><?php echo $user_avatar; ?></div>
+			<div id="upload_user_avatar_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
+		</div>
 		
 		<div class="form-group">
 			<label for="first_name"><?php _e('First name', 'tst');?></label>
-			<input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo esc_attr(tst_print_member_field('first_name', $member_data));?>">
-			<small class="help-block"><?php _e('Please provide your first name', 'tst');?></small>
+			<input type="text" class="form-control" name="first_name" id="first_name" value="<?php echo esc_attr(tst_print_member_field('first_name', $member_data));?>">			
             <div id="first_name_vm" class="validation-message" style="display: none;"></div>
 		</div>
 		
 		<div class="form-group">
 			<label for="last_name"><?php _e('Last name', 'tst');?></label>
-			<input type="text" class="form-control" name="last_name" id="last_name" value="<?php echo esc_attr(tst_print_member_field('last_name', $member_data));?>">
-			<small class="help-block"><?php _e('Please provide your last name', 'tst');?></small>
+			<input type="text" class="form-control" name="last_name" id="last_name" value="<?php echo esc_attr(tst_print_member_field('last_name', $member_data));?>">			
             <div id="last_name_vm" class="validation-message" style="display: none;"></div>
 		</div>
 		
 		<div class="form-group">
 			<label for="user_city"><?php _e('City', 'tst');?></label>
-			<input type="text" class="form-control" name="user_city" id="user_city" value="<?php echo esc_attr(tst_print_member_field('user_city', $member_data));?>">
-			<small class="help-block"><?php _e('Please specify the city where you live', 'tst');?></small>
-		</div>
-
-		<div class="form-group">
-			<label for="user_workplace"><?php _e('Place of work', 'tst');?></label>
-			<input type="text" class="form-control" name="user_workplace" id="user_workplace" value="<?php echo esc_attr(tst_print_member_field('user_workplace', $member_data));?>">
-		</div>
-		
-		<div class="form-group">
-			<?$user_company_logo = tst_get_member_user_company_logo($member_data['member_id'])?>
-			
-			<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>
-			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-plus itv-company-logo-action" title="<?php _e('Upload company logo', 'tst');?>"></a>
-			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="glyphicon glyphicon-minus itv-company-logo-action" <?if(!$user_company_logo):?>style="display:none;"<?endif?> title="<?php _e('Delete company logo', 'tst');?>"></a>
-			
-			<div id="upload_user_company_logo_info"><?=$user_company_logo?></div>
-			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?=site_url( '/wp-includes/images/spinner-2x.gif' )?>" /></div>
+			<input type="text" class="form-control" name="user_city" id="user_city" value="<?php echo esc_attr(tst_print_member_field('user_city', $member_data));?>" placeholder="<?php _e('Please specify the city you live in', 'tst');?>">			
 		</div>
 		
 		<div class="form-group">
 			<label for="user_speciality"><?php _e('Speciality', 'tst');?></label>
-			<input type="text" class="form-control" name="user_speciality" id="user_speciality" value="<?php echo esc_attr(tst_print_member_field('user_speciality', $member_data));?>">
-			<small class="help-block"><?php _e('Describe your speciality in a few words', 'tst');?>.</small>
+			<input type="text" class="form-control" name="user_speciality" id="user_speciality" value="<?php echo esc_attr(tst_print_member_field('user_speciality', $member_data));?>" placeholder="<?php _e('Describe your speciality in a few words', 'tst');?>">			
 		</div>
 		
 		<div class="form-group">
 			<label for="user_bio"><?php _e('Bio', 'tst');?></label>
-			<textarea name="user_bio" id="user_bio" class="form-control" rows="6"><?php echo esc_textarea(tst_print_member_field('user_bio', $member_data));?></textarea>
-			<small class="help-block"><?php _e('Please provide a brief information about yourself', 'tst');?>.</small>
+			<textarea name="user_bio" id="user_bio" class="form-control" rows="6" placeholder="<?php _e('Please provide a brief information about yourself', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_bio', $member_data));?></textarea>			
 		</div>
+
+		<div class="form-group">
+			<label for="user_workplace"><?php _e('Organization', 'tst');?></label>
+			<input type="text" class="form-control" name="user_workplace" id="user_workplace" value="<?php echo esc_attr(tst_print_member_field('user_workplace', $member_data));?>" placeholder="<?php _e('Name of your organization or project', 'tst');?>">
+		</div>
+		
+		<div class="form-group">
+			<label for="user_workplace_desc"><?php _e('About your organization', 'tst');?></label>
+			<textarea name="user_workplace_desc" id="user_workplace_desc" class="form-control" rows="6" placeholder="<?php _e('Brief description of your organization or project', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_workplace_desc', $member_data));?></textarea>			
+		</div>
+		
+		<div class="form-group">
+			<?php $user_company_logo = tst_get_member_user_company_logo($member_data['member_id']); ?>
+			
+			<!--<label for="user_company_logo"><?php _e('Company logo', 'tst');?></label>-->
+			&nbsp;<a id="upload_user_company_logo" href="javascript:void(0);" class="btn btn-primary btn-xs itv-company-logo-action"><?php _e('Upload company logo', 'tst');?></a>
+			&nbsp;<a id="delete_user_company_logo" href="javascript:void(0);" class="btn btn-default btn-xs itv-company-logo-action" <?php if(!$user_company_logo):?>style="display:none;"<?php endif; ?>><?php _e('Delete company logo', 'tst');?></a>
+			
+			<div id="upload_user_company_logo_info"><?php echo $user_company_logo; ?></div>
+			<div id="upload_user_company_logo_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
+		</div>
+		
+		
 		
 		<div>
 			<label for="skills_list"><?php _e('Skills list', 'tst');?></label>
 			<div class="skills_list clearfix">
-			<?
+			<?php
 				$skills = tst_get_user_skills($member_data['member_id']);
 				tst_show_user_skills($skills);
 			?>
@@ -189,7 +204,7 @@ get_header();?>
 		
 		<h4><?php _e('Contact details', 'tst');?></h4>		
 		<?php //wp_get_user_contact_methods( $profileuser )
-			$fields = array_merge(array('user_website' => __('Website', 'tst')), $social_ids);
+			$fields = array_merge(array('user_website' => __('Website', 'tst'), 'user_skype' => __('User Skype', 'tst')), $social_ids);
 			foreach($fields as $key => $label) {?>
 
 			<div class="form-group">
@@ -201,8 +216,7 @@ get_header();?>
 
 		<div class="form-group">
 			<label for="user_contacts_text"><?php _e('Additional contact info', 'tst');?></label>
-			<textarea name="user_contacts_text" id="user_contacts_text" class="form-control user_contacts" rows="4"><?php echo esc_textarea(tst_print_member_field('user_contacts', $member_data));?></textarea>
-			<small class="help-block"><?php _e('Please provide some additional ways to contact you', 'tst');?>.</small>
+			<textarea name="user_contacts_text" id="user_contacts_text" class="form-control user_contacts" rows="4" placeholder="<?php _e('Please provide some additional ways to contact you', 'tst');?>"><?php echo esc_textarea(tst_print_member_field('user_contacts', $member_data));?></textarea>			
 		</div>
 
         <div id="form_message"></div>
@@ -222,3 +236,4 @@ get_header();?>
 </article>
 
 <?php get_footer(); ?>
+

@@ -1,0 +1,256 @@
+/** Menu */
+#site_navigation {
+	background: $color-text-black;
+	
+	.container {
+		@include clearfix;
+		position: relative;
+	}
+	
+	.site-branding {
+		float: left;
+		line-height: $menu_height;
+		vertical-align: middle;
+		
+		.logo {
+			font-family: Arial, Helvetica, sans-serif;
+			box-sizing: border-box;
+			display: block;			
+			width: 180px;
+			height: $menu_height;
+			font-size: 20px;
+			line-height: 36px;
+			vertical-align: middle;
+			color: transparentize($color-white, 0.07);
+			text-decoration: none;
+			padding-left: 63px;
+			position: relative;
+			
+			&:before {
+				content:  '';
+				display: block;
+				position: absolute;
+				left: 5px;
+				top: 4px;
+				background: transparent url('../img/logo-sprite.png') no-repeat 0 0;				
+				width: 34px;
+				height: 36px;
+				
+				@include for-retina(){
+					background: transparent url('../img/logo-sprite-2x.png') no-repeat 0 0;
+					background-size: 84px 84px;
+				}
+			}
+		}
+	}
+		
+	.menu-toggle {
+		color: #A9A9A9;
+		cursor: pointer;
+		position: absolute;
+		right: 15px;
+		top: 10px;
+		font-size: 20px;
+		width: 30px;
+		height: 30px;
+		text-aligh: center;
+		@include transition(all 0.35s);
+		
+		&:hover {
+			color: $color-white;
+		}
+		
+		@include for(large-screens) {
+			display: none;
+		}
+	}
+
+	.site-navigation-area {
+		clear: both;
+		padding: $measure-columns-gut/2;
+		display: none;
+		@include for(large-screens) {
+			display: block;
+			clear: none;
+			padding: 0 0 0 220px;			
+		}
+	}
+	
+	&.toggled .site-navigation-area {
+		display: block;
+	}
+	
+	ul {
+		list-style-type: none;
+		padding: 0;		
+	}
+	
+	li {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;	
+	}
+	
+	a {
+		display: inline-block;
+		color: #cccccc;
+		line-height: 1;
+		padding: 6px 0;
+		text-decoration: none;
+		@include transition(all 0.35s);
+		
+		&:hover, &:focus, &:active {
+			color: $color-white;		
+		}
+	}
+	
+	.count {
+		color: rgba(255, 255, 255, 0.75);
+		font-size: 11px;
+		font-weight: 500;
+		line-height: 14px;
+		margin-left: 8px;		
+	}
+	
+	a:hover .count, .count:hover {
+		color: $color-white;
+		cursor: pointer;
+	}
+	
+	.submenu {
+		padding-left: $measure-columns-gut /2;
+	}
+	
+	@include for(large-screens) {
+		ul { @include clearfix; }
+				
+		li {
+			float: left;
+			position: relative;
+			padding: ($menu_height - 27px) / 2 0; 
+		}
+		
+		a {
+			padding: 5px 0;
+			line-height: 16px;			
+		}
+		
+		.submenu {
+			display: none;
+			padding: 5px 0;
+			position: absolute;
+			top: $menu_height;
+			left: -20px;
+			background: $color-white;
+			border: 1px solid $color-border-light;
+			z-index: 1000;			
+			@include calc(min-width, "100% + 30px");
+			box-shadow: 0px 0px 3px rgba(0,0,0, 0.1);
+			
+			li {
+				float: none;
+				margin: 0;
+				padding: 0;
+			}
+			
+			a {
+				white-space: nowrap;
+				padding: 7px 20px;
+				min-width: 100%;
+				color: $color-text;
+				
+				&:hover, &:focus, &:active {
+					background: darken($color-secondary, 10%);
+					color: $color-text-black;
+				}
+			}
+		}
+		
+		li:hover .submenu {
+			display: block;
+		}
+	}
+	
+} //site_navigation
+
+.fixed-nav #site_navigation {
+	width: 100%;
+	min-height: $menu_height;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10000;
+}
+
+.fixed-nav.admin-bar #site_navigation {
+	//@media screen and (min-width: 600px) { top: 46px; }
+	//@media screen and (min-width: 782px) { top: 32px; }
+}
+
+
+#content_menu {
+	margin: 0;
+	
+	.important-item {
+		margin-bottom: 6px;
+		
+		.count {			
+			border-radius: 1px;
+			margin: 0 3px;
+			padding: 2px 6px;
+			background: $color-label-green-normal;
+			color: $color-white;			
+		}
+		
+		a:hover .count, .count:hover {
+			background: darken($color-label-green-normal, 10%);
+		}
+	}
+	
+	.important-item-2 {
+		a {
+			//color: #DDDDDD;
+			&:hover, &:focus, &:active {
+				color: $color-white;		
+			}
+		}
+	}
+	
+	
+	
+	@include for(large-screens) {
+		@include clearfix;
+		float: left;
+		
+		li {
+			margin-right: $measure-columns-gut;
+		}
+		
+		.important-item {
+			margin-bottom: 0;
+		}
+	}
+}
+
+
+#actions_menu {
+	margin: $measure-columns-gut 0 0 0;
+	
+	.important-item {
+		a {
+			color: #eee;
+			&:hover, &:focus, &:active {
+				color: $color-white;		
+			}
+		}
+	}
+	
+	@include for(large-screens) {
+		margin: 0;		
+		float: right;
+		
+		li {
+			margin-left: $measure-columns-gut;
+		}
+	}
+}

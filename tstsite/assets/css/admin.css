@@ -1,0 +1,128 @@
+/**
+ * Admin style
+ **/
+
+.admin-tmb {
+	width: 54px; }
+
+.admin-tmb img {
+	max-width: 100%;
+	height: auto; }
+
+
+#csp-credentials,
+div[aria-describedby="csp-credentials"] {
+	z-index: 2000000000000;
+}
+
+.itv-admin-test-consult-needed {
+  color:#ff0000;
+}
+
+.itv-admin-test-consult-done {
+  color:#00bb00;
+}
+
+.column-thumbnail {
+	width: 10%;
+}
+
+.column-title {
+	width: 20%;
+}
+.column-post_views {
+	width: 10%;
+}
+
+.itv-stats-time, .itv-stats-task-title {
+	padding-right:30px;
+}
+
+.itv-stats-task-title {
+	width:40%;
+}
+
+.itv-stats-header th {
+	text-align:left;
+}
+
+.itv-stats-header th.itv-stats-header-status {
+    padding-right:30px;
+}
+
+a.itv-log-edit-user, a.itv-log-edit-user:hover {
+	text-decoration:none;
+	margin-left:3px;
+} 
+
+.column-p2p-from-consult-consultant ul {
+    display:none;
+}
+
+.column-taxonomy-consult_source {
+    width:120px;
+}
+
+.column-p2p-from-consult-consultant {
+    width:200px;
+}
+
+.manage-consult-loader {
+    vertical-align:middle;
+}
+
+.itv-admin-action-done-icon {
+    vertical-align:middle;
+}
+
+#acf-is_tst_consult_done {
+    display:none;
+}
+
+.itv-log-select-filter {
+    width:170px;
+}
+
+.log-stats-title {
+    font-size:0.9em;
+}
+
+.log-stats-table th {
+    text-align:left;
+}
+
+.wp-core-ui .button-primary.itv-resend-activation-email {
+    vertical-align:middle;
+    margin-left:20px;
+    margin-right:10px;
+}
+
+.itv-option-ok-label {
+    font-weight:bold;
+    color:#008000;
+}
+
+.itv-option-bad-label {
+    font-weight:bold;
+    color:#cc0000;
+}
+
+p.itv-activation-email-time {
+    font-size:0.8em;
+    color:#008000;
+}
+
+p.itv-activation-email-time.itv-activation-email-long-time-ago {
+    font-weight:bold;
+    color:#cc0000;
+}
+
+.itv-bulk-resend-activation-email {
+    width:380px;
+}
+
+p.itv-activation-email-time .itv-reactivation-limit {
+    color:#ffffff;
+    background-color:#cc0000;
+    padding:1px 5px 1px 5px;
+}

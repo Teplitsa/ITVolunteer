@@ -1,0 +1,103 @@
+.itv-rating {
+    .star{
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAABQCAYAAAAZQFV3AAACp0lEQVR42u2WT2jTcBTHoxs4Gf45FOdgh9omBfEqKMhggk6aPwdPgkK9CArePIieiqgTL4KHgSBamV3bJJvD1uXPWkiT4KjHHURhYJtsk7KDIP5h1a715dDRmqRNSy/K78G79Pveh19+7/feK4b9E/Y0URjhRP0WJ6ppTtIW5mT1MpfNHmjocaGwf1bQI5ZmxaRE7fa8JI06wuIryhif0e9CcL3FBS3Ncct7rRg+o15y0I1EWvHZgElBZW3BDX+jLvEvc+OspP1y0lkhb9qAqcX8pitQ0qqcrH1vo9dtQPix1i6hkzsA1Upfgayofeg38EVfgXwuN94rjF/KT9nvkOMGUpL2vFsYK6mfG+/UZo9AgIda7Op0GT3Stv2Si8pxuM8vXmBJMf/YU08nheXzkPCzDazGSjobU4pDngdFTCichAHwzXZnorrNynomqiiDXU+f+Lwylszk3zcDE7x6FYtGd/c80mbkmWEYHBdmxbc3UqnsUQwZWgFoBaAVgFYAWgH/hW2M0j4Dp+6UCPpViaBiRoA6Az21c1/l4OQhk6DulXB6AfxZKUidBn2XI2wteA4v4dR9M8TUd5xg6kYwfNNK4jBswMSp6WbdIOi6EQhfcwTCqWZbYM2JQToCyQ8dtRD9exVnjtmAkLDpCiToHyZBb7np8PmyDQgJNbcEL+4AZKp9BcJnbfQKg9wVp6LIPZ8QJ687AMmLPZ5uq+gnD9uARf/EQRDfdQuEBngdbXr8LbYeIENGiKl4BhJM+aPv1L627VfCyak1gtn2AKtC7JWO/Wy1mQm92rkQ1APXPv7byiOTw/D60+6FoJ6s4uE9XU0eKNIQFGnOGhBNsAoMkGkFmxjsaZxZ1TOOkGcB/BV8/ZOfPIH+lqMVgFYAWgFoBaAVgAwZ9gfvYo7N2uEnYAAAAABJRU5ErkJggg==');
+	    background-position:left -2px;
+	    display:block;
+	    width:20px;
+	    height:16px;
+	    line-height:16px;
+	    float:left;
+	    cursor:pointer;
+	    zoom:1;
+    }
+    .fullStar {
+        background-position:left -59px;
+    }
+    
+    .stars {
+        overflow:hidden;
+    }
+    
+    .tmp_es {
+        background-position:left -21px;
+    }
+    
+    .tmp_fs {
+        background-position:left -40px;
+    }
+
+    padding-top:7px;
+
+	.review-rating-container {
+	    float:left;
+	}
+    
+    .review-rating-label {
+        margin-right:5px;
+    }
+}
+
+.itv-rating.review-rating-readonly {
+	padding-top:0px;
+	width:30%;
+	min-width:100px;
+	
+	a.star {
+	   cursor: default;
+	}
+}
+
+.form-field-validation-message {
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: bold;
+    color: $color-label-red-normal;
+    padding: 4px 0 0 0px;
+}
+
+.rating-in-candidates-list {
+	padding-top:3px;
+}
+
+.rating-author-list {
+	padding-top:3px;
+}
+
+.leave-review-author {
+    background: transparentize($color-text-meta, 0.3);
+    color: $color-white;
+    font-size: 11px;
+    padding: 3px 11px 4px;
+    display: inline-block;
+    margin-top: 4px;
+    border-radius: 2px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+        background: darken($color-text-meta, 10%);
+    }
+}
+
+.leave-review-highlight {
+    background-color:#fce46d;
+    -webkit-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 50px 5px rgba(0,0,0,0.75);
+}
+
+.itv-review4doer-alert {
+    display:none;
+    margin:3px 0px 7px 0px;
+    padding:2px 2px 2px 3px;
+}
+
+.itv-xp-alert {
+    position:fixed;
+    z-index:100;
+    right: 20px;
+    top: -90px;
+}
+
+.itv-xp-alert .glyphicon {
+    margin-right:10px;
+}

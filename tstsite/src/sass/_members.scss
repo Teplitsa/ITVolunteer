@@ -1,0 +1,140 @@
+/** == Members Templates == **/
+
+/** Tasks List Screen **/
+.members-list-header {
+	.members-filters {
+		@include clearfix;
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+		padding-top: 12px;
+		
+		@include for(large-screens) {
+			margin-left: -36px;
+		}
+		
+		a {
+			display: inline-block;
+			line-height: 1;
+			padding: 4px 13px 6px;
+		}
+		
+		li {
+			float: left;
+			a { color: $color-user-user; }
+			
+			&.donee a { color: $color-user-donee; }
+			&.activist a { color: $color-user-activist;}
+			&.hero a { color: $color-user-hero; }
+			&.volunteer a { color: $color-user-volunteer; }
+		}
+				
+		li.active {
+			a {
+				color: $color-white;
+				background: $color-user-user;				
+				&:hover { text-decoration: none; }
+			}
+			
+			&.donee a { background: $color-user-donee; }
+			&.activist a { background: $color-user-activist;}
+			&.hero a { background: $color-user-hero; }
+			&.volunteer a { background: $color-user-volunteer; }
+		}
+	}
+}
+
+.member-header .edit-item {
+	padding: 5px 15px;
+	color: $color-link-one;
+	text-decoration: none;
+	background: rgba(255,255,255,0.9);
+	&:hover, &:focus, &:active {
+		background: $color-link-one;
+		color: $color-white;
+	}
+}
+
+
+//fake avatar
+.avatar-group {
+	position: relative;
+	min-height: 180px+25px;
+	
+	.user_avatar-show {
+		width: 180px;
+		height: 180px;
+		position: absolute;
+		top: 25px;
+		left: 0;
+		z-index: 0;
+	}
+	#upload_user_avatar_info {
+		background: $color-white;
+		position: relative;
+		z-index: 10;
+	}
+}
+
+.fixed-member-meta .sep {
+	display: inline-block;
+	margin: 0 3px;
+}
+
+.member-tasks {
+	.nav-tabs {
+		font-size: 12px;
+		li > a {
+			padding: 6px 9px;
+		}
+	}
+	.tab-pane {
+		padding: 25px 15px;
+		border-bottom: 1px solid #ddd;
+		
+		li {
+			font-size: 13px;
+			line-height: 1.3;
+		}
+	}
+	.well { font-size: 13px; }
+}
+
+.member-tasks-list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	
+	li {
+		margin-bottom: 15px;
+		padding: 0;
+		color: $color-deadline-all-time;
+	}
+	
+	time {
+		font-size: 0.9em;
+		color: $color-text-meta;
+	}
+}
+
+.register-form .checkbox label {
+    font-size:12px;
+    text-align:justify;
+}
+
+.checkbox .itv-reg-more-link {
+    width: 15px !important;
+    display: block;
+    position: absolute;
+    right: 0px;
+    top: 15px;
+    font-weight:bold;
+    background-color: #ffffff;
+    padding-left: 4px;
+}
+
+.itv-10x-btn-wrapper {
+    width:100%;
+    text-align:center;
+    margin-top:20px;
+}

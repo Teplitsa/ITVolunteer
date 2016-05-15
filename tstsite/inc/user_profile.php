@@ -1,6 +1,7 @@
 <?php
+use ITV\models\UserXPModel;
 
-# company logo
+// company logo
 function ajax_delete_user_company_logo() {
 	$member = wp_get_current_user();
 	
@@ -26,14 +27,14 @@ function ajax_delete_user_company_logo() {
 		}
 	}
 	
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 			'status' => 'error',
 			'message' => 'unkown error',
 		);
 	}
 	
-	die(json_encode($res));
+	wp_die(json_encode($res));
 }
 add_action('wp_ajax_delete-user-company-logo', 'ajax_delete_user_company_logo');
 
@@ -63,14 +64,14 @@ function ajax_upload_user_company_logo() {
 		}
 	}
 	
-	if(!$res) {
+	if($res === null) {
 		$res = array(
 			'status' => 'error',
 			'message' => 'unkown error',
 		);
 	}
 	
-	die(json_encode($res));
+	wp_die(json_encode($res));
 }
 add_action('wp_ajax_upload-user-company-logo', 'ajax_upload_user_company_logo');
 
@@ -83,11 +84,88 @@ function tst_get_member_user_company_logo($member_id) {
 	return $res;
 }
 
-# user skills
-$ITV_USER_SKILLS_EXCLUDE_CATEGORIES = array('prochee', 'materials');
+# user avatar
+function ajax_delete_user_avatar() {
+	$member = wp_get_current_user();
 
+	$res = null;
+	if(!$member) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'restricted method',
+		);
+	}
+	else {
+		$image_id = get_user_meta($member->ID, 'user_avatar', true);
+		if( $image_id ) {
+			wp_delete_attachment( $image_id, true );
+			$res = array(
+					'status' => 'ok',
+			);
+		} else {
+			$res = array(
+					'status' => 'error',
+					'message' => 'image not found',
+			);
+		}
+	}
+
+	if($res === null) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'unkown error',
+		);
+	}
+
+	wp_die(json_encode($res));
+}
+add_action('wp_ajax_delete-user-avatar', 'ajax_delete_user_avatar');
+
+function ajax_upload_user_avatar() {
+	$member = wp_get_current_user();
+
+	$res = null;
+	if(!$member) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'restricted method',
+		);
+	}
+	else {
+		$image_id = media_handle_upload( 'user_avatar', 0 );
+		$attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+		wp_update_attachment_metadata( $image_id,  $attach_data );
+				
+		if( $image_id ) {
+			update_user_meta($member->ID, 'user_avatar', $image_id);
+			UserXPModel::instance()->register_activity_from_gui($member->ID, UserXPModel::$ACTION_UPLOAD_PHOTO);
+						
+			$res = array(
+					'status' => 'ok',
+					'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
+			);
+		} else {
+			$res = array(
+					'status' => 'error',
+					'message' => 'upload image error',
+			);
+		}
+	}
+
+	if($res === null) {
+		$res = array(
+				'status' => 'error',
+				'message' => 'unkown error',
+		);
+	}
+
+	wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
+
+
+// user skills
 function tst_get_user_skills($member_id) {
-	global $ITV_USER_SKILLS_EXCLUDE_CATEGORIES;
 	$user_skills = get_user_meta($member_id, 'user_skills', true);
 	if(!is_array($user_skills)) {
 		$user_skills = $user_skills ? array($user_skills) : array();
@@ -100,8 +178,9 @@ function tst_get_user_skills($member_id) {
 	
 	$categories_filtered = array();
 	$parent_categories = array();
+	$skills_exclude_categories = array('prochee', 'materials');
 	foreach($categories as $category) {
-		if(array_search($category->slug, $ITV_USER_SKILLS_EXCLUDE_CATEGORIES) === false) {
+		if(array_search($category->slug, $skills_exclude_categories) === false) {
 			$category_hash = (array)$category;
 			$category_hash['checked'] = array_search($category->term_id, $user_skills) === false ? false : true;
 			if($category->parent) {
@@ -127,14 +206,13 @@ function tst_get_user_skills($member_id) {
 
 function tst_show_user_skills($skills) {
 	foreach($skills as $skill) {
-		?>
-			<div class="form-group"><div class="checkbox">
-			<label>		
-			<input type="checkbox" name="user_skill" class="user_skill" value="<?=$skill['term_id']?>" <?if($skill['checked']):?>checked="true"<?endif?> /> <?=$skill['cat_name']?>
-			</label>
-			</div></div>
-		<?
-	}
+?>
+	<div class="form-group"><div class="checkbox">
+	<label>		
+	<input type="checkbox" name="user_skill" class="user_skill" value="<?php echo $skill['term_id']?>" <?php if($skill['checked']):?>checked="true"<?php endif; ?> /> <?php echo $skill['cat_name']; ?>
+	</label>
+	</div></div>
+<?php }
 }
 
 function tst_get_member_user_skills_string($member_id) {
@@ -147,3 +225,25 @@ function tst_get_member_user_skills_string($member_id) {
 	}
 	return implode(', ', $actual_user_skills);
 }
+
+// SEO Title 
+add_filter( 'wpseo_title', 'itv_user_profile_seo_title');
+function itv_user_profile_seo_title($title) {
+	
+	if(is_single_member()){
+		$tst_member = tst_get_current_member();
+		if($tst_member->ID) {
+			
+			$title = sprintf(__('Member: %s', 'tst'), frl_page_title());
+			$org = get_user_meta($tst_member->ID, 'user_workplace', true);
+			if($org){
+				$title .= " / ".esc_attr($org);
+			}
+			$title .= ' - '.get_bloginfo('name');
+		}
+	}
+	
+	return $title;
+
+}
+
