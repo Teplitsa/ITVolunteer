@@ -1,5 +1,6 @@
 <?php
 use ITV\models\UserXPModel;
+use ITV\models\MailSendLogModel;
 
 class ItvLog {
     public static $ACTION_TASK_CREATE = 'create';
@@ -511,7 +512,6 @@ class ItvLog {
     
     public function show_general_stats() {
         $stats = $this->get_general_stats();
-        $users_stats = $this->get_users_stats('2016-02-01', '2016-02-07');
         echo '<table class="log-stats-table"><col width="70%"><col width="15%"><col width="15%">';
         echo '<tr>';
         echo "<th></th>";
@@ -576,6 +576,9 @@ class ItvLog {
         $stats_html = ob_get_clean();
         
         $users_stats = $this->get_users_stats($from_date, $to_date);
+        $send_mail_count = MailSendLogModel::instance()->get_send_email_count_for_week($from_date, $to_date);
+        $users_stats['week_mail_sent'] = $send_mail_count;
+        
         ob_start();
         $this->show_weekly_users_stats($users_stats);
         $users_stats_html = ob_get_clean();
