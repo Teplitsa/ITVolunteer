@@ -23,9 +23,8 @@ function tst_get_roles_list() {
 }
 
 function tst_get_role_name($role) {
-	
 	$roles = tst_get_roles_list(); 
-	return ($roles[$role]) ? $roles[$role] : $roles['user'];
+	return isset($roles[$role]) ? $roles[$role] : $roles['user'];
 }
 
 
