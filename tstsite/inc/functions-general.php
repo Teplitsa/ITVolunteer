@@ -4,7 +4,7 @@
  * (code wiil be modevd here from customizer.php and extras.php)
  ***/
 
-
+use ITV\models\MailSendLogModel;
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -172,3 +172,8 @@ function itv_html_email_with_cc($to, $subject, $message, $other_emails = [], $em
     
     return wp_mail($to, $subject, $message, $headers);
 }
+
+function itv_wp_mail_log( $args ) {
+    MailSendLogModel::instance()->log_send_action( $args );
+}
+add_filter( 'wp_mail', 'itv_wp_mail_log' );

@@ -283,8 +283,11 @@ function ajax_refuse_candidate() {
     p2p_update_meta($_POST['link-id'], 'is_approved', false);
 
     // Send email to the task doer:
-    $task = get_post($_POST['task-id']);
-    $doer = get_user_by('id', $_POST['doer-id']);
+    $task_id = $_POST['task-id'];
+    $task_doer_id = $_POST['doer-id'];
+    
+    $task = get_post($task_id);
+    $doer = get_user_by('id', $task_doer_id);
     
     $task_doers = tst_get_task_doers($task_id, true);
     $is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);

@@ -214,6 +214,8 @@ class ITV_CssJs {
 		$url = get_template_directory_uri();
 		$version = tst_get_version_num();
 	
+	    wp_enqueue_script('jquery');
+	    wp_enqueue_script('suggest');
 		wp_enqueue_style('tst-admin', $url.'/assets/css/admin.css', array(), $version);
 		wp_enqueue_script('tst-admin', $url.'/assets/js/admin.js', array('jquery'), $version);
 		

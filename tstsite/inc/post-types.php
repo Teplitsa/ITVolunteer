@@ -119,7 +119,7 @@ function itv_custom_content(){
                 'not_found' => __('No doers found.', 'tst'),
                 'create' => __('Create connections', 'tst'),
             ),
-			'admin_column' => true
+			'admin_column' => false,
         ));
     }
 }

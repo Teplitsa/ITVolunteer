@@ -8,6 +8,7 @@ use ITV\models\ThankyouModel;
 use ITV\models\ItvThankyouRecentlySaidException;
 use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
+use \WeDevs\ORM\WP\UserMeta as UserMeta;
 
 /* Define  roles */
 function tst_get_roles_list() {
@@ -22,9 +23,8 @@ function tst_get_roles_list() {
 }
 
 function tst_get_role_name($role) {
-	
 	$roles = tst_get_roles_list(); 
-	return ($roles[$role]) ? $roles[$role] : $roles['user'];
+	return isset($roles[$role]) ? $roles[$role] : $roles['user'];
 }
 
 
@@ -238,7 +238,7 @@ function tst_calculate_member_tasks_joined($user, $status = null, $num = null, $
 function tst_calculate_member_tasks_joined_count_raw_sql($user) {
     global $wpdb;
     #$sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d ";
-    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d AND um.meta_value = '' ";
+    $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts LEFT JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' WHERE posts.post_type = 'tasks' AND posts.post_status IN ('publish', 'in_work', 'closed') AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from AND p2p.p2p_to = %d AND (um.meta_value = '' OR um.meta_value IS NULL) ";
     return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
@@ -271,7 +271,7 @@ function tst_calculate_member_tasks_solved_count_raw_sql($user) {
     $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts INNER JOIN {$wpdb->prefix}p2p AS p2p ON p2p.p2p_from = posts.ID INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta ON p2p.p2p_id = p2pmeta.p2p_id 
         LEFT JOIN {$wpdb->prefix}usermeta AS um ON um.user_id = posts.post_author AND um.meta_key = 'activation_code' 
         WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
-            AND um.meta_value = ''
+            AND (um.meta_value = '' OR um.meta_value IS NULL)
             AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
             AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
             AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
@@ -713,13 +713,20 @@ function admin_users_filter( $query ){
             if($_GET['users_activation_status'] == 'activated') {
                 $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
                 "{$wpdb->users}.ID=um_activated.user_id AND " .
-                "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+                "um_activated.meta_key='activation_code' AND (um_activated.meta_value IS NULL OR um_activated.meta_value = '') ";
             }
             elseif($_GET['users_activation_status'] == 'not_activated') {
                     $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
                     "{$wpdb->users}.ID=um_activated.user_id AND " .
                     "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value != ''";
             }
+        }
+
+        if ( isset($_GET['users_city']) && $_GET['users_city'] != '') {
+            $qcity = esc_sql($_GET['users_city']);
+            $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_city ON " .
+            "{$wpdb->users}.ID=um_city.user_id AND " .
+            "um_city.meta_key='user_city' AND (um_city.meta_value LIKE '{$qcity}%' ) ";
         }
         
         if(isset($_GET['orderby'])) {
@@ -742,9 +749,9 @@ function admin_users_filter( $query ){
     }
     
     if(isset($query->query_vars['query_id']) && in_array($query->query_vars['query_id'], ['get_members_for_members_page', 'itv_count_activated_users_for_period', 'itv_count_main_users_stats'])) {
-        $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_activated ON " .
+        $query->query_from .= " LEFT JOIN {$wpdb->usermeta} AS um_activated ON " .
         "{$wpdb->users}.ID=um_activated.user_id AND " .
-        "um_activated.meta_key='activation_code' AND um_activated.meta_value IS NOT NULL AND um_activated.meta_value = ''";
+        "um_activated.meta_key='activation_code' AND (um_activated.meta_value IS NULL OR um_activated.meta_value = '') ";
     }
     
     // join user_xp
@@ -756,8 +763,13 @@ function admin_users_filter( $query ){
 add_filter( 'pre_user_query', 'admin_users_filter' );
 
 function show_users_filter_by_activation() {
+    $ret = "";
+    
+    $current_filter_val = isset($_GET['users_city']) ? $current_filter_val = $_GET['users_city'] : '';
+    $ret .= '<input type="text" name="users_city" id="users_city" class="itv-user-custom-filter itv-user-filter-city" placeholder="'.__('City', 'tst').'" data-filter-button-title="'.__('Filter', 'tst').'" value="'.$current_filter_val.'" />';
+    
     $current_filter_val = isset($_GET['users_activation_status']) ? $current_filter_val = $_GET['users_activation_status'] : '';
-    $ret = '<select name="users_activation_status" id="users_activation_status" data-filter-button-title="'.__('Filter', 'tst').'">';
+    $ret .= '<select name="users_activation_status" id="users_activation_status" class="users_activation_status itv-user-custom-filter" data-filter-button-title="'.__('Filter', 'tst').'">';
     $ret .= '<option value="" '.(!$current_filter_val ? 'selected="selected"' : '').'>'.__('All users', 'tst').'</option>';
     $ret .= '<option value="activated" '.($current_filter_val == 'activated' ? 'selected="selected"' : '').'>'.__('Activated users', 'tst').'</option>';
     $ret .= '<option value="not_activated" '.($current_filter_val == 'not_activated' ? 'selected="selected"' : '').'>'.__('Not activated users', 'tst').'</option>';
@@ -772,10 +784,14 @@ function itv_filter_users_by_activation() {
 add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 
 function itv_add_user_custom_columns($columns) {
+    $columns['itv_user_role'] = __('ITV role', 'tst');
     $columns['is_activated'] = __('Is activated', 'tst');
     $columns['reg_date'] = __('Registration date', 'tst');
     $columns['access_ip'] = __('Access IP', 'tst');
+    $columns['tasks_created'] = __('Tasks created', 'tst');
+    $columns['tasks_done'] = __('Tasks done', 'tst');
     $columns['user_xp'] = __('XP Rating', 'tst');
+    $columns['user_city'] = __('City', 'tst');
     return $columns;
 }
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
@@ -811,6 +827,25 @@ function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
         }
         return $res;
     }
+    elseif('itv_user_role' == $column_name) {
+        $user = get_user_by('id', $user_id);
+        return tst_get_member_role_name($user);
+    }
+    elseif('tasks_created' == $column_name) {
+        $user = get_user_by('id', $user_id);
+        $stats = tst_get_member_activity($user, 'created');
+        return isset($stats['created']) ? $stats['created'] : 0;
+    }
+    elseif('tasks_done' == $column_name) {
+        $user = get_user_by('id', $user_id);
+        $stats = tst_get_member_activity($user, 'solved');
+        return isset($stats['solved']) ? $stats['solved'] : 0;
+    }
+    elseif('user_city' == $column_name) {
+        $user_city = ItvIPGeo::instance()->get_geo_city($user_id);
+        return $user_city;
+    }
+    
     return $value;
 }
 add_action('manage_users_custom_column',  'itv_show_user_custom_columns_content', 10, 3);
@@ -1009,3 +1044,23 @@ function ajax_thankyou() {
 }
 add_action('wp_ajax_thankyou', 'ajax_thankyou');
 add_action('wp_ajax_nopriv_thankyou', 'ajax_thankyou');
+
+function itv_city_lookup() {
+    $input = isset($_GET['q']) ? $_GET['q'] : '';
+    $query = UserMeta::where('meta_key', '=', 'user_city');
+    if(trim($input)) {
+        $query->where('meta_value', 'like', trim($input) . "%");
+    }
+    else {
+        $query->where('meta_value', '<>', "");
+    }
+    
+    $metas = $query->groupBy('meta_value')->get();
+    
+    $cities = [];
+    foreach($metas as $meta) {
+        $cities[] = $meta->meta_value;
+    }
+    wp_die(implode("\n", $cities));
+}
+add_action('wp_ajax_city_lookup', 'itv_city_lookup');
