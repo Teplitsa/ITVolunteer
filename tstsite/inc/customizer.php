@@ -921,6 +921,46 @@ function itv_email_login_authenticate($user, $username, $password) {
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
 
+function __remove_test_tmp_users() {
+    global $wpdb;
+    
+    $users = new WP_User_Query( array(
+        'search'         => 'itvtesttmp*',
+        'search_columns' => array(
+            'user_login',
+        ),
+    ) );
+    $users_found = $users->get_results();
+    
+    foreach($users_found as $user) {
+        wp_delete_user( $user->ID );
+        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->usermeta WHERE user_id = %d ", $user->ID));
+    }
+}
+
+function __add_test_users_if_need() {
+    $test_users_login = ['itvtest001', 'itvtest002'];
+    $test_password = '123123';
+    
+    foreach($test_users_login as $user_login) {
+        $user = get_user_by('login', $user_login);
+        if(!$user) {
+            wp_create_user( $user_login, $test_password, $user_login . '@ngo2.ru' );
+        }
+    }
+}
+
+function ajax_prepare_test_data() {
+    __remove_test_tmp_users();
+    __add_test_users_if_need();
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+}
+add_action('wp_ajax_prepare-test-data', 'ajax_prepare_test_data');
+add_action('wp_ajax_nopriv_prepare-test-data', 'ajax_prepare_test_data');
+
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
 __('itv_week_day_2', 'tst');
