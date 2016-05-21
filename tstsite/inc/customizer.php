@@ -945,7 +945,8 @@ function __add_test_users_if_need() {
     foreach($test_users_login as $user_login) {
         $user = get_user_by('login', $user_login);
         if(!$user) {
-            wp_create_user( $user_login, $test_password, $user_login . '@ngo2.ru' );
+            $user_id = wp_create_user( $user_login, $test_password, $user_login . '@ngo2.ru' );
+            update_user_meta( $user_id, 'activation_code', '' );
         }
     }
 }
