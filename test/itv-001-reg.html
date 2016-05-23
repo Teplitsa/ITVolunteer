@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://testplugins.ngo2.ru/" />
+<title>itv-001-reg</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">itv-001-reg</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/wp-admin/admin-ajax.php?action=prepare-test-data</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/registration/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>javascript{Math.random().toString(36).substring(7)}</td>
+	<td>itvUserRand</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=first_name</td>
+	<td>itvtesttmp_${itvUserRand}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=last_name</td>
+	<td>itvtest-lastname-${itvUserRand}</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=email</td>
+	<td>itvtesttmp.${itvUserRand}@ngo2.ru</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=pass1</td>
+	<td>123123</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=agree_personal_data</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=do-register</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>2000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>//*[@id='register-form-message']</td>
+	<td>reg_result_text</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${reg_result_text}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>//*[@id='register-form-message']</td>
+	<td>*регистрация*завершена*</td>
+</tr>
+</tbody></table>
+</body>
+</html>
