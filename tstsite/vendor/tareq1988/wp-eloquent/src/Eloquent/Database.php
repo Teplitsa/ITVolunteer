@@ -1,6 +1,8 @@
 <?php
 namespace WeDevs\ORM\Eloquent;
 
+use Closure;
+
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
