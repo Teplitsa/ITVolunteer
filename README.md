@@ -63,10 +63,15 @@ https://www.youtube.com/watch?v=D32OZIhoC6E
 * Для подсчета статистики на сайте вам необходимо настроить запуск соответствующих скриптов через cron. Это можно сделать через SSH или панель управления хостингом. В cron нужно прописать следующие строки, предварительно заменив /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/ на полный путь к папке, в которой лежит ваш сайт на WordPress, а YOURSITE.RU заменить на реальный домен вашего сайта, например itv.te-st.ru:
 
 */30    *       *       *       *       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_refresh_users_stats.php --host=YOURSITE.RU >> /tmp/itv.cron.refresh_users_stats.log 2>&1
+
 45      22      *       *       *       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_archive_old_undone_tasks.php --host=YOURSITE.RU >> /tmp/itv.cron.archive_old_undone_tasks.log 2>&1
+
 15      23      *       *       *       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_notify_tasks_owners.php --host=YOURSITE.RU >> /tmp/itv.cron.notify_tasks_owners.log 2>&1
+
 25      23      *       *       *       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_refresh_tasks_stats_by_tags.php  --host=YOURSITE.RU >> /tmp/itv.cron.refresh_tasks_stats_by_tags.log 2>&1
+
 00      10      *       *       3       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_send_weekly_stats_report.php --host=YOURSITE.RU >> /tmp/itv.cron.send_weekly_stats_report.log 2>&1
+
 10      02      *       *       3       /usr/bin/php /FULL/PATH_TO_YOUR/SITE/DOCUMENT_ROOT/wp-content/themes/tstsite/cli_users_recalc_xp.php --host=YOURSITE.RU >> /tmp/itv.cron.users_recalc_xp.log 2>&1
 
 Если путь к команде php отличается от /usr/bin/php, то укажите свой путь или команду без пути (просто php).
