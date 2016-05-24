@@ -65,8 +65,8 @@ function ajax_add_edit_task(){
     
     $params = array(
         'post_type' => 'tasks',
-        'post_title' => htmlentities(trim($_POST['title']), ENT_COMPAT, 'UTF-8'),
-        'post_content' => htmlentities(trim($_POST['descr']), ENT_COMPAT, 'UTF-8'),
+        'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
+        'post_content' => filter_var(trim($_POST['descr']), FILTER_SANITIZE_STRING),
         'tags_input' => $_POST['tags'],
     );
 	
@@ -100,7 +100,7 @@ function ajax_add_edit_task(){
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
         
 		//update_field doesn't work for some reason - use native functions
-		update_post_meta((int)$_POST['id'], 'about-author-org', htmlentities(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : '')));
+		update_post_meta((int)$_POST['id'], 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
 		wp_set_post_terms( (int)$_POST['id'], (int)$_POST['reward'], 'reward');
 		update_post_meta((int)$_POST['id'], 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
