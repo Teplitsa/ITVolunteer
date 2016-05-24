@@ -64,16 +64,16 @@ function ajax_publish_task() {
         )));
     }
 
-    $upd_id = wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
 	if($author_id = get_post($upd_id)->post_author){
 		do_action('update_member_stats', array($author_id));
 	}
 	
-    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
+    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
     
     wp_die(json_encode(array(
         'status' => 'ok',
-        'permalink' => get_permalink($_POST['task-id'])
+        'permalink' => get_permalink((int)$_POST['task-id'])
     )));
 }
 add_action('wp_ajax_publish-task', 'ajax_publish_task');
@@ -95,12 +95,12 @@ function ajax_unpublish_task() {
         )));
     }
 
-    $upd_id = wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'draft'));
+    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'draft'));
     if($author_id = get_post($upd_id)->post_author){
 		do_action('update_member_stats', array($author_id));
 	}
 	
-    ItvLog::instance()->log_task_action($_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
+    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
     
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -125,7 +125,7 @@ function ajax_task_to_work() {
         )));
     }
 	
-	$task_id = $_POST['task-id'];
+	$task_id = (int)$_POST['task-id'];
     wp_update_post(array('ID' => $task_id, 'post_status' => 'in_work'));
 	
 	$task = get_post($task_id);	
@@ -160,7 +160,7 @@ function ajax_close_task() {
         )));
     }
 
-    $task_id = $_POST['task-id'];
+    $task_id = (int)$_POST['task-id'];
     wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
     ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
     UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
@@ -205,11 +205,11 @@ function ajax_approve_candidate() {
         )));
     }
 
-    p2p_update_meta($_POST['link-id'], 'is_approved', true);
+    p2p_update_meta((int)$_POST['link-id'], 'is_approved', true);
 
     // Send email to the task doer:
-    $task = get_post($_POST['task-id']);
-    $doer = get_user_by('id', $_POST['doer-id']);
+    $task = get_post((int)$_POST['task-id']);
+    $doer = get_user_by('id', (int)$_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
@@ -253,7 +253,7 @@ function ajax_approve_candidate() {
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('approve_candidate_author_notice'), $task ? $task->ID : 0);
 
     // Task is automatically switched "to work":
-    wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'in_work'));
+    wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'in_work'));
 
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -280,11 +280,11 @@ function ajax_refuse_candidate() {
         )));
     }
 
-    p2p_update_meta($_POST['link-id'], 'is_approved', false);
+    p2p_update_meta((int)$_POST['link-id'], 'is_approved', false);
 
     // Send email to the task doer:
-    $task_id = $_POST['task-id'];
-    $task_doer_id = $_POST['doer-id'];
+    $task_id = (int)$_POST['task-id'];
+    $task_doer_id = (int)$_POST['doer-id'];
     
     $task = get_post($task_id);
     $doer = get_user_by('id', $task_doer_id);
@@ -299,7 +299,7 @@ function ajax_refuse_candidate() {
 		
     $email_templates = ItvEmailTemplates::instance();
 	
-    $user = get_user_by('id', $_POST['doer-id']);
+    $user = get_user_by('id', (int)$_POST['doer-id']);
     wp_mail(
         $user->user_email,
         $email_templates->get_title('refuse_candidate_doer_notice'),
@@ -313,7 +313,7 @@ function ajax_refuse_candidate() {
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
         // Task is automatically switched "publish":
-        wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
     }
     
     wp_die(json_encode(array(
@@ -339,7 +339,7 @@ function ajax_add_candidate() {
         )));
     }
 
-    $task_id = $_POST['task-id'];
+    $task_id = (int)$_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
@@ -370,7 +370,7 @@ function ajax_add_candidate() {
             $email_templates->get_text('add_candidate_author_notice'),
             $task_author->first_name,
             $task->post_title,
-            htmlentities($_POST['candidate-message'], ENT_COMPAT, 'UTF-8'),
+            filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING),
             get_permalink($task_id)
         ))
     );
@@ -400,7 +400,7 @@ function ajax_remove_candidate() {
         )));
     }
 
-    $task_id = $_POST['task-id'];
+    $task_id = (int)$_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
@@ -426,14 +426,14 @@ function ajax_remove_candidate() {
             $email_templates->get_text('refuse_candidate_author_notice'),
             $task_author->first_name,
             $task->post_title,
-            $_POST['candidate-message']
+            filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING)
         ))
     );
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
         // Task is automatically switched "publish":
-        wp_update_post(array('ID' => $_POST['task-id'], 'post_status' => 'publish'));
+        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
     }
 	
     wp_die(json_encode(array(
@@ -503,10 +503,10 @@ function ajax_user_register() {
 		)));
 	} else {
 		$user_params = array(
-				'email' => $_POST['email'],
+				'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
 				'pass' => $_POST['pass'],
-				'first_name' => $_POST['first_name'],
-				'last_name' => $_POST['last_name'],
+				'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
+				'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
 		);
 		$reg_result = tst_register_user($user_params);
 		
@@ -567,11 +567,11 @@ function ajax_update_profile() {
         )));
     } else {
         $params = array(
-            'ID' => $_POST['id'],
-            'user_email' => $_POST['email'],
-            'first_name' => $_POST['first_name'],
-            'last_name' => $_POST['last_name'],
-        	'user_url' => $_POST['user_website'],
+            'ID' => (int)$_POST['id'],
+            'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+            'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_EMAIL),
+            'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_EMAIL),
+        	'user_url' => filter_var($_POST['user_website'], FILTER_SANITIZE_EMAIL),
         );
         if( !empty($_POST['pass']) )
             $params['user_pass'] = $_POST['pass'];
@@ -584,17 +584,17 @@ function ajax_update_profile() {
             )));
         } else {
             // Update another fields...
-            update_user_meta($member->ID, 'description', htmlentities($_POST['bio'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_city', htmlentities($_POST['city'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_workplace', htmlentities(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', ENT_QUOTES, 'UTF-8'));
-			update_user_meta($member->ID, 'user_workplace_desc', htmlentities(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_speciality', htmlentities($_POST['spec'], ENT_QUOTES, 'UTF-8'));            
-            update_user_meta($member->ID, 'user_contacts', htmlentities($_POST['user_contacts_text'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'user_skype', htmlentities($_POST['user_skype'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'twitter', htmlentities($_POST['twitter'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'facebook', htmlentities($_POST['facebook'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'vk', htmlentities($_POST['vk'], ENT_QUOTES, 'UTF-8'));
-            update_user_meta($member->ID, 'googleplus', htmlentities($_POST['googleplus'], ENT_QUOTES, 'UTF-8'));
+            update_user_meta($member->ID, 'description', filter_var($_POST['bio'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_city', filter_var($_POST['city'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_workplace', filter_var(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', FILTER_SANITIZE_STRING));
+			update_user_meta($member->ID, 'user_workplace_desc', filter_var(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_speciality', filter_var($_POST['spec'], FILTER_SANITIZE_STRING));            
+            update_user_meta($member->ID, 'user_contacts', filter_var($_POST['user_contacts_text'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_skype', filter_var($_POST['user_skype'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'twitter', filter_var($_POST['twitter'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'facebook', filter_var($_POST['facebook'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'vk', filter_var($_POST['vk'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'googleplus', filter_var($_POST['googleplus'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'user_skills', isset($_POST['user_skills']) ? $_POST['user_skills'] : array());
            
 		    do_action('update_member_stats', array($user_id));
@@ -624,15 +624,15 @@ function ajax_delete_profile() {
         )));
     }
     
-    $user = get_user_by('id', $_POST['id']);
+    $user = get_user_by('id', (int)$_POST['id']);
     $user_login = '';
     if($user) {
     	$user_login = $user->user_login;
     }
 
     #	delete user from multisite forever
-    if(wpmu_delete_user($_POST['id'])) {
-    #if(wp_delete_user($_POST['id'], ACCOUNT_DELETED_ID)) {
+    if(wpmu_delete_user((int)$_POST['id'])) {
+    #if(wp_delete_user((int)$_POST['id'], ACCOUNT_DELETED_ID)) {
     	$itv_log = ItvLog::instance();
     	$itv_log->log_user_action(ItvLog::$ACTION_USER_DELETE_PROFILE, $user_id, $user_login);
     	 
@@ -920,6 +920,47 @@ function itv_email_login_authenticate($user, $username, $password) {
 }
 remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
 add_filter('authenticate', 'itv_email_login_authenticate', 20, 3);
+
+function __remove_test_tmp_users() {
+    global $wpdb;
+    
+    $users = new WP_User_Query( array(
+        'search'         => 'itvtesttmp*',
+        'search_columns' => array(
+            'user_login',
+        ),
+    ) );
+    $users_found = $users->get_results();
+    
+    foreach($users_found as $user) {
+        wp_delete_user( $user->ID );
+        $wpdb->query($wpdb->prepare("DELETE FROM $wpdb->usermeta WHERE user_id = %d ", $user->ID));
+    }
+}
+
+function __add_test_users_if_need() {
+    $test_users_login = ['itvtest001', 'itvtest002'];
+    $test_password = '123123';
+    
+    foreach($test_users_login as $user_login) {
+        $user = get_user_by('login', $user_login);
+        if(!$user) {
+            $user_id = wp_create_user( $user_login, $test_password, $user_login . '@ngo2.ru' );
+            update_user_meta( $user_id, 'activation_code', '' );
+        }
+    }
+}
+
+function ajax_prepare_test_data() {
+    __remove_test_tmp_users();
+    __add_test_users_if_need();
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+}
+add_action('wp_ajax_prepare-test-data', 'ajax_prepare_test_data');
+add_action('wp_ajax_nopriv_prepare-test-data', 'ajax_prepare_test_data');
 
 __('itv_week_day_0', 'tst');
 __('itv_week_day_1', 'tst');
