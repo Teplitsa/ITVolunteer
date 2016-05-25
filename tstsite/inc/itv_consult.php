@@ -201,7 +201,7 @@ class ItvConsult {
             ));
             
             # add consultant filter
-            $selected = isset($_GET['user']) ? $_GET['user'] : '';
+            $selected = isset($_GET['user']) ? filter_var($_GET['user'], FILTER_SANITIZE_STRING) : '';
             static::show_consultants_dropdown($selected, false);
         };
     }
@@ -801,7 +801,7 @@ add_action('admin_init' , 'itv_consult_admin_init');
 function itv_consult_change_datetime() {
     $res = array('status' => 'error');
     try {
-        update_post_meta( $_POST['consult_id'], 'consult_moment', $_POST['datetime'] . ':00' );
+        update_post_meta( (int)$_POST['consult_id'], 'consult_moment', $_POST['datetime'] . ':00' );
         $res = array('status' => 'ok');
     }
     catch(Exception $ex) {}
@@ -813,16 +813,16 @@ add_action('wp_ajax_change-consult-datetime', 'itv_consult_change_datetime');
 function itv_consult_change_state() {
     $res = array('status' => 'error');
     try {
-        wp_set_post_terms( $_POST['consult_id'], $_POST['state_term_id'], 'consult_state', false );
+        wp_set_post_terms( (int)$_POST['consult_id'], (int)$_POST['state_term_id'], 'consult_state', false );
         
         // update old type consultation request
         $tasks = get_posts( array(
             'connected_type' => 'task-consult',
-            'connected_items' => $_POST['consult_id']
+            'connected_items' => (int)$_POST['consult_id']
         ));
         $task = count($tasks) > 0 ? $tasks[0] : null;
         if($task) {
-            $term = get_term($_POST['state_term_id'], 'consult_state');
+            $term = get_term((int)$_POST['state_term_id'], 'consult_state');
             if($term && $term->slug == 'done') {
                 update_field('is_tst_consult_done', true, $task->ID);
             }
@@ -844,12 +844,12 @@ function itv_consult_change_consultant() {
     try {
         $users = get_users( array(
             'connected_type' => 'consult-consultant',
-            'connected_items' => $_POST['consult_id']
+            'connected_items' => (int)$_POST['consult_id']
         ));
         foreach($users as $user) {
-            p2p_type('consult-consultant')->disconnect( $_POST['consult_id'], $user->ID );
+            p2p_type('consult-consultant')->disconnect( (int)$_POST['consult_id'], $user->ID );
         }
-        p2p_type('consult-consultant')->connect( $_POST['consult_id'], $_POST['consultant_id'], array());
+        p2p_type('consult-consultant')->connect( (int)$_POST['consult_id'], (int)$_POST['consultant_id'], array());
         
         $res = array('status' => 'ok');
     }

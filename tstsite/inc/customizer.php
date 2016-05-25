@@ -569,9 +569,9 @@ function ajax_update_profile() {
         $params = array(
             'ID' => (int)$_POST['id'],
             'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-            'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_EMAIL),
-            'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_EMAIL),
-        	'user_url' => filter_var($_POST['user_website'], FILTER_SANITIZE_EMAIL),
+            'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
+            'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
+        	'user_url' => filter_var($_POST['user_website'], FILTER_SANITIZE_STRING),
         );
         if( !empty($_POST['pass']) )
             $params['user_pass'] = $_POST['pass'];

@@ -200,7 +200,7 @@ class ItvLog {
             $user_text = "<a href='" . $user_link . "' title='" . get_user_last_login_time ( $user ) . "'>" . $user_login . "</a>";
             $user_text .= "<a href='" . $edit_user_link . "' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";
             
-            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user->ID, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
+            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user_id, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
             echo "<td class='itv-stats-time'>" . $log->action_time . "</td>";
             echo "<td class='itv-stats-time'>" . "</td>";
             echo "<td>" . $user_text . "</td>";
@@ -309,19 +309,19 @@ class ItvLog {
             }
     
             if(isset($_GET['log_user_name']) && trim($_GET['log_user_name'])) {
-                $this->filter['log_user_name'] = trim($_GET['log_user_name']);
+                $this->filter['log_user_name'] = filter_var(trim($_GET['log_user_name']), FILTER_SANITIZE_STRING);
             }
     
             if(isset($_GET['log_task_title']) && trim($_GET['log_task_title'])) {
-                $this->filter['log_task_title'] = trim($_GET['log_task_title']);
+                $this->filter['log_task_title'] = filter_var(trim($_GET['log_task_title']), FILTER_SANITIZE_STRING);
             }
             
             if(isset($_GET['from_date']) && trim($_GET['from_date'])) {
-                $this->filter['from_date'] = trim($_GET['from_date']);
+                $this->filter['from_date'] = filter_var(trim($_GET['from_date']), FILTER_SANITIZE_STRING);
             }
             
             if(isset($_GET['to_date']) && trim($_GET['to_date'])) {
-                $this->filter['to_date'] = trim($_GET['to_date']);
+                $this->filter['to_date'] = filter_var(trim($_GET['to_date']), FILTER_SANITIZE_STRING);
             }
             
         }
@@ -379,12 +379,12 @@ class ItvLog {
     }
     
     public function get_filter_by_task() {
-        $ret = '<input type="text" name="log_task_title" placeholder="'.__('Task title', 'tst').'" value="'.(isset($_GET['log_task_title']) ? $_GET['log_task_title'] : '').'" />';
+        $ret = '<input type="text" name="log_task_title" placeholder="'.__('Task title', 'tst').'" value="'.(isset($_GET['log_task_title']) ? filter_var($_GET['log_task_title'], FILTER_SANITIZE_STRING) : '').'" />';
         return $ret;
     }
     
     public function get_filter_by_user() {
-        $ret = '<input type="text" name="log_user_name" placeholder="'.__('Username or email', 'tst').'" value="'.(isset($_GET['log_user_name']) ? $_GET['log_user_name'] : '').'" />';
+        $ret = '<input type="text" name="log_user_name" placeholder="'.__('Username or email', 'tst').'" value="'.(isset($_GET['log_user_name']) ? filter_var($_GET['log_user_name'], FILTER_SANITIZE_STRING) : '').'" />';
         return $ret;
     }
     
