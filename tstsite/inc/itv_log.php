@@ -200,7 +200,7 @@ class ItvLog {
             $user_text = "<a href='" . $user_link . "' title='" . get_user_last_login_time ( $user ) . "'>" . $user_login . "</a>";
             $user_text .= "<a href='" . $edit_user_link . "' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";
             
-            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user->ID, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
+            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user_id, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
             echo "<td class='itv-stats-time'>" . $log->action_time . "</td>";
             echo "<td class='itv-stats-time'>" . "</td>";
             echo "<td>" . $user_text . "</td>";
