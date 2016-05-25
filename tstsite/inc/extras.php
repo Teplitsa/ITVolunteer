@@ -54,7 +54,7 @@ function tst_main_query_mods(WP_Query $query) {
             $metas = (array)$query->get('meta_query');
             $metas[] = array(
                 'key' => 'reward',
-                'value' => $_GET['rw'], //'slug',
+                'value' => filter_var($_GET['rw'], FILTER_SANITIZE_STRING), //'slug',
                 'compare' => '=',
             );
             $query->set('meta_query', $metas);

@@ -60,59 +60,59 @@ function tst_preserve_task_author($data, $postarr) {
 /** AJAX on task edits **/
 function ajax_add_edit_task(){
 
-    $_POST['id'] = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
+    $task_id = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
     $itv_log = ItvLog::instance();
     
     $params = array(
         'post_type' => 'tasks',
         'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
         'post_content' => filter_var(trim($_POST['descr']), FILTER_SANITIZE_STRING),
-        'tags_input' => $_POST['tags'],
+        'tags_input' => filter_var($_POST['tags'], FILTER_SANITIZE_STRING),
     );
 	
 	$is_new_task = false;
-    if($_POST['id']) { // Updating a task
-        $params['ID'] = $_POST['id'];
+    if($task_id) { // Updating a task
+        $params['ID'] = $task_id;
 
         if(isset($_POST['status']) && $_POST['status'] == 'trash') {
 
-            wp_trash_post($_POST['id']);
-            $itv_log->log_task_action($_POST['id'], ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
+            wp_trash_post((int)$task_id);
+            $itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
 
             wp_die(json_encode(array(
                 'status' => 'deleted',
                 'message' => __('The task was successfully deleted.', 'tst'),
             )));
         } else {
-            $params['post_status'] = $_POST['status'];
+            $params['post_status'] = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
         }
     }
     // New task
     else {
         $is_new_task = true;
-        $params['post_status'] = isset($_POST['status']) ? $_POST['status'] : 'draft';		
+        $params['post_status'] = isset($_POST['status']) ? filter_var($_POST['status'], FILTER_SANITIZE_STRING) : 'draft';		
     }
    
-	$_POST['id'] = wp_insert_post($params);
+	$task_id = wp_insert_post($params);
 	
-    if($_POST['id']) {
-        $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $_POST['id']);
+    if($task_id) {
+        $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $task_id);
         $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
         
 		//update_field doesn't work for some reason - use native functions
-		update_post_meta((int)$_POST['id'], 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
-		wp_set_post_terms( (int)$_POST['id'], (int)$_POST['reward'], 'reward');
-		update_post_meta((int)$_POST['id'], 'is_tst_consult_needed', $new_is_tst_consult_needed);
+		update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
+		wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
+		update_post_meta($task_id, 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
 		
         if($is_new_task) {
-            tst_send_admin_notif_new_task($_POST['id']);
+            tst_send_admin_notif_new_task($task_id);
         }
         
         if($new_is_tst_consult_needed) {
             if($is_new_task || !$old_is_tst_consult_needed) {
-                update_field('is_tst_consult_done', false, $_POST['id']);
-                ItvConsult::create($_POST['id']);
+                update_field('is_tst_consult_done', false, $task_id);
+                ItvConsult::create($task_id);
             }
         }
 				
@@ -122,7 +122,7 @@ function ajax_add_edit_task(){
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
 //                    __('The task was successfully created.', 'tst'),
-                'id' => $_POST['id'],
+                'id' => $task_id,
             )));
         } else
             wp_die(json_encode(array(
@@ -130,7 +130,7 @@ function ajax_add_edit_task(){
 //            'message' =>  ?
 //                    __('The task was successfully saved.', 'tst') :
 //                    __('The task was successfully created.', 'tst'),
-                'id' => $_POST['id']
+                'id' => $task_id
             )));
 
     } else {
