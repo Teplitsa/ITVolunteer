@@ -81,19 +81,29 @@ $itv_author_reviews = ItvReviewsAuthor::instance();
 				<?php the_content(); ?>
 			</div>
 			
-    		<div class="form-group itv-res-screen-group">			
+			<?php
+			    $screenshots = ResultScreenshots::instance()->get_screenshots(get_the_ID());
+			?>
+
+			<div class="form-group itv-res-screen-group task-section" <?php if(!count($screenshots) && !ResultScreenshots::instance()->is_upload_allowed($cur_user_id, get_the_ID())):?>style="display:none;"<?php endif;?>>
+		        <h5 class="task-section-title"><?php _e('Result screenshots', 'tst');?></h5>
     			<?php
-    				$screenshots = ResultScreenshots::instance()->get_screenshots($cur_user_id, get_the_ID());
+    				if(!count($screenshots)) {
+    				    $screenshots[] = null;
+    				}
     			?>
     			
-    			<a id="upload_res_screen" href="javascript:void(0);" class="btn btn-primary btn-xs itv-res-screen-upload" data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>"><?php _e('Upload result screenshots', 'tst');?></a>
+    			<a id="upload_res_screen" href="javascript:void(0);" class="btn btn-primary btn-xs itv-res-screen-upload" <?php if(!ResultScreenshots::instance()->is_upload_allowed($cur_user_id, get_the_ID()) || ResultScreenshots::instance()->is_limit($cur_user_id, get_the_ID())):?>style="display:none;"<?php endif?>  data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>"><?php _e('Upload result screenshots', 'tst');?></a>
+    			<span id="itv-upload-res-screen-loading" class="itv-upload-screen-loader" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></span>
     			
-    			<div class="itv-res-screen-list clearfix">
+    			<div id="itv-res-screen-list" class="itv-res-screen-list clearfix">
     			<?php foreach($screenshots as $screenshot):?>
-    			    <div class="itv-res-screen-item pull-left">
-            			<a href="javascript:void(0);" data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>" class="btn btn-default btn-xs itv-res-screen-action delete_res_screen" <?php if(!$screenshot):?>style="display:none;"<?php endif?>><?php _e('Delete avatar', 'tst');?></a>
-            			<div id="upload_res_screen_info" class="itv-res-screen-info"><?php echo $screenshot; ?></div>
-            			<div id="upload_res_screen_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
+    			    <div class="itv-res-screen-item pull-left" <?php if(!$screenshot):?>style="display:none;"<?php endif?>>
+    			        <?php if(ResultScreenshots::instance()->is_upload_allowed($cur_user_id, get_the_ID())):?>
+            			<a href="javascript:void(0);" data-screen_id="<?php echo $screenshot ? $screenshot->id : ''?>" data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>" class="btn btn-default btn-xs itv-res-screen-action delete_res_screen" <?php if(!$screenshot):?>style="display:none;"<?php endif?>><?php _e('Delete screenshot', 'tst');?></a>
+            			<?php endif?>
+            			<a class="itv-res-screen-info itv-upload-res-screen-info swipebox" href="<?php echo $screenshot ? $screenshot->get_full_image_src() : '#'; ?>"><?php echo $screenshot ? $screenshot->get_image() : ''; ?></a>
+            			<div class="itv-upload-res-screen-loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
         			</div>
     			<?php endforeach;?>
     			</div>

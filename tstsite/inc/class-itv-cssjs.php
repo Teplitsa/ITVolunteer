@@ -182,6 +182,10 @@ class ITV_CssJs {
 			'xp_cookie_name'                 => UserXPModel::instance()->get_xp_alert_cookie_name(get_current_user_id()),
 			'xp_actions'                     => UserXPModel::instance()->get_xp_alert_strings_json(),
 			'error'                          => __('Error!', 'tst'),
+			'res_screen_delete_error'        => __('Delete screenshot error!', 'tst'),
+			'user_company_logo_upload_error' => __('Upload screenshot error!', 'tst'),
+			'sure_delete_screen'             => __('Are you sure?', 'tst'),
+			'screens_limit_exceeded'         => __('Too much screenshots loaded!', 'tst'),
 			//        '' => __('.', 'tst'),
 		));
 		

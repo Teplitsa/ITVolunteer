@@ -1,6 +1,6 @@
 <?php
 use ITV\models\UserXPModel;
-use ITV\dao\ResultScreen;
+use ITV\models\ResultScreenshots;
 
 /**
  * Task related utilities and manipulations
@@ -236,38 +236,21 @@ function comment_inserted($comment_id, $comment_object) {
 # result screenshots
 function ajax_delete_result_screenshot() {
     $member = wp_get_current_user();
-    $task_id = isset($_GET['task_id']) ? (int)$_GET['task_id'] : 0;
+    $screen_id = isset($_GET['screen_id']) ? (int)$_GET['screen_id'] : 0;
 
     $res = null;
-    if(!$member) {
-        $res = array(
-            'status' => 'error',
-            'message' => 'restricted method',
-        );
+    try {
+        $res = ResultScreenshots::instance()->ajax_delete_screenshot($member, $screen_id);
     }
-    else {
-        $screen = ResultScreen::where(['user_id' => $member->ID, 'task_id' => $task_id])->first();
-        $image_id = $screen ? $screen->image_id : 0;
-        if( $image_id ) {
-            wp_delete_attachment( $image_id, true );
-            $res = array(
-                'status' => 'ok',
-            );
-        } else {
-            $res = array(
-                'status' => 'error',
-                'message' => 'image not found',
-            );
-        }
-    }
-
-    if($res === null) {
+    catch (\Exception $ex) {
+        error_log($ex);
+    
         $res = array(
             'status' => 'error',
             'message' => 'unkown error',
         );
     }
-
+    
     wp_die(json_encode($res));
 }
 add_action('wp_ajax_delete-result-screenshot', 'ajax_delete_result_screenshot');
@@ -277,44 +260,12 @@ function ajax_upload_result_screenshot() {
     $task_id = isset($_POST['task_id']) ? (int)$_POST['task_id'] : 0;
 
     $res = null;
-    if(!$member) {
-        $res = array(
-            'status' => 'error',
-            'message' => 'restricted method',
-        );
+    try {
+        $res = ResultScreenshots::instance()->ajax_upload_screenshot($member, $task_id);
     }
-    elseif(!$task_id) {
-        $res = array(
-            'status' => 'error',
-            'message' => 'task not found',
-        );
-    }
-    else {
-        $image_id = media_handle_upload( 'res_screen', 0 );
-        $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
-        wp_update_attachment_metadata( $image_id,  $attach_data );
-
-        if( $image_id ) {
-            $res_screen = new ResultScreen();
-            $res_screen->user_id = $member->ID;
-            $res_screen->task_id = $task_id;
-            $res_screen->image_id = $image_id;
-            $res_screen->moment = current_time('mysql');
-            $res_screen->save();
-
-            $res = array(
-                'status' => 'ok',
-                'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
-            );
-        } else {
-            $res = array(
-                'status' => 'error',
-                'message' => 'upload image error',
-            );
-        }
-    }
-
-    if($res === null) {
+    catch (\Exception $ex) {
+        error_log($ex);
+        
         $res = array(
             'status' => 'error',
             'message' => 'unkown error',
