@@ -624,3 +624,52 @@ $base-el-margin : 24px;
 		}
 	}
 }
+
+//result screenshots
+.itv-res-screen-group {
+    position: relative;
+    min-height: 180px+25px;
+    
+    .itv-res-screen-show {
+        width: 180px;
+        height: 180px;
+        position: absolute;
+        top: 25px;
+        left: 0;
+        z-index: 0;
+    }
+    
+    .itv-res-screen-info {
+        background: $color-white;
+        position: relative;
+        z-index: 10;
+    }
+
+    a.itv-res-screen-upload {
+        margin-bottom: 5px;
+        text-decoration: none;
+        vertical-align: middle;  
+        text-decoration:none;
+    }
+    
+    a.itv-res-screen-action, a.itv-res-screen-action:hover {
+        margin-bottom: 5px;
+        text-decoration: none;
+        vertical-align: middle;  
+        text-decoration:none;
+        position:absolute;
+        right:0px;
+        top:0px;
+        z-index:100;
+    }
+    
+    .itv-res-screen-item {
+        position:relative;
+        width:180px;
+        height:180px;
+        margin-right:10px;
+    }
+    
+    .itv-res-screen-list {
+    }
+}

@@ -1,5 +1,7 @@
 <?php
 use ITV\models\UserXPModel;
+use ITV\dao\ResultScreen;
+
 /**
  * Task related utilities and manipulations
  * (code wiil be modevd here from customizer.php and extras.php)
@@ -230,3 +232,95 @@ add_action('wp_insert_comment','comment_inserted',99,2);
 function comment_inserted($comment_id, $comment_object) {
     UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_COMMENT);
 }
+
+# result screenshots
+function ajax_delete_result_screenshot() {
+    $member = wp_get_current_user();
+    $task_id = isset($_GET['task_id']) ? (int)$_GET['task_id'] : 0;
+
+    $res = null;
+    if(!$member) {
+        $res = array(
+            'status' => 'error',
+            'message' => 'restricted method',
+        );
+    }
+    else {
+        $screen = ResultScreen::where(['user_id' => $member->ID, 'task_id' => $task_id])->first();
+        $image_id = $screen ? $screen->image_id : 0;
+        if( $image_id ) {
+            wp_delete_attachment( $image_id, true );
+            $res = array(
+                'status' => 'ok',
+            );
+        } else {
+            $res = array(
+                'status' => 'error',
+                'message' => 'image not found',
+            );
+        }
+    }
+
+    if($res === null) {
+        $res = array(
+            'status' => 'error',
+            'message' => 'unkown error',
+        );
+    }
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_delete-result-screenshot', 'ajax_delete_result_screenshot');
+
+function ajax_upload_result_screenshot() {
+    $member = wp_get_current_user();
+    $task_id = isset($_POST['task_id']) ? (int)$_POST['task_id'] : 0;
+
+    $res = null;
+    if(!$member) {
+        $res = array(
+            'status' => 'error',
+            'message' => 'restricted method',
+        );
+    }
+    elseif(!$task_id) {
+        $res = array(
+            'status' => 'error',
+            'message' => 'task not found',
+        );
+    }
+    else {
+        $image_id = media_handle_upload( 'res_screen', 0 );
+        $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+        wp_update_attachment_metadata( $image_id,  $attach_data );
+
+        if( $image_id ) {
+            $res_screen = new ResultScreen();
+            $res_screen->user_id = $member->ID;
+            $res_screen->task_id = $task_id;
+            $res_screen->image_id = $image_id;
+            $res_screen->moment = current_time('mysql');
+            $res_screen->save();
+
+            $res = array(
+                'status' => 'ok',
+                'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'avatar' )),
+            );
+        } else {
+            $res = array(
+                'status' => 'error',
+                'message' => 'upload image error',
+            );
+        }
+    }
+
+    if($res === null) {
+        $res = array(
+            'status' => 'error',
+            'message' => 'unkown error',
+        );
+    }
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-result-screenshot', 'ajax_upload_result_screenshot');

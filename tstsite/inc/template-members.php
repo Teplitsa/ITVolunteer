@@ -210,10 +210,10 @@ function tst_get_member_user_avatar($member_id) {
 	$res = '';
 	
 	if($image_id) {
-		
 		$name = tst_get_member_name($member_id);		
 		$res = wp_get_attachment_image( $image_id, 'avatar', false, array('alt' => $name, 'title'=> $name));
 	}
+	
 	return $res;
 }
 

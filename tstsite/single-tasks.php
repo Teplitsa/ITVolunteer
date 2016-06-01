@@ -2,7 +2,9 @@
 /**
  * Template for single task 
  **/
- 
+
+use ITV\models\ResultScreenshots;
+
 get_header(); 
 while ( have_posts() ) : the_post();
 
@@ -78,7 +80,25 @@ $itv_author_reviews = ItvReviewsAuthor::instance();
 			<div class="task-summary task-section">
 				<?php the_content(); ?>
 			</div>
-
+			
+    		<div class="form-group itv-res-screen-group">			
+    			<?php
+    				$screenshots = ResultScreenshots::instance()->get_screenshots($cur_user_id, get_the_ID());
+    			?>
+    			
+    			<a id="upload_res_screen" href="javascript:void(0);" class="btn btn-primary btn-xs itv-res-screen-upload" data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>"><?php _e('Upload result screenshots', 'tst');?></a>
+    			
+    			<div class="itv-res-screen-list clearfix">
+    			<?php foreach($screenshots as $screenshot):?>
+    			    <div class="itv-res-screen-item pull-left">
+            			<a href="javascript:void(0);" data-user_id="<?php echo $cur_user_id?>" data-task_id="<?php echo get_the_ID() ?>" class="btn btn-default btn-xs itv-res-screen-action delete_res_screen" <?php if(!$screenshot):?>style="display:none;"<?php endif?>><?php _e('Delete avatar', 'tst');?></a>
+            			<div id="upload_res_screen_info" class="itv-res-screen-info"><?php echo $screenshot; ?></div>
+            			<div id="upload_res_screen_loading" style="display:none;"><img src="<?php echo site_url( '/wp-includes/images/spinner-2x.gif' ); ?>" /></div>
+        			</div>
+    			<?php endforeach;?>
+    			</div>
+    		</div>
+		
 			<div class="task-author task-section">
 				<h5 class="task-section-title"><?php _e('Need help', 'tst');?></h5>
 				<div class="task-author-avatar"><?php echo tst_get_task_author_avatar();?></div>
