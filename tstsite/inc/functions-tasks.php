@@ -1,5 +1,7 @@
 <?php
 use ITV\models\UserXPModel;
+use ITV\models\ResultScreenshots;
+
 /**
  * Task related utilities and manipulations
  * (code wiil be modevd here from customizer.php and extras.php)
@@ -230,3 +232,46 @@ add_action('wp_insert_comment','comment_inserted',99,2);
 function comment_inserted($comment_id, $comment_object) {
     UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_COMMENT);
 }
+
+# result screenshots
+function ajax_delete_result_screenshot() {
+    $member = wp_get_current_user();
+    $screen_id = isset($_GET['screen_id']) ? (int)$_GET['screen_id'] : 0;
+
+    $res = null;
+    try {
+        $res = ResultScreenshots::instance()->ajax_delete_screenshot($member, $screen_id);
+    }
+    catch (\Exception $ex) {
+        error_log($ex);
+    
+        $res = array(
+            'status' => 'error',
+            'message' => 'unkown error',
+        );
+    }
+    
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_delete-result-screenshot', 'ajax_delete_result_screenshot');
+
+function ajax_upload_result_screenshot() {
+    $member = wp_get_current_user();
+    $task_id = isset($_POST['task_id']) ? (int)$_POST['task_id'] : 0;
+
+    $res = null;
+    try {
+        $res = ResultScreenshots::instance()->ajax_upload_screenshot($member, $task_id);
+    }
+    catch (\Exception $ex) {
+        error_log($ex);
+        
+        $res = array(
+            'status' => 'error',
+            'message' => 'unkown error',
+        );
+    }
+
+    wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-result-screenshot', 'ajax_upload_result_screenshot');

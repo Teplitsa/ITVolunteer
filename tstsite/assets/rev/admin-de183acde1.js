@@ -3,12 +3,23 @@
 (function($) {
  
 	$(document).ready(function(){
-	    var $p2p_users_by_task_filter = $('body.wp-admin.users-php select[name="p2p[task-doers][from]"]');
-	    var $users_filter_div = $p2p_users_by_task_filter.closest('div');
-	    $p2p_users_by_task_filter.hide();
-	    var $activated_status_filter = $('#users_activation_status');
-	    $users_filter_div.append($activated_status_filter);
-	    $users_filter_div.find('input[type=submit]').val($activated_status_filter.data('filter-button-title'));
+	    $('body.wp-admin.users-php select[name="p2p[task-doers][from]"]').each(function(i1, p2p_users_by_task_filter){
+	        var $p2p_users_by_task_filter = $(p2p_users_by_task_filter);
+	        
+	        var $users_filter_div = $p2p_users_by_task_filter.closest('div');
+	        $users_filter_div.addClass('itv-users-filter-div');
+	        $p2p_users_by_task_filter.hide();
+	        
+	        var $activated_status_filter = $users_filter_div.parent().find('#users_activation_status');
+	        var filter_btn_title = $activated_status_filter.data('filter-button-title');
+            $users_filter_div.find('input[value=Filter]').val(filter_btn_title);
+            
+            $activated_status_filter.parent().find('.itv-user-custom-filter').each(function(i3, el){
+                $users_filter_div.prepend($(el));
+            });
+	    });
+	    
+	    $('.itv-user-filter-city').suggest(ajaxurl + '?action=city_lookup', { minchars: 2 });
 	    
         $('#save-task-status').click(function(e){
             e.preventDefault();
@@ -64,7 +75,12 @@
             return itv_resend_activation_email($(this));
         });
         
-        $('#itv-users-bulk-actions').insertBefore('.tablenav.top')
+        $('.itv-users-bulk-actions').each(function(i1, el){
+            $(el).insertBefore($(el).parent().parent());
+        });
+        
+        $('.tablenav.bottom .itv-users-filter-div').remove();
+        
         $('#itv-bulk-resend-activation-email').click(function(){
             return itv_bult_resend_activation_email($(this));
         });
