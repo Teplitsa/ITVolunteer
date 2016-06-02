@@ -71,11 +71,12 @@ class ItvConfig {
                     ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
                 ]
             ],
-            
             'ALERT_TEAM' => array (
                 'support@te-st.ru',
             ),
-            
+            'RESULT_SCREENSHOTS' => [
+                'limit' => 6,
+            ],
         );
         
         $this->_config['THANKYOU'] = [

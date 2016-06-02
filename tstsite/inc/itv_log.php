@@ -1,6 +1,7 @@
 <?php
 use ITV\models\UserXPModel;
 use ITV\models\MailSendLogModel;
+use ITV\models\ResultScreenshots;
 
 class ItvLog {
     public static $ACTION_TASK_CREATE = 'create';
@@ -19,6 +20,7 @@ class ItvLog {
     public static $ACTION_TASK_NOTIF_ARCHIVE_SOON = 'archive_soon';
     public static $ACTION_TASK_LONG_WORK_ARCHIVE_NOTIF = 'long_work_archive_soon';
     public static $ACTION_TASK_LONG_WORK_ARCHIVE = 'long_work_archive';
+    public static $ACTION_TASK_RES_SCREEN_UPLOAD = 'task_res_screen_upload';
     
     public static $ACTION_USER_REGISTER = 'user_register';
     public static $ACTION_USER_UPDATE = 'user_update';
@@ -47,7 +49,7 @@ class ItvLog {
     public static $TYPE_EMAIL = 'email';
     
     private $list_log_record_types = array('task', 'user', 'review', 'email');
-    private $list_log_actions = array('create', 'inwork', 'close', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
+    private $list_log_actions = array('create', 'inwork', 'close', 'task_res_screen_upload', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
         'archive', 'long_work_archive', 'no_doer_yes', 'archive_soon', 'long_work_archive_soon', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
         'review_for_doer', 'review_for_author', 'user_thankyou',
         'email_approve_candidate_doer', 'email_approve_candidate_author', 'email_refuse_candidate_author', 'email_add_candidate_author', 'email_remove_candidate_author', 'email_doer_about_task_closed', 
@@ -200,7 +202,7 @@ class ItvLog {
             $user_text = "<a href='" . $user_link . "' title='" . get_user_last_login_time ( $user ) . "'>" . $user_login . "</a>";
             $user_text .= "<a href='" . $edit_user_link . "' class='dashicons-before dashicons-edit itv-log-edit-user' > </a>";
             
-            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user->ID, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
+            echo "<td class='itv-stats-task-title' title='" . get_user_meta ( $user_id, 'last_login_time', true ) . "'>" . $this->humanize_action ( $log->action, $user_text ) . "</td>";
             echo "<td class='itv-stats-time'>" . $log->action_time . "</td>";
             echo "<td class='itv-stats-time'>" . "</td>";
             echo "<td>" . $user_text . "</td>";
@@ -309,19 +311,19 @@ class ItvLog {
             }
     
             if(isset($_GET['log_user_name']) && trim($_GET['log_user_name'])) {
-                $this->filter['log_user_name'] = trim($_GET['log_user_name']);
+                $this->filter['log_user_name'] = filter_var(trim($_GET['log_user_name']), FILTER_SANITIZE_STRING);
             }
     
             if(isset($_GET['log_task_title']) && trim($_GET['log_task_title'])) {
-                $this->filter['log_task_title'] = trim($_GET['log_task_title']);
+                $this->filter['log_task_title'] = filter_var(trim($_GET['log_task_title']), FILTER_SANITIZE_STRING);
             }
             
             if(isset($_GET['from_date']) && trim($_GET['from_date'])) {
-                $this->filter['from_date'] = trim($_GET['from_date']);
+                $this->filter['from_date'] = filter_var(trim($_GET['from_date']), FILTER_SANITIZE_STRING);
             }
             
             if(isset($_GET['to_date']) && trim($_GET['to_date'])) {
-                $this->filter['to_date'] = trim($_GET['to_date']);
+                $this->filter['to_date'] = filter_var(trim($_GET['to_date']), FILTER_SANITIZE_STRING);
             }
             
         }
@@ -379,12 +381,12 @@ class ItvLog {
     }
     
     public function get_filter_by_task() {
-        $ret = '<input type="text" name="log_task_title" placeholder="'.__('Task title', 'tst').'" value="'.(isset($_GET['log_task_title']) ? $_GET['log_task_title'] : '').'" />';
+        $ret = '<input type="text" name="log_task_title" placeholder="'.__('Task title', 'tst').'" value="'.(isset($_GET['log_task_title']) ? filter_var($_GET['log_task_title'], FILTER_SANITIZE_STRING) : '').'" />';
         return $ret;
     }
     
     public function get_filter_by_user() {
-        $ret = '<input type="text" name="log_user_name" placeholder="'.__('Username or email', 'tst').'" value="'.(isset($_GET['log_user_name']) ? $_GET['log_user_name'] : '').'" />';
+        $ret = '<input type="text" name="log_user_name" placeholder="'.__('Username or email', 'tst').'" value="'.(isset($_GET['log_user_name']) ? filter_var($_GET['log_user_name'], FILTER_SANITIZE_STRING) : '').'" />';
         return $ret;
     }
     
@@ -576,8 +578,12 @@ class ItvLog {
         $stats_html = ob_get_clean();
         
         $users_stats = $this->get_users_stats($from_date, $to_date);
+        
         $send_mail_count = MailSendLogModel::instance()->get_send_email_count_for_week($from_date, $to_date);
         $users_stats['week_mail_sent'] = $send_mail_count;
+        
+        $res_screens_count = ResultScreenshots::instance()->count_screens_uploaded_for_week($from_date, $to_date);
+        $users_stats['week_res_screen_uploaded'] = $res_screens_count;
         
         ob_start();
         $this->show_weekly_users_stats($users_stats);

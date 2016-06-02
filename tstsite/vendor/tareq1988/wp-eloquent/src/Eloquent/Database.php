@@ -1,8 +1,6 @@
 <?php
 namespace WeDevs\ORM\Eloquent;
 
-use Closure;
-
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\Grammars\Grammar;
@@ -110,21 +108,18 @@ class Database implements ConnectionInterface {
             return $query;
         }
 
-        if ( $bindings ) {
-            foreach ( $bindings as $replace ) {
-                if ( is_string( $replace ) ) {
-                    $replace = "'" . esc_sql( $replace ) . "'";
-                } elseif ( $replace === null ) {
-                    $replace = "null";
-                }
-
-                if ( ! $update ) {
-                    $query = preg_replace('/\?/', $replace, $query, 1);
-                } else {
-                    $query = preg_replace('/= \?/', '= ' . $replace, $query, 1);
-                }
+        $bindings = array_map( function( $replace ) {
+            if ( is_string( $replace ) ) {
+                $replace = "'" . esc_sql( $replace ) . "'";
+            } elseif ( $replace === null ) {
+                $replace = "null";
             }
-        }
+
+            return $replace;
+        }, $bindings );
+
+        $query = str_replace( array( '%', '?' ), array( '%%', '%s' ), $query );
+        $query = vsprintf( $query, $bindings );
 
         return $query;
     }
@@ -250,7 +245,7 @@ class Database implements ConnectionInterface {
      *
      * @throws \Exception
      */
-    public function transaction( Closure $callback ) {
+    public function transaction( \Closure $callback ) {
         // TODO: Implement transaction() method.
     }
 
@@ -297,7 +292,7 @@ class Database implements ConnectionInterface {
      *
      * @return array
      */
-    public function pretend( Closure $callback ) {
+    public function pretend( \Closure $callback ) {
         // TODO: Implement pretend() method.
     }
 

@@ -52,6 +52,7 @@ gulp.task('build-js', function() {
         appFiles = [basePaths.bower+'imagesloaded/imagesloaded.pkgd.min.js',
                     basePaths.bower+'masonry/dist/masonry.pkgd.min.js',                    
                     basePaths.bower+'readmore/readmore.min.js',
+                    basePaths.bower+'swipebox/src/js/jquery.swipebox.min.js',
                     basePaths.src+'js/*']; //our own JS files
 
     return gulp.src(vendorFiles.concat(appFiles)) //join them
@@ -70,7 +71,15 @@ gulp.task('build-css', function() {
     //paths bourbon
     var paths = require('node-bourbon').includePaths;
 
-    var vendorFiles = gulp.src(''), //components bower_components/chosen/chosen.min.css
+    var vendorCSSFiles = mainBowerFiles({ //files from bower_components
+        paths: {
+            bowerDirectory: basePaths.bower,
+            bowerJson: 'bower.json'
+        }
+    }),        
+    appCSSFiles = [basePaths.bower+'swipebox/src/css/swipebox.min.css'];
+    
+    var vendorFiles = gulp.src(basePaths.bower+'swipebox/src/css/swipebox.min.css'), //components bower_components/chosen/chosen.min.css
         appFiles = gulp.src(basePaths.src+'sass/main.scss') //our main file with @import-s
             .pipe(!isProduction ? plugins.sourcemaps.init() : gutil.noop())  //process the original sources for sourcemap
             .pipe(plugins.sass({

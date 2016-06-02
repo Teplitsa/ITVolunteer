@@ -624,3 +624,54 @@ $base-el-margin : 24px;
 		}
 	}
 }
+
+//result screenshots
+.itv-res-screen-group {
+    position: relative;
+    
+    .itv-res-screen-info {
+        background: $color-white;
+        position: relative;
+        z-index: 10;
+    }
+
+    a.itv-res-screen-upload {
+        margin-bottom: 15px;
+        text-decoration: none;
+        vertical-align: middle;  
+        text-decoration:none;
+    }
+    
+    .itv-res-screen-list {
+        a.itv-res-screen-action, a.itv-res-screen-action:hover {
+            margin-bottom: 5px;
+            text-decoration: none;
+            vertical-align: middle;  
+            text-decoration:none;
+            position:absolute;
+            right:0px;
+            top:0px;
+            z-index:100;
+        }
+        
+        .itv-res-screen-item {
+            position:relative;
+            width:180px;
+            height:180px;
+            margin-right:30px;
+            margin-bottom:30px;
+        }
+        
+        .itv-upload-res-screen-loading {
+            margin-top:65px;
+            margin-left:75px;
+        }
+    }
+    
+    .itv-upload-screen-loader {
+        img {
+            height:25px;
+            vertical-align:top;
+        }
+    }
+}

@@ -422,8 +422,8 @@ function ajax_leave_review() {
 		)));
 	}
 
-	$task_id = $_POST['task-id'];
-	$doer_id = $_POST['doer-id'];
+	$task_id = (int)$_POST['task-id'];
+	$doer_id = (int)$_POST['doer-id'];
 	$task = get_post($task_id);
 	$author_id = get_current_user_id();
 
@@ -459,7 +459,7 @@ function ajax_leave_review() {
 		)));
 	}
 
-	$message = htmlentities(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), ENT_QUOTES, 'UTF-8');
+	$message = filter_var(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), FILTER_SANITIZE_STRING);
 	if(!$message) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
@@ -511,8 +511,8 @@ function ajax_leave_review_author() {
 		)));
 	}
 
-	$task_id = $_POST['task-id'];
-	$author_id = $_POST['author-id'];
+	$task_id = (int)$_POST['task-id'];
+	$author_id = (int)$_POST['author-id'];
 	$task = get_post($task_id);
 	$doer_id = get_current_user_id();
 
@@ -548,7 +548,7 @@ function ajax_leave_review_author() {
 		)));
 	}
 
-	$message = htmlentities(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), ENT_QUOTES, 'UTF-8');
+	$message = filter_var(trim(isset($_POST['review-message']) ? $_POST['review-message'] : ''), FILTER_SANITIZE_STRING);
 	if(!$message) {
 		wp_die(json_encode(array(
 			'status' => 'fail',
@@ -679,7 +679,7 @@ function itv_resend_activation_email_core($user) {
 
 function itv_resend_activation_email() {
     $res = array('status' => 'error');
-    $user_id = isset($_POST['user_id']) ? $_POST['user_id'] : 0;
+    $user_id = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
     try {
         $user = get_user_by('id', $user_id);
         
@@ -723,7 +723,7 @@ function admin_users_filter( $query ){
         }
 
         if ( isset($_GET['users_city']) && $_GET['users_city'] != '') {
-            $qcity = esc_sql($_GET['users_city']);
+            $qcity = esc_sql(filter_var($_GET['users_city'], FILTER_SANITIZE_STRING));
             $query->query_from .= " INNER JOIN {$wpdb->usermeta} AS um_city ON " .
             "{$wpdb->users}.ID=um_city.user_id AND " .
             "um_city.meta_key='user_city' AND (um_city.meta_value LIKE '{$qcity}%' ) ";
@@ -765,10 +765,10 @@ add_filter( 'pre_user_query', 'admin_users_filter' );
 function show_users_filter_by_activation() {
     $ret = "";
     
-    $current_filter_val = isset($_GET['users_city']) ? $current_filter_val = $_GET['users_city'] : '';
+    $current_filter_val = isset($_GET['users_city']) ? filter_var($_GET['users_city'], FILTER_SANITIZE_STRING) : '';
     $ret .= '<input type="text" name="users_city" id="users_city" class="itv-user-custom-filter itv-user-filter-city" placeholder="'.__('City', 'tst').'" data-filter-button-title="'.__('Filter', 'tst').'" value="'.$current_filter_val.'" />';
     
-    $current_filter_val = isset($_GET['users_activation_status']) ? $current_filter_val = $_GET['users_activation_status'] : '';
+    $current_filter_val = isset($_GET['users_activation_status']) ? filter_var($_GET['users_activation_status'], FILTER_SANITIZE_STRING) : '';
     $ret .= '<select name="users_activation_status" id="users_activation_status" class="users_activation_status itv-user-custom-filter" data-filter-button-title="'.__('Filter', 'tst').'">';
     $ret .= '<option value="" '.(!$current_filter_val ? 'selected="selected"' : '').'>'.__('All users', 'tst').'</option>';
     $ret .= '<option value="activated" '.($current_filter_val == 'activated' ? 'selected="selected"' : '').'>'.__('Activated users', 'tst').'</option>';
@@ -1006,7 +1006,7 @@ function ajax_thankyou() {
         )));
     }
 
-    $to_uid = $_POST['to-uid'];
+    $to_uid = (int)$_POST['to-uid'];
     $user_id = get_current_user_id();
 
     $is_error = true;
@@ -1046,7 +1046,7 @@ add_action('wp_ajax_thankyou', 'ajax_thankyou');
 add_action('wp_ajax_nopriv_thankyou', 'ajax_thankyou');
 
 function itv_city_lookup() {
-    $input = isset($_GET['q']) ? $_GET['q'] : '';
+    $input = isset($_GET['q']) ? filter_var($_GET['q'], FILTER_SANITIZE_STRING) : '';
     $query = UserMeta::where('meta_key', '=', 'user_city');
     if(trim($input)) {
         $query->where('meta_value', 'like', trim($input) . "%");

@@ -13,6 +13,7 @@ __( 'itv_task_actions_log_unpublish', 'tst' );
 __( 'itv_task_actions_log_inwork', 'tst' );
 __( 'itv_task_actions_log_close', 'tst' );
 __( 'itv_task_actions_log_archive', 'tst' );
+__( 'itv_task_actions_log_task_res_screen_upload', 'tst' );
 
 __( 'itv_task_actions_log_no_doer_yes', 'tst' );
 __( 'itv_task_actions_log_archive_soon', 'tst' );
@@ -54,6 +55,7 @@ __('itv_users_weekly_stats_donee_count', 'tst');
 __('itv_users_weekly_stats_week_user_xp', 'tst');
 __('itv_users_weekly_stats_total_user_xp', 'tst');
 __('itv_users_weekly_stats_week_mail_sent', 'tst');
+__('itv_users_weekly_stats_week_res_screen_uploaded', 'tst');
 
 // itv_notificator
 __ ( 'Task status become publish', 'tst' );
