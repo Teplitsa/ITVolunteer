@@ -102,12 +102,11 @@ class ResultScreenshots extends ITVSingletonModel {
         }
         
         if(!$is_error) {
-        
             $image_id = media_handle_upload( 'res_screen', 0 );
             $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
             wp_update_attachment_metadata( $image_id,  $attach_data );
-        
-            if( $image_id ) {
+            
+            if( $image_id && !is_wp_error($image_id) ) {
                 $res_screen = new ResultScreen();
                 $res_screen->user_id = $member->ID;
                 $res_screen->task_id = $task_id;
@@ -125,6 +124,11 @@ class ResultScreenshots extends ITVSingletonModel {
                     'full_image_src' => $res_screen->get_full_image_src(),
                 );
             } else {
+                
+                if(is_wp_error($image_id)) {
+                    error_log('Image cannot be uploaded to server. Check uploads dir permissions.');
+                }
+                
                 $res = array(
                     'status' => 'error',
                     'message' => 'upload image error',
