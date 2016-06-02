@@ -1,6 +1,7 @@
 <?php
 use ITV\models\UserXPModel;
 use ITV\models\MailSendLogModel;
+use ITV\models\ResultScreenshots;
 
 class ItvLog {
     public static $ACTION_TASK_CREATE = 'create';
@@ -19,6 +20,7 @@ class ItvLog {
     public static $ACTION_TASK_NOTIF_ARCHIVE_SOON = 'archive_soon';
     public static $ACTION_TASK_LONG_WORK_ARCHIVE_NOTIF = 'long_work_archive_soon';
     public static $ACTION_TASK_LONG_WORK_ARCHIVE = 'long_work_archive';
+    public static $ACTION_TASK_RES_SCREEN_UPLOAD = 'task_res_screen_upload';
     
     public static $ACTION_USER_REGISTER = 'user_register';
     public static $ACTION_USER_UPDATE = 'user_update';
@@ -47,7 +49,7 @@ class ItvLog {
     public static $TYPE_EMAIL = 'email';
     
     private $list_log_record_types = array('task', 'user', 'review', 'email');
-    private $list_log_actions = array('create', 'inwork', 'close', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
+    private $list_log_actions = array('create', 'inwork', 'close', 'task_res_screen_upload', 'user_register', 'delete', 'edit', 'add_candidate', 'refuse_candidate', 'approve_candidate', 'remove_candidate', 'publish', 'unpublish', 
         'archive', 'long_work_archive', 'no_doer_yes', 'archive_soon', 'long_work_archive_soon', 'user_update', 'user_delete_profile', 'user_login_email', 'user_login_login', 'user_login_failed', 
         'review_for_doer', 'review_for_author', 'user_thankyou',
         'email_approve_candidate_doer', 'email_approve_candidate_author', 'email_refuse_candidate_author', 'email_add_candidate_author', 'email_remove_candidate_author', 'email_doer_about_task_closed', 
@@ -576,8 +578,12 @@ class ItvLog {
         $stats_html = ob_get_clean();
         
         $users_stats = $this->get_users_stats($from_date, $to_date);
+        
         $send_mail_count = MailSendLogModel::instance()->get_send_email_count_for_week($from_date, $to_date);
         $users_stats['week_mail_sent'] = $send_mail_count;
+        
+        $res_screens_count = ResultScreenshots::instance()->count_screens_uploaded_for_week($from_date, $to_date);
+        $users_stats['week_res_screen_uploaded'] = $res_screens_count;
         
         ob_start();
         $this->show_weekly_users_stats($users_stats);

@@ -22,16 +22,21 @@ $(function(){
             if(json && json.status == 'ok' && json.image) {
                 var $template = $('.itv-res-screen-item').first().clone(true, true);
                 
-                $template.find('.delete_res_screen').data('screen_id', json.screen_id);
+                $template.find('.delete_res_screen')
+                    .data('screen_id', json.screen_id)
+                    .show();
                 
                 var image = json.image;
                 image = '<' + image + '>';
-                $template.find('.itv-upload-res-screen-info').attr('href', json.full_image_src).html(image);
-                $template.find('.itv-upload-res-screen-info').show();
-                $template.find('.delete_res_screen').show();
+                $template.find('.itv-upload-res-screen-info')
+                    .attr('href', json.full_image_src)
+                    .html(image)
+                    .addClass('swipebox')
+                    .show();
                 
                 $('#itv-res-screen-list').append($template);
                 $template.show();
+                $( '.swipebox' ).swipebox();
                 
                 if(json['is_limit']) {
                     $("#upload_res_screen").hide();

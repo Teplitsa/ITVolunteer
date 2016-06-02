@@ -27,6 +27,22 @@ class ResultScreenshots extends ITVSingletonModel {
         return $res;
     }
     
+    public function count_screens_uploaded_for_week($from, $to) {
+        if($from && !preg_match('/.* \d{2}:\d{2}:\d{2}$/', $from)) {
+            $from .= ' 00:00:00';
+        }
+        
+        $query = ResultScreen::where('moment', '>=', $from);
+        if($to) {
+            if(!preg_match('/.* \d{2}:\d{2}:\d{2}$/', $to)) {
+                $to .= ' 00:00:00';
+            }
+            $query->where('moment', '<', $to);
+        }
+        
+        return $query->count();
+    }
+    
     public function get_screenshots($task_id) {
         $screens = ResultScreen::where(['task_id' => $task_id])->get();
         $res = [];
@@ -98,6 +114,8 @@ class ResultScreenshots extends ITVSingletonModel {
                 $res_screen->image_id = $image_id;
                 $res_screen->moment = current_time('mysql');
                 $res_screen->save();
+                
+                \ItvLog::instance()->log_task_action($task_id, \ItvLog::$ACTION_TASK_RES_SCREEN_UPLOAD, $member->ID);
         
                 $res = array(
                     'status' => 'ok',
