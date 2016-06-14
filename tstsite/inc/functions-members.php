@@ -596,30 +596,52 @@ function itv_get_user_activation_email_datetime($user) {
     return $activation_email_time;
 }
 
-function itv_extra_user_profile_fields( $user ) {
+function itv_is_activated_field ( $user ) {
     $is_user_activated = itv_is_user_activated($user->ID);
-    ?>
-<table class="form-table">
-<tr id="itv-is-activated-user-option">
-<th><label><?php _e("Is activated", 'tst'); ?></label></th>
-<td>
-<span id="itv-user-activated-yes-no-box">
-<?php if($is_user_activated):?>
-    <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
-<?php else: ?>
-    <font class="itv-option-bad-label"><?php _e('No'); ?></font>
-    <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email" <?php if(!itv_is_resend_activation_available($user->ID)):?>disabled="disabled"<?php endif;?>><?php _e('Resend activation email', 'tst'); ?></button>
-    <?php echo itv_get_confirm_email_date($user);?>
-<?php endif; ?>
-</span>
-<span id="itv-user-activation-mail-sent-box" style="display: none;">
-    <font class="itv-option-ok-label"><?php _e('Activation mail sent', 'tst'); ?></font>
-</span>
-</td>
-</tr>
-</table>
-
+?>
+    <table class="form-table">
+    <tr id="itv-is-activated-user-option">
+    <th><label><?php _e("Is activated", 'tst'); ?></label></th>
+    <td>
+    <span id="itv-user-activated-yes-no-box">
+    <?php if($is_user_activated):?>
+        <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
+    <?php else: ?>
+        <font class="itv-option-bad-label"><?php _e('No'); ?></font>
+        <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email" <?php if(!itv_is_resend_activation_available($user->ID)):?>disabled="disabled"<?php endif;?>><?php _e('Resend activation email', 'tst'); ?></button>
+        <?php echo itv_get_confirm_email_date($user);?>
+    <?php endif; ?>
+    </span>
+    <span id="itv-user-activation-mail-sent-box" style="display: none;">
+        <font class="itv-option-ok-label"><?php _e('Activation mail sent', 'tst'); ?></font>
+    </span>
+    </td>
+    </tr>
+    </table>
+    
 <?php 
+}
+
+function itv_xp_field ( $user ) {
+    $user_xp = UserXPModel::instance()->get_user_xp($user->ID);
+?>
+    <table class="form-table">
+    <tr id="itv-userxp-user-option">
+    <th><label><?php _e('XP Rating', 'tst'); ?></label></th>
+    <td>
+        <b id="itv-userxp-value"><?php echo $user_xp; ?></b>
+        <input id="itv-userxp-inc" type="text" class="itv-userxp-inc" />
+        <button class="button button-primary" id="itv-userxp-add-btn"><?php _e('Add XP to user', 'tst'); ?></button>
+        <input type="hidden" id="inc_userxp_nonce" value="<?php echo wp_create_nonce('inc_userxp'); ?>"/>
+    </td>
+    </tr>
+    </table>
+<?php 
+}
+
+function itv_extra_user_profile_fields( $user ) {
+    itv_is_activated_field( $user );
+    itv_xp_field( $user );
 }
 add_action( 'edit_user_profile', 'itv_extra_user_profile_fields' );
 
@@ -1064,3 +1086,53 @@ function itv_city_lookup() {
     wp_die(implode("\n", $cities));
 }
 add_action('wp_ajax_city_lookup', 'itv_city_lookup');
+
+/* inc user xp value */
+function ajax_inc_userxp_value() {
+    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+    if(
+            empty($_POST['user_id'])
+            || empty($_POST['user_xp'])
+            || !wp_verify_nonce($_POST['nonce'], 'inc_userxp')
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $user_id = (int)$_POST['user_id'];
+    $user_xp = (int)$_POST['user_xp'];
+
+    $is_error = true;
+    if($user_id && $user_xp) {
+        $error_message = __('Error!', 'tst');
+        
+        try {
+            $new_userxp_value = UserXPModel::instance()->inc_user_xp_value($user_id, $user_xp);
+            $is_error = false;
+        }
+        catch(\Exception $ex) {
+            error_log($ex);
+        }
+    }
+
+    $ret;
+    if($is_error) {
+        $ret = [
+            'status' => 'fail',
+            'message' => $error_message,
+        ];
+    }
+    else {
+        $ret = [
+            'status' => 'ok',
+            'user_xp' => $new_userxp_value,
+        ];
+    }
+    
+    wp_die(json_encode($ret));
+}
+add_action('wp_ajax_inc-userxp-value', 'ajax_inc_userxp_value');
+

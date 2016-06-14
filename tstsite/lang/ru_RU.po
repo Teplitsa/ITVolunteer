@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-02 17:43+0200\n"
-"PO-Revision-Date: 2016-06-02 17:43+0200\n"
+"POT-Creation-Date: 2016-06-11 10:11+0200\n"
+"PO-Revision-Date: 2016-06-11 10:15+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -452,7 +452,7 @@ msgid "Please check agree process data checkbox"
 msgstr "Пожалуйста, дайте согласие на обработку персональных данных"
 
 #: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:235
-#: inc/functions-members.php:1014
+#: inc/functions-members.php:1035 inc/functions-members.php:1109
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
@@ -476,10 +476,14 @@ msgstr "Слишком много скриншотов загружено!"
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:237 inc/functions-members.php:909
+#: inc/class-itv-cssjs.php:237 inc/functions-members.php:930
 #, php-format
 msgid "Resend activation email next %s (remains %s)"
 msgstr "Отправить активацию для следующих %s (осталось %s)"
+
+#: inc/class-itv-cssjs.php:239
+msgid "Enter numeric user xp inc value"
+msgstr "Введите положительное или отрицательное число!"
 
 # @ tst
 #: inc/customizer.php:12 inc/customizer.php:731 inc/functions-general.php:162
@@ -494,7 +498,7 @@ msgstr "it-волонтёр"
 #: inc/customizer.php:338 inc/customizer.php:399 inc/customizer.php:467
 #: inc/customizer.php:502 inc/customizer.php:561 inc/customizer.php:623
 #: inc/customizer.php:657 inc/functions-members.php:421
-#: inc/functions-members.php:510 inc/functions-members.php:998
+#: inc/functions-members.php:510 inc/functions-members.php:1019
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
@@ -712,19 +716,19 @@ msgid "<strong>Error:</strong> review for the task already exists."
 msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 
 #: inc/functions-members.php:491 inc/functions-members.php:580
-#: inc/functions-members.php:1039
+#: inc/functions-members.php:1060
 msgid "Review saved"
 msgstr "Отзыв сохранен"
 
-#: inc/functions-members.php:604 inc/functions-members.php:788
+#: inc/functions-members.php:604 inc/functions-members.php:809
 msgid "Is activated"
 msgstr "Активирован"
 
-#: inc/functions-members.php:608 inc/functions-members.php:808
+#: inc/functions-members.php:608 inc/functions-members.php:829
 msgid "Yes"
 msgstr "Да"
 
-#: inc/functions-members.php:610 inc/functions-members.php:808
+#: inc/functions-members.php:610 inc/functions-members.php:829
 msgid "No"
 msgstr "Нет"
 
@@ -736,77 +740,81 @@ msgstr "Выслать письмо активации"
 msgid "Activation mail sent"
 msgstr "Письмо активации отправлено"
 
-#: inc/functions-members.php:637
+#: inc/functions-members.php:630 inc/functions-members.php:814
+#: inc/template-members.php:680 partials/content-member_single.php:237
+msgid "XP Rating"
+msgstr "Опыт"
+
+#: inc/functions-members.php:634
+msgid "Add XP to user"
+msgstr "Добавить опыта"
+
+#: inc/functions-members.php:658
 #, php-format
 msgid "Activation email time: %s"
 msgstr "Время последнего письма: %s"
 
-#: inc/functions-members.php:638
+#: inc/functions-members.php:659
 msgid "Reactivation sent 2 times!"
 msgstr "Письмо активации высылалось дополнительно 2 раза!"
 
 # @ tst
-#: inc/functions-members.php:769 inc/functions-members.php:794
+#: inc/functions-members.php:790 inc/functions-members.php:815
 #: page-member-action.php:158 partials/content-member_single.php:101
 msgid "City"
 msgstr "Город"
 
-#: inc/functions-members.php:769 inc/functions-members.php:772
+#: inc/functions-members.php:790 inc/functions-members.php:793
 msgid "Filter"
 msgstr "Фильтровать"
 
-#: inc/functions-members.php:773
+#: inc/functions-members.php:794
 msgid "All users"
 msgstr "Все"
 
-#: inc/functions-members.php:774
+#: inc/functions-members.php:795
 msgid "Activated users"
 msgstr "Активированные"
 
-#: inc/functions-members.php:775
+#: inc/functions-members.php:796
 msgid "Not activated users"
 msgstr "Не активированные"
 
-#: inc/functions-members.php:787
+#: inc/functions-members.php:808
 msgid "ITV role"
 msgstr "Роль ИТВ"
 
-#: inc/functions-members.php:789
+#: inc/functions-members.php:810
 msgid "Registration date"
 msgstr "Регистрация"
 
-#: inc/functions-members.php:790
+#: inc/functions-members.php:811
 msgid "Access IP"
 msgstr "IP доступа"
 
 # @ tst
-#: inc/functions-members.php:791 page-member-tasks.php:71
+#: inc/functions-members.php:812 page-member-tasks.php:71
 #: partials/content-member_single.php:245
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
-#: inc/functions-members.php:792
+#: inc/functions-members.php:813
 msgid "Tasks done"
 msgstr "Решенные задачи"
 
-#: inc/functions-members.php:793 inc/template-members.php:680
-#: partials/content-member_single.php:237
-msgid "XP Rating"
-msgstr "Опыт"
-
-#: inc/functions-members.php:820
+#: inc/functions-members.php:841
 msgid "Reg IP:"
 msgstr "IP рег."
 
-#: inc/functions-members.php:826
+#: inc/functions-members.php:847
 msgid "Last login IP:"
 msgstr "IP входа:"
 
-#: inc/functions-members.php:1005
+#: inc/functions-members.php:1026
 msgid "<strong>Error:</strong> Access denied!"
 msgstr "<strong>Ошибка:</strong> доступ запрещен!"
 
-#: inc/functions-members.php:1022
+#: inc/functions-members.php:1043
 msgid "<strong>Error:</strong> Recently said thank you!"
 msgstr ""
 "<strong>Ошибка:</strong> Вы недавно уже говорили \"Спасибо!\" этому "
@@ -2180,7 +2188,7 @@ msgstr ""
 msgid "Task status become "
 msgstr "Статус стал"
 
-#: inc/models/UserXPModel.php:390
+#: inc/models/UserXPModel.php:397
 #, php-format
 msgid "user_xp_alert_%s_"
 msgstr ""

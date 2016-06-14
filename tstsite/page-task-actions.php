@@ -66,7 +66,7 @@ get_header();?>
 	<div class="row">		
 		<div class="col-md-8">
 			<div class="form-group">			
-			    <input class="form-control input-lg" placeholder="<?php _e('Short task description (140 char.)', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="90" />
+			    <input class="form-control input-lg" placeholder="<?php _e('Short task description (140 char.)', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="140" />
                 <div id="task-title-vm" class="validation-message" style="display: none;"></div>
 			</div>
 		</div>

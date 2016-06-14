@@ -236,6 +236,7 @@ class ITV_CssJs {
 			'no_expired_activation_users' => __('No expired activation users', 'tst'),
 			'bulk_resend_activation_email_button' => sprintf(__('Resend activation email next %s (remains %s)', 'tst'), '{portion}', '{count}'),
 			'reactivation_emails_portion' => $reactivation_emails_portion,
+			'empty_xp_inc_val_error' => __('Enter numeric user xp inc value', 'tst'),
 		));   
 
 	}
