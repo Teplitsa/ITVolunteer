@@ -88,7 +88,12 @@ class UserXPModel extends ITVSingletonModel {
     
     private function inc_user_xp($user_id, $action) {
         $user_xp = $this->get_user_xp($user_id);
-        $this->set_user_xp($user_id, $user_xp + $this->get_action_xp($action));
+        return $this->set_user_xp($user_id, $user_xp + $this->get_action_xp($action));
+    }
+    
+    public function inc_user_xp_value($user_id, $value) {
+        $user_xp = $this->get_user_xp($user_id);
+        return $this->set_user_xp($user_id, $user_xp + $value);
     }
     
     private function set_user_xp($user_id, $xp_val) {
@@ -99,6 +104,8 @@ class UserXPModel extends ITVSingletonModel {
         }
         $user_xp->xp = $xp_val;
         $user_xp->save();
+        
+        return $user_xp->xp;
     }
     
     public function get_action_xp($action) {

@@ -75,6 +75,11 @@
             return itv_resend_activation_email($(this));
         });
         
+        move_userxp_field_to_top();
+        $('#itv-userxp-add-btn').click(function(){
+            return itv_add_xp_to_user($(this));
+        });
+        
         $('.itv-users-bulk-actions').each(function(i1, el){
             $(el).insertBefore($(el).parent().parent());
         });
@@ -202,6 +207,13 @@
         $current_parent.remove();
     }
     
+    function move_userxp_field_to_top() {
+        var $tr = $('#itv-userxp-user-option');
+        var $current_parent = $tr.parent();
+        $tr.insertBefore('.user-rich-editing-wrap');
+        $current_parent.remove();
+    }
+    
     function itv_resend_activation_email($button) {
         var user_id = $('#user_id').val();
         
@@ -220,6 +232,33 @@
         .always(function(){
             $loader.remove();
         });
+        return false;
+    }
+    
+    function itv_add_xp_to_user($button) {
+        var user_id = $('#user_id').val();
+        var $xp_input = $('#itv-userxp-inc');
+        if($xp_input.val() && parseInt($xp_input.val())) {
+            var $loader = itv_get_loader();
+            $loader.insertAfter($button);
+            var userxp_value = $xp_input.val();
+            var wpnonce = $('#inc_userxp_nonce').val();
+            $.post(ajaxurl, {action: 'inc-userxp-value', user_id: user_id, user_xp: userxp_value, nonce: wpnonce}, function(){}, 'json')
+            .done(function(json){
+                $('#itv-userxp-value').html(json['user_xp']);
+                $xp_input.val('');
+            })
+            .fail(function(){
+                alert(adminend.common_ajax_error);
+            })
+            .always(function(){
+                $loader.remove();
+            });
+        }
+        else {
+            alert(adminend.empty_xp_inc_val_error);
+            $xp_input.focus();
+        }
         return false;
     }
     
