@@ -123,6 +123,11 @@
 	
 	@include for(large-screens) {
 		ul { @include clearfix; }
+		
+		.itv-search-nav {
+		  padding-right:10px;
+		  padding-left:5px;
+		}
 				
 		li {
 			float: left;
@@ -135,11 +140,11 @@
 			line-height: 16px;			
 		}
 		
-		.submenu {
+		.submenu, .submenu-search {
 			display: none;
 			padding: 5px 0;
 			position: absolute;
-			top: $menu_height;
+			top: $menu_height - 1px;
 			left: -20px;
 			background: $color-white;
 			border: 1px solid $color-border-light;
@@ -163,6 +168,10 @@
 					background: darken($color-secondary, 10%);
 					color: $color-text-black;
 				}
+			}
+			
+			.itv-search-input {
+			     min-width:250px;
 			}
 		}
 		
@@ -253,4 +262,9 @@
 			margin-left: $measure-columns-gut;
 		}
 	}
+}
+
+.int-search-page-input {
+    margin-top:20px;
+    margin-bottom:30px;
 }

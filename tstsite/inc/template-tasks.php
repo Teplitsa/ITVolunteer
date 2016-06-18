@@ -44,6 +44,44 @@ function tst_tasks_filters_menu(){
 <?php	
 }
 
+function tst_tasks_filters_search_menu(){
+    global $wp_query;
+
+    $current = ($wp_query->get('task_status')) ? trim($wp_query->get('task_status')) : '';
+    ?>
+<ul class="tasks-filters">
+	<li class="publish<?php if($current == 'publish') echo ' active';?>">
+	<a href="<?php echo tst_tasks_search_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
+		<?php _e('New tasks', 'tst')?>
+	</a>
+	</li>
+	<li class="in_work<?php if($current == 'in_work') echo ' active';?>">
+	<a href="<?php echo tst_tasks_search_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
+		<?php _e('In work tasks', 'tst')?>
+	</a>
+	</li>
+	<li class="closed<?php if($current == 'closed') echo ' active';?>">
+	<a href="<?php echo tst_tasks_search_filters_link('closed'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_close');?>>
+		<?php _e('Closed tasks', 'tst')?>
+	</a>
+	</li>
+	<li class="archived<?php if($current == 'archived') echo ' active';?>">
+	<a href="<?php echo tst_tasks_search_filters_link('archived'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_archived');?>>
+		<?php _e('Archived', 'tst')?>
+	</a>
+	</li>
+</ul>
+<?php	
+}
+
+function tst_tasks_search_filters_link($status = 'publish') {
+    $params = [
+        's' => isset($_GET['s']) ? $_GET['s'] : '',
+        'task_status' => $status,
+    ];
+    return add_query_arg($params, home_url('/'));
+}
+
 function tst_tasks_filters_link($status = 'publish') {
 	
 	$statuses = array('publish', 'in_work', 'closed', 'archived');

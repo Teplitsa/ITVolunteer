@@ -1248,3 +1248,9 @@ jQuery(function($){
         return false;
     });
 });
+
+jQuery(function($){
+    $('.itv-search-nav').click(function(){
+        $('.submenu-search').toggle();
+    });
+});
