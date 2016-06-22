@@ -744,4 +744,19 @@ function tst_news_item_in_loop($news){
 <?php	
 }
 
-
+function itv_get_search_button_color_class($query) {
+    $task_status = $query->get('task_status');
+    if($task_status == 'in_work') {
+        $btn_class = "btn-warning";
+    }
+    elseif($task_status == 'archived') {
+        $btn_class = "btn-primary";
+    }
+    elseif($task_status == 'closed') {
+        $btn_class = "btn-default";
+    }
+    else {
+        $btn_class = "btn-success";
+    }
+    return $btn_class;
+}

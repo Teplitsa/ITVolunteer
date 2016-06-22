@@ -2,6 +2,9 @@
 /**
  * The Navbar 
  */
+
+global $wp_query;
+
 ?>
 	<div class="site-branding">		
 		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="logo"><?php bloginfo( 'name' ); ?></a>				
@@ -33,17 +36,35 @@
             <li><a href="<?php echo home_url('contacts');?>"><?php _e('Contacts', 'tst');?></a></li>
           </ul>
         </li>
+        
+		<li class="has-children">
+			<a href="javascript:void(0);" role="button" class="glyphicon glyphicon-search itv-search-nav"></a>
+            <ul class="submenu-search">
+                <li>
+                    <form class="navbar-form navbar-left" role="search" action="<?php echo home_url('/'); ?>">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control itv-search-input" name="s" placeholder="" value="<?php echo get_search_query(); ?>">
+                                <span class="input-group-btn">
+                                    <button class="btn <?php echo itv_get_search_button_color_class($wp_query)?> itv-search-button" type="submit"><?php _e('Do Search', 'tst')?></button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </li>
+            </ul>			
+		</li>	
     </ul>
 		
 	<ul id="actions_menu" class="actions-menu">
 	<?php if(is_user_logged_in()): global $current_user; ?>
 		<li class="has-children">
 		<?php $user_url = tst_get_member_url($current_user);?>
-			<a href="<?php echo $user_url;?>" class="ga-event-trigger" <?php tst_ga_event_data('m_profile');?>>					
+			<a href="<?php echo $user_url;?>" class="ga-event-trigger" <?php tst_ga_event_data('m_profile');?>>
 				<?php echo tst_get_member_name($current_user);?> <b class="caret"></b>
 				<?php echo apply_filters('itv_notification_badge', '');?>
 			</a>
-			<ul class="submenu">			
+			<ul class="submenu">
 				<li><a href="<?php echo home_url('/member-actions/member-tasks/');?>"><?php _e('My tasks', 'tst');?></a></li>
 				<li><a href="<?php echo tst_get_member_url($current_user);?>"><?php _e('My profile', 'tst');?></a>
 					<?php echo apply_filters('itv_notification_badge', '');?></li>
@@ -51,7 +72,7 @@
 			</ul>
 		</li>
 	<?php else: ?>
-		<li><a href="<?php echo home_url('/registration/');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_login');?>><?php _e('Log In', 'tst');?></a></li>			
+		<li><a href="<?php echo home_url('/registration/');?>" class="ga-event-trigger" <?php tst_ga_event_data('m_login');?>><?php _e('Log In', 'tst');?></a></li>
 	<?php endif;?>
 	
 	<?php if(is_user_logged_in()) {?>

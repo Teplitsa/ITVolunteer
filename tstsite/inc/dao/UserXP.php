@@ -21,3 +21,9 @@ class UserXPAlerts extends ITVDAO {
     protected $primaryKey = 'user_id';
     protected $table = 'str_itv_user_xp_alerts';
 }
+
+class UserXPExtra extends ITVDAO {
+    public $timestamps = false;
+    protected $primaryKey = 'user_id';
+    protected $table = 'str_itv_user_xp_extra';
+}

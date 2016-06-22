@@ -2558,6 +2558,12 @@ jQuery(function($){
     });
 });
 
+jQuery(function($){
+    $('.itv-search-nav').click(function(){
+        $('.submenu-search').toggle();
+    });
+});
+
 /* jQuery Star Rating Plugin
  * 
  * @Author

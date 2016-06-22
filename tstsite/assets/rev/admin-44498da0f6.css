@@ -126,3 +126,8 @@ p.itv-activation-email-time .itv-reactivation-limit {
     background-color:#cc0000;
     padding:1px 5px 1px 5px;
 }
+
+.itv-userxp-inc {
+    width:50px;
+    margin-left:50px;
+}
