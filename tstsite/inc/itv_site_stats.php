@@ -181,6 +181,58 @@ class ItvSiteStats {
         
         self::$ITV_TASKS_COUNT_ALL = $total;
     }
+    
+    /**
+     * Stats calculations on search pages *
+     */
+    public static function perform_calculations_for_search($search_str) {
+        global $wpdb, $wp_query;
+        
+        $search_where = $wp_query->request;
+        preg_match('/WHERE 1=1(.*)ORDER BY/', $search_where, $matches);
+        $query = '';
+        if(isset($matches[1])) {
+            $search_condition = $matches[1];
+            $search_condition = preg_replace('/AND \(\(\w+.post_status = \'\w+\'\)\)/', ' ', $search_condition);
+            $query = "SELECT post_status, COUNT(ID) as num FROM $wpdb->posts WHERE 1=1 $search_condition AND post_status IN ('publish', 'in_work', 'closed', 'archived') GROUP BY post_status";
+        }
+        else {
+            $search_str_escaped = '%' . $wpdb->esc_like($search_str) . '%';
+            $query = $wpdb->prepare("SELECT post_status, COUNT(ID) as num FROM $wpdb->posts WHERE 1=1 AND post_status IN ('publish', 'in_work', 'closed', 'archived') AND ((($wpdb->posts.post_title LIKE %s) OR ($wpdb->posts.post_content LIKE %s))) GROUP BY post_status", $search_str_escaped, $search_str_escaped);
+        }
+        
+        $calc = null;
+        if($search_str) {
+            $calc = $query ? $wpdb->get_results ( $query, OBJECT_K ) : null;
+        }
+    
+        $search_stats['publish'] = 0;
+        $search_stats['in_work'] = 0;
+        $search_stats['closed'] = 0;
+        $search_stats['archived'] = 0;
+        $search_stats['total'] = 0;
+        
+        if (isset ( $calc ['publish'] )) {
+            $search_stats['publish'] = ( int ) $calc ['publish']->num;
+            $search_stats['total'] += $search_stats['publish'];
+        }
+        if (isset ( $calc ['in_work'] )) {
+            $search_stats['in_work'] = ( int ) $calc ['in_work']->num;
+            $search_stats['total'] += $search_stats['in_work'];
+        }
+        if (isset ( $calc ['closed'] )) {
+            $search_stats['closed'] = ( int ) $calc ['closed']->num;
+            $search_stats['total'] += $search_stats['closed'];
+        }
+        if (isset ( $calc ['archived'] )) {
+            $search_stats['archived'] = ( int ) $calc ['archived']->num;
+            $search_stats['total'] += $search_stats['archived'];
+        }
+        
+        
+    
+        return $search_stats;
+    }
 } // class
 
 ItvSiteStats::instance ();

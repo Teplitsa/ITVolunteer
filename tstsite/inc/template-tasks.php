@@ -44,33 +44,41 @@ function tst_tasks_filters_menu(){
 <?php	
 }
 
-function tst_tasks_filters_search_menu(){
+function tst_tasks_filters_search_menu($search_str){
     global $wp_query;
 
     $current = ($wp_query->get('task_status')) ? trim($wp_query->get('task_status')) : '';
+    $search_stats = ItvSiteStats::perform_calculations_for_search($search_str);
     ?>
-<ul class="tasks-filters">
-	<li class="publish<?php if($current == 'publish') echo ' active';?>">
-	<a href="<?php echo tst_tasks_search_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
-		<?php _e('New tasks', 'tst')?>
-	</a>
-	</li>
-	<li class="in_work<?php if($current == 'in_work') echo ' active';?>">
-	<a href="<?php echo tst_tasks_search_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
-		<?php _e('In work tasks', 'tst')?>
-	</a>
-	</li>
-	<li class="closed<?php if($current == 'closed') echo ' active';?>">
-	<a href="<?php echo tst_tasks_search_filters_link('closed'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_close');?>>
-		<?php _e('Closed tasks', 'tst')?>
-	</a>
-	</li>
-	<li class="archived<?php if($current == 'archived') echo ' active';?>">
-	<a href="<?php echo tst_tasks_search_filters_link('archived'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_archived');?>>
-		<?php _e('Archived', 'tst')?>
-	</a>
-	</li>
-</ul>
+<div class="col-md-2" style="padding-top:12px;">
+    <?php if($search_str): ?>
+        <?php echo __('Results', 'tst');?>: <b><?php echo $search_stats['total'];?></b>
+    <?php endif?>
+</div>
+<div class="col-md-10">
+    <ul class="tasks-filters">
+    	<li class="publish<?php if($current == 'publish') echo ' active';?>">
+    	<a href="<?php echo tst_tasks_search_filters_link('publish'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_open');?>>
+    		<?php _e('New tasks', 'tst')?>: <?php echo $search_stats['publish'];?>
+    	</a>
+    	</li>
+    	<li class="in_work<?php if($current == 'in_work') echo ' active';?>">
+    	<a href="<?php echo tst_tasks_search_filters_link('in_work'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_work');?>>
+    		<?php _e('In work tasks', 'tst')?>: <?php echo $search_stats['in_work'];?>
+    	</a>
+    	</li>
+    	<li class="closed<?php if($current == 'closed') echo ' active';?>">
+    	<a href="<?php echo tst_tasks_search_filters_link('closed'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_close');?>>
+    		<?php _e('Closed tasks', 'tst')?>: <?php echo $search_stats['closed'];?>
+    	</a>
+    	</li>
+    	<li class="archived<?php if($current == 'archived') echo ' active';?>">
+    	<a href="<?php echo tst_tasks_search_filters_link('archived'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_archived');?>>
+    		<?php _e('Archived', 'tst')?>: <?php echo $search_stats['archived'];?>
+    	</a>
+    	</li>
+    </ul>
+</div>
 <?php	
 }
 
@@ -308,7 +316,6 @@ function tst_get_archived_tasks_count() {
 	}
 	return ItvSiteStats::$ITV_TASKS_COUNT_ARCHIVED;
 }
-
 
 /** == Single Task == **/
 function tst_tasks_view_counter($task = null) {
