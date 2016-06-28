@@ -14,14 +14,7 @@ get_header(); ?>
 <header class="page-heading <?php echo $css;?>-list-header <?php if(!is_home()){echo 'no-breadcrumbs'; }?>">
 	<h1 class="page-title"><?php echo frl_page_title();?></h1>
 	<div class="row">
-	    <div class="col-md-2" style="padding-top:12px;">
-	        <?php if($search_str): ?>
-	            <?php echo __('Results', 'tst');?>: <b><?php echo (int)$wp_query->found_posts;?></b>
-            <?php endif?>
-	    </div>
-		<div class="col-md-10">
-			<?php tst_tasks_filters_search_menu();?>
-		</div>
+		<?php tst_tasks_filters_search_menu($search_str);?>
 	</div>
 </header>
 
@@ -32,7 +25,7 @@ get_header(); ?>
             <form class="searchform" role="search" action="<?php echo home_url('/'); ?>" method="get">
                 <div class="row">
                 <div class="col-md-10">
-                <input class="search-field form-control" type="search" value="<?php echo get_search_query(); ?>" name="s">
+                <input class="search-field form-control" type="search" value="<?php echo stripslashes(get_search_query()); ?>" name="s">
                 </div>
                 <div class="col-md-2">
                 <div class="sbutton-holder">
