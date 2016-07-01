@@ -6,7 +6,7 @@
 <?php if( !$cur_user_id ) {?>
     
     <?php if($post->post_status == 'closed'):?>
-        <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
+        <a id="guest-help" class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
     <?php else: ?>
         <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>><?php _e('Offer help', 'tst');?></a>
     <?php endif ?>
@@ -109,7 +109,7 @@
 <?php } elseif( !$is_curr_users_task && !tst_is_user_candidate() ) {?>
 
     <?php if($post->post_status == 'closed'):?>
-        <a href="<?php echo tst_get_login_url();?>" class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
+        <a class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
     <?php else: ?>
         <a href="#" id="task-offer-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>><?php _e('Offer help', 'tst');?></a>
     <?php endif?>
