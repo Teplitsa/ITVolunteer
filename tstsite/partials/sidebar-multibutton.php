@@ -5,9 +5,11 @@
 <div id="multibutton">
 <?php if( !$cur_user_id ) {?>
     
-    <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>>
-            <?php _e('Offer help', 'tst');?>
-    </a>        
+    <?php if($post->post_status == 'closed'):?>
+        <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
+    <?php else: ?>
+        <a href="<?php echo tst_get_login_url();?>" id="guest-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>><?php _e('Offer help', 'tst');?></a>
+    <?php endif ?>
 
 <?php } elseif((current_user_can('edit_post', get_the_ID()) || $is_curr_users_task) && $post->post_status == 'draft') {?>
     
@@ -106,7 +108,12 @@
 
 <?php } elseif( !$is_curr_users_task && !tst_is_user_candidate() ) {?>
 
-	<a href="#" id="task-offer-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>><?php _e('Offer help', 'tst');?></a>        
+    <?php if($post->post_status == 'closed'):?>
+        <a href="<?php echo tst_get_login_url();?>" class="btn btn-default btn-lg widefat btn-task-closed" disabled="disabled"><?php _e('Task closed', 'tst');?></a>
+    <?php else: ?>
+        <a href="#" id="task-offer-help" class="btn btn-success btn-lg widefat" <?php echo $post->post_status != 'publish' ? 'disabled="disabled"' : '';?>><?php _e('Offer help', 'tst');?></a>
+    <?php endif?>
+	
 	<div id="task-status" class="text-center help-block">
 		<?php switch($post->post_status) {
 			case 'publish': _e('You are not offered your help yet', 'tst'); break;

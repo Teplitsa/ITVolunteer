@@ -54,7 +54,11 @@ img {
 	color: #A94442;
 }
 
-
+.btn-task-closed, .btn-task-closed[disabled]:hover {
+    color:#ffffff;
+    background-color:#bec2be;
+    border:1px solid #afb3af;
+}
 
 
 /** Tasks **/
