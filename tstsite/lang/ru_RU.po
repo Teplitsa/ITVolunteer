@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-18 11:00+0200\n"
-"PO-Revision-Date: 2016-06-18 11:01+0200\n"
+"POT-Creation-Date: 2016-07-01 10:59+0200\n"
+"PO-Revision-Date: 2016-07-01 11:00+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -128,7 +128,7 @@ msgstr "Расписание"
 # @ default
 # @ tst
 #: inc/admin.php:114 page-task-actions.php:183
-#: partials/sidebar-multibutton.php:14
+#: partials/sidebar-multibutton.php:16
 msgid "Publish"
 msgstr "Опубликовать"
 
@@ -155,7 +155,7 @@ msgstr "Статус:"
 
 # @ tst
 # @ default
-#: inc/admin.php:208 inc/admin.php:236 inc/template-tasks.php:101
+#: inc/admin.php:208 inc/admin.php:236 inc/template-tasks.php:109
 msgid "Draft"
 msgstr "Черновик"
 
@@ -166,19 +166,19 @@ msgstr "Опубликовано"
 
 # @ tst
 #: inc/admin.php:214 inc/admin.php:238 inc/functions-tasks.php:22
-#: inc/template-tasks.php:103
+#: inc/template-tasks.php:111
 msgid "In work"
 msgstr "В работе"
 
 # @ tst
 #: inc/admin.php:217 inc/admin.php:239 inc/functions-tasks.php:30
-#: inc/template-tasks.php:104
+#: inc/template-tasks.php:112
 msgid "Closed"
 msgstr "Решено"
 
 #: inc/admin.php:220 inc/admin.php:240 inc/functions-tasks.php:38
-#: inc/template-tasks.php:33 inc/template-tasks.php:70
-#: inc/template-tasks.php:105 inc/template-tasks.php:360
+#: inc/template-tasks.php:33 inc/template-tasks.php:77
+#: inc/template-tasks.php:113 inc/template-tasks.php:367
 msgid "Archived"
 msgstr "Архив"
 
@@ -197,8 +197,8 @@ msgstr "ОК"
 # @ tst
 # @ default
 #: inc/admin.php:244 inc/admin.php:304 inc/admin.php:401
-#: partials/contact-form.php:29 partials/sidebar-multibutton.php:98
-#: partials/sidebar-multibutton.php:127 partials/sidebar-multibutton.php:154
+#: partials/contact-form.php:29 partials/sidebar-multibutton.php:100
+#: partials/sidebar-multibutton.php:134 partials/sidebar-multibutton.php:161
 #: single-tasks.php:138
 msgid "Cancel"
 msgstr "Отменить"
@@ -262,7 +262,7 @@ msgid "Task status"
 msgstr "Статус задачи"
 
 # @ tst
-#: inc/admin.php:480 inc/post-types.php:30 inc/template-tasks.php:184
+#: inc/admin.php:480 inc/post-types.php:30 inc/template-tasks.php:192
 #: page-task-actions.php:152
 msgid "Reward"
 msgstr "Награда"
@@ -708,7 +708,7 @@ msgid "<strong>Error:</strong> empty message."
 msgstr "<strong>Ошибка:</strong> введите текст отзыва."
 
 #: inc/functions-members.php:474 inc/functions-members.php:563
-#: partials/sidebar-multibutton.php:91
+#: partials/sidebar-multibutton.php:93
 msgid "Please rate doer work result"
 msgstr "Пожалуйста, оцените работу."
 
@@ -2516,19 +2516,19 @@ msgid "Created tasks / completed tasks"
 msgstr "Созданных задач / завершенных задач"
 
 # @ tst
-#: inc/template-tasks.php:17 inc/template-tasks.php:357
+#: inc/template-tasks.php:17 inc/template-tasks.php:364
 #: partials/home-well.php:52
 msgid "New tasks:"
 msgstr "Ожидают волонтеров:"
 
 # @ tst
-#: inc/template-tasks.php:22 inc/template-tasks.php:358
+#: inc/template-tasks.php:22 inc/template-tasks.php:365
 #: partials/home-well.php:55
 msgid "In work tasks:"
 msgstr "В работе:"
 
 # @ tst
-#: inc/template-tasks.php:27 inc/template-tasks.php:359
+#: inc/template-tasks.php:27 inc/template-tasks.php:366
 #: partials/home-well.php:58
 msgid "Closed tasks:"
 msgstr "Решено:"
@@ -2537,34 +2537,39 @@ msgstr "Решено:"
 msgid "By tags"
 msgstr "По тегам"
 
+# @ tst
 #: inc/template-tasks.php:55
+msgid "Results"
+msgstr "Результатов"
+
+#: inc/template-tasks.php:62
 msgid "New tasks"
 msgstr "Ожидают волонтеров"
 
-#: inc/template-tasks.php:60
+#: inc/template-tasks.php:67
 msgid "In work tasks"
 msgstr "В работе"
 
-#: inc/template-tasks.php:65 partials/content-member_single.php:173
+#: inc/template-tasks.php:72 partials/content-member_single.php:173
 msgid "Closed tasks"
 msgstr "Завершенные задачи"
 
 # @ tst
-#: inc/template-tasks.php:102
+#: inc/template-tasks.php:110
 msgid "Opened"
 msgstr "Открыто"
 
-#: inc/template-tasks.php:106
+#: inc/template-tasks.php:114
 msgid "Trash"
 msgstr "В корзине"
 
-#: inc/template-tasks.php:123
+#: inc/template-tasks.php:131
 #, php-format
 msgid "published: %s"
 msgstr "опубликовано: %s"
 
 # @ tst
-#: inc/template-tasks.php:225 inc/template-tasks.php:263
+#: inc/template-tasks.php:233 inc/template-tasks.php:271
 msgid "Details"
 msgstr "Подробности"
 
@@ -3122,136 +3127,140 @@ msgstr "Одобрить"
 msgid "Оffered their help"
 msgstr "Предложили помощь"
 
+#: partials/sidebar-multibutton.php:9 partials/sidebar-multibutton.php:112
+msgid "Task closed"
+msgstr "Задача закрыта"
+
 # @ tst
-#: partials/sidebar-multibutton.php:9 partials/sidebar-multibutton.php:109
+#: partials/sidebar-multibutton.php:11 partials/sidebar-multibutton.php:114
 msgid "Offer help"
 msgstr "Предложить помощь"
 
 # @ tst
-#: partials/sidebar-multibutton.php:16
+#: partials/sidebar-multibutton.php:18
 msgid "Task is in draft stage"
 msgstr "Задача является черновиком"
 
 # @ tst
-#: partials/sidebar-multibutton.php:25
+#: partials/sidebar-multibutton.php:27
 msgid "Stop publication"
 msgstr "Остановить публикацию"
 
 # @ tst
-#: partials/sidebar-multibutton.php:28
+#: partials/sidebar-multibutton.php:30
 msgid "The task is open. No volunteers found"
 msgstr "Задание открыто. Волонтёров пока нет"
 
 # @ tst
-#: partials/sidebar-multibutton.php:38
+#: partials/sidebar-multibutton.php:40
 msgid "In work!"
 msgstr "В работу"
 
 # @ tst
-#: partials/sidebar-multibutton.php:40
+#: partials/sidebar-multibutton.php:42
 msgid "The task is open"
 msgstr "Задача открыта"
 
 # @ tst
-#: partials/sidebar-multibutton.php:49
+#: partials/sidebar-multibutton.php:51
 msgid "Close the task"
 msgstr "Закрыть задачу"
 
 # @ tst
-#: partials/sidebar-multibutton.php:52
+#: partials/sidebar-multibutton.php:54
 msgid "The task is in work"
 msgstr "Задача в работе"
 
 # @ tst
-#: partials/sidebar-multibutton.php:52
+#: partials/sidebar-multibutton.php:54
 msgid "Re-open the task?"
 msgstr "Продолжить набор кандидатов?"
 
 # @ tst
-#: partials/sidebar-multibutton.php:67
+#: partials/sidebar-multibutton.php:69
 msgid "Return to work"
 msgstr "Вернуться к работе"
 
 # @ tst
-#: partials/sidebar-multibutton.php:69
+#: partials/sidebar-multibutton.php:71
 msgid "The task is closed"
 msgstr "Задача решена"
 
-#: partials/sidebar-multibutton.php:77
+#: partials/sidebar-multibutton.php:79
 msgid "Leave a review to the task doer just to thank him."
 msgstr "Оставьте отзыв или слова благодарности исполнителю"
 
-#: partials/sidebar-multibutton.php:79
+#: partials/sidebar-multibutton.php:81
 msgid "Problem solved. Glad to work with him. Recomend this doer."
 msgstr ""
 "Задача успешно закрыта. Был рад сотрудничеству. Рекомендую этого "
 "пользователя."
 
-#: partials/sidebar-multibutton.php:80 single-tasks.php:120
+#: partials/sidebar-multibutton.php:82 single-tasks.php:120
 msgid "Please input review text"
 msgstr "Пожалуйста, напишите свой отзыв."
 
-#: partials/sidebar-multibutton.php:82 single-tasks.php:122
+#: partials/sidebar-multibutton.php:84 single-tasks.php:122
 #: single-tasks.php:150
 msgid "Your mark:"
 msgstr "Ваша оценка:"
 
 # @ tst
-#: partials/sidebar-multibutton.php:99 partials/sidebar-multibutton.php:128
-#: partials/sidebar-multibutton.php:155 single-tasks.php:139
+#: partials/sidebar-multibutton.php:101 partials/sidebar-multibutton.php:135
+#: partials/sidebar-multibutton.php:162 single-tasks.php:139
 msgid "Send"
 msgstr "Отправить"
 
 # @ tst
-#: partials/sidebar-multibutton.php:112
+#: partials/sidebar-multibutton.php:119
 msgid "You are not offered your help yet"
 msgstr "Вы еще не предложили помощь"
 
 # @ tst
-#: partials/sidebar-multibutton.php:113
+#: partials/sidebar-multibutton.php:120
 msgid ""
 "The task are already in work! Please try offering your help on another one"
 msgstr "Задача уже в работе! Помогите кому-нибудь еще :)"
 
 # @ tst
-#: partials/sidebar-multibutton.php:114
+#: partials/sidebar-multibutton.php:121
 msgid "The task was closed for help offers"
 msgstr "Задача закрыта для предложений помощи"
 
 # @ tst
-#: partials/sidebar-multibutton.php:116
+#: partials/sidebar-multibutton.php:123
 msgid "The task is not open yet, so you cannot offer your help for now"
 msgstr ""
 "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
 # @ tst
-#: partials/sidebar-multibutton.php:120
+#: partials/sidebar-multibutton.php:127
 msgid "Send a little message to the task author about what you can do to help."
 msgstr "Напишите автору задачи, чем вы хотите помочь."
 
 # @ tst
-#: partials/sidebar-multibutton.php:135
+#: partials/sidebar-multibutton.php:142
 msgid "Refuse helping"
 msgstr "Отказаться помогать"
 
 # @ tst
-#: partials/sidebar-multibutton.php:139
+#: partials/sidebar-multibutton.php:146
 msgid "You have offered your help, wait for the task author to approve it"
 msgstr "Вы предложили помощь, ожидайте утверждения автором задачи"
 
 # @ tst
-#: partials/sidebar-multibutton.php:141
+#: partials/sidebar-multibutton.php:148
 msgid "You have offered your help, but task author did not approved it"
 msgstr "Вы предложили помощь, но пока она еще не принята автором задачи"
 
 # @ tst
-#: partials/sidebar-multibutton.php:143
+#: partials/sidebar-multibutton.php:150
 msgid "The task is not open yet, so your help offering is impossible for now"
 msgstr ""
 "Задача еще не открыта - в данный момент вы не можете предложить свою помощь"
 
 # @ tst
-#: partials/sidebar-multibutton.php:147
+#: partials/sidebar-multibutton.php:154
 msgid ""
 "Send a little message to the task author about why you wish to refuse your "
 "help."
@@ -3259,12 +3268,7 @@ msgstr ""
 "Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
 
 # @ tst
-#: search.php:19
-msgid "Results"
-msgstr "Результатов"
-
-# @ tst
-#: search.php:39 searchform.php:16
+#: search.php:32 searchform.php:16
 msgid "Search"
 msgstr "Поиск"
 
