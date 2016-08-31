@@ -93,7 +93,12 @@ class ThankyouModel extends ITVSingletonModel {
     
     private function is_said_recently_condition($thankyou) {
         return strtotime($thankyou->moment) > current_time('timestamp') - $this->THANKYOU_CONFIG['MIN_INTERVAL'] * 60;
-    } 
+    }
+
+    public function get_user_thankyou_count($to_uid) {
+        $query = ThankYou::where('to_uid', $to_uid);
+        return $query->count();
+    }
 }
 
 /* exceptions */

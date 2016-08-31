@@ -4,6 +4,7 @@
  **/
 
 use ITV\models\UserXPModel;
+use ITV\models\ThankyouModel;
 
 function tst_task_in_tab($task){
 	
@@ -244,6 +245,10 @@ $is_thankyou_said_recently = \ITV\models\ThankyouModel::instance()->is_said_rece
 							<tr>
 								<th><?php _e('Tasks created', 'tst');?></th>
 								<td class="num"><?php echo (int)$activity['created'].' / <span title="'.__('Closed from them', 'tst').'">'.(int)$activity['created_closed'].'</span>';?></td>
+							</tr>
+							<tr>
+								<th><?php _e('Thankyou times', 'tst');?></th>
+								<td class="num"><span><?php echo ThankyouModel::instance()->get_user_thankyou_count($tst_member->ID); ?></span></td>
 							</tr>
 						</tbody>
 					</table>
