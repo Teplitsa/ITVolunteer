@@ -97,7 +97,7 @@ class ThankyouModel extends ITVSingletonModel {
 
     public function get_user_thankyou_count($to_uid) {
         $query = ThankYou::where('to_uid', $to_uid);
-        return $query->count();
+        return $query->sum('counter');
     }
 }
 
