@@ -60,6 +60,9 @@ add_action('wp_footer', function(){
 		<a href="<?php echo home_url('tags'); ?>" class="tags ga-event-trigger" <?php tst_ga_event_data('hp_tf_tags');?>>
 			<?php _e('By tags', 'tst')?>
 		</a>	
+		<a href="<?php echo home_url('nko-tags'); ?>" class="tags ga-event-trigger" <?php tst_ga_event_data('hp_tf_nko_tags');?>>
+			<?php _e('By NPO tags', 'tst')?>
+		</a>	
 	</div>
 	
 </section>

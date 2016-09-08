@@ -35,9 +35,13 @@ function tst_tasks_filters_menu(){
 	</li>
 	<?php } ?>
 	<li class="tags<?php if(is_page('tags')) echo ' active';?>">
-	
 	<a href="<?php echo home_url('tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_tags');?>>
 		<?php _e('By tags', 'tst')?>
+	</a>
+	</li>
+	<li class="tags<?php if(is_page('nko-tags')) echo ' active';?>">
+	<a href="<?php echo home_url('nko-tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_nko_tags');?>>
+		<?php _e('By NPO tags', 'tst')?>
 	</a>
 	</li>
 </ul>

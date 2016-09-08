@@ -129,6 +129,12 @@ function itv_get_ga_events() {
     	'ga_label' => tst_detect_page_type()
     );
     
+    $events_data['hp_tf_nko_tags'] = array(
+        'ga_category' => 'Фильтр задач - по тегам НКО',
+        'ga_action' => 'Ссылка по тегам НКО на главной',
+        'ga_label' => tst_detect_page_type()
+    );
+    
     $events_data['hp_ntask_bottom'] = array(
     	'ga_category' => 'Создать задачу',
     	'ga_action' => 'Кнопка создать задачу на главной (низ)',
@@ -174,7 +180,11 @@ function itv_get_ga_events() {
     	'ga_action' => 'Ссылка на страницу тегов - в заголовке',
     	'ga_label' => tst_detect_page_type()
     );
-    
+    $events_data['tl_tf_nko_tags'] = array(
+        'ga_category' => 'Фильтр задач - теги НКО',
+        'ga_action' => 'Ссылка на страницу тегов НКО - в заголовке',
+        'ga_label' => tst_detect_page_type()
+    );
     
     
     /** Menu **/
