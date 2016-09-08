@@ -186,6 +186,7 @@ class ITV_CssJs {
 			'user_company_logo_upload_error' => __('Upload screenshot error!', 'tst'),
 			'sure_delete_screen'             => __('Are you sure?', 'tst'),
 			'screens_limit_exceeded'         => __('Too much screenshots loaded!', 'tst'),
+			'you_said_thankyou'              => __('You said thankyou!', 'tst'),
 			//        '' => __('.', 'tst'),
 		));
 		
