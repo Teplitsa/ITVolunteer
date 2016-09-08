@@ -80,7 +80,7 @@ function itv_custom_content(){
         'show_tagcloud'     => true,
         'show_admin_column' => false,
         'query_var'         => true,
-        'rewrite'           => array('slug' => 'nko_task_tag', 'with_front' => false),
+        'rewrite'           => array('slug' => 'nko_task_tag'),
     ));
 	
     register_post_type('tasks', array(

@@ -28,6 +28,8 @@ get_header(); ?>
 		<div class="col-md-8">
 			<div class="page-content">
 			<?php
+			    $tags = get_terms($tst_tags_taxonomy_name, array('hide_empty' => 1, 'orderby' => 'count', 'order' => 'DESC'));
+			    
 				if(!empty($tags)){
     				
     				$max_tasks_by_tag = $tasks_stats_by_tags->get_max_posts_count_by_tags();
@@ -41,7 +43,7 @@ get_header(); ?>
     					
     					if($tasks_stats) {
     					    echo "<li>";
-    					    echo "<a href='".get_term_link($tag)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tasks_stats->total."</i>";
+    					    echo "<a href='".get_term_link($tag, $tst_tags_taxonomy_name)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tasks_stats->total."</i>";
     					    echo itv_show_tasks_stats_by_tag($tasks_stats, $max_tasks_by_tag);
     					    echo "</li>";
     					}

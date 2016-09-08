@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-08 10:49+0200\n"
-"PO-Revision-Date: 2016-09-08 10:53+0200\n"
+"POT-Creation-Date: 2016-09-08 17:28+0200\n"
+"PO-Revision-Date: 2016-09-08 17:29+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -2326,7 +2326,7 @@ msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:94 inc/template-general.php:37 partials/navbar.php:80
+#: inc/post-types.php:94 inc/template-general.php:41 partials/navbar.php:80
 msgid "New task"
 msgstr "Новая задача"
 
@@ -2385,65 +2385,70 @@ msgstr "Исполнители не найдены."
 msgid "Tasks by tag: %s ( %s )"
 msgstr "Задачи по тегу: %s ( %s )"
 
+#: inc/template-general.php:25
+#, php-format
+msgid "Tasks by NKO tag: %s ( %s )"
+msgstr "Тема: %s ( %s )"
+
 # @ tst
-#: inc/template-general.php:40
+#: inc/template-general.php:44
 #, php-format
 msgid "Edit task #%s"
 msgstr "Редактировать задачу #%s"
 
 # @ tst
-#: inc/template-general.php:47 inc/template-general.php:129
+#: inc/template-general.php:51 inc/template-general.php:133
 msgid "All Tasks"
 msgstr "Все задачи"
 
 # @ tst
-#: inc/template-general.php:53
+#: inc/template-general.php:57
 msgid "Search results"
 msgstr "Результаты поиска"
 
-#: inc/template-general.php:57 partials/navbar.php:34
+#: inc/template-general.php:61 partials/navbar.php:34
 msgid "News"
 msgstr "Новости"
 
 # @ tst
-#: inc/template-general.php:60
+#: inc/template-general.php:64
 msgid "Page not found"
 msgstr "Страница не найдена"
 
 # @ tst
-#: inc/template-general.php:63
+#: inc/template-general.php:67
 msgid "Some title"
 msgstr "Заголовок"
 
 # @ tst
-#: inc/template-general.php:173
+#: inc/template-general.php:177
 msgid "More"
 msgstr "Еще"
 
 # @ tst
-#: inc/template-general.php:244
+#: inc/template-general.php:248
 msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
 # @ tst
-#: inc/template-general.php:249 partials/content-member_single.php:321
+#: inc/template-general.php:253 partials/content-member_single.php:321
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
 # @ tst
-#: inc/template-general.php:304 inc/template-members.php:129
+#: inc/template-general.php:308 inc/template-members.php:129
 #: page-author-reviews.php:122
 msgid "&laquo; prev."
 msgstr "&laquo; пред."
 
 # @ tst
-#: inc/template-general.php:305 inc/template-members.php:130
+#: inc/template-general.php:309 inc/template-members.php:130
 #: page-author-reviews.php:123
 msgid "next. &raquo;"
 msgstr "след. &raquo;"
 
 # @ tst
-#: inc/template-general.php:413
+#: inc/template-general.php:417
 #, php-format
 msgctxt "1: date, 2: time"
 msgid "%1$s at %2$s"

@@ -8,7 +8,7 @@ get_header();?>
 
 <?php 
 $tasks_stats_by_tags = ItvTasksStatsByNKOTags::instance();
-$tags = get_terms('nko_task_tag', array('hide_empty' => 1, 'orderby' => 'count', 'order' => 'DESC'));
+$tst_tags_taxonomy_name = 'nko_task_tag';
 ?>
 
 <?php include('page-tags-general.php');?>

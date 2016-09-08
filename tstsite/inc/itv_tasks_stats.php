@@ -46,40 +46,6 @@ class ItvTasksStats {
 	}
 }
 
-class ItvTasksStatsByTags extends ItvTasksStatsByTax {
-	private static $_instance = NULL;
-	protected $tags_taxonomy_name = 'post_tag';
-	
-	public function __construct() {
-		global $wpdb;
-		$this->task_stats_by_tax_table = $wpdb->prefix.'itv_task_stats_by_tags';
-	}
-	
-	public static function instance() {
-		if(ItvTasksStatsByTags::$_instance == NULL) {
-			ItvTasksStatsByTags::$_instance = new ItvTasksStatsByTags();
-		}
-		return ItvTasksStatsByTags::$_instance;
-	}
-}
-
-class ItvTasksStatsByNKOTags extends ItvTasksStatsByTax {
-    private static $_instance = NULL;
-    protected $tags_taxonomy_name = 'nko_task_tag';
-    
-    public function __construct() {
-        global $wpdb;
-        $this->task_stats_by_tax_table = $wpdb->prefix.'itv_task_stats_by_nko_tags';
-    }
-    
-    public static function instance() {
-        if(ItvTasksStatsByNKOTags::$_instance == NULL) {
-            ItvTasksStatsByNKOTags::$_instance = new ItvTasksStatsByNKOTags();
-        }
-        return ItvTasksStatsByNKOTags::$_instance;
-    }
-}
-
 class ItvTasksStatsByTax {
     protected $task_stats_by_tax_table = '';
     protected $tags_taxonomy_name = '';
@@ -126,9 +92,43 @@ class ItvTasksStatsByTax {
 	}
 	
 	public function get_tags() {
-	    $tags = get_terms($this->tags_taxonomy_name, array('hide_empty' => 1, 'orderby' => 'count', 'order' => 'DESC'));
+	    $tags = get_terms($this->tags_taxonomy_name, array('hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
 	    return $tags;
 	}
+}
+
+class ItvTasksStatsByTags extends ItvTasksStatsByTax {
+    private static $_instance = NULL;
+    protected $tags_taxonomy_name = 'post_tag';
+
+    public function __construct() {
+        global $wpdb;
+        $this->task_stats_by_tax_table = $wpdb->prefix.'itv_task_stats_by_tags';
+    }
+
+    public static function instance() {
+        if(ItvTasksStatsByTags::$_instance == NULL) {
+            ItvTasksStatsByTags::$_instance = new ItvTasksStatsByTags();
+        }
+        return ItvTasksStatsByTags::$_instance;
+    }
+}
+
+class ItvTasksStatsByNKOTags extends ItvTasksStatsByTax {
+    private static $_instance = NULL;
+    protected $tags_taxonomy_name = 'nko_task_tag';
+
+    public function __construct() {
+        global $wpdb;
+        $this->task_stats_by_tax_table = $wpdb->prefix.'itv_task_stats_by_nko_tags';
+    }
+
+    public static function instance() {
+        if(ItvTasksStatsByNKOTags::$_instance == NULL) {
+            ItvTasksStatsByNKOTags::$_instance = new ItvTasksStatsByNKOTags();
+        }
+        return ItvTasksStatsByNKOTags::$_instance;
+    }
 }
 
 ItvTasksStats::instance();
