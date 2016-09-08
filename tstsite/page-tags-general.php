@@ -39,10 +39,12 @@ get_header(); ?>
     				
     					$tasks_stats = $tasks_stats_by_tags->get_tag_stats($tag->term_taxonomy_id);
     					
-    					echo "<li>";
-    					echo "<a href='".get_term_link($tag)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tasks_stats->total."</i>";
-    					echo itv_show_tasks_stats_by_tag($tasks_stats, $max_tasks_by_tag);
-    					echo "</li>";
+    					if($tasks_stats) {
+    					    echo "<li>";
+    					    echo "<a href='".get_term_link($tag)."'>".apply_filters('frl_the_title', $tag->name)."</a> <i>".$tasks_stats->total."</i>";
+    					    echo itv_show_tasks_stats_by_tag($tasks_stats, $max_tasks_by_tag);
+    					    echo "</li>";
+    					}
     				}
     				echo "</ul>";	
 				}
