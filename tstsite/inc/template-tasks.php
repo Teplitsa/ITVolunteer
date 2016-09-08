@@ -35,9 +35,13 @@ function tst_tasks_filters_menu(){
 	</li>
 	<?php } ?>
 	<li class="tags<?php if(is_page('tags')) echo ' active';?>">
-	
 	<a href="<?php echo home_url('tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_tags');?>>
 		<?php _e('By tags', 'tst')?>
+	</a>
+	</li>
+	<li class="tags<?php if(is_page('nko-tags')) echo ' active';?>">
+	<a href="<?php echo home_url('nko-tags'); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tl_tf_nko_tags');?>>
+		<?php _e('By NPO tags', 'tst')?>
 	</a>
 	</li>
 </ul>
@@ -224,7 +228,7 @@ function tst_task_card_in_loop($task){
 			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php echo get_the_title($task); ?></a>
 		</h4>							
 		<div class="task-meta"><?php echo tst_task_meta_in_card($task);?></div>
-		<?php echo get_the_term_list($task->ID, 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
+		<div class="task-tags"><?php echo tst_task_all_tags($task); ?></div>
 	</header><!-- .entry-header -->
 
 	<div class="task-summary">	
@@ -239,7 +243,21 @@ function tst_task_card_in_loop($task){
 <?php	
 }
 
-
+function tst_task_all_tags($task) {
+    $tags_list = array();
+    
+    $tags = get_the_term_list($task->ID, 'nko_task_tag', '', ', ', '');
+    if($tags) {
+        $tags_list[] = $tags;
+    }
+    
+    $tags = get_the_term_list($task->ID, 'post_tag', '', ', ', '');
+    if($tags) {
+        $tags_list[] = $tags;
+    }
+    
+    return implode(', ', $tags_list);
+}
 
 
 
@@ -262,7 +280,7 @@ function tst_task_related_card($task){
 			<a href="<?php echo get_permalink($task); ?>" class="ga-event-trigger" <?php tst_ga_event_data('tc_title');?> rel="bookmark"><?php echo get_the_title($task); ?></a>
 		</h4>							
 		<div class="task-meta"><?php echo tst_task_meta_in_card($task);?></div>
-		<?php echo get_the_term_list($task->ID, 'post_tag', '<div class="task-tags">', ', ', '</div>'); ?>		
+		<div class="task-tags"><?php echo tst_task_all_tags($task); ?></div>
 	</header><!-- .entry-header -->
 
 	<div class="task-summary">	

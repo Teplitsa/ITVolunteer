@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-31 10:18+0200\n"
-"PO-Revision-Date: 2016-08-31 10:19+0200\n"
+"POT-Creation-Date: 2016-09-08 17:28+0200\n"
+"PO-Revision-Date: 2016-09-08 17:29+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -127,7 +127,7 @@ msgstr "Расписание"
 
 # @ default
 # @ tst
-#: inc/admin.php:114 page-task-actions.php:183
+#: inc/admin.php:114 page-task-actions.php:205
 #: partials/sidebar-multibutton.php:16
 msgid "Publish"
 msgstr "Опубликовать"
@@ -155,7 +155,7 @@ msgstr "Статус:"
 
 # @ tst
 # @ default
-#: inc/admin.php:208 inc/admin.php:236 inc/template-tasks.php:109
+#: inc/admin.php:208 inc/admin.php:236 inc/template-tasks.php:113
 msgid "Draft"
 msgstr "Черновик"
 
@@ -166,19 +166,19 @@ msgstr "Опубликовано"
 
 # @ tst
 #: inc/admin.php:214 inc/admin.php:238 inc/functions-tasks.php:22
-#: inc/template-tasks.php:111
+#: inc/template-tasks.php:115
 msgid "In work"
 msgstr "В работе"
 
 # @ tst
 #: inc/admin.php:217 inc/admin.php:239 inc/functions-tasks.php:30
-#: inc/template-tasks.php:112
+#: inc/template-tasks.php:116
 msgid "Closed"
 msgstr "Решено"
 
 #: inc/admin.php:220 inc/admin.php:240 inc/functions-tasks.php:38
-#: inc/template-tasks.php:33 inc/template-tasks.php:77
-#: inc/template-tasks.php:113 inc/template-tasks.php:367
+#: inc/template-tasks.php:33 inc/template-tasks.php:81
+#: inc/template-tasks.php:117 inc/template-tasks.php:371
 msgid "Archived"
 msgstr "Архив"
 
@@ -262,8 +262,8 @@ msgid "Task status"
 msgstr "Статус задачи"
 
 # @ tst
-#: inc/admin.php:480 inc/post-types.php:30 inc/template-tasks.php:192
-#: page-task-actions.php:152
+#: inc/admin.php:480 inc/post-types.php:30 inc/template-tasks.php:196
+#: page-task-actions.php:174
 msgid "Reward"
 msgstr "Награда"
 
@@ -795,7 +795,7 @@ msgstr "IP доступа"
 
 # @ tst
 #: inc/functions-members.php:813 page-member-tasks.php:71
-#: partials/content-member_single.php:250
+#: partials/content-member_single.php:246
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
@@ -845,12 +845,12 @@ msgid "The task was successfully deleted."
 msgstr "Задача успешно удалена."
 
 # @ tst
-#: inc/functions-tasks.php:143
+#: inc/functions-tasks.php:144
 msgid "<strong>Error:</strong> something occured due to the task addition."
 msgstr "Во время добавления задачи произошли ошибки."
 
 # @ tst
-#: inc/functions-tasks.php:144
+#: inc/functions-tasks.php:145
 msgid "<strong>Error:</strong> something occured due to task edition."
 msgstr "Во время редактирования задачи произошли ошибки"
 
@@ -903,6 +903,7 @@ msgid "Popular consult sources"
 msgstr "Популярные источники"
 
 #: inc/itv_consult.php:23 inc/itv_consult.php:56 inc/post-types.php:42
+#: inc/post-types.php:72
 msgid "Separate with commas"
 msgstr "Разделять запятыми"
 
@@ -1028,23 +1029,23 @@ msgid "No consults found in Trash"
 msgstr "Консультации не найдены."
 
 # @ tst
-#: inc/itv_consult.php:119 inc/itv_consult.php:122 inc/post-types.php:60
-#: inc/post-types.php:111
+#: inc/itv_consult.php:119 inc/itv_consult.php:122 inc/post-types.php:89
+#: inc/post-types.php:140
 msgid "Task"
 msgstr "Задача"
 
 # @ tst
-#: inc/itv_consult.php:123 inc/post-types.php:69 inc/post-types.php:112
+#: inc/itv_consult.php:123 inc/post-types.php:98 inc/post-types.php:141
 msgid "Search tasks"
 msgstr "Поиск задач"
 
-#: inc/itv_consult.php:124 inc/post-types.php:71
+#: inc/itv_consult.php:124 inc/post-types.php:100
 msgid "No tasks found"
 msgstr "Задачи не найдены"
 
 # @ tst
 #: inc/itv_consult.php:125 inc/itv_consult.php:131 inc/itv_consult.php:149
-#: inc/itv_consult.php:155 inc/post-types.php:114 inc/post-types.php:120
+#: inc/itv_consult.php:155 inc/post-types.php:143 inc/post-types.php:149
 msgid "Create connections"
 msgstr "Создать взаимосвязь"
 
@@ -1188,7 +1189,7 @@ msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:742 inc/post-types.php:66
+#: inc/itv_consult.php:742 inc/post-types.php:95
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
@@ -2250,72 +2251,132 @@ msgstr "Выбрать из часто используемых"
 msgid "Not found rewards"
 msgstr "Награды не найдены"
 
+#: inc/post-types.php:59 inc/post-types.php:61
+msgid "NPO Tags"
+msgstr "Темы"
+
+#: inc/post-types.php:60
+msgid "NPO Tag"
+msgstr "Тема"
+
+#: inc/post-types.php:62
+msgid "All NPO Tags"
+msgstr "Все темы НКО"
+
+#: inc/post-types.php:63
+msgid "Edit NPO Tag"
+msgstr "Редактировать тему"
+
+#: inc/post-types.php:64
+msgid "View NPO Tag"
+msgstr "Смотреть"
+
+#: inc/post-types.php:65
+msgid "Update NPO Tag"
+msgstr "Обновить"
+
+#: inc/post-types.php:66
+msgid "Add new NPO Tag"
+msgstr "Добавить новую тему"
+
+#: inc/post-types.php:67
+msgid "New NPO Tag name"
+msgstr "Новая тема"
+
+#: inc/post-types.php:68
+msgid "Parent NPO Tag"
+msgstr "Родительская тема"
+
+#: inc/post-types.php:69
+msgid "Parent NPO Tag:"
+msgstr "Родительская тема:"
+
+#: inc/post-types.php:70
+msgid "Search NPO Tags"
+msgstr "Найти тему"
+
+#: inc/post-types.php:71
+msgid "Popular NPO Tags"
+msgstr "Популярные темы"
+
+#: inc/post-types.php:73
+msgid "Add or remove NPO Tag"
+msgstr "Добавить или удалить тему"
+
+#: inc/post-types.php:74
+msgid "Choose from most used NPO Tags"
+msgstr "Выберите из популярных тем"
+
+#: inc/post-types.php:75
+msgid "Not found NPO Tags"
+msgstr "Темы не найдены"
+
 # @ tst
-#: inc/post-types.php:59 inc/post-types.php:61 inc/post-types.php:108
+#: inc/post-types.php:88 inc/post-types.php:90 inc/post-types.php:137
 #: inc/template-members.php:683 partials/navbar.php:20
 msgid "Tasks"
 msgstr "Задачи"
 
-#: inc/post-types.php:62 inc/post-types.php:64
+#: inc/post-types.php:91 inc/post-types.php:93
 msgid "Add task"
 msgstr "Добавить задачу"
 
-#: inc/post-types.php:63
+#: inc/post-types.php:92
 msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:65 inc/template-general.php:37 partials/navbar.php:80
+#: inc/post-types.php:94 inc/template-general.php:41 partials/navbar.php:80
 msgid "New task"
 msgstr "Новая задача"
 
 # @ tst
-#: inc/post-types.php:67 page-member-tasks.php:89 page-member-tasks.php:115
+#: inc/post-types.php:96 page-member-tasks.php:89 page-member-tasks.php:115
 #: page-member-tasks.php:141
 msgid "View task"
 msgstr "Страница задачи"
 
 # @ tst
-#: inc/post-types.php:68 partials/content-member_single.php:283
+#: inc/post-types.php:97 partials/content-member_single.php:283
 #: partials/content-member_single.php:304
 msgid "All tasks"
 msgstr "Все задачи"
 
-#: inc/post-types.php:70
+#: inc/post-types.php:99
 msgid "Parent task"
 msgstr "Родительская"
 
-#: inc/post-types.php:72
+#: inc/post-types.php:101
 msgid "No tasks found in Trash"
 msgstr "В Корзине задачи не найдены"
 
 # @ tst
-#: inc/post-types.php:101
+#: inc/post-types.php:130
 msgid "Doer approved"
 msgstr "Исполнитель утвержден"
 
 # @ tst
-#: inc/post-types.php:107
+#: inc/post-types.php:136
 msgid "Task doers"
 msgstr "Исполнители задачи"
 
 # @ tst
-#: inc/post-types.php:113
+#: inc/post-types.php:142
 msgid "No tasks found."
 msgstr "Задачи не найдены."
 
 # @ tst
-#: inc/post-types.php:117
+#: inc/post-types.php:146
 msgid "Doer"
 msgstr "Исполнитель"
 
 # @ tst
-#: inc/post-types.php:118
+#: inc/post-types.php:147
 msgid "Search doers"
 msgstr "Поиск исполнителей"
 
 # @ tst
-#: inc/post-types.php:119
+#: inc/post-types.php:148
 msgid "No doers found."
 msgstr "Исполнители не найдены."
 
@@ -2324,65 +2385,70 @@ msgstr "Исполнители не найдены."
 msgid "Tasks by tag: %s ( %s )"
 msgstr "Задачи по тегу: %s ( %s )"
 
+#: inc/template-general.php:25
+#, php-format
+msgid "Tasks by NKO tag: %s ( %s )"
+msgstr "Тема: %s ( %s )"
+
 # @ tst
-#: inc/template-general.php:40
+#: inc/template-general.php:44
 #, php-format
 msgid "Edit task #%s"
 msgstr "Редактировать задачу #%s"
 
 # @ tst
-#: inc/template-general.php:47 inc/template-general.php:129
+#: inc/template-general.php:51 inc/template-general.php:133
 msgid "All Tasks"
 msgstr "Все задачи"
 
 # @ tst
-#: inc/template-general.php:53
+#: inc/template-general.php:57
 msgid "Search results"
 msgstr "Результаты поиска"
 
-#: inc/template-general.php:57 partials/navbar.php:34
+#: inc/template-general.php:61 partials/navbar.php:34
 msgid "News"
 msgstr "Новости"
 
 # @ tst
-#: inc/template-general.php:60
+#: inc/template-general.php:64
 msgid "Page not found"
 msgstr "Страница не найдена"
 
 # @ tst
-#: inc/template-general.php:63
+#: inc/template-general.php:67
 msgid "Some title"
 msgstr "Заголовок"
 
 # @ tst
-#: inc/template-general.php:173
+#: inc/template-general.php:177
 msgid "More"
 msgstr "Еще"
 
 # @ tst
-#: inc/template-general.php:244
+#: inc/template-general.php:248
 msgid "Back to tasks list"
 msgstr "Возврат к списку задач"
 
 # @ tst
-#: inc/template-general.php:249 partials/content-member_single.php:321
+#: inc/template-general.php:253 partials/content-member_single.php:321
 msgid "Back to members list"
 msgstr "Возврат к списку участников"
 
 # @ tst
-#: inc/template-general.php:304 inc/template-members.php:129
+#: inc/template-general.php:308 inc/template-members.php:129
 #: page-author-reviews.php:122
 msgid "&laquo; prev."
 msgstr "&laquo; пред."
 
 # @ tst
-#: inc/template-general.php:305 inc/template-members.php:130
+#: inc/template-general.php:309 inc/template-members.php:130
 #: page-author-reviews.php:123
 msgid "next. &raquo;"
 msgstr "след. &raquo;"
 
 # @ tst
-#: inc/template-general.php:413
+#: inc/template-general.php:417
 #, php-format
 msgctxt "1: date, 2: time"
 msgid "%1$s at %2$s"
@@ -2516,60 +2582,64 @@ msgid "Created tasks / completed tasks"
 msgstr "Созданных задач / завершенных задач"
 
 # @ tst
-#: inc/template-tasks.php:17 inc/template-tasks.php:364
+#: inc/template-tasks.php:17 inc/template-tasks.php:368
 #: partials/home-well.php:52
 msgid "New tasks:"
 msgstr "Ожидают волонтеров:"
 
 # @ tst
-#: inc/template-tasks.php:22 inc/template-tasks.php:365
+#: inc/template-tasks.php:22 inc/template-tasks.php:369
 #: partials/home-well.php:55
 msgid "In work tasks:"
 msgstr "В работе:"
 
 # @ tst
-#: inc/template-tasks.php:27 inc/template-tasks.php:366
+#: inc/template-tasks.php:27 inc/template-tasks.php:370
 #: partials/home-well.php:58
 msgid "Closed tasks:"
 msgstr "Решено:"
 
-#: inc/template-tasks.php:40 partials/home-well.php:61
+#: inc/template-tasks.php:39 partials/home-well.php:61
 msgid "By tags"
 msgstr "По тегам"
 
+#: inc/template-tasks.php:44 partials/home-well.php:64
+msgid "By NPO tags"
+msgstr "По темам"
+
 # @ tst
-#: inc/template-tasks.php:55
+#: inc/template-tasks.php:59
 msgid "Results"
 msgstr "Результатов"
 
-#: inc/template-tasks.php:62
+#: inc/template-tasks.php:66
 msgid "New tasks"
 msgstr "Ожидают волонтеров"
 
-#: inc/template-tasks.php:67
+#: inc/template-tasks.php:71
 msgid "In work tasks"
 msgstr "В работе"
 
-#: inc/template-tasks.php:72 partials/content-member_single.php:174
+#: inc/template-tasks.php:76 partials/content-member_single.php:174
 msgid "Closed tasks"
 msgstr "Завершенные задачи"
 
 # @ tst
-#: inc/template-tasks.php:110
+#: inc/template-tasks.php:114
 msgid "Opened"
 msgstr "Открыто"
 
-#: inc/template-tasks.php:114
+#: inc/template-tasks.php:118
 msgid "Trash"
 msgstr "В корзине"
 
-#: inc/template-tasks.php:131
+#: inc/template-tasks.php:135
 #, php-format
 msgid "published: %s"
 msgstr "опубликовано: %s"
 
 # @ tst
-#: inc/template-tasks.php:233 inc/template-tasks.php:271
+#: inc/template-tasks.php:237 inc/template-tasks.php:275
 msgid "Details"
 msgstr "Подробности"
 
@@ -2922,39 +2992,47 @@ msgstr "Теги"
 msgid "Choose a tags for the task..."
 msgstr "Выберите два-три тега для этой задачи"
 
-# @ tst
+#: page-task-actions.php:152
+msgid "Task nko tags"
+msgstr "Темы"
+
 #: page-task-actions.php:154
+msgid "Choose NPO tag for the task..."
+msgstr "Выберите тему для задачи"
+
+# @ tst
+#: page-task-actions.php:176
 msgid "Select a reward for a service, please"
 msgstr "Выберите награду за выполнение задачи"
 
 # @ tst
-#: page-task-actions.php:171
+#: page-task-actions.php:193
 msgid "itv_task_consult_needed_label"
 msgstr "Дополнительная консультация"
 
 # @ tst
-#: page-task-actions.php:174
+#: page-task-actions.php:196
 msgid "itv_task_consult_needed_more_info"
 msgstr ""
 "получить бесплатную консультацию сотрудника Теплицы социальных технологий"
 
 # @ tst
-#: page-task-actions.php:184
+#: page-task-actions.php:206
 msgid "Save draft"
 msgstr "Сохранить черновик"
 
 # @ tst
-#: page-task-actions.php:187
+#: page-task-actions.php:209
 msgid "Refresh"
 msgstr "Обновить"
 
 # @ tst
-#: page-task-actions.php:207
+#: page-task-actions.php:229
 msgid "View Task"
 msgstr "Просмотреть задачу"
 
 # @ tst
-#: page-task-actions.php:212
+#: page-task-actions.php:234
 msgid "Delete the task"
 msgstr "Удалить задачу"
 
@@ -3013,20 +3091,20 @@ msgstr "Все отзывы исполнителя"
 msgid "All author reviews"
 msgstr "Все отзывы автора"
 
-#: partials/content-member_single.php:242
-msgid "Thankyou times"
-msgstr "Сказали спасибо"
-
 # @ tst
-#: partials/content-member_single.php:246
+#: partials/content-member_single.php:242
 msgid "Tasks joined"
 msgstr "Участие в задачах"
 
 # @ tst
+#: partials/content-member_single.php:243
 #: partials/content-member_single.php:247
-#: partials/content-member_single.php:251
 msgid "Closed from them"
 msgstr "Из них решено"
+
+#: partials/content-member_single.php:250
+msgid "Thankyou times"
+msgstr "Сказали спасибо"
 
 # @ tst
 #: partials/content-member_single.php:260

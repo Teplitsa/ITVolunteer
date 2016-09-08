@@ -20,7 +20,11 @@ function frl_page_title(){
         $title = apply_filters('tag_archive_title', single_tag_title('', false));
 		$title = sprintf(__('Tasks by tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
     }
-	elseif(is_singular('tasks')) {
+    elseif(is_tax('nko_task_tag')) {
+        $title = apply_filters('tag_archive_title', single_tag_title('', false));
+		$title = sprintf(__('Tasks by NKO tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
+    }
+    elseif(is_singular('tasks')) {
 
 		//$id = intval($post->ID); 
 		$title = apply_filters('the_title', $post->post_title);

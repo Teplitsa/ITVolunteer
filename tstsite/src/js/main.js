@@ -85,6 +85,13 @@ jQuery(function($){
 		width: '99%'
     });
 
+    $('#task-nko-tags').chosen({
+        disable_search_threshold: 10,
+        max_selected_options: 1,
+        no_results_text: frontend.chosen_no_results_text,
+        width: '99%'
+    });
+
     $('#task-delete').click(function(){
         var $form = $('#task-action');
         is_ok = confirm(frontend.task_delete_confirm);
@@ -185,6 +192,7 @@ jQuery(function($){
         var $form = $(this),
 			$submit_used = $form.find('.e-clicked'),
             tags_list = $form.find('#task-tags').val(),
+            nko_tags_list = $form.find('#task-nko-tags').val(),
             form_is_valid = true,
             val = '';      
 
@@ -214,7 +222,6 @@ jQuery(function($){
                 $form.find('#about-author-org-vm').html(frontend.about_author_org_is_required).show();
             } else
                 $form.find('#about-author-org-vm').html('').hide();
-          
 
             val = tags_list;
             if( !val || !val.length ) {
@@ -241,7 +248,10 @@ jQuery(function($){
         if(tags_list)
             tags_list = tags_list.join(',');
 	    
-		//consultation
+        if(nko_tags_list)
+            nko_tags_list = nko_tags_list.join(',');
+
+        //consultation
 		var is_tst_consult_needed = 0;
 		if($form.find('#is_tst_consult_needed').prop('checked')) {
 			is_tst_consult_needed = 1;
@@ -257,7 +267,8 @@ jQuery(function($){
 			'is_tst_consult_needed': is_tst_consult_needed,                        
             'about_author_org'     : $form.find('#about-author-org').val(),            
             'reward'               : $form.find('#reward').val(),
-            'tags'                 : tags_list
+            'tags'                 : tags_list,
+            'nko_tags'             : nko_tags_list
 			
         }, function(resp){
 

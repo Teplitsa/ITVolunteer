@@ -104,6 +104,7 @@ function ajax_add_edit_task(){
 		//update_field doesn't work for some reason - use native functions
 		update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
 		wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
+		wp_set_post_terms($task_id, explode(',', filter_var($_POST['nko_tags'], FILTER_SANITIZE_STRING)), 'nko_task_tag');
 		update_post_meta($task_id, 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
 		

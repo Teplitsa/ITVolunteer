@@ -147,7 +147,29 @@ get_header();?>
             </select>
             <div id="task-tags-vm" class="validation-message" style="display: none;"></div>
         </div>
-	
+
+		<div class="form-group">
+            <label for="task-nko-tags"><?php _e('Task nko tags', 'tst');?></label>
+            <br />
+            <select id="task-nko-tags" multiple="10" data-placeholder="<?php _e('Choose NPO tag for the task...', 'tst');?>">
+            <?php if( !$new_task ) {
+                    $task_nko_tags = wp_get_post_terms($task->ID, 'nko_task_tag', array());
+                    function nko_tag_in_array($tag, $array) {
+                        foreach($array as $value) {
+                            if($tag->term_id == $value->term_id)
+                                return true;
+                        }
+                        return false;
+                    }
+                }
+				$tags = get_terms('nko_task_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
+                foreach($tags as $tag) { ?>
+                <option value="<?php echo esc_attr($tag->term_id);?>" <?php echo (!$new_task && nko_tag_in_array($tag, $task_nko_tags)) ? 'selected="selected"' : '';?>><?php echo apply_filters('frl_the_title', $tag->name);?></option>
+            <?php }?>
+            </select>
+            <div id="task-nko-tags-vm" class="validation-message" style="display: none;"></div>
+        </div>
+        
 		<div class="form-group">
 			<label for="reward"><?php _e('Reward', 'tst');?></label>
 			<select id="reward" class="form-control">
