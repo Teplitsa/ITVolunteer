@@ -1159,10 +1159,15 @@ jQuery(function($){
 var ITV_USER_XP_ACTIONS = jQuery.parseJSON(frontend.xp_actions);
 
 function itv_show_user_xp_alert(action, index) {
+    var message = ITV_USER_XP_ACTIONS[action];
+    itv_show_user_alert_message(message, index);
+}
+
+function itv_show_user_alert_message(message, index) {
     var $new_xp_alert = $('#itv-xp-alert').clone();
     var $new_xp_alert_text = $new_xp_alert.find('.itv-xp-alert-text');
     $new_xp_alert.addClass('itv-xp-alert-item');
-    $new_xp_alert_text.html(ITV_USER_XP_ACTIONS[action]);
+    $new_xp_alert_text.html(message);
     
     $('#page').append($new_xp_alert);
     $new_xp_alert.show();
@@ -1175,6 +1180,10 @@ function itv_show_user_xp_alert(action, index) {
     var $adminbar = $('#wpadminbar');
     if($adminbar.length) {
         top_offset += $adminbar.height();
+    }
+    
+    if(!index) {
+        index = 0;
     }
     
     $new_xp_alert.animate({
@@ -1237,6 +1246,7 @@ function itv_thank_you($button) {
         if(json.status == 'ok') {
             $loader.hide();
             $done_label.show();
+            itv_show_user_alert_message(frontend.you_said_thankyou);
         }
         else {
             alert(frontend.error);

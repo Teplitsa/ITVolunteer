@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-09-08 17:28+0200\n"
-"PO-Revision-Date: 2016-09-08 17:29+0200\n"
+"POT-Creation-Date: 2016-09-08 23:26+0200\n"
+"PO-Revision-Date: 2016-09-08 23:26+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -178,7 +178,7 @@ msgstr "Решено"
 
 #: inc/admin.php:220 inc/admin.php:240 inc/functions-tasks.php:38
 #: inc/template-tasks.php:33 inc/template-tasks.php:81
-#: inc/template-tasks.php:117 inc/template-tasks.php:371
+#: inc/template-tasks.php:117 inc/template-tasks.php:385
 msgid "Archived"
 msgstr "Архив"
 
@@ -451,7 +451,7 @@ msgstr "При удалении фоторграфии произошла оши
 msgid "Please check agree process data checkbox"
 msgstr "Пожалуйста, дайте согласие на обработку персональных данных"
 
-#: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:235
+#: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:236
 #: inc/functions-members.php:1036 inc/functions-members.php:1110
 msgid "Error!"
 msgstr "Произошла ошибка!"
@@ -472,16 +472,20 @@ msgstr "Вы уверены?"
 msgid "Too much screenshots loaded!"
 msgstr "Слишком много скриншотов загружено!"
 
-#: inc/class-itv-cssjs.php:236
+#: inc/class-itv-cssjs.php:189
+msgid "You said thankyou!"
+msgstr "Вы сказали спасибо!"
+
+#: inc/class-itv-cssjs.php:237
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:237 inc/functions-members.php:931
+#: inc/class-itv-cssjs.php:238 inc/functions-members.php:931
 #, php-format
 msgid "Resend activation email next %s (remains %s)"
 msgstr "Отправить активацию для следующих %s (осталось %s)"
 
-#: inc/class-itv-cssjs.php:239
+#: inc/class-itv-cssjs.php:240
 msgid "Enter numeric user xp inc value"
 msgstr "Введите положительное или отрицательное число!"
 
@@ -2582,19 +2586,19 @@ msgid "Created tasks / completed tasks"
 msgstr "Созданных задач / завершенных задач"
 
 # @ tst
-#: inc/template-tasks.php:17 inc/template-tasks.php:368
+#: inc/template-tasks.php:17 inc/template-tasks.php:382
 #: partials/home-well.php:52
 msgid "New tasks:"
 msgstr "Ожидают волонтеров:"
 
 # @ tst
-#: inc/template-tasks.php:22 inc/template-tasks.php:369
+#: inc/template-tasks.php:22 inc/template-tasks.php:383
 #: partials/home-well.php:55
 msgid "In work tasks:"
 msgstr "В работе:"
 
 # @ tst
-#: inc/template-tasks.php:27 inc/template-tasks.php:370
+#: inc/template-tasks.php:27 inc/template-tasks.php:384
 #: partials/home-well.php:58
 msgid "Closed tasks:"
 msgstr "Решено:"
@@ -2639,7 +2643,7 @@ msgid "published: %s"
 msgstr "опубликовано: %s"
 
 # @ tst
-#: inc/template-tasks.php:237 inc/template-tasks.php:275
+#: inc/template-tasks.php:237 inc/template-tasks.php:289
 msgid "Details"
 msgstr "Подробности"
 
@@ -3442,6 +3446,9 @@ msgstr "Комментарии"
 #: single-tasks.php:216
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid "You said thankyou"
+#~ msgstr "Вы сказали спасибо"
 
 #~ msgid "Participation"
 #~ msgstr "Участие"
