@@ -806,6 +806,11 @@ function itv_filter_users_by_activation() {
 add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 
 function itv_add_user_custom_columns($columns) {
+    $current_site = get_current_blog_id();
+    if($current_site != SITE_ID_CURRENT_SITE){
+        return $columns;
+    }
+    
     $columns['itv_user_role'] = __('ITV role', 'tst');
     $columns['is_activated'] = __('Is activated', 'tst');
     $columns['reg_date'] = __('Registration date', 'tst');
@@ -819,12 +824,22 @@ function itv_add_user_custom_columns($columns) {
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
 
 function itv_add_user_custom_sortable_columns($columns) {
+    $current_site = get_current_blog_id();
+    if($current_site != SITE_ID_CURRENT_SITE){
+        return $columns;
+    }
+        
     $columns['user_xp'] = 'user_xp';
     return $columns;
 }
 add_filter( 'manage_users_sortable_columns', 'itv_add_user_custom_sortable_columns' );
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
+    $current_site = get_current_blog_id();
+    if($current_site != SITE_ID_CURRENT_SITE){
+        return;
+    }
+        
     if('is_activated' == $column_name) {
         $user = get_user_by('id', $user_id);
         return itv_is_user_activated($user_id) ? __('Yes') : __('No') . itv_get_confirm_email_date($user, true);
