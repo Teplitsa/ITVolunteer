@@ -729,6 +729,10 @@ function itv_user_reg_date($user_id) {
 // activated/not activated users filter
 function admin_users_filter( $query ){
     global $pagenow, $wpdb;
+    
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
 
     if(is_admin() && $pagenow=='users.php') {
         if ( isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
@@ -785,6 +789,10 @@ function admin_users_filter( $query ){
 add_filter( 'pre_user_query', 'admin_users_filter' );
 
 function show_users_filter_by_activation() {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
+    
     $ret = "";
     
     $current_filter_val = isset($_GET['users_city']) ? filter_var($_GET['users_city'], FILTER_SANITIZE_STRING) : '';
@@ -806,8 +814,7 @@ function itv_filter_users_by_activation() {
 add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 
 function itv_add_user_custom_columns($columns) {
-    $current_site = get_current_blog_id();
-    if($current_site != SITE_ID_CURRENT_SITE){
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
         return $columns;
     }
     
@@ -824,8 +831,7 @@ function itv_add_user_custom_columns($columns) {
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
 
 function itv_add_user_custom_sortable_columns($columns) {
-    $current_site = get_current_blog_id();
-    if($current_site != SITE_ID_CURRENT_SITE){
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
         return $columns;
     }
         
@@ -835,8 +841,7 @@ function itv_add_user_custom_sortable_columns($columns) {
 add_filter( 'manage_users_sortable_columns', 'itv_add_user_custom_sortable_columns' );
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
-    $current_site = get_current_blog_id();
-    if($current_site != SITE_ID_CURRENT_SITE){
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
         return;
     }
         
@@ -935,6 +940,10 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
 }
 
 function itv_show_users_bulk_actions() {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
+    
     $remain_to_resend = itv_get_users_to_resend_activation(0, true);
     $itv_config = ItvConfig::instance();
     $reactivation_emails_portion = $itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT');
