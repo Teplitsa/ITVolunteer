@@ -220,3 +220,4 @@ require_once get_template_directory() . '/inc/models/UserXPModel.php';
 require_once get_template_directory() . '/inc/models/ThankyouModel.php';
 require_once get_template_directory() . '/inc/models/MailSendLogModel.php';
 require_once get_template_directory() . '/inc/models/ResultScreenshots.php';
+require_once get_template_directory() . '/inc/models/UserBlockModel.php';
