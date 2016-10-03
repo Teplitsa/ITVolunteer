@@ -1,6 +1,6 @@
 <?php
 
-require_once('inc/itv_user_reg_source_detector.php');
+require_once(dirname(__FILE__) . '/../inc/itv_user_reg_source_detector.php');
 
 $ITV_APP_FILE = __FILE__;
 

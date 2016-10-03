@@ -340,47 +340,39 @@
     }
 
     function block_user_ajax($button, $block_user_form) {
-        var $loader = $('<img />')
-            .attr('src', adminend.site_url + 'wp-includes/images/spinner.gif')
-            .addClass('manage-consult-loader');
-        $loader.insertAfter($button);
-        $button.prop('disabled', true);
-
-        $.post(adminend.ajaxurl, {
+        itv_do_admin_ajax_action($button, {
             'action': 'block_user',
             'nonce': $block_user_form.find('.itv-user-block-nonce').val(),
             'user_id': $block_user_form.find('.itv-user-id').val(),
             'date': $block_user_form.find('.itv-user-block-till-date').val()
-        }, null, 'json')
-            .done(function(json) {
-                if(json && json['status'] == 'ok') {
-                    itv_admin_show_action_done($button);
-
-                    var $link = $('#itv-block-user-link' + json['user_id']);
-                    $link.data('user-blocked-till', json['date']);
-                    var $icon = $link.closest('tr').find('.itv-user-lock-icon');
-                    var $icon_title = $icon.attr('title');
-                    $icon.attr('title', $icon_title.replace(/(\d+-\d+-\d+)/, json['date']))
-                }
-                else {
-                    if(json && json['message']) {
-                        alert(json['message']);
-                    }
-                    else {
-                        alert(adminend.common_ajax_error);
-                    }
-                }
-            })
-            .fail(function() {
-                alert(adminend.common_ajax_error);
-            })
-            .always(function() {
-                $button.prop('disabled', false);
-                $loader.remove();
-            });
-
+        }, function(json) {
+            var $link = $('#itv-block-user-link' + json['user_id']);
+            $link.data('user-blocked-till', json['date']);
+            var $icon = $link.closest('tr').find('.itv-user-lock-icon');
+            var $icon_title = $icon.attr('title');
+            $icon.attr('title', $icon_title.replace(/(\d+-\d+-\d+)/, json['date']));
+            $icon.show();
+            $block_user_form.find('.itv-user-unblock-submit').show();
+            $block_user_form.find('.itv-block-user-already-blocked').show();
+        });
     }
-
+    
+    function unblock_user_ajax($button, $block_user_form) {
+        itv_do_admin_ajax_action($button, {
+	        'action': 'unblock_user',
+	        'nonce': $block_user_form.find('.itv-user-block-nonce').val(),
+	        'user_id': $block_user_form.find('.itv-user-id').val(),
+	        'date': $block_user_form.find('.itv-user-block-till-date').val()
+	    }, function(json) {
+            var $link = $('#itv-block-user-link' + json['user_id']);
+            $link.data('user-blocked-till', '');
+            var $icon = $link.closest('tr').find('.itv-user-lock-icon');
+            $icon.hide();
+            $block_user_form.find('.itv-user-unblock-submit').hide();
+            $block_user_form.find('.itv-block-user-already-blocked').hide();
+	    });
+    }
+    
     function move_lock_icon_to_name_column() {
         $('.itv-user-lock-icon').each(function(){
             $(this).closest('tr').find('.column-name').append($(this));
@@ -407,27 +399,73 @@
         });
 
         $('.itv-block-user-link').click(function () {
+            var $user_blocked_till = $(this).data('user-blocked-till');
             $block_user_form.find('.itv-block-user-nicename').text($(this).data('user-nicename'));
             $block_user_form.find('.itv-user-id').val($(this).data('user-id'));
 
-            if($(this).data('user-blocked-till')) {
+            if($user_blocked_till) {
                 $block_user_form.find('.itv-block-user-period').val('till_date');
-                $block_user_form.find('.itv-user-block-till-date').val($(this).data('user-blocked-till'));
+                $block_user_form.find('.itv-user-block-till-date').val($user_blocked_till);
                 $block_user_form.find('.itv-user-block-till-date').show();
+                $block_user_form.find('.itv-user-unblock-submit').show();
+                $block_user_form.find('.itv-block-user-already-blocked').show();
             }
             else {
+                $block_user_form.find('.itv-block-user-period').val('1 week');
                 user_block_period_changed($block_user_form.find('.itv-block-user-period'));
+                $block_user_form.find('.itv-user-unblock-submit').hide();
+                $block_user_form.find('.itv-block-user-already-blocked').hide();
             }
         });
 
         $block_user_form.find('.itv-user-block-submit').click(function(){
             block_user_ajax($(this), $block_user_form);
         });
-
+        
+        $block_user_form.find('.itv-user-unblock-submit').click(function(){
+            unblock_user_ajax($(this), $block_user_form);
+        });
+        
+        $('.itv-user-lock-icon').click(function(){
+        	$(this).closest('tr').find('.itv-block-user-link').click();
+        });
+        
         move_lock_icon_to_name_column();
     });
 
 })(jQuery);
+
+function itv_do_admin_ajax_action($button, $params, $ok_callback) {
+    var $ = jQuery;
+    var $loader = $('<img />')
+    .attr('src', adminend.site_url + 'wp-includes/images/spinner.gif')
+    .addClass('manage-consult-loader');
+    $loader.insertAfter($button);
+    $button.prop('disabled', true);
+
+    $.post(adminend.ajaxurl, $params, null, 'json')
+        .done(function(json) {
+            if(json && json['status'] == 'ok') {
+                itv_admin_show_action_done($button);
+            	$ok_callback(json);
+            }
+            else {
+                if(json && json['message']) {
+                    alert(json['message']);
+                }
+                else {
+                    alert(adminend.common_ajax_error);
+                }
+            }
+        })
+        .fail(function() {
+            alert(adminend.common_ajax_error);
+        })
+        .always(function() {
+            $button.prop('disabled', false);
+            $loader.remove();
+        });
+}
 
 function itv_admin_show_action_done($el) {
     var $ = jQuery;

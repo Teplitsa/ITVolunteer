@@ -1,6 +1,6 @@
 <?php
 
-require_once('inc/itv_user_report_generator.php');
+require_once(dirname(__FILE__) . '/../inc/itv_user_report_generator.php');
 
 try {
 	include('cli_common.php');

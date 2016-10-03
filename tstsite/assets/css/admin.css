@@ -138,7 +138,8 @@ p.itv-activation-email-time .itv-reactivation-limit {
 }
 
 .itv-block-user-wrapper .itv-user-block-till-date,
-.itv-block-user-wrapper .itv-user-block-submit {
+.itv-block-user-wrapper .itv-user-block-submit,
+.itv-block-user-wrapper .itv-user-unblock-submit {
     vertical-align: middle;
 }
 
@@ -153,4 +154,10 @@ p.itv-activation-email-time .itv-reactivation-limit {
 .itv-user-lock-icon {
     padding-left:5px;
     color:red;
+    cursor:pointer;
+}
+
+.itv-block-user-already-blocked {
+    color:red;
+    margin-bottom:10px;
 }

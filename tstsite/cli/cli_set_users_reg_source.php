@@ -1,12 +1,12 @@
 <?php
 
-require_once('inc/itv_user_batch_updater.php');
+require_once(dirname(__FILE__) . '/../inc/itv_user_reg_source_detector.php');
 
 try {
 	include('cli_common.php');
 	
-	$users_updater = new ItvUserBatchUpdater();
-	$users_updater->run($wpdb);
+	$reg_source_detector = new ItvUserRegSourceDetector();
+	$reg_source_detector->run($wpdb);
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
