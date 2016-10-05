@@ -1,6 +1,6 @@
 <?php
 
-require_once('inc/itv_notificator.php');
+require_once(dirname(__FILE__) . '/../inc/itv_notificator.php');
 
 try {
 	include('cli_common.php');

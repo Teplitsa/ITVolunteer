@@ -1,5 +1,6 @@
 <?php
 use ITV\models\UserXPModel;
+use \ITV\models\UserBlockModel;
 /**
  * Code for ITV functions
  */
@@ -446,10 +447,17 @@ add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 
 /** Add a new login check - is account active or not: */
 add_filter('authenticate', function($user, $username, $password){
-    if( !is_wp_error($user) && get_user_meta($user->ID, 'activation_code', true)) {
-        $err = new WP_Error('user-inactive', __('Your account is not active yet! Please check out your email.', 'tst'));
-        return $err;
+    if( !is_wp_error($user) ) {
+        if( get_user_meta($user->ID, 'activation_code', true)) {
+            $err = new WP_Error('user-inactive', __('Your account is not active yet! Please check out your email.', 'tst'));
+            return $err;
+        }
+        elseif( UserBlockModel::instance()->is_user_blocked( $user->ID ) ) {
+            $err = new WP_Error('user-blocked', sprintf( __( 'Your account is blocked till %s', 'tst' ), UserBlockModel::instance()->get_user_block_till_date( $user->ID ) ) );
+            return $err;
+        }
     }
+    
     return $user;
 }, 30, 3);
 
@@ -467,7 +475,7 @@ function ajax_login() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
-
+    
     $user = wp_signon(array(
         'user_login' => $_POST['login'],
         'user_password' => $_POST['pass'],
@@ -479,7 +487,7 @@ function ajax_login() {
             'message' => $user->get_error_message($user->get_error_code()),
         )));
     }
-
+    
     if($user) {
         UserXPModel::instance()->register_activity_from_gui($user->ID, UserXPModel::$ACTION_LOGIN);
     }

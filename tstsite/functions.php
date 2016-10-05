@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.99');
+define('TST_WORKING_VERSION', '1.9.100');
 //require get_template_directory().'/inc/acf_keys.php';
 
 /**
@@ -220,3 +220,4 @@ require_once get_template_directory() . '/inc/models/UserXPModel.php';
 require_once get_template_directory() . '/inc/models/ThankyouModel.php';
 require_once get_template_directory() . '/inc/models/MailSendLogModel.php';
 require_once get_template_directory() . '/inc/models/ResultScreenshots.php';
+require_once get_template_directory() . '/inc/models/UserBlockModel.php';

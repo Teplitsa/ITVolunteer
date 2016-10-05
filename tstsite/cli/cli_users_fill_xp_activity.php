@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . '/vendor/autoload.php';
-require_once 'inc/models/UserXPModel.php';
+require_once dirname(__FILE__) . '/../vendor/autoload.php';
+require_once dirname(__FILE__) . '/../inc/models/UserXPModel.php';
 
 use ITV\models\UserXPModel;
 
