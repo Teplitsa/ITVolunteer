@@ -279,6 +279,34 @@ function tst_calculate_member_tasks_solved_count_raw_sql($user) {
     return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
+function itv_get_unique_user_login($first_name, $last_name = '') {
+	$new_ok_login = sanitize_user($first_name, true);
+	$is_ok = false;
+	
+	if(!username_exists($new_ok_login)) {
+		$is_ok = true;
+	}
+	
+	if(!$is_ok && $last_name) {
+		$new_ok_login = sanitize_user($last_name, true);
+		if(!username_exists($new_ok_login)) {
+			$is_ok = true;
+		}
+	}
+	
+	if(!$is_ok) {
+		$user_login = sanitize_user($first_name . ($last_name ? '_' . $last_name : ''), true);
+		$new_ok_login = $user_login;
+		$iter = 1;
+		while(username_exists($new_ok_login) && $iter < 1000) {
+			$new_ok_login = $user_login . $iter;
+			$iter += 1;
+		}
+	}
+	
+	return $new_ok_login;
+}
+
 function tst_register_user($user_params) {
 	$error_message = '';
 	$is_error = false;
