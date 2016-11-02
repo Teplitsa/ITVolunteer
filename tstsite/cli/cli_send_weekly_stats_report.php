@@ -1,12 +1,12 @@
 <?php
 
-require_once('inc/itv_user_reg_source_detector.php');
+require_once(dirname(__FILE__) . '/../inc/itv_log.php');
 
 try {
 	include('cli_common.php');
 	
-	$reg_source_detector = new ItvUserRegSourceDetector();
-	$reg_source_detector->run($wpdb);
+	$itv_log = new ItvLog();
+	$itv_log->send_weekly_stats_email();
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";

@@ -1,8 +1,8 @@
 <?php
 
-include('inc/itv_exceptions.php');
-include('cli/utils.php');
-include('cli/ItvCliApp.php');
+include(dirname(__FILE__) . '/../inc/itv_exceptions.php');
+include('utils.php');
+include('ItvCliApp.php');
 
 use ITV\cli\ItvCliApp;
 

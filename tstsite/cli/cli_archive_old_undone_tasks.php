@@ -1,6 +1,6 @@
 <?php
 
-require_once('inc/itv_archiver.php');
+require_once(dirname(__FILE__) . '/../inc/itv_archiver.php');
 
 try {
     date_default_timezone_set('Europe/Moscow');

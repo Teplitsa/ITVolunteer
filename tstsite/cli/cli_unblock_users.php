@@ -1,12 +1,13 @@
 <?php
 
-require_once('inc/itv_log.php');
+use ITV\models\UserBlockModel;
+
+require_once dirname(__FILE__) . '/../inc/models/UserBlockModel.php';
 
 try {
 	include('cli_common.php');
 	
-	$itv_log = new ItvLog();
-	$itv_log->send_weekly_stats_email();
+	UserBlockModel::instance()->unblock_users_when_block_expired( $wpdb );
 }
 catch (ItvNotCLIRunException $ex) {
 	echo $ex->getMessage() . "\n";
