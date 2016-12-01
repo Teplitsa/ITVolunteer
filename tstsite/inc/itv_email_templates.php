@@ -1,5 +1,9 @@
 <?php
 class ItvEmailTemplates {
+    
+    public static $YOU_HAVE_BEEN_BLOCKED = 'you_have_been_blocked';
+    public static $YOU_HAVE_BEEN_UNBLOCKED = 'you_have_been_unblocked';
+    
     private $_email_templates;
     private static $_instance = NULL;
     public function __construct() {
@@ -88,6 +92,14 @@ class ItvEmailTemplates {
             'too_much_thankyou' => [
                 'title' => __('ITVolunteer - too much thank you clicked!', 'tst'),
                 'text' => __("Hello!\n\nUser <a href=\"{{from_user_url}}\">{{from_username}}</a> said thank you to <a href=\"{{to_user_url}}\">{{to_username}}</a> more {{limit}} times!\n\nLast moment is {{last_moment}}\n\n", 'tst'),
+            ],
+            'you_have_been_blocked' => [
+                'title' => __('ITVolunteer - your profile has been blocked!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been blocked till {{block_till_date}}.\n\n<a href='{{block_info_url}}'>Why?</a>\n\nBest,\nITVolunteer", 'tst'),
+            ],
+            'you_have_been_unblocked' => [
+                'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
             ],
 		)
         ;
