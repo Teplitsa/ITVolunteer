@@ -160,4 +160,6 @@ p.itv-activation-email-time .itv-reactivation-limit {
 .itv-block-user-already-blocked {
     color:red;
     margin-bottom:10px;
+    font-size: 15px;
+    font-weight: bold;
 }

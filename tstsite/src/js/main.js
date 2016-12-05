@@ -1275,3 +1275,14 @@ jQuery(function($){
         $('.submenu-search').toggle();
     });
 });
+
+// contact us using formidable
+jQuery(function($){
+    var $contact_us_frm = $('#form_contact-us');
+    if( $contact_us_frm.length ) {
+        $contact_us_frm.find('.itv-contact-us-field-name input').val( frontend.user_full_name );
+        $contact_us_frm.find('.itv-contact-us-field-email input').val( frontend.user_email );
+    }
+});
+
+
