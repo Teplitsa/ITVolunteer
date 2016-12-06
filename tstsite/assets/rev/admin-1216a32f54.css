@@ -67,6 +67,7 @@ a.itv-log-edit-user, a.itv-log-edit-user:hover {
     width:200px;
 }
 
+.itv-console-loader,
 .manage-consult-loader {
     vertical-align:middle;
 }
@@ -130,4 +131,35 @@ p.itv-activation-email-time .itv-reactivation-limit {
 .itv-userxp-inc {
     width:50px;
     margin-left:50px;
+}
+
+.itv-block-user-wrapper {
+    padding-top:30px;
+}
+
+.itv-block-user-wrapper .itv-user-block-till-date,
+.itv-block-user-wrapper .itv-user-block-submit,
+.itv-block-user-wrapper .itv-user-unblock-submit {
+    vertical-align: middle;
+}
+
+.itv-block-user-head {
+    margin-bottom:10px;
+}
+
+.itv-block-user-actions {
+    padding-top:10px;
+}
+
+.itv-user-lock-icon {
+    padding-left:5px;
+    color:red;
+    cursor:pointer;
+}
+
+.itv-block-user-already-blocked {
+    color:red;
+    margin-bottom:10px;
+    font-size: 15px;
+    font-weight: bold;
 }

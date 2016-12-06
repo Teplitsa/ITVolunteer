@@ -1,9 +1,8 @@
 {
-  "admin.css": "admin-44498da0f6.css",
-  "admin.js": "admin-be152ee9db.js",
-  "bootstrap.min.css": "bootstrap-2f624089c6.min.css",
-  "bundle.css": "bundle-7dcc546cca.css",
-  "bundle.js": "bundle-1cb8cf375c.js",
+  "admin.css": "admin-1216a32f54.css",
+  "admin.js": "admin-c3e92c547e.js",
+  "bundle.css": "bundle-5b6502df83.css",
+  "bundle.js": "bundle-67f0f2c2cf.js",
   "jquery.datetimepicker.min.css": "jquery-55ea27a4ef.datetimepicker.min.css",
   "jquery.datetimepicker.min.js": "jquery-729c53d843.datetimepicker.min.js",
   "vendor.js": "vendor-0e82fa58e7.js"

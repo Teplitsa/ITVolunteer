@@ -122,11 +122,41 @@ class UserBlockModel extends ITVSingletonModel {
     }
     
     public function block_user( $user_id, $block_till_date ) {
-        return update_user_meta( $user_id, 'itv_blocked', $block_till_date );
+        update_user_meta( $user_id, 'itv_blocked', $block_till_date );
+        $this->email_block( $user_id, $block_till_date );
     }
     
     public function unblock_user( $user_id ) {
-        return delete_user_meta( $user_id, 'itv_blocked' );
+        delete_user_meta( $user_id, 'itv_blocked' );
+        $this->email_unblock( $user_id );
+    }
+    
+    public function email_block( $user_id, $block_till_date ) {
+        
+        $user = get_user_by ( 'id', $user_id );
+        $about_block_page = get_page_by_path( 'about-user-blocking' );
+        
+        itv_notify_user( $user, \ItvEmailTemplates::$YOU_HAVE_BEEN_BLOCKED, array (
+            'username' => $user->user_nicename,
+            'block_till_date' => date_i18n( get_option( 'date_format' ), strtotime( $block_till_date ) ),
+            'block_info_url' => get_permalink( $about_block_page ),
+            'block_reason' => '',
+        ));
+        
+    }
+    
+    public function email_unblock( $user_id ) {
+
+        $user = get_user_by ( 'id', $user_id );
+        $about_block_page = get_page_by_path( 'about-user-blocking' );
+        
+        itv_notify_user( $user, \ItvEmailTemplates::$YOU_HAVE_BEEN_UNBLOCKED, array (
+            'username' => $user->user_nicename,
+            'block_info_url' => get_permalink( $about_block_page ),
+            'create_task_url' => home_url( '/task-actions/' ),
+            'tasks_list_url' => home_url( '/tasks/publish/' ),
+        ));
+        
     }
     
     public function user_check_block() {

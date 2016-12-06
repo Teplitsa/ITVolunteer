@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-02 15:44+0200\n"
-"PO-Revision-Date: 2016-10-02 15:44+0200\n"
+"POT-Creation-Date: 2016-12-02 01:16+0200\n"
+"PO-Revision-Date: 2016-12-02 01:16+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -1207,11 +1207,11 @@ msgid "Consult settings"
 msgstr "Параметры консультации"
 
 # @ tst
-#: inc/itv_email_templates.php:8
+#: inc/itv_email_templates.php:12
 msgid "IT-Volunteer: you have been approved as participant!"
 msgstr "it-волонтёр: вы были утверждены в качестве исполнителя!"
 
-#: inc/itv_email_templates.php:9
+#: inc/itv_email_templates.php:13
 #, php-format
 msgid ""
 "Greetings, %s!\n"
@@ -1242,11 +1242,11 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:12
+#: inc/itv_email_templates.php:16
 msgid "IT-Volunteer: participant approved!"
 msgstr "it-волонтёр: кандидат одобрен!"
 
-#: inc/itv_email_templates.php:13
+#: inc/itv_email_templates.php:17
 #, php-format
 msgid ""
 "Greetings, %s!\n"
@@ -1272,12 +1272,12 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:16
+#: inc/itv_email_templates.php:20
 msgid "IT-Volunteer: you have been disapproved as participant"
 msgstr "it-волонтёр: вы были исключены из исполнителей задачи"
 
 # @ tst
-#: inc/itv_email_templates.php:17
+#: inc/itv_email_templates.php:21
 #, php-format
 msgid ""
 "Hello, %s.\n"
@@ -1295,14 +1295,14 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:20
+#: inc/itv_email_templates.php:24
 msgid "IT-Volunteer: a volunteer for your task removed himself!"
 msgstr ""
 "it-волонтёр: один из волонтёров, желающих выполнить ваше задание, отказался "
 "от этого!"
 
 # @ tst
-#: inc/itv_email_templates.php:21
+#: inc/itv_email_templates.php:25
 #, php-format
 msgid ""
 "Hello, %s.\n"
@@ -1326,12 +1326,12 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:24
+#: inc/itv_email_templates.php:28
 msgid "IT-Volunteer: a volunteer for your task appeared!"
 msgstr "it-волонтёр: новый волонтёр для вашего задания!"
 
 # @ tst
-#: inc/itv_email_templates.php:25
+#: inc/itv_email_templates.php:29
 #, php-format
 msgid ""
 "Hello, %s.\n"
@@ -1355,11 +1355,11 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:28
+#: inc/itv_email_templates.php:32
 msgid "ITVolunteer - activate your account"
 msgstr "it-волонтёр - активация учетной записи"
 
-#: inc/itv_email_templates.php:29
+#: inc/itv_email_templates.php:33
 #, php-format
 msgid ""
 "Greerings!\n"
@@ -1382,16 +1382,16 @@ msgstr ""
 "команда it-волонтёра."
 
 # @ tst
-#: inc/itv_email_templates.php:30
+#: inc/itv_email_templates.php:34
 msgid "denisch_test_localization"
 msgstr "тест локализации"
 
 # @ tst
-#: inc/itv_email_templates.php:33
+#: inc/itv_email_templates.php:37
 msgid "it-volunteer - welcome!"
 msgstr "it-волонтёр - добро пожаловать!"
 
-#: inc/itv_email_templates.php:34
+#: inc/itv_email_templates.php:38
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1420,12 +1420,12 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:37
+#: inc/itv_email_templates.php:41
 msgid "ITVolunteer - new comment on your task!"
 msgstr "it-волонтёр - новый комментарий к вашей задаче!"
 
 # @ tst
-#: inc/itv_email_templates.php:38
+#: inc/itv_email_templates.php:42
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1445,12 +1445,12 @@ msgstr ""
 "команда it-волонтёра"
 
 # @ tst
-#: inc/itv_email_templates.php:41
+#: inc/itv_email_templates.php:45
 msgid "ITVolunteer - your task in coming to its deadline!"
 msgstr "it-волонтёр - ваша задача близится к своему дэдлайну!"
 
 # @ tst
-#: inc/itv_email_templates.php:42
+#: inc/itv_email_templates.php:46
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1471,12 +1471,12 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:45
+#: inc/itv_email_templates.php:49
 msgid "ITVolunteer - task deadline is near!"
 msgstr "it-волонтёр - дедлайн вашей задачи совсем близко!"
 
 # @ tst
-#: inc/itv_email_templates.php:46
+#: inc/itv_email_templates.php:50
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1496,7 +1496,7 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:50
+#: inc/itv_email_templates.php:54
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1521,12 +1521,12 @@ msgstr ""
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 # @ tst
-#: inc/itv_email_templates.php:53
+#: inc/itv_email_templates.php:57
 msgid "it-volunteer - new message from contact form"
 msgstr "it-волонтёр- новое сообщение с формы обратной связи"
 
 # @ tst
-#: inc/itv_email_templates.php:54
+#: inc/itv_email_templates.php:58
 #, php-format
 msgid ""
 "Greetings!\n"
@@ -1555,11 +1555,11 @@ msgstr ""
 "команда it-волонтёра,\n"
 "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
-#: inc/itv_email_templates.php:57
+#: inc/itv_email_templates.php:61
 msgid "ITVolunteer - your task will be moved to archive soon!"
 msgstr "it-волонтёр - ваша задача будет перемещена в архив"
 
-#: inc/itv_email_templates.php:58
+#: inc/itv_email_templates.php:62
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1582,11 +1582,11 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:61
+#: inc/itv_email_templates.php:65
 msgid "ITVolunteer - no doer has been approved for your task yet!"
 msgstr "it-волонтёр - пожалуйста проверьте текст вашей задачи"
 
-#: inc/itv_email_templates.php:62
+#: inc/itv_email_templates.php:66
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1612,11 +1612,11 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:65 inc/itv_email_templates.php:69
+#: inc/itv_email_templates.php:69 inc/itv_email_templates.php:73
 msgid "ITVolunteer - linked task status changed!"
 msgstr "it-волонтёр - статус задачи изменился"
 
-#: inc/itv_email_templates.php:66
+#: inc/itv_email_templates.php:70
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1638,7 +1638,7 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:70
+#: inc/itv_email_templates.php:74
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1667,11 +1667,11 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:73 inc/itv_email_templates.php:77
+#: inc/itv_email_templates.php:77 inc/itv_email_templates.php:81
 msgid "ITVolunteer - linked task closed!"
 msgstr "it-волонтёр - задача закрыта"
 
-#: inc/itv_email_templates.php:74
+#: inc/itv_email_templates.php:78
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1708,7 +1708,7 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:78
+#: inc/itv_email_templates.php:82
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1732,11 +1732,11 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:81
+#: inc/itv_email_templates.php:85
 msgid "ITVolunteer - thank you for your work!"
 msgstr "it-волонтёр - вам сказали спасибо!"
 
-#: inc/itv_email_templates.php:82
+#: inc/itv_email_templates.php:86
 msgid ""
 "Greetings, {{to_username}}!\n"
 "\n"
@@ -1753,12 +1753,12 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:85
+#: inc/itv_email_templates.php:89
 msgid "ITVolunteer - long work on task with no result!"
 msgstr ""
 "it-волонтёр - ваша задача уже давно в работе и будет перемещена в архив"
 
-#: inc/itv_email_templates.php:86
+#: inc/itv_email_templates.php:90
 msgid ""
 "Greetings, {{username}}!\n"
 "\n"
@@ -1781,11 +1781,11 @@ msgstr ""
 "С уважением, команда сервиса IT-волонтер\n"
 "Теплица социальных технологий"
 
-#: inc/itv_email_templates.php:89
+#: inc/itv_email_templates.php:93
 msgid "ITVolunteer - too much thank you clicked!"
 msgstr "it-волонтёр: слишком много \"Спасибо!\"!"
 
-#: inc/itv_email_templates.php:90
+#: inc/itv_email_templates.php:94
 msgid ""
 "Hello!\n"
 "\n"
@@ -1802,6 +1802,59 @@ msgstr ""
 "более {{limit}} раз!\n"
 "\n"
 "Письмо отправлено автоматически.\n"
+
+#: inc/itv_email_templates.php:97
+msgid "ITVolunteer - your profile has been blocked!"
+msgstr "it-волонтёр - ваш профиль заблокирован!"
+
+#: inc/itv_email_templates.php:98
+msgid ""
+"Greetings, {{username}}!\n"
+"\n"
+"Your profile on ITVolonteer has been blocked till {{block_till_date}}.\n"
+"\n"
+"<a href='{{block_info_url}}'>Why?</a>\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Добрый день, {{username}}!\n"
+"\n"
+"Ваш профиль на сайте it-волонтер заблокирован до {{block_till_date}}.\n"
+"\n"
+"<a href=\"{{block_info_url}}\">Почему?</a>\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра,\n"
+"<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
+
+#: inc/itv_email_templates.php:101
+msgid "ITVolunteer - your profile has been unblocked!"
+msgstr "it-волонтёр - ваш профиль снова активен!"
+
+#: inc/itv_email_templates.php:102
+msgid ""
+"Greetings, {{username}}!\n"
+"\n"
+"Your profile on ITVolonteer has been unblocked and active again.\n"
+"\n"
+"<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n"
+"\n"
+"Best,\n"
+"ITVolunteer"
+msgstr ""
+"Добрый день, {{username}}!\n"
+"\n"
+"Ваш профиль на сайте it-волонтер разблокирован и снова активен!\n"
+"Вы снова можете <a href=\"{{create_task_url}}\">размещать</a> задачи или "
+"решать <a href=\"{{tasks_list_url}}\">существующие</a>!\n"
+"\n"
+"<a href=\"{{block_info_url}}\">Узнать больше о причинах блокировки профиля</"
+"a>\n"
+"\n"
+"С уважением,\n"
+"команда it-волонтёра,\n"
+"<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 #: inc/itv_lang.php:4
 msgid "itv_task_actions_log_create"
@@ -3509,6 +3562,50 @@ msgstr "Комментарии"
 #: single-tasks.php:216
 msgid "Related tasks"
 msgstr "Похожие задачи"
+
+#~ msgid ""
+#~ "Greetings, {{username}}!\n"
+#~ "\n"
+#~ "Your profile on ITVolonteer has been blocked till {{block_till_date}}.\n"
+#~ "\n"
+#~ "{{block_reason}}Blocking info page: {{block_info_link}}.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Добрый день, {{username}}!\n"
+#~ "\n"
+#~ "Ваш профиль на сайте it-волонтер заблокирован до {{block_till_date}}.\n"
+#~ "\n"
+#~ "{{block_reason}}<a href=\"{{block_info_url}}\">Узнать больше о причинах "
+#~ "блокировки профиля</a>\n"
+#~ "\n"
+#~ "С уважением,\n"
+#~ "команда it-волонтёра,\n"
+#~ "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
+
+#~ msgid ""
+#~ "Greetings, {{username}}!\n"
+#~ "\n"
+#~ "Your profile on ITVolonteer has been unblocked and active again.\n"
+#~ "\n"
+#~ "Blocking info page: {{block_info_link}}.\n"
+#~ "\n"
+#~ "Best,\n"
+#~ "ITVolunteer"
+#~ msgstr ""
+#~ "Добрый день, {{username}}!\n"
+#~ "\n"
+#~ "Ваш профиль на сайте it-волонтер разблокирован и снова активен!\n"
+#~ "Вы снова можете <a href=\"{{create_task_url}}\">размещать</a> задачи или "
+#~ "решать <a href=\"{{tasks_list_url}}\">существующие</a>!\n"
+#~ "\n"
+#~ "<a href=\"{{block_info_url}}\">Узнать больше о причинах блокировки "
+#~ "профиля</a>\n"
+#~ "\n"
+#~ "С уважением,\n"
+#~ "команда it-волонтёра,\n"
+#~ "<a href='http://te-st.ru/'>Теплица социальных технологий</a>"
 
 #~ msgid "Unblock user"
 #~ msgstr "Разблокировать"
