@@ -24,7 +24,7 @@ function tst_custom_task_status(){
         'exclude_from_search'       => false,
         'show_in_admin_all_list'    => true,
         'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('In work <span class="count">(%s)</span>', 'In work <span class="count">(%s)</span>'),
+        'label_count'               => _n_noop('In work <span class="count">(%s)</span>', 'In work <span class="count">(%s)</span>', 'tst'),
     ));
     register_post_status('closed', array(
         'label'                     => __('Closed', 'tst'),
@@ -32,7 +32,7 @@ function tst_custom_task_status(){
         'exclude_from_search'       => true,
         'show_in_admin_all_list'    => true,
         'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>'),
+        'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>', 'tst'),
     ));
 	register_post_status('archived', array(
         'label'                     => __('Archived', 'tst'),
@@ -40,7 +40,7 @@ function tst_custom_task_status(){
         'exclude_from_search'       => true,
         'show_in_admin_all_list'    => true,
         'show_in_admin_status_list' => true,
-        'label_count'               => _n_noop('Closed <span class="count">(%s)</span>', 'Closed <span class="count">(%s)</span>'),
+        'label_count'               => _n_noop('Archived <span class="count">(%s)</span>', 'Archived <span class="count">(%s)</span>', 'tst'),
     ));
 }
 
