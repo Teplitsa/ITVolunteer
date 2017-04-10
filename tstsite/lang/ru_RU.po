@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 01:16+0200\n"
-"PO-Revision-Date: 2016-12-02 01:16+0200\n"
+"POT-Creation-Date: 2017-04-07 17:37+0200\n"
+"PO-Revision-Date: 2017-04-07 17:38+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -321,87 +321,91 @@ msgstr "Статистика активности"
 msgid "Itv Tasks Log"
 msgstr "Лог изменений задач"
 
+#: inc/admin.php:752
+msgid "All NKO tags"
+msgstr "Все темы"
+
 # @ tst
-#: inc/class-itv-cssjs.php:157
+#: inc/class-itv-cssjs.php:97
 msgid "No such tags found..."
 msgstr "Нам очень жаль, но мы не нашли таких тегов :("
 
 # @ tst
-#: inc/class-itv-cssjs.php:158
+#: inc/class-itv-cssjs.php:98
 msgid "User login must have 4 or more symbols."
 msgstr "Логин должен содержать не менее 4-х символов."
 
 # @ tst
-#: inc/class-itv-cssjs.php:159
+#: inc/class-itv-cssjs.php:99
 msgid "User login contains incorrect symbols."
 msgstr "Логин содержит некорректные символы."
 
 # @ tst
-#: inc/class-itv-cssjs.php:160
+#: inc/class-itv-cssjs.php:100
 msgid "Email is required."
 msgstr "Пожалуйста, укажите email"
 
 # @ tst
-#: inc/class-itv-cssjs.php:161
+#: inc/class-itv-cssjs.php:101
 msgid "Email is incorrect."
 msgstr "Некорректный email."
 
 # @ tst
-#: inc/class-itv-cssjs.php:162
+#: inc/class-itv-cssjs.php:102
 msgid "Passwords are inconsistent."
 msgstr "Пароли не совпадают."
 
 # @ tst
-#: inc/class-itv-cssjs.php:163
+#: inc/class-itv-cssjs.php:103
 msgid "Password is required."
 msgstr "Обязательно укажите пароль"
 
 # @ tst
-#: inc/class-itv-cssjs.php:164
+#: inc/class-itv-cssjs.php:104
 msgid "First name must be at least 3 symbols long."
 msgstr "Не менее 3 знаков"
 
 # @ tst
-#: inc/class-itv-cssjs.php:165
+#: inc/class-itv-cssjs.php:105
 msgid "Last name must be at least 3 symbols long."
 msgstr "Не менее 3 знаков"
 
 # @ tst
-#: inc/class-itv-cssjs.php:166
+#: inc/class-itv-cssjs.php:106
 msgid "This task will be deleted. Are you sure?"
 msgstr "Задача будет удалена. Вы уверены?"
 
 # @ tst
-#: inc/class-itv-cssjs.php:167
+#: inc/class-itv-cssjs.php:107
 msgid "Your profile will be deleted. Are you sure?"
 msgstr "Ваш профиль будет удален. Вы уверены?"
 
 # @ tst
-#: inc/class-itv-cssjs.php:168
+#: inc/class-itv-cssjs.php:108
 msgid "Please, set a title for the task."
 msgstr "Как называется ваша задача? Нам правда важно это знать :)"
 
 # @ tst
-#: inc/class-itv-cssjs.php:169
+#: inc/class-itv-cssjs.php:109
 msgid "Please, set a deadline date for the task."
 msgstr "Когда вы планируете завершить задачу? Это важная информация."
 
 # @ tst
-#: inc/class-itv-cssjs.php:170
+#: inc/class-itv-cssjs.php:110
 msgid "Please, set a small description for the task."
 msgstr ""
 "Без краткого описания мы не сможем опубликовать вашу задачу. Напишите, "
 "пожалуйста, краткое, но исчерпывающее описание."
 
 # @ tst
-#: inc/class-itv-cssjs.php:171
+#: inc/class-itv-cssjs.php:111
 msgid ""
 "Please, note a few words about a reward that you are willing to give for a "
 "task."
 msgstr "Как вы хотите отблагодарить исполнителя?"
 
 # @ tst
-#: inc/class-itv-cssjs.php:172
+#: inc/class-itv-cssjs.php:112
 msgid ""
 "Please, tell something about your project, initiative or an organization."
 msgstr ""
@@ -409,88 +413,88 @@ msgstr ""
 "организации, которую вы представляете."
 
 # @ tst
-#: inc/class-itv-cssjs.php:173
+#: inc/class-itv-cssjs.php:113
 msgid "Please, set at least one thematic tag for your task."
 msgstr "Пожалуйста, добавьте хотя бы один тематический тег для вашей задачи."
 
 # @ tst
-#: inc/class-itv-cssjs.php:174
+#: inc/class-itv-cssjs.php:114
 msgid "Please, select your reward for a task doer."
 msgstr "Пожалуйста, выберите награду для исполнителя вашей задачи."
 
 # @ tst
-#: inc/class-itv-cssjs.php:175
+#: inc/class-itv-cssjs.php:115
 msgid "Your name is required."
 msgstr "Обязательно укажите ваше имя."
 
 # @ tst
-#: inc/class-itv-cssjs.php:176
+#: inc/class-itv-cssjs.php:116
 msgid "Your message is required."
 msgstr ""
 "Без текста запроса мы не сможем отправить сообщение. Напишите что-нибудь :)"
 
 # @ tst
-#: inc/class-itv-cssjs.php:177
+#: inc/class-itv-cssjs.php:117
 msgid "Company logo upload failed"
 msgstr "При загрузке логотипа произошла ошибка."
 
 # @ tst
-#: inc/class-itv-cssjs.php:178
+#: inc/class-itv-cssjs.php:118
 msgid "Company logo delete failed"
 msgstr "При удалении логотипа произошла ошибка."
 
-#: inc/class-itv-cssjs.php:179
+#: inc/class-itv-cssjs.php:119
 msgid "Avatar upload failed"
 msgstr "При загрузке фоторграфии произошла ошибка"
 
-#: inc/class-itv-cssjs.php:180
+#: inc/class-itv-cssjs.php:120
 msgid "Avatar delete failed"
 msgstr "При удалении фоторграфии произошла ошибка!"
 
-#: inc/class-itv-cssjs.php:181
+#: inc/class-itv-cssjs.php:121
 msgid "Please check agree process data checkbox"
 msgstr "Пожалуйста, дайте согласие на обработку персональных данных"
 
-#: inc/class-itv-cssjs.php:184 inc/class-itv-cssjs.php:236
-#: inc/functions-members.php:1060 inc/functions-members.php:1134
+#: inc/class-itv-cssjs.php:124 inc/class-itv-cssjs.php:178
+#: inc/functions-members.php:1111 inc/functions-members.php:1185
 msgid "Error!"
 msgstr "Произошла ошибка!"
 
-#: inc/class-itv-cssjs.php:185
+#: inc/class-itv-cssjs.php:125
 msgid "Delete screenshot error!"
 msgstr "Ошибка!"
 
-#: inc/class-itv-cssjs.php:186
+#: inc/class-itv-cssjs.php:126
 msgid "Upload screenshot error!"
 msgstr "Ошибка загрузки!"
 
-#: inc/class-itv-cssjs.php:187
+#: inc/class-itv-cssjs.php:127
 msgid "Are you sure?"
 msgstr "Вы уверены?"
 
-#: inc/class-itv-cssjs.php:188
+#: inc/class-itv-cssjs.php:128
 msgid "Too much screenshots loaded!"
 msgstr "Слишком много скриншотов загружено!"
 
-#: inc/class-itv-cssjs.php:189
+#: inc/class-itv-cssjs.php:129
 msgid "You said thankyou!"
 msgstr "Вы сказали спасибо!"
 
-#: inc/class-itv-cssjs.php:237
+#: inc/class-itv-cssjs.php:179
 msgid "No expired activation users"
 msgstr "Нет пользователей, просрочивших активацию."
 
-#: inc/class-itv-cssjs.php:238 inc/functions-members.php:955
+#: inc/class-itv-cssjs.php:180 inc/functions-members.php:1006
 #, php-format
 msgid "Resend activation email next %s (remains %s)"
 msgstr "Отправить активацию для следующих %s (осталось %s)"
 
-#: inc/class-itv-cssjs.php:240
+#: inc/class-itv-cssjs.php:182
 msgid "Enter numeric user xp inc value"
 msgstr "Введите положительное или отрицательное число!"
 
 # @ tst
-#: inc/customizer.php:13 inc/customizer.php:739 inc/functions-general.php:162
+#: inc/customizer.php:13 inc/customizer.php:739 inc/functions-general.php:139
 #: inc/itv_consult.php:431 inc/itv_consult.php:479 inc/itv_consult.php:539
 #: inc/itv_consult.php:596 inc/itv_log.php:621
 msgid "ITVounteer"
@@ -501,14 +505,14 @@ msgstr "it-волонтёр"
 #: inc/customizer.php:160 inc/customizer.php:205 inc/customizer.php:280
 #: inc/customizer.php:339 inc/customizer.php:400 inc/customizer.php:475
 #: inc/customizer.php:510 inc/customizer.php:569 inc/customizer.php:631
-#: inc/customizer.php:665 inc/functions-members.php:421
-#: inc/functions-members.php:510 inc/functions-members.php:1044
-#: inc/functions-members.php:1125
+#: inc/customizer.php:665 inc/functions-members.php:472
+#: inc/functions-members.php:561 inc/functions-members.php:1095
+#: inc/functions-members.php:1176
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 # @ tst
-#: inc/customizer.php:452 inc/customizer.php:884 inc/customizer.php:908
+#: inc/customizer.php:452 inc/customizer.php:856 inc/customizer.php:880
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
@@ -530,7 +534,7 @@ msgstr ""
 "инструкциям в отправленном вам письме."
 
 # @ tst
-#: inc/customizer.php:574 inc/functions-members.php:298
+#: inc/customizer.php:574 inc/functions-members.php:349
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
@@ -593,31 +597,31 @@ msgstr "Требуется!"
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:973
+#: inc/customizer.php:945
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:974
+#: inc/customizer.php:946
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:975
+#: inc/customizer.php:947
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:976
+#: inc/customizer.php:948
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:977
+#: inc/customizer.php:949
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:978
+#: inc/customizer.php:950
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:979
+#: inc/customizer.php:951
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -646,7 +650,7 @@ msgid "Client"
 msgstr "Бенефициар"
 
 # @ tst
-#: inc/extras.php:200 inc/functions-members.php:19
+#: inc/extras.php:200 inc/functions-members.php:42
 msgid "Volunteer"
 msgstr "Волонтер"
 
@@ -665,166 +669,166 @@ msgstr "Неизвестная роль"
 msgid "LogIn"
 msgstr "Войти"
 
-#: inc/functions-general.php:133
+#: inc/functions-general.php:110
 #, php-format
 msgid "User can do %s"
 msgstr "Умеет делать %s"
 
-#: inc/functions-members.php:17
+#: inc/functions-members.php:40
 msgid "Beneficiary"
 msgstr "Бенефициар"
 
-#: inc/functions-members.php:18
+#: inc/functions-members.php:41
 msgid "Activist"
 msgstr "Активист"
 
-#: inc/functions-members.php:20
+#: inc/functions-members.php:43
 msgid "Superhero"
 msgstr "Супергерой"
 
-#: inc/functions-members.php:21
+#: inc/functions-members.php:44
 msgid "User"
 msgstr "Пользователь"
 
 # @ tst
-#: inc/functions-members.php:295
+#: inc/functions-members.php:346
 msgid "Username already exists!"
 msgstr "Такой логин уже существует."
 
 # @ tst
-#: inc/functions-members.php:323 inc/functions-members.php:330
-#: inc/functions-members.php:337
+#: inc/functions-members.php:374 inc/functions-members.php:381
+#: inc/functions-members.php:388
 msgid "We are very sorry :( Some error occured while registering your account."
 msgstr ""
 "К сожалению, во время регистрации произошла ошибка. Пробуйте повторить "
 "регистрацию позже."
 
-#: inc/functions-members.php:433 inc/functions-members.php:522
+#: inc/functions-members.php:484 inc/functions-members.php:573
 msgid "<strong>Error:</strong> task not found."
 msgstr "<strong>Ошибка:</strong> задача не найден."
 
-#: inc/functions-members.php:440 inc/functions-members.php:529
-#: inc/functions-members.php:547
+#: inc/functions-members.php:491 inc/functions-members.php:580
+#: inc/functions-members.php:598
 msgid "<strong>Error:</strong> operation not permitted."
 msgstr "<strong>Ошибка:</strong> действие запрещено."
 
-#: inc/functions-members.php:458
+#: inc/functions-members.php:509
 msgid "<strong>Error:</strong> task doer not found."
 msgstr "<strong>Ошибка:</strong> исполнитель не найден."
 
-#: inc/functions-members.php:466 inc/functions-members.php:555
+#: inc/functions-members.php:517 inc/functions-members.php:606
 msgid "<strong>Error:</strong> empty message."
 msgstr "<strong>Ошибка:</strong> введите текст отзыва."
 
-#: inc/functions-members.php:474 inc/functions-members.php:563
+#: inc/functions-members.php:525 inc/functions-members.php:614
 #: partials/sidebar-multibutton.php:93
 msgid "Please rate doer work result"
 msgstr "Пожалуйста, оцените работу."
 
-#: inc/functions-members.php:483 inc/functions-members.php:572
+#: inc/functions-members.php:534 inc/functions-members.php:623
 msgid "<strong>Error:</strong> review for the task already exists."
 msgstr "<strong>Ошибка:</strong> отзыв уже оставлен."
 
-#: inc/functions-members.php:491 inc/functions-members.php:580
-#: inc/functions-members.php:1085
+#: inc/functions-members.php:542 inc/functions-members.php:631
+#: inc/functions-members.php:1136
 msgid "Review saved"
 msgstr "Отзыв сохранен"
 
-#: inc/functions-members.php:604 inc/functions-members.php:822
+#: inc/functions-members.php:655 inc/functions-members.php:873
 msgid "Is activated"
 msgstr "Активирован"
 
-#: inc/functions-members.php:608 inc/functions-members.php:850
+#: inc/functions-members.php:659 inc/functions-members.php:901
 msgid "Yes"
 msgstr "Да"
 
-#: inc/functions-members.php:610 inc/functions-members.php:850
+#: inc/functions-members.php:661 inc/functions-members.php:901
 msgid "No"
 msgstr "Нет"
 
-#: inc/functions-members.php:611
+#: inc/functions-members.php:662
 msgid "Resend activation email"
 msgstr "Выслать письмо активации"
 
-#: inc/functions-members.php:616
+#: inc/functions-members.php:667
 msgid "Activation mail sent"
 msgstr "Письмо активации отправлено"
 
-#: inc/functions-members.php:630 inc/functions-members.php:827
+#: inc/functions-members.php:681 inc/functions-members.php:878
 #: inc/template-members.php:680 partials/content-member_single.php:238
 msgid "XP Rating"
 msgstr "Опыт"
 
-#: inc/functions-members.php:634
+#: inc/functions-members.php:685
 msgid "Add XP to user"
 msgstr "Добавить опыта"
 
-#: inc/functions-members.php:659
+#: inc/functions-members.php:710
 #, php-format
 msgid "Activation email time: %s"
 msgstr "Время последнего письма: %s"
 
-#: inc/functions-members.php:660
+#: inc/functions-members.php:711
 msgid "Reactivation sent 2 times!"
 msgstr "Письмо активации высылалось дополнительно 2 раза!"
 
 # @ tst
-#: inc/functions-members.php:799 inc/functions-members.php:828
+#: inc/functions-members.php:850 inc/functions-members.php:879
 #: page-member-action.php:158 partials/content-member_single.php:102
 msgid "City"
 msgstr "Город"
 
-#: inc/functions-members.php:799 inc/functions-members.php:802
+#: inc/functions-members.php:850 inc/functions-members.php:853
 msgid "Filter"
 msgstr "Фильтровать"
 
-#: inc/functions-members.php:803
+#: inc/functions-members.php:854
 msgid "All users"
 msgstr "Все"
 
-#: inc/functions-members.php:804
+#: inc/functions-members.php:855
 msgid "Activated users"
 msgstr "Активированные"
 
-#: inc/functions-members.php:805
+#: inc/functions-members.php:856
 msgid "Not activated users"
 msgstr "Не активированные"
 
-#: inc/functions-members.php:821
+#: inc/functions-members.php:872
 msgid "ITV role"
 msgstr "Роль ИТВ"
 
-#: inc/functions-members.php:823
+#: inc/functions-members.php:874
 msgid "Registration date"
 msgstr "Регистрация"
 
-#: inc/functions-members.php:824
+#: inc/functions-members.php:875
 msgid "Access IP"
 msgstr "IP доступа"
 
 # @ tst
-#: inc/functions-members.php:825 page-member-tasks.php:71
+#: inc/functions-members.php:876 page-member-tasks.php:71
 #: partials/content-member_single.php:246
 msgid "Tasks created"
 msgstr "Созданные задачи"
 
-#: inc/functions-members.php:826
+#: inc/functions-members.php:877
 msgid "Tasks done"
 msgstr "Решенные задачи"
 
-#: inc/functions-members.php:862
+#: inc/functions-members.php:913
 msgid "Reg IP:"
 msgstr "IP рег."
 
-#: inc/functions-members.php:868
+#: inc/functions-members.php:919
 msgid "Last login IP:"
 msgstr "IP входа:"
 
-#: inc/functions-members.php:1051
+#: inc/functions-members.php:1102
 msgid "<strong>Error:</strong> Access denied!"
 msgstr "<strong>Ошибка:</strong> доступ запрещен!"
 
-#: inc/functions-members.php:1068
+#: inc/functions-members.php:1119
 msgid "<strong>Error:</strong> Recently said thank you!"
 msgstr ""
 "<strong>Ошибка:</strong> Вы недавно уже говорили \"Спасибо!\" этому "
@@ -840,13 +844,21 @@ msgstr[1] "В работе <span class=\"count\">(%s)</span>"
 msgstr[2] "В работе <span class=\"count\">(%s)</span>"
 
 # @ tst
-#: inc/functions-tasks.php:35 inc/functions-tasks.php:43
+#: inc/functions-tasks.php:35
 #, php-format
 msgid "Closed <span class=\"count\">(%s)</span>"
 msgid_plural "Closed <span class=\"count\">(%s)</span>"
 msgstr[0] "Закрыто <span class=\"count\">(%s)</span>"
 msgstr[1] "Закрыто <span class=\"count\">(%s)</span>"
 msgstr[2] "Закрыто <span class=\"count\">(%s)</span>"
+
+#: inc/functions-tasks.php:43
+#, php-format
+msgid "Archived <span class=\"count\">(%s)</span>"
+msgid_plural "Archived <span class=\"count\">(%s)</span>"
+msgstr[0] "В архиве <span class=\"count\">(%s)</span>"
+msgstr[1] "В архиве <span class=\"count\">(%s)</span>"
+msgstr[2] "В архиве <span class=\"count\">(%s)</span>"
 
 # @ tst
 #: inc/functions-tasks.php:86
