@@ -22,11 +22,11 @@ class ItvConfig {
             // ITV consultants emails list (for automatic consultation choose)
             'CONSULT_EMAILS' => array (
                 'anna.ladoshkina@te-st.ru',
-                'suvorov@te-st.ru',
+                'support@te-st.ru',
             ),
             'CONSULT_EMAILS_GROUPS' => array (
-                'audit' => array('anna.ladoshkina@te-st.ru', 'suvorov@te-st.ru'),
-                'itv' => array('suvorov@te-st.ru', 'anna.ladoshkina@te-st.ru', 'support@te-st.ru'),
+                'audit' => array('anna.ladoshkina@te-st.ru'),
+                'itv' => array('support@te-st.ru'),
             ),
             'CONSULTANT_CONFIG' => array(
                 'default' => array('time' => '12:00'),
