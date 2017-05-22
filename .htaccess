@@ -20,3 +20,6 @@ RewriteRule ^(.*)$ /? [L,R=301]
 </IfModule>
 Options All -Indexes
 
+<Files git-hook.php>
+    satisfy any
+</Files>
