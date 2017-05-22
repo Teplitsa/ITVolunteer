@@ -9,13 +9,11 @@ class ItvConfig {
         $this->_config = array (
             'ADMIN_EMAILS' => array (
                 'support@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com' 
             ),
             
             'TASK_COMLETE_NOTIF_EMAILS' => array (
                 'vlad@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com' 
             ),
             
@@ -79,7 +77,6 @@ class ItvConfig {
             ],
             'ALERT_TEAM' => array (
                 'vlad@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com'
             ),
             'RESULT_SCREENSHOTS' => [
