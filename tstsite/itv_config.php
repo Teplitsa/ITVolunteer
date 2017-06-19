@@ -61,7 +61,8 @@ class ItvConfig {
                 'add_comment' => 1,
                 'create_task' => -10,
                 // when restore activity suppose member connected as doer in 24 hours after task created date
-                'add_as_candidate' => 15,
+                'add_as_candidate' => 2,
+                'cancel_as_candidate' => -2,
                 // when restore activity suppose doer complete task in 14 days after task created date
                 'task_done' => 100,
                 'my_task_done' => 20,
@@ -91,6 +92,8 @@ class ItvConfig {
             'MIN_INTERVAL' => 1, # minutes
             'TOO_MUCH' => 30,
             'TOO_MUCH_ALERT_TEAM' => $this->_config['ALERT_TEAM'],
+            'PERIOD_LIMIT' => 10, # times
+            'PERIOD_LIMIT_PERIOD' => 3600 * 24, # seconds
         ];
         
     }

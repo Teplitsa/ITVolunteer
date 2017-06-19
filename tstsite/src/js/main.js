@@ -1,5 +1,4 @@
 /* scripts */
-
 jQuery(function($){
 	$('html').removeClass('no-js').addClass('js');	
 	var windowWidth = $('#page').width();
@@ -63,15 +62,17 @@ jQuery(function($){
 	});
 	
 	
-	/* Modal on home */			
-	$('#myModal').on('shown.bs.modal', function () {
-		var targetSrc = $('#hp-mtr').find('a').attr('href');
-		$(this).find('iframe').attr({src : targetSrc});
+	/* Modal on home */
+	$('#tst-about-video-modal').on('shown.bs.modal', function () {
+	    if(tst_video_ready_to_play) {
+	        tst_youtube_player.playVideo();
+	    }
 	});
 	
-	$('#myModal').on('hidden.bs.modal', function() {
-		
-		$(this).find('iframe').removeAttr('src');
+	$('#tst-about-video-modal').on('hidden.bs.modal', function() {
+        if(tst_video_ready_to_play) {
+            tst_youtube_player.pauseVideo();
+        }
 	});
 	
 	
@@ -1164,6 +1165,8 @@ function itv_show_user_xp_alert(action, index) {
 }
 
 function itv_show_user_alert_message(message, index) {
+    var $ = jQuery;
+    
     var $new_xp_alert = $('#itv-xp-alert').clone();
     var $new_xp_alert_text = $new_xp_alert.find('.itv-xp-alert-text');
     $new_xp_alert.addClass('itv-xp-alert-item');
@@ -1196,6 +1199,8 @@ function itv_show_user_alert_message(message, index) {
 }
 
 function itv_hide_xp_alert_list() {
+    var $ = jQuery;
+    
     $('.itv-xp-alert-item').first().fadeOut( "slow", function() {
         $(this).remove();
     });
@@ -1217,6 +1222,8 @@ function itv_show_all_xp_alerts() {
 }
 
 function itv_thank_you($button) {
+    var $ = jQuery;
+    
     var $loader = $button.parent().find('.thankyou-loader');
     var $done_label = $button.parent().find('.itv-thankyou-done');
     
@@ -1243,10 +1250,15 @@ function itv_thank_you($button) {
         'nonce': $button.parent().find('#_wpnonce').val()
     }, null, 'json')
     .done(function(json){
+
         if(json.status == 'ok') {
             $loader.hide();
             $done_label.show();
             itv_show_user_alert_message(frontend.you_said_thankyou);
+        }
+        else if(json.status == 'fail') {
+            $loader.hide();
+            alert(json.message);
         }
         else {
             alert(frontend.error);
@@ -1285,4 +1297,23 @@ jQuery(function($){
     }
 });
 
+// youtube api init
+var tst_youtube_player;
+var tst_video_ready_to_play = false;
 
+var tag = document.createElement('script');
+tag.src = "//www.youtube.com/player_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+function onPlayerReady(event) {
+    tst_video_ready_to_play = true;
+}
+
+function onYouTubePlayerAPIReady() {
+    tst_youtube_player = new YT.Player('tst-about-video-iframe', {
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}

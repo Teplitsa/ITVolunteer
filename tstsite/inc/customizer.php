@@ -411,6 +411,7 @@ function ajax_remove_candidate() {
 
     p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+    UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CANCEL_AS_CANDIDATE);
     
 	if($task){
 		do_action('update_task_stats', $task);	

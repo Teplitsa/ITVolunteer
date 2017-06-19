@@ -653,5 +653,27 @@ class ItvLog {
         }
         return $closed_tasks_count;
     }
+
+    public function count_user_actions_for_period($user_id, $action_name, $period) {
+        global $wpdb;
+        
+        if(is_array($period) && count($period) > 1) {
+            $action_time_sql = $wpdb->prepare( " AND action_time >= %s AND action_time < %s ", $period[0], $period[1] );
+        }
+        elseif(is_array($period)) {
+            $action_time_sql = $wpdb->prepare( " AND action_time >= %s", $period[0] );
+        }
+        elseif($period) {
+            $action_time_sql = $wpdb->prepare( " AND action_time >= %s", $period );
+        }
     
+        $sql = $wpdb->prepare ( "
+                SELECT COUNT(*) FROM $this->task_action_table
+                WHERE assoc_user_id = %d AND `action` = %s 
+                {$action_time_sql}", $user_id, $action_name );
+        
+        $actions_count = $wpdb->get_var( $sql );
+    
+        return $actions_count;
+    }
 }

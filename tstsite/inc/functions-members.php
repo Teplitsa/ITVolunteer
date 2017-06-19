@@ -1111,8 +1111,19 @@ function ajax_thankyou() {
         $error_message = __('Error!', 'tst');
         
         try {
-            ThankyouModel::instance()->do_thankyou($user_id, $to_uid);
-            $is_error = false;
+            
+            if(ThankyouModel::instance()->is_yourself($user_id, $to_uid)) {
+                $is_error = true;
+                $error_message = __('You can not thank yourself!', 'tst');
+            }
+            elseif(ThankyouModel::instance()->is_limit_exceeded($user_id)) {
+                $is_error = true;
+                $error_message = __('Your thankyou limit is exceeded for today!', 'tst');
+            }
+            else {
+                ThankyouModel::instance()->do_thankyou($user_id, $to_uid);
+                $is_error = false;
+            }
         }
         catch(\ITV\models\ItvThankyouRecentlySaidException $ex) {
             error_log($ex);

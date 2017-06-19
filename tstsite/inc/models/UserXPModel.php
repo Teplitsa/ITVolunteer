@@ -27,6 +27,7 @@ class UserXPModel extends ITVSingletonModel {
     public static $ACTION_ADD_COMMENT = 'add_comment';
     public static $ACTION_CREATE_TASK = 'create_task';
     public static $ACTION_ADD_AS_CANDIDATE = 'add_as_candidate';
+    public static $ACTION_CANCEL_AS_CANDIDATE = 'cancel_as_candidate';
     public static $ACTION_TASK_DONE = 'task_done';
     public static $ACTION_MY_TASK_DONE = 'my_task_done';
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
