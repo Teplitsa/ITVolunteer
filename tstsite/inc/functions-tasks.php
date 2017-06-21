@@ -221,6 +221,19 @@ function tst_get_task_doers_count($task_id, $only_approved = false, $update = fa
     return $num;
 }
 
+function tst_is_user_already_candidate($candidate_user_id, $task_id) {
+    $is_already_candidate = false;
+    $task_doers = tst_get_task_doers($task_id);
+    foreach ($task_doers as $user_id => $user) {
+        if( $candidate_user_id == $user->ID) {
+            $is_already_candidate = true;
+            break;
+        }
+    }
+    
+    return $is_already_candidate;
+}
+
 
 add_action('update_task_stats', 'tst_actualize_task_stats'); //store numbers as metas
 function tst_actualize_task_stats($task) {

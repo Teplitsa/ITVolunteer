@@ -657,6 +657,7 @@ class ItvLog {
     public function count_user_actions_for_period($user_id, $action_name, $period) {
         global $wpdb;
         
+        $action_time_sql = "";
         if(is_array($period) && count($period) > 1) {
             $action_time_sql = $wpdb->prepare( " AND action_time >= %s AND action_time < %s ", $period[0], $period[1] );
         }
