@@ -344,11 +344,12 @@ function ajax_add_candidate() {
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
-
+	$is_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
+	
     p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
     
-    if(!UserXPModel::instance()->is_reg_candidate_activity_exist(get_current_user_id(), $task->ID)) {
+    if(!$is_doer_already_candidate) {
         UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
         UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
     }
@@ -405,12 +406,17 @@ function ajax_remove_candidate() {
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
+	$was_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
 	
 	$task_doers = tst_get_task_doers($task_id, true);
 	$is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
 
     p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+    
+    if($was_doer_already_candidate) {
+        UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CANCEL_AS_CANDIDATE);
+    }
     
 	if($task){
 		do_action('update_task_stats', $task);	

@@ -128,8 +128,7 @@ gulp.task('copy-b-css', function(){
 
 gulp.task('copy-b-js', function(){
     
-    var vendor = ['bower_components/jquery/dist/jquery.min.js',
-                  'bower_components/bootstrap/dist/js/bootstrap.min.js'];
+    var vendor = [];
     
     return gulp.src(vendor)
         .pipe(plugins.concat('vendor.js'))//combine them into vendor.js        

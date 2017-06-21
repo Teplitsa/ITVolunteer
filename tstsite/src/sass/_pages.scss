@@ -75,7 +75,15 @@
 		}
 	}
 }
-	
+
+#tst-about-video-modal {
+    z-index:10050;
+    
+    .modal-dialog {
+        width:671px;
+    }
+}
+
 .intro-panel-filters {	
 	color: $color-text;
 	text-align: center;

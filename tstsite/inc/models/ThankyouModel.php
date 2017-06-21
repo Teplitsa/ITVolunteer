@@ -99,6 +99,15 @@ class ThankyouModel extends ITVSingletonModel {
         $query = ThankYou::where('to_uid', $to_uid);
         return $query->sum('counter');
     }
+
+    public function is_yourself($user_id, $to_uid) {
+        return $user_id == $to_uid;
+    }
+    
+    public function is_limit_exceeded($user_id) {
+        $thankyou_count = \ItvLog::instance()->count_user_actions_for_period($user_id, 'user_thankyou', date('Y-m-d H:i:s', time() - $this->THANKYOU_CONFIG['PERIOD_LIMIT_PERIOD']));
+        return $thankyou_count >= $this->THANKYOU_CONFIG['PERIOD_LIMIT'];
+    }
 }
 
 /* exceptions */
