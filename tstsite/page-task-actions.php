@@ -189,7 +189,7 @@ get_header();?>
 		</div>
        
 	
-		<div class="form-group checkbox">
+		<div class="form-group checkbox" style="display: none;">
 			<b><?php _e('itv_task_consult_needed_label', 'tst')?></b>
 			<label for="is_tst_consult_needed" class="itv-task-form-sublabel">
 				<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if(isset($task_data['is_tst_consult_needed']) && $task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>
