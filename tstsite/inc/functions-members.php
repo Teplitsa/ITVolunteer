@@ -450,6 +450,10 @@ function get_user_last_login_time($user) {
 add_filter('show_admin_bar', 'tst_remove_admin_bar');
 function tst_remove_admin_bar($show){
 	
+	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+		return;
+	}
+	
 	if(!current_user_can('edit_others_posts'))
 		return false;
 	
@@ -691,6 +695,10 @@ function itv_xp_field ( $user ) {
 }
 
 function itv_extra_user_profile_fields( $user ) {
+	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+		return;
+	}
+	
     itv_is_activated_field( $user );
     itv_xp_field( $user );
 }

@@ -164,3 +164,10 @@ function itv_wp_mail_log( $args ) {
     MailSendLogModel::instance()->log_send_action( $args );
 }
 add_filter( 'wp_mail', 'itv_wp_mail_log' );
+
+function itv_show_404() {
+	status_header( 404 );
+	nocache_headers();
+	get_template_part( '404' );
+	die();
+}
