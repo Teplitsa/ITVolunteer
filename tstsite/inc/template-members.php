@@ -716,7 +716,9 @@ class TST_Current_Member {
 	private function __construct() {		
 		
 		$this->user_object = get_user_by('slug', get_query_var('membername'));
-		update_meta_cache('user', array($this->user_object->ID));
+		if($this->user_object) {
+			update_meta_cache('user', array($this->user_object->ID));
+		}
 		
 	}
 	
