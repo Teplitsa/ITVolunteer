@@ -330,6 +330,11 @@ function itv_get_unique_user_login($first_name, $last_name = '') {
 	return $new_ok_login;
 }
 
+function tst_sanitize_user($user_login) {
+	return preg_replace("/\s+/", "_", $user_login);
+}
+add_filter('sanitize_user', 'tst_sanitize_user');
+
 function tst_register_user($user_params) {
 	$error_message = '';
 	$is_error = false;
