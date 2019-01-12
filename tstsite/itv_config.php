@@ -9,13 +9,11 @@ class ItvConfig {
         $this->_config = array (
             'ADMIN_EMAILS' => array (
                 'support@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com' 
             ),
             
             'TASK_COMLETE_NOTIF_EMAILS' => array (
                 'vlad@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com' 
             ),
             
@@ -29,7 +27,7 @@ class ItvConfig {
             ),
             'CONSULTANT_CONFIG' => array(
                 'default' => array('time' => '12:00'),
-                'support@te-st.ru' => array('time' => '13:00'),
+                'support@te-st.ru' => array('time' => '21:00'),
             ),
             'CONSULT_BCC_EMAILS' => array (
                 'denis.cherniatev@gmail.com',
@@ -80,7 +78,6 @@ class ItvConfig {
             ],
             'ALERT_TEAM' => array (
                 'vlad@te-st.ru',
-                'suvorov@te-st.ru',
                 'denis.cherniatev@gmail.com'
             ),
             'RESULT_SCREENSHOTS' => [
