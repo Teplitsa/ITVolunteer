@@ -19,6 +19,7 @@
 	<?php wp_head(); ?>
 	<!--Microsoft -->
     <meta http-equiv="cleartype" content="on">
+    <meta name="yandex-verification" content="804eab4aa1555391" />
 		
 </head>
 <?php flush(); ?>
