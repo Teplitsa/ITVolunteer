@@ -1,0 +1,98 @@
+/** == Mixins (_mixins.scss) == **/
+
+@mixin no-outline {
+    outline: 0 !important;
+    -webkit-appearance:none;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+@mixin a-no-hover-underline {
+    text-decoration: none;
+
+    &:active, &:focus {
+        text-decoration: none;
+    }
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+@mixin a-hover-underline {
+    text-decoration: none;
+
+    &:active, &:focus {
+        text-decoration: underline;
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+@mixin drop-down-arrow($height: 16px) {
+    &:after {
+        content: " ";
+        display: inline-block;
+        margin-left: 4px;
+        width: 16px;
+        height: $height;
+        vertical-align: bottom;
+        background-size: 16px 16px;
+        background-position: center center;
+        background-image: url('../img/icon-arrow-down-gray.svg');
+    }
+}
+
+// buttons
+@mixin button-primary {
+    @include text-sm;
+    @include a-no-hover-underline;
+    background-color: $color-main;
+    color: $color-white;
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+}
+
+@mixin button-secondary {
+    @include button-primary;
+    background-color: $color-white;
+    color: $color-main;
+    box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08), inset -1px -1px 1px rgba(129, 118, 111, 0.16);
+}
+
+@mixin button-md {
+    @include text-line-sm;
+    padding: 12px;
+}
+
+@mixin button-primary-md {
+    @include button-primary;
+    @include button-md;
+}
+
+@mixin action-button-secondary-md {
+    @include button-secondary;
+    @include button-md;
+}
+
+@mixin button-lg {
+    @include htext;
+    padding: 16px;
+}
+
+@mixin button-primary-lg {
+    @include button-primary;
+    @include button-lg;
+}
+
+@mixin action-button-secondary-lg {
+    @include action-button-secondary;
+    @include actiion-button-lg;
+}

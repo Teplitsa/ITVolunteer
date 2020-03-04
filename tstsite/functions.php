@@ -34,6 +34,10 @@ function tst_get_version_num(){
 	return $num;
 }
 
+function itv_is_spa() {
+    return is_singular('tasks');
+}
+
 if ( ! function_exists( 'tst_setup' ) ) :
 function tst_setup() {
 

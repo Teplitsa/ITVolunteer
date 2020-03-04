@@ -122,7 +122,7 @@ class ITV_Query {
 	
 	
 	/* Cache additional posts info by request */
-	function query_posts_adder($posts, &$query){
+	function query_posts_adder($posts, $query){
 						
 		if('yes' == $query->get('set_users')){
 			$ids = self::get_user_id_from_posts($posts);

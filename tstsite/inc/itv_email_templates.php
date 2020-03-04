@@ -120,6 +120,10 @@ class ItvEmailTemplates {
         return $this->get_some ( $template_name, 'title' );
     }
     
+    public function get_all_email_templates() {
+        return $this->_email_templates;
+    }
+    
     private function get_some($template_name, $what) {
         return isset ( $this->_email_templates [$template_name] [$what] ) ? $this->_email_templates [$template_name] [$what] : '';
     }

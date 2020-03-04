@@ -1,0 +1,89 @@
+/** == Typography (_typo.scss) == **/
+
+$body-font-family: 'IBM Plex Sans';
+
+@mixin htext-xl {
+    @include text;
+    font-size: 30px;
+    line-height: 40px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+@mixin htext-lg {
+    @include text;
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 500;
+}
+
+@mixin htext {
+    @include text;
+    font-size: 20px;
+    line-height: 32px;
+    font-weight: 500;
+}
+
+@mixin text-lg {
+    @include text;
+    font-size: 20px;
+    line-height: 32px;
+    font-weight: 400;
+}
+
+@mixin text {
+    font-family: $body-font-family;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    font-style: normal;
+}
+
+@mixin text-line-sm {
+    @include text;
+    line-height: 20px;
+}
+
+@mixin text-bold-line-sm {
+    @include text-line-sm;
+    font-weight: 600;
+}
+
+@mixin text-sm {
+    @include text;
+    font-size: 13px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+@mixin text-sm-bold {
+    @include text-sm;
+    font-weight: 600;
+}
+
+@mixin text-xs {
+    @include text;
+    font-size: 11px;
+    line-height: 12px;
+}
+
+@mixin text-xs-line-lg {
+    @include text-xs;
+    line-height: 16px;
+}
+
+@mixin text-xs-bold {
+    @include text-xs;
+    font-weight: 600;
+}
+
+@mixin text-xs-bold-line-lg {
+    @include text-xs-bold;
+    line-height: 16px;
+}
+
+// headers
+@mixin task-subtitle {
+    @include text-bold-line-sm;
+    color: $color-gray-dark-xl;
+}

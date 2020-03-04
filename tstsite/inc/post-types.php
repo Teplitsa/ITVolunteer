@@ -116,6 +116,9 @@ function itv_custom_content(){
 		'menu_icon'          => 'dashicons-welcome-write-blog',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
+        'show_in_graphql'    =>  true,
+        'graphql_single_name' => 'task',
+        'graphql_plural_name' => 'tasks',
 	));
 	
 	if ( function_exists('p2p_register_connection_type') ) {

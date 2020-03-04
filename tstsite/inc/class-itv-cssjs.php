@@ -11,9 +11,9 @@ class ITV_CssJs {
 	
 	private function __construct() {
 		
+        add_action('wp_enqueue_scripts', array($this, 'load_styles'), 30);
+        add_action('wp_enqueue_scripts', array($this, 'load_scripts'), 30);
 		
-		add_action('wp_enqueue_scripts', array($this, 'load_styles'), 30);
-		add_action('wp_enqueue_scripts', array($this, 'load_scripts'), 30);
 		add_action('init', array($this, 'disable_wp_emojicons'));
 		
 		add_action('admin_enqueue_scripts',  array($this, 'load_admin_scripts'), 30);
@@ -59,7 +59,10 @@ class ITV_CssJs {
 	
 	/* load css */
 	function load_styles() {
-		
+	    if(itv_is_spa()) {
+	        return;
+	    }
+	    
 		$url = get_template_directory_uri();
 		wp_enqueue_style('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.css'), array(), null);	
 	}
@@ -80,7 +83,13 @@ class ITV_CssJs {
 	}
 	
 	/* front */
+	
+	
 	public function load_scripts() {
+	    itv_is_spa() ? $this->load_scripts_spa() : $this->load_scripts_ssr();
+	}
+	
+	public function load_scripts_ssr() {
 		
 		$url = get_template_directory_uri();
         $user = wp_get_current_user(); 
@@ -137,7 +146,25 @@ class ITV_CssJs {
 		if(is_singular('tasks') && get_option('thread_comments')) {
 			wp_enqueue_script('comment-reply');
 		}
-		
+	}
+	
+	public function load_scripts_spa() {
+	    
+	    $url = get_template_directory_uri();
+	    
+	    wp_dequeue_style('dashicons');
+	    wp_dequeue_style('post-views-counter-frontend');
+	    
+	    wp_enqueue_script('front', $url.'/assets_spa/js/bundle-front-app.js', array(), null, true);
+	    
+	    $user = wp_get_current_user();
+	    wp_localize_script('front', 'frontend', array(
+	        'ajaxurl'                        => admin_url('admin-ajax.php'),
+	        'site_url'                       => site_url('/'),
+	        'user_id'                        => $user ? $user->ID : null,
+	        //        '' => __('.', 'tst'),
+	    ));
+	    
 	}
 	
 	/** disable emojji **/
