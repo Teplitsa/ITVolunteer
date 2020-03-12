@@ -51,7 +51,11 @@ function itv_custom_content(){
         'show_admin_column' => false,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'reward', 'with_front' => false),
-        //'update_count_callback' => '',        
+        //'update_count_callback' => '', 
+        
+	    'show_in_graphql' => true,
+	    'graphql_single_name' => 'RewardTag',
+	    'graphql_plural_name' => 'RewardTags'
     ));
     
     register_taxonomy('nko_task_tag', array('tasks'), array(
@@ -81,6 +85,10 @@ function itv_custom_content(){
         'show_admin_column' => false,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'nko_task_tag'),
+        
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'NgoTaskTag',
+        'graphql_plural_name' => 'NgoTaskTags'
     ));
 	
     register_post_type('tasks', array(
@@ -116,6 +124,7 @@ function itv_custom_content(){
 		'menu_icon'          => 'dashicons-welcome-write-blog',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
+        
         'show_in_graphql'    =>  true,
         'graphql_single_name' => 'task',
         'graphql_plural_name' => 'tasks',
@@ -158,9 +167,58 @@ function itv_custom_content(){
 
 }//if tst_custom_content
     
+add_action( 'graphql_register_types', 'itv_register_task_graphql_fields' );
+function itv_register_task_graphql_fields() {
+    register_graphql_field(
+        'Task',
+        'viewsCount',
+        [
+            'type'        => 'Int',
+            'description' => __( 'Task views count', 'tst' ),
+            'resolve'     => function( $task ) {
+                return pvc_get_post_views($task->ID);
+            },
+        ]
+    );
+    
+    register_graphql_field(
+        'Task',
+        'doerCandidatesCount',
+        [
+            'type'        => 'Int',
+            'description' => __( 'Task doer candidates count', 'tst' ),
+            'resolve'     => function( $task ) {
+            return tst_get_task_doers_count($task->ID);
+            },
+        ]
+    );
+    
+}
 
-
-
-
-
-
+add_action( 'graphql_register_types', 'itv_register_user_graphql_fields' );
+function itv_register_user_graphql_fields() {
+    register_graphql_field(
+        'User',
+        'userWorkplace',
+        [
+            'type'        => 'String',
+            'description' => __( 'User workplace', 'tst' ),
+            'resolve'     => function( $user ) {
+                return get_user_meta( $user->userId, 'user_workplace' );
+            },
+        ]
+    );
+    
+    register_graphql_field(
+        'User',
+        'userWorkplaceDescription',
+        [
+            'type'        => 'String',
+            'description' => __( 'User workplace description', 'tst' ),
+            'resolve'     => function( $user ) {
+                return get_user_meta( $user->userId, 'user_workplace_desc' );
+            },
+        ]
+    );
+    
+}

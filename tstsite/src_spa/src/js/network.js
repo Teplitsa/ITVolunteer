@@ -5,8 +5,7 @@ import gql from "graphql-tag";
 export const USER_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId, idType: DATABASE_ID) {
-        id
-        userId
+        databaseId
         username
         avatar {
           url
@@ -17,9 +16,38 @@ query User ($userId: ID!) {
 export const TASK_QUERY = gql`
 query Task($taskId: ID!) {
     task(id: $taskId, idType: DATABASE_ID) {
-        id
-        taskId
+        databaseId
         title
         content
+        date
+        viewsCount
+        doerCandidatesCount
+        
+        featuredImage {
+            sourceUrl(size: LARGE)
+        }        
+
+        tags {
+          nodes {
+            databaseId
+            name
+            slug
+          }
+        }
+        rewardTags {
+          nodes {
+            databaseId
+            name
+            slug
+          }
+        }
+        ngoTaskTags {
+            nodes {
+            databaseId
+            name
+            slug
+          }
+        }
+
     }
 }`
