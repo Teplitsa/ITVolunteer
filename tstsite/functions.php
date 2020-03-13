@@ -16,7 +16,7 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-define('ITV_FRONTEND_VERSION', '1.0.0');
+define('ITV_FRONTEND_VERSION', '1.0.1');
 
 function tst_get_version_num(){
 	
