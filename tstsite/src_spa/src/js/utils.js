@@ -1,8 +1,15 @@
+import React from 'react'
 
 export function loadingWait() {
-    return "Загрузка..."
+    return (
+        <span className="loading wait">Загрузка...</span>
+    )
 }
 
 export function loadingError(error) {
-    return `Ошибка: {$error.message}`
+    return (
+        <span className="loading error">
+            `Ошибка: ${error.message}`
+        </span>        
+    )
 }

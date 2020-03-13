@@ -97,6 +97,7 @@ class ITV_CssJs {
 		wp_dequeue_style('dashicons');
 		wp_dequeue_style('post-views-counter-frontend');
 				
+		wp_enqueue_script('jquery');
 		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array(), null, true);
 
 		wp_localize_script('front', 'frontend', array(

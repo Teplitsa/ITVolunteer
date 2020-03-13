@@ -197,28 +197,98 @@ function itv_register_task_graphql_fields() {
 
 add_action( 'graphql_register_types', 'itv_register_user_graphql_fields' );
 function itv_register_user_graphql_fields() {
-    register_graphql_field(
+    register_graphql_fields(
         'User',
-        'userWorkplace',
         [
-            'type'        => 'String',
-            'description' => __( 'User workplace', 'tst' ),
-            'resolve'     => function( $user ) {
-                return get_user_meta( $user->userId, 'user_workplace' );
-            },
-        ]
-    );
-    
-    register_graphql_field(
-        'User',
-        'userWorkplaceDescription',
-        [
-            'type'        => 'String',
-            'description' => __( 'User workplace description', 'tst' ),
-            'resolve'     => function( $user ) {
-                return get_user_meta( $user->userId, 'user_workplace_desc' );
-            },
+            'profileURL' => [
+                'type'        => 'String',
+                'description' => __( 'User profile URL', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return tst_get_member_url($user->userId);
+                },
+            ],
+            'fullName' => [
+                'type'        => 'String',
+                'description' => __( 'User profile URL', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return tst_get_member_name($user->userId);
+                },
+            ],
+            'solvedTasksCount' => [
+                'type'        => 'Int',
+                'description' => __( 'Number of tasks user solved as DOER', 'tst' ),
+                'resolve'     => function( $user ) {
+                    $key = 'solved';
+                    $activity = tst_get_member_activity($user->userId, $key);
+                    return $activity[$key];
+                },
+            ],
+            'authorReviewsCount' => [
+                'type'        => 'Int',
+                'description' => __( 'User author reviews count', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return ItvReviewsAuthor::instance()->count_author_reviews($user->userId);
+                },
+            ],
+            'doerReviewsCount' => [
+                'type'        => 'Int',
+                'description' => __( 'User doer reviews count', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return ItvReviews::instance()->count_doer_reviews($user->userId);
+                },
+            ],
+            'organizationName' => [
+                'type'        => 'String',
+                'description' => __( 'User organization', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return tst_get_member_field('user_workplace', $user->userId);
+                },
+            ],
+            'organizationDescription' => [
+                'type'        => 'String',
+                'description' => __( 'User organization description', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return tst_get_member_field('user_workplace_desc', $user->userId);
+                },
+            ],
+            'organizationLogo' => [
+                'type'        => 'String',
+                'description' => __( 'User organization logo', 'tst' ),
+                'resolve'     => function( $user ) {
+                    return tst_get_member_user_company_logo_src( $user->userId );
+                },
+            ]
         ]
     );
     
 }
+
+use WPGraphQL\Data\DataSource;
+use WPGraphQL\AppContext;
+add_action( 'graphql_register_types', 'itv_register_doers_graphql_query' );
+function itv_register_doers_graphql_query() {
+    register_graphql_field(
+        'RootQuery', 
+        'taskDoers',
+        [
+            'description' => __( 'Task doers', 'tst' ),
+            'type' => [ 'list_of' => 'User' ],
+            'args'        => [
+                'taskId'     => [
+                    'type' => [
+                        'non_null' => 'ID',
+                    ],
+                ],
+            ],
+            'resolve' => function($source, array $args, AppContext $context) {
+                $doers = tst_get_task_doers($args['taskId'], false);
+                $users = [];
+                foreach($doers as $doer) {
+                    $users[] = DataSource::resolve_user( $doer->ID, $context );
+                }
+                return $users;
+            },
+        ]
+    );
+}
+ 

@@ -25,13 +25,13 @@ function AccountInHeader({userId}) {
                     <span className="new-notif"></span>
                 }
             </a>
-            <a href="#" className="open-account-menu">
+            <a href={data.user.profileURL} className="open-account-menu">
                 <span 
                     className="avatar-wrapper"
                     style={{
                         backgroundImage: data.user && data.user.avatar ? `url(${data.user.avatar.url})` : "none",
                     }}
-                    title={data.user && `Привет, ${data.user.username}!`}
+                    title={data.user && `Привет, ${data.user.fullName}!`}
                 />
                 <img src={arrowDown} className="arrow-down" alt="arrowDown" />
             </a>

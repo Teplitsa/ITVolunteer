@@ -4,6 +4,7 @@
 @import 'front/presets';
 @import 'front/typo';
 @import 'front/mixins';
+@import 'front/utils';
 
 $green: #00AA00;
 
@@ -527,6 +528,14 @@ body {
 .sidebar-users-block {
     &.approved-doer {
         border-color: $color-main;
+
+        &.responses {
+            .user-card {
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
     }
 
     &.responses {
@@ -977,10 +986,20 @@ body {
     .comments-list {
         margin-top: 16px;
 
-        & > .comment {
-            &:not(:first-child) {
-                margin-top: 20px;
+        .comment-wrapper {
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        & > .comment-wrapper {
+            margin-left: 0px;
+
+            &:first-child {
+                margin-top: 0px;
             }
+        }
+
+        .comment-wrapper > .comment {
 
             .comment-author {
             }
