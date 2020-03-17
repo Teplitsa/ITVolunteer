@@ -65,6 +65,7 @@ fragment TaskCommentFields on ItvComment {
       fullName
       itvAvatar
       memberRole
+      profileURL
     }
   }
 }

@@ -220,10 +220,13 @@ function itv_avatar_url($member_id = null){
         
     $itv_user_avatar = tst_get_member_user_avatar_url($member_id);
     $itv_user_avatar_fpath = str_replace(home_url() . "/wp-content", WP_CONTENT_DIR, $itv_user_avatar);
-    #error_log($itv_user_avatar_fpath);
+//     error_log($itv_user_avatar_fpath);
     
-    if(!$itv_user_avatar || !is_file($itv_user_avatar_fpath)) {
+    if(!$itv_user_avatar) {
         $itv_user_avatar = tst_get_avatar_fallback_url($member_id);
+    }
+    elseif(!is_file($itv_user_avatar_fpath)) {
+        $itv_user_avatar = get_template_directory_uri() . '/assets/img/temp-avatar.png';
     }
     
     return $itv_user_avatar;

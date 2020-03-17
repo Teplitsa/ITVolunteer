@@ -105,9 +105,9 @@ function itv_register_comment_graphql_fields() {
                          * If the comment has a user associated, use it to populate the author, otherwise return
                          * the $comment and the Union will use that to hydrate the CommentAuthor Type
                          */
-                    error_log("comment Id: " . $comment->id);
-                    error_log("comment commentId: " . $comment->commentId);
-                    error_log("***comment->userId: " . $comment->userId);
+//                     error_log("comment Id: " . $comment->id);
+//                     error_log("comment commentId: " . $comment->commentId);
+//                     error_log("***comment->userId: " . $comment->userId);
                     
                     if ( ! empty( $comment->userId ) ) {
                         if ( empty( $comment->userId ) || ! absint( $comment->userId ) ) {

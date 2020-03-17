@@ -87,7 +87,7 @@ export function TaskDoers({taskId}) {
                         })()}
                     </div>
                     <div className="details">
-                        <span className="name">{user.email}</span>
+                        <a className="name" href={user.profileURL}>{user.fullName}</a>
                         <span className="reviews">{`${user.doerReviewsCount} отзывов`}</span>
                         <span className="status">{`Выполнено ${user.solvedTasksCount} задач`}</span>
                     </div>
