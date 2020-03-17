@@ -19,11 +19,11 @@ export class UserSmallView extends Component {
     render() {
         return <div className="itv-user-small-view">
             <span className="avatar-wrapper" style={{
-                backgroundImage: this.state.user.avatar ? `url(${this.state.user.avatar.url})` : "none",
+                backgroundImage: this.state.user.itvAvatar ? `url(${this.state.user.itvAvatar})` : "none",
             }}/>
 
             <span className="name">
-                <span>{this.state.user.fullName}</span>/{this.state.user.itvStatus}
+                <span>{this.state.user.fullName}</span>/{this.state.user.memberRole}
             </span>
         </div>
     }
@@ -40,7 +40,7 @@ export function TaskAuthor({taskAuthorId}) {
             <div className="user-card">
                 <div className="user-card-inner">
                     <div className="avatar-wrapper" style={{
-                        backgroundImage: authorData.user.avatar ? `url(${authorData.user.avatar.url})` : "none",
+                        backgroundImage: authorData.user.itvAvatar ? `url(${authorData.user.itvAvatar})` : "none",
                     }}/>
                     <div className="details">
                         <span className="status">Заказчик</span>
@@ -80,14 +80,14 @@ export function TaskDoers({taskId}) {
             <div className="user-card" key={key}>
                 <div className="user-card-inner">
                     <div className="avatar-wrapper" style={{
-                        backgroundImage: user.avatar ? `url(${user.avatar.url})` : "none",
+                        backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
                     }}>
                         {(() => {
                             return (key == 1 ? <img src={metaIconPaseka} className="itv-approved" /> : null);
                         })()}
                     </div>
                     <div className="details">
-                        <span className="name">{user.fullName}</span>
+                        <span className="name">{user.email}</span>
                         <span className="reviews">{`${user.doerReviewsCount} отзывов`}</span>
                         <span className="status">{`Выполнено ${user.solvedTasksCount} задач`}</span>
                     </div>

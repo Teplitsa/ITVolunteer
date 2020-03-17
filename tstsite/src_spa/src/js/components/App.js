@@ -67,8 +67,6 @@ class App extends Component {
                     <h2>Помощь нужна</h2>
 
                     <TaskAuthor taskAuthorId={this.state.taskAuthorId} />
-                    {/*
-                    */}
 
                     <div className="action-block">
                         <a href="#" className="action-button">Откликнуться на задачу</a>

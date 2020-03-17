@@ -29,7 +29,7 @@ function AccountInHeader({userId}) {
                 <span 
                     className="avatar-wrapper"
                     style={{
-                        backgroundImage: data.user && data.user.avatar ? `url(${data.user.avatar.url})` : "none",
+                        backgroundImage: data.user.itvAvatar ? `url(${data.user.itvAvatar})` : "none",
                     }}
                     title={data.user && `Привет, ${data.user.fullName}!`}
                 />
@@ -45,7 +45,10 @@ class SiteHeader extends Component {
         super(props)
         this.state = {
             userId: props.userId,
+            is_logged_in: props.userId > 0,
         }
+
+        console.log("this.state.is_logged_in: ", this.state.is_logged_in)
     }
 
     render() {
@@ -59,7 +62,9 @@ class SiteHeader extends Component {
                     <a href={ITV_URLS.volunteers}>Волонтеры</a>
                     <a href="#" className="drop-menu">О проекте</a>
                 </div>
-                <AccountInHeader userId={this.state.userId} />
+                {this.state.is_logged_in && 
+                    <AccountInHeader userId={this.state.userId} />
+                }
             </nav>
         </header>
     }

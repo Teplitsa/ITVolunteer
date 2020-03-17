@@ -226,3 +226,6 @@ require_once get_template_directory() . '/inc/models/ThankyouModel.php';
 require_once get_template_directory() . '/inc/models/MailSendLogModel.php';
 require_once get_template_directory() . '/inc/models/ResultScreenshots.php';
 require_once get_template_directory() . '/inc/models/UserBlockModel.php';
+
+// grapql
+require get_template_directory().'/graphql/graphql.php';

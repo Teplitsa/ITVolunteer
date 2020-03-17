@@ -17,19 +17,22 @@ var ITV_TMP_USER = {
 }
 
 export function TaskComments({taskId, userId}) {
+    console.log("taskId:", taskId)
+    console.log("userId:", userId)
+
     const { loading: loading, error: error, data: commentsData } = useQuery(TASK_COMMENTS_QUERY, {variables: { taskId: taskId }},);
 
     if (loading) return utils.loadingWait()
     if (error) return utils.loadingError(error)
 
-    console.log("commentsData.comments.nodes:", commentsData.comments.nodes)
+    console.log("commentsData:", commentsData)
 
     return (
         <div className="task-comments">
             <h3>Комментарии</h3>
             <p className="comments-intro">Александр Токарев будет рад услышать ваш совет, вопрос или предложение.</p>
             <div className="comments-list">
-                {commentsData.comments.nodes.map((comment, key) => <Comment comment={comment} key={key} />)}
+                {commentsData.itvComments.nodes.map((comment, key) => <Comment comment={comment} key={key} />)}
                 <div className="comment-wrapper">
                     <div className="comment reply">
                         <div className="comment-body">
@@ -45,6 +48,8 @@ export function TaskComments({taskId, userId}) {
 }
 
 function Comment({comment}) {
+    console.log("comment.author", comment.author)
+
     return (
         <div className="comment-wrapper">
             <div className="comment">
@@ -54,7 +59,7 @@ function Comment({comment}) {
                     }
                 </div>
                 <div className="comment-body">
-                    <time>{comment.date}</time>
+                    <time>{comment.commentId}</time>
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">
                         <div className="like">2</div>

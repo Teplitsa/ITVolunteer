@@ -1,23 +1,24 @@
-import React from 'react';
-import { Query } from "react-apollo";
-import gql from "graphql-tag";
+import React from 'react'
+import { Query } from "react-apollo"
+import gql from "graphql-tag"
 
 export const USER_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId, idType: DATABASE_ID) {
+        id
         userId
         username
         profileURL
         fullName
-        avatar {
-          url
-        }
+        memberRole
+        itvAvatar
     }
 }`
 
 export const TASK_AUTHOR_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId, idType: DATABASE_ID) {
+        id
         userId
         username
         fullName
@@ -26,60 +27,64 @@ query User ($userId: ID!) {
         organizationLogo
         authorReviewsCount
         profileURL
-
-        avatar {
-          url
-        }
+        memberRole
+        itvAvatar
     }
 }`
 
 export const TASK_DOERS_QUERY = gql`
 query TaskDoers ($taskId: ID!) {
     taskDoers(taskId: $taskId) {
+        id
         userId
         username
         fullName
         solvedTasksCount
         doerReviewsCount
         profileURL
-        avatar {
-          url
-        }
+        memberRole
+        itvAvatar
+        email
     }
 }`
 
 export const TASK_COMMENTS_QUERY = gql`
-fragment CommentFields on Comment {
+fragment TaskCommentFields on ItvComment {
+  id
   commentId
   content
   date
   author {
+    ... on CommentAuthor {
+      id
+      fullName
+      itvAvatar
+    }
     ... on User {
       id
-      email
-      avatar {
-        url
-      }
+      fullName
+      itvAvatar
+      memberRole
     }
   }
 }
 
-query Comments ($taskId: ID!) {
-  comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
+query TaskComments ($taskId: ID!) {
+  itvComments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
     nodes {
-      ...CommentFields
+      ...TaskCommentFields
       replies: children {
         nodes {
-          ...CommentFields
+          ...TaskCommentFields
           replies: children {
             nodes {
-              ...CommentFields
+              ...TaskCommentFields
               replies: children {
                 nodes {
-                  ...CommentFields
+                  ...TaskCommentFields
                   replies: children {
                     nodes {
-                      ...CommentFields
+                      ...TaskCommentFields
                     }
                   }
                 }
@@ -92,10 +97,10 @@ query Comments ($taskId: ID!) {
   }
 }`
 
-
 export const TASK_QUERY = gql`
 query Task($taskId: ID!) {
     task(id: $taskId, idType: DATABASE_ID) {
+        id
         databaseId
         title
         content

@@ -18,18 +18,6 @@ import { TASK_QUERY } from '../network'
 
 import {UserSmallView} from './User'
 
-var ITV_TMP_TASK = {
-    post_title: "Нужен сайт на Word Press для нашей организации",
-    date_created_str: "12  Января 2020",
-    date_open_str: "Открыто 4 дня назад",
-    reposnses_count_str: "1 отклик",
-    views_count_str: "234 просмотра",
-    post_content: "Алгебра, очевидно, очевидна не для всех. Однако не все знают, что ротор векторного поля специфицирует бином Ньютона. Криволинейный интеграл, общеизвестно, иррационален. График функции многих переменных, как следует из вышесказанного, в принципе накладывает лист Мёбиуса. Однако не все знают, что окрестность точки однородно обуславливает скачок функции. Интеграл Фурье нейтрализует возрастающий математический анализ.",
-    post_tags: [{name: "Wordpress", term_id: 1}, {term_id: 2, name: "Создание сайта"}],
-    post_themes: [{name: "Устойчивое развитие", term_id: 1}, {term_id: 2, name: "Экоактивизм"}],
-    post_rewards: [{name: "Есть бюджет", term_id: 1}],
-}
-
 var ITV_TMP_USER = {
     avatar_url: "https://itv.te-st.ru/wp-content/itv/tstsite/assets/img/temp-avatar.png",
     status_str: "Заказчик",
@@ -44,7 +32,6 @@ export function TaskBody({taskId, userId}) {
     const { loading: taskDataLoading, error: taskDataError, data: taskData } = useQuery(TASK_QUERY, {variables: { taskId: taskId }},);
 
     const state = {
-        task: ITV_TMP_TASK,
         author: ITV_TMP_USER,
     }
 

@@ -158,31 +158,36 @@ function tst_members_paging($page_query, $user_query, $echo = true){
 
 /** Avatar related functions **/
 function tst_get_avatar_fallback($member_id = null) {
-	
-	if( !$member_id )
-		$member_id = tst_get_current_member()->ID;
-	elseif(is_object($member_id))
-		$member_id = $member_id->ID;
-		
-	$src = '';				
-	if($member_id) {
-		if(!metadata_exists('user', $member_id, 'gravatar_local_url')) {
-			$src = tst_localize_gravatar($member_id);
-			update_user_meta($member_id, 'gravatar_local_url', $src);
-		}
-		else {
-			$src = get_user_meta($member_id, 'gravatar_local_url', true);
-		}
-		
-	}
-	
-	if(empty($src)){
-		$src = get_template_directory_uri() . '/assets/img/temp-avatar.png';
-	}	
-		
+	$src = tst_get_avatar_fallback_url($member_id);
 	$name = tst_get_member_name($member_id);
 	
 	return "<img src='".$src."' alt='".esc_attr($name)."' title='".esc_attr($name)."'>";	
+}
+
+function tst_get_avatar_fallback_url($member_id = null) {
+    
+    if( !$member_id )
+        $member_id = tst_get_current_member()->ID;
+    elseif(is_object($member_id))
+        $member_id = $member_id->ID;
+        
+    $src = '';
+    if($member_id) {
+        if(!metadata_exists('user', $member_id, 'gravatar_local_url')) {
+            $src = tst_localize_gravatar($member_id);
+            update_user_meta($member_id, 'gravatar_local_url', $src);
+        }
+        else {
+            $src = get_user_meta($member_id, 'gravatar_local_url', true);
+        }
+        
+    }
+    
+    if(empty($src)){
+        $src = get_template_directory_uri() . '/assets/img/temp-avatar.png';
+    }
+    
+    return $src;
 }
 
 function tst_temp_avatar($member_id = null, $echo = true){
@@ -204,6 +209,25 @@ function tst_temp_avatar($member_id = null, $echo = true){
 		return $itv_user_avatar;
 }
 
+function itv_avatar_url($member_id = null){
+    
+    if( !$member_id ) {
+        $member_id = tst_get_current_member()->ID;
+    }
+    elseif(is_object($member_id)) {
+        $member_id = $member_id->ID;
+    }
+        
+    $itv_user_avatar = tst_get_member_user_avatar_url($member_id);
+    $itv_user_avatar_fpath = str_replace(home_url() . "/wp-content", WP_CONTENT_DIR, $itv_user_avatar);
+    #error_log($itv_user_avatar_fpath);
+    
+    if(!$itv_user_avatar || !is_file($itv_user_avatar_fpath)) {
+        $itv_user_avatar = tst_get_avatar_fallback_url($member_id);
+    }
+    
+    return $itv_user_avatar;
+}
 
 function tst_get_member_user_avatar($member_id) {
 	$image_id = get_user_meta($member_id, 'user_avatar', true);
@@ -217,6 +241,18 @@ function tst_get_member_user_avatar($member_id) {
 	return $res;
 }
 
+function tst_get_member_user_avatar_url($member_id) {
+    $image_id = get_user_meta($member_id, 'user_avatar', true);
+    $res = '';
+    
+    if($image_id) {
+        $res = wp_get_attachment_image_src( $image_id, 'avatar');
+        $res = $res ? $res[0] : '';
+    }
+    
+    return $res;
+}
+
 function tst_localize_gravatar($user_id) {
 	
 	$url = '';
@@ -225,7 +261,7 @@ function tst_localize_gravatar($user_id) {
 	elseif(is_object($user_id))
 		$user = $user_id;
 		
-	$grav_url = "http://www.gravatar.com/avatar/".md5(strtolower(trim($user->user_email)))."?s=180&d=404";	
+	$grav_url = "https://www.gravatar.com/avatar/".md5(strtolower(trim($user->user_email)))."?s=180&d=404";	
 	$headers = @get_headers($grav_url);
 	
 	if (!preg_match("|200|", $headers[0])) {
