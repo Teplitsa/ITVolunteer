@@ -59,11 +59,11 @@ export function TaskAuthor({taskAuthorId}) {
                     </div>
                     <div className="details">
                         <span className="status">Представитель организации/проекта</span>
-                        <span className="name">{authorData.user.organizationName}</span>
+                        <span className="name" dangerouslySetInnerHTML={{__html: authorData.user.organizationName}} />
                     </div>
                 </div>
             </div>
-            <p className="org-description">{authorData.user.organizationDescription}</p>
+            <p className="org-description" dangerouslySetInnerHTML={{__html: authorData.user.organizationDescription}} />
         </div>
     )
 }
