@@ -9,13 +9,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@apollo/react-hooks": "^3.1.1",
     "apollo-boost": "^0.4.7",
+    "apollo-client": "^2.6.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
     "react": "^16.12.0",
     "react-apollo": "^3.1.3",
     "date-fns": "^2.10.0",
     "react-datepicker": "^2.14.0",
+    "easy-peasy": "^3.3.0",
     "react-dom": "^16.12.0"
   },
   "devDependencies": {

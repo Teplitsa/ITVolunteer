@@ -13,3 +13,17 @@ export function loadingError(error) {
         </span>        
     )
 }
+
+export function itvSiteUrl(path) {
+    return frontend.site_url + path.replace(/^\//, '')
+}
+
+export function itvAjaxUrl(action) {
+    let url = new URL(frontend.ajaxurl)
+    url.searchParams.set('action', action)
+
+    console.log("ajaxurl:", frontend.ajaxurl)
+    console.log("url:", url.toString())
+
+    return url.toString()
+}

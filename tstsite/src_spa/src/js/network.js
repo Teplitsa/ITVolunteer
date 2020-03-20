@@ -1,17 +1,22 @@
+import { useQuery, useMutation, useLazyQuery } from "@apollo/react-hooks";
+import { gql } from "apollo-boost";
 import React from 'react'
-import { Query } from "react-apollo"
-import gql from "graphql-tag"
 
 export const USER_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId, idType: DATABASE_ID) {
         id
         userId
+        databaseId
         username
-        profileURL
         fullName
+        profileURL
         memberRole
         itvAvatar
+
+        authorReviewsCount
+        solvedTasksCount
+        doerReviewsCount
     }
 }`
 
@@ -20,36 +25,51 @@ query User ($userId: ID!) {
     user(id: $userId, idType: DATABASE_ID) {
         id
         userId
+        databaseId
         username
         fullName
-        organizationName
-        organizationDescription
-        organizationLogo
-        authorReviewsCount
         profileURL
         memberRole
         itvAvatar
+
+        organizationName
+        organizationDescription
+        organizationLogo
+
+        authorReviewsCount
+        solvedTasksCount
+        doerReviewsCount
     }
 }`
+
+export const getTaskAuthorQuery = (userId) => {
+    return useQuery(TASK_AUTHOR_QUERY, {
+        variables: {
+            userId,
+        },
+    })
+}
 
 export const TASK_DOERS_QUERY = gql`
 query TaskDoers ($taskId: ID!) {
     taskDoers(taskId: $taskId) {
         id
         userId
+        databaseId
         username
         fullName
-        solvedTasksCount
-        doerReviewsCount
         profileURL
         memberRole
         itvAvatar
-        email
+
+        authorReviewsCount
+        solvedTasksCount
+        doerReviewsCount
     }
 }`
 
 export const TASK_COMMENTS_QUERY = gql`
-fragment TaskCommentFields on ItvComment {
+fragment TaskCommentFields on Comment {
   id
   commentId
   content
@@ -71,7 +91,7 @@ fragment TaskCommentFields on ItvComment {
 }
 
 query TaskComments ($taskId: ID!) {
-  itvComments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
+  comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
     nodes {
       ...TaskCommentFields
       replies: children {
@@ -137,3 +157,11 @@ query Task($taskId: ID!) {
 
     }
 }`
+
+export const getTaskQuery = (taskId) => {
+    return useQuery(TASK_QUERY, {
+        variables: {
+            taskId,
+        },
+    })
+}

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { useQuery } from '@apollo/react-hooks'
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 import * as utils from "../utils"
 import { TASK_COMMENTS_QUERY } from '../network'
@@ -16,32 +17,42 @@ var ITV_TMP_USER = {
     org_description: "Дальневосточный леопард, или амурский леопард, или амурский барс, или восточносибирский леопард, или устар. маньчжурский леопард — хищное млекопитающее из семейства кошачьих, один из подвидов леопарда. Длина тела составляет 107—136 см. Вес самцов — до 50 кг, самок — до 42,5 кг.",
 }
 
-export function TaskComments({taskId, userId}) {
-    console.log("taskId:", taskId)
-    console.log("userId:", userId)
-
+export function TaskComments({taskId, author}) {
     const { loading: loading, error: error, data: commentsData } = useQuery(TASK_COMMENTS_QUERY, {variables: { taskId: taskId }},);
 
     if (loading) return utils.loadingWait()
     if (error) return utils.loadingError(error)
 
-    console.log("commentsData:", commentsData)
+    if(commentsData && !commentsData.comments.nodes.length) {
+        return null
+    }
 
     return (
         <div className="task-comments">
             <h3>Комментарии</h3>
-            <p className="comments-intro">Александр Токарев будет рад услышать ваш совет, вопрос или предложение.</p>
+            <p className="comments-intro">{`${author.fullName} будет рад услышать ваш совет, вопрос или предложение.`}</p>
             <div className="comments-list">
-                {commentsData.itvComments.nodes.map((comment, key) => <Comment comment={comment} key={key} />)}
-                <div className="comment-wrapper">
-                    <div className="comment reply">
-                        <div className="comment-body">
-                            <time>08.12.2019 в 17:42</time>
-                            <textarea></textarea>
-                        </div>
-                        <a className="send-button"></a>
-                    </div>
+                {commentsData.comments.nodes.map((comment, key) => <Comment comment={comment} key={key} />)}
+                <AddCommentForm />
+            </div>
+        </div>
+    )
+}
+
+function AddCommentForm(props) {
+    const user = useStoreState(store => store.user.data)
+
+    if(!user.userId) return null
+
+    return (
+        <div className="comment-wrapper">
+            <div className="comment reply">
+                <div className="comment-body">
+                    <time>08.12.2019 в 17:42</time>
+                    <b>{user.fullName}</b>
+                    <textarea></textarea>
                 </div>
+                <a className="send-button"></a>
             </div>
         </div>
     )

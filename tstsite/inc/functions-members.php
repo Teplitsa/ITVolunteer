@@ -1235,3 +1235,18 @@ function ajax_inc_userxp_value() {
 }
 add_action('wp_ajax_inc-userxp-value', 'ajax_inc_userxp_value');
 
+
+function ajax_load_current_user() {
+    $user = wp_get_current_user();
+    
+    $user_data = [
+        'userId' => $user->ID,
+        'fullName' => tst_get_member_name( $user->ID ),
+        'memberRole' => tst_get_member_role_name( $user->ID ),
+        'itvAvatar' => itv_avatar_url( $user->ID ),
+    ];
+    
+    wp_die(json_encode($user_data));    
+}
+add_action('wp_ajax_load-current-user', 'ajax_load_current_user');
+add_action('wp_ajax_nopriv_load-current-user', 'ajax_load_current_user');

@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { useQuery } from '@apollo/react-hooks'
+import { useStoreState, useStoreActions } from "easy-peasy"
 
 import iconApproved from '../../img/icon-all-done.svg'
 import metaIconPaseka from '../../img/icon-paseka.svg'
@@ -69,6 +70,7 @@ export function TaskAuthor({taskAuthorId}) {
 }
 
 export function TaskDoers({taskId}) {
+    const user = useStoreState(store => store.user.data)
     const { loading: loading, error: error, data: doersData } = useQuery(TASK_DOERS_QUERY, {variables: { taskId: taskId }},);
 
     if (loading) return utils.loadingWait()
@@ -93,7 +95,7 @@ export function TaskDoers({taskId}) {
                     </div>
                 </div>
                 <div className="author-actions-on-doer">
-                    <a href="#" className="accept-doer">Выбрать</a>
+                    <a href="#" className={`accept-doer ${user.id ? "" : "d-none"}`}>Выбрать</a>
                     <a href="#" className="reject-doer">Отклонить</a>
                     <div className="tooltip">
                         <div className="tooltip-buble">

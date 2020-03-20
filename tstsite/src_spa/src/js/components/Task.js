@@ -14,41 +14,31 @@ import ratingStarFilled from '../../img/icon-star-filled.svg'
 import ratingStarEmptyWhite from '../../img/icon-star-empty-white.svg'
 
 import * as utils from "../utils"
-import { TASK_QUERY } from '../network'
+import { getTaskAuthorQuery, getTaskQuery } from '../network'
 
 import {UserSmallView} from './User'
 
-var ITV_TMP_USER = {
-    avatar_url: "https://itv.te-st.ru/wp-content/itv/tstsite/assets/img/temp-avatar.png",
-    status_str: "Заказчик",
-    name: "Александр Токарев",
-    reviews_str: "20 отзывов",
-    org_status_str: "Представитель организации/проекта",
-    org_name: 'НКО "Леопарды Дальнего Востока"',
-    org_description: "Дальневосточный леопард, или амурский леопард, или амурский барс, или восточносибирский леопард, или устар. маньчжурский леопард — хищное млекопитающее из семейства кошачьих, один из подвидов леопарда. Длина тела составляет 107—136 см. Вес самцов — до 50 кг, самок — до 42,5 кг.",
-}
+export function TaskBody({taskId, userId, author}) {
+    const { 
+        loading: taskLoading, 
+        error: taskLoadError, 
+        data: taskData
+    } = getTaskQuery(taskId)    
 
-export function TaskBody({taskId, userId}) {
-    const { loading: taskDataLoading, error: taskDataError, data: taskData } = useQuery(TASK_QUERY, {variables: { taskId: taskId }},);
+    if (taskLoading) return utils.loadingWait()
+    if (taskLoadError) return utils.loadingError(taskLoadError)
 
-    const state = {
-        author: ITV_TMP_USER,
-    }
-
-    if (taskDataLoading) return utils.loadingWait()
-    if (taskDataError) return utils.loadingError(taskDataError)
-
-    // console.log("task data: ", taskData)
-    
     return (<div className="task-body">                    
             <header>
                 <h1  dangerouslySetInnerHTML={{__html: taskData.task.title}}/>
                 <div className="meta-info">
                     <img src={iconApproved} className="itv-approved" />
+                    
                     <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(taskData.task.date), 'do MMMM Y', {locale: ru})}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(taskData.task.date), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${taskData.task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${taskData.task.viewsCount} просмотров`}/>
+
                     <a href="javascript:void(0)" className="share-task">
                         <TaskMetaInfo icon={metaIconShare} title="Поделиться"/>
                     </a>
@@ -101,7 +91,7 @@ export function TaskBody({taskId, userId}) {
                                             <i className="point-circle"> </i>
                                             <h4>Публикация задачи</h4>
                                             <div className="details">
-                                                <UserSmallView user={state.author} />
+                                                <UserSmallView user={author} />
                                                 <div className="comment">Задача оказалась сложнее, чем я думал, надо будет привлечь ещё троих, чтобы сделать в новый срок</div>
                                                 <div className="comment">
                                                     Задача оказалась сложнее, чем я думал, надо будет привлечь ещё троих, чтобы сделать в новый срок
