@@ -4,10 +4,8 @@ import React from 'react'
 
 export const USER_QUERY = gql`
 query User ($userId: ID!) {
-    user(id: $userId, idType: DATABASE_ID) {
+    user(id: $userId) {
         id
-        userId
-        databaseId
         username
         fullName
         profileURL
@@ -22,10 +20,8 @@ query User ($userId: ID!) {
 
 export const TASK_AUTHOR_QUERY = gql`
 query User ($userId: ID!) {
-    user(id: $userId, idType: DATABASE_ID) {
+    user(id: $userId) {
         id
-        userId
-        databaseId
         username
         fullName
         profileURL
@@ -51,11 +47,9 @@ export const getTaskAuthorQuery = (userId) => {
 }
 
 export const TASK_DOERS_QUERY = gql`
-query TaskDoers ($taskId: ID!) {
-    taskDoers(taskId: $taskId) {
+query TaskDoers ($taskGqlId: ID!) {
+    taskDoers(taskGqlId: $taskGqlId) {
         id
-        userId
-        databaseId
         username
         fullName
         profileURL
@@ -68,10 +62,17 @@ query TaskDoers ($taskId: ID!) {
     }
 }`
 
+export const getTaskDoersQuery = (taskGqlId) => {
+    return useQuery(TASK_DOERS_QUERY, {
+        variables: {
+            taskGqlId,
+        },
+    })
+}
+
 export const TASK_COMMENTS_QUERY = gql`
 fragment TaskCommentFields on Comment {
   id
-  commentId
   content
   date
   author {
@@ -119,8 +120,8 @@ query TaskComments ($taskId: ID!) {
 }`
 
 export const TASK_QUERY = gql`
-query Task($taskId: ID!) {
-    task(id: $taskId, idType: DATABASE_ID) {
+query Task($taskGqlId: ID!) {
+    task(id: $taskGqlId) {
         id
         databaseId
         title
@@ -129,27 +130,35 @@ query Task($taskId: ID!) {
         viewsCount
         doerCandidatesCount
         
+        author {
+          id
+          fullName
+          itvAvatar
+          memberRole
+          profileURL
+        }
+        
         featuredImage {
             sourceUrl(size: LARGE)
         }        
 
         tags {
           nodes {
-            databaseId
+            id
             name
             slug
           }
         }
         rewardTags {
           nodes {
-            databaseId
+            id
             name
             slug
           }
         }
         ngoTaskTags {
-            nodes {
-            databaseId
+          nodes {
+            id
             name
             slug
           }
@@ -158,10 +167,10 @@ query Task($taskId: ID!) {
     }
 }`
 
-export const getTaskQuery = (taskId) => {
+export const getTaskQuery = (taskGqlId) => {
     return useQuery(TASK_QUERY, {
         variables: {
-            taskId,
+            taskGqlId,
         },
     })
 }

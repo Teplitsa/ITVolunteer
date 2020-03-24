@@ -12,7 +12,7 @@ $author_id = get_the_author_meta('ID');
 
 ?>
 <script>
-	var ITV_CURRENT_TASK_ID = parseInt('<?php echo $task_id;?>');
-	var ITV_CURRENT_TASK_AUTHOR_ID = parseInt('<?php echo $author_id;?>');
+	var ITV_CURRENT_TASK_GQLID = '<?php echo $task_post_id = \GraphQLRelay\Relay::toGlobalId( 'tasks', $task_id );?>';
+	var ITV_CURRENT_TASK_AUTHOR_GQLID = '<?php echo $task_post_id = \GraphQLRelay\Relay::toGlobalId( 'tasks', $author_id );?>';
 </script>
 <?php get_footer();

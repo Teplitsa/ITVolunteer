@@ -21,9 +21,11 @@ export function itvSiteUrl(path) {
 export function itvAjaxUrl(action) {
     let url = new URL(frontend.ajaxurl)
     url.searchParams.set('action', action)
-
-    console.log("ajaxurl:", frontend.ajaxurl)
-    console.log("url:", url.toString())
-
     return url.toString()
+}
+
+export function itvShowAjaxError(errorData) {
+    alert('Ошибка!')
+    console.log(errorData.action + " failed")
+    console.log(errorData.error)
 }

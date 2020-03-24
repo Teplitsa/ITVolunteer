@@ -33,6 +33,13 @@ function itv_register_task_graphql_fields() {
                     return tst_get_task_doers_count($task->ID);
                 },
             ],
+//             'authorId' => [
+//                 'type'        => 'Int',
+//                 'description' => __( 'Task views count', 'tst' ),
+//                 'resolve'     => function( $task ) {
+//                     return $task->post_author;
+//                 },
+//             ],
         ]
     );
 }
@@ -128,14 +135,23 @@ function itv_register_doers_graphql_query() {
             'description' => __( 'Task doers', 'tst' ),
             'type' => [ 'list_of' => 'User' ],
             'args'        => [
-                'taskId'     => [
+                'taskGqlId'     => [
                     'type' => [
                         'non_null' => 'ID',
                     ],
                 ],
             ],
             'resolve' => function($source, array $args, AppContext $context) {
-                $doers = tst_get_task_doers($args['taskId'], false);
+                $post_identity = \GraphQLRelay\Relay::fromGlobalId( $args['taskGqlId'] );
+                
+                if(empty($post_identity['id'])) {
+                    error_log("invalid task id in taskDoers: " . print_r($args, true));
+                    return [];
+                }
+                
+                $task_post_id = $post_identity['id'];
+                
+                $doers = tst_get_task_doers($task_post_id, false);
                 $users = [];
                 foreach($doers as $doer) {
                     $users[] = \WPGraphQL\Data\DataSource::resolve_user( $doer->ID, $context );

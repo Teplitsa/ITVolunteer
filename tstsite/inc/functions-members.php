@@ -1237,14 +1237,21 @@ add_action('wp_ajax_inc-userxp-value', 'ajax_inc_userxp_value');
 
 
 function ajax_load_current_user() {
-    $user = wp_get_current_user();
-    
-    $user_data = [
-        'userId' => $user->ID,
-        'fullName' => tst_get_member_name( $user->ID ),
-        'memberRole' => tst_get_member_role_name( $user->ID ),
-        'itvAvatar' => itv_avatar_url( $user->ID ),
-    ];
+    if(is_user_logged_in()) {
+        $user = wp_get_current_user();
+        
+        $user_data = [
+            'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
+            'fullName' => tst_get_member_name( $user->ID ),
+            'memberRole' => tst_get_member_role_name( $user->ID ),
+            'itvAvatar' => itv_avatar_url( $user->ID ),
+        ];        
+    }
+    else {
+        $user_data = [
+            'id' => null,
+        ];
+    }
     
     wp_die(json_encode($user_data));    
 }

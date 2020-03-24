@@ -5,11 +5,12 @@ import ApolloClient from "apollo-boost"
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
 import { createStore, StoreProvider, useStoreState, useStoreActions } from "easy-peasy"
 
-import introspectionQueryResultData from '../fragmentTypes.json';
+import introspectionQueryResultData from '../fragmentTypes.json'
 import '../sass/front-main.scss'
+import '../../node_modules/air-datepicker/dist/css/datepicker.css'
 
 import { storeModel } from "./store-model"
-import { itvSiteUrl, itvAjaxUrl } from "./utils"
+import * as utils from "./utils"
 
 import ItvApp from './components/ItvApp'
 
@@ -20,7 +21,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 const cache = new InMemoryCache({ fragmentMatcher });
 
 const client = new ApolloClient({
-    uri: itvSiteUrl('/graphql'),
+    uri: utils.itvSiteUrl('/graphql'),
     cache: cache,
 });
 
@@ -36,26 +37,26 @@ function App(props) {
             return
         }
 
-        fetch(itvAjaxUrl('load-current-user'))
+        let action = 'load-current-user'
+        fetch(utils.itvAjaxUrl(action))
         .then(res => {
             try {
                 return res.json()
             } catch(ex) {
-                console.log(ex)
+                utils.itvShowAjaxError({action, error: ex})
                 return {}
             }
         })
         .then(
             (result) => {
-                console.log(result)
                 setUserData(result)
             },
             (error) => {
-                console.log("load user failed", error)
-                setUserData({userId: 0})
+                utils.itvShowAjaxError({action, error})
+                setUserData({id: null})
             }
         )
-    });
+    })
 
     return (
         <ItvApp />

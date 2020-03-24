@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { useStoreState, useStoreActions } from "easy-peasy"
 
 import logo from '../../img/pic-logo-itv.svg'
 import bell from '../../img/icon-bell.svg'
@@ -11,10 +12,7 @@ import { USER_QUERY } from '../network'
 import { useQuery } from '@apollo/react-hooks'
 
 function AccountInHeader({userId}) {
-    const { loading, error, data } = userId ? useQuery(USER_QUERY, {variables: { userId: userId }},) : {loading: null, error: null, data: {}};
-
-    if (loading) return utils.loadingWait()
-    if (error) return utils.loadingError(error)
+    const user = useStoreState(store => store.user.data)
 
     return (
         <div className="account-col">
@@ -25,13 +23,13 @@ function AccountInHeader({userId}) {
                     <span className="new-notif"></span>
                 }
             </a>
-            <a href={data.user.profileURL} className="open-account-menu">
+            <a href={user.profileURL} className="open-account-menu">
                 <span 
                     className="avatar-wrapper"
                     style={{
-                        backgroundImage: data.user.itvAvatar ? `url(${data.user.itvAvatar})` : "none",
+                        backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
                     }}
-                    title={data.user && `Привет, ${data.user.fullName}!`}
+                    title={user && `Привет, ${user.fullName}!`}
                 />
                 <img src={arrowDown} className="arrow-down" alt="arrowDown" />
             </a>
@@ -39,20 +37,11 @@ function AccountInHeader({userId}) {
     )
 }
 
-class SiteHeader extends Component {
+export function SiteHeader(props) {
+    const user = useStoreState(store => store.user.data)
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            userId: props.userId,
-            is_logged_in: props.userId > 0,
-        }
-
-        console.log("this.state.is_logged_in: ", this.state.is_logged_in)
-    }
-
-    render() {
-        return <header id="site-header" className="site-header">
+    return (
+        <header id="site-header" className="site-header">
             <nav>
                 <a href={ITV_URLS.home} className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
@@ -62,12 +51,8 @@ class SiteHeader extends Component {
                     <a href={ITV_URLS.volunteers}>Волонтеры</a>
                     <a href="#" className="drop-menu">О проекте</a>
                 </div>
-                {this.state.is_logged_in && 
-                    <AccountInHeader userId={this.state.userId} />
-                }
+                <AccountInHeader />
             </nav>
         </header>
-    }
+    )
 }
-
-export default SiteHeader

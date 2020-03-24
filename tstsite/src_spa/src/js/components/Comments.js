@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { useStoreState, useStoreActions } from "easy-peasy";
 
@@ -7,18 +7,8 @@ import { TASK_COMMENTS_QUERY } from '../network'
 
 import {UserSmallView} from './User'
 
-var ITV_TMP_USER = {
-    avatar_url: "https://itv.te-st.ru/wp-content/itv/tstsite/assets/img/temp-avatar.png",
-    status_str: "Заказчик",
-    name: "Александр Токарев",
-    reviews_str: "20 отзывов",
-    org_status_str: "Представитель организации/проекта",
-    org_name: 'НКО "Леопарды Дальнего Востока"',
-    org_description: "Дальневосточный леопард, или амурский леопард, или амурский барс, или восточносибирский леопард, или устар. маньчжурский леопард — хищное млекопитающее из семейства кошачьих, один из подвидов леопарда. Длина тела составляет 107—136 см. Вес самцов — до 50 кг, самок — до 42,5 кг.",
-}
-
-export function TaskComments({taskId, author}) {
-    const { loading: loading, error: error, data: commentsData } = useQuery(TASK_COMMENTS_QUERY, {variables: { taskId: taskId }},);
+export function TaskComments({task, author}) {
+    const { loading: loading, error: error, data: commentsData } = useQuery(TASK_COMMENTS_QUERY, {variables: { taskId: task.databaseId }},);
 
     if (loading) return utils.loadingWait()
     if (error) return utils.loadingError(error)
@@ -33,33 +23,70 @@ export function TaskComments({taskId, author}) {
             <p className="comments-intro">{`${author.fullName} будет рад услышать ваш совет, вопрос или предложение.`}</p>
             <div className="comments-list">
                 {commentsData.comments.nodes.map((comment, key) => <Comment comment={comment} key={key} />)}
-                <AddCommentForm />
+                <AddCommentForm author={author} />
             </div>
         </div>
     )
 }
 
-function AddCommentForm(props) {
+function AddCommentForm({author}) {
     const user = useStoreState(store => store.user.data)
+    const doers = useStoreState(store => store.task.doers)
+    const mayAddComment = !!user.id && ( user.id == author.id || doers.find((doer) => doer.id == user.id) )
 
-    if(!user.userId) return null
+    function handleSubmitCommentClick(e) {
+        e.preventDefault()
 
-    return (
-        <div className="comment-wrapper">
+        console.log('submit comment...');
+
+        let action = 'submit-comment'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post'
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                console.log(ex)
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                setUserData(result)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+                setUserData({id: null})
+            }
+        )
+    }
+
+    return mayAddComment ? (
+        <div className="comment-wrapper add-comment-form-wrapper" id="add-comment-form-wrapper">
             <div className="comment reply">
                 <div className="comment-body">
                     <time>08.12.2019 в 17:42</time>
-                    <b>{user.fullName}</b>
                     <textarea></textarea>
                 </div>
-                <a className="send-button"></a>
+                <a href="#" className="send-button" onClick={handleSubmitCommentClick}></a>
             </div>
         </div>
-    )
+    ) : null
 }
 
 function Comment({comment}) {
-    console.log("comment.author", comment.author)
+    const [replyLinkRef, setReplyLinkRef] = useState(null)
+
+    function handleReplyComment(e) {
+        e.preventDefault()
+        
+        let $ = jQuery        
+        let $topCommentWrapper = $(replyLinkRef).closest('.comment-wrapper')
+        let $commentForm = $('#add-comment-form-wrapper')
+        $commentForm.insertAfter($topCommentWrapper)
+    }
 
     return (
         <div className="comment-wrapper">
@@ -76,7 +103,7 @@ function Comment({comment}) {
                         <div className="like">2</div>
                         <div className="actions">
                             <a href="#" className="report">Пожаловаться</a>
-                            <a href="#" className="edit">Ответить</a>
+                            <a href="#" ref={(ref) => setReplyLinkRef(ref)} className="reply-comment edit" onClick={handleReplyComment}>Ответить</a>
                         </div>
                     </div>
                 </div>

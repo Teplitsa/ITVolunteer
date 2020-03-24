@@ -521,6 +521,10 @@ body {
         @include text-sm;
         color: $color-gray-dark-lg;
         margin-top: 12px;
+
+        &:empty {
+            display: none;
+        }
     }
 }
 
@@ -891,7 +895,6 @@ body {
     }
 
     .status {
-        margin-right: 12px;
 
         &:before {
             display: inline-block;
@@ -911,6 +914,8 @@ body {
     }
 
     .edit {
+        margin-left: 12px;
+
         &:before {
             display: inline-block;
             content: " ";
@@ -1270,5 +1275,5 @@ body {
 
 //
 .d-none {
-    display: none;
+    display: none !important;
 }

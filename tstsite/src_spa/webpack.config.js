@@ -1,9 +1,9 @@
-const path = require("path");
+const path = require("path")
 
 module.exports = {
   mode: "development",
   entry: {
-    client: ["./src/js/front-app.js", "@babel/polyfill"]
+    client: ["./src/js/front-app.js", "@babel/polyfill", "./node_modules/air-datepicker/dist/js/datepicker.js"]
   },
   output: {
     path: path.resolve(__dirname, "../assets_spa/js/"),
@@ -15,6 +15,10 @@ module.exports = {
         test: /\.js$/, 
         exclude: /node_modules/, 
         loader: "babel-loader" 
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.scss$/,
