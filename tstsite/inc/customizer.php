@@ -194,23 +194,65 @@ function ajax_approve_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['link-id'])
-        || empty($_POST['doer-id'])
-        || empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
+        empty($_POST['doer_gql_id'])
+        || empty($_POST['task_gql_id'])
+//         empty($_POST['doer-id'])
+//         || empty($_POST['task-id'])
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
+    
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    
+    $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+    $doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
 
-    p2p_update_meta((int)$_POST['link-id'], 'is_approved', true);
+    if(!$doer_id 
+        || !$task_id
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $task = get_post($task_id);
+    $doer = get_user_by('id', $doer_id);
+    
+    $link_id = null;
+    if(empty($_POST['link-id']) && $task && $doer) {
+        $doers = tst_get_task_doers($task->ID);
+        error_log('$doer->ID=' . $doer->ID);
+        foreach($doers as $candidate) {
+            error_log('$candidate->ID' . $candidate->ID);
+            error_log('$candidate->p2p_id' . $candidate->p2p_id);
+            if($candidate->ID == $doer->ID) {
+                $link_id = $candidate->p2p_id;
+            }
+        }
+    }
+    else {
+        $link_id = (int)$_POST['link-id'];
+    }
+    
+    error_log("link_id=" . $link_id);
+    
+    if(!$link_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+
+    p2p_update_meta($link_id, 'is_approved', true);
 
     // Send email to the task doer:
-    $task = get_post((int)$_POST['task-id']);
-    $doer = get_user_by('id', (int)$_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
@@ -272,8 +314,8 @@ function ajax_refuse_candidate() {
         empty($_POST['link-id'])
         || empty($_POST['doer-id'])
         || empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -331,8 +373,8 @@ function ajax_add_candidate() {
 
     if(
         empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -449,6 +491,71 @@ function ajax_remove_candidate() {
 }
 add_action('wp_ajax_remove-candidate', 'ajax_remove_candidate');
 add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
+
+
+/** Decline a candidate by task author **/
+function ajax_decline_candidate() {
+    $task_id = (int)$_POST['task-id'];
+	$task_doer_id = (int)$_POST['doer-id'];
+	
+    $task = get_post($task_id);
+    $task_author = get_user_by('id', $task->post_author);
+    $user = get_current_user();
+	$was_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
+	
+    if(!$task_id 
+        || !is_user_logged_in() 
+        || !$task_author 
+        || $user->ID != $task_author->ID
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+        
+	$task_doers = tst_get_task_doers($task_id, true);
+	$is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
+
+    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+        
+//     if($was_doer_already_candidate) {
+//         UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CANCEL_AS_CANDIDATE);
+//     }
+        
+	if($task){
+		do_action('update_task_stats', $task);	
+		do_action('update_member_stats', array($task_doer_id, $task->post_author));
+	}
+	
+    // Send email to the task doer:
+    $email_templates = ItvEmailTemplates::instance();
+
+    wp_mail(
+        $task_author->user_email,
+        $email_templates->get_title('refuse_candidate_author_notice'),
+        nl2br(sprintf(
+            $email_templates->get_text('refuse_candidate_author_notice'),
+            $task_author->first_name,
+            $task->post_title,
+            filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING)
+        ))
+    );
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
+
+    if($task && $task->post_status == 'in_work' && $is_doer_remove) {
+        // Task is automatically switched "publish":
+        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
+    }
+	
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+        
+}
+add_action('wp_ajax_decline-candidate', 'ajax_decline_candidate');
+add_action('wp_ajax_nopriv_decline-candidate', 'ajax_decline_candidate');
 
 
 /** Add a new login check - is account active or not: */

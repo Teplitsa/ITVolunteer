@@ -226,7 +226,7 @@ export function TaskDoersBlock({task, author}) {
                 У вас есть 3 дня на одобрение/отклонение кандидата. После прохождения 3-х дней мы снимаем баллы.
             </div>
             }
-            <TaskDoers task={task} doers={doers} author={author} />
+            <TaskDoers task={task} doers={doers} user={user} author={author} />
         </div>
     ) : null
 }

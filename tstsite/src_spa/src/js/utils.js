@@ -25,7 +25,29 @@ export function itvAjaxUrl(action) {
 }
 
 export function itvShowAjaxError(errorData) {
-    alert('Ошибка!')
-    console.log(errorData.action + " failed")
-    console.log(errorData.error)
+    let $ = jQuery;
+    if(errorData.message) {
+        alert($('<div>').html(errorData.message).text())
+    }
+    else {
+        alert('Ошибка!')
+    }
+
+    if(errorData.action) {
+        console.log(errorData.action + " failed")
+    }
+
+    if(errorData.error) {
+        console.log(errorData.error)
+    }
+}
+
+export function itvShowActionSuccess(actionData) {
+    if(actionData.message) {
+        alert(actionData.message)
+    }
+
+    if(actionData.action) {
+        console.log(actionData.action + " success")
+    }
 }

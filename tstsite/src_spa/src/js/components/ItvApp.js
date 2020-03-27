@@ -8,13 +8,14 @@ import {SiteHeader} from './SiteHeader'
 import SiteFooter from './SiteFooter'
 import {TaskBody, TaskDoersBlock} from './Task'
 import {TaskComments} from './Comments'
-import {UserSmallView, TaskAuthor, TaskDoers} from './User'
+import {UserSmallView, TaskAuthor, TaskDoers, DoerCard} from './User'
 
 function ItvApp(props) {
     const user = useStoreState(store => store.user.data)
     const doers = useStoreState(store => store.task.doers)
     const task = useStoreState(store => store.task.data)
     const author = useStoreState(store => store.task.author)
+    const approvedDoer = useStoreState(store => store.task.approvedDoer)
     const taskGqlId = ITV_CURRENT_TASK_GQLID
     const taskAuthorGqlId = ITV_CURRENT_TASK_AUTHOR_GQLID
 
@@ -94,23 +95,23 @@ function ItvApp(props) {
 
                     <TaskAuthor author={author} />
 
-                    {!!user.id && user.id != author.id &&
+                    {!approvedDoer && !!user.id && user.id != author.id &&
                     <div className="action-block">
                         <a href="#" className="action-button">Откликнуться на задачу</a>
                     </div>
                     }
 
-                    {!!doers.length &&
+                    {!approvedDoer && !doers.length &&
                     <h2>Откликов пока нет</h2>
                     }
 
-                    {!!user.id && user.id != author.id &&
+                    {!approvedDoer && !!user.id && user.id != author.id &&
                     <div className="sidebar-users-block no-responses">
                         <p>Откликов пока нет. Воспользуйся возможностью получить задачу</p>
                     </div>
                     }
 
-                    {!!user.id && user.id == author.id &&
+                    {!approvedDoer && !!user.id && user.id == author.id && doers.length < 2 &&
                     <div className="sidebar-users-block no-responses">
                         <p>Мало просмотров и откликов на задачу? Возможно, <a href="#">наши советы помогут вам</a></p>
                     </div>
@@ -122,30 +123,17 @@ function ItvApp(props) {
 
                     <h2>Отклики на задачу</h2>
 
+                    {!approvedDoer &&
                     <TaskDoersBlock task={task} author={author} />
+                    }
 
-                    <div className="sidebar-users-block responses approved-doer d-none">
+                    {!!approvedDoer &&
+                    <div className="sidebar-users-block responses approved-doer">
                         <div className="user-cards-list">
-                            {[1].map((item, key) =>
-                            <div className="user-card" key={key}>
-                                <div className="user-card-inner">
-                                    <div className="avatar-wrapper" style={{
-                                        backgroundImage: author.itvAvatar ? `url(${author.itvAvatar})` : "none",
-                                    }}>
-                                        {(() => {
-                                            return (item == 3 ? <img src={metaIconPaseka} className="itv-approved" /> : null);
-                                        })()}
-                                    </div>
-                                    <div className="details">
-                                        <span className="name">{author.fullName}</span>
-                                        <span className="reviews">{`${author.doerReviewsCount} отзывов`}</span>
-                                        <span className="status">{`Выполнено ${author.solvedTasksCount} задач`}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            )}
+                            <DoerCard doer={approvedDoer} user={user} author={author} task={task} />
                         </div>
                     </div>                    
+                    }
 
                 </section>
             </main>

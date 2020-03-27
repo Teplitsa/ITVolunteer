@@ -119,6 +119,15 @@ query TaskComments ($taskId: ID!) {
   }
 }`
 
+export const getTaskCommentsQuery = (taskId) => {
+    return useQuery(TASK_COMMENTS_QUERY, {
+        variables: {
+            taskId,
+        },
+    })
+}
+
+
 export const TASK_QUERY = gql`
 query Task($taskGqlId: ID!) {
     task(id: $taskGqlId) {

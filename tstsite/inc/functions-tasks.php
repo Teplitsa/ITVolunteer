@@ -289,3 +289,50 @@ function ajax_upload_result_screenshot() {
     wp_die(json_encode($res));
 }
 add_action('wp_ajax_upload-result-screenshot', 'ajax_upload_result_screenshot');
+
+function itv_ajax_submit_task_comment(){
+    error_log("call itv_ajax_submit_task_comment...");
+
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    
+    $parent_comment_identity = !empty($_POST['parent_comment_id']) ? \GraphQLRelay\Relay::fromGlobalId( $_POST['parent_comment_id'] ) : null;
+    $parent_comment_id = !empty($parent_comment_identity['id']) ? (int)$parent_comment_identity['id'] : 0;
+    
+    $itv_log = ItvLog::instance();
+    
+    if($task_id && is_user_logged_in()) {
+
+        $comment_data = array(
+            'comment' => filter_var(trim($_POST['comment_body']), FILTER_SANITIZE_STRING),
+            'comment_parent' => $parent_comment_id,
+            'comment_post_ID' => $task_id,
+        );
+
+        $comment = wp_handle_comment_submission($comment_data);
+        
+        if(is_wp_error($comment)) {
+            wp_die(json_encode(array(
+                'status' => 'error',
+                'message' => $comment->get_error_message(),
+            )));
+        }
+        
+        wp_die(json_encode(array(
+            'status' => 'ok',
+            'comment' => [
+                'id' => \GraphQLRelay\Relay::toGlobalId( 'comment', $comment->comment_ID ),
+                'content' => $comment->comment_content,
+                'date' => $comment->comment_date,
+            ],
+        )));
+        
+    } else {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'message' => __('Error!', 'tst'),
+        )));
+    }
+}
+add_action('wp_ajax_submit-comment', 'itv_ajax_submit_task_comment');
+add_action('wp_ajax_nopriv_submit-comment', 'itv_ajax_submit_task_comment');
