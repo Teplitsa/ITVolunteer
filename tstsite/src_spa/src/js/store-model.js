@@ -22,11 +22,21 @@ const taskModel = {
         return !!user.id && ( user.id == state.author.id || state.doers.find((doer) => doer.id == user.id) )
     }),
 
+    isUserCandidate: computed(state => (user) => {
+        return !!user.id && state.doers.find((doer) => doer.id == user.id)
+    }),
+
     setDoers: action((state, payload) => {
         state.doers = payload
     }),
+    addDoer: action((state, payload) => {
+        state.doers.push(payload)
+    }),
     setData: action((state, payload) => {
         state.data = payload
+        if(payload.approvedDoer) {
+            state.approvedDoer = payload.approvedDoer
+        }
     }),
     setAuthor: action((state, payload) => {
         state.author = payload

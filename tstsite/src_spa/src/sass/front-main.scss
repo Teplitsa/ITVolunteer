@@ -563,7 +563,9 @@ body {
             }
 
             &:last-child {
-                margin-bottom: 13px;
+                .author-actions-on-doer {
+                    margin-bottom: 13px;
+                }
             }
 
             .avatar-wrapper {

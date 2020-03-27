@@ -138,6 +138,18 @@ query Task($taskGqlId: ID!) {
         date
         viewsCount
         doerCandidatesCount
+
+        approvedDoer {
+          id
+          fullName
+          itvAvatar
+          memberRole
+          profileURL
+
+          authorReviewsCount
+          solvedTasksCount
+          doerReviewsCount
+        }
         
         author {
           id

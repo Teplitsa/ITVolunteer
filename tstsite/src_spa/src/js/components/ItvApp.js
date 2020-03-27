@@ -16,12 +16,14 @@ function ItvApp(props) {
     const task = useStoreState(store => store.task.data)
     const author = useStoreState(store => store.task.author)
     const approvedDoer = useStoreState(store => store.task.approvedDoer)
+    const isUserCandidate = useStoreState(store => store.task.isUserCandidate(user))
     const taskGqlId = ITV_CURRENT_TASK_GQLID
     const taskAuthorGqlId = ITV_CURRENT_TASK_AUTHOR_GQLID
 
     const setTaskDoers = useStoreActions(actions => actions.task.setDoers)
     const setTaskData = useStoreActions(actions => actions.task.setData)
     const setTaskAuthor = useStoreActions(actions => actions.task.setAuthor)
+    const addDoer = useStoreActions(actions => actions.task.addDoer)
 
     const { 
         loading: taskLoading, 
@@ -65,6 +67,40 @@ function ItvApp(props) {
         setTaskAuthor(taskAuthorData.user)
     }, [taskAuthorData])
 
+    const handleAddCandidate = (e) => {
+        e.preventDefault()
+
+        let formData = new FormData()
+        formData.append('task_gql_id', task.id)
+
+        let action = 'add-candidate'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                addDoer(user)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+
+    }
+
     return (
         <div>
             <SiteHeader userId={user.userId} />
@@ -75,10 +111,10 @@ function ItvApp(props) {
                     <TaskBody task={task} author={author} />
                     <TaskComments task={task} author={author} />
 
-                    {!!user.id && user.id != author.id &&
+                    {!approvedDoer && !!user.id && user.id != author.id && !isUserCandidate && 
                     <div className="task-give-response">                    
                         <p>Кликнув на кнопку, вы попадете в список волонтёров откликнувшихся на задачу. Заказчик задачи выберет подходящего из списка.</p>
-                        <a href="#" className="button-give-response">Откликнуться на задачу</a>
+                        <a href="#" className="button-give-response" onClick={handleAddCandidate}>Откликнуться на задачу</a>
                     </div>
                     }
 
@@ -95,9 +131,9 @@ function ItvApp(props) {
 
                     <TaskAuthor author={author} />
 
-                    {!approvedDoer && !!user.id && user.id != author.id &&
+                    {!approvedDoer && !!user.id && user.id != author.id && !isUserCandidate && 
                     <div className="action-block">
-                        <a href="#" className="action-button">Откликнуться на задачу</a>
+                        <a href="#" className="action-button" onClick={handleAddCandidate}>Откликнуться на задачу</a>
                     </div>
                     }
 
@@ -105,7 +141,7 @@ function ItvApp(props) {
                     <h2>Откликов пока нет</h2>
                     }
 
-                    {!approvedDoer && !!user.id && user.id != author.id &&
+                    {!approvedDoer && !doers.length && !!user.id && user.id != author.id && 
                     <div className="sidebar-users-block no-responses">
                         <p>Откликов пока нет. Воспользуйся возможностью получить задачу</p>
                     </div>
@@ -117,14 +153,8 @@ function ItvApp(props) {
                     </div>
                     }
 
-                    <div className="something-wrong-with-task">
-                        <a href="#" className="contact-admin">Что-то не так с задачей? Напиши администратору</a>
-                    </div>
-
-                    <h2>Отклики на задачу</h2>
-
-                    {!approvedDoer &&
-                    <TaskDoersBlock task={task} author={author} />
+                    {!!approvedDoer &&
+                    <h2>Над задачей работает</h2>
                     }
 
                     {!!approvedDoer &&
@@ -134,6 +164,18 @@ function ItvApp(props) {
                         </div>
                     </div>                    
                     }
+
+                    {!approvedDoer && doers.length > 0 &&
+                    <h2>Отклики на задачу</h2>
+                    }
+
+                    {!approvedDoer && doers.length > 0 &&
+                    <TaskDoersBlock task={task} author={author} />
+                    }
+
+                    <div className="something-wrong-with-task">
+                        <a href="#" className="contact-admin">Что-то не так с задачей? Напиши администратору</a>
+                    </div>
 
                 </section>
             </main>

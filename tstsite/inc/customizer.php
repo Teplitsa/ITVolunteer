@@ -225,6 +225,14 @@ function ajax_approve_candidate() {
     $task = get_post($task_id);
     $doer = get_user_by('id', $doer_id);
     
+    $approved_doers = tst_get_task_doers($task->ID, true);
+    if(count($approved_doers) > 0) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
     $link_id = null;
     if(empty($_POST['link-id']) && $task && $doer) {
         $doers = tst_get_task_doers($task->ID);
@@ -372,7 +380,8 @@ function ajax_add_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['task-id'])
+        empty($_POST['task_gql_id'])
+//         empty($_POST['task-id'])
 //         || empty($_POST['nonce'])
 //         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
     ) {
@@ -381,8 +390,19 @@ function ajax_add_candidate() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
+    
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    
+    if(!is_user_logged_in() 
+        || !$task_id
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
 
-    $task_id = (int)$_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
@@ -402,7 +422,6 @@ function ajax_add_candidate() {
 		do_action('update_member_stats', $users);
 		do_action('update_task_stats', $task);	
 	}	
-	
 	
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
@@ -495,17 +514,37 @@ add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 
 /** Decline a candidate by task author **/
 function ajax_decline_candidate() {
-    $task_id = (int)$_POST['task-id'];
-	$task_doer_id = (int)$_POST['doer-id'];
-	
+    if(
+        empty($_POST['doer_gql_id'])
+        || empty($_POST['task_gql_id'])
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    error_log('task_id=' . $task_id);
+    
+    $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+    $task_doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    error_log('task_doer_id=' . $task_doer_id);
+    
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
-    $user = get_current_user();
+    error_log('task_author=' . $task_author->ID);
+    
+    $user = wp_get_current_user();
+    error_log('user=' . $user->ID);
+    
 	$was_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
 	
-    if(!$task_id 
+    if(!$task 
         || !is_user_logged_in() 
         || !$task_author 
+        || !$was_doer_already_candidate
         || $user->ID != $task_author->ID
     ) {
         wp_die(json_encode(array(

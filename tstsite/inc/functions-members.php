@@ -1240,11 +1240,17 @@ function ajax_load_current_user() {
     if(is_user_logged_in()) {
         $user = wp_get_current_user();
         
+        $solved_key = 'solved';
+        $activity = tst_get_member_activity( $user->ID, $solved_key );
+        
         $user_data = [
             'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
             'fullName' => tst_get_member_name( $user->ID ),
             'memberRole' => tst_get_member_role_name( $user->ID ),
             'itvAvatar' => itv_avatar_url( $user->ID ),
+            'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
+            'solvedTasksCount' => $activity[$solved_key],
+            'doerReviewsCount' => ItvReviews::instance()->count_doer_reviews( $user->ID ),
         ];        
     }
     else {

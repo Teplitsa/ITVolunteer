@@ -33,6 +33,14 @@ function itv_register_task_graphql_fields() {
                     return tst_get_task_doers_count($task->ID);
                 },
             ],
+            'approvedDoer' => [
+                'type'        => 'User',
+                'description' => __( 'Task doer candidates count', 'tst' ),
+                'resolve'     => function( $task, $args, $context ) {
+	               $task_doers = tst_get_task_doers($task->ID, true);
+	               return count($task_doers) ? \WPGraphQL\Data\DataSource::resolve_user( $task_doers[0]->ID, $context ) : null;
+                },
+            ],
 //             'authorId' => [
 //                 'type'        => 'Int',
 //                 'description' => __( 'Task views count', 'tst' ),

@@ -81,7 +81,6 @@ export function TaskDoers({task, author, doers}) {
 }
 
 export function DoerCard({doer, user, author, task}) {
-
     const doers = useStoreState(store => store.task.doers)
     const approveDoer = useStoreActions(actions => actions.task.approveDoer)
     const declineDoer = useStoreActions(actions => actions.task.declineDoer)
@@ -123,7 +122,37 @@ export function DoerCard({doer, user, author, task}) {
 
     const handleDeclineDoer = (e, doer) => {
         e.preventDefault()
-        declineDoer({doers, doer})
+
+        let formData = new FormData()
+        formData.append('doer_gql_id', doer.id)
+        formData.append('task_gql_id', task.id)
+
+        let action = 'decline-candidate'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                declineDoer({doers, doer})
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+
     }
 
     return (
