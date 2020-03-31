@@ -685,7 +685,7 @@ add_filter('retrieve_password_message', function($message, $key){
 
     return nl2br(str_replace(array('>', '<'), array('', ''), $message));
 
-});
+}, 10, 2);
 
 
 function tst_get_days_until_deadline($deadline) {
