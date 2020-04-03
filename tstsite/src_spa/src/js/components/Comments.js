@@ -151,12 +151,18 @@ function Comment({comment, task, parentComment}) {
     const user = useStoreState(store => store.user.data)
     const userMayAddComment = useStoreState(store => store.task.userMayAddComment(user))
     const commentToReply = useStoreState(store => store.task.commentToReply)
+    const likesCount = useStoreState(store => store.task.commentsLikesCount)
 
-    const setCommentToReply = useStoreActions(actions => actions.task.setCommentToReply)    
+    const setCommentToReply = useStoreActions(actions => actions.task.setCommentToReply)
+    const addCommentLike = useStoreActions(actions => actions.task.addCommentLike)
 
     const handleReplyComment = (e) => {
         e.preventDefault()
         setCommentToReply(comment)
+    }
+
+    const hadnleLikeClick = () => {
+        addCommentLike(comment.id)
     }
 
     return (
@@ -171,9 +177,9 @@ function Comment({comment, task, parentComment}) {
                     <time>{format(new Date(comment.date), 'dd.MM.yyyy в HH:mm')}</time>
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">
-                        <div className="like">2</div>
+                        <div className="like" onClick={hadnleLikeClick}>{likesCount[comment.id] ? likesCount[comment.id] : 0}</div>
                         <div className="actions">
-                            <a href="#" className="report">Пожаловаться</a>
+                            <a href="#" className="report d-none">Пожаловаться</a>
                             <a href="#" className="reply-comment edit" onClick={handleReplyComment}>Ответить</a>
                         </div>
                     </div>

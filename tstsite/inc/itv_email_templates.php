@@ -4,6 +4,8 @@ class ItvEmailTemplates {
     public static $YOU_HAVE_BEEN_BLOCKED = 'you_have_been_blocked';
     public static $YOU_HAVE_BEEN_UNBLOCKED = 'you_have_been_unblocked';
     
+    public $email_templates_atvetka_style = [];
+    
     private $_email_templates;
     private static $_instance = NULL;
     public function __construct() {
@@ -56,7 +58,9 @@ class ItvEmailTemplates {
             'message_added_notification' => array(
                 'title' => __('it-volunteer - new message from contact form', 'tst'),
                 'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: %s\nName: %s\nEmail: %s\nMessage:\n%s\n\nBest,\nit-volunteer", 'tst'),
-            ),
+            ),                        
+                        
+            // news palceholders       
             'task_archive_soon_notif' => array(
                 'title' => __('ITVolunteer - your task will be moved to archive soon!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nYour task will be moved to archive soon because no doers have been approved for it.\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
@@ -101,8 +105,59 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
             ],
-		)
-        ;
+		);
+        
+        $this->email_templates_atvetka_style = array(
+            'approve_candidate_doer_notice' => array(
+                'title' => __('IT-Volunteer: you have been approved as participant!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYou have been approved to participate in task: {{task_title}}.\n\nYou can contact the task author for details with email: <a href='mailto:{{author_email}}'>{{author_email}}</a> or in some other ways (see <a href='{{author_profile_url}}'>author's profile</a>).\n\nHave a nice day!", 'tst'),
+            ),
+            'approve_candidate_author_notice' => array(
+                'title' => __('IT-Volunteer: participant approved!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYou have approved some volunteer to participate in task: {{task_title}}.\n\nYou can contact the task doer for details with email: <a href='mailto:{{doer_email}}'>{{doer_email}}</a> or in some other ways (see <a href='{{doer_profile_url}}'>doer's profile</a>).\n\nHave a nice day!", 'tst'),
+            ),
+            'refuse_candidate_doer_notice' => array(
+                'title' => __('IT-Volunteer: you have been disapproved as participant', 'tst'),
+                'text' => __("Hello, {{username}}.\n\nYou have been disapproved to participate in task: {{task_title}}.\n\nHave a nice day!", 'tst'),
+            ),
+            'refuse_candidate_author_notice' => array(
+                'title' => __('IT-Volunteer: a volunteer for your task removed himself!', 'tst'),
+                'text' => __("Hello, {{username}}.\n\nSomeone has been removed himself from a volunteers for your task: {{task_title}}.\n\nHis message is:\n{{message}}\n\nHave a nice day!", 'tst'),
+            ),
+            'add_candidate_author_notice' => array(
+                'title' => __('IT-Volunteer: a volunteer for your task appeared!', 'tst'),
+                'text' => __("Hello, {{username}}.\n\nSomeone is wishing to participate in your task: {{task_title}}.\nThis volunteer is writing to you this: {{message}}.\n\nYou can approve him if you wish on the task page: {{task_url}}.\n\nHave a nice day!", 'tst'),
+            ),
+            'activate_account_notice' => array(
+                'title' => __('ITVolunteer - activate your account', 'tst'),
+                'text' => __("Greerings!\n\nYour registration is almost done. To complete it, please <a href='{{complete_reg_url}}'>click here</a>.\nYour login is {{login}}\n\nBest,\nITVolunteer", 'tst'),
+                'test' => __('denisch_test_localization', 'tst'),
+            ),
+            'account_activated_notice' => array(
+                'title' => __('it-volunteer - welcome!', 'tst'),
+                'text' => __("Greetings!\n\nYour account is active now, welcome to it-volunteering ranks.\n\nYour login: <strong>{{login}}</strong>\nPlease write down your pass to keep it safe. \nUse the following link to enter the site: {{activation_url}}\n\n\nBest,\nit-volunteer", 'tst'),
+            ),
+            'new_comment_task_author_notification' => array(
+                'title' => __('ITVolunteer - new comment on your task!', 'tst'),
+                'text' => __("Greetings!\n\nYour task was commented by someone.\n\nYou can read it on task page: {{task_url}}\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'deadline_coming_author_notification' => array(
+                'title' => __('ITVolunteer - your task in coming to its deadline!', 'tst'),
+                'text' => __("Greetings!\n\nYour task deadline will come in one day from now. You can monitor task activity on its page: {{task_url}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'deadline_coming_doer_notification' => array(
+                'title' => __('ITVolunteer - task deadline is near!', 'tst'),
+                'text' => __("Greetings!\n\nThe task you are participate in has a deadline coming in one day from now. You can review the task on its page: {{task_url}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'password_reset_notice' => array(
+                'title' => '', // Default email title is used
+                'text' => __("Greetings!\n\nSomeone requested that the password be reset for the following account: {{login}}\n\nIf this was a mistake, just ignore this email and nothing will happen. To reset your password, visit the following address: {{reset_password_url}}\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'message_added_notification' => array(
+                'title' => __('it-volunteer - new message from contact form', 'tst'),
+                'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: {{page_url}}\nName: {{name}}\nEmail: {{email}}\nMessage:\n{{message}}\n\nBest,\nit-volunteer", 'tst'),
+            ),
+        );
     }
     
     public static function instance() {

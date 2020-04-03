@@ -791,6 +791,7 @@ body {
                 text-align: center;
                 min-width: 63px; 
                 max-width: 63px;
+                text-transform: lowercase;
 
                 .date-num {
                     @include text-bold-line-sm;
@@ -798,8 +799,7 @@ body {
                 }
             }
 
-            
-            &.active {
+            &.current {
                 .info {
                     border-color: $color-gray-light-md;
 
@@ -809,12 +809,14 @@ body {
                 }
             }
 
-            &.done {
+            &.past {
+                opacity: 0.5;
+
                 .info {
-                    border-color: $color-gray-light-md;
+                    // border-color: $color-gray-light-md;
 
                     .point-circle {
-                        border-color: $color-gray-light-md;
+                        // border-color: $color-gray-light-md;
                     }
                 }
             }
@@ -831,6 +833,7 @@ body {
                 border-left: 1px solid $color-gray;
                 position: relative;
                 padding-bottom: $base * 4;
+                width: 100%;
 
                 .point-circle {
                     position: absolute;
@@ -855,6 +858,10 @@ body {
                 .details {
                     @include text-sm-bold;
                     margin-top: $base;
+
+                    .user-speach:not(:first-child) {
+                        margin-top: 12px;
+                    }
 
                     .comment {
                         @include text-sm;
@@ -882,6 +889,22 @@ body {
 
                     .comment-actions {
                         margin-top: 12px;
+                    }
+
+                    .decision-action {
+                        margin-top: $base * 2;
+                        
+                        .accept {
+                            @include button-primary;
+                            font-weight: 600;
+                            margin-right: $base * 3;
+                            padding-left: 16px;
+                            padding-right: 16px;
+                        }
+
+                        .reject {
+                            @include button-secondary-sm;
+                        }
                     }
                 }
             }
@@ -917,6 +940,25 @@ body {
                 background-color: $color-main;
             }
         }
+
+        &.in_work {
+            &:before {
+                background-color: $color-main;
+            }
+        }
+
+        &.draft {
+            &:before {
+                background-color: $color-gray;
+            }
+        }
+
+        &.closed {
+            &:before {
+                background-color: $color-gray;
+            }
+        }
+
     }
 
     .edit {
@@ -1227,12 +1269,21 @@ body {
 }
 
 //
-.timeline-comment-form {
+.timeline-form-wrapper {
+    position: relative;
+}
+
+.timeline-form {
     padding: $base * 2 $base * 2  $base * 3 $base * 2 ;
     background-color: $color-white;
-    margin-top: 12px;
+    margin-top: $base * 4;
     box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
     border-radius: 8px;
+
+    position: absolute;
+    z-index: 10;
+    top: 0px;
+    left: 0px;
 
     h4 {
         @include text-line-sm;
@@ -1240,15 +1291,17 @@ body {
     }
 
     textarea {
+        @include text-sm-bold;
         background-color: $color-gray-light-xl;
         border: 1px solid $color-gray-light-lg;
         color: $color-gray-dark-lg;
         margin-top: $base * 2;
         min-height: 146px;
+        margin-bottom: $base * 2;
+        border-radius: 4px;
     }
 
     .rating-bar {
-        margin-top: $base * 2;
     }
 
     .comment-action {
@@ -1258,8 +1311,104 @@ body {
         .submit-comment {
             @include button-secondary-sm-dark;
         }
+
+        .cancel-comment {
+            margin-right: $base * 2;
+            @include button-link-sm-dark;
+        }
     }
 
+    &.timeline-form-date-comment {
+        width: 253px;
+    }
+
+    &.timeline-form-date-suggest {
+        width: 253px;
+
+        .datepicker {
+            border: none;
+            width: 253px;
+
+            .datepicker--nav {
+                border-bottom: none;
+
+                .datepicker--nav-title {
+                    @include text-line-sm-light;
+                    color: $color-gray-dark-xl;
+
+                    i {
+                        color: $color-gray-dark-xl;
+                    }
+                }
+
+                .datepicker--nav-action {
+                    &:hover {
+                        border-radius: 50%;
+                    }
+                }
+            }
+
+            .datepicker--content {
+                @include text-sm-bold;
+                color: $color-gray-dark-xl;
+
+                .datepicker--days-names {
+                    margin-bottom: 4px;
+
+                    .datepicker--day-name {
+                        @include text-sm-bold;
+                        color: $color-gray-dark-xl;
+                        text-transform: lowercase;
+                        height: 20px;
+                    }
+                }
+
+                .datepicker--cell {
+                    height: 36px;
+
+                    &.-other-month-,
+                    &.-disabled- {
+                        color: #322E2888;
+                    }
+
+                    &.-focus-{
+                        color: $color-gray-dark-xl;
+                        border-radius: 50%;
+                        border: 1px solid $color-gray;
+                        background-color: transparent;
+                    }
+
+                    &.-selected-{
+                        color: $color-gray-light-xl;
+                        border-radius: 50%;
+                        border: none;
+                        background-color: $color-sec-dark;
+                    }
+
+                    &.-current-{
+                        color: $color-gray-light-xl;
+                        border-radius: 50%;
+                        border: none;
+                        background-color: $color-gray-dark-md;
+                    }
+
+                }
+            }
+        }
+
+        .comment-action {
+            margin-top: $base * 2;
+        }
+    }
+
+    &.timeline-form-close-suggest-comment {
+        width: 253px;
+        left: 205px;
+    }
+
+    &.timeline-form-review {
+        width: 560px;
+    }
 }
 
 //
@@ -1276,6 +1425,30 @@ body {
         img {
             margin-right: 4px;
         }
+
+        & > span {
+            vertical-align: middle;
+        }
+
+        & > span:before {
+            content: " ";
+            display: inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            margin-right: 4px;
+            background-image: url('../img/icon-star-empty-white.svg');
+        }
+
+        &:hover > span:before,
+        & > span.on:before {
+            background-image: url('../img/icon-star-filled.svg');            
+        }
+
+        & > span:hover ~ span:before {
+            background-image: url('../img/icon-star-empty-white.svg');
+        }        
     }
 }
 

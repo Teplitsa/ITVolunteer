@@ -70,6 +70,22 @@
     @include button-secondary-sm;
     background-color: $color-gray-light-xl;
     border-color: $color-gray;
+
+    &:hover, &:active, &:focus, &.active {
+        background-color: $color-gray-light-md;
+        border-color: $color-gray-light-md;
+    }
+}
+
+@mixin button-link-sm-dark {
+    @include button-secondary-sm-dark;
+    border-color: transparent;
+    background-color: transparent;
+
+    &:hover, &:active, &:focus {
+        border-color: transparent;
+        background-color: transparent;
+    }
 }
 
 @mixin button-primary {

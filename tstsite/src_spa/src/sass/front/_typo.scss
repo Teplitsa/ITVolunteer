@@ -44,6 +44,11 @@ $body-font-family: 'IBM Plex Sans';
     line-height: 20px;
 }
 
+@mixin text-line-sm-light {
+    @include text-line-sm;
+    font-weight: 400;
+}
+
 @mixin text-bold-line-sm {
     @include text-line-sm;
     font-weight: 600;

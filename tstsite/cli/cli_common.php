@@ -25,7 +25,7 @@ $host = isset($options['host']) ? $options['host'] : '';
 echo "=======start=======\n";
 
 if(empty($host)) {
-	throw new ItvNotCLIRunException("Host must be defined!");
+// 	throw new ItvNotCLIRunException("Host must be defined!");
 }
 else {
 	echo "HOST: " . $host . "\n";

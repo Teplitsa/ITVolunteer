@@ -97,9 +97,35 @@ const taskModel = {
         }
         
     }),
+    commentsLikesCount: {},
+    addCommentLike: action((state, payload) => {
+        if(!state.commentsLikesCount[payload]) {
+            state.commentsLikesCount[payload] = 0
+        }
+        state.commentsLikesCount[payload] += 1
+    }),
+    // reviews
+    reviewForDoer: null,
+    setReviewForDoer: action((state, payload) => {
+        state.reviewForDoer = payload
+    }),
+    reviewForAuthor: null,
+    setReviewForAuthor: action((state, payload) => {
+        state.reviewForAuthor = payload
+    }),
+}
+
+const timelineModel = {
+    timeline: [],
+    isLoaded: false,
+    setTimeline: action((state, payload) => {
+        state.timeline = payload
+        state.isLoaded = true
+    }),
 }
 
 export const storeModel = {
     user: userStoreModel,
     task: taskModel,
+    timeline: timelineModel,
 }

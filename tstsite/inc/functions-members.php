@@ -468,13 +468,13 @@ function tst_remove_admin_bar($show){
 
 /** Leave a review for task doer */
 function ajax_leave_review() {
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+// 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	if(
 			empty($_POST['task-id'])
 			|| empty($_POST['doer-id'])
-			|| empty($_POST['nonce'])
-			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
+// 			|| empty($_POST['nonce'])
+// 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
 	) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
@@ -557,13 +557,13 @@ add_action('wp_ajax_nopriv_leave-review', 'ajax_leave_review');
 
 /** Leave a review for author */
 function ajax_leave_review_author() {
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+// 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	if(
 			empty($_POST['task-id'])
 			|| empty($_POST['author-id'])
-			|| empty($_POST['nonce'])
-			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review-author')
+// 			|| empty($_POST['nonce'])
+// 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review-author')
 	) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
@@ -642,6 +642,40 @@ function ajax_leave_review_author() {
 }
 add_action('wp_ajax_leave-review-author', 'ajax_leave_review_author');
 add_action('wp_ajax_nopriv_leave-review-author', 'ajax_leave_review_author');
+
+function ajax_get_task_reviews() {
+	if(
+			empty($_POST['task-id'])
+	) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$task = get_post($task_id);
+
+	if(!$task) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+
+    $task_doers = tst_get_task_doers($task->ID, true);
+	$reviews = [
+	   'reviewForAuthor' => ItvReviewsAuthor::instance()->get_review_for_author_and_task($task->post_author, $task->ID),
+	   'reviewForDoer' => count($task_doers) > 0 ? ItvReviews::instance()->get_review_for_doer_and_task($task_doers[0]->ID, $task->ID) : null,
+	];
+
+	wp_die(json_encode(array(
+		'status' => 'ok',
+		'reviews' => $reviews,
+	)));
+}
+add_action('wp_ajax_get-task-reviews', 'ajax_get_task_reviews');
+add_action('wp_ajax_nopriv_get-task-reviews', 'ajax_get_task_reviews');
 
 # member activation button
 function itv_is_user_activated($user_id) {
@@ -1095,6 +1129,15 @@ function tst_get_new_active_members_count($from_date, $to_date) {
     return $user_query->get_total();
 }
 
+function itv_is_user_paseka_member($user_id) {
+    $user_participation = get_user_meta($user_id, 'user_participation');
+    return !empty($user_participation[0]) ? array_search('paseka', $user_participation[0]) !== false : false;
+}
+
+function itv_is_user_partner($user_id) {
+    return get_user_meta($user_id, 'user_test_partner', true);
+}
+
 /** Say thank you to member */
 function ajax_thankyou() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
@@ -1236,22 +1279,29 @@ function ajax_inc_userxp_value() {
 add_action('wp_ajax_inc-userxp-value', 'ajax_inc_userxp_value');
 
 
+function itv_get_user_in_gql_format($user) {
+    $solved_key = 'solved';
+    $activity = tst_get_member_activity( $user->ID, $solved_key );
+    
+    $user_data = [
+        'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
+        'fullName' => tst_get_member_name( $user->ID ),
+        'memberRole' => tst_get_member_role_name( $user->ID ),
+        'itvAvatar' => itv_avatar_url( $user->ID ),
+        'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
+        'solvedTasksCount' => $activity[$solved_key],
+        'doerReviewsCount' => ItvReviews::instance()->count_doer_reviews( $user->ID ),
+        'isPartner' => itv_is_user_partner($user->ID),
+        'isPasekaMember' => itv_is_user_paseka_member($user->ID),
+    ];
+    
+    return $user_data;
+}
+
 function ajax_load_current_user() {
     if(is_user_logged_in()) {
         $user = wp_get_current_user();
-        
-        $solved_key = 'solved';
-        $activity = tst_get_member_activity( $user->ID, $solved_key );
-        
-        $user_data = [
-            'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
-            'fullName' => tst_get_member_name( $user->ID ),
-            'memberRole' => tst_get_member_role_name( $user->ID ),
-            'itvAvatar' => itv_avatar_url( $user->ID ),
-            'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
-            'solvedTasksCount' => $activity[$solved_key],
-            'doerReviewsCount' => ItvReviews::instance()->count_doer_reviews( $user->ID ),
-        ];        
+        $user_data = itv_get_user_in_gql_format($user);
     }
     else {
         $user_data = [

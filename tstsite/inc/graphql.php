@@ -1,7 +1,11 @@
 <?php
 
+require_once dirname(__FILE__) . '/../vendor/autoload.php';
+require_once(dirname(__FILE__) . '/../inc/models/TimelineModel.php');
+
 use \WPGraphQL\AppContext;
 use \WPGraphQL\Data\DataSource;
+use \ITV\models\TimelineModel;
 
 add_filter('graphql_app_context_config', 'itv_graphql_app_context_config');
 function itv_graphql_app_context_config($config) {
@@ -39,6 +43,13 @@ function itv_register_task_graphql_fields() {
                 'resolve'     => function( $task, $args, $context ) {
 	               $task_doers = tst_get_task_doers($task->ID, true);
 	               return count($task_doers) ? \WPGraphQL\Data\DataSource::resolve_user( $task_doers[0]->ID, $context ) : null;
+                },
+            ],
+            'reviewsDone' => [
+                'type'        => 'Bool',
+                'description' => __( 'Author and doer left reviews', 'tst' ),
+                'resolve'     => function( $task, $args, $context ) {
+                    return false;
                 },
             ],
 //             'authorId' => [
@@ -129,7 +140,20 @@ function itv_register_user_graphql_fields() {
                 'resolve' => function ($user) {
                     return tst_get_member_user_company_logo_src( $user->userId );
                 }
-            ]
+            ],
+            'isPasekaMember' => [
+                'type' => 'Boolean',
+                'resolve' => function ($user) {
+                    return itv_is_user_paseka_member($user->userId);
+                }
+            ],
+            'isPartner' => [
+                'type' => 'Bool',
+                'resolve' => function ($user) {
+                    return itv_is_user_partner($user->userId);
+                }
+            ],
+            
         ]
     );
 }

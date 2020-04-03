@@ -6,6 +6,7 @@ export const USER_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId) {
         id
+        databaseId
         username
         fullName
         profileURL
@@ -15,6 +16,9 @@ query User ($userId: ID!) {
         authorReviewsCount
         solvedTasksCount
         doerReviewsCount
+
+        isPasekaMember
+        isPartner
     }
 }`
 
@@ -22,6 +26,7 @@ export const TASK_AUTHOR_QUERY = gql`
 query User ($userId: ID!) {
     user(id: $userId) {
         id
+        databaseId
         username
         fullName
         profileURL
@@ -35,6 +40,9 @@ query User ($userId: ID!) {
         authorReviewsCount
         solvedTasksCount
         doerReviewsCount
+
+        isPasekaMember
+        isPartner
     }
 }`
 
@@ -50,6 +58,7 @@ export const TASK_DOERS_QUERY = gql`
 query TaskDoers ($taskGqlId: ID!) {
     taskDoers(taskGqlId: $taskGqlId) {
         id
+        databaseId
         username
         fullName
         profileURL
@@ -59,6 +68,9 @@ query TaskDoers ($taskGqlId: ID!) {
         authorReviewsCount
         solvedTasksCount
         doerReviewsCount
+
+        isPasekaMember
+        isPartner
     }
 }`
 
@@ -91,7 +103,7 @@ fragment TaskCommentFields on Comment {
   }
 }
 
-query TaskComments ($taskId: ID!) {
+query TaskComments ($taskId: ID) {
   comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
     nodes {
       ...TaskCommentFields
@@ -138,9 +150,12 @@ query Task($taskGqlId: ID!) {
         date
         viewsCount
         doerCandidatesCount
+        status
+        reviewsDone
 
         approvedDoer {
           id
+          databaseId
           fullName
           itvAvatar
           memberRole
@@ -153,6 +168,7 @@ query Task($taskGqlId: ID!) {
         
         author {
           id
+          databaseId
           fullName
           itvAvatar
           memberRole

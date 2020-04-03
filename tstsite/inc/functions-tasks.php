@@ -1,6 +1,7 @@
 <?php
 use ITV\models\UserXPModel;
 use ITV\models\ResultScreenshots;
+use ITV\models\TimelineModel;
 
 /**
  * Task related utilities and manipulations
@@ -107,8 +108,10 @@ function ajax_add_edit_task(){
 		wp_set_post_terms($task_id, explode(',', filter_var($_POST['nko_tags'], FILTER_SANITIZE_STRING)), 'nko_task_tag');
 		update_post_meta($task_id, 'is_tst_consult_needed', $new_is_tst_consult_needed);
 		
+		$timeline = ITV\models\TimelineModel::instance();
 		
         if($is_new_task) {
+            $timeline->create_task_timeline($task_id);
             tst_send_admin_notif_new_task($task_id);
         }
         
@@ -127,7 +130,9 @@ function ajax_add_edit_task(){
 //                    __('The task was successfully created.', 'tst'),
                 'id' => $task_id,
             )));
-        } else
+        } else {
+            $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+            
             wp_die(json_encode(array(
                 'status' => 'ok',
 //            'message' =>  ?
@@ -135,6 +140,7 @@ function ajax_add_edit_task(){
 //                    __('The task was successfully created.', 'tst'),
                 'id' => $task_id
             )));
+        }
 
     } else {
 
@@ -336,3 +342,166 @@ function itv_ajax_submit_task_comment(){
 }
 add_action('wp_ajax_submit-comment', 'itv_ajax_submit_task_comment');
 add_action('wp_ajax_nopriv_submit-comment', 'itv_ajax_submit_task_comment');
+
+function itv_ajax_get_task_timeline(){
+    error_log("call itv_ajax_submit_task_comment...");
+
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    
+    if($task_id && is_user_logged_in()) {
+        
+        $timeline = ITV\models\TimelineModel::instance()->get_task_timeline($task_id);
+        $res = [];
+        foreach($timeline as $k => $ti) {
+            $ti_data = $ti->attributesToArray();
+            if($ti_data['due_date'] == '0000-00-00') {
+                $ti_data['due_date'] = null;
+            }
+            
+            if(in_array($ti->type, [TimelineModel::$TYPE_CLOSE_SUGGEST])) {
+                $ti_data['timeline_date'] = $ti_data['created_at'];
+            }
+            else {
+                $ti_data['timeline_date'] = $ti_data['due_date'] ? $ti_data['due_date'] : $ti_data['created_at'];
+            }
+            
+            $res[] = $ti_data;
+        }
+        
+        wp_die(json_encode(array(
+            'status' => 'ok',
+            'timeline' => $res,
+        )));
+        
+    } else {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'message' => __('Error!', 'tst'),
+        )));
+    }
+}
+add_action('wp_ajax_get-task-timeline', 'itv_ajax_get_task_timeline');
+add_action('wp_ajax_nopriv_get-task-timeline', 'itv_ajax_get_task_timeline');
+
+function ajax_suggest_close_task() {
+	if(
+			empty($_POST['task-id'])
+	) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$task = get_post($task_id);
+	$doer_id = get_current_user_id();
+
+	if(!$task) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		if( !$doer ) // If doer deleted his account
+			continue;
+		if($doer_id == $doer->ID) {
+			$task_doer = $doer;
+			break;
+		}
+	}
+
+	if(!$task_doer) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+		)));
+	}
+
+	$message = filter_var(trim(isset($_POST['message']) ? $_POST['message'] : ''), FILTER_SANITIZE_STRING);
+	if(!$message) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> empty message.', 'tst'),
+		)));
+	}
+	
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message]);
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+}
+add_action('wp_ajax_suggest-close-task', 'ajax_suggest_close_task');
+add_action('wp_ajax_nopriv_suggest-close-task', 'ajax_suggest_close_task');
+
+function ajax_suggest_close_date() {
+	if(
+			empty($_POST['task-id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$task = get_post($task_id);
+	$doer_id = get_current_user_id();
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		if( !$doer ) // If doer deleted his account
+			continue;
+		if($doer_id == $doer->ID) {
+			$task_doer = $doer;
+			break;
+		}
+	}
+
+	if(!$task_doer) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+        )));
+	}
+
+	$message = filter_var(trim(isset($_POST['message']) ? $_POST['message'] : ''), FILTER_SANITIZE_STRING);
+	if(!$message) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> empty message.', 'tst'),
+        )));
+	}
+
+	$due_date = filter_var(trim(isset($_POST['due_date']) ? $_POST['due_date'] : ''), FILTER_SANITIZE_STRING);
+	$due_date = date('Y-m-d H:i:s', strtotime($due_date));
+	
+	if(!$message) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+	
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message, 'due_date' => $due_date]);
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+}
+add_action('wp_ajax_suggest-close-date', 'ajax_suggest_close_date');
+add_action('wp_ajax_nopriv_suggest-close-date', 'ajax_suggest_close_date');

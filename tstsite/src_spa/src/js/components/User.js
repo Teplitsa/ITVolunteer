@@ -51,7 +51,9 @@ export function TaskAuthor({author}) {
                     <div className="avatar-wrapper" style={{
                         backgroundImage: author.organizationLogo ? `url(${author.organizationLogo})` : "none",
                     }}>
+                        {!!author.isPartner &&
                         <img src={iconApproved} className="itv-approved" />
+                        }
                     </div>
                     }
 
@@ -162,7 +164,7 @@ export function DoerCard({doer, user, author, task}) {
                     backgroundImage: doer.itvAvatar ? `url(${doer.itvAvatar})` : "none",
                 }}>
 
-                    {false &&
+                    {!!doer.isPasekaMember &&
                     <img src={metaIconPaseka} className="itv-approved" />
                     }
 
