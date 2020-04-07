@@ -1293,6 +1293,9 @@ function itv_get_user_in_gql_format($user) {
         'doerReviewsCount' => ItvReviews::instance()->count_doer_reviews( $user->ID ),
         'isPartner' => itv_is_user_partner($user->ID),
         'isPasekaMember' => itv_is_user_paseka_member($user->ID),
+        'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
+        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
+        'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
     ];
     
     return $user_data;

@@ -124,8 +124,16 @@ const timelineModel = {
     }),
 }
 
+const taskListModel = {
+    taskList: [],
+    setTaskList: action((state, payload) => {
+        state.taskList = payload
+    }),    
+}
+
 export const storeModel = {
     user: userStoreModel,
     task: taskModel,
     timeline: timelineModel,
+    taskList: taskListModel,
 }

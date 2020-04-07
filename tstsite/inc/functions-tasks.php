@@ -505,3 +505,52 @@ function ajax_suggest_close_date() {
 }
 add_action('wp_ajax_suggest-close-date', 'ajax_suggest_close_date');
 add_action('wp_ajax_nopriv_suggest-close-date', 'ajax_suggest_close_date');
+
+function itv_get_ajax_task_short($task) {
+    $author = get_user_by('id', $task->post_author);
+    
+    return [
+        'id' => \GraphQLRelay\Relay::toGlobalId( 'task', $task->ID ),
+        'databaseId' => $task->ID,
+        'title' => get_the_title($task->ID),
+        'content' => get_the_content($task->ID),
+        'slug' => $task->post_name,
+        'date' => $task->post_date,
+        'viewsCount' => pvc_get_post_views($task->ID),
+        'doerCandidatesCount' => tst_get_task_doers_count($task->ID),
+        'status' => $task->post_status,
+        'pemalink' => get_permalink($task),
+        'pemalinkPath' => str_replace(site_url(), "", get_permalink($task)),
+        'tags' => ['nodes' => wp_get_post_terms( $task->ID, 'post_tag')],
+        'ngoTaskTags' => ['nodes' => wp_get_post_terms( $task->ID, 'nko_task_tag')],
+        'rewardTags' => ['nodes' => wp_get_post_terms( $task->ID, 'reward')],
+        'author' => itv_get_user_in_gql_format($author),
+    ];
+}
+
+function ajax_get_task_list() {
+    $args = array(
+        'post_type' => 'tasks',
+        'task_status' => 'publish',
+        'author__not_in', array(ACCOUNT_DELETED_ID),
+        'posts_per_page' => 15,
+    );
+    
+    $task_list = [];
+    $GLOBALS['wp_query'] = new WP_Query($args);
+    while ( $GLOBALS['wp_query']->have_posts() ) {
+        $GLOBALS['wp_query']->the_post();
+        $post = get_post();
+        
+        if($post) {
+            $task_list[] = itv_get_ajax_task_short($post);
+        }
+    }
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'taskList' => $task_list,
+    )));
+}
+add_action('wp_ajax_get-task-list', 'ajax_get_task_list');
+add_action('wp_ajax_nopriv_get-task-list', 'ajax_get_task_list');

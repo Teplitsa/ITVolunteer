@@ -37,7 +37,7 @@ function tst_get_version_num(){
 }
 
 function itv_is_spa() {
-    return is_singular('tasks');
+    return is_singular('tasks') || is_post_type_archive('tasks');
 }
 
 if ( ! function_exists( 'tst_setup' ) ) :

@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import {
+  Link
+} from "react-router-dom";
 import { useStoreState, useStoreActions } from "easy-peasy"
 
 import logo from '../../img/pic-logo-itv.svg'
@@ -47,7 +50,7 @@ export function SiteHeader(props) {
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
                 <div className="main-menu-col">
-                    <a href={ITV_URLS.tasks}>Задачи</a>
+                    <Link to="/tasks/publish/">Задачи</Link>
                     <a href={ITV_URLS.volunteers}>Волонтеры</a>
                     <a href="#" className="drop-menu">О проекте</a>
                 </div>

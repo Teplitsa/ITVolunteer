@@ -2,12 +2,22 @@
 
 $body-font-family: 'IBM Plex Sans';
 
+@mixin htext-xl-bold {
+    @include htext-xl;
+    font-weight: 600;
+}
+
 @mixin htext-xl {
     @include text;
     font-size: 30px;
     line-height: 40px;
     font-weight: 500;
     letter-spacing: -0.01em;
+}
+
+@mixin htext-lg-bold {
+    @include htext-lg;
+    font-weight: 600;
 }
 
 @mixin htext-lg {
