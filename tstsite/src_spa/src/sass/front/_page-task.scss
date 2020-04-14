@@ -508,7 +508,16 @@
                 }
             }
 
+            &.date_decision,
+            &.close_decision {
+                &.reject {
+                    color: $color-sec-dark;
+                }
+            }
+
             &.current {
+                color: $color-main;
+
                 .info {
                     border-color: $color-gray-light-md;
 
@@ -604,7 +613,7 @@
                         margin-top: $base * 2;
                         
                         .accept {
-                            @include button-primary;
+                            @include button-primary-sm;
                             font-weight: 600;
                             margin-right: $base * 3;
                             padding-left: 16px;

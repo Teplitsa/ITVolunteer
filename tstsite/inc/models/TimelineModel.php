@@ -38,11 +38,11 @@ class TimelineModel extends ITVSingletonModel {
         $this->TYPE_SORT = [
             TimelineModel::$TYPE_PUBLICATION => 0,
             TimelineModel::$TYPE_SEARCH_DOER => 10,
-            TimelineModel::$TYPE_WORK => 20,
+            TimelineModel::$TYPE_WORK => 30,
             TimelineModel::$TYPE_DATE_SUGGEST => 30,
-            TimelineModel::$TYPE_DATE_DECISION => 31,
-            TimelineModel::$TYPE_CLOSE_SUGGEST => 40,
-            TimelineModel::$TYPE_CLOSE_DECISION => 41,
+            TimelineModel::$TYPE_DATE_DECISION => 30,
+            TimelineModel::$TYPE_CLOSE_SUGGEST => 30,
+            TimelineModel::$TYPE_CLOSE_DECISION => 30,
             TimelineModel::$TYPE_CLOSE => 50,
             TimelineModel::$TYPE_REVIEW => 100,
         ];
@@ -177,6 +177,11 @@ class TimelineModel extends ITVSingletonModel {
         return TimelineItem::where($filter)->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->get();
     }
 
+    public function get_item($item_id) {
+        $filter = ['id' => $item_id];        
+        return TimelineItem::where($filter)->first();
+    }
+    
     public function get_first_item($task_id, $type=null, $status=null) {
         $filter = ['task_id' => $task_id];
         

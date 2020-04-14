@@ -49,6 +49,26 @@ const taskModel = {
     }),
     setComments: action((state, payload) => {
         state.comments = payload
+
+        if(!state.comments) {
+            return
+        }
+
+        function operateComment(comment1) {
+            if(!comment1) {
+                return
+            }
+
+            state.commentsLikesCount[comment1.id] = comment1.likesCount
+
+            comment1.replies.nodes.forEach((comment2) => {
+                operateComment(comment2)
+            })
+        }
+
+        state.comments.nodes.forEach((comment3) => {
+            operateComment(comment3)
+        })
     }),
     commentToReply: null,
     setCommentToReply: action((state, payload) => {
@@ -98,11 +118,8 @@ const taskModel = {
         
     }),
     commentsLikesCount: {},
-    addCommentLike: action((state, payload) => {
-        if(!state.commentsLikesCount[payload]) {
-            state.commentsLikesCount[payload] = 0
-        }
-        state.commentsLikesCount[payload] += 1
+    setCommentLikesCount: action((state, payload) => {
+        state.commentsLikesCount[payload.commentId] = payload.likesCount
     }),
     // reviews
     reviewForDoer: null,

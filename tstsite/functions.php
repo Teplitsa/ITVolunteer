@@ -231,3 +231,4 @@ require_once get_template_directory() . '/inc/models/UserBlockModel.php';
 // grapql
 require get_template_directory().'/inc/graphql.php';
 require_once(get_template_directory() . '/inc/models/TimelineModel.php');
+require_once(get_template_directory() . '/inc/models/CommentsModel.php');

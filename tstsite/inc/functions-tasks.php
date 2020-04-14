@@ -2,6 +2,7 @@
 use ITV\models\UserXPModel;
 use ITV\models\ResultScreenshots;
 use ITV\models\TimelineModel;
+use ITV\models\CommentsLikeModel;
 
 /**
  * Task related utilities and manipulations
@@ -471,6 +472,13 @@ function ajax_suggest_close_date() {
 		}
 	}
 
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
 	if(!$task_doer) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -554,3 +562,368 @@ function ajax_get_task_list() {
 }
 add_action('wp_ajax_get-task-list', 'ajax_get_task_list');
 add_action('wp_ajax_nopriv_get-task-list', 'ajax_get_task_list');
+
+
+function ajax_accept_close_date() {
+	if(
+		empty($_POST['task-id'])
+	    || empty($_POST['timeline-item-id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$timeline_item_id = (int)$_POST['timeline-item-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+	
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		$task_doer = $doer;
+		break;
+	}
+	
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task_doer) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+        )));
+	}
+	
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $author_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    $timeline = ITV\models\TimelineModel::instance();
+    $suggest_timeline_item = $timeline->get_item($timeline_item_id);
+    $close_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_CLOSE);
+    $reviews_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_REVIEW);
+    
+    if($suggest_timeline_item && $close_timeline_item && $reviews_timeline_item) {
+        $close_timeline_item->due_date = $suggest_timeline_item->due_date;
+        $close_timeline_item->save();
+        
+        $suggest_timeline_item->decision = TimelineModel::$DECISION_ACCEPT;
+        $suggest_timeline_item->save();
+        
+        $reviews_timeline_item->due_date = $timeline->get_next_checkpoint_date($suggest_timeline_item->due_date, TimelineModel::$TYPE_REVIEW);
+        $reviews_timeline_item->save();
+        
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_ACCEPT]);
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $task_doer->ID]);
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_accept-close-date', 'ajax_accept_close_date');
+add_action('wp_ajax_nopriv_accept-close-date', 'ajax_accept_close_date');
+
+
+function ajax_reject_close_date() {
+	if(
+		empty($_POST['task-id'])
+	    || empty($_POST['timeline-item-id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$timeline_item_id = (int)$_POST['timeline-item-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+	
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		$task_doer = $doer;
+		break;
+	}
+
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task_doer) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+        )));
+	}
+	
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $author_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    $timeline = ITV\models\TimelineModel::instance();
+    $suggest_timeline_item = $timeline->get_item($timeline_item_id);
+    if($suggest_timeline_item) {
+        $suggest_timeline_item->decision = TimelineModel::$DECISION_REJECT;
+        $suggest_timeline_item->save();
+        
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_REJECT]);
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $task_doer->ID]);        
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_reject-close-date', 'ajax_reject_close_date');
+add_action('wp_ajax_nopriv_reject-close-date', 'ajax_reject_close_date');
+
+
+function itv_close_task($task) {
+    wp_update_post(array('ID' => $task->ID, 'post_status' => 'closed'));
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
+    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    
+    $doers = tst_get_task_doers($task->ID, true);
+    $doer = array_shift($doers);
+    if($doer) {
+        UserXPModel::instance()->register_activity_from_gui($doer->ID, UserXPModel::$ACTION_TASK_DONE);
+    }
+    
+    tst_send_admin_notif_task_complete($task->ID);
+    
+	if($task) {
+		$users = tst_get_task_doers($task->ID);
+		$users[] = get_user_by('id', $task->post_author);;	
+		do_action('update_member_stats', $users);
+	}	
+}
+
+
+function ajax_accept_close() {
+	if(
+		empty($_POST['task-id'])
+	    || empty($_POST['timeline-item-id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$timeline_item_id = (int)$_POST['timeline-item-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+	
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		$task_doer = $doer;
+		break;
+	}
+	
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task_doer) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+        )));
+	}
+	
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $author_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    $timeline = ITV\models\TimelineModel::instance();
+    $suggest_timeline_item = $timeline->get_item($timeline_item_id);
+    $close_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_CLOSE);
+    $reviews_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_REVIEW);
+    
+    if($suggest_timeline_item && $close_timeline_item && $reviews_timeline_item) {
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_ACCEPT]);
+        itv_close_task($task);
+        
+        $timeline->complete_current_items($task->ID);
+        
+        $close_timeline_item->status = TimelineModel::$STATUS_PAST;
+        $close_timeline_item->save();
+        
+        $suggest_timeline_item->decision = TimelineModel::$DECISION_ACCEPT;
+        $suggest_timeline_item->save();
+        
+        $reviews_timeline_item->status = TimelineModel::$STATUS_CURRENT;
+        $reviews_timeline_item->save();
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_accept-close', 'ajax_accept_close');
+add_action('wp_ajax_nopriv_accept-close', 'ajax_accept_close');
+
+
+function ajax_reject_close() {
+	if(
+		empty($_POST['task-id'])
+	    || empty($_POST['timeline-item-id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$timeline_item_id = (int)$_POST['timeline-item-id'];
+	$task = get_post($task_id);
+	$author_id = get_current_user_id();
+	
+	$task_doer = null;
+	foreach(tst_get_task_doers($task->ID, true) as $doer) {
+		$task_doer = $doer;
+		break;
+	}
+
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task_doer) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task doer not found.', 'tst'),
+        )));
+	}
+	
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $author_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    $timeline = ITV\models\TimelineModel::instance();
+    $suggest_timeline_item = $timeline->get_item($timeline_item_id);
+    if($suggest_timeline_item) {
+        $suggest_timeline_item->decision = TimelineModel::$DECISION_REJECT;
+        $suggest_timeline_item->save();
+        
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_REJECT]);
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_reject-close', 'ajax_reject_close');
+add_action('wp_ajax_nopriv_reject-close', 'ajax_reject_close');
+
+
+function ajax_like_comment() {
+	if(
+	    empty($_POST['comment_gql_id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+    $comment_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['comment_gql_id'] );
+    $comment_id = !empty($comment_identity['id']) ? (int)$comment_identity['id'] : 0;
+    $user_id = get_current_user_id();
+
+	if(!$comment_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+    
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+	
+    $likesCount = get_comment_meta($comment_id, 'itv_likes_count', true);
+    if(!$likesCount) {
+        $likesCount = 0;
+    }
+    
+	$comments_like = ITV\models\CommentsLikeModel::instance();
+	if(!$comments_like->is_user_comment_like($user_id, $comment_id)) {
+	    $likesCount += 1;
+        $comments_like->add_user_comment_like($user_id, $comment_id);
+	    update_comment_meta($comment_id, 'itv_likes_count', $likesCount);
+	}
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'likesCount' => $likesCount,
+    )));    
+}
+add_action('wp_ajax_like-comment', 'ajax_like_comment');
+add_action('wp_ajax_nopriv_like-comment', 'ajax_like_comment');

@@ -91,6 +91,8 @@ fragment TaskCommentFields on Comment {
   id
   content
   date
+  likesCount
+  likeGiven
   author {
     ... on CommentAuthor {
       id

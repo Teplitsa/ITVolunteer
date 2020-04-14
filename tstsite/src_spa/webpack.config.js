@@ -24,12 +24,6 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: 'file-loader',
-            options: {
-              name: '../css/[name].css',
-            }
-          },        
-          {
             loader: "style-loader" // creates style nodes from JS strings
           },
           {

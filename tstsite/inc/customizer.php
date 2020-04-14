@@ -165,25 +165,17 @@ function ajax_close_task() {
     }
 
     $task_id = (int)$_POST['task-id'];
-    wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
-    ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
-    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    $task = get_post($task_id);
     
-    $doers = tst_get_task_doers($task_id, true);
-    $doer = array_shift($doers);
-    if($doer) {
-        UserXPModel::instance()->register_activity_from_gui($doer->ID, UserXPModel::$ACTION_TASK_DONE);
-    }
-    
-    tst_send_admin_notif_task_complete($task_id);
-    
-    $task = get_post($task_id);	
-	if($task) {
-		$users = tst_get_task_doers($task->ID);
-		$users[] = get_user_by('id', $task->post_author);;	
-		do_action('update_member_stats', $users);
-	}	
-
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+	
+	itv_close_task($task);
+	
     wp_die(json_encode(array(
         'status' => 'ok',
     )));

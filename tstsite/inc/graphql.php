@@ -6,6 +6,7 @@ require_once(dirname(__FILE__) . '/../inc/models/TimelineModel.php');
 use \WPGraphQL\AppContext;
 use \WPGraphQL\Data\DataSource;
 use \ITV\models\TimelineModel;
+use \ITV\models\CommentsLikeModel;
 
 add_filter('graphql_app_context_config', 'itv_graphql_app_context_config');
 function itv_graphql_app_context_config($config) {
@@ -212,6 +213,41 @@ function itv_register_comment_author_graphql_fields() {
                 'description' => __( 'Full name', 'tst' ),
                 'resolve'     => function( $commentAuthor ) {
                     return $commentAuthor->name;
+                },
+            ],
+        ]
+    );
+}
+
+// comments
+add_action( 'graphql_register_types', 'itv_register_comment_graphql_fields' );
+function itv_register_comment_graphql_fields() {
+    register_graphql_fields(
+        'Comment',
+        [
+            'likesCount' => [
+                'type'        => 'Int',
+                'description' => __( 'Comment likes count', 'tst' ),
+                'resolve'     => function( $comment ) {
+                    $like = get_comment_meta($comment->commentId, 'itv_likes_count', true);
+                    
+                    if(!$like) {
+                        $like = 0;
+                    }
+                    return $like;
+                },
+            ],
+            'likeGiven' => [
+                'type' => 'Boolean',
+                'description' => __( 'Comment likes count', 'tst' ),
+                'resolve'     => function( $comment ) {
+	               if(is_user_logged_in()) {
+                        $comments_like = ITV\models\CommentsLikeModel::instance();
+                        return !!$comments_like->is_user_comment_like(get_current_user_id(), $comment->commentId);
+	               }
+	               else {
+	                   return false;
+	               }
                 },
             ],
         ]

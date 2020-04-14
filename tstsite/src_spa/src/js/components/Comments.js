@@ -36,7 +36,7 @@ export function TaskComments({task, author}) {
         console.log("taskComments changed")
     }, [taskComments])
 
-    return (
+    return author.id ? (
         <div className="task-comments">
             <h3>Комментарии</h3>
             <p className="comments-intro">{`${author.fullName} будет рад услышать ваш совет, вопрос или предложение.`}</p>
@@ -49,7 +49,7 @@ export function TaskComments({task, author}) {
 
             </div>
         </div>
-    )
+    ) : null
 }
 
 function AddCommentForm(props) {
@@ -154,15 +154,53 @@ function Comment({comment, task, parentComment}) {
     const likesCount = useStoreState(store => store.task.commentsLikesCount)
 
     const setCommentToReply = useStoreActions(actions => actions.task.setCommentToReply)
-    const addCommentLike = useStoreActions(actions => actions.task.addCommentLike)
+    const setCommentLikesCount = useStoreActions(actions => actions.task.setCommentLikesCount)
 
     const handleReplyComment = (e) => {
         e.preventDefault()
         setCommentToReply(comment)
     }
 
-    const hadnleLikeClick = () => {
-        addCommentLike(comment.id)
+    const handleLikeClick = (e) => {
+        let $ = jQuery
+
+        if(!user.id) {
+            return
+        }
+
+        if(comment.likeGiven) {
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('comment_gql_id', comment.id)
+
+        let action = 'like-comment'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                setCommentLikesCount({likesCount: result.likesCount, commentId: comment.id})
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )  
+        
     }
 
     return (
@@ -177,7 +215,9 @@ function Comment({comment, task, parentComment}) {
                     <time>{format(new Date(comment.date), 'dd.MM.yyyy в HH:mm')}</time>
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">
-                        <div className="like" onClick={hadnleLikeClick}>{likesCount[comment.id] ? likesCount[comment.id] : 0}</div>
+                        <div className="like" onClick={(e) => {
+                            handleLikeClick(e, comment.id)
+                        }}>{likesCount[comment.id] ? likesCount[comment.id] : 0}</div>
                         <div className="actions">
                             <a href="#" className="report d-none">Пожаловаться</a>
                             <a href="#" className="reply-comment edit" onClick={handleReplyComment}>Ответить</a>

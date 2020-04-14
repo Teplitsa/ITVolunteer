@@ -87,7 +87,7 @@ export function TaskBody({task, author}) {
                 
 
                 { !!user.id && user.id === author.id &&
-                <a href={`/task-actions/?task=${task.databaseId}`} className="edit">Редактировать</a>
+                <a href={`/task-actions/?task=${task.databaseId}`} className="edit" target="_blank">Редактировать</a>
                 }
 
             </div>
@@ -298,7 +298,7 @@ export function TaskTimeline({task, author}) {
 
         let formData = new FormData()
         formData.append('message', text)
-        formData.append('due_date', suggestedCloseDate.toString())
+        formData.append('due_date', (new Date(suggestedCloseDate - (new Date()).getTimezoneOffset() * 60000)).toISOString().slice(0, 19).replace('T', ' '))
         formData.append('task-id', task.databaseId)
 
         let action = 'suggest-close-date'
@@ -328,6 +328,88 @@ export function TaskTimeline({task, author}) {
                 utils.itvShowAjaxError({action, error})
             }
         )                
+    }
+
+    function handleAcceptSuggestedDate(e, timelineItemId) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('timeline-item-id', timelineItemId)
+        formData.append('task-id', task.databaseId)
+
+        let action = 'accept-close-date'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                loadTaskTimeline()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )            
+    }
+
+    function handleRejectSuggestedDate(e, timelineItemId) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('timeline-item-id', timelineItemId)
+        formData.append('task-id', task.databaseId)
+
+        let action = 'reject-close-date'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                loadTaskTimeline()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )            
     }
 
     // suggest close task
@@ -398,6 +480,88 @@ export function TaskTimeline({task, author}) {
                 utils.itvShowAjaxError({action, error})
             }
         )            
+    }
+
+    function handleAcceptSuggestedClose(e) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('timeline-item-id', timelineItemId)
+        formData.append('task-id', task.databaseId)
+
+        let action = 'accept-close'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                loadTaskTimeline()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )       
+    }
+
+    function handleRejectSuggestedClose(e) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('timeline-item-id', timelineItemId)
+        formData.append('task-id', task.databaseId)
+
+        let action = 'reject-close'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                loadTaskTimeline()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )       
     }
 
     // add review
@@ -513,7 +677,7 @@ export function TaskTimeline({task, author}) {
         <div className="timeline">
             <h3>Календарь задачи</h3>
             <div className="timeline-list">
-                {timeline.map((item, key) => <div className={`checkpoint ${item.status} ${item.type}`} key={key}>
+                {timeline.map((item, key) => <div className={`checkpoint ${item.status} ${item.type} ${item.decision}`} key={key}>
                         <div className="date">
                             <span className="date-num">{format(new Date(item.timeline_date), 'd')}</span>
                             {format(new Date(item.timeline_date), 'LLL', {locale: ru})}
@@ -654,10 +818,13 @@ export function TaskTimeline({task, author}) {
 
                                     {user.id == author.id &&
                                     <div className="decision-action">
-                                        <a href="#" className="accept">Принять</a>
-                                        <a href="#" className="reject danger">Отклонить</a>
-                                    </div>
-                                    }
+                                        <a href="#" className="accept" onClick={(e) => {
+                                            handleAcceptSuggestedClose(e, item.id)
+                                        }}>Принять</a>
+                                        <a href="#" className="reject danger" onClick={(e) => {
+                                            handleRejectSuggestedClose(e, item.id)
+                                        }}>Отклонить</a>
+                                    </div>}
                                 </div>
                             }
 
@@ -671,20 +838,22 @@ export function TaskTimeline({task, author}) {
                                 <div className="details">
                                     <UserSmallView user={approvedDoer} />
                                     <div className="comment">{item.message}</div>
+
+                                    {user.id == author.id && item.status === 'current' &&
+                                    <div className="decision-action">
+                                        <a href="#" className="accept" onClick={(e) => {
+                                            handleAcceptSuggestedDate(e, item.id)
+                                        }}>Принять</a>
+                                        <a href="#" className="reject danger" onClick={(e) => {
+                                            handleRejectSuggestedDate(e, item.id)
+                                        }}>Отклонить</a>
+                                    </div>}
                                 </div>
                             }
 
                             {item.type == 'date_decision' && approvedDoer &&
                                 <div className="details">
                                     <UserSmallView user={author} />
-                                    
-                                    {user.id == author.id &&
-                                    <div className="decision-action">
-                                        <a href="#" className="accept">Принять</a>
-                                        <a href="#" className="reject danger">Отклонить</a>
-                                    </div>
-                                    }
-
                                 </div>
                             }
 
