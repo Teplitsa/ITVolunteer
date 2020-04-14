@@ -14,6 +14,7 @@ import ratingStarEmptyGray from '../../img/icon-star-empty-gray.svg'
 import ratingStarFilled from '../../img/icon-star-filled.svg'
 import ratingStarEmptyWhite from '../../img/icon-star-empty-white.svg'
 
+import { getTaskLazyQuery } from '../network'
 import * as utils from "../utils"
 
 import {UserSmallView, TaskDoers} from './User'
@@ -21,6 +22,92 @@ import {UserSmallView, TaskDoers} from './User'
 export function TaskBody({task, author}) {
     const user = useStoreState(store => store.user.data)
     const approvedDoer = useStoreState(store => store.task.approvedDoer)
+
+    const [getTaskLazy, { 
+        loading: taskLoading, 
+        error: taskLoadError, 
+        data: taskData
+    }] = getTaskLazyQuery(task.id)
+
+    function handleUnpublishTask(e) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('task-id', task.databaseId)
+
+        let action = 'unpublish-task'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                getTaskLazy()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )              
+    }
+
+    function handlePublishTask(e) {
+        e.preventDefault()
+
+        let $ = jQuery
+
+        if(user.id !== author.id) {
+            console.log('not author')
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('task-id', task.databaseId)
+
+        let action = 'publish-task'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                getTaskLazy()
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )              
+    }
 
     return task.id ? (<div className="task-body">                    
             <header>
@@ -58,7 +145,7 @@ export function TaskBody({task, author}) {
                 }
             </header>
             <article dangerouslySetInnerHTML={{__html: task.content}} />
-            { !!user.id && user.id === author.id &&
+            { !!user.id && (user.id === author.id || (approvedDoer && approvedDoer.id == user.id)) &&
             <TaskStages task={task}/>
             }
 
@@ -66,30 +153,39 @@ export function TaskBody({task, author}) {
             <TaskTimeline task={task} author={author} />
             }
 
-            { false && !!user.id && user.id === author.id &&
-            <div className="task-publication-actions">
-                <a href="#" className="accept-task">Одобрить задачу</a>
-                <a href="#" className="reject-task danger">Отклонить задачу</a>
-            </div>
-            }
-
-            <div className="task-author-actions">
-                {[
-                    ['draft', 'Черновик'], 
-                    ['publish', 'Опубликовано'],
-                    ['in_work', 'В работе'],
-                    ['closed', 'Закрыто'],
-                ].map((item, key) => {
-                    return task.status == item[0] ? (
-                        <span className={`status ${item[0]}`} key={key}>{item[1]}</span>
-                    ) : null
-                })}
-                
-
-                { !!user.id && user.id === author.id &&
-                <a href={`/task-actions/?task=${task.databaseId}`} className="edit" target="_blank">Редактировать</a>
+            <div className="task-basic-actions-bar">
+                <div>
+                {!!user.id && user.id === author.id && ['draft', 'publish'].find(status => task.status === status) &&
+                <div className="task-publication-actions">
+                    {task.status == 'draft' &&
+                    <a href="#" className="accept-task" onClick={handlePublishTask}>Опубликовать</a>    
+                    }
+                    {task.status == 'publish' &&
+                    <a href="#" className="reject-task danger" onClick={handleUnpublishTask}>Снять с публикации</a>    
+                    }
+                    
+                </div>
                 }
+                </div>
 
+                <div className="task-author-actions">
+                    {[
+                        ['draft', 'Черновик'], 
+                        ['publish', 'Опубликовано'],
+                        ['in_work', 'В работе'],
+                        ['closed', 'Закрыто'],
+                    ].map((item, key) => {
+                        return task.status == item[0] ? (
+                            <span className={`status ${item[0]}`} key={key}>{item[1]}</span>
+                        ) : null
+                    })}
+                    
+
+                    { !!user.id && user.id === author.id &&
+                    <a href={`/task-actions/?task=${task.databaseId}`} className="edit" target="_blank">Редактировать</a>
+                    }
+
+                </div>
             </div>
         </div>        
     ) : null  
@@ -149,8 +245,8 @@ export function TaskStages(props) {
                 <div className={`stage ${task.status == 'draft' ? 'active' : 'done'}`}><i>1</i>Публикация</div>
                 <div className={`stage ${task.status == 'publish' ? 'active' : (['draft'].find(s => s == task.status) ? '' : 'done')}`}><i>2</i>Поиск</div>
                 <div className={`stage ${task.status == 'in_work' ? 'active' : (['draft', 'publish'].find(s => s == task.status) ? '' : 'done')}`}><i>3</i>В работе</div>
-                <div className={`stage ${task.status == 'closed' && !task.reviewsDone ? 'active' : (['draft', 'publish', 'in_work'].find(s => s == task.status) ? '' : 'done')}`}><i>4</i>Закрытие</div>
-                <div className={`stage last ${task.status == 'closed' && task.reviewsDone ? 'active' : (['draft', 'publish', 'in_work', 'closed'].find(s => s == task.status) ? '' : 'done')}`}><i>5</i>Отзывы<b className="finish-flag"/></div>
+                <div className={`stage ${task.status == 'closed' ? 'done' : ''}`}><i>4</i>Закрытие</div>
+                <div className={`stage last ${task.status == 'closed' && (!task.reviewsDone ? 'active' : 'done')}`}><i>5</i>Отзывы<b className="finish-flag"/></div>
             </div>
         </div>
    )
@@ -161,6 +257,7 @@ export function TaskTimeline({task, author}) {
     const approvedDoer = useStoreState(store => store.task.approvedDoer)
     const timeline = useStoreState(store => store.timeline.timeline)
     const setTimeline = useStoreActions(actions => actions.timeline.setTimeline)
+    const setTaskData = useStoreActions(actions => actions.task.setData)
 
     // suggest
     const [isOpenDateSuggest, setOpenDateSuggest] = useState(false)
@@ -177,6 +274,12 @@ export function TaskTimeline({task, author}) {
     const [isOpenReviewForm, setOpenReviewForm] = useState(false)
     const [newReviewRating, setNewReviewRating] = useState(0)
 
+    const [getTaskLazy, { 
+        loading: taskLoading, 
+        error: taskLoadError, 
+        data: taskData
+    }] = getTaskLazyQuery(task.id)
+
     useEffect(() => {
         if(!task || !task.id) {
             return
@@ -185,6 +288,14 @@ export function TaskTimeline({task, author}) {
         loadTaskTimeline()
         loadTaskReviews()
     }, [task])
+
+    useEffect(() => {
+        if(!taskData) {
+            return
+        }
+
+        setTaskData(taskData.task)
+    }, [taskData])    
 
     useEffect(() => {
         if(!dateSuggestFormRef) {
@@ -482,7 +593,7 @@ export function TaskTimeline({task, author}) {
         )            
     }
 
-    function handleAcceptSuggestedClose(e) {
+    function handleAcceptSuggestedClose(e, timelineItemId) {
         e.preventDefault()
 
         let $ = jQuery
@@ -515,7 +626,7 @@ export function TaskTimeline({task, author}) {
                     return utils.itvShowAjaxError({message: result.message})
                 }
 
-                loadTaskTimeline()
+                getTaskLazy()
             },
             (error) => {
                 utils.itvShowAjaxError({action, error})
@@ -523,7 +634,7 @@ export function TaskTimeline({task, author}) {
         )       
     }
 
-    function handleRejectSuggestedClose(e) {
+    function handleRejectSuggestedClose(e, timelineItemId) {
         e.preventDefault()
 
         let $ = jQuery
@@ -629,7 +740,12 @@ export function TaskTimeline({task, author}) {
                 }
 
                 setOpenReviewForm(false)
-                loadTaskReviews()
+                if(reviewForAuthor || reviewForDoer) {
+                    getTaskLazy()
+                }
+                else {
+                    loadTaskReviews()
+                }
             },
             (error) => {
                 utils.itvShowAjaxError({action, error})
@@ -702,9 +818,9 @@ export function TaskTimeline({task, author}) {
                                                 <div className="stars">
                                                     {[1, 2, 3, 4, 5].map((i) => {
                                                         return reviewForAuthor.rating >= i ? (
-                                                            <img src={ratingStarFilled} />
+                                                            <img src={ratingStarFilled} key={`Star${i}`} />
                                                         ) : (
-                                                            <img src={ratingStarEmptyGray} />
+                                                            <img src={ratingStarEmptyGray} key={`Star${i}`} />
                                                         )
                                                     })}
                                                 </div>
@@ -733,10 +849,20 @@ export function TaskTimeline({task, author}) {
                                     </div>
                                     }
 
-                                    {(approvedDoer && user.id === approvedDoer.id && !reviewForAuthor) 
-                                        || (user.id === author.id && !reviewForDoer) &&
+                                    {((approvedDoer && user.id === approvedDoer.id && !reviewForAuthor) 
+                                        || (user.id === author.id && !reviewForDoer)) &&
                                     <div className="comment-actions">
+                                        {!reviewForDoer && !reviewForAuthor &&
+                                        <div className="first-review-description">Оставьте свой отзыв. Он важен для получения обратной связи</div>
+                                        }
+
+                                        {!reviewForDoer && !reviewForAuthor &&
+                                        <a href="#" className="action add-review first-review" onClick={handleOpenReview}>Написать отзыв</a>
+                                        }
+
+                                        {(reviewForDoer || reviewForAuthor) &&
                                         <a href="#" className="action add-review" onClick={handleOpenReview}>Написать отзыв</a>
+                                        }
                                     </div>
                                     }
 
@@ -816,7 +942,7 @@ export function TaskTimeline({task, author}) {
                                     <UserSmallView user={approvedDoer} />
                                     <div className="comment">{item.message}</div>
 
-                                    {user.id == author.id &&
+                                    {user.id == author.id && item.status != 'past' &&
                                     <div className="decision-action">
                                         <a href="#" className="accept" onClick={(e) => {
                                             handleAcceptSuggestedClose(e, item.id)

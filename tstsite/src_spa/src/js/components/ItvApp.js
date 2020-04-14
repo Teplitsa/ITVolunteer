@@ -26,6 +26,7 @@ function ItvApp(props) {
                         <PageTaskList />
                     </Route>
                     <Route path="/tasks/:taskSlug" component={PageTask} />
+                    <Route path="/" component={PageTask} />
                 </Switch>            
                 <SiteFooter/>
             </Router>

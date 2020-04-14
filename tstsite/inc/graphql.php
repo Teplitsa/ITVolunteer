@@ -50,7 +50,10 @@ function itv_register_task_graphql_fields() {
                 'type'        => 'Bool',
                 'description' => __( 'Author and doer left reviews', 'tst' ),
                 'resolve'     => function( $task, $args, $context ) {
-                    return false;
+                    $task_doers = tst_get_task_doers($task->ID, true);
+                    $reviewForAuthor = ItvReviewsAuthor::instance()->get_review_for_author_and_task($task->post_author, $task->ID);
+                    $reviewForDoer = count($task_doers) > 0 ? ItvReviews::instance()->get_review_for_doer_and_task($task_doers[0]->ID, $task->ID) : null;
+                    return !!$reviewForAuthor && !!$reviewForDoer;
                 },
             ],
 //             'authorId' => [

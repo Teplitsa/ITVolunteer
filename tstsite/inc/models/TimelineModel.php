@@ -220,4 +220,8 @@ class TimelineModel extends ITVSingletonModel {
         $this->complete_current_items($task_id);
         $this->add_item($task_id, $type, $args);
     }
+
+    public function delete_task_timeline($task_id) {
+        TimelineItem::where(['task_id' => $task_id])->delete();
+    }
 }

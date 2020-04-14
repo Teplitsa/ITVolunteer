@@ -218,6 +218,14 @@ export const getTaskQuery = (taskGqlId) => {
         },
     })
 }
+export const getTaskLazyQuery = (taskGqlId) => {
+    return useLazyQuery(TASK_QUERY, {
+        variables: {
+            taskGqlId,
+        },
+        fetchPolicy: "network-only",
+    })
+}
 
 
 export const TASK_BY_SLUG_QUERY = gql`

@@ -20,22 +20,32 @@ function AccountInHeader({userId}) {
     return (
         <div className="account-col">
             <a href="#" className="go-old">Старый дизайн</a>
-            <a href="#" className="open-notif">
-                <img src={bell} alt="Сообщения" />
-                { true && 
-                    <span className="new-notif"></span>
-                }
-            </a>
-            <a href={user.profileURL} className="open-account-menu">
-                <span 
-                    className="avatar-wrapper"
-                    style={{
-                        backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
-                    }}
-                    title={user && `Привет, ${user.fullName}!`}
-                />
-                <img src={arrowDown} className="arrow-down" alt="arrowDown" />
-            </a>
+            {!!user.id &&
+            <div className="account-symbols">
+                <a href="#" className="open-notif">
+                    <img src={bell} alt="Сообщения" />
+                    { true && 
+                        <span className="new-notif"></span>
+                    }
+                </a>
+                <a href={user.profileURL} className="open-account-menu" target="_blank">
+                    <span 
+                        className="avatar-wrapper"
+                        style={{
+                            backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+                        }}
+                        title={user && `Привет, ${user.fullName}!`}
+                    />
+                    <img src={arrowDown} className="arrow-down" alt="arrowDown" />
+                </a>
+            </div>
+            }
+            {!user.id &&
+            <div className="account-enter-links">
+                <a href="/registration" className="account-enter-link account-login" target="_blank">Вход</a>
+                <a href="/registration" className="account-enter-link account-registration" target="_blank">Регистрация</a>
+            </div>
+            }
         </div>
     )
 }
@@ -51,7 +61,7 @@ export function SiteHeader(props) {
                 </a>
                 <div className="main-menu-col">
                     <Link to="/tasks/publish/">Задачи</Link>
-                    <a href={ITV_URLS.volunteers}>Волонтеры</a>
+                    <a href={ITV_URLS.volunteers} target="_blank">Волонтеры</a>
                     <a href="#" className="drop-menu">О проекте</a>
                 </div>
                 <AccountInHeader />

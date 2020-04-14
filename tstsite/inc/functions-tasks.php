@@ -711,10 +711,11 @@ add_action('wp_ajax_reject-close-date', 'ajax_reject_close_date');
 add_action('wp_ajax_nopriv_reject-close-date', 'ajax_reject_close_date');
 
 
-function itv_close_task($task) {
+function itv_close_task($task, $user_id) {
     wp_update_post(array('ID' => $task->ID, 'post_status' => 'closed'));
-    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
-    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_CLOSE, $user_id);
+    UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_MY_TASK_DONE);
     
     $doers = tst_get_task_doers($task->ID, true);
     $doer = array_shift($doers);
@@ -790,7 +791,7 @@ function ajax_accept_close() {
     
     if($suggest_timeline_item && $close_timeline_item && $reviews_timeline_item) {
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_ACCEPT]);
-        itv_close_task($task);
+        itv_close_task($task, get_current_user_id());
         
         $timeline->complete_current_items($task->ID);
         

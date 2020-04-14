@@ -55,6 +55,27 @@ body {
             display: flex;
             justify-content: flex-end;
 
+            .account-symbols {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .account-enter-links {
+                border-left: 1px solid $color-gray-light-md;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+
+                a {
+                    @include text-sm-bold;
+
+                    &:first-child {
+                        margin-left: $base * 4;
+                        margin-right: $base * 3;
+                    }
+                }
+            }
+
             .go-old {
                 @include text-xs-bold;
                 @include a-no-hover-underline;
@@ -67,7 +88,7 @@ body {
                 align-items: center;
                 justify-content: center;
                 border-radius: 10px;
-                margin-right: 32px;
+                margin-right: 20px;
             }   
             
             .open-notif {
@@ -80,6 +101,7 @@ body {
                 width: 44px;
                 height: 44px;
                 margin-right: 36px;
+                margin-left: 12px;
                 box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08), inset -1px -1px 1px rgba(129, 118, 111, 0.16);
 
                 & > img {

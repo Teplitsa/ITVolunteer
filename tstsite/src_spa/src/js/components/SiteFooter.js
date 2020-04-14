@@ -1,30 +1,25 @@
 import React, {Component} from 'react'
+import {
+  Link
+} from "react-router-dom";
 
 import logo from '../../img/pic-logo-itv.svg'
 import logoTeplitsa from '../../img/pic-logo-teplitsa.svg'
 
-class SiteFooter extends Component {
+import { ITV_URLS } from '../const'
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            stats: {
-                total_members: 5173,
-                total_tasks: 2783,
-                tasks_solved: 979,
-            },
-        }
-    }
+function SiteFooter(props) {
+    const basicStats = ITV_BASIC_STATS;
 
-    render() {
-        return <footer className="site-footer" role="contentinfo"><div className="site-footer-inner">
+    return (
+        <footer className="site-footer" role="contentinfo"><div className="site-footer-inner">
             <div className="header">
                 <a href="#" className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
                 <div className="links-col">
-                    <a href="#">Задачи</a>
-                    <a href="#">Волонтеры</a>
+                    <Link to="/tasks/publish/">Задачи</Link>
+                    <a href={ITV_URLS.volunteers} target="_blank">Волонтеры</a>
                     <a href="#" className="drop-menu">О проекте</a>
                 </div>
             </div>
@@ -32,28 +27,28 @@ class SiteFooter extends Component {
                 <div className="col-stats">
                     <h3>Статистика проекта</h3>
                     <div className="stats">
-                        <p>Всего участников: 5173</p>
-                        <p>Всего задач: 2783</p>
-                        <p>Задач решено: 979</p>
+                        <p>{`Всего участников: ${basicStats.activeMemebersCount}`}</p>
+                        <p>{`Всего задач: ${basicStats.closedTasksCount + basicStats.workTasksCount + basicStats.newTasksCount}`}</p>
+                        <p>{`Задач решено: ${basicStats.closedTasksCount}`}</p>
                     </div>
                 </div>
                 <div className="col-projects">
                     <h3>Проекты Теплицы</h3>
                     <div className="projects">
                         <div className="project">
-                            <a href="#">Кандинский</a>
+                            <a href="https://knd.te-st.ru" target="_blank">Кандинский</a>
                             <p>Сайт-конструктор для НКО</p>
                         </div>
                         <div className="project">
-                            <a href="#">Аудит</a>
+                            <a href="https://audit.te-st.ru" target="_blank">Аудит</a>
                             <p>Интерактивная система аудита сайта НКО</p>
                         </div>
                         <div className="project">
-                            <a href="#">Лейка</a>
+                            <a href="https://leyka.te-st.ru" target="_blank">Лейка</a>
                             <p>Сбор пожертвований на сайте</p>
                         </div>
                         <div className="project">
-                            <a href="#">Онлайн курс</a>
+                            <a href="https://teplo.social" target="_blank">Онлайн курс</a>
                             <p>Как создать, развивать и продвигать сайт НКО</p>
                         </div>
                     </div>
@@ -78,7 +73,7 @@ class SiteFooter extends Component {
                 </div>
             </div>
         </div></footer>
-    }
+    )
 }
 
 export default SiteFooter

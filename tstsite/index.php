@@ -3,6 +3,8 @@
  * The main archive template.
  **/
 
-get_header(); ?>
+get_header(); 
 
-<?php get_footer();
+include_once(get_template_directory() . '/partials/spa-common-data.php');
+
+get_footer();

@@ -35,7 +35,7 @@ export function PageTask(props) {
         loading: taskLoading, 
         error: taskLoadError, 
         data: taskData
-    } = getTaskBySlugQuery(taskSlug)
+    } = taskSlug ? getTaskBySlugQuery(taskSlug) : getTaskQuery(ITV_CURRENT_TASK_GQLID)
     
     const {
         loading: taskAuthorLoading,
@@ -159,7 +159,7 @@ export function PageTask(props) {
 
                 {!approvedDoer && !!user.id && user.id == author.id && doers.length < 2 &&
                 <div className="sidebar-users-block no-responses">
-                    <p>Мало просмотров и откликов на задачу? Возможно, <a href="#">наши советы помогут вам</a></p>
+                    <p>Мало просмотров и откликов на задачу? Возможно, <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">наши советы помогут вам</a></p>
                 </div>
                 }
 

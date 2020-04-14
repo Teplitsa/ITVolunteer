@@ -68,16 +68,39 @@ function ajax_publish_task() {
         )));
     }
 
-    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
-	if($author_id = get_post($upd_id)->post_author){
-		do_action('update_member_stats', array($author_id));
+    $task_id = (int)$_POST['task-id'];
+    $task = get_post($task_id);
+	$user_id = get_current_user_id();
+    
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
 	}
 	
-    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $user_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+    
+    wp_update_post(array('ID' => $task->ID, 'post_status' => 'publish'));
+	do_action('update_member_stats', array($task->post_author));
+	
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_PUBLISH, $user_id);
     
     wp_die(json_encode(array(
         'status' => 'ok',
-        'permalink' => get_permalink((int)$_POST['task-id'])
+        'permalink' => get_permalink($task->ID)
     )));
 }
 add_action('wp_ajax_publish-task', 'ajax_publish_task');
@@ -98,13 +121,36 @@ function ajax_unpublish_task() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
-
-    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'draft'));
-    if($author_id = get_post($upd_id)->post_author){
-		do_action('update_member_stats', array($author_id));
+    
+    $task_id = (int)$_POST['task-id'];
+    $task = get_post($task_id);
+	$user_id = get_current_user_id();
+    
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
 	}
 	
-    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $user_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    wp_update_post(array('ID' => $task->ID, 'post_status' => 'draft'));
+	do_action('update_member_stats', array($task->post_author));
+	
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_UNPUBLISH, $user_id);
     
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -174,7 +220,7 @@ function ajax_close_task() {
         )));
 	}
 	
-	itv_close_task($task);
+	itv_close_task($task, get_current_user_id());
 	
     wp_die(json_encode(array(
         'status' => 'ok',

@@ -195,8 +195,8 @@ function TaskList(props) {
 function TaskListItem(props) {
     const task = props.task
 
-    return (<div className="task-body">                    
-                <div class="task-author-meta">
+    return task ? (<div className="task-body">                    
+                <div className="task-author-meta">
                     <UserSmallView user={task.author} />
                     {!!task.author.organizationName &&
                     <UserSmallView user={{
@@ -243,5 +243,5 @@ function TaskListItem(props) {
                     }
                 </div>
                 }
-    </div>)
+    </div>) : null
 }
