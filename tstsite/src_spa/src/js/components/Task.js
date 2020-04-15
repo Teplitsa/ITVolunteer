@@ -145,11 +145,11 @@ export function TaskBody({task, author}) {
                 }
             </header>
             <article dangerouslySetInnerHTML={{__html: task.content}} />
-            { !!user.id && (user.id === author.id || (approvedDoer && approvedDoer.id == user.id)) &&
+            { !!user.id &&
             <TaskStages task={task}/>
             }
 
-            { !!user.id && (user.id === author.id || (!!approvedDoer && user.id === approvedDoer.id)) &&
+            { !!user.id &&
             <TaskTimeline task={task} author={author} />
             }
 
