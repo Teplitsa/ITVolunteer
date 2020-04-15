@@ -33,6 +33,10 @@ const taskModel = {
         state.doers.push(payload)
     }),
     setData: action((state, payload) => {
+        if(!payload) {
+            return
+        }
+        
         state.data = payload
         if(payload.approvedDoer) {
             state.approvedDoer = payload.approvedDoer
