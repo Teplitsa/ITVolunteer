@@ -98,6 +98,9 @@ function ajax_publish_task() {
 	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_PUBLISH, $user_id);
     
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+    
     wp_die(json_encode(array(
         'status' => 'ok',
         'permalink' => get_permalink($task->ID)
@@ -151,6 +154,9 @@ function ajax_unpublish_task() {
 	do_action('update_member_stats', array($task->post_author));
 	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_UNPUBLISH, $user_id);
+    
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->make_past_item_current($task_id, TimelineModel::$TYPE_PUBLICATION);
     
     wp_die(json_encode(array(
         'status' => 'ok',

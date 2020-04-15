@@ -1,10 +1,11 @@
-import React, {Component} from 'react'
+import React, {Component, useEffect} from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { useStoreState, useStoreActions } from "easy-peasy"
 
 import iconApproved from '../../img/icon-all-done.svg'
 import metaIconPaseka from '../../img/icon-paseka.svg'
 
+import { getTaskLazyQuery } from '../network'
 import * as utils from "../utils"
 
 export function UserSmallView({user}) {
@@ -86,6 +87,22 @@ export function DoerCard({doer, user, author, task}) {
     const doers = useStoreState(store => store.task.doers)
     const approveDoer = useStoreActions(actions => actions.task.approveDoer)
     const declineDoer = useStoreActions(actions => actions.task.declineDoer)
+    const setTaskData = useStoreActions(actions => actions.task.setData)
+    const loadTimeline = useStoreActions(actions => actions.timeline.loadTimeline)
+
+    const [getTaskLazy, { 
+        loading: taskLoading, 
+        error: taskLoadError, 
+        data: taskData
+    }] = getTaskLazyQuery(task.id)
+
+    useEffect(() => {
+        if(!taskData) {
+            return
+        }
+
+        setTaskData(taskData.task)
+    }, [taskData])    
 
     const handleApproveDoer = (e, doer) => {
         e.preventDefault()
@@ -114,12 +131,13 @@ export function DoerCard({doer, user, author, task}) {
                 }
 
                 approveDoer(doer)
+                // getTaskLazy()
+                loadTimeline(task.id)
             },
             (error) => {
                 utils.itvShowAjaxError({action, error})
             }
         )
-
     }
 
     const handleDeclineDoer = (e, doer) => {
@@ -154,7 +172,6 @@ export function DoerCard({doer, user, author, task}) {
                 utils.itvShowAjaxError({action, error})
             }
         )
-
     }
 
     return (

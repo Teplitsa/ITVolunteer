@@ -45,8 +45,7 @@ try {
         $timeline->create_task_timeline($post_id);
         
         $task_timeline = [];
-        $task_timeline_iter = TimelineItem::where(['task_id' => $post_id])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->get();
-        foreach($task_timeline_iter as $timeline_item) {
+        foreach($timeline->get_task_timeline_items($post_id) as $timeline_item) {
             $task_timeline[] = $timeline_item;
         }
         $task_timeline = array_reverse($task_timeline);

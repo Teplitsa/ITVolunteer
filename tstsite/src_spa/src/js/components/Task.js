@@ -256,7 +256,7 @@ export function TaskTimeline({task, author}) {
     const user = useStoreState(store => store.user.data)
     const approvedDoer = useStoreState(store => store.task.approvedDoer)
     const timeline = useStoreState(store => store.timeline.timeline)
-    const setTimeline = useStoreActions(actions => actions.timeline.setTimeline)
+    const loadTimeline = useStoreActions(actions => actions.timeline.loadTimeline)
     const setTaskData = useStoreActions(actions => actions.task.setData)
 
     // suggest
@@ -315,34 +315,7 @@ export function TaskTimeline({task, author}) {
 
     // timeline
     async function loadTaskTimeline() {
-        let formData = new FormData()
-        formData.append('task_gql_id', task.id)
-
-        let action = 'get-task-timeline'
-        fetch(utils.itvAjaxUrl(action), {
-            method: 'post',
-            body: formData,
-        })
-        .then(res => {
-            try {
-                return res.json()
-            } catch(ex) {
-                utils.itvShowAjaxError({action, error: ex})
-                return {}
-            }
-        })
-        .then(
-            (result) => {
-                if(result.status == 'error') {
-                    return utils.itvShowAjaxError({message: result.message})
-                }
-
-                setTimeline(result.timeline)
-            },
-            (error) => {
-                utils.itvShowAjaxError({action, error})
-            }
-        )
+        loadTimeline(task.id)
     }
 
     // suggest close date
@@ -793,7 +766,7 @@ export function TaskTimeline({task, author}) {
         <div className="timeline">
             <h3>Календарь задачи</h3>
             <div className="timeline-list">
-                {timeline.map((item, key) => <div className={`checkpoint ${item.status} ${item.type} ${item.decision}`} key={key}>
+                {timeline.map((item, key) => <div className={`checkpoint ${item.status} ${item.type} ${item.decision} ${item.isOverdue ? 'overdue' : ''}`} key={key}>
                         <div className="date">
                             <span className="date-num">{format(new Date(item.timeline_date), 'd')}</span>
                             {format(new Date(item.timeline_date), 'LLL', {locale: ru})}

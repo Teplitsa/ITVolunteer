@@ -42,8 +42,8 @@ function AccountInHeader({userId}) {
             }
             {!user.id &&
             <div className="account-enter-links">
-                <a href="/registration" className="account-enter-link account-login" target="_blank">Вход</a>
-                <a href="/registration" className="account-enter-link account-registration" target="_blank">Регистрация</a>
+                <a href="/registration" className="account-enter-link account-login">Вход</a>
+                <a href="/registration" className="account-enter-link account-registration">Регистрация</a>
             </div>
             }
         </div>

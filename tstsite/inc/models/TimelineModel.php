@@ -76,8 +76,12 @@ class TimelineModel extends ITVSingletonModel {
         ];
     }
     
+    public function get_task_timeline_items($task_id) {
+        return TimelineItem::where(['task_id' => $task_id])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->get();
+    }
+    
     public function get_task_timeline($task_id) {
-        $custom_items = TimelineItem::where(['task_id' => $task_id])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->get();
+        $custom_items = $this->get_task_timeline_items($task_id);
         
         foreach($custom_items as $item) {
             if(in_array($item->type, [TimelineModel::$TYPE_DATE_DECISION, TimelineModel::$TYPE_CLOSE_DECISION])) {
@@ -92,8 +96,7 @@ class TimelineModel extends ITVSingletonModel {
                 $item->doer = itv_get_user_in_gql_format($doer);
             }
             
-            #TODO - calc overdue
-            $item->is_overdue = false;
+            $item->isOverdue = in_array($item->type, [TimelineModel::$TYPE_SEARCH_DOER, TimelineModel::$TYPE_CLOSE, TimelineModel::$TYPE_REVIEW]) && strtotime($item->due_date) < strtotime(date('Y-m-d', time()));
         }
         
         return $custom_items;
@@ -163,6 +166,15 @@ class TimelineModel extends ITVSingletonModel {
         }
     }
     
+    public function fix_current_items($task_id, $status) {
+        $custom_items = TimelineItem::where(['task_id' => $task_id, 'status' => TimelineModel::$STATUS_CURRENT])->get();
+        
+        foreach($custom_items as $item) {
+            $item->status = $status;
+            $item->save();
+        }
+    }
+    
     public function get_items($task_id, $type=null, $status=null) {
         $filter = ['task_id' => $task_id];
         
@@ -210,7 +222,7 @@ class TimelineModel extends ITVSingletonModel {
         $item = TimelineItem::where(['task_id' => $task_id, 'type' => $type, 'status' => TimelineModel::$STATUS_PAST])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->first();
         
         if($item) {
-            $this->complete_current_items($task_id);
+            $this->fix_current_items($task_id, TimelineModel::$STATUS_FUTURE);
             $item->status = TimelineModel::$STATUS_CURRENT;
             $item->save();
         }        

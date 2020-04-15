@@ -159,6 +159,7 @@ query Task($taskGqlId: ID!) {
         doerCandidatesCount
         status
         reviewsDone
+        nextTaskSlug
 
         approvedDoer {
           id
@@ -241,6 +242,7 @@ query Task($taskSlug: ID!) {
         doerCandidatesCount
         status
         reviewsDone
+        nextTaskSlug
 
         approvedDoer {
           id

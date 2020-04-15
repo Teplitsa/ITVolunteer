@@ -56,6 +56,29 @@ function itv_register_task_graphql_fields() {
                     return !!$reviewForAuthor && !!$reviewForDoer;
                 },
             ],
+            'nextTaskSlug' => [
+                'type'        => 'String',
+                'description' => __( 'Next task slug', 'tst' ),
+                'resolve'     => function( $task, $args, $context ) {
+                    $tasks_query = new WP_Query(array(
+                    	'post_type'      => 'tasks',
+                    	'post_status'    => array('publish'),
+                    	'posts_per_page' => 1,
+                    	'author__not_in' => array(ACCOUNT_DELETED_ID),
+                        'post__not_in' => array($task->ID),
+                        'date_query' => array(
+                            array(
+                                'before'     => $task->date,
+                            ),
+                        ),
+                    ));
+                    
+                    $posts = $tasks_query->get_posts();
+                    $nextPost = !empty($posts) ? $posts[0] : null;
+                    
+                    return $nextPost ? $nextPost->post_name : "";
+                },
+            ],
 //             'authorId' => [
 //                 'type'        => 'Int',
 //                 'description' => __( 'Task views count', 'tst' ),

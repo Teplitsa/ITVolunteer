@@ -139,6 +139,38 @@ const timelineModel = {
         state.timeline = payload
         state.isLoaded = true
     }),
+    loadTimeline: thunk((actions, payload) => {
+        let formData = new FormData()
+        formData.append('task_gql_id', payload)
+
+        let action = 'get-task-timeline'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+
+            actions.setUserLoaded(true)
+        })
+        .then(
+            (result) => {
+                if(result.status == 'error') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                actions.setTimeline(result.timeline)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }),
 }
 
 const taskListModel = {

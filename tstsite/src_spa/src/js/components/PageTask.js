@@ -1,5 +1,8 @@
 import React, {Component, useState, useEffect} from 'react'
 import { useStoreState, useStoreActions } from "easy-peasy"
+import {
+  Link
+} from "react-router-dom";
 
 import * as utils from "../utils"
 import { getTaskAuthorQuery, getTaskQuery, getTaskDoersQuery, getTaskBySlugQuery } from '../network'
@@ -131,7 +134,7 @@ export function PageTask(props) {
                 {!!user.id && user.id != author.id &&
                 <div className="task-get-next">
                     <p>Хочешь посмотреть ещё подходящих для тебя задач?</p>
-                    <a href="#" className="get-next-task">Следующая задача</a>
+                    <Link to={`/tasks/${task.nextTaskSlug}/`}>Следующая задача</Link>
                 </div>
                 }
 

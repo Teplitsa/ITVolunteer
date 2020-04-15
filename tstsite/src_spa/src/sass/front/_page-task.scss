@@ -524,8 +524,18 @@
                 }
             }
 
+            &.future {
+                &.overdue {
+                    color: $color-sec-dark;
+                }
+            }
+
             &.current {
                 color: $color-main;
+
+                &.overdue {
+                    color: $color-sec-dark;
+                }
 
                 .info {
                     border-color: $color-gray-light-md;
@@ -908,7 +918,7 @@
         margin-right: $base * 3;
     }
 
-    .get-next-task {
+    & > a {
         @include button-secondary;
         width: 203px;
     }
