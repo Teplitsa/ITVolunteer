@@ -18,6 +18,7 @@ try {
 	$task_id = isset($options['task']) ? $options['task'] : '';
 	
     $params = array(
+        'post_status'      => 'any', 
         'post_type'        => 'tasks',
         'fields'           => 'ids',
         'posts_per_page'   => -1,
