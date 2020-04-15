@@ -99,6 +99,11 @@ function ajax_publish_task() {
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_PUBLISH, $user_id);
     
     $timeline = ITV\models\TimelineModel::instance();
+	$timeline_items = $timeline->get_task_timeline_items($task_id);
+	if(empty($timeline_items)) {
+        $timeline->create_task_timeline($task_id);		    
+	}
+		
     $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
     
     wp_die(json_encode(array(
