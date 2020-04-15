@@ -111,8 +111,7 @@ function ajax_add_edit_task(){
 		
 		$timeline = ITV\models\TimelineModel::instance();
 		
-		$timeline_items = $timeline->get_task_timeline_items($task_id);
-		if(empty($timeline_items)) {
+		if(!$timeline->get_first_item($task_id)) {
             $timeline->create_task_timeline($task_id);		    
 		}
 		
