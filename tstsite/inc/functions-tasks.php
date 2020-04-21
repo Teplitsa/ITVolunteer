@@ -539,13 +539,82 @@ function itv_get_ajax_task_short($task) {
     ];
 }
 
+function add_task_list_filter_param($args, $section_id, $item_id) {
+    if($section_id === 'tags') {
+        if(empty($args['tax_query'])) {
+            $args['tax_query'] = [];
+        }
+        
+        $args['tax_query'][] = [
+            'taxonomy' => 'post_tag',
+            'field'    => 'term_id',
+            'terms'    => $item_id,
+        ];    
+    }
+    elseif($section_id === 'ngo_tags') {
+        if(empty($args['tax_query'])) {
+            $args['tax_query'] = [];
+        }
+        
+        $args['tax_query'][] = [
+            'taxonomy' => 'nko_task_tag',
+            'field'    => 'term_id',
+            'terms'    => $item_id,
+        ];
+    }
+    
+    return $args;
+}
+
 function ajax_get_task_list() {
+    $page = !empty($_POST['page']) ? (int)$_POST['page'] : 1;
+    if($page < 1) {
+        $page = 1;
+    }
+    
+    $filter = [];
+    error_log(print_r($filter, true));
+    
+    if(!empty($_POST['filter'])) {
+        try {
+            $filter = json_decode($_POST['filter'], true);
+            error_log(print_r($filter, true));
+        }
+        catch (Exception $ex) {
+            error_log("json_decode error");
+            error_log(print_r($ex, true));
+        }
+    }
+    
+    error_log(print_r($filter, true));
+    error_log(print_r($_POST, true));
+    
     $args = array(
         'post_type' => 'tasks',
         'task_status' => 'publish',
-        'author__not_in', array(ACCOUNT_DELETED_ID),
-        'posts_per_page' => 15,
+        'author__not_in' => array(ACCOUNT_DELETED_ID),
+        'posts_per_page' => 1,
+        'paged' => $page,
     );
+    
+    error_log(print_r($filter, true))
+    ;
+    if(!empty($filter)) {
+        $filter_options = get_task_list_filter_options();
+        foreach($filter_options as $key => $section) {
+            foreach($section['items'] as $ik => $item) {
+                foreach($filter as $fk => $fv) {
+                    error_log("fk:" . $fk);
+                    error_log("sec.item:" . $section['id'] . "." . $item['id']);
+                    if($fk === $section['id'] . "." . $item['id']) {
+                        $args = add_task_list_filter_param($args, $section['id'], $item['id']);
+                    }
+                }
+            }
+        }
+    }
+    
+    error_log(print_r($args, true));
     
     $task_list = [];
     $GLOBALS['wp_query'] = new WP_Query($args);
@@ -931,3 +1000,215 @@ function ajax_like_comment() {
 }
 add_action('wp_ajax_like-comment', 'ajax_like_comment');
 add_action('wp_ajax_nopriv_like-comment', 'ajax_like_comment');
+
+
+function count_tasks_in_filter_option($args = array()) {
+    $args = array_merge([
+        'post_type' => 'tasks',
+        'task_status' => array('publish', 'in_work', 'closed'),
+        'author__not_in', array(ACCOUNT_DELETED_ID),
+        'posts_per_page' => -1,
+    ], $args);
+    $query = new WP_Query($args);
+    return $query->found_posts;
+}
+
+function count_tasks_in_filter_option_no_reponses() {
+    global $wpdb;
+
+    $sql = "SELECT COUNT(posts.ID) 
+FROM {$wpdb->posts} AS posts 
+LEFT JOIN {$wpdb->prefix}p2p AS p2p 
+    ON p2p.p2p_from = posts.ID 
+WHERE posts.post_type = 'tasks' 
+    AND posts.post_status IN ('publish', 'in_work', 'closed') 
+    AND p2p.p2p_id IS NULL";
+    return $wpdb->get_var($wpdb->prepare($sql));
+}
+
+function count_tasks_in_filter_option_author_checked() {
+    global $wpdb;
+
+    $sql = "SELECT COUNT(posts.ID) 
+FROM {$wpdb->posts} AS posts 
+LEFT JOIN {$wpdb->prefix}p2p AS p2p 
+    ON p2p.p2p_from = posts.ID 
+LEFT JOIN {$wpdb->prefix}usermeta AS um 
+    ON um.user_id = posts.post_author 
+        AND um.meta_key = 'activation_code' 
+WHERE (um.meta_value = '' OR um.meta_value IS NULL) ";
+    return $wpdb->get_var($wpdb->prepare($sql));
+}
+
+function count_tasks_in_filter_option_only_for_paseka_members() {
+    global $wpdb;
+
+    $sql = "SELECT COUNT(posts.ID) 
+FROM {$wpdb->posts} AS posts 
+LEFT JOIN {$wpdb->prefix}p2p AS p2p 
+    ON p2p.p2p_from = posts.ID 
+WHERE posts.post_type = 'tasks' 
+    AND posts.post_status IN ('publish', 'in_work', 'closed')";
+    return $wpdb->get_var($wpdb->prepare($sql));
+}
+
+function get_task_list_filter_options() {
+    $sections = [];
+    
+    $sections[] = [
+        'id' => 'tags',
+        'title' => 'Категории',
+        'items' => array_map(function($term){
+            return [
+                'id' => $term->term_id,
+                'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+            ];
+        }, get_terms('post_tag')),
+    ];
+
+    $sections[] = [
+        'id' => 'ngo_tags',
+        'title' => 'Специализация',
+        'items' => array_map(function($term){
+            return [
+                'id' => $term->term_id,
+                'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+            ];
+        }, get_terms('nko_task_tag')),
+    ];
+    
+    $sections[] = [
+        'id' => 'task_type',
+        'title' => 'Тип задачи',
+        'items' => [
+            [
+                'id' => 'no-responses',
+                'title' => 'Нет откликов на задачу',
+            ],
+            [
+                'id' => 'reward-exist',
+                'title' => 'Есть вознаграждение',
+            ],
+            [
+                'id' => 'deadline-exist',
+                'title' => 'Есть дедлайн',
+            ],
+        ],
+    ];
+
+    $sections[] = [
+        'id' => 'author_type',
+        'title' => 'Заказчики',
+        'items' => [
+            [
+                'id' => 'author-checked',
+                'title' => 'Заказчик проверен',
+            ],
+            [
+                'id' => 'for-paseka-members',
+                'title' => 'Только для Пасеки',
+            ],
+        ],
+    ];
+    
+    return $sections;
+}
+
+
+function ajax_get_task_list_filter() {
+    $sections = [];
+    
+    $sections[] = [
+        'id' => 'tags',
+        'title' => 'Категории',
+        'items' => array_map(function($term){
+            return [
+                'id' => $term->term_id,
+                'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                'task_count' => count_tasks_in_filter_option([
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'post_tag',
+                            'field'    => 'term_id',
+                            'terms'    => $term->term_id,
+                        ),
+                    ),                                
+                ]),
+            ];
+        }, get_terms('post_tag')),
+    ];
+
+    $sections[] = [
+        'id' => 'ngo_tags',
+        'title' => 'Специализация',
+        'items' => array_map(function($term){
+            return [
+                'id' => $term->term_id,
+                'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                'task_count' => count_tasks_in_filter_option([
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'nko_task_tag',
+                            'field'    => 'term_id',
+                            'terms'    => $term->term_id,
+                        ),
+                    ),                                
+                ]),
+            ];
+        }, get_terms('nko_task_tag')),
+    ];
+    
+    $sections[] = [
+        'id' => 'task_type',
+        'title' => 'Тип задачи',
+        'items' => [
+            [
+                'id' => 'no-responses',
+                'title' => 'Нет откликов на задачу',
+                'task_count' => count_tasks_in_filter_option_no_reponses(),
+            ],
+            [
+                'id' => 'reward-exist',
+                'title' => 'Есть вознаграждение',
+                'task_count' => count_tasks_in_filter_option([
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => 'reward',
+                            'field'    => 'slug',
+                            'terms'    => ['from-grant', 'symbol'],
+                        ),
+                    ),                                
+                ]),
+            ],
+            [
+                'id' => 'deadline-exist',
+                'title' => 'Есть дедлайн',
+                'task_count' => count_tasks_in_filter_option(), // all tasks have deadline
+            ],
+        ],
+    ];
+
+    $sections[] = [
+        'id' => 'author_type',
+        'title' => 'Заказчики',
+        'items' => [
+            [
+                'id' => 'author-checked',
+                'title' => 'Заказчик проверен',
+                'task_count' => count_tasks_in_filter_option_author_checked(),
+            ],
+            [
+                'id' => 'for-paseka-members',
+                'title' => 'Только для Пасеки',
+                'task_count' => count_tasks_in_filter_option_only_for_paseka_members(),
+            ],
+        ],
+    ];
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'sections' => $sections,
+    )));    
+}
+add_action('wp_ajax_get-task-list-filter', 'ajax_get_task_list_filter');
+add_action('wp_ajax_nopriv_get-task-list-filter', 'ajax_get_task_list_filter');

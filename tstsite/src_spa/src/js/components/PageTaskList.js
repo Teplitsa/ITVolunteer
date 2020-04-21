@@ -5,6 +5,7 @@ import {
 import { useStoreState, useStoreActions } from "easy-peasy"
 import { format, formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import * as _ from "lodash";
 
 import * as utils from "../utils"
 import { getTaskAuthorQuery, getTaskQuery, getTaskDoersQuery } from '../network'
@@ -21,6 +22,8 @@ import imgFilterCheckOff from '../../img/icon-filter-check-off.svg'
 
 import tagIconTags from '../../img/icon-color-picker.svg'
 import tagIconThemes from '../../img/icon-people.svg'
+import tagIconTaskType from '../../img/icon-filter-task-list.svg'
+import tagIconAuthorType from '../../img/icon-people.svg'
 import iconApproved from '../../img/icon-all-done.svg'
 import tagIconReward from '../../img/icon-gift-box.svg'
 import metaIconCalendar from '../../img/icon-calc.svg'
@@ -31,6 +34,18 @@ import ratingStarEmptyWhite from '../../img/icon-star-empty-white.svg'
 
 import {TaskMetaInfo, TaskMetaTerms} from './Task'
 import {UserSmallView} from './User'
+
+const filterSectionIcons = {
+    tags: tagIconTags,
+    ngo_tags: tagIconThemes,
+    task_type: tagIconTaskType,
+    author_type: tagIconAuthorType,
+}
+
+const filterTips = {
+    newTaskNotif: 'newTaskNotif',
+    subscribeAndEarnPoints: 'subscribeAndEarnPoints',
+}
 
 export function PageTaskList(props) {
     const user = useStoreState(store => store.user.data)
@@ -52,21 +67,82 @@ export function PageTaskList(props) {
 }
 
 function TaskListFilter(props) {
+    const tipClose = useStoreState(store => store.taskListFilter.tipClose)
+    const setTipClose = useStoreActions(actions => actions.taskListFilter.setTipClose)
+    const saveTipClose = useStoreActions(actions => actions.taskListFilter.saveTipClose)
+    const loadTipClose = useStoreActions(actions => actions.taskListFilter.loadTipClose)    
+
+    // sections close state
+    const sectionClose = useStoreState(store => store.taskListFilter.sectionClose)
+    const setSectionClose = useStoreActions(actions => actions.taskListFilter.setSectionClose)
+    const saveSectionClose = useStoreActions(actions => actions.taskListFilter.saveSectionClose)
+    const loadSectionClose = useStoreActions(actions => actions.taskListFilter.loadSectionClose)    
+
+    // option check state
+    const optionCheck = useStoreState(store => store.taskListFilter.optionCheck)
+    const setOptionCheck = useStoreActions(actions => actions.taskListFilter.setOptionCheck)
+    const saveOptionCheck = useStoreActions(actions => actions.taskListFilter.saveOptionCheck)
+    const loadOptionCheck = useStoreActions(actions => actions.taskListFilter.loadOptionCheck)    
+
+    // filter data
+    const filterData = useStoreState(store => store.taskListFilter.filterData)
+    const isFilterDataLoaded = useStoreState(store => store.taskListFilter.isFilterDataLoaded)
+    const loadFilterData = useStoreActions(actions => actions.taskListFilter.loadFilterData)        
+
+    function handleCloseTip(e, tipId) {
+        e.preventDefault()
+        setTipClose({...tipClose, [tipId]: true})
+        saveTipClose()
+    }
+
+    function handleFilterOptionClick(e, optionId) {
+        e.preventDefault()
+        setOptionCheck({...optionCheck, [optionId]: !_.get(optionCheck, optionId, false)})
+        saveOptionCheck()
+    }
+
+    useEffect(() => {
+        loadFilterData()
+        loadTipClose()
+        loadOptionCheck()
+    }, [])
+
+    if(!isFilterDataLoaded) {
+        return (
+            <section className="task-list-filter">
+            {utils.loadingWait()}
+            </section>
+        )   
+    }
+
     return (
         <section className="task-list-filter">
             <div className="filter-explain">Выберите категории задач, которые вам подоходят</div>
+
+            {!tipClose[filterTips.newTaskNotif] &&
             <div className="filter-tip">
                 <div className="filter-tip-header">
                     <span className="filter-tip-title">
                         <img src={imgFilterMoodRock}/>
                         <span>Подсказка</span>
                     </span>
-                    <a href="#" className="filter-tip-close"> </a>
+                    <a href="#" className="filter-tip-close" onClick={(e) => {handleCloseTip(e, filterTips.newTaskNotif)}}> </a>
                 </div>
                 Вы сможете получать уведомления о новых задачах
             </div>
+            }
+
             <div className="filter-sections">
-                <div className="filter-section">
+                {filterData.map((item, index) => {
+                    return <FilterSection key={`filterSection${index}`} 
+                        sectionData={item} 
+                        optionCheck={optionCheck} 
+                        optionClickHandler={handleFilterOptionClick}
+                    />
+                })}
+
+                {/* markup example for options with folding */}
+                <div className="filter-section d-none">
                     <div className="filter-section-title">
                         <img src={imgFilterTags}/>
                         <span>Категории</span>
@@ -80,73 +156,51 @@ function TaskListFilter(props) {
                             </div>
                             <div className="filter-section-option-list-items">
                                 <div className="filter-section-option-list-item">
-                                    <img src={imgFilterCheckOff}/>
-                                    <span>Баннеры</span>
+                                    <span className="check-title">
+                                        <img src={_.get(optionCheck, "tags.banners", false) ? imgFilterCheckOn : imgFilterCheckOff}/>
+                                        <span>Баннеры</span>
+                                    </span>
+                                    <span className="stats">28</span>
                                 </div>
                                 <div className="filter-section-option-list-item active">
-                                    <img src={imgFilterCheckOn}/>
-                                    <span>Веб-дизайн</span>
+                                    <span className="check-title">
+                                        <img src={imgFilterCheckOn}/>
+                                        <span>Веб-дизайн</span>
+                                    </span>
+                                    <span className="stats">28</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="filter-section-option-list expand">
                             <div className="filter-section-option-list-header">
-                                <img src={imgFilterGalkaDown}/>
-                                <span>Веб-сайты и разработка</span>
+                                <span className="check-title">
+                                    <img src={imgFilterGalkaDown}/>
+                                    <span>Веб-сайты и разработка</span>
+                                </span>
+                                <span className="stats">33</span>
                             </div>
                             <div className="filter-section-option-list-items">
-                                <div className="filter-section-option-list-item">
-                                    <img src={imgFilterCheckOff}/>
-                                    <span>Баннеры</span>
-                                </div>
-                                <div className="filter-section-option-list-item active">
-                                    <img src={imgFilterCheckOn}/>
-                                    <span>Веб-дизайн</span>
-                                </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <div className="filter-sections">
-                <div className="filter-section">
-                    <div className="filter-section-title">
-                        <img src={imgFilterTaskList}/>
-                        <span>Тип задачи</span>
-                    </div>
 
-                    <div className="filter-section-option-groups">
-                        <div className="filter-section-option-list">
-                            <div className="filter-section-option-list-items">
-                                <div className="filter-section-option-list-item">
-                                    <img src={imgFilterCheckOff}/>
-                                    <span>Баннеры</span>
-                                </div>
-                                <div className="filter-section-option-list-item">
-                                    <img src={imgFilterCheckOff}/>
-                                    <span>Баннеры</span>
-                                </div>
-                                <div className="filter-section-option-list-item active">
-                                    <img src={imgFilterCheckOn}/>
-                                    <span>Веб-дизайн</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {!tipClose[filterTips.subscribeAndEarnPoints] && 
             <div className="filter-tip after-filter">
                 <div className="filter-tip-header">
                     <span className="filter-tip-title">
                         <img src={imgFilterAward}/>
                         <span>Награда</span>
                     </span>
-                    <a href="#" className="filter-tip-close"> </a>
+                    <a href="#" className="filter-tip-close" onClick={(e) => {handleCloseTip(e, filterTips.subscribeAndEarnPoints)}}> </a>
                 </div>
                 Подпишитесь на уведомления и получите 500 баллов
             </div>
+            }
+
             <div className="filter-actions">
                 <a href="#" className="filter-subscribe">Подписаться на уведомления</a>
                 <a href="#" className="filter-reset">Сбросить фильтры</a>
@@ -155,14 +209,76 @@ function TaskListFilter(props) {
     )
 }
 
+function FilterSection(props) {
+    const sectionId = _.get(props, "sectionData.id", "")
+    const sectionTitle = _.get(props, "sectionData.title", "")
+    const sectionIcon = _.get(filterSectionIcons, sectionId, "")
+    const sectionItems = _.get(props, "sectionData.items", "")
+    const optionClickHandler = props.optionClickHandler
+    const optionCheck = props.optionCheck
+
+    if(!sectionId) {
+        return null
+    }
+
+    return (
+        <div className="filter-section">
+            <div className="filter-section-title">
+                <img src={sectionIcon ? sectionIcon : imgFilterTaskList}/>
+                <span>{sectionTitle}</span>
+            </div>
+
+            <div className="filter-section-option-groups">
+                <div className="filter-section-option-list">
+                    <div className="filter-section-option-list-items">
+                        {sectionItems.map((item, index) => {
+                            const optionId = sectionId + "." + item.id
+                            return (
+                                <div className="filter-section-option-list-item" key={`filterSectionItem${sectionId}-${index}`}>
+                                    <span className="check-title" onClick={(e) => {optionClickHandler(e, optionId)}}>
+                                        <img src={_.get(optionCheck, optionId, false) ? imgFilterCheckOn : imgFilterCheckOff}/>
+                                        <span>{item.title}</span>
+                                    </span>
+                                    <span className="stats">{item.task_count}</span>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 function TaskList(props) {
     const taskList = useStoreState(store => store.taskList.taskList)
+    const isTaskListLoaded = useStoreState(store => store.taskList.isTaskListLoaded)
+    const resetTaskListLoaded = useStoreActions(actions => actions.taskList.resetTaskListLoaded)
     const setTaskList = useStoreActions(actions => actions.taskList.setTaskList)
 
+    // load more
+    const [page, setPage] = useState(1)
+    const appendTaskList = useStoreActions(actions => actions.taskList.appendTaskList)
 
-    useEffect(() => {
+    // filter
+    const optionCheck = useStoreState(store => store.taskListFilter.optionCheck)    
+
+    async function loadFilteredTaskList(optionCheck, page) {
+        let isLoadMore = page > 1
+
+        if(!isLoadMore) {
+            resetTaskListLoaded()
+        }
+
+        let formData = new FormData()
+        formData.append('page', page)
+        formData.append('filter', JSON.stringify(optionCheck))
+
         let action = 'get-task-list'
-        fetch(utils.itvAjaxUrl(action))
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
         .then(res => {
             try {
                 return res.json()
@@ -177,17 +293,46 @@ function TaskList(props) {
                     return utils.itvShowAjaxError({message: result.message})
                 }
 
-                setTaskList(result.taskList)
+                if(isLoadMore) {
+                    appendTaskList(result.taskList)
+                }
+                else {
+                    setTaskList(result.taskList)
+                }
             },
             (error) => {
                 utils.itvShowAjaxError({action, error})
             }
         )
-    }, [])
+    }
+
+    useEffect(() => {
+        loadFilteredTaskList(optionCheck, page)
+    }, [page])
+
+    useEffect(() => {
+        setPage(1)
+    }, [optionCheck])
+
+    function handleLoadMoreTasks(e) {
+        e.preventDefault()
+        setPage(page + 1)
+    }
+
+    if(!isTaskListLoaded) {
+        return (
+            <section className="task-list">
+            {utils.loadingWait()}
+            </section>
+        )
+    }
 
     return (
         <section className="task-list">
-            {taskList && taskList.map((task, key) => <TaskListItem task={task} key={key} />)}
+            {taskList && taskList.map((task, key) => <TaskListItem task={task} key={`taskListItem${key}`} />)}
+            <div className="load-more-tasks">
+                <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>Загрузить ещё</a>
+            </div>
         </section>
     )
 }

@@ -2,6 +2,8 @@ import React from 'react'
 import { action, computed, thunk, thunkOn, actionOn } from "easy-peasy";
 import * as utils from "./utils"
 
+var storeJsLocalStorage = require('store')
+
 const userStoreModel = {
     data: {},
     isLoaded: false,
@@ -179,8 +181,96 @@ const timelineModel = {
 
 const taskListModel = {
     taskList: [],
+    isTaskListLoaded: false,
     setTaskList: action((state, payload) => {
         state.taskList = payload
+        state.isTaskListLoaded = true
+    }),    
+    appendTaskList: action((state, payload) => {
+        state.taskList = [...state.taskList, ...payload]
+    }),
+    resetTaskListLoaded: action((state, payload) => {
+        state.isTaskListLoaded = false
+    }),
+}
+
+const taskListFilterModel = {
+    // tips
+    tipClose: {},
+    setTipClose: action((state, payload) => {
+        state.tipClose = payload ? payload : {}
+        console.log("set state.tipClose:", state.tipClose)
+    }),
+    loadTipClose: thunk((actions, payload) => {
+        actions.setTipClose(storeJsLocalStorage.get('taskFilter.tipClose'))
+    }),    
+    saveTipClose: action((state, payload) => {
+        console.log("save state:", state)
+        storeJsLocalStorage.set('taskFilter.tipClose', state.tipClose)
+    }),
+
+    // section open
+    sectionClose: {},
+    setSectionClose: action((state, payload) => {
+        state.sectionClose = payload ? payload : {}
+        console.log("set state.setSectionClose:", state.setSectionClose)
+    }),
+    loadSectionClose: thunk((actions, payload) => {
+        actions.setSectionClose(storeJsLocalStorage.get('taskFilter.setSectionClose'))
+    }),    
+    saveSectionClose: action((state, payload) => {
+        console.log("save state:", state)
+        storeJsLocalStorage.set('taskFilter.setSectionClose', state.setSectionClose)
+    }),
+
+    // option checked
+    optionCheck: {},
+    setOptionCheck: action((state, payload) => {
+        state.optionCheck = payload ? payload : {}
+        console.log("set state.optionCheck:", state.optionCheck)
+    }),
+    loadOptionCheck: thunk((actions, payload) => {
+        actions.setOptionCheck(storeJsLocalStorage.get('taskFilter.optionCheck'))
+    }),    
+    saveOptionCheck: action((state, payload) => {
+        console.log("save state:", state)
+        storeJsLocalStorage.set('taskFilter.optionCheck', state.optionCheck)
+    }),
+
+    // load filter
+    filterData: [],
+    isFilterDataLoaded: false,
+    setFilterData: action((state, payload) => {
+        state.filterData = payload ? payload : []
+        state.isFilterDataLoaded = true
+        console.log("set state.filterData:", state.filterData)
+    }),
+    loadFilterData: thunk((actions, payload) => {
+
+        let action = 'get-task-list-filter'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'get',
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'error') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                actions.setFilterData(result.sections)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
     }),    
 }
 
@@ -189,4 +279,5 @@ export const storeModel = {
     task: taskModel,
     timeline: timelineModel,
     taskList: taskListModel,
+    taskListFilter: taskListFilterModel,
 }

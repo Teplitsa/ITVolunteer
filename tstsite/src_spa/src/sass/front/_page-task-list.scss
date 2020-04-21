@@ -170,6 +170,28 @@
                     .filter-section-option-list-item {
                         @include text-sm;
                         color: $color-gray-dark-lg;
+                        display: flex;
+
+                        .check-title {
+                            cursor: pointer;
+
+                            & > img {
+                                width: 16px;
+                                height: 16px;
+                                vertical-align: middle;
+                                margin-right: 6px;
+                            }
+
+                            & > span {
+
+                            }
+                        }
+
+                        .stats {
+                            flex-grow: 1;
+                            text-align: right;
+                            color: $color-gray-dark-md;
+                        }
 
                         &.active {
                             color: $color-main;
@@ -177,17 +199,6 @@
 
                         &:not(:first-child) {
                             margin-top: 8px;
-                        }
-
-                        & > img {
-                            width: 16px;
-                            height: 16px;
-                            vertical-align: middle;
-                            margin-right: 6px;
-                        }
-
-                        & > span {
-
                         }
                     }
                 }
@@ -218,6 +229,20 @@
 
 // tasks
 .site-main.page-task-list .page-sections .task-list {
+
+    padding-bottom: 56px;
+
+    .load-more-tasks {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+
+        .btn {
+            @include button-secondary;
+            font-weight: 600;
+            padding: 12px 40px;
+        }
+    }
 
    .task-body {
         padding-top: $base * 3;

@@ -3,7 +3,11 @@ const path = require("path")
 module.exports = {
   mode: "development",
   entry: {
-    client: ["./src/js/front-app.js", "@babel/polyfill", "./node_modules/air-datepicker/dist/js/datepicker.js"]
+    client: [
+      "./src/js/front-app.js", 
+      "@babel/polyfill", 
+      "./node_modules/air-datepicker/dist/js/datepicker.js"
+    ]
   },
   output: {
     path: path.resolve(__dirname, "../assets_spa/js/"),
