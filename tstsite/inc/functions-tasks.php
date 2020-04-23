@@ -303,7 +303,7 @@ function ajax_upload_result_screenshot() {
 add_action('wp_ajax_upload-result-screenshot', 'ajax_upload_result_screenshot');
 
 function itv_ajax_submit_task_comment(){
-    error_log("call itv_ajax_submit_task_comment...");
+//     error_log("call itv_ajax_submit_task_comment...");
 
     $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
     $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
@@ -350,7 +350,7 @@ add_action('wp_ajax_submit-comment', 'itv_ajax_submit_task_comment');
 add_action('wp_ajax_nopriv_submit-comment', 'itv_ajax_submit_task_comment');
 
 function itv_ajax_get_task_timeline(){
-    error_log("call itv_ajax_submit_task_comment...");
+//     error_log("call itv_ajax_submit_task_comment...");
 
     $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
     $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
@@ -592,7 +592,7 @@ function add_task_list_filter_param($args, $section_id, $item_id, $value) {
                 'field'    => 'slug',
                 'terms'    => ITV_TASK_FILTER_REWARD_EXIST_TERMS,
             ];
-            error_log(print_r($args, true));
+//             error_log(print_r($args, true));
         }
     }
     elseif($section_id === 'author_type') {
@@ -668,7 +668,7 @@ LEFT JOIN {$wpdb->prefix}p2p AS p2p
         $request = str_replace("WHERE 1=1 ", "WHERE 1=1 AND ".implode(" AND ", $custom_where_list)." ", $request);
     }
     
-    error_log($request);
+//     error_log($request);
 
     return $request;
 }
@@ -719,7 +719,7 @@ function ajax_get_task_list() {
         }
     }
     
-    error_log(print_r($args, true));
+//     error_log(print_r($args, true));
     
     $task_list = [];
     $GLOBALS['wp_query'] = new WP_Query($args);
@@ -775,7 +775,7 @@ function ajax_get_task_status_stats() {
         }
     }
     
-    error_log(print_r($args, true));
+//     error_log(print_r($args, true));
     
     $stats = [];
     $status_list = ["publish", "in_work", "closed"];
@@ -1168,7 +1168,7 @@ function count_tasks_in_filter_option($args = array()) {
         'posts_per_page' => -1,
     ], $args);
     $query = new WP_Query($args);
-    error_log("count request: " . $query->request);
+//     error_log("count request: " . $query->request);
     return $query->found_posts;
 }
 
