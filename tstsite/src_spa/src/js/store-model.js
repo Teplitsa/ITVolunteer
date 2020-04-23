@@ -11,6 +11,38 @@ const userStoreModel = {
         state.data = payload
         state.isLoaded = true
     }),
+
+    // subscribe task list
+    subscribeTaskList: null,
+    setSubscribeTaskList: action((state, payload) => {
+        state.subscribeTaskList = payload
+    }),
+    loadSubscribeTaskList: thunk((actions, payload) => {
+        let action = 'get-task-list-subscription'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'get',
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                actions.setSubscribeTaskList(result.filter)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }),    
 }
 
 const taskModel = {
@@ -199,13 +231,13 @@ const taskListFilterModel = {
     tipClose: {},
     setTipClose: action((state, payload) => {
         state.tipClose = payload ? payload : {}
-        console.log("set state.tipClose:", state.tipClose)
+        // console.log("set state.tipClose:", state.tipClose)
     }),
     loadTipClose: thunk((actions, payload) => {
         actions.setTipClose(storeJsLocalStorage.get('taskFilter.tipClose'))
     }),    
     saveTipClose: action((state, payload) => {
-        console.log("save state:", state)
+        // console.log("save state:", state)
         storeJsLocalStorage.set('taskFilter.tipClose', state.tipClose)
     }),
 
@@ -213,28 +245,33 @@ const taskListFilterModel = {
     sectionClose: {},
     setSectionClose: action((state, payload) => {
         state.sectionClose = payload ? payload : {}
-        console.log("set state.setSectionClose:", state.setSectionClose)
+        // console.log("set state.setSectionClose:", state.setSectionClose)
     }),
     loadSectionClose: thunk((actions, payload) => {
         actions.setSectionClose(storeJsLocalStorage.get('taskFilter.setSectionClose'))
     }),    
     saveSectionClose: action((state, payload) => {
-        console.log("save state:", state)
+        // console.log("save state:", state)
         storeJsLocalStorage.set('taskFilter.setSectionClose', state.setSectionClose)
     }),
 
     // option checked
-    optionCheck: {},
+    optionCheck: null,
     setOptionCheck: action((state, payload) => {
-        state.optionCheck = payload ? payload : {}
-        console.log("set state.optionCheck:", state.optionCheck)
+        state.optionCheck = payload
     }),
     loadOptionCheck: thunk((actions, payload) => {
-        actions.setOptionCheck(storeJsLocalStorage.get('taskFilter.optionCheck'))
+        let optionCheck = storeJsLocalStorage.get('taskFilter.optionCheck')
+        actions.setOptionCheck(_.isEmpty(optionCheck) ? {} : optionCheck)
     }),    
     saveOptionCheck: action((state, payload) => {
-        console.log("save state:", state)
         storeJsLocalStorage.set('taskFilter.optionCheck', state.optionCheck)
+    }),
+
+    // status stats
+    statusStats: null,
+    setStatusStats: action((state, payload) => {
+        state.statusStats = payload
     }),
 
     // load filter
@@ -243,10 +280,9 @@ const taskListFilterModel = {
     setFilterData: action((state, payload) => {
         state.filterData = payload ? payload : []
         state.isFilterDataLoaded = true
-        console.log("set state.filterData:", state.filterData)
+        // console.log("set state.filterData:", state.filterData)
     }),
     loadFilterData: thunk((actions, payload) => {
-
         let action = 'get-task-list-filter'
         fetch(utils.itvAjaxUrl(action), {
             method: 'get',

@@ -109,13 +109,17 @@ export function TaskBody({task, author}) {
         )              
     }
 
-    return task.id ? (<div className="task-body">                    
+    if(!task.id) {
+        return null
+    }
+
+    return (<div className="task-body">                    
             <header>
                 <h1  dangerouslySetInnerHTML={{__html: task.title}}/>
                 <div className="meta-info">
                     <img src={iconApproved} className="itv-approved" />
                     
-                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.date), 'do MMMM Y', {locale: ru})}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.dateGmt), 'do MMMM Y', {locale: ru})}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(task.date), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.viewsCount} просмотров`}/>
@@ -188,7 +192,7 @@ export function TaskBody({task, author}) {
                 </div>
             </div>
         </div>        
-    ) : null  
+    )
 }
 
 export class TaskMetaTerms extends Component {

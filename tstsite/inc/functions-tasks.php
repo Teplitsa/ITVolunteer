@@ -8,6 +8,8 @@ use ITV\models\CommentsLikeModel;
  * Task related utilities and manipulations
  * (code wiil be modevd here from customizer.php and extras.php)
  **/
+define('ITV_TASK_FILTER_REWARD_EXIST_TERMS', ['from-grant', 'symbol']);
+define('ITV_POST_META_FOR_PASEKA_ONLY', 'itv_for_paseka_only');
 
 /** Tasks custom status **/
 add_action('init', 'tst_custom_task_status');
@@ -527,6 +529,7 @@ function itv_get_ajax_task_short($task) {
         'content' => get_the_content($task->ID),
         'slug' => $task->post_name,
         'date' => $task->post_date,
+        'dateGmt' => $task->post_date_gmt,
         'viewsCount' => pvc_get_post_views($task->ID),
         'doerCandidatesCount' => tst_get_task_doers_count($task->ID),
         'status' => $task->post_status,
@@ -539,32 +542,137 @@ function itv_get_ajax_task_short($task) {
     ];
 }
 
-function add_task_list_filter_param($args, $section_id, $item_id) {
-    if($section_id === 'tags') {
-        if(empty($args['tax_query'])) {
-            $args['tax_query'] = [];
+function add_task_list_filter_tax($args, $tax, $term_id) {
+    if(empty($args['tax_query'])) {
+        $args['tax_query'] = [];
+    }
+    
+    $tqi = null;
+    foreach($args['tax_query'] as $i => $tq) {
+        if($tq['taxonomy'] == $tax) {
+            $tqi = $i;
+            break;
         }
-        
+    }
+    
+    if($tqi === null) {
         $args['tax_query'][] = [
-            'taxonomy' => 'post_tag',
+            'taxonomy' => $tax,
             'field'    => 'term_id',
-            'terms'    => $item_id,
+            'terms'    => [$term_id],
         ];    
     }
-    elseif($section_id === 'ngo_tags') {
-        if(empty($args['tax_query'])) {
-            $args['tax_query'] = [];
-        }
-        
-        $args['tax_query'][] = [
-            'taxonomy' => 'nko_task_tag',
-            'field'    => 'term_id',
-            'terms'    => $item_id,
-        ];
+    else {
+        $args['tax_query'][$tqi]['terms'][] = $term_id;
     }
     
     return $args;
 }
+
+function add_task_list_filter_param($args, $section_id, $item_id, $value) {
+    if($section_id === 'tags') {
+        $args = add_task_list_filter_tax($args, 'post_tag', $item_id);
+    }
+    elseif($section_id === 'ngo_tags') {
+        $args = add_task_list_filter_tax($args, 'nko_task_tag', $item_id);
+    }
+    elseif($section_id === 'status') {
+        if(in_array($value, array('publish', 'in_work', 'closed'))) {
+            $args['post_status'] = $value; 
+        }
+    }
+    elseif($section_id === 'task_type') {
+        if($item_id === 'reward-exist') {
+            if(empty($args['tax_query'])) {
+                $args['tax_query'] = [];
+            }
+            
+            $args['tax_query'][] = [
+                'taxonomy' => 'reward',
+                'field'    => 'slug',
+                'terms'    => ITV_TASK_FILTER_REWARD_EXIST_TERMS,
+            ];
+            error_log(print_r($args, true));
+        }
+    }
+    elseif($section_id === 'author_type') {
+        if($item_id === 'for-paseka-members') {
+            if(empty($args['meta_query'])) {
+                $args['meta_query'] = [];
+            }
+            
+            $args['meta_query'][] = [
+                'key' => ITV_POST_META_FOR_PASEKA_ONLY,
+                'value' => true,
+            ];
+            
+        }
+    }
+    
+    return $args;
+}
+
+function modify_task_list_filter_sql($request, $query) {
+    global $wpdb;
+    
+    if(empty($query->query['query_id'])) {
+        return $request;
+    }
+    
+    if($query->query['query_id'] !== "itv_filtered_task_list") {
+        return $request;
+    }
+    
+    $filter = [];    
+    if(!empty($_POST['filter'])) {
+        $filter_json_str = stripslashes($_POST['filter']);
+        
+        try {
+            $filter = json_decode($filter_json_str, true);
+        }
+        catch (Exception $ex) {
+            error_log("json_decode error: " . $filter_json_str);
+        }
+    }
+    
+    $custom_join_list = [];
+    $custom_where_list = [];
+    
+    #TODO: fix when real itv_author_checked meta will be added for user 
+    if(!empty($filter['author_type.checked'])) {
+        $custom_join_list["user_meta.author_checked"] = "
+LEFT JOIN {$wpdb->prefix}usermeta AS um_author_checked 
+    ON um_author_checked.user_id = str_posts.post_author 
+        AND um_author_checked.meta_key = 'activation_code' 
+";
+        
+        $custom_where_list[] = " (um_author_checked.meta_value = '' OR um_author_checked.meta_value IS NULL) ";
+    }
+
+    if(!empty($filter['task_type.no-responses'])) {
+        $custom_join_list["p2p.task_doers"] = "
+LEFT JOIN {$wpdb->prefix}p2p AS p2p 
+    ON p2p.p2p_from = str_posts.ID
+        AND p2p.p2p_type = 'task-doers'
+";
+        
+        $custom_where_list[] = " (p2p.p2p_id IS NULL) ";
+    }
+    
+    
+    if(count($custom_join_list) > 0) {
+        $request = str_replace("FROM str_posts", "FROM str_posts " . implode(" ", $custom_join_list) . " ", $request);
+    }
+    
+    if(count($custom_where_list) > 0) {
+        $request = str_replace("WHERE 1=1 ", "WHERE 1=1 AND ".implode(" AND ", $custom_where_list)." ", $request);
+    }
+    
+    error_log($request);
+
+    return $request;
+}
+add_filter('posts_request', 'modify_task_list_filter_sql', 10, 2 );
 
 function ajax_get_task_list() {
     $page = !empty($_POST['page']) ? (int)$_POST['page'] : 1;
@@ -572,44 +680,41 @@ function ajax_get_task_list() {
         $page = 1;
     }
     
-    $filter = [];
-    error_log(print_r($filter, true));
-    
+    $filter = [];    
     if(!empty($_POST['filter'])) {
+        $filter_json_str = stripslashes($_POST['filter']);
+        
         try {
-            $filter = json_decode($_POST['filter'], true);
-            error_log(print_r($filter, true));
+            $filter = json_decode($filter_json_str, true);
         }
         catch (Exception $ex) {
-            error_log("json_decode error");
-            error_log(print_r($ex, true));
+            error_log("json_decode error: " . $filter_json_str);
         }
     }
     
-    error_log(print_r($filter, true));
-    error_log(print_r($_POST, true));
-    
     $args = array(
+        'query_id' => "itv_filtered_task_list",
         'post_type' => 'tasks',
-        'task_status' => 'publish',
+        'post_status' => 'publish',
         'author__not_in' => array(ACCOUNT_DELETED_ID),
-        'posts_per_page' => 1,
+//         'posts_per_page' => 1,
         'paged' => $page,
     );
     
-    error_log(print_r($filter, true))
-    ;
     if(!empty($filter)) {
         $filter_options = get_task_list_filter_options();
         foreach($filter_options as $key => $section) {
-            foreach($section['items'] as $ik => $item) {
-                foreach($filter as $fk => $fv) {
-                    error_log("fk:" . $fk);
-                    error_log("sec.item:" . $section['id'] . "." . $item['id']);
-                    if($fk === $section['id'] . "." . $item['id']) {
-                        $args = add_task_list_filter_param($args, $section['id'], $item['id']);
+            if(!empty($section['items'])) {
+                foreach($section['items'] as $ik => $item) {
+                    foreach($filter as $fk => $fv) {
+                        if($fv && $fk === $section['id'] . "." . $item['id']) {
+                            $args = add_task_list_filter_param($args, $section['id'], $item['id'], $fv);
+                        }
                     }
                 }
+            }
+            elseif(!empty($filter[$section['id']])) {
+                $args = add_task_list_filter_param($args, $section['id'], null, $filter[$section['id']]);                
             }
         }
     }
@@ -618,6 +723,7 @@ function ajax_get_task_list() {
     
     $task_list = [];
     $GLOBALS['wp_query'] = new WP_Query($args);
+    
     while ( $GLOBALS['wp_query']->have_posts() ) {
         $GLOBALS['wp_query']->the_post();
         $post = get_post();
@@ -634,6 +740,58 @@ function ajax_get_task_list() {
 }
 add_action('wp_ajax_get-task-list', 'ajax_get_task_list');
 add_action('wp_ajax_nopriv_get-task-list', 'ajax_get_task_list');
+
+function ajax_get_task_status_stats() {
+    $filter = [];
+    
+    if(!empty($_POST['filter'])) {
+        $filter_json_str = stripslashes($_POST['filter']);
+        
+        try {
+            $filter = json_decode($filter_json_str, true);
+        }
+        catch (Exception $ex) {
+            error_log("json_decode error: " . $filter_json_str);
+        }
+    }
+    
+    $args = array(
+        'query_id' => "itv_filtered_task_list",
+        'post_type' => 'tasks',
+        'author__not_in' => array(ACCOUNT_DELETED_ID),
+        'posts_per_page' => -1,
+    );
+    
+    if(!empty($filter)) {
+        $filter_options = get_task_list_filter_options();
+        foreach($filter_options as $key => $section) {
+            foreach($section['items'] as $ik => $item) {
+                foreach($filter as $fk => $fv) {
+                    if($fv && $fk === $section['id'] . "." . $item['id']) {
+                        $args = add_task_list_filter_param($args, $section['id'], $item['id'], $fv);
+                    }
+                }
+            }
+        }
+    }
+    
+    error_log(print_r($args, true));
+    
+    $stats = [];
+    $status_list = ["publish", "in_work", "closed"];
+    foreach($status_list as $status) {
+        $args['post_status'] = $status;
+        $query = new WP_Query($args);
+        $stats[$status] = $query->found_posts;
+    }
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'stats' => $stats,
+    )));
+}
+add_action('wp_ajax_get-task-status-stats', 'ajax_get_task_status_stats');
+add_action('wp_ajax_nopriv_get-task-status-stats', 'ajax_get_task_status_stats');
 
 
 function ajax_accept_close_date() {
@@ -1005,11 +1163,12 @@ add_action('wp_ajax_nopriv_like-comment', 'ajax_like_comment');
 function count_tasks_in_filter_option($args = array()) {
     $args = array_merge([
         'post_type' => 'tasks',
-        'task_status' => array('publish', 'in_work', 'closed'),
+        'post_status' => array('publish', 'in_work', 'closed'),
         'author__not_in', array(ACCOUNT_DELETED_ID),
         'posts_per_page' => -1,
     ], $args);
     $query = new WP_Query($args);
+    error_log("count request: " . $query->request);
     return $query->found_posts;
 }
 
@@ -1020,10 +1179,12 @@ function count_tasks_in_filter_option_no_reponses() {
 FROM {$wpdb->posts} AS posts 
 LEFT JOIN {$wpdb->prefix}p2p AS p2p 
     ON p2p.p2p_from = posts.ID 
+        AND p2p.p2p_type = 'task-doers'
 WHERE posts.post_type = 'tasks' 
-    AND posts.post_status IN ('publish', 'in_work', 'closed') 
+    AND posts.post_status IN ('publish', 'in_work', 'closed')
+    AND posts.post_author NOT IN (%s) 
     AND p2p.p2p_id IS NULL";
-    return $wpdb->get_var($wpdb->prepare($sql));
+    return $wpdb->get_var($wpdb->prepare($sql, ACCOUNT_DELETED_ID));
 }
 
 function count_tasks_in_filter_option_author_checked() {
@@ -1031,25 +1192,11 @@ function count_tasks_in_filter_option_author_checked() {
 
     $sql = "SELECT COUNT(posts.ID) 
 FROM {$wpdb->posts} AS posts 
-LEFT JOIN {$wpdb->prefix}p2p AS p2p 
-    ON p2p.p2p_from = posts.ID 
 LEFT JOIN {$wpdb->prefix}usermeta AS um 
     ON um.user_id = posts.post_author 
         AND um.meta_key = 'activation_code' 
-WHERE (um.meta_value = '' OR um.meta_value IS NULL) ";
-    return $wpdb->get_var($wpdb->prepare($sql));
-}
-
-function count_tasks_in_filter_option_only_for_paseka_members() {
-    global $wpdb;
-
-    $sql = "SELECT COUNT(posts.ID) 
-FROM {$wpdb->posts} AS posts 
-LEFT JOIN {$wpdb->prefix}p2p AS p2p 
-    ON p2p.p2p_from = posts.ID 
-WHERE posts.post_type = 'tasks' 
-    AND posts.post_status IN ('publish', 'in_work', 'closed')";
-    return $wpdb->get_var($wpdb->prepare($sql));
+WHERE (um.meta_value = '' OR um.meta_value IS NULL) AND posts.post_author NOT IN (%s) ";
+    return $wpdb->get_var($wpdb->prepare($sql, ACCOUNT_DELETED_ID));
 }
 
 function get_task_list_filter_options() {
@@ -1089,10 +1236,10 @@ function get_task_list_filter_options() {
                 'id' => 'reward-exist',
                 'title' => 'Есть вознаграждение',
             ],
-            [
-                'id' => 'deadline-exist',
-                'title' => 'Есть дедлайн',
-            ],
+//             [
+//                 'id' => 'deadline-exist',
+//                 'title' => 'Есть дедлайн',
+//             ],
         ],
     ];
 
@@ -1109,6 +1256,10 @@ function get_task_list_filter_options() {
                 'title' => 'Только для Пасеки',
             ],
         ],
+    ];
+    
+    $sections[] = [
+        'id' => 'status',
     ];
     
     return $sections;
@@ -1175,16 +1326,16 @@ function ajax_get_task_list_filter() {
                         array(
                             'taxonomy' => 'reward',
                             'field'    => 'slug',
-                            'terms'    => ['from-grant', 'symbol'],
+                            'terms'    => ITV_TASK_FILTER_REWARD_EXIST_TERMS,
                         ),
                     ),                                
                 ]),
             ],
-            [
-                'id' => 'deadline-exist',
-                'title' => 'Есть дедлайн',
-                'task_count' => count_tasks_in_filter_option(), // all tasks have deadline
-            ],
+//             [
+//                 'id' => 'deadline-exist',
+//                 'title' => 'Есть дедлайн',
+//                 'task_count' => count_tasks_in_filter_option(), // all tasks have deadline
+//             ],
         ],
     ];
 
@@ -1200,7 +1351,14 @@ function ajax_get_task_list_filter() {
             [
                 'id' => 'for-paseka-members',
                 'title' => 'Только для Пасеки',
-                'task_count' => count_tasks_in_filter_option_only_for_paseka_members(),
+                'task_count' => count_tasks_in_filter_option([
+                    'meta_query' => [
+                        [
+                            'key' => ITV_POST_META_FOR_PASEKA_ONLY,
+                            'value' => true,
+                        ]
+                    ]
+                ]),
             ],
         ],
     ];
@@ -1212,3 +1370,85 @@ function ajax_get_task_list_filter() {
 }
 add_action('wp_ajax_get-task-list-filter', 'ajax_get_task_list_filter');
 add_action('wp_ajax_nopriv_get-task-list-filter', 'ajax_get_task_list_filter');
+
+
+function ajax_subscribe_task_list() {
+	if(
+	    empty($_POST['filter'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+	$user_id = get_current_user_id();
+	
+	$filter = [];
+    if(!empty($_POST['filter'])) {
+        $filter_json_str = stripslashes($_POST['filter']);
+        
+        try {
+            $filter = json_decode($filter_json_str, true);
+        }
+        catch (Exception $ex) {
+            error_log("json_decode error: " . $filter_json_str);
+        }
+    }
+    
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+	
+	update_user_meta( $user_id, 'itv_subscribe_task_list', $filter );
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));        
+}
+add_action('wp_ajax_subscribe-task-list', 'ajax_subscribe_task_list');
+add_action('wp_ajax_nopriv_subscribe-task-list', 'ajax_subscribe_task_list');
+
+
+function ajax_unsubscribe_task_list() {
+	$user_id = get_current_user_id();
+	
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+	
+	delete_user_meta( $user_id, 'itv_subscribe_task_list' );
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));        
+}
+add_action('wp_ajax_unsubscribe-task-list', 'ajax_unsubscribe_task_list');
+add_action('wp_ajax_nopriv_unsubscribe-task-list', 'ajax_unsubscribe_task_list');
+
+
+function ajax_get_task_list_subscription() {
+	$user_id = get_current_user_id();
+	
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+	
+	$filter = get_user_meta( $user_id, 'itv_subscribe_task_list', true );
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'filter' => !$filter ? null : $filter,
+    )));        
+}
+add_action('wp_ajax_get-task-list-subscription', 'ajax_get_task_list_subscription');
+add_action('wp_ajax_nopriv_get-task-list-subscription', 'ajax_get_task_list_subscription');

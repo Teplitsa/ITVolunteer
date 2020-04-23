@@ -51,3 +51,9 @@ export function itvShowActionSuccess(actionData) {
         console.log(actionData.action + " success")
     }
 }
+
+export function itvShowActionError(message) {
+    if(actionData.message) {
+        alert(actionData.message)
+    }
+}

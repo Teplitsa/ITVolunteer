@@ -47,17 +47,83 @@ const filterTips = {
     subscribeAndEarnPoints: 'subscribeAndEarnPoints',
 }
 
+const statusFilterTitle = {
+    publish: "Ожидают волонтеров",
+    in_work: "В работе",
+    closed: "Решено",
+}
+
 export function PageTaskList(props) {
     const user = useStoreState(store => store.user.data)
+
+    const statusStats = useStoreState(store => store.taskListFilter.statusStats)
+    const setStatusStats = useStoreActions(actions => actions.taskListFilter.setStatusStats)
+    const loadStatusStats = useStoreActions(actions => actions.taskListFilter.loadStatusStats)
+
+    // option check state
+    const optionCheck = useStoreState(store => store.taskListFilter.optionCheck)
+    const setOptionCheck = useStoreActions(actions => actions.taskListFilter.setOptionCheck)
+    const saveOptionCheck = useStoreActions(actions => actions.taskListFilter.saveOptionCheck)
+
+    useEffect(() => {
+        if(optionCheck === null) {
+            return
+        }
+
+        let formData = new FormData()
+        formData.append('filter', JSON.stringify(optionCheck))
+
+        let action = 'get-task-status-stats'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                setStatusStats(result.stats)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }, [optionCheck])
+
+    function statusFilterClickHandler(e, status) {
+        e.preventDefault()
+        setOptionCheck({...optionCheck, status: status})
+        saveOptionCheck()
+    }
 
     return (<main id="site-main" className="site-main page-task-list" role="main">
         <section className="page-header">
             <h1>Задачи</h1>
+            {statusStats !== null &&
             <div className="stats">
-                <span className="active">Ожидают волонтеров: 53</span>
-                <span>В работе: 83</span>
-                <span>Решено: 975</span>
+                {["publish", "in_work", "closed"].map((status, index) => {
+                    return (
+                        <span 
+                            className={(optionCheck.status ===  status || (!optionCheck.status && status === "publish")) ? "active" : ""} 
+                            key={`StatusFilterItem${index}`} 
+                            onClick={(e) => {statusFilterClickHandler(e, status)}}
+                        >
+                            {`${statusFilterTitle[status]}: ${_.get(statusStats, status, "")}`}
+                        </span>
+                    )
+                })}
             </div>
+            }
         </section>
         <div className="page-sections">
             <TaskListFilter />
@@ -89,6 +155,18 @@ function TaskListFilter(props) {
     const isFilterDataLoaded = useStoreState(store => store.taskListFilter.isFilterDataLoaded)
     const loadFilterData = useStoreActions(actions => actions.taskListFilter.loadFilterData)        
 
+    // subscription
+    const subscribeTaskList = useStoreState(store => store.user.subscribeTaskList)
+    const setSubscribeTaskList = useStoreActions(actions => actions.user.setSubscribeTaskList)
+    const loadSubscribeTaskList = useStoreActions(actions => actions.user.loadSubscribeTaskList)
+
+    useEffect(() => {
+        loadFilterData()
+        loadTipClose()
+        loadOptionCheck()
+        loadSubscribeTaskList()
+    }, [])
+
     function handleCloseTip(e, tipId) {
         e.preventDefault()
         setTipClose({...tipClose, [tipId]: true})
@@ -97,15 +175,92 @@ function TaskListFilter(props) {
 
     function handleFilterOptionClick(e, optionId) {
         e.preventDefault()
-        setOptionCheck({...optionCheck, [optionId]: !_.get(optionCheck, optionId, false)})
+
+        let newCheckValue = !_.get(optionCheck, optionId, false)
+
+        if(newCheckValue) {
+            setOptionCheck({...optionCheck, [optionId]: true})            
+        }
+        else {
+            let optionCheckNew = {...optionCheck}
+            delete optionCheckNew[optionId]
+            setOptionCheck({...optionCheckNew})
+        }
+        
         saveOptionCheck()
     }
 
-    useEffect(() => {
-        loadFilterData()
-        loadTipClose()
-        loadOptionCheck()
-    }, [])
+    function handleSubscribe(e) {
+        e.preventDefault()
+
+        let formData = new FormData()
+        formData.append('filter', JSON.stringify(optionCheck))
+
+        let action = 'subscribe-task-list'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                setSubscribeTaskList(optionCheck)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }
+
+    function handleUnsubscribe(e) {
+        e.preventDefault()
+
+        let formData = new FormData()
+
+        let action = 'unsubscribe-task-list'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                setSubscribeTaskList(null)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }
+
+    function handleResetFilter(e) {
+        e.preventDefault()
+
+        setOptionCheck({})
+        saveOptionCheck()
+    }
 
     if(!isFilterDataLoaded) {
         return (
@@ -202,8 +357,16 @@ function TaskListFilter(props) {
             }
 
             <div className="filter-actions">
-                <a href="#" className="filter-subscribe">Подписаться на уведомления</a>
-                <a href="#" className="filter-reset">Сбросить фильтры</a>
+                {subscribeTaskList === null && 
+                <a href="#" className="filter-subscribe" onClick={(e) => {handleSubscribe(e)}}>Подписаться на уведомления</a>
+                }
+                <a href="#" className="filter-reset" onClick={(e) => {handleResetFilter(e)}}>Сбросить фильтры</a>
+                {subscribeTaskList !== null && 
+                <div className="already-subscribed">
+                    <a href="#" className="filter-unsubscribe" onClick={(e) => {handleUnsubscribe(e)}}>Отменить подписку</a>
+                    <span>У вас настроена рассылка на выбранные категории задач</span>
+                </div>
+                }
             </div>
         </section>
     )
@@ -234,7 +397,7 @@ function FilterSection(props) {
                         {sectionItems.map((item, index) => {
                             const optionId = sectionId + "." + item.id
                             return (
-                                <div className="filter-section-option-list-item" key={`filterSectionItem${sectionId}-${index}`}>
+                                <div className={`filter-section-option-list-item ${_.get(optionCheck, optionId, false) ? "active" : ""}`} key={`filterSectionItem${sectionId}-${index}`}>
                                     <span className="check-title" onClick={(e) => {optionClickHandler(e, optionId)}}>
                                         <img src={_.get(optionCheck, optionId, false) ? imgFilterCheckOn : imgFilterCheckOff}/>
                                         <span>{item.title}</span>
@@ -258,6 +421,7 @@ function TaskList(props) {
 
     // load more
     const [page, setPage] = useState(1)
+    const [loadMoreTaskCount, setLoadMoreTaskCount] = useState(1)
     const appendTaskList = useStoreActions(actions => actions.taskList.appendTaskList)
 
     // filter
@@ -293,6 +457,8 @@ function TaskList(props) {
                     return utils.itvShowAjaxError({message: result.message})
                 }
 
+                setLoadMoreTaskCount(result.taskList.length)
+
                 if(isLoadMore) {
                     appendTaskList(result.taskList)
                 }
@@ -307,10 +473,19 @@ function TaskList(props) {
     }
 
     useEffect(() => {
+        if(optionCheck === null) {
+            return
+        }
+
         loadFilteredTaskList(optionCheck, page)
-    }, [page])
+    }, [page, optionCheck])
 
     useEffect(() => {
+        if(optionCheck === null) {
+            return
+        }
+
+        resetTaskListLoaded()
         setPage(1)
     }, [optionCheck])
 
@@ -330,9 +505,11 @@ function TaskList(props) {
     return (
         <section className="task-list">
             {taskList && taskList.map((task, key) => <TaskListItem task={task} key={`taskListItem${key}`} />)}
+            {loadMoreTaskCount > 0 &&
             <div className="load-more-tasks">
                 <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>Загрузить ещё</a>
             </div>
+            }
         </section>
     )
 }
@@ -340,7 +517,11 @@ function TaskList(props) {
 function TaskListItem(props) {
     const task = props.task
 
-    return task ? (<div className="task-body">                    
+    if(!task) {
+        return null
+    }
+
+    return (<div className="task-body">                    
                 <div className="task-author-meta">
                     <UserSmallView user={task.author} />
                     {!!task.author.organizationName &&
@@ -355,9 +536,14 @@ function TaskListItem(props) {
                     <h1 dangerouslySetInnerHTML={{__html: task.title}}/>
                 </Link>
                 <div className="meta-info">
-                    <img src={iconApproved} className="itv-approved" />
+                    <div className="tooltip itv-approved">
+                        <div className="tooltip-buble">
+                            Мы проверили, задача хорошая
+                        </div>
+                        <img src={iconApproved} className="tooltip-actor itv-approved" />
+                    </div>                    
                     
-                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.date), 'do MMMM Y', {locale: ru})}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.dateGmt), 'do MMMM Y', {locale: ru})}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(task.date), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.viewsCount} просмотров`}/>
@@ -388,5 +574,5 @@ function TaskListItem(props) {
                     }
                 </div>
                 }
-    </div>) : null
+    </div>)
 }

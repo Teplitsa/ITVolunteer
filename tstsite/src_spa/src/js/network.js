@@ -91,6 +91,7 @@ fragment TaskCommentFields on Comment {
   id
   content
   date
+  dateGmt
   likesCount
   likeGiven
   author {
@@ -155,6 +156,7 @@ query Task($taskGqlId: ID!) {
         slug
         content
         date
+        dateGmt
         viewsCount
         doerCandidatesCount
         status
@@ -238,6 +240,7 @@ query Task($taskSlug: ID!) {
         slug
         content
         date
+        dateGmt
         viewsCount
         doerCandidatesCount
         status
