@@ -543,7 +543,7 @@ function TaskListItem(props) {
                         <img src={iconApproved} className="tooltip-actor itv-approved" />
                     </div>                    
                     
-                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.dateGmt), 'do MMMM Y', {locale: ru})}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.dateGmt + "Z"), 'do MMMM Y', {locale: ru})}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(task.date), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.viewsCount} просмотров`}/>

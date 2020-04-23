@@ -212,7 +212,7 @@ function Comment({comment, task, parentComment}) {
                     }
                 </div>
                 <div className="comment-body">
-                    <time>{format(new Date(comment.dateGmt), 'dd.MM.yyyy в HH:mm')}</time>
+                    <time>{format(new Date(comment.dateGmt + "Z"), 'dd.MM.yyyy в HH:mm')}</time>
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">
                         <div className="like" onClick={(e) => {
