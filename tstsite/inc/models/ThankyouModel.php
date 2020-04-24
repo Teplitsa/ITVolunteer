@@ -46,14 +46,13 @@ class ThankyouModel extends ITVSingletonModel {
         \ItvLog::instance()->log_user_action(\ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
         
         $from_user = User::find($user_id);
-        $email_subject = \ItvEmailTemplates::instance()->get_title('thankyou_notification');
-        $email_body_template = \ItvEmailTemplates::instance()->get_text('thankyou_notification');
         
-        wp_mail(
-            $to_user->user_email,
-            $email_subject,
-            nl2br(itv_fill_template($email_body_template, ['to_username' => $to_user->display_name, 'from_username' => $from_user->display_name, 'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU)]))
-        );
+        do_action('atv_email_notification', 'thankyou_notification', [
+            'user_id' => $to_user->ID,
+            'to_username' => $to_user->display_name,
+            'from_username' => $from_user->display_name,
+            'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU),
+        ]);
         
         if($thankyou->counter > $this->THANKYOU_CONFIG['TOO_MUCH'] && !$thankyou->is_too_much_sent && count($this->THANKYOU_CONFIG['TOO_MUCH_ALERT_TEAM'])) {
             

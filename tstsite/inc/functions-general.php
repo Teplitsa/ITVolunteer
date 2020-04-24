@@ -151,13 +151,12 @@ function itv_html_email_with_cc($to, $subject, $message, $other_emails = [], $em
 }
 
 function itv_notify_user( $user, $notification_id, $params, $task = NULL ) {
-    $email_templates = ItvEmailTemplates::instance();
-    wp_mail($user->user_email, 
-            $email_templates->get_title( $notification_id ), 
-            nl2br ( itv_fill_template( $email_templates->get_text( $notification_id ), $params ) ) );
+    do_action('atv_email_notification', $notification_id, array_merge([
+        'to' => $user->user_email,
+    ], $params));
     
     $itv_log = ItvLog::instance ();
-    $itv_log->log_email_action( 'email_' . $notification_id, $user->ID, $email_templates->get_title( $notification_id ), $task ? $task->ID : 0 );
+    $itv_log->log_email_action( 'email_' . $notification_id, $user->ID, ItvEmailTemplates::instance()->get_title($notification_id), $task ? $task->ID : 0 );
 }
 
 function itv_wp_mail_log( $args ) {

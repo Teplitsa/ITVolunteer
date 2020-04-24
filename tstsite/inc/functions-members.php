@@ -422,7 +422,7 @@ function tst_is_valid_register_user_params($user_params) {
 	return $is_valid;
 }
 
-function tst_send_activation_email($user, $email_subject, $email_body_template) {
+function tst_send_activation_email($user) {
 	$user_id = $user->ID;
 	$user_email = $user->user_email;
 	$user_login = $user->user_login;
@@ -434,11 +434,11 @@ function tst_send_activation_email($user, $email_subject, $email_body_template) 
 	$account_activation_url = "/account-activation/?uid=$user_id&code=$activation_code";
 	$link = is_multisite() ? network_site_url($account_activation_url) : home_url($account_activation_url);
 	
-	wp_mail(
-		$user_email,
-		$email_subject,
-		nl2br(sprintf($email_body_template, $link, $user_login))
-	);
+    do_action('atv_email_notification', 'activate_account_notice', [
+        'to' => $user_email,
+        'login' => $user_login,
+        'complete_reg_url' => $link,
+    ]);
 }
 
 /* Last login data */
@@ -782,11 +782,7 @@ function itv_resend_activation_email_core($user) {
         return;
     }
     
-    $email_templates = ItvEmailTemplates::instance();
-    $email_subject = $email_templates->get_title('activate_account_notice');
-    $email_body_template = $email_templates->get_text('activate_account_notice');
-    
-    tst_send_activation_email($user, $email_subject, $email_body_template);
+    tst_send_activation_email($user);
     update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
     
     $activation_email_counter = get_user_meta($user->ID, 'activation_email_counter', true);

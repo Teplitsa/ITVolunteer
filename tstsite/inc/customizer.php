@@ -720,11 +720,7 @@ function ajax_user_register() {
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
 			UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_REGISTER);
 				
-			$email_templates = ItvEmailTemplates::instance();
-			$email_subject = $email_templates->get_title('activate_account_notice');
-			$email_body_template = $email_templates->get_text('activate_account_notice');
-			
-			tst_send_activation_email($user, $email_subject, $email_body_template);
+			tst_send_activation_email($user);
 			update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
 			
 			wp_die(json_encode(array(

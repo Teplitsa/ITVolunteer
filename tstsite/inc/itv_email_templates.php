@@ -105,8 +105,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
             ],
+                        
 		);
         
+        // atvetka
         $this->email_templates_atvetka_style = array(
             'approve_candidate_doer_notice' => array(
                 'title' => __('IT-Volunteer: you have been approved as participant!', 'tst'),
@@ -157,7 +159,48 @@ class ItvEmailTemplates {
                 'title' => __('it-volunteer - new message from contact form', 'tst'),
                 'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: {{page_url}}\nName: {{name}}\nEmail: {{email}}\nMessage:\n{{message}}\n\nBest,\nit-volunteer", 'tst'),
             ),
+            'thankyou_notification' => [
+                'title' => __('ITVolunteer - thank you for your work!', 'tst'),
+                'text' => __("Greetings, {{to_username}}!\n\nUser {{from_username}} said thank you for your work!\n\nBest,\nITVolunteer", 'tst'),
+            ],
+            'task_no_doer_notif' => array(
+                'title' => __('ITVolunteer - no doer has been approved for your task yet!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nWeek left but still no doer has been approved for your task.\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'task_status_changed' => array(
+                'title' => __('ITVolunteer - linked task status changed!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} status changed!\n{{status_message}}\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'task_status_changed_doer' => array(
+                'title' => __('ITVolunteer - linked task status changed!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} status changed!\n{{status_message}}\nTask page: {{task_link}}.\nDon't forget to check task status after close.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'task_status_closed_doer' => array(
+               'title' => __('ITVolunteer - linked task closed!', 'tst'),
+               'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} closed!\nPlease go to task page and leave a review for the author: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'task_status_closed_author' => array(
+                'title' => __('ITVolunteer - linked task closed!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} closed!\nPlease go to task page and leave a review for the doer: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'task_archive_soon_notif' => array(
+                'title' => __('ITVolunteer - your task will be moved to archive soon!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYour task will be moved to archive soon because no doers have been approved for it.\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ),
+            'long_work_task_archive_soon' => [
+                'title' => __('ITVolunteer - long work on task with no result!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nTask is in work for {{days_in_status}} days, but still no result. It will be moved to archive soon!\nTask page: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
+            ],
+            'you_have_been_blocked' => [
+                'title' => __('ITVolunteer - your profile has been blocked!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been blocked till {{block_till_date}}.\n\n<a href='{{block_info_url}}'>Why?</a>\n\nBest,\nITVolunteer", 'tst'),
+            ],
+            'you_have_been_unblocked' => [
+                'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
+            ],
         );
+        
     }
     
     public static function instance() {
