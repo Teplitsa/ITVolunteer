@@ -52,7 +52,7 @@ function tst_setup() {
 	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
-	include(get_template_directory().'/inc/itv_email_templates.php');	
+	include(get_template_directory().'/mail/message_content_templates.php');	
 
 
 

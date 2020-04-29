@@ -13,12 +13,20 @@ try {
 	$tax = 'atv_notif_events';
 	
 	foreach(\ItvEmailTemplates::instance()->get_all_email_templates() as $email_name => $email_template) {
-	    $email_template_text = !empty(\ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]) ? \ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]['text'] : $email_template['text'];
-	    $email_template_text = preg_replace('/\{\{([a-z_]+)\}\}/', '{\1}', $email_template_text);
+	    $message_content = !empty(\ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]) ? \ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]['text'] : $email_template['text'];
+	    $message_content = preg_replace('/\{\{([a-z_]+)\}\}/', '{\1}', $message_content);
+	    
+	    $message_title = $email_template['title'];
+	    $message_content = $email_template['title'];
+	    
+	    ob_start();
+	    include(get_template_directory() . '/mail/message_template.php');
+	    $message_content = ob_get_clean();
 	    
 	    $posts_data[] = [
-            'post_title' => $email_template['title'],
-            'post_content' => $email_template_text,
+            'post_title' => $message_title,
+            'post_content' => $message_content,
+	        'post_content_raw' => $message_content,
             'post_name' => $email_name,
             'tax_terms' => array(
                 $tax => array($email_name),
@@ -32,7 +40,7 @@ try {
 	
     Itv_Setup_Utils::setup_terms_data($terms, $tax);
 	Itv_Setup_Utils::setup_posts_data($posts_data, ATV_Email_Notification::POST_TYPE);
-    
+	
 	echo 'DONE'.chr(10);
 
 	//Final

@@ -104,6 +104,11 @@ body {
         margin-top: $base * 2;
         margin-left: auto;
         margin-right: auto;
+
+        a {
+            @include a-hover-underline;
+            color: $color-gray-dark-md;
+        }
     }
 }
 

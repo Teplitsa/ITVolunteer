@@ -199,6 +199,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
             ],
+            'consult_needed_author_notification' => [
+                'title' => __('itv_email_test_consult_needed_notification_subject', 'tst'),
+                'text' => __('itv_email_test_consult_needed_notification', 'tst'),
+            ],
         );
         
     }
