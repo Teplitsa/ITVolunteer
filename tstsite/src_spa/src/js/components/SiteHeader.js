@@ -142,6 +142,9 @@ function NotifList(props) {
 function NotifItem({notif,}) {
     const user = useStoreState(store => store.user.data)
 
+    console.log("notif.dateGmt:", notif.dateGmt)
+    console.log("now:", new Date())
+
     return (
         <div className={`notif-list__item ${notif.is_read ? 'notif-list__item__read' : ''}`}>
             <div className="notif-list__item-icon">

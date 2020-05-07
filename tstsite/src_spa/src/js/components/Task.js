@@ -113,6 +113,9 @@ export function TaskBody({task, author}) {
         return null
     }
 
+    console.log("task.dateGmt:", task.dateGmt)
+    console.log("now:", new Date())
+
     return (<div className="task-body">                    
             <header>
                 <h1  dangerouslySetInnerHTML={{__html: task.title}}/>

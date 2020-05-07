@@ -203,6 +203,9 @@ function Comment({comment, task, parentComment}) {
         
     }
 
+    console.log("comment.dateGmt:", comment.dateGmt)
+    console.log("now:", new Date())
+
     return (
         <div className="comment-wrapper">
             <div className="comment">
