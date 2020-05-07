@@ -16,7 +16,7 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-define('ITV_FRONTEND_VERSION', '1.0.10');
+define('ITV_FRONTEND_VERSION', '1.0.10' . "." . rand());
 define('ITV_FORCE_THEME_MOD_SETUP', false);
 
 function tst_get_version_num(){
@@ -216,6 +216,7 @@ require_once get_template_directory().'/inc/stats-events.php';
 require_once get_template_directory().'/inc/itv_notificator.php';
 require_once get_template_directory().'/inc/itv_tasks_stats.php';
 require_once get_template_directory().'/inc/itv_consult.php';
+require_once(get_template_directory() . '/inc/user_notif.php');
 
 // ipgeo lib and wrapper
 require_once get_template_directory().'/ipgeo/ipgeobase.php';
@@ -232,3 +233,4 @@ require_once get_template_directory() . '/inc/models/UserBlockModel.php';
 require get_template_directory().'/inc/graphql.php';
 require_once(get_template_directory() . '/inc/models/TimelineModel.php');
 require_once(get_template_directory() . '/inc/models/CommentsModel.php');
+require_once(get_template_directory() . '/inc/models/UserNotif.php');

@@ -22,6 +22,16 @@ export function UserSmallView({user}) {
     )
 }
 
+export function UserSmallPicView({user}) {
+    return (
+        <div className="itv-user-small-view">
+            <span className="avatar-wrapper" style={{
+                backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+            }}/>
+        </div>
+    )
+}
+
 export function TaskAuthor({author}) {
     const user = useStoreState(store => store.user.data)
 
@@ -174,6 +184,41 @@ export function DoerCard({doer, user, author, task}) {
         )
     }
 
+    const handleCancelDoer = (e, doer) => {
+        e.preventDefault()
+
+        let formData = new FormData()
+        formData.append('task_gql_id', task.id)
+
+        let action = 'remove-candidate'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'fail') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                declineDoer({doers, doer})
+                approveDoer(null)
+                loadTimeline(task.id)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }
+
     return (
         <div className="user-card">
             <div className="user-card-inner">
@@ -192,10 +237,21 @@ export function DoerCard({doer, user, author, task}) {
                     <span className="status">{`Выполнено ${doer.solvedTasksCount} задач`}</span>
                 </div>
             </div>
-            {!!user.id && user.id == author.id &&
-            <div className="author-actions-on-doer">
+            {!!user.id && (user.id === author.id || user.id === doer.id) &&
+            <div className={`author-actions-on-doer ${user.id === doer.id ? 'i-am-doer' : ''}`}>
+                {user.id == author.id &&
                 <a href="#" className="accept-doer" onClick={(e) => {handleApproveDoer(e, doer)}}>Выбрать</a>
+                }
+
+                {user.id == author.id &&
                 <a href="#" className="reject-doer" onClick={(e) => {handleDeclineDoer(e, doer)}}>Отклонить</a>
+                }
+
+                {user.id === doer.id &&
+                <a href="#" className="cancel-doer danger" onClick={(e) => {handleCancelDoer(e, doer)}}>Отказаться помогать</a>
+                }
+
+                {user.id == author.id &&
                 <div className="tooltip">
                     <div className="tooltip-buble">
                         <h4>Как выбрать волонтёра?</h4>
@@ -203,6 +259,7 @@ export function DoerCard({doer, user, author, task}) {
                     </div>
                     <div className="tooltip-actor">?</div>
                 </div>
+                }
             </div>
             }
         </div>

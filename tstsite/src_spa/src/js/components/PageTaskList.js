@@ -133,6 +133,7 @@ export function PageTaskList(props) {
 }
 
 function TaskListFilter(props) {
+    const user = useStoreState(store => store.user.data)
     const tipClose = useStoreState(store => store.taskListFilter.tipClose)
     const setTipClose = useStoreActions(actions => actions.taskListFilter.setTipClose)
     const saveTipClose = useStoreActions(actions => actions.taskListFilter.saveTipClose)
@@ -164,8 +165,15 @@ function TaskListFilter(props) {
         loadFilterData()
         loadTipClose()
         loadOptionCheck()
-        loadSubscribeTaskList()
     }, [])
+
+    useEffect(() => {
+        if(!user.id) {
+            return
+        }
+
+        loadSubscribeTaskList()
+    }, [user])
 
     function handleCloseTip(e, tipId) {
         e.preventDefault()
@@ -421,11 +429,12 @@ function TaskList(props) {
 
     // load more
     const [page, setPage] = useState(1)
-    const [loadMoreTaskCount, setLoadMoreTaskCount] = useState(1)
+    const [isLoadMoreTaskCount, setIsLoadMoreTaskCount] = useState(true)
     const appendTaskList = useStoreActions(actions => actions.taskList.appendTaskList)
 
     // filter
     const optionCheck = useStoreState(store => store.taskListFilter.optionCheck)    
+    const statusStats = useStoreState(store => store.taskListFilter.statusStats)
 
     async function loadFilteredTaskList(optionCheck, page) {
         let isLoadMore = page > 1
@@ -457,7 +466,7 @@ function TaskList(props) {
                     return utils.itvShowAjaxError({message: result.message})
                 }
 
-                setLoadMoreTaskCount(result.taskList.length)
+                setIsLoadMoreTaskCount(result.taskList.length > 0)
 
                 if(isLoadMore) {
                     appendTaskList(result.taskList)
@@ -489,6 +498,22 @@ function TaskList(props) {
         setPage(1)
     }, [optionCheck])
 
+    useEffect(() => {
+        if(optionCheck === null) {
+            return
+        }
+
+        if(statusStats === null) {
+            return
+        }
+
+        let totalTasksCount = _.get(statusStats, optionCheck ? optionCheck.status : "publish", 0)
+        console.log("totalTasksCount:", totalTasksCount)
+        console.log("taskList.length:", taskList.length)
+        setIsLoadMoreTaskCount(totalTasksCount > taskList.length)
+
+    }, [statusStats, optionCheck, taskList])
+
     function handleLoadMoreTasks(e) {
         e.preventDefault()
         setPage(page + 1)
@@ -505,7 +530,7 @@ function TaskList(props) {
     return (
         <section className="task-list">
             {taskList && taskList.map((task, key) => <TaskListItem task={task} key={`taskListItem${key}`} />)}
-            {loadMoreTaskCount > 0 &&
+            {isLoadMoreTaskCount &&
             <div className="load-more-tasks">
                 <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>Загрузить ещё</a>
             </div>

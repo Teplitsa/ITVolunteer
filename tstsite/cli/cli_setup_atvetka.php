@@ -13,11 +13,11 @@ try {
 	$tax = 'atv_notif_events';
 	
 	foreach(\ItvEmailTemplates::instance()->get_all_email_templates() as $email_name => $email_template) {
+        $message_title = $email_template['title'];
+        
 	    $message_content = !empty(\ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]) ? \ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]['text'] : $email_template['text'];
 	    $message_content = preg_replace('/\{\{([a-z_]+)\}\}/', '{\1}', $message_content);
-	    
-	    $message_title = $email_template['title'];
-	    $message_content = $email_template['title'];
+	    $message_content = wpautop( $message_content );	    
 	    
 	    ob_start();
 	    include(get_template_directory() . '/mail/message_template.php');

@@ -256,7 +256,7 @@
                     margin-bottom: 0px;
                 }
 
-                .author-actions-on-doer {
+                .author-actions-on-doer:not(.i-am-doer) {
                     display: none;
                 }
             }
@@ -322,6 +322,12 @@
                 }
 
                 .reject-doer {
+                    @include button-secondary-sm;
+                    border-radius: 10px;
+                    border-color: $color-gray-light-md;
+                }
+
+                .cancel-doer {
                     @include button-secondary-sm;
                     border-radius: 10px;
                     border-color: $color-gray-light-md;

@@ -105,7 +105,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your profile has been unblocked!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nYour profile on ITVolonteer has been unblocked and active again.\n\n<a href='{{block_info_url}}'>Learn more about blocking reasons</a>\n\nBest,\nITVolunteer", 'tst'),
             ],
-                        
+            'consult_needed_author_notification' => [
+                'title' => __('itv_email_test_consult_needed_notification_subject', 'tst'),
+                'text' => __('itv_email_test_consult_needed_notification', 'tst'),
+            ],
 		);
         
         // atvetka
@@ -151,10 +154,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - task deadline is near!', 'tst'),
                 'text' => __("Greetings!\n\nThe task you are participate in has a deadline coming in one day from now. You can review the task on its page: {{task_url}}.\n\nBest,\nITVolunteer", 'tst'),
             ),
-            'password_reset_notice' => array(
-                'title' => '', // Default email title is used
-                'text' => __("Greetings!\n\nSomeone requested that the password be reset for the following account: {{login}}\n\nIf this was a mistake, just ignore this email and nothing will happen. To reset your password, visit the following address: {{reset_password_url}}\n\nBest,\nITVolunteer", 'tst'),
-            ),
+//             'password_reset_notice' => array(
+//                 'title' => '', // Default email title is used
+//                 'text' => __("Greetings!\n\nSomeone requested that the password be reset for the following account: {{login}}\n\nIf this was a mistake, just ignore this email and nothing will happen. To reset your password, visit the following address: {{reset_password_url}}\n\nBest,\nITVolunteer", 'tst'),
+//             ),
             'message_added_notification' => array(
                 'title' => __('it-volunteer - new message from contact form', 'tst'),
                 'text' => __("Greetings!\n\nSomeone leaved a message on the contact form.\n\Page URL: {{page_url}}\nName: {{name}}\nEmail: {{email}}\nMessage:\n{{message}}\n\nBest,\nit-volunteer", 'tst'),

@@ -3,6 +3,8 @@
  * Members related functions after review
  **/
 
+use ITV\models\UserNotifModel;
+
 use ITV\models\UserXPModel;
 use ITV\models\ThankyouModel;
 use ITV\models\ItvThankyouRecentlySaidException;
@@ -546,6 +548,10 @@ function ajax_leave_review() {
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
 	}
 
+	//
+	UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
+	UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
+	
 	wp_die(json_encode(array(
 	'status' => 'ok',
 	'message' => __('Review saved', 'tst'),
@@ -634,6 +640,10 @@ function ajax_leave_review_author() {
 		}
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
 	}
+	
+	//
+	UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_FEEDBACK_TASKDOER_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
+	UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_POST_FEEDBACK_TASKDOER_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
 
 	wp_die(json_encode(array(
 		'status' => 'ok',

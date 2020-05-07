@@ -3,6 +3,7 @@ use ITV\models\UserXPModel;
 use ITV\models\ResultScreenshots;
 use ITV\models\TimelineModel;
 use ITV\models\CommentsLikeModel;
+use ITV\models\UserNotifModel;
 
 /**
  * Task related utilities and manipulations
@@ -310,8 +311,7 @@ function itv_ajax_submit_task_comment(){
     
     $parent_comment_identity = !empty($_POST['parent_comment_id']) ? \GraphQLRelay\Relay::fromGlobalId( $_POST['parent_comment_id'] ) : null;
     $parent_comment_id = !empty($parent_comment_identity['id']) ? (int)$parent_comment_identity['id'] : 0;
-    
-    $itv_log = ItvLog::instance();
+    $user_id = get_current_user_id();
     
     if($task_id && is_user_logged_in()) {
 
@@ -329,6 +329,11 @@ function itv_ajax_submit_task_comment(){
                 'message' => $comment->get_error_message(),
             )));
         }
+        
+        //
+        $task = get_post($task_id);
+        UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_COMMENT_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+        UserNotifModel::instance()->push_notif($user_id, UserNotifModel::$TYPE_POST_COMMENT_USER, ['task_id' => $task_id, 'from_user_id' => $user_id]);
         
         wp_die(json_encode(array(
             'status' => 'ok',
@@ -509,8 +514,13 @@ function ajax_suggest_close_date() {
         )));
 	}
 	
-    $timeline = ITV\models\TimelineModel::instance();
+    //
+	$timeline = ITV\models\TimelineModel::instance();
     $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message, 'due_date' => $due_date]);
+    
+    //
+    UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_SUGGEST_NEW_DEADLINE_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
+    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_SUGGEST_NEW_DEADLINE_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
 
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -863,7 +873,11 @@ function ajax_accept_close_date() {
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_ACCEPT]);
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $task_doer->ID]);
     }
-
+    
+    //
+    UserNotifModel::instance()->push_notif($author_id, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKAUTHOR, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
+    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
+    
     wp_die(json_encode(array(
         'status' => 'ok',
     )));    
@@ -1033,6 +1047,10 @@ function ajax_accept_close() {
         
         $reviews_timeline_item->status = TimelineModel::$STATUS_CURRENT;
         $reviews_timeline_item->save();
+        
+        //
+        UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_TASK_CLOSING_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
+        UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_TASK_CLOSING_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
     }
 
     wp_die(json_encode(array(

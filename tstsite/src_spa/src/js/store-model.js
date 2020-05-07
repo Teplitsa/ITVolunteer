@@ -310,10 +310,45 @@ const taskListFilterModel = {
     }),    
 }
 
+const userNotifModel = {
+    // load filter
+    notifList: null,
+    setNotifList: action((state, payload) => {
+        state.notifList = payload
+    }),
+    loadNotifList: thunk((actions, payload) => {
+        let action = 'get_user_notif_short_list'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'get',
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'error') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                actions.setNotifList(result.notifList)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }),    
+}
+
 export const storeModel = {
     user: userStoreModel,
     task: taskModel,
     timeline: timelineModel,
     taskList: taskListModel,
     taskListFilter: taskListFilterModel,
+    userNotif: userNotifModel,
 }
