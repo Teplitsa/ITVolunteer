@@ -71,19 +71,19 @@ class Itv_Setup_Utils {
         
         $post_id = wp_insert_post($post_data);
         
-//         if(!empty($post_data['post_content_raw'])) {
-//             $wpdb->update( 
-//             	$wpdb->posts, 
-//             	array( 
-//             		'post_content' => $post_data['post_content_raw'],
-//             	), 
-//             	array( 'ID' => $post_id ), 
-//             	array( 
-//             		'%s',
-//             	), 
-//             	array( '%d' ) 
-//             );        
-//         }
+        if(!empty($post_data['post_content_raw'])) {
+            $wpdb->update( 
+            	$wpdb->posts, 
+            	array( 
+            		'post_content' => $post_data['post_content_raw'],
+            	), 
+            	array( 'ID' => $post_id ), 
+            	array( 
+            		'%s',
+            	), 
+            	array( '%d' ) 
+            );        
+        }
         
         if(!empty($post_data['meta'])) {
             foreach($post_data['meta'] as $k => $v) {
