@@ -341,6 +341,7 @@ function itv_ajax_submit_task_comment(){
                 'id' => \GraphQLRelay\Relay::toGlobalId( 'comment', $comment->comment_ID ),
                 'content' => $comment->comment_content,
                 'date' => $comment->comment_date,
+                'dateGmt' => $comment->comment_date_gmt,
             ],
         )));
         

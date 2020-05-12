@@ -36,7 +36,11 @@ export function TaskComments({task, author}) {
         console.log("taskComments changed")
     }, [taskComments])
 
-    return author.id ? (
+    if(!author.id) {
+        return null
+    }
+
+    return (
         <div className="task-comments">
             <h3>Комментарии</h3>
             <p className="comments-intro">{`${author.fullName} будет рад услышать ваш совет, вопрос или предложение.`}</p>
@@ -49,7 +53,7 @@ export function TaskComments({task, author}) {
 
             </div>
         </div>
-    ) : null
+    )
 }
 
 function AddCommentForm(props) {
@@ -203,8 +207,9 @@ function Comment({comment, task, parentComment}) {
         
     }
 
-    console.log("comment.dateGmt:", comment.dateGmt)
-    console.log("now:", new Date())
+    if(!comment || !comment.id) {
+        return null
+    }
 
     return (
         <div className="comment-wrapper">
@@ -215,7 +220,9 @@ function Comment({comment, task, parentComment}) {
                     }
                 </div>
                 <div className="comment-body">
+                    {comment.dateGmt &&
                     <time>{format(new Date(comment.dateGmt + "Z"), 'dd.MM.yyyy в HH:mm')}</time>
+                    }
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">
                         <div className="like" onClick={(e) => {
