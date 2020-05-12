@@ -9,6 +9,10 @@ import { getTaskLazyQuery } from '../network'
 import * as utils from "../utils"
 
 export function UserSmallView({user}) {
+    if(!user) {
+        return null
+    }
+
     return (
         <div className="itv-user-small-view">
             <span className="avatar-wrapper" style={{
@@ -23,6 +27,10 @@ export function UserSmallView({user}) {
 }
 
 export function UserSmallPicView({user}) {
+    if(!user) {
+        return null
+    }
+
     return (
         <div className="itv-user-small-view">
             <span className="avatar-wrapper" style={{
@@ -35,7 +43,15 @@ export function UserSmallPicView({user}) {
 export function TaskAuthor({author}) {
     const user = useStoreState(store => store.user.data)
 
-    return author.id ? (
+    if(!author || !author.id) {
+        return null
+    }
+
+    if(!user) {
+        return null
+    }
+
+    return (
         <div className="sidebar-users-block">
             <div className="user-card">
                 <div className="user-card-inner">
@@ -78,7 +94,7 @@ export function TaskAuthor({author}) {
 
             <p className="org-description" dangerouslySetInnerHTML={{__html: author.organizationDescription}} />
         </div>
-    ) : null
+    )
 }
 
 export function TaskDoers({task, author, doers}) {
@@ -217,6 +233,10 @@ export function DoerCard({doer, user, author, task}) {
                 utils.itvShowAjaxError({action, error})
             }
         )
+    }
+
+    if(!doer) {
+        return null
     }
 
     return (
