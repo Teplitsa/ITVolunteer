@@ -221,7 +221,7 @@ function Comment({comment, task, parentComment}) {
                 </div>
                 <div className="comment-body">
                     {comment.dateGmt &&
-                    <time>{format(new Date(comment.dateGmt + "Z"), 'dd.MM.yyyy в HH:mm')}</time>
+                    <time>{format(utils.itvWpDateTimeToDate(comment.dateGmt), 'dd.MM.yyyy в HH:mm')}</time>
                     }
                     <div className="text" dangerouslySetInnerHTML={{__html: comment.content}} />
                     <div className="meta-bar">

@@ -59,6 +59,6 @@ class UserNotifModel extends ITVSingletonModel {
     }
     
     public function mark_read($user_id, $notif_id_list) {
-        UserNotif::where(['user_id' => $user_id])->whereIn(['id' => $notif_id_list])->update(['is_read' => 1]);
+        UserNotif::where(['user_id' => $user_id])->whereIn('id', $notif_id_list)->update(['is_read' => 1]);
     }    
 }

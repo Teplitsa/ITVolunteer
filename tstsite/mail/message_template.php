@@ -34,9 +34,7 @@
   			<a href="#" class="btn danger btn-build-team">Собрать команду</a>
   		</div>
   		<a href="https://te-st.ru">
-          	<svg class="teplitsa-logo">
-        		<use xlink:href="#pic-logo-teplitsa" />
-        	</svg>
+  			<img class="teplitsa-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-teplitsa.png";?>" />
     	</a>
     	<div class="owner-info">
     		<a href="https://itv.te-st.ru">Платформа IT-Волонтер — проект Теплицы социальных технологий</a>

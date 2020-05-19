@@ -90,6 +90,18 @@ function itv_register_task_graphql_fields() {
     );
 }
 
+add_filter('graphql_data_is_private', "itv_graphql_task_private_filter", 10, 6);
+function itv_graphql_task_private_filter($is_private, $model_name, $data, $visibility, $owner, $current_user) {
+    if($model_name !== 'PostObject'
+        || $data->post_type != 'tasks'
+        || $is_private === false
+    ) {
+        return $is_private;
+    }
+    
+    return !in_array($data->post_status, ['in_work', 'closed', 'archived']);
+}
+
 // users
 add_action( 'graphql_register_types', 'itv_register_user_graphql_fields' );
 function itv_register_user_graphql_fields() {
@@ -183,6 +195,18 @@ function itv_register_user_graphql_fields() {
             
         ]
     );
+
+}
+
+add_filter('graphql_data_is_private', "itv_graphql_user_private_filter", 10, 6);
+function itv_graphql_user_private_filter($is_private, $model_name, $data, $visibility, $owner, $current_user) {
+    if($model_name !== 'UserObject'
+        || $is_private === false
+    ) {
+        return $is_private;
+    }
+    
+    return !!$data->deleted;
 }
 
 add_action( 'graphql_register_types', 'itv_register_doers_graphql_query' );
@@ -278,4 +302,15 @@ function itv_register_comment_graphql_fields() {
             ],
         ]
     );
+}
+
+add_filter('graphql_data_is_private', "itv_graphql_comment_private_filter", 10, 6);
+function itv_graphql_comment_private_filter($is_private, $model_name, $data, $visibility, $owner, $current_user) {
+    if(!in_array($model_name, ['CommentObject', 'CommentAuthorObject'])
+        || $is_private === false
+    ) {
+        return $is_private;
+    }
+    
+    return false;
 }

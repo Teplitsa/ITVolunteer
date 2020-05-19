@@ -119,8 +119,8 @@ export function TaskBody({task, author}) {
                 <div className="meta-info">
                     <img src={iconApproved} className="itv-approved" />
                     
-                    <TaskMetaInfo icon={metaIconCalendar} title={task.dateGmt ? format(new Date(task.dateGmt + "Z"), 'do MMMM Y', {locale: ru}) : ""}/>
-                    <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(task.dateGmt + "Z"), {locale: ru, addSuffix: true})}`}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={task.dateGmt ? format(utils.itvWpDateTimeToDate(task.dateGmt), 'do MMMM Y', {locale: ru}) : ""}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(utils.itvWpDateTimeToDate(task.dateGmt), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.viewsCount} просмотров`}/>
 
@@ -772,13 +772,13 @@ export function TaskTimeline({task, author}) {
             <div className="timeline-list">
                 {timeline.map((item, key) => <div className={`checkpoint ${item.status} ${item.type} ${item.decision} ${item.isOverdue ? 'overdue' : ''}`} key={key}>
                         <div className="date">
-                            <span className="date-num">{format(new Date(item.timeline_date), 'd')}</span>
-                            {format(new Date(item.timeline_date), 'LLL', {locale: ru})}
+                            <span className="date-num">{format(utils.itvWpDateTimeToDate(item.timeline_date), 'd')}</span>
+                            {format(utils.itvWpDateTimeToDate(item.timeline_date), 'LLL', {locale: ru})}
                         </div>
 
                         <div className="info">
                             <i className="point-circle"> </i>
-                            <h4>{item.title}{item.type == 'date_suggest' ? " " + format(new Date(item.timeline_date), 'dd.MM.yyyy') : ""}</h4>
+                            <h4>{item.title}{item.type == 'date_suggest' ? " " + format(utils.itvWpDateTimeToDate(item.timeline_date), 'dd.MM.yyyy') : ""}</h4>
 
                             { item.status == 'future' &&
                                 <div className="details">Ожидаемый срок</div>}

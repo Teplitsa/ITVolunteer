@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 export function loadingWait() {
     return (
@@ -56,4 +57,8 @@ export function itvShowActionError(message) {
     if(actionData.message) {
         alert(actionData.message)
     }
+}
+
+export function itvWpDateTimeToDate(wpDateTime) {
+    return new Date(moment(wpDateTime + "Z"))
 }

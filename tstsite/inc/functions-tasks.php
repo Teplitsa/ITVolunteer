@@ -1279,6 +1279,7 @@ function get_task_list_filter_options() {
     
     $sections[] = [
         'id' => 'status',
+        'items' => [],
     ];
     
     return $sections;

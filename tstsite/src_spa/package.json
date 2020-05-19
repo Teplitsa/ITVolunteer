@@ -22,7 +22,8 @@
     "air-datepicker": "^2.2.3",
     "store": "^2.0.12",
     "lodash": "^4.17.15",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "moment": "^2.25.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",

@@ -5,6 +5,7 @@ import {
 import { useStoreState, useStoreActions } from "easy-peasy"
 import { format, formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import * as _ from "lodash"
 
 import logo from '../../img/pic-logo-itv.svg'
 import logoNoText from '../../img/pic-logo-itv-notext.svg'
@@ -69,12 +70,15 @@ function AccountInHeader({userId}) {
             <a href="#" className="go-old">Старый дизайн</a>
             {!!user.id &&
             <div className="account-symbols">
-                <div className="open-notif" onClick={handleNotifClick}>
-                    <img src={bell} alt="Сообщения" />
+                <div className="open-notif">
 
-                    {!_.isEmpty(notifList) && 
-                    <span className="new-notif"></span>
-                    }
+                    <div onClick={handleNotifClick}>
+                        <img src={bell} alt="Сообщения" />
+
+                        {!_.isEmpty(notifList) && 
+                        <span className="new-notif"></span>
+                        }
+                    </div>
 
                     {!!isShowNotif && !_.isEmpty(notifList) && 
                     <NotifList />
@@ -133,7 +137,9 @@ function NotifList(props) {
             })}
             </div>
             <div className="notif-list__view-all">
+                {/*
                 <a href="#">Все оповещения</a>
+                */}
             </div>
         </div>
     )
@@ -141,36 +147,74 @@ function NotifList(props) {
 
 function NotifItem({notif,}) {
     const user = useStoreState(store => store.user.data)
+    const removeNotifFromList = useStoreActions(actions => actions.userNotif.removeNotifFromList)
 
-    console.log("notif.dateGmt:", notif.dateGmt)
-    console.log("now:", new Date())
+    function handleNotifItemClick(e) {
+        removeNotifFromList(notif)
+
+        let formData = new FormData()
+        formData.append('notifIdList[]', [notif.id])
+
+        let action = 'set_user_notif_read'
+        fetch(utils.itvAjaxUrl(action), {
+            method: 'post',
+            body: formData,
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'error') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }
 
     return (
         <div className={`notif-list__item ${notif.is_read ? 'notif-list__item__read' : ''}`}>
-            <div className="notif-list__item-icon">
-                {(!notif.from_user || notif.from_user.id === user.id) &&
-                <img src={logoNoText} alt="" />
-                }
-                {!!notif.from_user && notif.from_user.id !== user.id &&
-                <UserSmallPicView user={notif.from_user} />
-                }
-            </div>
-            <div className="notif-list__item-body">
-                <div className="notif-list__item-title">
-                    {!!notif.from_user && notif.from_user.id !== user.id &&
-                    <b>{notif.from_user.fullName}</b>
+            <div className="notif-list__item-content">
+                <div className="notif-list__item-icon">
+                    {(!notif.from_user || notif.from_user.id === user.id) &&
+                    <img src={logoNoText} alt="" />
                     }
-                    <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
+                    {!!notif.from_user && notif.from_user.id !== user.id &&
+                    <UserSmallPicView user={notif.from_user} />
+                    }
                 </div>
+                <div className="notif-list__item-body">
+                    <div className="notif-list__item-title">
 
-                {!!notif.task &&
-                <div className="notif-list__item-task">{notif.task.title}</div>
-                }
-                
-                <div className="notif-list__item-time">
-                    <img src={iconNotifRock} alt="" />
-                    <span>{`${formatDistanceToNow(new Date(notif.dateGmt + "Z"), {locale: ru, addSuffix: true})}`}</span>
+                        {!!notif.from_user && notif.from_user.id !== user.id &&
+                        <a href={notif.from_user.pemalinkUrl}>
+                            <b>{notif.from_user.fullName}</b>
+                        </a>
+                        }
+
+                        <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
+                    </div>
+
+                    {!!notif.task &&
+                    <Link to={notif.task.pemalinkPath} className="notif-list__item-task">
+                        {notif.task.title}
+                    </Link>
+                    }
+                    
+                    <div className="notif-list__item-time">
+                        <img src={iconNotifRock} alt="" />
+                        <span>{`${formatDistanceToNow(utils.itvWpDateTimeToDate(notif.dateGmt), {locale: ru, addSuffix: true})}`}</span>
+                    </div>
                 </div>
+                <a href="#" className="notif-list__item-set-read" onClick={handleNotifItemClick}></a>
             </div>
         </div>
     )

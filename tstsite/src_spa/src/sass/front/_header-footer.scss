@@ -323,6 +323,7 @@ body {
     box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
     border-radius: 0px 0px 8px 8px;
     z-index: 10;
+    cursor: default;
 
     &:before {
         content: "";
@@ -338,10 +339,15 @@ body {
     }
 
     &__container {
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: calc(100vh - 146px);
     }
 
     &__item {
-        display: flex;
+        @include a-no-hover-underline;
+        display: block;
+        position: relative;
         background-color: $color-gray-light-xl;
         border-bottom: 1px solid $color-gray-light-md;
         padding: 10px 16px 14px 10px;
@@ -355,8 +361,13 @@ body {
             .avatar-wrapper {
                 width: 20px;
                 height: 20px;
+                margin-right: 4px;
             }
         }
+    }
+
+    &__item-content {
+        display: flex;
     }
 
     &__item-icon {
@@ -369,11 +380,16 @@ body {
     }
 
     &__item-body {
+        margin-top: 2px;
     }
 
     &__item-title {
         @include text-xs-bold-line-lg;
         color: $color-gray-dark-md;
+
+        a {
+           color: $color-gray-dark-xl; 
+        }
 
         b {
             color: $color-gray-dark-xl;
@@ -386,6 +402,7 @@ body {
 
     &__item-task {
         @include text-xs-bold;
+        display: block;
         color: $color-gray-dark-xl;
         margin-top: 2px;
     }
@@ -401,6 +418,17 @@ body {
             margin-right: 6px;
             vertical-align: middle;
         }
+    }
+
+    &__item-set-read {
+        position: absolute;
+        display: block;
+        right: 8px;
+        top: 6px;
+        background-image: url('../img/icon-filter-close.svg');
+        background-size: 12px 12px;
+        width: 12px;
+        height: 12px;
     }
 
     &__view-all {

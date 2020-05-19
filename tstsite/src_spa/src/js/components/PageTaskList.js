@@ -5,7 +5,7 @@ import {
 import { useStoreState, useStoreActions } from "easy-peasy"
 import { format, formatDistanceToNow } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import * as _ from "lodash";
+import * as _ from "lodash"
 
 import * as utils from "../utils"
 import { getTaskAuthorQuery, getTaskQuery, getTaskDoersQuery } from '../network'
@@ -508,8 +508,8 @@ function TaskList(props) {
         }
 
         let totalTasksCount = _.get(statusStats, optionCheck ? optionCheck.status : "publish", 0)
-        console.log("totalTasksCount:", totalTasksCount)
-        console.log("taskList.length:", taskList.length)
+        // console.log("totalTasksCount:", totalTasksCount)
+        // console.log("taskList.length:", taskList.length)
         setIsLoadMoreTaskCount(totalTasksCount > taskList.length)
 
     }, [statusStats, optionCheck, taskList])
@@ -567,9 +567,8 @@ function TaskListItem(props) {
                         </div>
                         <img src={iconApproved} className="tooltip-actor itv-approved" />
                     </div>                    
-                    
-                    <TaskMetaInfo icon={metaIconCalendar} title={format(new Date(task.dateGmt + "Z"), 'do MMMM Y', {locale: ru})}/>
-                    <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(new Date(task.dateGmt + "Z"), {locale: ru, addSuffix: true})}`}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={format(utils.itvWpDateTimeToDate(task.dateGmt), 'do MMMM Y', {locale: ru})}/>
+                    <TaskMetaInfo icon={metaIconCalendar} title={`Открыто ${formatDistanceToNow(utils.itvWpDateTimeToDate(task.dateGmt), {locale: ru, addSuffix: true})}`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.doerCandidatesCount} откликов`}/>
                     <TaskMetaInfo icon={metaIconCalendar} title={`${task.viewsCount} просмотров`}/>
 

@@ -341,7 +341,10 @@ const userNotifModel = {
                 utils.itvShowAjaxError({action, error})
             }
         )
-    }),    
+    }),
+    removeNotifFromList: action((state, payload) => {
+        state.notifList = state.notifList.filter((item) => item.id !== payload.id)
+    }),
 }
 
 export const storeModel = {
