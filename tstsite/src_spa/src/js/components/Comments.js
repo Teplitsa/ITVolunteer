@@ -33,7 +33,7 @@ export function TaskComments({task, author}) {
     }, [commentsData])
 
     useEffect(() => {
-        console.log("taskComments changed")
+        // console.log("taskComments changed")
     }, [taskComments])
 
     if(!author.id) {

@@ -187,7 +187,7 @@ class ItvNotificator {
         if (! $this->is_notification_sent ( 'notif_no_task_doer_yet', $this->get_task_notif_key ( $task ), $user_email )) {
             if (! $this->is_skip_sending) {
                 try {
-                    do_action('atv_email_notification', 'task_no_doer_notif', [
+                    ItvAtvetka::instance()->mail('task_no_doer_notif', [
                         'to' => $user_email,
                         'username' => $user_nicename,
                         'task_link' => $task_permalink, 
@@ -215,7 +215,7 @@ class ItvNotificator {
         $task_permalink = get_permalink ( $task );
         
         /* notice to candidate: */
-        do_action('atv_email_notification', 'account_activated_notice', [
+        ItvAtvetka::instance()->mail('account_activated_notice', [
             'to' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
@@ -231,7 +231,7 @@ class ItvNotificator {
         $task_permalink = get_permalink ( $task );
         
         /* notice to candidate: */
-        do_action('atv_email_notification', 'task_status_changed_doer', [
+        ItvAtvetka::instance()->mail('task_status_changed_doer', [
             'to' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
@@ -246,7 +246,7 @@ class ItvNotificator {
         $task_permalink = get_permalink ( $task );
         $task_permalink .= '#leave_review_for_doer';
     
-        do_action('atv_email_notification', 'task_status_closed_author', [
+        ItvAtvetka::instance()->mail('task_status_closed_author', [
             'to' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
@@ -260,7 +260,7 @@ class ItvNotificator {
         $task_permalink = get_permalink ( $task );
         $task_permalink .= '#leave_review_for_author';
         
-        do_action('atv_email_notification', 'task_status_closed_doer', [
+        ItvAtvetka::instance()->mail('task_status_closed_doer', [
             'to' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
@@ -365,7 +365,7 @@ class ItvNotificator {
             if (! $this->is_skip_sending) {
                 try {
                     
-                    do_action('atv_email_notification', $notif_key, [
+                    ItvAtvetka::instance()->mail($notif_key, [
                         'to' => $user_email,
                         'username' => $user_nicename,
                         'task_link' => $task_permalink,

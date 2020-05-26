@@ -34,6 +34,19 @@ ob_start();
 
 <?php 
     $message_title = "Новый отклик на задачу";
-    $message_content = ob_get_clean();    
-    include(get_template_directory() . '/mail/message_template.php');
+    $message_content = ob_get_clean();
 ?>
+
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><?php echo $message_title;?></title>
+  </head>
+  <body class="">
+
+  <?php include(get_template_directory() . '/mail/message_template.php');?>
+  	  
+  </body>
+</html>

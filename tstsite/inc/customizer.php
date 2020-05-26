@@ -327,7 +327,7 @@ function ajax_approve_candidate() {
     // Notice to doer:
     $email_templates = ItvEmailTemplates::instance();
     
-    do_action('atv_email_notification', 'approve_candidate_doer_notice', [
+    ItvAtvetka::instance()->mail('approve_candidate_doer_notice', [
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
@@ -337,7 +337,7 @@ function ajax_approve_candidate() {
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_DOER, $doer->ID, $email_templates->get_title('approve_candidate_doer_notice'), $task ? $task->ID : 0);
 
     // Notice to author:
-    do_action('atv_email_notification', 'approve_candidate_author_notice', [
+    ItvAtvetka::instance()->mail('approve_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
@@ -359,8 +359,8 @@ function ajax_approve_candidate() {
     }
     
     //
-    UserNotifModel::instance()->push_notif($doer->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $doer->ID]);
-    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $doer->ID]);
+    UserNotifModel::instance()->push_notif($doer->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_author->ID]);
+    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_author->ID]);
     foreach($doers as $candidate) {
         if($doer->ID === $candidate->ID) {
             continue;
@@ -412,7 +412,7 @@ function ajax_refuse_candidate() {
 		
     $email_templates = ItvEmailTemplates::instance();
 	
-    do_action('atv_email_notification', 'refuse_candidate_doer_notice', [
+    ItvAtvetka::instance()->mail('refuse_candidate_doer_notice', [
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
@@ -470,7 +470,9 @@ function ajax_add_candidate() {
     
     if(!$is_doer_already_candidate) {
         UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
-        UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
+        if(!UserXPModel::instance()->is_reg_candidate_activity_exist(get_current_user_id(), $task->ID)) {
+            UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
+        }
     }
 		
 	if($task) {
@@ -483,11 +485,11 @@ function ajax_add_candidate() {
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
-    do_action('atv_email_notification', 'add_candidate_author_notice', [
+    ItvAtvetka::instance()->mail('add_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
-        'message' => filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING),
+        'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
         'task_url' => get_permalink($task_id),
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
@@ -567,11 +569,11 @@ function ajax_remove_candidate() {
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
-    do_action('atv_email_notification', 'refuse_candidate_author_notice', [
+    ItvAtvetka::instance()->mail('refuse_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
-        'message' => filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING),
+        'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
 
@@ -579,7 +581,11 @@ function ajax_remove_candidate() {
         // Task is automatically switched "publish":
         wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
     }
-	
+    
+    //
+    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_REACTION_TO_TASK_BACK, ['task_id' => $task_id, 'from_user_id' => $task_doer_id]);
+    
+    //
     $timeline = ITV\models\TimelineModel::instance();
     $timeline->add_current_item($task_id, TimelineModel::$TYPE_SEARCH_DOER);
     
@@ -647,7 +653,7 @@ function ajax_decline_candidate() {
     $email_templates = ItvEmailTemplates::instance();
     
     $doer = get_user_by('id', $task_doer_id);
-    do_action('atv_email_notification', 'refuse_candidate_doer_notice', [
+    ItvAtvetka::instance()->mail('refuse_candidate_doer_notice', [
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
@@ -885,7 +891,7 @@ function ajax_add_message() {
         )));
     }
 
-    do_action('atv_email_notification', 'message_added_notification', [
+    ItvAtvetka::instance()->mail('message_added_notification', [
         'to' => get_option('admin_email'),
         'page_url' => isset($_POST['page_url']) ? $_POST['page_url'] : '',
         'name' => $_POST['name'],

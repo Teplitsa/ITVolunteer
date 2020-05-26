@@ -45,7 +45,7 @@ get_header();?>
             <?php } else {
                 update_user_meta($user->ID, 'activation_code', '');
 
-                do_action('atv_email_notification', 'account_activated_notice', [
+                ItvAtvetka::instance()->mail('account_activated_notice', [
                     'to' => $user->user_email,
                     'login' => $user->user_login,
                     'activation_url' => home_url('/login/'),

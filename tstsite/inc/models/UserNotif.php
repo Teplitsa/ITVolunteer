@@ -29,6 +29,7 @@ class UserNotifModel extends ITVSingletonModel {
     public static $TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKDOER = 'post_feedback_taskauthor_to_taskdoer';
     public static $TYPE_POST_FEEDBACK_TASKDOER_TO_TASKAUTHOR = 'post_feedback_taskdoer_to_taskauthor';
     public static $TYPE_POST_FEEDBACK_TASKDOER_TO_TASKDOER = 'post_feedback_taskdoer_to_taskdoer';
+    public static $TYPE_REACTION_TO_TASK_BACK = 'reaction_to_task_back';
     
     public static $SHORT_LIST_LIMIT = 20;
     

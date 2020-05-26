@@ -41,6 +41,7 @@ const ITV_USER_NOTIF_TEXT = {
     post_feedback_taskdoer_to_taskdoer: 'оставил(а) вам отзыв по задаче',
     post_feedback_taskauthor_to_taskauthor: 'оставил(а) вам отзыв по задаче',
     post_feedback_taskdoer_to_taskauthor: 'Вы оставили отзыв автору задачи',
+    reaction_to_task_back: 'отозвал свой отклик на задачу',
 }
 
 function AccountInHeader({userId}) {
@@ -81,7 +82,9 @@ function AccountInHeader({userId}) {
                     </div>
 
                     {!!isShowNotif && !_.isEmpty(notifList) && 
-                    <NotifList />
+                    <NotifList clickOutsideHandler={() => {
+                        setIsShowNotif(false)
+                    }}/>
                     }
                 </div>
                 <a href={user.profileURL} className="open-account-menu" target="_blank">
@@ -127,10 +130,27 @@ export function SiteHeader(props) {
 }
 
 function NotifList(props) {
+    const clickOutsideHandler = props.clickOutsideHandler
     const notifList = useStoreState(store => store.userNotif.notifList)
+    const [notifListRef, setNotifListRef] = useState(null)
+
+    function handleClickOutside(e) {
+        if (notifListRef && !notifListRef.contains(e.target)) {
+            if(clickOutsideHandler) {
+                clickOutsideHandler()
+            }
+        }
+    }    
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    })
 
     return (
-        <div className={`notif-list`}>
+        <div className={`notif-list`} ref={(ref) => setNotifListRef(ref)}>
             <div className={`notif-list__container`}>
             {notifList.map((item, index) => {
                 return <NotifItem key={`NotifListItem${index}`} notif={item} />

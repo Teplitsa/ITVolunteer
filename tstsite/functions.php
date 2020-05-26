@@ -217,6 +217,7 @@ require_once get_template_directory().'/inc/itv_notificator.php';
 require_once get_template_directory().'/inc/itv_tasks_stats.php';
 require_once get_template_directory().'/inc/itv_consult.php';
 require_once(get_template_directory() . '/inc/user_notif.php');
+require_once(get_template_directory() . '/mail/atvetka.php');
 
 // ipgeo lib and wrapper
 require_once get_template_directory().'/ipgeo/ipgeobase.php';
