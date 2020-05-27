@@ -6,6 +6,40 @@
 
 use ITV\models\MailSendLogModel;
 
+/** WPGraphQl JWT */
+
+add_filter("graphql_jwt_auth_secret_key", fn () => '!aoRS- P`:Dl$swR+lx{<W+Sb%*9{G}:rn<+a_gie({xk~R-5d4c8yj2OmMkq0+P');
+
+add_action("admin_init", "wp_ajax_login_by_auth_token");
+
+function wp_ajax_login_by_auth_token()
+{
+    if (wp_doing_ajax()) {
+        switch ($_REQUEST["action"]) {
+            case "publish-task":
+            case "unpublish-task":
+            case "approve-candidate":
+            case "decline-candidate":
+            case "like-comment":
+                $_POST["auth_token"] ??= null;
+                try {
+                    $token = Auth::validate_token($_POST["auth_token"]);
+                    if (is_wp_error($token)) {
+                        throw new Exception();
+                    }
+                    $user_id = $token->data->user->id;
+                    wp_set_current_user($user_id);
+                } catch (Exception $error) {
+                    wp_die(json_encode(array(
+                        "status" => "fail",
+                        "message" => __("Unauthorized request.", "tst"),
+                    )));
+                }
+                break;
+        }
+    }
+}
+
 /** Favicon  **/
 function itv_favicon(){
 	
