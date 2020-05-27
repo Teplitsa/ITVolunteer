@@ -1,0 +1,129 @@
+.site-header {
+  border-bottom: 1px solid $color-gray-light-md;
+
+  nav {
+    max-width: $content-width;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 101px;
+
+    & > * {
+      width: 33.3%;
+    }
+
+    .logo-col {
+      @include no-outline;
+      img.logo {
+      }
+    }
+
+    .main-menu-col {
+      display: flex;
+      justify-content: space-between;
+
+      & > a {
+        @include a-hover-underline;
+        @include text-bold-line-sm;
+        color: $color-gray-dark-lg;
+
+        &.drop-menu {
+          @include drop-down-arrow(20px);
+        }
+      }
+    }
+
+    .account-col {
+      display: flex;
+      justify-content: flex-end;
+
+      .account-symbols {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .account-enter-links {
+        border-left: 1px solid $color-gray-light-md;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        a {
+          @include text-sm-bold;
+
+          &:first-child {
+            margin-left: $base * 4;
+            margin-right: $base * 3;
+          }
+        }
+      }
+
+      .go-old {
+        @include text-xs-bold;
+        @include a-no-hover-underline;
+        color: $color-gray-dark-md;
+        border: 2px solid $color-gray-light-md;
+        background-color: $color-gray-light-xl;
+        width: 121px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        margin-right: 20px;
+      }
+
+      .open-notif {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-white;
+        border-radius: 10px;
+        width: 44px;
+        height: 44px;
+        margin-right: 36px;
+        margin-left: 12px;
+        box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08),
+          inset -1px -1px 1px rgba(129, 118, 111, 0.16);
+
+        & > img {
+          display: inline-block;
+        }
+
+        .new-notif {
+          width: 12px;
+          height: 12px;
+          display: inline-block;
+          background-color: $color-sec;
+          position: absolute;
+          top: -4px;
+          right: -4px;
+          border-radius: 12px;
+        }
+      }
+
+      .open-account-menu {
+        display: flex;
+
+        span.avatar-wrapper {
+          display: inline-block;
+          border-radius: 12px;
+          box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24);
+          overflow: hidden;
+          width: 44px;
+          height: 44px;
+          margin-right: $base;
+          background-size: cover;
+          background-position: center;
+        }
+
+        .arrow-down {
+        }
+      }
+    }
+  }
+}
