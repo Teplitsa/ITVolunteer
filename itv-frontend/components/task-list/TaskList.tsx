@@ -1,16 +1,14 @@
 import { ReactElement, useState, useEffect } from "react";
 import Link from "next/link";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import Loader from "../Loader";
 
 import metaIconCalendar from '../../assets/img/icon-calc.svg';
 import iconApproved from '../../assets/img/icon-all-done.svg';
 
 const TaskList: React.FunctionComponent<{
-  resetTaskListLoaded: () => void;
-  appendTaskList: () => void;
 
-}> = ({ resetTaskListLoaded, appendTaskList }): ReactElement => {
+}> = ({}): ReactElement => {
 
   const { 
     items,
@@ -19,6 +17,8 @@ const TaskList: React.FunctionComponent<{
     statusStats,
 
   } = useStoreState((state) => state.components.taskList);
+
+  const resetTaskListLoaded = useStoreActions((actions) => actions.components.taskList.resetTaskListLoaded);
 
     // load more
     const [page, setPage] = useState(1)
