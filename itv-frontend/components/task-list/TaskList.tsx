@@ -96,7 +96,7 @@ const TaskList: React.FunctionComponent<{
             return
         }
 
-        let totalTasksCount = _.get(statusStats, optionCheck ? optionCheck.status : "publish", 0)
+        let totalTasksCount = statusStats[optionCheck ? optionCheck.status : "publish"]
         setIsLoadMoreTaskCount(totalTasksCount > items.length)
 
     }, [statusStats, optionCheck, items])
