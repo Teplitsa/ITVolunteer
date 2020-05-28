@@ -159,3 +159,10 @@
   @include action-button-secondary;
   @include actiion-button-lg;
 }
+
+// icons
+@mixin pic-small {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
