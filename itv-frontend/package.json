@@ -10,24 +10,24 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
-    "date-fns": "^2.13.0",
+    "date-fns": "^2.14.0",
     "easy-peasy": "^3.3.0",
     "graphql-request": "^1.8.2",
+    "js-cookie": "^2.2.1",
     "next": "9.3.6",
     "next-images": "^1.4.0",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
-    "uuid": "^8.0.0",
-    "js-cookie": "^2.2.1"
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
-    "@types/node": "^13.13.5",
-    "@types/react": "^16.9.34",
-    "@types/uuid": "^7.0.3",
+    "@types/node": "^13.13.9",
+    "@types/react": "^16.9.35",
+    "@types/uuid": "^7.0.4",
     "file-loader": "^6.0.0",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.3",
     "url-loader": "^4.1.0"
   }
 }
