@@ -29,9 +29,9 @@ module.exports = phase => {
     });
   }
 
-    return {
-      env: { ...appConfig },
-      compress: false,
-      ...imagesConfig,
-    };
+  return {
+    env: { ...appConfig },
+    compress: false,
+    ...imagesConfig,
+  };
 };
