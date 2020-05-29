@@ -50,6 +50,16 @@ const sessionState: ISessionState = {
     (userId, authorId) =>
       Boolean(userId) && Boolean(authorId) && userId === authorId
   ),
+  isUserTaskCandidate: computed(
+    [
+      (state) => state.user.id,
+      (state, storeState) => storeState.components.task?.doers,
+    ],
+    (userId, doers) =>
+      Boolean(userId) &&
+      Array.isArray(doers) &&
+      doers.findIndex((doer) => doer.id === userId) >= 0
+  ),
   canUserReplyToComment: computed(
     [
       (state) => state.user.databaseId,

@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskComment } from "../../model/model.typing";
 import { getTheDate } from "../../utilities/utilities";
@@ -15,6 +15,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
   replies,
 }): ReactElement => {
   const [isCommentToReply, toggleReplyForm] = useState<boolean>(false);
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const canUserReplyToComment = useStoreState(
     (state) => state.session.canUserReplyToComment
   );
@@ -22,6 +23,20 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
     (actions) => actions.components.task?.commentLikeRequest
   );
   const like = commentLikeRequest.bind(null, id);
+
+  useEffect(() => {
+    if (isCommentToReply) {
+      new IntersectionObserver(
+        ([textArea]) => textArea.isIntersecting && textAreaRef.current.focus(),
+        { rootMargin: "50% 0% 50% 0%", threshold: 1.0 }
+      ).observe(textAreaRef.current);
+
+      textAreaRef.current.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+  }, [isCommentToReply]);
 
   return (
     <div className="comment-wrapper">
@@ -65,10 +80,13 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
           </div>
         </div>
       </div>
-      {replies.nodes.map((comment) => (
-        <TaskCommentListItem key={comment.id} {...comment} />
-      ))}
-      {canUserReplyToComment && isCommentToReply && <TaskCommentForm />}
+      {Array.isArray(replies?.nodes) &&
+        replies.nodes.map((comment) => (
+          <TaskCommentListItem key={comment.id} {...comment} />
+        ))}
+      {canUserReplyToComment && isCommentToReply && (
+        <TaskCommentForm {...{ textAreaRef, parentCommentId: id }} />
+      )}
     </div>
   );
 };
