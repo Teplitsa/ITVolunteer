@@ -53,7 +53,29 @@ global $wp_query;
                     </form>
                 </li>
             </ul>			
+		</li>
+		
+		<li class="important-item-3">
+			<script>
+				function itvSwitchToV2(){
+					Cookies.remove('itvOldDesign');
+					document.location.reload();
+					return false;
+				}
+				
+				function itvSwitchToV1(){
+					Cookies.set('itvOldDesign', "true", {"period": 30});
+					document.location.reload();
+					return false;
+				}
+			</script>
+			<?php if(!empty($_COOKIE["itvOldDesign"])):?>
+				<a href="#" onclick="return itvSwitchToV2();">Новый дизайн</a>
+			<?php else:?>
+				<a href="#" onclick="return itvSwitchToV1();">Старый дизайн</a>
+			<?php endif;?>
 		</li>	
+			
     </ul>
 		
 	<ul id="actions_menu" class="actions-menu">
