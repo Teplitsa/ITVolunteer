@@ -1,6 +1,6 @@
 const appConfig = {
-  GraphQLServer: "http://localhost:9000/graphql",
-  AjaxUrl: "http://localhost:9000/wp-admin/admin-ajax.php",
+  GraphQLServer: "https://itv.ngo2.ru/graphql",
+  AjaxUrl: "https://itv.ngo2.ru/wp-admin/admin-ajax.php",
   AuthTokenLifeTimeMs: 600,
 };
 

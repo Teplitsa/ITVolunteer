@@ -5,10 +5,13 @@
  ***/
 
 use ITV\models\MailSendLogModel;
+use WPGraphQL\JWT_Authentication;
 
 /** WPGraphQl JWT */
 
-add_filter("graphql_jwt_auth_secret_key", fn () => '!aoRS- P`:Dl$swR+lx{<W+Sb%*9{G}:rn<+a_gie({xk~R-5d4c8yj2OmMkq0+P');
+add_filter("graphql_jwt_auth_secret_key", function() {
+    return '!aoRS- P`:Dl$swR+lx{<W+Sb%*9{G}:rn<+a_gie({xk~R-5d4c8yj2OmMkq0+P';
+});
 
 add_action("admin_init", "wp_ajax_login_by_auth_token");
 
@@ -21,9 +24,9 @@ function wp_ajax_login_by_auth_token()
             case "approve-candidate":
             case "decline-candidate":
             case "like-comment":
-                $_POST["auth_token"] ??= null;
+                $_POST["auth_token"] = $_POST["auth_token"] ?? null;
                 try {
-                    $token = Auth::validate_token($_POST["auth_token"]);
+                    $token = WPGraphQL\JWT_Authentication\Auth::validate_token($_POST["auth_token"]);
                     if (is_wp_error($token)) {
                         throw new Exception();
                     }

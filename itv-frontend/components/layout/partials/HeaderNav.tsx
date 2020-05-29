@@ -4,9 +4,20 @@ import { useStoreState } from "../../../model/helpers/hooks";
 import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
+import Cookies from 'js-cookie';
+import * as C from "const"
 
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
+
+  function handleOldDesignClick(e) {
+    if(!process.browser) {
+      return
+    }
+
+    Cookies.set(C.ITV_COOKIE.OLD_DESIGN.name, C.ITV_COOKIE.OLD_DESIGN.value, { expires: C.ITV_COOKIE.OLD_DESIGN.period });
+    document.location.reload();
+  }
 
   return (
     <nav>
@@ -27,9 +38,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
         </Link>
       </div>
       <div className="account-col">
-        <Link href="/old">
-          <a className="go-old">Старый дизайн</a>
-        </Link>
+        <a className="go-old" onClick={handleOldDesignClick}>Старый дизайн</a>
         {(isLoggedIn && <ParticipantNav />) || <GuestNav />}
       </div>
     </nav>

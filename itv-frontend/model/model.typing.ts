@@ -287,11 +287,16 @@ export interface ITaskListModel extends ITaskListState, ITaskListActions {}
 
 export interface ITaskListState {
   items: Array<ITaskListItemState>;
+  isTaskListLoaded: boolean;
+  optionCheck: any;
+  statusStats: Object;
 }
 
 export interface ITaskListActions {
   initializeState: Action<ITaskListModel>;
   setState: Action<ITaskListModel, ITaskListState>;
+  resetTaskListLoaded: Action<ITaskListModel>;
+  appendTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
 }
 
 /**
