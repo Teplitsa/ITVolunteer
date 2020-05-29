@@ -1,21 +1,25 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 const TaskSuggestionsForVolonteers: React.FunctionComponent = (): ReactElement => {
-  const { isLoggedIn, isTaskAuthorLoggedIn } = useStoreState(
-    (state) => state.session
-  );
+  const {
+    isLoggedIn,
+    isTaskAuthorLoggedIn,
+    isUserTaskCandidate,
+  } = useStoreState((state) => state.session);
   const { nextTaskSlug, approvedDoer } = useStoreState(
     (state) => state.components.task
   );
-  const isUserCandidate = false;
+  const addDoer = useStoreActions(
+    (actions) => actions.components.task?.addDoerRequest
+  );
 
   return (
     isLoggedIn &&
     !isTaskAuthorLoggedIn && (
       <>
-        {!approvedDoer && !isUserCandidate && (
+        {!approvedDoer && !isUserTaskCandidate && (
           <div className="task-give-response">
             <p>
               Кликнув на кнопку, вы попадете в список волонтёров откликнувшихся
@@ -24,7 +28,10 @@ const TaskSuggestionsForVolonteers: React.FunctionComponent = (): ReactElement =
             <a
               href="#"
               className="button-give-response"
-              onClick={(event) => event.preventDefault()}
+              onClick={(event) => {
+                event.preventDefault();
+                addDoer();
+              }}
             >
               Откликнуться на задачу
             </a>

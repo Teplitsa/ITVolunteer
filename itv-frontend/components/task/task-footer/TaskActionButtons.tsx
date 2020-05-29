@@ -5,7 +5,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
   );
-  const { databaseId, status } = useStoreState((state) => state.components.task);
+  const { status } = useStoreState((state) => state.components.task);
   const taskStatusChange = useStoreActions(
     (actions) => actions.components.task.statusChangeRequest
   );
@@ -20,7 +20,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
               className="accept-task"
               onClick={(event) => {
                 event.preventDefault();
-                taskStatusChange({ databaseId, status: "publish" });
+                taskStatusChange({ status: "publish" });
               }}
             >
               Опубликовать
@@ -32,7 +32,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
               className="reject-task danger"
               onClick={(event) => {
                 event.preventDefault();
-                taskStatusChange({ databaseId, status: "draft" });
+                taskStatusChange({ status: "draft" });
               }}
             >
               Снять с публикации

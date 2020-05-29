@@ -1,5 +1,18 @@
 import { ITaskComment, ITaskCommentAuthor } from "../model.typing";
 
+export const findCommentById = (
+  commentId: string,
+  comments: Array<ITaskComment>
+) => {
+  for (let comment of comments) {
+    if (comment.id === commentId) {
+      return comment;
+    } else if (Array.isArray(comment.replies?.nodes)) {
+      return findCommentById(commentId, comment.replies.nodes);
+    }
+  }
+};
+
 const taskComment: ITaskComment = {
   id: "",
   content: "",

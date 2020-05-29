@@ -1,14 +1,18 @@
-import { action, thunk } from "easy-peasy";
+import { action, thunk, thunkOn } from "easy-peasy";
 import {
   IStoreModel,
   ITaskState,
   ITaskActions,
   ITaskThunks,
+  ITaskComment,
 } from "../model.typing";
 import { queriedFields as approvedDoerQueriedFields } from "./task-approved-doer";
 import { queriedFields as authorQueriedFields } from "./task-author";
 import { graphqlQuery as doerGraphqlQuery } from "./task-doer";
-import { graphqlQuery as commentGraphqlQuery } from "./task-comment";
+import {
+  findCommentById,
+  graphqlQuery as commentGraphqlQuery,
+} from "./task-comment";
 import { getAjaxUrl, stripTags } from "../../utilities/utilities";
 
 const taskState: ITaskState = {
@@ -117,18 +121,104 @@ const taskActions: ITaskActions = {
 
     if (!Array.isArray(comments)) return taskState;
 
-    const commentIndex = comments.findIndex(
-      (comment) => comment.id === commentId
-    );
+    const comment: ITaskComment = findCommentById(commentId, comments);
 
-    if (commentIndex < 0) return taskState;
+    if (typeof comment === "undefined") return taskState;
 
-    comments[commentIndex].likesCount = likesCount;
-    comments[commentIndex].likeGiven = true;
+    comment.likesCount = likesCount;
+    comment.likeGiven = true;
   }),
 };
 
 const taskThunks: ITaskThunks = {
+  newCommentRequest: thunk(
+    async (
+      actions,
+      { parentCommentId, commentBody, callbackFn },
+      { getStoreState }
+    ) => {
+      const {
+        session: {
+          user: { id, fullName, itvAvatar, memberRole, profileURL },
+          validToken: token,
+        },
+        components: {
+          task: { id: taskId, comments },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "submit-comment";
+      const formData = new FormData();
+
+      formData.append("task_gql_id", taskId);
+      formData.append("comment_body", commentBody);
+      parentCommentId && formData.append("parent_comment_id", parentCommentId);
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const {
+          status: responseStatus,
+          comment,
+          message: responseMessage,
+        } = await (<
+          Promise<{
+            status: string;
+            comment?: {
+              id: string;
+              content: string;
+              date: string;
+            };
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          callbackFn && callbackFn();
+          return {
+            comments,
+            newComment: comment,
+            author: { id, fullName, itvAvatar, memberRole, profileURL },
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onNewCommentRequestSuccess: thunkOn(
+    (actions) => actions.newCommentRequest.successType,
+    (
+      { updateComments },
+      { payload: { parentCommentId }, result: { author, newComment, comments } }
+    ) => {
+      const parentComment: ITaskComment = findCommentById(
+        parentCommentId,
+        comments
+      );
+
+      Object.assign(newComment, {
+        author,
+        dateGmt: newComment.date,
+        likesCount: 0,
+        likeGiven: false,
+      });
+
+      if (Array.isArray(parentComment.replies?.nodes)) {
+        parentComment.replies.nodes.unshift(newComment);
+      } else {
+        parentComment.replies = {
+          nodes: [newComment],
+        };
+      }
+
+      updateComments([].concat(comments));
+    }
+  ),
   commentLikeRequest: thunk(
     async ({ likeComment }, commentId, { getStoreState }) => {
       const {
@@ -164,13 +254,12 @@ const taskThunks: ITaskThunks = {
     }
   ),
   manageDoerRequest: thunk(
-    async (
-      actions,
-      { action, taskId, doer, callbackFn },
-      { getStoreState }
-    ) => {
+    async (actions, { action, doer, callbackFn }, { getStoreState }) => {
       const {
         session: { validToken: token },
+        components: {
+          task: { id: taskId },
+        },
       } = getStoreState() as IStoreModel;
       const formData = new FormData();
 
@@ -190,14 +279,19 @@ const taskThunks: ITaskThunks = {
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
         } else {
-          callbackFn();
+          callbackFn && callbackFn();
         }
       } catch (error) {
         console.error(error);
       }
     }
   ),
-  commentsRequest: thunk(async ({ updateComments }, taskDatabaseId) => {
+  commentsRequest: thunk(async ({ updateComments }, _, { getStoreState }) => {
+    const {
+      components: {
+        task: { databaseId: taskDatabaseId },
+      },
+    } = getStoreState() as IStoreModel;
     const { request } = await import("graphql-request");
     const {
       comments: { nodes: commentCollection },
@@ -211,22 +305,89 @@ const taskThunks: ITaskThunks = {
 
     updateComments(commentCollection);
   }),
-  doersRequest: thunk(async ({ updateDoers }, id) => {
+  doersRequest: thunk(async ({ updateDoers }, _, { getStoreState }) => {
+    const {
+      components: {
+        task: { id: taskId },
+      },
+    } = getStoreState() as IStoreModel;
     const { request } = await import("graphql-request");
     const { taskDoers: doers } = await request(
       process.env.GraphQLServer,
       doerGraphqlQuery.doersRequest,
       {
-        taskGqlId: id,
+        taskGqlId: taskId,
       }
     );
 
     updateDoers(doers);
   }),
+  addDoerRequest: thunk(async ({ updateDoers }, _, { getStoreState }) => {
+    const {
+      session: {
+        validToken: token,
+        user: {
+          id,
+          databaseId,
+          fullName,
+          profileURL,
+          itvAvatar,
+          solvedTasksCount,
+          doerReviewsCount,
+          isPasekaMember,
+        },
+      },
+      components: {
+        task: { id: taskId, doers },
+      },
+    } = getStoreState() as IStoreModel;
+    const doer = {
+      id,
+      databaseId,
+      fullName,
+      profileURL,
+      itvAvatar,
+      solvedTasksCount,
+      doerReviewsCount,
+      isPasekaMember,
+    };
+    const action = "add-candidate";
+    const formData = new FormData();
+
+    formData.append("task_gql_id", taskId);
+    formData.append("auth_token", String(token));
+
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
+
+      const { status: responseStatus, message: responseMessage } = await (<
+        Promise<{ status: string; message: string }>
+      >result.json());
+
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+      } else {
+        if (Array.isArray(doers)) {
+          doers.push(doer);
+          updateDoers([].concat(doers));
+        } else {
+          updateDoers([doer]);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }),
   statusChangeRequest: thunk(
-    async ({ updateStatus }, { databaseId, status }, { getStoreState }) => {
+    async ({ updateStatus }, { status }, { getStoreState }) => {
       const {
         session: { validToken: token },
+        components: {
+          task: { databaseId },
+        },
       } = getStoreState() as IStoreModel;
       const action = `${status === "draft" ? "un" : ""}publish-task`;
       const formData = new FormData();

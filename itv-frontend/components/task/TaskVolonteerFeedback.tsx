@@ -6,7 +6,7 @@ const TaskVolonteerFeedback: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn, isTaskAuthorLoggedIn } = useStoreState(
     (state) => state.session
   );
-  const { id: taskId, approvedDoer, doers } = useStoreState(
+  const { approvedDoer, doers } = useStoreState(
     (state) => state.components.task
   );
   const doersRequest = useStoreActions(
@@ -14,8 +14,8 @@ const TaskVolonteerFeedback: React.FunctionComponent = (): ReactElement => {
   );
 
   useEffect(() => {
-    isLoggedIn && doersRequest(taskId);
-  }, [isLoggedIn, taskId, doersRequest]);
+    isLoggedIn && doersRequest();
+  }, [isLoggedIn, doersRequest]);
 
   return (
     isLoggedIn &&

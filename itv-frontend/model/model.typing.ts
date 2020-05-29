@@ -71,6 +71,7 @@ export interface ISessionState {
   validToken?: Computed<ISessionModel, string>;
   isLoggedIn?: Computed<ISessionModel, boolean>;
   isTaskAuthorLoggedIn?: Computed<ISessionModel, boolean, IStoreModel>;
+  isUserTaskCandidate?: Computed<ISessionModel, boolean, IStoreModel>;
   canUserReplyToComment?: Computed<ISessionModel, boolean, IStoreModel>;
 }
 
@@ -228,7 +229,7 @@ export interface ITaskComment {
   id: string;
   content: string;
   date: string;
-  dateGmt: string;
+  dateGmt?: string;
   likesCount: number;
   likeGiven: boolean;
   author: ITaskCommentAuthor;
@@ -258,18 +259,24 @@ export interface ITaskThunks {
     ITaskActions,
     {
       action: "approve-candidate" | "decline-candidate";
-      taskId: string;
       doer: ITaskDoer;
       callbackFn?: () => void;
     }
   >;
-  statusChangeRequest: Thunk<
-    ITaskActions,
-    { databaseId: number; status: TaskStatus }
-  >;
-  doersRequest: Thunk<ITaskActions, string>;
-  commentsRequest: Thunk<ITaskActions, number>;
+  statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus }>;
+  doersRequest: Thunk<ITaskActions>;
+  addDoerRequest: Thunk<ITaskActions>;
+  commentsRequest: Thunk<ITaskActions>;
   commentLikeRequest: Thunk<ITaskActions, string>;
+  newCommentRequest: Thunk<
+    ITaskActions,
+    {
+      commentBody: string;
+      parentCommentId?: string;
+      callbackFn?: () => void;
+    }
+  >;
+  onNewCommentRequestSuccess: ThunkOn<ITaskModel>;
 }
 
 /**
