@@ -6,6 +6,8 @@ import Task from "../../components/task/Task";
 import TaskComments from "../../components/task/TaskComments";
 import TaskSuggestionsForVolonteers from "../../components/task/TaskSuggestionsForVolonteers";
 import TaskAuthor from "../../components/task/author/TaskAuthor";
+import TaskBecomeCandidate from "../../components/task/TaskBecomeCandidate";
+import TaskReplyStatus from "../../components/task/TaskReplyStatus";
 import TaskApprovedDoer from "../../components/task/TaskApprovedDoer";
 import TaskVolonteerFeedback from "../../components/task/TaskVolonteerFeedback";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
@@ -26,6 +28,8 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
           </section>
           <Sidebar>
             <TaskAuthor />
+            <TaskBecomeCandidate />
+            <TaskReplyStatus />
             <TaskApprovedDoer />
             <TaskVolonteerFeedback />
             <TaskAdminSupport />
