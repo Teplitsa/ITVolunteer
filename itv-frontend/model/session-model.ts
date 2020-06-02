@@ -7,6 +7,7 @@ import {
   ISessionThunks,
 } from "./model.typing";
 import { thunk, action, computed } from "easy-peasy";
+import { getAjaxUrl, stripTags } from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
   id: "",
@@ -106,18 +107,57 @@ const sessionThunks: ISessionThunks = {
     const { request } = await import("graphql-request");
     const { v4: uuidv4 } = await import("uuid");
     const loginQuery: string = graphqlQuery.login;
-    const {
-      login: { authToken, refreshToken, user },
-    } = await request(process.env.GraphQLServer, loginQuery, {
-      mutationId: uuidv4(),
-      username,
-      password,
-    });
 
-    setState({
-      token: { timestamp: Date.now(), authToken, refreshToken },
-      user,
-    });
+    console.log("sessionThunks...")
+
+    try {
+      const result = await fetch(getAjaxUrl("itv-get-jwt-auth-token"), {
+        method: "post",
+      });
+
+      const { 
+        status: responseStatus, 
+        message: responseMessage, 
+        authToken: authToken,
+        refreshToken: refreshToken,
+        user: user, 
+      } = await (<
+        Promise<{ status: string; message: string; authToken: string; refreshToken: string; user: any }>
+      >result.json());
+
+      console.log("authToken:", authToken)
+
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+
+        setState({
+          token: { timestamp: Date.now(), authToken: null, refreshToken: null },
+          user: sessionUserState,
+        });        
+
+      } else {
+        setState({
+          token: { timestamp: Date.now(), authToken, refreshToken },
+          user,
+        });
+      }
+
+    } catch (error) {
+      console.error(error);
+    }    
+
+    // const {
+    //   login: { authToken, refreshToken, user },
+    // } = await request(process.env.GraphQLServer, loginQuery, {
+    //   mutationId: uuidv4(),
+    //   username,
+    //   password,
+    // });
+
+    // setState({
+    //   token: { timestamp: Date.now(), authToken, refreshToken },
+    //   user,
+    // });
   }),
 };
 

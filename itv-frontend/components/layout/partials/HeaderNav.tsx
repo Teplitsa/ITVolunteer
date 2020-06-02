@@ -1,6 +1,6 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import Link from "next/link";
-import { useStoreState } from "../../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
 import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
@@ -9,6 +9,21 @@ import * as C from "const"
 
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
+  const login = useStoreActions((actions) => actions.session.login);
+
+  useEffect(() => {
+    console.log("run login...")
+
+    if(!process.browser) {
+      return
+    }
+
+    if(isLoggedIn) {
+      return
+    }
+
+    login({username: "", password: ""})
+  }, [])
 
   function handleOldDesignClick(e) {
     if(!process.browser) {
@@ -21,11 +36,9 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
 
   return (
     <nav>
-      <Link href="/">
-        <a className="logo-col">
-          <img src={Logo} className="logo" alt="IT-волонтер" />
-        </a>
-      </Link>
+      <a href="/" className="logo-col">
+        <img src={Logo} className="logo" alt="IT-волонтер" />
+      </a>
       <div className="main-menu-col">
         <Link href="/tasks">
           <a>Задачи</a>

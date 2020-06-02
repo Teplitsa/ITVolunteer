@@ -99,7 +99,8 @@ class ITV_CssJs {
 				
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('front', $url.'/assets/rev/'.$this->get_rev_filename('bundle.js'), array(), null, true);
-
+		wp_enqueue_script('front-wp-pages', $url.'/assets_spa/js/bundle-wp-pages-app.js', array('jquery', 'front'), ITV_FRONTEND_VERSION, true);
+		
 		wp_localize_script('front', 'frontend', array(
 			'ajaxurl'                        => admin_url('admin-ajax.php'),
 			'site_url'                       => site_url('/'),
@@ -138,6 +139,8 @@ class ITV_CssJs {
 			'you_said_thankyou'              => __('You said thankyou!', 'tst'),
             'user_full_name'                 => $user ? $user->first_name.($user->last_name ? ' '.$user->last_name : '') : '',
             'user_email'                     => $user ? $user->user_email : '',
+		    #TODO: check to remove, if possible
+		    'user_id'                        => $user ? $user->ID : null,
 			//        '' => __('.', 'tst'),
 		));
 		
