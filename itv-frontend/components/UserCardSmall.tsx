@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
-import { ITaskCommentAuthor } from "../../model/model.typing";
+import { ITaskCommentAuthor } from "../model/model.typing";
 
-const TaskCommentAuthor: React.FunctionComponent<ITaskCommentAuthor> = ({
+const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
   fullName,
   itvAvatar: avatarImage,
   memberRole,
@@ -16,10 +16,11 @@ const TaskCommentAuthor: React.FunctionComponent<ITaskCommentAuthor> = ({
       />
 
       <span className="name">
-        <span>{fullName}</span>/{memberRole}
+        <span>{fullName}</span>
+        {memberRole && ` / ${memberRole}`}
       </span>
     </div>
   );
 };
 
-export default TaskCommentAuthor;
+export default UserCardSmall;

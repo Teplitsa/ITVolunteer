@@ -1,6 +1,15 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 
+export const getLocaleDateTimeISOString = (locale = "ru-RU"): string => {
+  switch (locale) {
+    case "ru-RU":
+      return new Date()
+        .toLocaleString()
+        .replace(/(\d{2})\.(\d{2})\.(\d{4}),\s([\d|:]+)/g, "$3-$2-$1 $4");
+  }
+};
+
 export const stripTags = (str = "") => str.replace(/<\/?[^>]+>/gi, "");
 
 export const capitalize = (str = "") =>
@@ -44,6 +53,7 @@ export const getAjaxUrl = (action: string): string => {
 };
 
 export default {
+  getLocaleDateTimeISOString,
   stripTags,
   capitalize,
   toCamelCase,

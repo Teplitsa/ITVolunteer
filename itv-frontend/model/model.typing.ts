@@ -189,6 +189,21 @@ export interface ITaskState {
   author?: ITaskAuthor;
   doers?: Array<ITaskDoer>;
   comments?: Array<ITaskComment>;
+  timeline?: Array<ITaskTimelineItem>;
+  reviews?: {
+    reviewForAuthor?: ITaskReviewer;
+    reviewForDoer?: ITaskReviewer;
+  };
+}
+
+export interface ITaskReviewer {
+  id: string;
+  author_id: string;
+  doer_id: string;
+  task_id: string;
+  message: string;
+  rating: string;
+  time_add: string;
 }
 
 export interface ITaskApprovedDoer {
@@ -244,6 +259,41 @@ export interface ITaskCommentAuthor {
   profileURL?: string;
 }
 
+export interface ITaskTimelineItem {
+  id: number;
+  doer_id?: string;
+  task_id: string;
+  type: string;
+  status: string;
+  sort_order: string;
+  due_date: string;
+  created_at: string;
+  updated_at: string;
+  message?: string;
+  date_close?: string;
+  decision: string;
+  title: string;
+  isOverdue: boolean;
+  timeline_date: string;
+  doer?: ITaskTimelineItemDoer;
+}
+
+export interface ITaskTimelineItemDoer {
+  id: string;
+  fullName: string;
+  memberRole: string;
+  itvAvatar: string;
+  authorReviewsCount: string;
+  solvedTasksCount: string;
+  doerReviewsCount: string;
+  isPartner: string;
+  isPasekaMember: boolean;
+  organizationName: string;
+  organizationDescription: string;
+  organizationLogo: string;
+  pemalinkUrl: string;
+}
+
 export interface ITaskActions {
   initializeState: Action<ITaskModel>;
   setState: Action<ITaskModel, ITaskState>;
@@ -251,6 +301,14 @@ export interface ITaskActions {
   updateApprovedDoer: Action<ITaskModel, ITaskApprovedDoer>;
   updateDoers: Action<ITaskModel, Array<ITaskDoer>>;
   updateComments: Action<ITaskModel, Array<ITaskComment>>;
+  updateTimeline: Action<ITaskModel, Array<ITaskTimelineItem>>;
+  updateReviews: Action<
+    ITaskModel,
+    {
+      reviewForAuthor?: ITaskReviewer;
+      reviewForDoer?: ITaskReviewer;
+    }
+  >;
   likeComment: Action<ITaskModel, { commentId: string; likesCount: number }>;
 }
 
@@ -267,6 +325,8 @@ export interface ITaskThunks {
   doersRequest: Thunk<ITaskActions>;
   addDoerRequest: Thunk<ITaskActions>;
   commentsRequest: Thunk<ITaskActions>;
+  timelineRequest: Thunk<ITaskActions>;
+  reviewsRequest: Thunk<ITaskActions>;
   commentLikeRequest: Thunk<ITaskActions, string>;
   newCommentRequest: Thunk<
     ITaskActions,
@@ -277,6 +337,61 @@ export interface ITaskThunks {
     }
   >;
   onNewCommentRequestSuccess: ThunkOn<ITaskModel>;
+  newReviewRequest: Thunk<
+    ITaskActions,
+    {
+      reviewRating: number;
+      reviewText: string;
+      callbackFn?: () => void;
+    }
+  >;
+
+  onNewReviewRequestSuccess: ThunkOn<ITaskModel>;
+  acceptSuggestedDateRequest: Thunk<
+    ITaskActions,
+    {
+      timelineItemId: string;
+    }
+  >;
+  onAcceptSuggestedDateRequest: ThunkOn<ITaskModel>;
+  rejectSuggestedDateRequest: Thunk<
+    ITaskActions,
+    {
+      timelineItemId: string;
+    }
+  >;
+  onRejectSuggestedDateRequest: ThunkOn<ITaskModel>;
+  acceptSuggestedCloseRequest: Thunk<
+    ITaskActions,
+    {
+      timelineItemId: string;
+    }
+  >;
+  onAcceptSuggestedCloseRequest: ThunkOn<ITaskModel>;
+  rejectSuggestedCloseRequest: Thunk<
+    ITaskActions,
+    {
+      timelineItemId: string;
+    }
+  >;
+  onRejectSuggestedCloseRequest: ThunkOn<ITaskModel>;
+  suggestCloseDateRequest: Thunk<
+    ITaskActions,
+    {
+      suggestComment: string;
+      suggestedCloseDate: Date | null;
+      callbackFn?: () => void;
+    }
+  >;
+  onSuggestCloseDateRequest: ThunkOn<ITaskModel>;
+  suggestCloseTaskRequest: Thunk<
+    ITaskActions,
+    {
+      suggestComment: string;
+      callbackFn?: () => void;
+    }
+  >;
+  onSuggestCloseTaskRequest: ThunkOn<ITaskModel>;
 }
 
 /**

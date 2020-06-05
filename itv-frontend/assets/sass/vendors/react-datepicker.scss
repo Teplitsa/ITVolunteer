@@ -1,0 +1,35 @@
+.react-datepicker {
+  display: flex !important;
+  flex-flow: column;
+  &__day--selected,
+  &__day--in-selecting-range,
+  &__day--in-range,
+  &__month-text--selected,
+  &__month-text--in-selecting-range,
+  &__month-text--in-range,
+  &__quarter-text--selected,
+  &__quarter-text--in-selecting-range,
+  &__quarter-text--in-range {
+    background-color: #fbf8f4 !important;
+    color: #000 !important;
+    &:hover {
+      background-color: #fbf8f4 !important;
+    }
+    &:active,
+    &:focus {
+      outline-color: #bab5ab !important;
+    }
+  }
+  &__day,
+  &__month-text,
+  &__quarter-text {
+    &:focus {
+      outline-color: #bab5ab !important;
+    }
+  }
+  &__navigation {
+    &:focus {
+      outline: none !important;
+    }
+  }
+}

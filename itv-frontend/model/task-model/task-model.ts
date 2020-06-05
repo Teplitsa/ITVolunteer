@@ -5,6 +5,8 @@ import {
   ITaskActions,
   ITaskThunks,
   ITaskComment,
+  ITaskTimelineItem,
+  ITaskReviewer,
 } from "../model.typing";
 import { queriedFields as approvedDoerQueriedFields } from "./task-approved-doer";
 import { queriedFields as authorQueriedFields } from "./task-author";
@@ -13,7 +15,11 @@ import {
   findCommentById,
   graphqlQuery as commentGraphqlQuery,
 } from "./task-comment";
-import { getAjaxUrl, stripTags } from "../../utilities/utilities";
+import {
+  getLocaleDateTimeISOString,
+  stripTags,
+  getAjaxUrl,
+} from "../../utilities/utilities";
 
 const taskState: ITaskState = {
   id: "",
@@ -32,6 +38,8 @@ const taskState: ITaskState = {
   author: null,
   doers: null,
   comments: null,
+  timeline: null,
+  reviews: null,
 };
 
 export const queriedFields = Object.entries(taskState).reduce(
@@ -116,6 +124,12 @@ const taskActions: ITaskActions = {
   updateComments: action((taskState, comments) => {
     Object.assign(taskState, { comments });
   }),
+  updateTimeline: action((taskState, timeline) => {
+    Object.assign(taskState, { timeline });
+  }),
+  updateReviews: action((taskState, reviews) => {
+    Object.assign(taskState, { reviews });
+  }),
   likeComment: action((taskState, { commentId, likesCount }) => {
     const comments = taskState.comments;
 
@@ -131,6 +145,448 @@ const taskActions: ITaskActions = {
 };
 
 const taskThunks: ITaskThunks = {
+  suggestCloseTaskRequest: thunk(
+    async (actions, { suggestComment, callbackFn }, { getStoreState }) => {
+      if (!suggestComment) return;
+
+      const {
+        session: { validToken: token },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "suggest-close-task";
+      const formData = new FormData();
+
+      formData.append("message", suggestComment);
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          callbackFn && callbackFn();
+          return {
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onSuggestCloseTaskRequest: thunkOn(
+    (actions) => actions.suggestCloseTaskRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      timelineRequest();
+    }
+  ),
+  suggestCloseDateRequest: thunk(
+    async (
+      actions,
+      { suggestComment, suggestedCloseDate, callbackFn },
+      { getStoreState }
+    ) => {
+      if (!suggestComment || !suggestedCloseDate) return;
+
+      const {
+        session: { validToken: token },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "suggest-close-date";
+      const formData = new FormData();
+
+      formData.append("message", suggestComment);
+      formData.append(
+        "due_date",
+        suggestedCloseDate
+          .toLocaleString()
+          .replace(/(\d{2})\.(\d{2})\.(\d{4}),\s([\d|:]+)/g, "$3-$2-$1 $4")
+      );
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          callbackFn && callbackFn();
+          return {
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onSuggestCloseDateRequest: thunkOn(
+    (actions) => actions.suggestCloseDateRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      timelineRequest();
+    }
+  ),
+  acceptSuggestedDateRequest: thunk(
+    async (actions, { timelineItemId }, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "accept-close-date";
+      const formData = new FormData();
+
+      formData.append("timeline-item-id", String(timelineItemId));
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          return {
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onAcceptSuggestedDateRequest: thunkOn(
+    (actions) => actions.acceptSuggestedDateRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      timelineRequest();
+    }
+  ),
+  rejectSuggestedDateRequest: thunk(
+    async (actions, { timelineItemId }, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "reject-close-date";
+      const formData = new FormData();
+
+      formData.append("timeline-item-id", String(timelineItemId));
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          return {
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onRejectSuggestedDateRequest: thunkOn(
+    (actions) => actions.rejectSuggestedDateRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      timelineRequest();
+    }
+  ),
+  acceptSuggestedCloseRequest: thunk(
+    async (actions, { timelineItemId }, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        entrypoint: {
+          page: { slug: pageSlug },
+        },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "accept-close";
+      const formData = new FormData();
+
+      formData.append("timeline-item-id", String(timelineItemId));
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          return {
+            pageSlug,
+            token,
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onAcceptSuggestedCloseRequest: thunkOn(
+    (actions) => actions.acceptSuggestedCloseRequest.successType,
+    ({ setState: setTaskState }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      const { pageSlug, token } = result;
+
+      import("graphql-request").then(async ({ GraphQLClient }) => {
+        const { v4: uuidv4 } = await import("uuid");
+        const updateTaskStateQuery = graphqlQuery.getBySlug;
+        const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
+        try {
+          const { task } = await graphQLClient.request(updateTaskStateQuery, {
+            input: {
+              clientMutationId: uuidv4(),
+              taskSlug: pageSlug,
+            },
+          });
+          setTaskState(task);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+    }
+  ),
+  rejectSuggestedCloseRequest: thunk(
+    async (actions, { timelineItemId }, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        components: {
+          task: { databaseId: taskId },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "reject-close";
+      const formData = new FormData();
+
+      formData.append("timeline-item-id", String(timelineItemId));
+      formData.append("task-id", String(taskId));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          return {
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onRejectSuggestedCloseRequest: thunkOn(
+    (actions) => actions.newReviewRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      timelineRequest();
+    }
+  ),
+  newReviewRequest: thunk(
+    async (
+      actions,
+      { reviewRating, reviewText, callbackFn },
+      { getStoreState }
+    ) => {
+      const {
+        session: { validToken: token, isTaskAuthorLoggedIn },
+        entrypoint: {
+          page: { slug: pageSlug },
+        },
+        components: {
+          task: {
+            databaseId: taskId,
+            author: { databaseId: authorId },
+            approvedDoer,
+            reviews,
+          },
+        },
+      } = getStoreState() as IStoreModel;
+      const formData = new FormData();
+      formData.append("review-rating", String(reviewRating));
+      formData.append("review-message", reviewText);
+      formData.append("task-id", String(taskId));
+
+      let action = "";
+
+      if (isTaskAuthorLoggedIn) {
+        action = "leave-review";
+        formData.append("doer-id", String(approvedDoer?.databaseId));
+      } else {
+        action = "leave-review-author";
+        formData.append("author-id", String(authorId));
+      }
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+          return { responseStatus };
+        } else {
+          callbackFn && callbackFn();
+          return {
+            newReview: {
+              id: "",
+              author_id: String(authorId),
+              doer_id: String(approvedDoer?.databaseId),
+              task_id: String(taskId),
+              message: reviewText,
+              rating: String(reviewRating),
+              time_add: getLocaleDateTimeISOString(),
+            },
+            pageSlug,
+            token,
+            isTaskAuthorLoggedIn,
+            reviews,
+            responseStatus,
+          };
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  onNewReviewRequestSuccess: thunkOn(
+    (actions) => actions.newReviewRequest.successType,
+    ({ setState: setTaskState, updateReviews }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      const {
+        pageSlug,
+        newReview,
+        token,
+        isTaskAuthorLoggedIn,
+        reviews,
+      } = result;
+
+      updateReviews({
+        ...reviews,
+        ...{
+          [`reviewFor${isTaskAuthorLoggedIn ? "Doer" : "Author"}`]: newReview,
+        },
+      });
+
+      import("graphql-request").then(async ({ GraphQLClient }) => {
+        const { v4: uuidv4 } = await import("uuid");
+        const updateTaskStateQuery = graphqlQuery.getBySlug;
+        const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
+        try {
+          const { task } = await graphQLClient.request(updateTaskStateQuery, {
+            input: {
+              clientMutationId: uuidv4(),
+              taskSlug: pageSlug,
+            },
+          });
+          setTaskState(task);
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+    }
+  ),
   newCommentRequest: thunk(
     async (
       actions,
@@ -177,12 +633,14 @@ const taskThunks: ITaskThunks = {
         >result.json());
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
+          return { responseStatus };
         } else {
           callbackFn && callbackFn();
           return {
             comments,
             newComment: comment,
             author: { id, fullName, itvAvatar, memberRole, profileURL },
+            responseStatus,
           };
         }
       } catch (error) {
@@ -192,10 +650,10 @@ const taskThunks: ITaskThunks = {
   ),
   onNewCommentRequestSuccess: thunkOn(
     (actions) => actions.newCommentRequest.successType,
-    (
-      { updateComments },
-      { payload: { parentCommentId }, result: { author, newComment, comments } }
-    ) => {
+    ({ updateComments }, { payload: { parentCommentId }, result }) => {
+      if (result?.responseStatus !== "ok") return;
+
+      const { author, newComment, comments } = result;
       const parentComment: ITaskComment = findCommentById(
         parentCommentId,
         comments
@@ -219,6 +677,87 @@ const taskThunks: ITaskThunks = {
       updateComments([].concat(comments));
     }
   ),
+  timelineRequest: thunk(async ({ updateTimeline }, _, { getStoreState }) => {
+    const {
+      session: { validToken: token },
+      components: {
+        task: { id: taskId },
+      },
+    } = getStoreState() as IStoreModel;
+    const action = "get-task-timeline";
+    const formData = new FormData();
+
+    formData.append("task_gql_id", taskId);
+    formData.append("auth_token", String(token));
+
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
+
+      const {
+        status: responseStatus,
+        message: responseMessage,
+        timeline,
+      } = await (<
+        Promise<{
+          status: string;
+          message?: string;
+          timeline?: Array<ITaskTimelineItem>;
+        }>
+      >result.json());
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+      } else {
+        updateTimeline(timeline);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }),
+  reviewsRequest: thunk(async ({ updateReviews }, _, { getStoreState }) => {
+    const {
+      session: { validToken: token },
+      components: {
+        task: { databaseId: taskId },
+      },
+    } = getStoreState() as IStoreModel;
+    const action = "get-task-reviews";
+    const formData = new FormData();
+
+    formData.append("task-id", String(taskId));
+    formData.append("auth_token", String(token));
+
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
+
+      const {
+        status: responseStatus,
+        message: responseMessage,
+        reviews,
+      } = await (<
+        Promise<{
+          status: string;
+          message?: string;
+          reviews?: {
+            reviewForAuthor?: ITaskReviewer;
+            reviewForDoer?: ITaskReviewer;
+          };
+        }>
+      >result.json());
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+      } else {
+        updateReviews(reviews);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }),
   commentLikeRequest: thunk(
     async ({ likeComment }, commentId, { getStoreState }) => {
       const {
@@ -413,31 +952,6 @@ const taskThunks: ITaskThunks = {
       } catch (error) {
         console.error(error);
       }
-      // const { GraphQLClient } = await import("graphql-request");
-      // const { v4: uuidv4 } = await import("uuid");
-      // const updateStatusQuery = graphqlQuery.updateStatus;
-      // const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
-      //   headers: {
-      //     authorization: `Bearer ${token}`,
-      //   },
-      // });
-
-      // try {
-      //   const {
-      //     updateTask: {
-      //       task: { status: updatedStatus },
-      //     },
-      //   } = await graphQLClient.request(updateStatusQuery, {
-      //     input: {
-      //       clientMutationId: uuidv4(),
-      //       id,
-      //       status: status.toUpperCase(),
-      //     },
-      //   });
-      //   updateStatus({ status: updatedStatus });
-      // } catch (error) {
-      //   console.error(error.message);
-      // }
     }
   ),
 };

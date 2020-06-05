@@ -1,4 +1,5 @@
 import "../assets/sass/main.scss";
+import "react-datepicker/dist/react-datepicker.css";
 import { AppProps } from "next/app";
 import { ReactElement, useEffect } from "react";
 import { Store, createStore, StoreProvider as Provider } from "easy-peasy";
@@ -40,11 +41,13 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
     },
   });
   dispatch({
-    type: `@action.page.${page ? "setState" : "initializeState"}`,
+    type: `@action.entrypoint.page.${page ? "setState" : "initializeState"}`,
     payload: page || null,
   });
   dispatch({
-    type: `@action.archive.${archive ? "setState" : "initializeState"}`,
+    type: `@action.entrypoint.archive.${
+      archive ? "setState" : "initializeState"
+    }`,
     payload:
       (archive && {
         entrypoint: archiveEntrypoint,

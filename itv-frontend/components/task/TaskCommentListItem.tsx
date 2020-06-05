@@ -2,7 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskComment } from "../../model/model.typing";
 import { getTheDate } from "../../utilities/utilities";
-import TaskCommentAuthor from "./TaskCommentAuthor";
+import UserCardSmall from "../UserCardSmall";
 import TaskCommentForm from "./TaskCommentForm";
 
 const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
@@ -42,7 +42,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
     <div className="comment-wrapper">
       <div className="comment">
         <div className="comment-author">
-          {author && <TaskCommentAuthor {...author} />}
+          {author && <UserCardSmall {...author} />}
         </div>
         <div className="comment-body">
           <time>

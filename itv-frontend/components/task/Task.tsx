@@ -3,6 +3,7 @@ import { useStoreState } from "../../model/helpers/hooks";
 import TaskHeader from "./task-header/TaskHeader";
 import TaskFooter from "./task-footer/TaskFooter";
 import TaskStages from "./task-footer/TaskStages";
+import TaskTimeline from "../task/task-footer/timeline/TaskTimeline"
 import TaskActionBar from "./task-footer/TaskActionBar";
 import TaskStatus from "./task-footer/TaskStatus";
 import TaskActionButtons from "./task-footer/TaskActionButtons";
@@ -28,6 +29,7 @@ const Task: React.FunctionComponent = (): ReactElement => {
         />
         <TaskFooter>
           <TaskStages />
+          <TaskTimeline />
           <TaskActionBar>
             <TaskActionButtons />
             <TaskStatus />
