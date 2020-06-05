@@ -5,12 +5,12 @@ import IconNgoTags from "../../../assets/img/icon-people.svg";
 import IconRewardTags from "../../../assets/img/icon-gift-box.svg";
 import TaskTagGroup from "./TaskTagGroup";
 
-const TaskTags: React.FunctionComponent = (): ReactElement => {
+function TaskTags(props) {
   const {
     tags: { nodes: tags },
     rewardTags: { nodes: rewardTags },
     ngoTaskTags: { nodes: ngoTags },
-  } = useStoreState((state) => state.components.task as any);
+  } = props.task
 
   const tagGroups = [];
 
@@ -25,9 +25,11 @@ const TaskTags: React.FunctionComponent = (): ReactElement => {
         return (
           <TaskTagGroup key={groupId}>
             <img src={icon} />
-            {tagGroup.map(({ id, name }) => (
-              <span key={id}>{name}</span>
-            ))}
+            {tagGroup.map(({ term_id, name }) => {
+              return (
+                <span key={`Tag${groupId}${term_id}`}>{name}</span>
+              )
+            })}
           </TaskTagGroup>
         );
       })}

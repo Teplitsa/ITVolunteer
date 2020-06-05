@@ -13,11 +13,20 @@ function SiteFooter(props) {
                 <a href="#" className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
-                <div className="links-col">
-                    <a href="/tasks/publish/">Задачи</a>
-                    <a href={ITV_URLS.volunteers} target="_blank">Волонтеры</a>
-                    <a href="#" className="drop-menu">О проекте</a>
-                </div>
+                <ul className="links-col">
+                    <li><a href="/tasks/publish/">Задачи</a></li>
+                    <li><a href={ITV_URLS.volunteers} target="_blank">Волонтеры</a></li>
+                    <li className="drop-menu">
+                      <a href="#">О проекте</a>
+                      <ul className="submenu">
+                        <li><a href="/about">О проекте</a></li>
+                        <li><a href="/conditions">Правила участия</a></li>
+                        <li><a href="/news">Новости</a></li>
+                        <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
+                        <li><a href="/contacts">Контакты</a></li>
+                      </ul>                    
+                    </li>
+                </ul>
             </div>
             <div className="info">
                 <div className="col-stats">

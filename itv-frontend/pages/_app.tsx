@@ -59,13 +59,13 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
   });
 
   useEffect(() => {
-    componentList
-      .filter((excludeComponentName) => excludeComponentName !== componentName)
-      .forEach((excludeComponentName) => {
-        dispatch({
-          type: `@action.components.${excludeComponentName}.initializeState`,
-        });
-      });
+    // componentList
+    //   .filter((excludeComponentName) => excludeComponentName !== componentName)
+    //   .forEach((excludeComponentName) => {
+    //     dispatch({
+    //       type: `@action.components.${excludeComponentName}.initializeState`,
+    //     });
+    //   });
   }, [componentName]);
 
   useEffect(() => {
@@ -80,3 +80,4 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
 };
 
 export default ITVApp;
+

@@ -5,9 +5,12 @@ import {
   ISessionToken,
   ISessionActions,
   ISessionThunks,
+  IFetchResult,
 } from "./model.typing";
 import { thunk, action, computed } from "easy-peasy";
 import { getAjaxUrl, stripTags } from "../utilities/utilities";
+import * as utils from "../utilities/utilities"
+import * as _ from "lodash"
 
 const sessionUserState: ISessionUser = {
   id: "",
@@ -100,6 +103,35 @@ const sessionActions: ISessionActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
+  setSubscribeTaskList: action((state, payload) => {
+      state.user.subscribeTaskList = payload
+  }),
+  loadSubscribeTaskList: thunk((actions, payload) => {
+      let action = 'get-task-list-subscription'
+      fetch(utils.getAjaxUrl(action), {
+          method: 'get',
+      })
+      .then(res => {
+          try {
+              return res.json()
+          } catch(ex) {
+              utils.showAjaxError({action, error: ex})
+              return {}
+          }
+      })
+      .then(
+          (result: IFetchResult) => {
+              if(result.status == 'fail') {
+                  return utils.showAjaxError({message: result.message})
+              }
+
+              actions.setSubscribeTaskList(result.filter)
+          },
+          (error) => {
+              utils.showAjaxError({action, error})
+          }
+      )
+  }),    
 };
 
 const sessionThunks: ISessionThunks = {
@@ -125,7 +157,7 @@ const sessionThunks: ISessionThunks = {
         Promise<{ status: string; message: string; authToken: string; refreshToken: string; user: any }>
       >result.json());
 
-      console.log("authToken:", authToken)
+      // console.log("authToken:", authToken)
 
       if (responseStatus === "fail") {
         console.error(stripTags(responseMessage));

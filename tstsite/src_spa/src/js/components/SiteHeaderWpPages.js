@@ -91,16 +91,25 @@ function AccountInHeader({userId}) {
                     }}/>
                     }
                 </div>
-                <a href={user.profileURL} className="open-account-menu" target="_blank">
-                    <span 
-                        className="avatar-wrapper"
-                        style={{
-                            backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
-                        }}
-                        title={user && `Привет, ${user.fullName}!`}
-                    />
-                    <img src={arrowDown} className="arrow-down" alt="arrowDown" />
-                </a>
+                <div className="open-account-menu">
+                  <a href={user.profileURL} target="_blank">
+                      <span 
+                          className="avatar-wrapper"
+                          style={{
+                              backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+                          }}
+                          title={user && `Привет, ${user.fullName}!`}
+                      />
+                      <img src={arrowDown} className="arrow-down" alt="arrowDown" />
+                  </a>
+
+                  <ul className="submenu">
+                    <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
+                    <li><a href={`/members/${user.username}`}>Мой профиль</a></li>
+                    <li><a href="/wp-login.php?action=logout">Выйти</a></li>
+                  </ul>
+
+                </div>
             </div>
             }
             {!user.id &&
@@ -132,11 +141,24 @@ export function SiteHeader(props) {
                 <a href={C.ITV_URLS.home} className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
-                <div className="main-menu-col">
+                <ul className="main-menu-col">
+                  <li>
                     <a href="/tasks/publish/">Задачи</a>
+                  </li>
+                  <li>
                     <a href={C.ITV_URLS.volunteers} target="_blank">Волонтеры</a>
-                    <a href="#" className="drop-menu">О проекте</a>
-                </div>
+                  </li>
+                  <li className="drop-menu">
+                    <a href="#">О проекте</a>
+                    <ul className="submenu">
+                      <li><a href="/about">О проекте</a></li>
+                      <li><a href="/conditions">Правила участия</a></li>
+                      <li><a href="/news">Новости</a></li>
+                      <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
+                      <li><a href="/contacts">Контакты</a></li>
+                    </ul>                    
+                  </li>
+                </ul>
                 <AccountInHeader />
             </nav>
         </header>

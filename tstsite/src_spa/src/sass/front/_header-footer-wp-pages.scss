@@ -51,14 +51,29 @@ body.itv-v2-header-footer {
             display: flex;
             justify-content: space-between;
 
-            & > a {
-                @include a-hover-underline;
-                @include text-bold-line-sm;
+            & > li {
                 color: $color-gray-dark-lg;
+                position: relative;
+
+                a {
+                  @include a-hover-underline;
+                  @include text-bold-line-sm;
+                  color: $color-gray-dark-lg;
+                }
 
                 &.drop-menu {
-                    @include drop-down-arrow(20px);
-                }                
+                  @include drop-down-arrow(20px);
+
+                  a {
+                    @include a-no-hover-underline;
+                  }
+
+                  &:hover .submenu {
+                    display: block;
+                  }              
+                }  
+
+                @include dd-submenu;
             }
         }
 
@@ -140,7 +155,12 @@ body.itv-v2-header-footer {
             }   
 
             .open-account-menu {
-                display: flex;
+                position: relative;
+                cursor: pointer;
+
+                a {
+                  display: flex;
+                }
 
                 span.avatar-wrapper {
                     display: inline-block;
@@ -155,7 +175,19 @@ body.itv-v2-header-footer {
                 }
 
                 .arrow-down {
+                }
 
+                &:hover {
+                  .submenu {
+                    display: block;
+                  }
+                }
+
+                @include dd-submenu;
+
+                .submenu {
+                  top: 45px;
+                  left: -20px;
                 }
             }      
         }
@@ -214,7 +246,37 @@ body.itv-v2-header-footer {
                     @include drop-down-arrow(20px);
                 }                
             }
+
+            & > li {
+                color: $color-gray-dark-lg;
+                position: relative;
+
+                &.drop-menu {
+                  @include drop-down-arrow(20px);
+
+                  a {
+                    @include a-no-hover-underline;
+                  }
+
+                  &:hover .submenu {
+                    display: block;
+                  }              
+                }  
+
+                @include dd-submenu;
+
+                .submenu {
+                  text-align: left;
+                  left: 40px;
+
+                  a {
+                    margin-left: 0px;
+                  }
+                }
+            }
+
         }
+
     }
 
     .info {
@@ -369,6 +431,8 @@ body.itv-v2-header-footer {
     }
 
     &__item {
+        // hover: $color-gray-light-xl
+        // read: $color-gray-light-lg
         @include a-no-hover-underline;
         display: block;
         position: relative;

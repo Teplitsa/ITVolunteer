@@ -40,15 +40,9 @@ const withAppAndEntrypointModel = async ({
     location: "SOCIAL",
   });
 
-  const [entrypointTemplate, entrypointModel] = isArchive
-    ? await archiveModel(request, entrypointType, entrypointQueryVars)
-    : await pageModel(request, entrypointType, entrypointQueryVars);
-
-  const componentData = isArchive
-    ? {
-        items: entrypointModel.edges.map(({ node: item }) => item),
-      }
-    : null;
+  const entrypointTemplate = "page"
+  const entrypointModel = null
+  const componentData = null
 
   const [componentName, component] = await componentModel(
     request,
