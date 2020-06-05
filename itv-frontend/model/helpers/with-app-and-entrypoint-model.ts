@@ -40,7 +40,7 @@ const withAppAndEntrypointModel = async ({
     location: "SOCIAL",
   });
 
-  const entrypointTemplate = "page"
+  const entrypointTemplate = null
   const entrypointModel = null
   const componentData = null
 
