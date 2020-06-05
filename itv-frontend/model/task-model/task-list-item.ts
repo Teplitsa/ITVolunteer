@@ -5,6 +5,12 @@ const taskState: ITaskListItemState = {
   title: "",
   slug: "",
   content: "",
+  date: "1970-01-01",
+  dateGmt: "1970-01-01",
+  viewsCount: 0,
+  doerCandidatesCount: 0,
+  reviewsDone: false,
+  nextTaskSlug: "",
 };
 
 export const queriedFields = Object.keys(taskState) as Array<

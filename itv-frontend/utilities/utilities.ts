@@ -70,7 +70,3 @@ export function showAjaxError(errorData) {
         console.log(errorData.error)
     }
 }
-
-// export function wpDateTimeToDate(wpDateTime) {
-//     return new Date(moment(wpDateTime + "Z"))
-// }
