@@ -55,7 +55,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
       </div>
 
       <div className="open-account-menu">
-        <a href={user.profileURL} href={toProfile} target="_blank">
+        <a href={toProfile} target="_blank">
             <span 
                 className="avatar-wrapper"
                 style={{
