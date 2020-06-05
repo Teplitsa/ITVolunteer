@@ -25,6 +25,16 @@ function wp_ajax_login_by_auth_token()
             case "decline-candidate":
             case "like-comment":
             case "add-candidate":
+            case "get-task-timeline":
+            case "get-task-reviews":
+            case "leave-review":
+            case "leave-review-author":
+            case "accept-close-date":
+            case "reject-close-date":
+            case "accept-close":
+            case "reject-close":
+            case "suggest-close-date":
+            case "suggest-close-task":
                 $_POST["auth_token"] = $_POST["auth_token"] ?? null;
                 try {
                     $token = WPGraphQL\JWT_Authentication\Auth::validate_token($_POST["auth_token"]);
