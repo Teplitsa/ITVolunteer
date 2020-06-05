@@ -24,20 +24,50 @@
     }
 
     .links-col {
-      display: flex;
-      align-items: center;
-      height: 100%;
+        display: flex;
+        align-items: center;
+        height: 100%;
 
-      a {
-        @include text-line-sm;
-        color: $color-gray-dark-md;
-        margin-left: 44px;
+        a {
+            @include text-line-sm;
+            color: $color-gray-dark-md;
+            margin-left: 44px;
 
-        &.drop-menu {
-          @include drop-down-arrow(20px);
+            &.drop-menu {
+                @include drop-down-arrow(20px);
+            }                
         }
-      }
+
+        & > li {
+            color: $color-gray-dark-lg;
+            position: relative;
+
+            &.drop-menu {
+              @include drop-down-arrow(20px);
+
+              a {
+                @include a-no-hover-underline;
+              }
+
+              &:hover .submenu {
+                display: block;
+              }              
+            }  
+
+            @include dd-submenu;
+
+            .submenu {
+              text-align: left;
+              left: 40px;
+              top: 24px;
+
+              a {
+                margin-left: 0px;
+              }
+            }
+        }
     }
+
   }
 
   .info {

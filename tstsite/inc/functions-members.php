@@ -1293,6 +1293,8 @@ function itv_get_user_in_gql_format($user) {
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
         'fullName' => tst_get_member_name( $user->ID ),
+        'name' => $user->user_login,
+        'username' => $user->user_login,
         'memberRole' => tst_get_member_role_name( $user->ID ),
         'itvAvatar' => itv_avatar_url( $user->ID ),
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),

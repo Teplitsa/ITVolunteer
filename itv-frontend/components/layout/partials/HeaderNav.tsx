@@ -39,17 +39,31 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       <a href="/" className="logo-col">
         <img src={Logo} className="logo" alt="IT-волонтер" />
       </a>
-      <div className="main-menu-col">
-        <Link href="/tasks">
-          <a>Задачи</a>
-        </Link>
-        <Link href="/members/hero">
-          <a>Волонтеры</a>
-        </Link>
-        <Link href="/about">
-          <a className="drop-menu">О проекте</a>
-        </Link>
-      </div>
+      <ul className="main-menu-col">
+        <li>
+          <Link href="/tasks">
+            <a>Задачи</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/members/hero">
+            <a>Волонтеры</a>
+          </Link>
+        </li>
+        <li className="drop-menu">
+          <Link href="/about">
+            <a className="drop-menu">О проекте</a>
+          </Link>
+          <ul className="submenu">
+            <li><Link href="/about"><a>О проекте</a></Link></li>
+            <li><Link href="/conditions"><a>Правила участия</a></Link></li>
+            <li><Link href="/news"><a>Новости</a></Link></li>
+            <li><Link href="/sovety-dlya-nko-uspeshnye-zadachi"><a>Советы НКО</a></Link></li>
+            <li><Link href="/contacts"><a>Контакты</a></Link></li>
+          </ul>                    
+        </li>
+      </ul>
+
       <div className="account-col">
         <a className="go-old" onClick={handleOldDesignClick}>Старый дизайн</a>
         {(isLoggedIn && <ParticipantNav />) || <GuestNav />}

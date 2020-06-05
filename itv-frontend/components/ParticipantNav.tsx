@@ -54,16 +54,27 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           }
       </div>
 
-      <a className="open-account-menu" href={toProfile} target="_blank">
-        <span
-          className="avatar-wrapper"
-          style={{
-            backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
-          }}
-          title={fullName && `Привет, ${fullName}!`}
-        />
-        <img src={ArrowDown} className="arrow-down" alt={ArrowDown} />
-      </a>
+      <div className="open-account-menu">
+        <a href={user.profileURL} href={toProfile} target="_blank">
+            <span 
+                className="avatar-wrapper"
+                style={{
+                    backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+                }}
+                title={user && `Привет, ${user.fullName}!`}
+            />
+            <img src={ArrowDown} className="arrow-down" alt={ArrowDown} />
+        </a>
+
+        <ul className="submenu">
+          <li><Link href="/member-actions/member-tasks/"><a>Мои задачи</a></Link></li>
+          <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
+          <li><Link href={`/members/${user.username}`}><a>Мой профиль</a></Link></li>
+          <li><Link href="/wp-login.php?action=logout"><a>Выйти</a></Link></li>
+        </ul>
+
+      </div>
+
     </div>
   );
 };
