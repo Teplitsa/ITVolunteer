@@ -94,10 +94,13 @@ export interface ISessionUser {
   doerReviewsCount: number;
   isPasekaMember: boolean;
   isPartner: boolean;
+  subscribeTaskList?: any | null;
 }
 
 export interface ISessionActions {
   setState: Action<ISessionModel, ISessionState>;
+  setSubscribeTaskList: Action<ISessionState, any>;
+  loadSubscribeTaskList: Thunk<ISessionActions>
 }
 
 export interface ISessionThunks {
@@ -162,6 +165,8 @@ export interface IComponentsModel extends IComponentsState {}
 export interface IComponentsState {
   task?: ITaskModel;
   taskList?: ITaskListModel;
+  taskListFilter?: ITaskListFilterModel;
+  userNotif?: IUserNotifModel;
 }
 
 /**
@@ -403,8 +408,6 @@ export interface ITaskListModel extends ITaskListState, ITaskListActions {}
 export interface ITaskListState {
   items: Array<ITaskListItemState>;
   isTaskListLoaded: boolean;
-  optionCheck: any;
-  statusStats: Object;
 }
 
 export interface ITaskListActions {
@@ -412,6 +415,7 @@ export interface ITaskListActions {
   setState: Action<ITaskListModel, ITaskListState>;
   resetTaskListLoaded: Action<ITaskListModel>;
   appendTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
+  setTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
 }
 
 /**
@@ -421,8 +425,82 @@ export interface ITaskListActions {
 export interface ITaskListItemModel extends ITaskListItemState {}
 
 export interface ITaskListItemState {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
+  id: string
+  title: string
+  slug: string
+  content: string
+  date: string;
+  dateGmt: string;
+  viewsCount: number;
+  doerCandidatesCount: number;
+  status?: TaskStatus;
+  reviewsDone: boolean;
+  nextTaskSlug: string;
+  approvedDoer?: ITaskApprovedDoer;
+  author?: ITaskAuthor;
+  [x: string]: any
+}
+
+
+/**
+ * TaskListFilter
+ */
+
+export interface ITaskListFilterModel extends ITaskListFilterState, ITaskListFilterActions {}
+export interface ITaskListFilterState {
+  optionCheck;
+  statusStats;
+  tipClose: Object;
+  sectionClose;
+  filterData;
+  isFilterDataLoaded;
+}
+
+export interface ITaskListFilterActions {
+  initializeState: Action<ITaskListFilterModel>;
+  setState: Action<ITaskListFilterModel, ITaskListFilterState>;
+  setTipClose: Action<ITaskListFilterModel, any>;
+  saveTipClose: Action<ITaskListFilterState>;
+  loadTipClose: Thunk<ITaskListFilterActions>;
+  setSectionClose: Action<ITaskListFilterState, any>;
+  saveSectionClose: Action<ITaskListFilterState, any>;
+  loadSectionClose: Thunk<ITaskListFilterActions, any>;
+  setOptionCheck: Action<ITaskListFilterState, any>;
+  saveOptionCheck: Action<ITaskListFilterState>;
+  loadOptionCheck: Thunk<ITaskListFilterActions, any>;
+  loadFilterData: Thunk<ITaskListFilterActions, any>;
+  setStatusStats: Action<ITaskListFilterState, any>;
+  setFilterData: Action<ITaskListFilterState, any>;
+}
+
+/**
+ * UserNotif
+ */
+
+export interface IUserNotifModel extends IUserNotifState, IUserNotifActions {}
+export interface IUserNotifState {
+  notifList;
+}
+
+export interface IUserNotifItem {
+  id
+  [x: string]: any
+}
+
+export interface IUserNotifActions {
+  initializeState: Action<ITaskListFilterModel>;
+  setState: Action<IUserNotifModel, IUserNotifState>;
+  setNotifList: Action<IUserNotifModel, IUserNotifState>;
+  loadNotifList: Thunk<IUserNotifActions>;
+  removeNotifFromList: Action<IUserNotifModel, any>;
+}
+
+/**
+ * Helpers
+ */
+
+export interface IFetchResult {
+  status: string,
+  message: string,
+  [x: string]: any,
 }

@@ -24,15 +24,11 @@
 </head>
 <?php flush(); ?>
 
-<?php $home_body_class = is_front_page() ? 'itv-home-body' : '';?>
+<?php $home_body_class = is_front_page() ? 'itv-home-body itv-v2-header-footer' : 'itv-v2-header-footer';?>
 <body id="top" <?php body_class($home_body_class); ?>>
 
-<div class="site-layout-container">
-<nav id="site_navigation" class="site-navigation" role="navigation">
-	<div class="container">
-		<?php get_template_part('partials/navbar');?>
-	</div>
-</nav><!-- #site-navigation -->
+<?php include_once(get_template_directory() . '/partials/spa-common-data.php');?>
+<div id="itv-wp-pages-header-container"></div>
 
 <div class="site-layout">
 <div id="page" class="hfeed site">

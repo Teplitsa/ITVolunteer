@@ -5,11 +5,13 @@ import TaskTags from "./TaskTags";
 
 const TaskHeader: React.FunctionComponent = (): ReactElement => {
   const { title } = useStoreState((state) => state.components.task);
+  const task = useStoreState((state) => state.components.task);
+
   return (
     <header>
       <h1 dangerouslySetInnerHTML={{ __html: title }} />
-      <TaskMeta />
-      <TaskTags />
+      <TaskMeta task={task} />
+      <TaskTags task={task} />
     </header>
   );
 };

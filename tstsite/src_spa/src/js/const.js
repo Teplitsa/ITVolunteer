@@ -4,3 +4,11 @@ export const ITV_URLS = {
     tasks: "/tasks/publish/",
     volunteers: "/members/hero/",
 }
+
+export const ITV_COOKIE = {
+  OLD_DESIGN: {
+    name: "itvOldDesign",
+    period: 30,
+    value: "true",
+  }
+}

@@ -6,6 +6,7 @@ import TaskListStats from "../../components/task-list/TaskListStats";
 import TaskList from "../../components/task-list/TaskList";
 import TaskListFilter from "../../components/task-list/TaskListFilter";
 import { ITaskListModel } from "../../model/model.typing";
+import * as utils from "../../utilities/utilities";
 
 const TaskListPage: React.FunctionComponent<ITaskListModel> = (
   taskList
@@ -29,6 +30,21 @@ const TaskListPage: React.FunctionComponent<ITaskListModel> = (
   );
 };
 
+const fetchTasksList = async () => {
+  let action = 'get-task-list'  
+  let res = await fetch(utils.getAjaxUrl(action), {
+    method: 'post',
+  })
+
+  try {
+    let result = await res.json()
+    return result.taskList      
+  } catch(ex) {
+    console.log("fetch task list failed")
+    return []
+  }
+}
+
 export const getServerSideProps: GetServerSideProps = async () => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
@@ -42,7 +58,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
       after: null,
     },
     componentModel: async (request, componentData) => {
-      return ["taskList", componentData];
+      const items = await fetchTasksList()
+      return ["taskList", {items: items}];
     },
   });
 

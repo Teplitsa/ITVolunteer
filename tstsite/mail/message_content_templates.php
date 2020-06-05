@@ -47,10 +47,6 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your task in coming to its deadline!', 'tst'),
                 'text' => __("Greetings!\n\nYour task deadline will come in one day from now. You can monitor task activity on its page: %s.\n\nBest,\nITVolunteer", 'tst'),
             ),
-            'deadline_coming_doer_notification' => array(
-                'title' => __('ITVolunteer - task deadline is near!', 'tst'),
-                'text' => __("Greetings!\n\nThe task you are participate in has a deadline coming in one day from now. You can review the task on its page: %s.\n\nBest,\nITVolunteer", 'tst'),
-            ),
             'password_reset_notice' => array(
                 'title' => '', // Default email title is used
                 'text' => __("Greetings!\n\nSomeone requested that the password be reset for the following account: %s\n\nIf this was a mistake, just ignore this email and nothing will happen. To reset your password, visit the following address: %s\n\nBest,\nITVolunteer", 'tst'),
@@ -77,14 +73,17 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - linked task status changed!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} status changed!\n{{status_message}}\nTask page: {{task_link}}.\nDon't forget to check task status after close.\n\nBest,\nITVolunteer", 'tst'),
             ),
+            #TODO: check triggers for the case
             'task_status_closed_doer' => array(
                'title' => __('ITVolunteer - linked task closed!', 'tst'),
                'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} closed!\nPlease go to task page and leave a review for the author: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
             ),
+            #TODO: check triggers for the case
             'task_status_closed_author' => array(
                 'title' => __('ITVolunteer - linked task closed!', 'tst'),
                 'text' => __("Greetings, {{username}}!\n\nTask {{task_title}} closed!\nPlease go to task page and leave a review for the doer: {{task_link}}.\n\nBest,\nITVolunteer", 'tst'),
             ),
+            #TODO: this should be moved to PUSH notif
             'thankyou_notification' => [
                 'title' => __('ITVolunteer - thank you for your work!', 'tst'),
                 'text' => __("Greetings, {{to_username}}!\n\nUser {{from_username}} said thank you for your work!\n\nBest,\nITVolunteer", 'tst'),

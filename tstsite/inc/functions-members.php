@@ -11,6 +11,7 @@ use ITV\models\ItvThankyouRecentlySaidException;
 use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
 use \WeDevs\ORM\WP\UserMeta as UserMeta;
+use WPGraphQL\JWT_Authentication;
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -1292,6 +1293,8 @@ function itv_get_user_in_gql_format($user) {
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
         'fullName' => tst_get_member_name( $user->ID ),
+        'name' => $user->user_login,
+        'username' => $user->user_login,
         'memberRole' => tst_get_member_role_name( $user->ID ),
         'itvAvatar' => itv_avatar_url( $user->ID ),
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
@@ -1323,3 +1326,43 @@ function ajax_load_current_user() {
 }
 add_action('wp_ajax_load-current-user', 'ajax_load_current_user');
 add_action('wp_ajax_nopriv_load-current-user', 'ajax_load_current_user');
+
+
+function ajax_get_current_user_jwt_auth_token() {
+    
+    if(is_user_logged_in()) {
+        
+        try {
+            $user = wp_get_current_user();
+            $token = WPGraphQL\JWT_Authentication\Auth::get_token( $user );
+            $gql_id = \GraphQLRelay\Relay::toGlobalId( 'user', $user->data->ID );
+            $gql_user = itv_get_user_in_gql_format($user);
+            $gql_user['databaseId'] = $user->data->ID;
+            
+    		$response = [
+    		    "status" => "ok",
+    		    "message" => "",
+    			'authToken'    => $token,
+    			'refreshToken' => WPGraphQL\JWT_Authentication\Auth::get_refresh_token( $user ),
+    			'user'         => $gql_user,
+    			'id'           => $gql_id,
+    		];
+    		
+            wp_die(json_encode($response));    
+    		
+        } catch (Exception $error) {
+            wp_die(json_encode(array(
+                "status" => "fail",
+                "message" => __("Unauthorized request.", "tst"),
+            )));
+        }
+    }
+    else {
+        wp_die(json_encode(array(
+            "status" => "fail",
+            "message" => __("Unauthorized request.", "tst"),
+        )));
+    }
+}
+add_action('wp_ajax_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');
+add_action('wp_ajax_nopriv_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');

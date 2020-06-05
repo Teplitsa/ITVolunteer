@@ -8,6 +8,7 @@ query User ($userId: ID!) {
         id
         databaseId
         username
+        name
         fullName
         profileURL
         memberRole
@@ -28,6 +29,7 @@ query User ($userId: ID!) {
         id
         databaseId
         username
+        name
         fullName
         profileURL
         memberRole
@@ -62,6 +64,7 @@ query TaskDoers ($taskGqlId: ID!) {
         id
         databaseId
         username
+        name
         fullName
         profileURL
         memberRole

@@ -8,8 +8,6 @@ import {
 const taskListState: ITaskListState = {
   items: [],
   isTaskListLoaded: false,
-  optionCheck: null,
-  statusStats: null,
 };
 
 export const graphqlQuery = {};
@@ -29,6 +27,10 @@ const taskListActions: ITaskListActions = {
   }),
   appendTaskList: action((state, newItems) => {
     state.items = [...state.items, ...newItems]
+  }),
+  setTaskList: action((state, payload) => {
+      state.items = payload
+      state.isTaskListLoaded = true
   }),
 };
 

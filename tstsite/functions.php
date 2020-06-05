@@ -41,6 +41,10 @@ function itv_is_spa() {
     return false;
 }
 
+function itv_is_v1_version() {
+    return !empty($_COOKIE['itvOldDesign']);
+}
+
 if ( ! function_exists( 'tst_setup' ) ) :
 function tst_setup() {
 

@@ -6,10 +6,15 @@ import metaIconCalendar from "../../../assets/img/icon-calc.svg";
 import metaIconShare from "../../../assets/img/icon-share.svg";
 import { getTheDate, getTheIntervalToNow } from "../../../utilities/utilities";
 
+/*
 const TaskMeta: React.FunctionComponent = (): ReactElement => {
   const { dateGmt, doerCandidatesCount, viewsCount } = useStoreState(
     (state) => state.components.task
   );
+*/
+function TaskMeta(props) {
+  const { dateGmt, doerCandidatesCount, viewsCount } = props.task
+
   const withMetaIconCalendar: Array<string> = [
     getTheDate({ dateString: `${dateGmt}Z` }),
     `Открыто ${getTheIntervalToNow({ fromDateString: `${dateGmt}Z` })}`,

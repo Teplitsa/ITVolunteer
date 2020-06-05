@@ -61,3 +61,22 @@ export default {
   getTheIntervalToNow,
   getAjaxUrl,
 };
+
+export function showAjaxError(errorData) {
+    if(errorData.message) {
+        let el = document.createElement('div')
+        el.innerHTML = errorData.message
+        alert(el.textContent)
+    }
+    else {
+        alert('Ошибка!')
+    }
+
+    if(errorData.action) {
+        console.log(errorData.action + " failed")
+    }
+
+    if(errorData.error) {
+        console.log(errorData.error)
+    }
+}

@@ -5,8 +5,12 @@ import {
   ISessionToken,
   ISessionActions,
   ISessionThunks,
+  IFetchResult,
 } from "./model.typing";
 import { thunk, action, computed } from "easy-peasy";
+import { getAjaxUrl, stripTags } from "../utilities/utilities";
+import * as utils from "../utilities/utilities"
+import * as _ from "lodash"
 
 const sessionUserState: ISessionUser = {
   id: "",
@@ -99,6 +103,35 @@ const sessionActions: ISessionActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
+  setSubscribeTaskList: action((state, payload) => {
+      state.user.subscribeTaskList = payload
+  }),
+  loadSubscribeTaskList: thunk((actions, payload) => {
+      let action = 'get-task-list-subscription'
+      fetch(utils.getAjaxUrl(action), {
+          method: 'get',
+      })
+      .then(res => {
+          try {
+              return res.json()
+          } catch(ex) {
+              utils.showAjaxError({action, error: ex})
+              return {}
+          }
+      })
+      .then(
+          (result: IFetchResult) => {
+              if(result.status == 'fail') {
+                  return utils.showAjaxError({message: result.message})
+              }
+
+              actions.setSubscribeTaskList(result.filter)
+          },
+          (error) => {
+              utils.showAjaxError({action, error})
+          }
+      )
+  }),    
 };
 
 const sessionThunks: ISessionThunks = {
@@ -106,18 +139,57 @@ const sessionThunks: ISessionThunks = {
     const { request } = await import("graphql-request");
     const { v4: uuidv4 } = await import("uuid");
     const loginQuery: string = graphqlQuery.login;
-    const {
-      login: { authToken, refreshToken, user },
-    } = await request(process.env.GraphQLServer, loginQuery, {
-      mutationId: uuidv4(),
-      username,
-      password,
-    });
 
-    setState({
-      token: { timestamp: Date.now(), authToken, refreshToken },
-      user,
-    });
+    console.log("sessionThunks...")
+
+    try {
+      const result = await fetch(getAjaxUrl("itv-get-jwt-auth-token"), {
+        method: "post",
+      });
+
+      const { 
+        status: responseStatus, 
+        message: responseMessage, 
+        authToken: authToken,
+        refreshToken: refreshToken,
+        user: user, 
+      } = await (<
+        Promise<{ status: string; message: string; authToken: string; refreshToken: string; user: any }>
+      >result.json());
+
+      // console.log("authToken:", authToken)
+
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+
+        setState({
+          token: { timestamp: Date.now(), authToken: null, refreshToken: null },
+          user: sessionUserState,
+        });        
+
+      } else {
+        setState({
+          token: { timestamp: Date.now(), authToken, refreshToken },
+          user,
+        });
+      }
+
+    } catch (error) {
+      console.error(error);
+    }    
+
+    // const {
+    //   login: { authToken, refreshToken, user },
+    // } = await request(process.env.GraphQLServer, loginQuery, {
+    //   mutationId: uuidv4(),
+    //   username,
+    //   password,
+    // });
+
+    // setState({
+    //   token: { timestamp: Date.now(), authToken, refreshToken },
+    //   user,
+    // });
   }),
 };
 

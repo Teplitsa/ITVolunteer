@@ -22,18 +22,33 @@
     }
 
     .main-menu-col {
-      display: flex;
-      justify-content: space-between;
+        display: flex;
+        justify-content: space-between;
 
-      & > a {
-        @include a-hover-underline;
-        @include text-bold-line-sm;
-        color: $color-gray-dark-lg;
+        & > li {
+            color: $color-gray-dark-lg;
+            position: relative;
 
-        &.drop-menu {
-          @include drop-down-arrow(20px);
+            a {
+              @include a-hover-underline;
+              @include text-bold-line-sm;
+              color: $color-gray-dark-lg;
+            }
+
+            &.drop-menu {
+              @include drop-down-arrow(20px);
+
+              a {
+                @include a-no-hover-underline;
+              }
+
+              &:hover .submenu {
+                display: block;
+              }              
+            }  
+
+            @include dd-submenu;
         }
-      }
     }
 
     .account-col {
@@ -115,23 +130,42 @@
       }
 
       .open-account-menu {
-        display: flex;
+          position: relative;
+          cursor: pointer;
 
-        span.avatar-wrapper {
-          display: inline-block;
-          border-radius: 12px;
-          box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24);
-          overflow: hidden;
-          width: 44px;
-          height: 44px;
-          margin-right: $base;
-          background-size: cover;
-          background-position: center;
-        }
+          a {
+            display: flex;
+          }
 
-        .arrow-down {
-        }
-      }
+          span.avatar-wrapper {
+              display: inline-block;
+              border-radius: 12px;
+              box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24);
+              overflow: hidden;
+              width: 44px;
+              height: 44px;
+              margin-right: $base;
+              background-size: cover;
+              background-position: center;
+          }
+
+          .arrow-down {
+          }
+
+          &:hover {
+            .submenu {
+              display: block;
+            }
+          }
+
+          @include dd-submenu;
+
+          .submenu {
+            top: 45px;
+            left: -20px;
+          }
+      }      
+      
     }
   }
 }
