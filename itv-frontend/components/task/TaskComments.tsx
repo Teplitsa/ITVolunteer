@@ -2,6 +2,7 @@ import { ReactElement, useEffect } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCommentList from "./TaskCommentList";
 import TaskCommentsIntro from "./TaskCommentsIntro";
+import TaskCommentForm from "./TaskCommentForm";
 import Loader from "../Loader";
 
 const TaskComments: React.FunctionComponent = (): ReactElement => {
@@ -35,9 +36,12 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
             <TaskCommentList />
           </>
         )) || (
-          <TaskCommentsIntro>
-            {`Пока никто не оставил комментарии к этой задаче.`}
-          </TaskCommentsIntro>
+          <>
+            <TaskCommentsIntro>
+              {`Пока никто не оставил комментарии к этой задаче.`}
+            </TaskCommentsIntro>
+            <TaskCommentForm />
+          </>
         ))) || <Loader />}
     </div>
   );

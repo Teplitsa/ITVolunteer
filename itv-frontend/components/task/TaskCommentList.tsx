@@ -8,10 +8,9 @@ const TaskCommentList: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="comments-list">
-      {(comments.length === 0 && <TaskCommentForm />) ||
-        comments.map((comment) => {
-          return <TaskCommentListItem key={comment.id} {...comment} />;
-        })}
+      {comments.map((comment) => {
+        return <TaskCommentListItem key={comment.id} {...comment} />;
+      })}
     </div>
   );
 };

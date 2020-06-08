@@ -86,7 +86,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
         replies.nodes.map((comment) => (
           <TaskCommentListItem key={comment.id} {...comment} />
         ))}
-      {canUserReplyToComment && isCommentToReply && (
+      {isCommentToReply && (
         <TaskCommentForm {...{ textAreaRef, parentCommentId: id }} />
       )}
     </div>
