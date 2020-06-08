@@ -73,9 +73,9 @@ function SiteFooter(props) {
                     <p>Теплица социальных технологий.</p>
                     <p>Материалы сайта доступны по лицензии Creative Commons СС-BY-SA. 3.0</p>
                 </div>
-                <div className="col-logo">
+                <a className="col-logo" href="https://te-st.ru">
                     <img src={logoTeplitsa} className="logo" alt="Теплица социальных технологий" />
-                </div>
+                </a>
             </div>
         </div></footer>
     )
