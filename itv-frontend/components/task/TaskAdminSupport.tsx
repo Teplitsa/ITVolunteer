@@ -4,6 +4,7 @@ import {
   IFetchResult,
 } from "../../model/model.typing";
 import * as utils from "../../utilities/utilities"
+import * as _ from "lodash"
 
 const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
   const nonceContactForm = useStoreState(store => store.components.task.nonceContactForm)
@@ -14,13 +15,19 @@ const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
     email: false,
     message: false,
   })
-  const contactForm = createRef()
+  const contactForm = createRef<HTMLFormElement>()
+  const inputName = createRef<HTMLInputElement>()
+  const inputEmail = createRef<HTMLInputElement>()
+  const inputMessage = createRef<HTMLTextAreaElement>()
 
   const submitContactForm = () => {
+    if(!process.browser) {
+      return;
+    }
 
-    let name = contactForm.current.querySelector("input[name=name]").value
-    let email = contactForm.current.querySelector("input[name=email]").value
-    let message = contactForm.current.querySelector("textarea[name=message]").value
+    let name = _.get(inputName.current, "value", "")
+    let email = _.get(inputEmail.current, "value", "")
+    let message = _.get(inputMessage.current, "value", "")
 
     setFormErrors({
       ...formErrors, 
@@ -64,14 +71,13 @@ const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
                 return utils.showAjaxError({message: result.message})
             }
 
+            setContactFormVisibility(false)
             setMessageSent(true)
         },
         (error) => {
             utils.showAjaxError({action, error})
         }
     )
-
-    setContactFormVisibility(false)
   }
 
   return (
@@ -92,19 +98,21 @@ const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
 
       {isContactFormVisible &&
       <div className="contact-form">
-        <form ref={contactForm}>
+        <form ref={contactForm} onSubmit={(e) => {
+          e.preventDefault();
+        }}>
 
           <div className="form-group">
-            <input type="text" className={`form-control input-sm ${formErrors.name ? "error" : ""}`} name="name" placeholder="Ваше имя" />
+            <input ref={inputName} type="text" className={`form-control input-sm ${formErrors.name ? "error" : ""}`} name="name" placeholder="Ваше имя" />
           </div>
 
           <div className="form-group">
-            <input type="text" className={`form-control input-sm ${formErrors.email ? "error" : ""}`} name="email" placeholder="Email" />
+            <input ref={inputEmail} type="text" className={`form-control input-sm ${formErrors.email ? "error" : ""}`} name="email" placeholder="Email" />
           </div>
 
           <div className="form-group">
             <label>Ваше сообщение:</label>
-            <textarea className={`form-control input-sm ${formErrors.message ? "error" : ""}`} name="message"></textarea>
+            <textarea ref={inputMessage} className={`form-control input-sm ${formErrors.message ? "error" : ""}`} name="message"></textarea>
           </div>
 
           <div className="action-block">
