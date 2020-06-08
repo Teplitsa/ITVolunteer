@@ -361,7 +361,7 @@ function itv_ajax_get_task_timeline(){
     $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
     $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
     
-    if($task_id && is_user_logged_in()) {
+    if($task_id) {
         
         $timeline = ITV\models\TimelineModel::instance()->get_task_timeline($task_id);
         $res = [];

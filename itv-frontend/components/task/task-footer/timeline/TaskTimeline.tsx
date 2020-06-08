@@ -13,16 +13,16 @@ const TaskTimeline: React.FunctionComponent = (): ReactElement => {
   );
 
   useEffect(() => {
-    isLoggedIn && timelineRequest();
+    timelineRequest();
     isLoggedIn && reviewsRequest();
   }, [isLoggedIn]);
 
   return (
-    isLoggedIn && (
+    Array.isArray(timeline) && (
       <div className="timeline">
         <h3>Календарь задачи</h3>
         <div className="timeline-list">
-          {timeline?.map((timelineItem) => (
+          {timeline.map((timelineItem) => (
             <TaskTimelineItem key={timelineItem.id} {...timelineItem} />
           ))}
         </div>
