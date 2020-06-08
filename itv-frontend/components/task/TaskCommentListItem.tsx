@@ -52,32 +52,34 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
             })}
           </time>
           <div className="text" dangerouslySetInnerHTML={{ __html: content }} />
-          <div className="meta-bar">
-            <div
-              className="like"
-              onClick={(event) => {
-                event.preventDefault();
-                !isForbiddenTolike && like();
-              }}
-            >
-              {likesCount}
-            </div>
-            <div className="actions">
-              <a href="#" className="report d-none">
-                Пожаловаться
-              </a>
-              <a
-                href="#"
-                className="reply-comment edit"
+          {canUserReplyToComment && (
+            <div className="meta-bar">
+              <div
+                className="like"
                 onClick={(event) => {
                   event.preventDefault();
-                  toggleReplyForm(!isCommentToReply);
+                  !isForbiddenTolike && like();
                 }}
               >
-                Ответить
-              </a>
+                {likesCount}
+              </div>
+              <div className="actions">
+                <a href="#" className="report d-none">
+                  Пожаловаться
+                </a>
+                <a
+                  href="#"
+                  className="reply-comment edit"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    toggleReplyForm(!isCommentToReply);
+                  }}
+                >
+                  Ответить
+                </a>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       {Array.isArray(replies?.nodes) &&

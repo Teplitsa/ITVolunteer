@@ -8,15 +8,7 @@ const TaskCommentList: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="comments-list">
-      {(comments.length === 0 && (
-        <>
-          <div className="comments-list__no-items">
-            Пока ещё никто не оставил комментарий. Вы можете первым
-            прокомментировать задачу.
-          </div>
-          <TaskCommentForm />
-        </>
-      )) ||
+      {(comments.length === 0 && <TaskCommentForm />) ||
         comments.map((comment) => {
           return <TaskCommentListItem key={comment.id} {...comment} />;
         })}

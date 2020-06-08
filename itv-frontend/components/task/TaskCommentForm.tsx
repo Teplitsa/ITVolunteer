@@ -4,7 +4,7 @@ import {
   useState,
   BaseSyntheticEvent,
 } from "react";
-import { useStoreActions } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { getTheDate } from "../../utilities/utilities";
 
 const TaskCommentForm: React.FunctionComponent<{
@@ -12,6 +12,9 @@ const TaskCommentForm: React.FunctionComponent<{
   parentCommentId?: string;
 }> = ({ textAreaRef = null, parentCommentId }): ReactElement => {
   const [commentText, setCommentText] = useState<string>("");
+  const canUserReplyToComment = useStoreState(
+    (state) => state.session.canUserReplyToComment
+  );
   const newCommentRequest = useStoreActions(
     (state) => state.components.task.newCommentRequest
   );
@@ -27,31 +30,33 @@ const TaskCommentForm: React.FunctionComponent<{
   });
 
   return (
-    <div className="comment-wrapper add-comment-form-wrapper">
-      <div className="comment reply">
-        <div className="comment-body">
-          <time>
-            {getTheDate({
-              dateString: new Date().toISOString(),
-              stringFormat: "dd.MM.yyyy в HH:mm",
-            })}
-          </time>
-          <textarea
-            ref={textAreaRef}
-            value={commentText}
-            onChange={typeIn}
-          ></textarea>
+    canUserReplyToComment && (
+      <div className="comment-wrapper add-comment-form-wrapper">
+        <div className="comment reply">
+          <div className="comment-body">
+            <time>
+              {getTheDate({
+                dateString: new Date().toISOString(),
+                stringFormat: "dd.MM.yyyy в HH:mm",
+              })}
+            </time>
+            <textarea
+              ref={textAreaRef}
+              value={commentText}
+              onChange={typeIn}
+            ></textarea>
+          </div>
+          <a
+            href="#"
+            className="send-button"
+            onClick={(event) => {
+              event.preventDefault();
+              publishComment();
+            }}
+          ></a>
         </div>
-        <a
-          href="#"
-          className="send-button"
-          onClick={(event) => {
-            event.preventDefault();
-            publishComment();
-          }}
-        ></a>
       </div>
-    </div>
+    )
   );
 };
 

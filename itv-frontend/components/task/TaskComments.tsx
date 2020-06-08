@@ -1,10 +1,13 @@
 import { ReactElement, useEffect } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCommentList from "./TaskCommentList";
+import TaskCommentsIntro from "./TaskCommentsIntro";
 import Loader from "../Loader";
 
 const TaskComments: React.FunctionComponent = (): ReactElement => {
-  const { isTaskAuthorLoggedIn } = useStoreState((state) => state.session);
+  const canUserReplyToComment = useStoreState(
+    (state) => state.session.canUserReplyToComment
+  );
   const {
     author: { fullName: authorName },
     comments,
@@ -14,17 +17,29 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
   );
 
   useEffect(() => {
-    isTaskAuthorLoggedIn && commentsRequest();
-  }, [isTaskAuthorLoggedIn, commentsRequest]);
+    commentsRequest();
+  }, [commentsRequest]);
 
   return (
-    isTaskAuthorLoggedIn && (
-      <div className="task-comments">
-        <h3>Комментарии</h3>
-        <p className="comments-intro">{`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}</p>
-        {(Array.isArray(comments) && <TaskCommentList />) || <Loader />}
-      </div>
-    )
+    <div className="task-comments">
+      <h3>Комментарии</h3>
+
+      {(Array.isArray(comments) &&
+        ((comments.length > 0 && (
+          <>
+            {canUserReplyToComment && (
+              <TaskCommentsIntro>
+                {`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
+              </TaskCommentsIntro>
+            )}
+            <TaskCommentList />
+          </>
+        )) || (
+          <TaskCommentsIntro>
+            {`Пока никто не оставил комментарии к этой задаче.`}
+          </TaskCommentsIntro>
+        ))) || <Loader />}
+    </div>
   );
 };
 
