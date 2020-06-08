@@ -1,5 +1,7 @@
-import { ReactElement, memo } from "react";
+import { ReactElement, memo, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import Task from "../../components/task/Task";
@@ -13,12 +15,44 @@ import TaskVolonteerFeedback from "../../components/task/TaskVolonteerFeedback";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import Sidebar from "../../components/layout/partials/Sidebar";
 import { ITaskState } from "../../model/model.typing";
+import { graphqlQuery as graphqlTaskQuery } from "../../model/task-model/task-model";
 
 const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
+  const { isLoggedIn, token } = useStoreState((state) => state.session);
+  const {...taskState} = useStoreState((state) => state.components.task);
+  const setTaskState = useStoreActions((actions) => actions.components.task.setState);
+  const router = useRouter()
+  const { slug } = router.query
+
+  useEffect(() => {
+    setTaskState(task);
+  }, [task])
+
+  useEffect(() => {
+    if(task.id || !slug || !isLoggedIn) {
+      return
+    }
+
+    import("graphql-request").then(async ({ GraphQLClient }) => {
+      const graphQLClient = new GraphQLClient(process.env.GraphQLServer);
+
+      try {
+        const { task } = await graphQLClient.request(graphqlTaskQuery.getBySlug, {
+          taskSlug: String(slug),
+        });
+        setTaskState(task);
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+
+  }, [slug, task, isLoggedIn])
+
   return (
     <>
       <DocumentHead />
       <Main>
+        {taskState.id &&
         <main id="site-main" className="site-main page-task" role="main">
           <section className="content">
             <h2>Задача</h2>
@@ -35,6 +69,14 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
             <TaskAdminSupport />
           </Sidebar>
         </main>
+        }
+        {!taskState.id &&
+        <main id="site-main" className="site-main page-task" role="main">
+          <section className="content">
+            <h2>Задача не найдена!</h2>
+          </section>
+        </main>
+        }
       </Main>
     </>
   );

@@ -46,13 +46,17 @@ const sessionState: ISessionState = {
   isLoggedIn: computed([(state) => state.user.databaseId], (userId) =>
     Boolean(userId)
   ),
+  isAdmin: computed([(state) => state.user.isAdmin], (isAdmin) =>
+    Boolean(isAdmin)
+  ),
   isTaskAuthorLoggedIn: computed(
     [
       (state) => state.user.databaseId,
       (state, storeState) => storeState.components.task?.author?.databaseId,
     ],
-    (userId, authorId) =>
-      Boolean(userId) && Boolean(authorId) && userId === authorId
+    (userId, authorId) => {
+      return Boolean(userId) && Boolean(authorId) && userId === authorId
+    }
   ),
   isUserTaskCandidate: computed(
     [

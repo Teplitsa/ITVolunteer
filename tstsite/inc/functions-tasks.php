@@ -550,6 +550,8 @@ function itv_get_ajax_task_short($task) {
         'ngoTaskTags' => ['nodes' => wp_get_post_terms( $task->ID, 'nko_task_tag')],
         'rewardTags' => ['nodes' => wp_get_post_terms( $task->ID, 'reward')],
         'author' => itv_get_user_in_gql_format($author),
+        'isApproved' => boolval(get_post_meta($task->ID, 'itv-approved', true)),
+//         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }
 
@@ -1472,3 +1474,93 @@ function ajax_get_task_list_subscription() {
 }
 add_action('wp_ajax_get-task-list-subscription', 'ajax_get_task_list_subscription');
 add_action('wp_ajax_nopriv_get-task-list-subscription', 'ajax_get_task_list_subscription');
+
+
+function ajax_approve_task() {
+	if(
+		empty($_POST['task_gql_id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    $task = get_post($task_id);
+	
+	if(!is_user_logged_in() || !current_user_can('manage_options')) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+	
+// 	wp_update_post([
+// 	    'ID' => $task_id,
+// 	    'post_status' => 'publish',
+// 	]);
+	update_post_meta($task_id, 'itv-approved', true);
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_approve-task', 'ajax_approve_task');
+
+
+function ajax_decline_task() {
+	if(
+		empty($_POST['task_gql_id'])
+	) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+	}
+
+    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    $task = get_post($task_id);
+	
+	if(!is_user_logged_in() || !current_user_can('manage_options')) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+	
+	delete_post_meta($task_id, 'itv-approved');
+	wp_update_post([
+	    'ID' => $task_id,
+	    'post_status' => 'draft',
+	]);
+	
+	$task_author = get_user_by('id', $task->post_author);
+    ItvAtvetka::instance()->mail('your_task_declined', [
+        'user_id' => $task_author->ID,
+        'username' => $task_author->first_name,        
+        'task_title' => $task->post_title,
+        'task_url' => get_permalink($task->ID),
+    ]);
+	
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_decline-task', 'ajax_decline_task');

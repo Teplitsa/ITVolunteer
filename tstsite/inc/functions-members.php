@@ -1298,14 +1298,15 @@ function itv_get_user_in_gql_format($user) {
         'memberRole' => tst_get_member_role_name( $user->ID ),
         'itvAvatar' => itv_avatar_url( $user->ID ),
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
-        'solvedTasksCount' => $activity[$solved_key],
-        'doerReviewsCount' => ItvReviews::instance()->count_doer_reviews( $user->ID ),
-        'isPartner' => itv_is_user_partner($user->ID),
-        'isPasekaMember' => itv_is_user_paseka_member($user->ID),
+        'solvedTasksCount' => intval($activity[$solved_key]),
+        'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
+        'isPartner' => boolval(itv_is_user_partner($user->ID)),
+        'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
         'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
         'pemalinkUrl' => tst_get_member_url($user),
+        'isAdmin' => user_can($user, 'manage_options'),
     ];
     
     return $user_data;
@@ -1315,6 +1316,7 @@ function ajax_load_current_user() {
     if(is_user_logged_in()) {
         $user = wp_get_current_user();
         $user_data = itv_get_user_in_gql_format($user);
+        $user_data['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
     }
     else {
         $user_data = [
@@ -1337,7 +1339,8 @@ function ajax_get_current_user_jwt_auth_token() {
             $token = WPGraphQL\JWT_Authentication\Auth::get_token( $user );
             $gql_id = \GraphQLRelay\Relay::toGlobalId( 'user', $user->data->ID );
             $gql_user = itv_get_user_in_gql_format($user);
-            $gql_user['databaseId'] = $user->data->ID;
+            $gql_user['databaseId'] = intval($user->data->ID);
+            $gql_user['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
             
     		$response = [
     		    "status" => "ok",

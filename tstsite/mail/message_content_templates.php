@@ -205,6 +205,11 @@ class ItvEmailTemplates {
                 'title' => __('itv_email_test_consult_needed_notification_subject', 'tst'),
                 'text' => __('itv_email_test_consult_needed_notification', 'tst'),
             ],
+            # new 
+            'your_task_declined' => [
+                'title' => __('ITVolunteer - your task has been declined by admin', 'tst'),
+                'text' => __('Greetings, {username}!\n\nYour task <a href="{task_url}">{task_title}</a> on ITVolonteer has been declined by admin', 'tst'),
+            ],
         );
         
     }

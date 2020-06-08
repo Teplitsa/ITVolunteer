@@ -77,7 +77,11 @@ class TimelineModel extends ITVSingletonModel {
     }
     
     public function get_task_timeline_items($task_id) {
-        return TimelineItem::where(['task_id' => $task_id])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->get();
+        return $this->apply_order(TimelineItem::where(['task_id' => $task_id]))->get();
+    }
+    
+    protected function apply_order($req) {
+        return $req->orderBy('due_date', 'DESC')->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC');
     }
     
     public function get_task_timeline($task_id) {
@@ -219,7 +223,7 @@ class TimelineModel extends ITVSingletonModel {
     }
     
     public function make_past_item_current($task_id, $type) {
-        $item = TimelineItem::where(['task_id' => $task_id, 'type' => $type, 'status' => TimelineModel::$STATUS_PAST])->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->first();
+        $item = $this->apply_order(TimelineItem::where(['task_id' => $task_id, 'type' => $type, 'status' => TimelineModel::$STATUS_PAST]))->first();
         
         if($item) {
             $this->fix_current_items($task_id, TimelineModel::$STATUS_FUTURE);
