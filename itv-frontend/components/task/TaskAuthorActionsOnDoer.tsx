@@ -5,7 +5,7 @@ const TaskAuthorActionsOnDoer: React.FunctionComponent<{
   approve: () => void;
   decline: () => void;
 }> = ({ approve, decline }): ReactElement => {
-  const { isTaskAuthorLoggedIn } = useStoreState((state) => state.session);
+  const { isTaskAuthorLoggedIn, user } = useStoreState((state) => state.session);
 
   return (
     isTaskAuthorLoggedIn && (
@@ -40,6 +40,7 @@ const TaskAuthorActionsOnDoer: React.FunctionComponent<{
           </div>
           <div className="tooltip-actor">?</div>
         </div>
+
       </div>
     )
   );

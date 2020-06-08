@@ -80,3 +80,20 @@ export function showAjaxError(errorData) {
         console.log(errorData.error)
     }
 }
+
+export function decodeHtmlEntities(textWithEntities) {
+  if(!document) {
+    return textWithEntities
+  }
+
+  try {
+    let el = document.createElement("div")
+    el.innerHTML = textWithEntities
+    return el.innerText
+  }
+  catch(ex) {
+    console.log("decode failed:", ex)
+    console.log("source text:", textWithEntities)
+    return textWithEntities
+  }
+}

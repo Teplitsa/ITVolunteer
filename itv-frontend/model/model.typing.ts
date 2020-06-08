@@ -70,6 +70,7 @@ export interface ISessionState {
   user: ISessionUser;
   validToken?: Computed<ISessionModel, string>;
   isLoggedIn?: Computed<ISessionModel, boolean>;
+  isAdmin?: Computed<ISessionModel, boolean>;
   isTaskAuthorLoggedIn?: Computed<ISessionModel, boolean, IStoreModel>;
   isUserTaskCandidate?: Computed<ISessionModel, boolean, IStoreModel>;
   canUserReplyToComment?: Computed<ISessionModel, boolean, IStoreModel>;
@@ -95,6 +96,8 @@ export interface ISessionUser {
   isPasekaMember: boolean;
   isPartner: boolean;
   subscribeTaskList?: any | null;
+  logoutUrl?: string;
+  isAdmin?: boolean;
 }
 
 export interface ISessionActions {
@@ -199,6 +202,8 @@ export interface ITaskState {
     reviewForAuthor?: ITaskReviewer;
     reviewForDoer?: ITaskReviewer;
   };
+  isApproved: boolean;
+  nonceContactForm?: string;
 }
 
 export interface ITaskReviewer {
@@ -303,6 +308,7 @@ export interface ITaskActions {
   initializeState: Action<ITaskModel>;
   setState: Action<ITaskModel, ITaskState>;
   updateStatus: Action<ITaskModel, { status: TaskStatus }>;
+  updateModerationStatus: Action<ITaskModel, { isApproved: boolean }>;
   updateApprovedDoer: Action<ITaskModel, ITaskApprovedDoer>;
   updateDoers: Action<ITaskModel, Array<ITaskDoer>>;
   updateComments: Action<ITaskModel, Array<ITaskComment>>;
@@ -327,6 +333,14 @@ export interface ITaskThunks {
     }
   >;
   statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus }>;
+  moderateRequest: Thunk<
+    ITaskActions,
+    {
+      action: "approve-task" | "decline-task";
+      taskId: string;
+      callbackFn?: () => void;
+    }
+  >;
   doersRequest: Thunk<ITaskActions>;
   addDoerRequest: Thunk<ITaskActions>;
   commentsRequest: Thunk<ITaskActions>;

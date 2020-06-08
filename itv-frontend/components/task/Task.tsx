@@ -17,7 +17,11 @@ export const status: Map<TaskStatusType, string> = new Map([
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
-  const { content } = useStoreState((state) => state.components.task);
+  const { content, id: taskId } = useStoreState((state) => state.components.task);
+
+  if(!taskId) {
+    return null
+  }
 
   return (
     <div className="task-body">

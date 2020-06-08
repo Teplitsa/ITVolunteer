@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import NotifList from "../components/UserNotif"
+import * as utils from "../utilities/utilities"
 import * as _ from "lodash"
 
 import Bell from "../assets/img/icon-bell.svg";
@@ -70,7 +71,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           <li><Link href="/member-actions/member-tasks/"><a>Мои задачи</a></Link></li>
           <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
           <li><Link href={`/members/${user.username}`}><a>Мой профиль</a></Link></li>
-          <li><Link href="/wp-login.php?action=logout"><a>Выйти</a></Link></li>
+          <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
         </ul>
 
       </div>

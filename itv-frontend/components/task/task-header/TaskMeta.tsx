@@ -13,7 +13,7 @@ const TaskMeta: React.FunctionComponent = (): ReactElement => {
   );
 */
 function TaskMeta(props) {
-  const { dateGmt, doerCandidatesCount, viewsCount } = props.task
+  const { dateGmt, doerCandidatesCount, viewsCount, isApproved } = props.task
 
   const withMetaIconCalendar: Array<string> = [
     getTheDate({ dateString: `${dateGmt}Z` }),
@@ -24,7 +24,9 @@ function TaskMeta(props) {
 
   return (
     <div className="meta-info">
-      <img src={iconApproved} className="itv-approved" />
+      {isApproved &&
+        <img src={iconApproved} className="itv-approved" />
+      }
       {withMetaIconCalendar.map((title, i) => {
         return (
           <TaskMetaItem key={i}>

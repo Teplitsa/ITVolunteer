@@ -40,6 +40,8 @@ const taskState: ITaskState = {
   comments: null,
   timeline: null,
   reviews: null,
+  isApproved: false,
+  nonceContactForm: "",
 };
 
 export const queriedFields = Object.entries(taskState).reduce(
@@ -114,6 +116,9 @@ const taskActions: ITaskActions = {
   }),
   updateStatus: action((taskState, taskStatus) => {
     Object.assign(taskState, taskStatus);
+  }),
+  updateModerationStatus: action((taskState, moderationStatus) => {
+    Object.assign(taskState, moderationStatus);
   }),
   updateApprovedDoer: action((taskState, approvedDoer) => {
     Object.assign(taskState, { approvedDoer });
@@ -805,6 +810,30 @@ const taskThunks: ITaskThunks = {
       formData.append("doer_gql_id", doer.id);
       formData.append("task_gql_id", taskId);
       formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{ status: string; message: string }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          callbackFn && callbackFn();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  moderateRequest: thunk(
+    async (actions, { action, taskId, callbackFn }, { getStoreState }) => {
+      const formData = new FormData();
+      formData.append("task_gql_id", taskId);
 
       try {
         const result = await fetch(getAjaxUrl(action), {

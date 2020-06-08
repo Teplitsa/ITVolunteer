@@ -107,7 +107,7 @@ function AccountInHeader({userId}) {
                     <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
                     <li><a href="/task-actions/">Новая задача</a></li>
                     <li><a href={`/members/${user.name}`}>Мой профиль</a></li>
-                    <li><a href="/wp-login.php?action=logout">Выйти</a></li>
+                    <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
                   </ul>
 
                 </div>

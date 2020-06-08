@@ -79,13 +79,20 @@ function itv_register_task_graphql_fields() {
                     return $nextPost ? $nextPost->post_name : "";
                 },
             ],
-//             'authorId' => [
-//                 'type'        => 'Int',
-//                 'description' => __( 'Task views count', 'tst' ),
-//                 'resolve'     => function( $task ) {
-//                     return $task->post_author;
-//                 },
-//             ],
+            'isApproved' => [
+                'type'        => 'Bool',
+                'description' => __( 'Is approved by admin', 'tst' ),
+                'resolve'     => function( $task, $args, $context ) {
+                    return boolval(get_post_meta($task->ID, 'itv-approved', true));
+                },
+            ],
+            'nonceContactForm' => [
+                'type'        => 'String',
+                'description' => __( 'Contact form nonce', 'tst' ),
+                'resolve'     => function( $task, $args, $context ) {
+                    return wp_create_nonce('we-are-receiving-a-letter-goshujin-sama');
+                },
+            ],
         ]
     );
 }
@@ -99,7 +106,7 @@ function itv_graphql_task_private_filter($is_private, $model_name, $data, $visib
         return $is_private;
     }
     
-    return !in_array($data->post_status, ['in_work', 'closed', 'archived']);
+    return !(in_array($data->post_status, ['in_work', 'closed', 'archived']) || current_user_can("manage_options"));
 }
 
 // users
@@ -192,7 +199,12 @@ function itv_register_user_graphql_fields() {
                     return itv_is_user_partner($user->userId);
                 }
             ],
-            
+            'isAdmin' => [
+                'type' => 'Bool',
+                'resolve' => function ($user) {
+                    return user_can($user->userId, 'manage_options');
+                }
+            ],
         ]
     );
 
