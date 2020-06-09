@@ -17,7 +17,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="details actions">
-      {isTaskAuthorLoggedIn &&
+      {!isTaskAuthorLoggedIn &&
       <a
         href="#"
         className={`action suggest-date ${
