@@ -17,7 +17,7 @@ add_action("admin_init", "wp_ajax_login_by_auth_token");
 
 function wp_ajax_login_by_auth_token()
 {
-    if (wp_doing_ajax()) {
+    if (wp_doing_ajax() && !is_user_logged_in()) {
         switch ($_REQUEST["action"]) {
             case "publish-task":
             case "unpublish-task":
