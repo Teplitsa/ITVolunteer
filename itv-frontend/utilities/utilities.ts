@@ -97,3 +97,12 @@ export function decodeHtmlEntities(textWithEntities) {
     return textWithEntities
   }
 }
+
+export function getSiteUrl(path="") {
+  if(!window) {
+    return path;
+  }
+
+  let rootUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+  return rootUrl + path;
+}

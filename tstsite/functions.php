@@ -199,6 +199,7 @@ require get_template_directory().'/itv_config.php';
 //classes
 require get_template_directory().'/inc/class-itv-cssjs.php';
 require get_template_directory().'/inc/class-itv-query.php';
+require_once( get_template_directory().'/inc/data_cache.php' );
 
 //templates and funcitons
 require get_template_directory().'/inc/template-general.php';
@@ -240,3 +241,6 @@ require get_template_directory().'/inc/graphql.php';
 require_once(get_template_directory() . '/inc/models/TimelineModel.php');
 require_once(get_template_directory() . '/inc/models/CommentsModel.php');
 require_once(get_template_directory() . '/inc/models/UserNotif.php');
+
+// task list filter
+require_once( get_template_directory().'/inc/task_list_filter.php' );

@@ -104,6 +104,47 @@
         }
       }
 
+      .meta-info-share {
+        position: relative;
+
+        .task-share-buttons {
+          display: flex;
+          position: absolute;
+          background-color: $color-white;
+          width: 180px;
+          height: 48px;
+          justify-content: space-between;
+          align-items: center;
+          top: 30px;
+          left: -50px;          
+          padding: 0px 8px;
+          border-radius: 24px;
+
+          &:before {
+            content: "";
+            display:block;
+            width:0;
+            height:0;
+            position:absolute;
+            border-left: 13px solid transparent;
+            border-right: 13px solid transparent;
+            border-bottom: 13px solid $color-white;
+            left: calc(50% - 12px);
+            top: -13px;
+          }
+
+          button {
+            height: 32px;
+          }
+
+          button,
+          button:active {
+            outline: none;
+          }
+
+        }
+      }
+
       .share-task {
         img {
           width: 16px;
