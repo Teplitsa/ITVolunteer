@@ -25,7 +25,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
 }): ReactElement => {
   const user = useStoreState((state) => state.session.user);
   const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
-  const { approvedDoer } = useStoreState((state) => state.components.task);
+  const { approvedDoer, status: taskStatus } = useStoreState((state) => state.components.task);  
 
   return (
     <div
@@ -49,8 +49,8 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
 
         {status === "future" && <div className="details">Ожидаемый срок</div>}
 
-        {type === "review" && status === "closed" && <TaskTimelineReviewType />}
-        {type == "close" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && (
+        {type === "review" && taskStatus === "closed" && <TaskTimelineReviewType />}
+        {type == "close" && taskStatus === "in_work" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && (
           <TaskTimelineCloseType />
         )}
         {type === "close_suggest" && approvedDoer && (

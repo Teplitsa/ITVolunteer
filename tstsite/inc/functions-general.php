@@ -42,7 +42,9 @@ function wp_ajax_login_by_auth_token()
                         throw new Exception();
                     }
                     $user_id = $token->data->user->id;
-                    wp_set_current_user($user_id);
+                    if($user_id) {
+                        wp_set_current_user($user_id);
+                    }
                 } catch (Exception $error) {
                     wp_die(json_encode(array(
                         "status" => "fail",
