@@ -36,13 +36,19 @@ class UserNotifModel extends ITVSingletonModel {
     public function __construct() {
     }
     
-    public function get_list($user_id, $is_read = null) {
+    public function get_list($user_id, $is_read = null, $newer_than_id = null) {
         $params = ['user_id' => $user_id];
         if($is_read !== null) {
             $params['is_read'] = (int)!!$is_read; 
         }
         
-        return UserNotif::where($params)->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->limit(UserNotifModel::$SHORT_LIST_LIMIT)->get();
+        $query = UserNotif::where($params);
+
+        if($newer_than_id !== null) {
+            $query->where('id', '>', $newer_than_id);
+        }
+        
+        return $query->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->limit(UserNotifModel::$SHORT_LIST_LIMIT)->get();
     }
     
     public function push_notif($user_id, $type, $args=array()) {        

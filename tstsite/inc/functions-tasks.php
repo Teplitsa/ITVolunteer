@@ -361,7 +361,7 @@ function itv_ajax_get_task_timeline(){
     $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
     $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
     
-    if($task_id) {
+    if($task_id && is_user_logged_in()) {
         
         $timeline = ITV\models\TimelineModel::instance()->get_task_timeline($task_id);
         $res = [];
@@ -418,13 +418,20 @@ function ajax_suggest_close_task() {
 	}
 
 	$task_doer = null;
+	$last_task_doer = null;
 	foreach(tst_get_task_doers($task->ID, true) as $doer) {
 		if( !$doer ) // If doer deleted his account
 			continue;
+		
+		$last_task_doer = $doer;
 		if($doer_id == $doer->ID) {
 			$task_doer = $doer;
 			break;
 		}
+	}
+	
+	if(!$task_doer) {
+	    $task_doer = $last_task_doer;
 	}
 
 	if(!$task_doer) {
@@ -443,7 +450,29 @@ function ajax_suggest_close_task() {
 	}
 	
     $timeline = ITV\models\TimelineModel::instance();
-    $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message]);
+    if($task->post_author == get_current_user_id()) {
+        $close_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_CLOSE);
+        $reviews_timeline_item = $timeline->get_first_item($task->ID, TimelineModel::$TYPE_REVIEW);
+        
+        if($close_timeline_item && $reviews_timeline_item) {
+            itv_close_task($task, get_current_user_id());
+            
+            $timeline->complete_current_items($task->ID);
+            
+            $close_timeline_item->status = TimelineModel::$STATUS_PAST;
+            $close_timeline_item->save();
+            
+            $reviews_timeline_item->status = TimelineModel::$STATUS_CURRENT;
+            $reviews_timeline_item->save();
+            
+            //
+            UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_TASK_CLOSING_TASKAUTHOR, ['task_id' => $task_id]);
+            UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_TASK_CLOSING_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
+        }
+    }
+    else {
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message]);
+    }
 
     wp_die(json_encode(array(
         'status' => 'ok',

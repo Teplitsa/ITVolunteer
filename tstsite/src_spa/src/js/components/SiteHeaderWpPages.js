@@ -49,6 +49,7 @@ function AccountInHeader({userId}) {
     const [isShowNotif, setIsShowNotif] = useState(false)
     const notifList = useStoreState(store => store.userNotif.notifList)
     const loadNotifList = useStoreActions(actions => actions.userNotif.loadNotifList)
+    const loadFreshNotifList = useStoreActions(actions => actions.userNotif.loadFreshNotifList)
 
     useEffect(() => {
         if(!user.id) {
@@ -57,6 +58,11 @@ function AccountInHeader({userId}) {
 
         loadNotifList()
     }, [user])
+
+    useEffect(() => {
+      let id = setInterval(loadFreshNotifList, 1000 * 20);
+      return () => clearInterval(id);
+    }, []);
 
     function handleOldDesignClick(e) {
         e.preventDefault();

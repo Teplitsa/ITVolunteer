@@ -504,8 +504,10 @@ export interface IUserNotifItem {
 export interface IUserNotifActions {
   initializeState: Action<ITaskListFilterModel>;
   setState: Action<IUserNotifModel, IUserNotifState>;
-  setNotifList: Action<IUserNotifModel, IUserNotifState>;
+  setNotifList: Action<IUserNotifModel, Array<any>>;
+  prependNotifList: Action<IUserNotifModel, Array<any>>;
   loadNotifList: Thunk<IUserNotifActions>;
+  loadFreshNotifList: Thunk<IUserNotifActions>;
   removeNotifFromList: Action<IUserNotifModel, any>;
 }
 

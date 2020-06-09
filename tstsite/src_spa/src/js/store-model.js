@@ -316,6 +316,14 @@ const userNotifModel = {
     setNotifList: action((state, payload) => {
         state.notifList = payload
     }),
+    prependNotifList: action((state, payload) => {
+      if(state.notifList === null) {
+        state.notifList = payload
+      }
+      else {
+        state.notifList = [...payload, ...state.notifList]
+      }
+    }),
     loadNotifList: thunk((actions, payload) => {
         let action = 'get_user_notif_short_list'
         fetch(utils.itvAjaxUrl(action), {
@@ -342,6 +350,42 @@ const userNotifModel = {
             }
         )
     }),
+    loadFreshNotifList: thunk((actions, payload, {getStoreState}) => {
+
+        const {
+          userNotif: { notifList },
+        } = getStoreState();
+
+        let action = 'get_user_notif_short_list'
+        let requestUrl = utils.itvAjaxUrl(action)
+        if(notifList && notifList.length > 0) {
+          requestUrl +=  "&newer_than_id=" + notifList[0].id
+        }
+
+        fetch(requestUrl, {
+            method: 'get',
+        })
+        .then(res => {
+            try {
+                return res.json()
+            } catch(ex) {
+                utils.itvShowAjaxError({action, error: ex})
+                return {}
+            }
+        })
+        .then(
+            (result) => {
+                if(result.status == 'error') {
+                    return utils.itvShowAjaxError({message: result.message})
+                }
+
+                actions.prependNotifList(result.notifList)
+            },
+            (error) => {
+                utils.itvShowAjaxError({action, error})
+            }
+        )
+    }),    
     removeNotifFromList: action((state, payload) => {
         state.notifList = state.notifList.filter((item) => item.id !== payload.id)
     }),

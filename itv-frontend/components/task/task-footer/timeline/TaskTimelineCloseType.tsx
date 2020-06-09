@@ -1,9 +1,11 @@
 import { ReactElement, useState } from "react";
+import { useStoreState } from "../../../../model/helpers/hooks";
 import TaskTimelineDateSuggest from "./TaskTimelineDateSuggest";
 import TaskTimelineSuggestComment from "./TaskTimelineSuggestComment";
 import TaskTimelineOpenCloseSuggest from "./TaskTimelineOpenCloseSuggest";
 
 const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
+  const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
   const [isOpenDateSuggest, setOpenDateSuggest] = useState<boolean>(false);
   const [suggestedCloseDate, setSuggestedCloseDate] = useState<Date | null>(
     null
@@ -15,6 +17,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="details actions">
+      {isTaskAuthorLoggedIn &&
       <a
         href="#"
         className={`action suggest-date ${
@@ -34,6 +37,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
       >
         Предложить новую дату
       </a>
+      }
       <a
         href="#"
         className={`action close-task ${

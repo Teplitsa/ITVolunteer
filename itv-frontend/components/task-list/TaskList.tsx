@@ -6,6 +6,7 @@ import {
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import Loader from "../Loader";
 import {UserSmallView} from "../UserView"
+import TaskListNothingFound from "./TaskListNothingFound"
 import TaskMeta from "../task/task-header/TaskMeta";
 import TaskTags from "../task/task-header/TaskTags";
 import * as utils from "../../utilities/utilities"
@@ -128,6 +129,9 @@ const TaskList: React.FunctionComponent<{
           <div className="load-more-tasks">
               <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>Загрузить ещё</a>
           </div>
+          }
+          {!items.length &&
+            <TaskListNothingFound />
           }
       </section>
   )

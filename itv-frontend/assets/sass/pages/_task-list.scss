@@ -331,3 +331,35 @@
         }
     }
 }
+
+// nothing found
+.task-list-nothing-found-block {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    border: 2px solid $color-gray-light-md;
+    box-sizing: border-box;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        @include htext-lg-bold;
+        letter-spacing: -0.01em;
+        color: $color-gray-dark-xl;
+    }
+
+    h3 {
+        @include text-lg;
+        color: $color-gray-dark-xl;
+    }
+
+    a.btn-reset-filter {
+        @include a-no-hover-underline;
+        @include action-button-secondary-md;
+        @include text-sm-bold;
+        margin-top: 20px;
+        display: inline-block;
+        width: 200px;
+    }
+}

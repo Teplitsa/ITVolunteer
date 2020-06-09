@@ -37,7 +37,7 @@ class TimelineModel extends ITVSingletonModel {
     public function __construct() {
         $this->TYPE_SORT = [
             TimelineModel::$TYPE_PUBLICATION => 0,
-            TimelineModel::$TYPE_SEARCH_DOER => 10,
+            TimelineModel::$TYPE_SEARCH_DOER => 30,
             TimelineModel::$TYPE_WORK => 30,
             TimelineModel::$TYPE_DATE_SUGGEST => 30,
             TimelineModel::$TYPE_DATE_DECISION => 30,
@@ -81,7 +81,7 @@ class TimelineModel extends ITVSingletonModel {
     }
     
     protected function apply_order($req) {
-        return $req->orderBy('due_date', 'DESC')->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC');
+        return $req->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC');
     }
     
     public function get_task_timeline($task_id) {
