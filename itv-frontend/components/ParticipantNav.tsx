@@ -20,6 +20,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   const user = useStoreState(store => store.session.user)
   const notifList = useStoreState(store => store.components.userNotif.notifList)
   const loadNotifList = useStoreActions(actions => actions.components.userNotif.loadNotifList)
+  const loadFreshNotifList = useStoreActions(actions => actions.components.userNotif.loadFreshNotifList)
 
   useEffect(() => {
       if(!user.id) {
@@ -34,6 +35,11 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
       setIsShowNotif(!isShowNotif)
   }
+
+  useEffect(() => {
+    let id = setInterval(loadFreshNotifList, 1000 * 20);
+    return () => clearInterval(id);
+  });
 
   return (
     <div className="account-symbols">

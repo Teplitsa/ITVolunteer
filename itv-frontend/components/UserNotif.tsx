@@ -42,7 +42,6 @@ export function NotifList(props) {
     const clickOutsideHandler = props.clickOutsideHandler
     const notifList = useStoreState(store => store.components.userNotif.notifList)
     const [notifListRef, setNotifListRef] = useState(null)
-    const loadFreshNotifList = useStoreActions(actions => actions.components.userNotif.loadFreshNotifList)
 
     function handleClickOutside(e) {
         if (notifListRef && !notifListRef.contains(e.target)) {
@@ -65,11 +64,6 @@ export function NotifList(props) {
             document.removeEventListener('mousedown', handleClickOutside)
         }
     })
-
-    useEffect(() => {
-      let id = setInterval(loadFreshNotifList, 1000 * 20);
-      return () => clearInterval(id);
-    });
 
     return (
         <div className={`notif-list`} ref={(ref) => setNotifListRef(ref)}>
