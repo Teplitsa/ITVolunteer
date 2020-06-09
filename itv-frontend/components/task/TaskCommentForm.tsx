@@ -10,7 +10,7 @@ import { getTheDate } from "../../utilities/utilities";
 const TaskCommentForm: React.FunctionComponent<{
   textAreaRef?: MutableRefObject<HTMLTextAreaElement>;
   parentCommentId?: string;
-}> = ({ textAreaRef = null, parentCommentId }): ReactElement => {
+}> = ({ textAreaRef = null, parentCommentId = "" }): ReactElement => {
   const [commentText, setCommentText] = useState<string>("");
   const canUserReplyToComment = useStoreState(
     (state) => state.session.canUserReplyToComment

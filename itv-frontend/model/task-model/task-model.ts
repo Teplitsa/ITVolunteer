@@ -659,10 +659,6 @@ const taskThunks: ITaskThunks = {
       if (result?.responseStatus !== "ok") return;
 
       const { author, newComment, comments } = result;
-      const parentComment: ITaskComment = findCommentById(
-        parentCommentId,
-        comments
-      );
 
       Object.assign(newComment, {
         author,
@@ -671,12 +667,20 @@ const taskThunks: ITaskThunks = {
         likeGiven: false,
       });
 
-      if (Array.isArray(parentComment.replies?.nodes)) {
-        parentComment.replies.nodes.unshift(newComment);
+      if (parentCommentId) {
+        const parentComment = findCommentById(parentCommentId, comments);
+
+        if (parentComment?.replies) {
+          if (Array.isArray(parentComment.replies.nodes)) {
+            parentComment.replies.nodes.unshift(newComment);
+          } else {
+            parentComment.replies = {
+              nodes: [newComment],
+            };
+          }
+        }
       } else {
-        parentComment.replies = {
-          nodes: [newComment],
-        };
+        comments.unshift(newComment);
       }
 
       updateComments([].concat(comments));

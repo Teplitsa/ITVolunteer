@@ -29,9 +29,12 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
         ((comments.length > 0 && (
           <>
             {canUserReplyToComment && (
-              <TaskCommentsIntro>
-                {`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
-              </TaskCommentsIntro>
+              <>
+                <TaskCommentsIntro>
+                  {`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
+                </TaskCommentsIntro>
+                <TaskCommentForm />
+              </>
             )}
             <TaskCommentList />
           </>

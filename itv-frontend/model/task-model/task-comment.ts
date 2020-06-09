@@ -3,7 +3,7 @@ import { ITaskComment, ITaskCommentAuthor } from "../model.typing";
 export const findCommentById = (
   commentId: string,
   comments: Array<ITaskComment>
-) => {
+): ITaskComment | undefined => {
   for (let comment of comments) {
     if (comment.id === commentId) {
       return comment;
