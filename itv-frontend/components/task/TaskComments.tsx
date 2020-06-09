@@ -33,7 +33,9 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
                 <TaskCommentsIntro>
                   {`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
                 </TaskCommentsIntro>
-                <TaskCommentForm />
+                <div className="comments-list">
+                  <TaskCommentForm />
+                </div>
               </>
             )}
             <TaskCommentList />
@@ -43,7 +45,9 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
             <TaskCommentsIntro>
               {`Пока никто не оставил комментарии к этой задаче.`}
             </TaskCommentsIntro>
-            <TaskCommentForm />
+            <div className="comments-list">
+              <TaskCommentForm />
+            </div>
           </>
         ))) || <Loader />}
     </div>
