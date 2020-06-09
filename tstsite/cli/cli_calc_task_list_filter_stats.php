@@ -14,7 +14,7 @@ try {
     $tlf = new TaskListFilter();
     
     $filter_data = $tlf->create_filter_with_stats();
-    wp_cache_set( DataCache::$DATA_TASK_LIST_FILTER, $filter_data, DataCache::$GROUP_TASK_LIST );
+    set_transient( DataCache::$DATA_TASK_LIST_FILTER, $filter_data, HOUR_IN_SECONDS );
 	
 	echo 'DONE'.chr(10);
 

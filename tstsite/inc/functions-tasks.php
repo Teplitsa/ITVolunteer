@@ -1111,11 +1111,11 @@ add_action('wp_ajax_nopriv_like-comment', 'ajax_like_comment');
 
 function ajax_get_task_list_filter() {
     
-    $filter_data = wp_cache_get( DataCache::$DATA_TASK_LIST_FILTER, DataCache::$GROUP_TASK_LIST );
+    $filter_data = get_transient( DataCache::$DATA_TASK_LIST_FILTER );
     if($filter_data === false) {
         $tlf = new TaskListFilter();
         $filter_data = $tlf->create_filter_with_stats();
-        wp_cache_set( DataCache::$DATA_TASK_LIST_FILTER, $filter_data, DataCache::$GROUP_TASK_LIST );
+        set_transient( DataCache::$DATA_TASK_LIST_FILTER, $filter_data, HOUR_IN_SECONDS );
     }
     
     wp_die(json_encode(array(
