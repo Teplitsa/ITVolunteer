@@ -11,6 +11,7 @@ const TaskCommentList: React.FunctionComponent = (): ReactElement => {
       {comments.map((comment) => {
         return <TaskCommentListItem key={comment.id} {...comment} />;
       })}
+      <TaskCommentForm />
     </div>
   );
 };
