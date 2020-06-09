@@ -64,9 +64,9 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
                 {likesCount}
               </div>
               <div className="actions">
-                <a href="#" className="report d-none">
+                {/* <a href="#" className="report d-none">
                   Пожаловаться
-                </a>
+                </a> */}
                 <a
                   href="#"
                   className="reply-comment edit"
