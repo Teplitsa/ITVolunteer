@@ -23,7 +23,8 @@
     "uuid": "^8.1.0",
     "lodash": "^4.17.15",
     "store": "^2.0.12",
-    "react-share": "^4.2.0"
+    "react-share": "^4.2.0",
+    "bootstrap": "^4.5.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",

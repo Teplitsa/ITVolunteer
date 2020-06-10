@@ -1,3 +1,9 @@
+@include media-breakpoint-down(md) {
+  html {
+    overflow-x: hidden;
+  }
+}
+
 .site-header {
   border-bottom: 1px solid $color-gray-light-md;
 
@@ -6,13 +12,15 @@
     margin-left: auto;
     margin-right: auto;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 101px;
+    & > .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 101px;
 
-    & > * {
-      width: 33.3%;
+      & > * {
+        width: 33.3%;
+      }
     }
 
     .logo-col {
@@ -166,6 +174,115 @@
           }
       }      
       
+    }
+  }
+
+  // mobile
+  .nav-mobile {
+    display: none;
+  }
+
+  @include media-breakpoint-down(md) {
+    .nav-mobile {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 16px 16px 24px;
+
+      .logo-col {
+        @include no-outline;
+        img.logo {
+        }
+      }
+
+      .open-mobile-menu {
+        @include a-no-hover-underline;
+        img {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+
+    & nav > .nav {
+      display: none;
+
+      &.mobile-open {
+        display: block;
+        padding-left: 24px;
+        height: auto;
+        padding-bottom: 32px;
+
+        & > * {
+          width: 100%;
+        }
+
+        .logo-col {
+          display: none;
+        }
+
+        .main-menu-col {
+          display: block;
+
+          & > li {
+            padding: 5px 0px;
+          }
+
+          .drop-menu {
+            &:after {
+              display: none;
+            }
+
+            .submenu {
+              position: relative;
+              display: block;
+              background-color: transparent;
+              border: none;
+              box-shadow: none;
+              border-radius: 0px;
+              z-index: 0;
+              cursor: default;
+              padding: 5px 0px 16px 32px;              
+              top: 0px;
+
+              li {
+                padding: 5px 0px;
+
+                &:first-child {
+                  display: none;
+                }
+
+                a {
+                  @include a-hover-underline;
+                  @include text-bold-line-sm;
+                }
+              }
+            }
+          }
+        }
+
+        .account-col {
+          display: block;
+
+          .account-symbols {
+            display: block;
+
+            .open-notif {
+              margin-left: 0px;
+              margin-right: 0px;
+            }
+
+            .open-account-menu {
+              .submenu {
+                position: relative;
+                display: block;
+                top: 0px;
+                left: 0px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -46,6 +46,10 @@
         align-items: flex-start;
         margin-top: 26px;
         width: 100%;
+
+        @include media-breakpoint-down(md) {
+          flex-direction: column;
+        }
     }
 }
 

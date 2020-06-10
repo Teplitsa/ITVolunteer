@@ -1,5 +1,9 @@
 @import "base/reset";
 @import "base/fonts";
+@import "bootstrap/scss/_functions";
+@import "bootstrap/scss/_variables";
+@import "bootstrap/scss/_mixins";
+@import "bootstrap/scss/mixins/_breakpoints";
 
 @import "base/presets";
 @import "base/typography";
