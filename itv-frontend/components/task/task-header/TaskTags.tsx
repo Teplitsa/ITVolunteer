@@ -25,9 +25,9 @@ function TaskTags(props) {
         return (
           <TaskTagGroup key={groupId}>
             <img src={icon} />
-            {tagGroup.map(({ term_id, name }) => {
+            {tagGroup.map(({ id, name }) => {
               return (
-                <span key={`Tag${groupId}${term_id}`}>{name}</span>
+                <span key={`Tag${groupId}${id}`}>{name}</span>
               )
             })}
           </TaskTagGroup>
