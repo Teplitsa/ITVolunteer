@@ -12,6 +12,25 @@ const archiveState: IArchiveState = {
   entrypoint: "",
   hasNextPage: true,
   lastViewedListItem: null,
+  seo: {
+    canonical: "",
+    title: "",
+    metaDesc: "",
+    focuskw: "",
+    metaRobotsNoindex: "",
+    metaRobotsNofollow: "",
+    opengraphAuthor: "",
+    opengraphDescription: "",
+    opengraphTitle: "",
+    opengraphImage: null,
+    opengraphUrl: "",
+    opengraphSiteName: "",
+    opengraphPublishedTime: "",
+    opengraphModifiedTime: "",
+    twitterTitle: "",
+    twitterDescription: "",
+    twitterImage: null,
+  },
 };
 
 export const queriedFields: Array<string> = ["hasNextPage", "endCursor"];

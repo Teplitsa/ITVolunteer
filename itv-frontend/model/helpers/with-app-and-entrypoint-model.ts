@@ -21,6 +21,19 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
     archiveQuery,
     archiveQueryVars
   );
+
+  if (postType === "task") {
+    Object.assign(archive, {
+      seo: {
+        canonical: "https://itv.te-st.ru/tasks",
+        title: "Задачи - it-волонтер",
+        opengraphTitle: "Задачи - it-волонтер",
+        opengraphUrl: "https://itv.te-st.ru/tasks",
+        opengraphSiteName: "it-волонтер",
+      },
+    });
+  }
+
   return ["archive", archive];
 };
 
@@ -40,9 +53,15 @@ const withAppAndEntrypointModel = async ({
     location: "SOCIAL",
   });
 
-  const entrypointTemplate = null
-  const entrypointModel = null
-  const componentData = null
+  const [entrypointTemplate, entrypointModel] = isArchive
+    ? await archiveModel(request, entrypointType, entrypointQueryVars)
+    : await pageModel(request, entrypointType, entrypointQueryVars);
+
+  const componentData = isArchive
+    ? {
+        items: entrypointModel.edges.map(({ node: item }) => item),
+      }
+    : null;
 
   const [componentName, component] = await componentModel(
     request,
