@@ -12,6 +12,7 @@ import arrowDown from '../../img/icon-arrow-down.svg'
 import iconNotifRock from '../../img/icon-filter-mood-rock.svg'
 import iconNotifTask from '../../img/icon-task-dark.svg'
 import iconNotifComment from '../../img/icon-message-dark.svg'
+import iconMobileMenu from "../../img/icon-mobile-menu.png";
 // import iconArrowRight from '../../img/icon-arrow-right.svg'
 
 import * as C from '../const'
@@ -77,7 +78,7 @@ function AccountInHeader({userId}) {
     }
 
     return (
-        <div className="account-col">
+        <div className={`account-col ${!!user.id ? "logged-in" : ""}`}>
             <a href="#" className="go-old" onClick={handleOldDesignClick}>Старый дизайн</a>
             {!!user.id &&
             <div className="account-symbols">
@@ -98,7 +99,7 @@ function AccountInHeader({userId}) {
                     }
                 </div>
                 <div className="open-account-menu">
-                  <a href={user.profileURL} target="_blank">
+                  <a href={user.profileURL}>
                       <span 
                           className="avatar-wrapper"
                           style={{
@@ -119,6 +120,16 @@ function AccountInHeader({userId}) {
                 </div>
             </div>
             }
+
+            {!!user.id &&
+            <ul className="submenu account-submenu-mobile">
+              <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
+              <li><a href="/task-actions/">Новая задача</a></li>
+              <li><a href={`/members/${user.username}`}>Мой профиль</a></li>
+              <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
+            </ul>
+            }
+
             {!user.id &&
             <div className="account-enter-links">
                 <a href="/registration" className="account-enter-link account-login">Вход</a>
@@ -132,6 +143,7 @@ function AccountInHeader({userId}) {
 export function SiteHeader(props) {
     const user = useStoreState(store => store.user.data)
     const [headerRef, setHeaderRef] = useState(null)
+    const [mobileOpen, setMobileOpen] = useState(false)
 
     useEffect(() => {
         if(!headerRef) {
@@ -145,6 +157,21 @@ export function SiteHeader(props) {
     return (
         <header id="site-header" className="site-header" ref={(ref) => setHeaderRef(ref)}>
             <nav>
+
+              <div className="nav-mobile">
+                <a href="/" className="logo-col">
+                  <img src={logo} className="logo" alt="IT-волонтер" />
+                </a>
+                <a href="#" className="open-mobile-menu" onClick={(e) => {
+                  e.preventDefault();
+                  setMobileOpen(!mobileOpen)
+                }}>
+                  <img src={iconMobileMenu} alt="Меню" />
+                </a>
+              </div>
+
+              <div className={`nav ${mobileOpen ? "mobile-open" : ""}`}>
+
                 <a href={C.ITV_URLS.home} className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
@@ -167,6 +194,9 @@ export function SiteHeader(props) {
                   </li>
                 </ul>
                 <AccountInHeader />
+
+              </div>
+
             </nav>
         </header>
     )

@@ -42,6 +42,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   });
 
   return (
+  <>
     <div className="account-symbols">
 
       <div className="open-notif">
@@ -62,7 +63,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
       </div>
 
       <div className="open-account-menu">
-        <a href={toProfile} target="_blank">
+        <a href={toProfile}>
             <span 
                 className="avatar-wrapper"
                 style={{
@@ -81,8 +82,15 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </ul>
 
       </div>
-
     </div>
+
+    <ul className="submenu account-submenu-mobile">
+      <li><Link href="/member-actions/member-tasks/"><a>Мои задачи</a></Link></li>
+      <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
+      <li><Link href={`/members/${user.username}`}><a>Мой профиль</a></Link></li>
+      <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
+    </ul>
+  </>    
   );
 };
 

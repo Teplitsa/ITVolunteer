@@ -80,7 +80,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
           </li>
         </ul>
 
-        <div className="account-col">
+        <div className={`account-col ${isLoggedIn ? "logged-in" : ""}`}>
           <a className="go-old" onClick={handleOldDesignClick}>Старый дизайн</a>
           {(isLoggedIn && <ParticipantNav />) || <GuestNav />}
         </div>

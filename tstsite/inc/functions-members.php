@@ -1305,7 +1305,7 @@ function itv_get_user_in_gql_format($user) {
         'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
-        'pemalinkUrl' => tst_get_member_url($user),
+        'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
     ];
     

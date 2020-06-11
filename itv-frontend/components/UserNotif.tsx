@@ -130,7 +130,7 @@ function NotifItem({notif, user}) {
                     <div className="notif-list__item-title">
 
                         {!!notif.from_user && notif.from_user.id !== user.id &&
-                        <a href={notif.from_user.pemalinkUrl}>
+                        <a href={notif.from_user.profileURL}>
                             <b>{notif.from_user.fullName}</b>
                         </a>
                         }

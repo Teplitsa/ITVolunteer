@@ -95,6 +95,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        text-align: center;
         border-radius: 10px;
         margin-right: 20px;
         cursor: pointer;
@@ -177,8 +178,16 @@
     }
   }
 
-  // mobile
+}
+
+// mobile
+.site-header {  
+
   .nav-mobile {
+    display: none;
+  }
+
+  .account-submenu-mobile {
     display: none;
   }
 
@@ -188,6 +197,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px 16px 16px 24px;
+      width: 100%;
 
       .logo-col {
         @include no-outline;
@@ -217,6 +227,32 @@
           width: 100%;
         }
 
+        .submenu {
+          position: relative;
+          display: block;
+          background-color: transparent;
+          border: none;
+          box-shadow: none;
+          border-radius: 0px;
+          z-index: 0;
+          cursor: default;
+          padding: 5px 0px 0px 32px;
+          top: 0px;
+
+          li {
+            padding: 5px 0px;
+
+            &:first-child {
+              display: none;
+            }
+
+            a {
+              @include a-hover-underline;
+              @include text-bold-line-sm;
+            }
+          }
+        }
+
         .logo-col {
           display: none;
         }
@@ -232,53 +268,67 @@
             &:after {
               display: none;
             }
-
-            .submenu {
-              position: relative;
-              display: block;
-              background-color: transparent;
-              border: none;
-              box-shadow: none;
-              border-radius: 0px;
-              z-index: 0;
-              cursor: default;
-              padding: 5px 0px 16px 32px;              
-              top: 0px;
-
-              li {
-                padding: 5px 0px;
-
-                &:first-child {
-                  display: none;
-                }
-
-                a {
-                  @include a-hover-underline;
-                  @include text-bold-line-sm;
-                }
-              }
-            }
           }
         }
 
         .account-col {
-          display: block;
+          flex-wrap: wrap;
+          flex-direction: column-reverse;
+
+          &.logged-in {
+            flex-direction: row-reverse;
+            margin-top: 10px;
+          }
+
+          .go-old {
+            margin-right: 0px;
+          }
+
+          .account-enter-links {
+            flex-basis: 100%;
+            display: block;
+            border-left: none;
+            margin-top: -10px;
+            padding: 0px 0px 10px 0px;
+
+            a {
+              @include a-hover-underline;
+              @include text-bold-line-sm;
+              color: $color-gray-dark-xl;
+              display: block;
+              margin-left: 0px;
+              padding: 5px 0px;
+            }
+          }
 
           .account-symbols {
-            display: block;
+            flex-direction: row-reverse;
 
             .open-notif {
-              margin-left: 0px;
-              margin-right: 0px;
+              margin-right: 20px;
+              margin-left: 20px;
             }
 
             .open-account-menu {
-              .submenu {
-                position: relative;
-                display: block;
-                top: 0px;
-                left: 0px;
+              margin-left: 0px;
+
+              .arrow-down {
+                display: none;
               }
+
+              .submenu {
+                display: none;
+              }
+            }
+          }
+
+          .account-submenu-mobile {
+            display: block;
+            flex-basis: 100%;
+            padding-left: 0px;
+
+            a {
+              color: $color-gray-dark-xl;
             }
           }
         }
