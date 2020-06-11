@@ -4,13 +4,14 @@ import IconTags from "../../../assets/img/icon-color-picker.svg";
 import IconNgoTags from "../../../assets/img/icon-people.svg";
 import IconRewardTags from "../../../assets/img/icon-gift-box.svg";
 import TaskTagGroup from "./TaskTagGroup";
+import { capitalize, toCamelCase } from "../../../utilities/utilities";
 
 function TaskTags(props) {
   const {
     tags: { nodes: tags },
     rewardTags: { nodes: rewardTags },
     ngoTaskTags: { nodes: ngoTags },
-  } = props.task
+  } = props.task;
 
   const tagGroups = [];
 
@@ -25,16 +26,22 @@ function TaskTags(props) {
         return (
           <TaskTagGroup key={groupId}>
             <img src={icon} />
-            {tagGroup.map(({ id, name }) => {
+            {tagGroup.map(({ slug, name }) => {
               return (
-                <span key={`Tag${groupId}${id}`}>{name}</span>
-              )
+                <span
+                  key={`Tag${capitalize(groupId)}${capitalize(
+                    toCamelCase(slug)
+                  )}`}
+                >
+                  {name}
+                </span>
+              );
             })}
           </TaskTagGroup>
         );
       })}
     </div>
   );
-};
+}
 
 export default TaskTags;
