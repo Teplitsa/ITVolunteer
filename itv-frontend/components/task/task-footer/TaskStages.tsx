@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
 
 const TaskStages: React.FunctionComponent = (): ReactElement => {
-  const isLoggedIn = useStoreState((state) => state.session.isLoggedIn);
   const { status, reviewsDone } = useStoreState(
     (state) => state.components.task
   );
@@ -51,7 +50,6 @@ const TaskStages: React.FunctionComponent = (): ReactElement => {
   }
 
   return (
-    isLoggedIn && (
       <div className="stages">
         <h3>Этапы</h3>
         <div className="stages-list">
@@ -70,7 +68,6 @@ const TaskStages: React.FunctionComponent = (): ReactElement => {
           })}
         </div>
       </div>
-    )
   );
 };
 
