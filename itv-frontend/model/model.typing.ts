@@ -335,14 +335,14 @@ export interface ITaskActions {
   updateApprovedDoer: Action<ITaskModel, ITaskApprovedDoer>;
   updateDoers: Action<ITaskModel, Array<ITaskDoer>>;
   updateComments: Action<ITaskModel, Array<ITaskComment>>;
-  updateTimeline: Action<ITaskModel, Array<ITaskTimelineItem>>;
-  updateReviews: Action<
-    ITaskModel,
-    {
-      reviewForAuthor?: ITaskReviewer;
-      reviewForDoer?: ITaskReviewer;
-    }
-  >;
+  // updateTimeline: Action<ITaskModel, Array<ITaskTimelineItem>>;
+  // updateReviews: Action<
+  //   ITaskModel,
+  //   {
+  //     reviewForAuthor?: ITaskReviewer;
+  //     reviewForDoer?: ITaskReviewer;
+  //   }
+  // >;
   likeComment: Action<ITaskModel, { commentId: string; likesCount: number }>;
 }
 
@@ -367,8 +367,6 @@ export interface ITaskThunks {
   doersRequest: Thunk<ITaskActions>;
   addDoerRequest: Thunk<ITaskActions>;
   commentsRequest: Thunk<ITaskActions>;
-  timelineRequest: Thunk<ITaskActions>;
-  reviewsRequest: Thunk<ITaskActions>;
   commentLikeRequest: Thunk<ITaskActions, string>;
   newCommentRequest: Thunk<
     ITaskActions,
@@ -379,61 +377,62 @@ export interface ITaskThunks {
     }
   >;
   onNewCommentRequestSuccess: ThunkOn<ITaskModel>;
-  newReviewRequest: Thunk<
-    ITaskActions,
-    {
-      reviewRating: number;
-      reviewText: string;
-      callbackFn?: () => void;
-    }
-  >;
-
-  onNewReviewRequestSuccess: ThunkOn<ITaskModel>;
-  acceptSuggestedDateRequest: Thunk<
-    ITaskActions,
-    {
-      timelineItemId: string;
-    }
-  >;
-  onAcceptSuggestedDateRequest: ThunkOn<ITaskModel>;
-  rejectSuggestedDateRequest: Thunk<
-    ITaskActions,
-    {
-      timelineItemId: string;
-    }
-  >;
-  onRejectSuggestedDateRequest: ThunkOn<ITaskModel>;
-  acceptSuggestedCloseRequest: Thunk<
-    ITaskActions,
-    {
-      timelineItemId: string;
-    }
-  >;
-  onAcceptSuggestedCloseRequest: ThunkOn<ITaskModel>;
-  rejectSuggestedCloseRequest: Thunk<
-    ITaskActions,
-    {
-      timelineItemId: string;
-    }
-  >;
-  onRejectSuggestedCloseRequest: ThunkOn<ITaskModel>;
-  suggestCloseDateRequest: Thunk<
-    ITaskActions,
-    {
-      suggestComment: string;
-      suggestedCloseDate: Date | null;
-      callbackFn?: () => void;
-    }
-  >;
-  onSuggestCloseDateRequest: ThunkOn<ITaskModel>;
-  suggestCloseTaskRequest: Thunk<
-    ITaskActions,
-    {
-      suggestComment: string;
-      callbackFn?: () => void;
-    }
-  >;
-  onSuggestCloseTaskRequest: ThunkOn<ITaskModel>;
+  // timelineRequest: Thunk<ITaskActions>;
+  // reviewsRequest: Thunk<ITaskActions>;
+  // newReviewRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     reviewRating: number;
+  //     reviewText: string;
+  //     callbackFn?: () => void;
+  //   }
+  // >;
+  // onNewReviewRequestSuccess: ThunkOn<ITaskModel>;
+  // acceptSuggestedDateRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     timelineItemId: string;
+  //   }
+  // >;
+  // onAcceptSuggestedDateRequest: ThunkOn<ITaskModel>;
+  // rejectSuggestedDateRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     timelineItemId: string;
+  //   }
+  // >;
+  // onRejectSuggestedDateRequest: ThunkOn<ITaskModel>;
+  // acceptSuggestedCloseRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     timelineItemId: string;
+  //   }
+  // >;
+  // onAcceptSuggestedCloseRequest: ThunkOn<ITaskModel>;
+  // rejectSuggestedCloseRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     timelineItemId: string;
+  //   }
+  // >;
+  // onRejectSuggestedCloseRequest: ThunkOn<ITaskModel>;
+  // suggestCloseDateRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     suggestComment: string;
+  //     suggestedCloseDate: Date | null;
+  //     callbackFn?: () => void;
+  //   }
+  // >;
+  // onSuggestCloseDateRequest: ThunkOn<ITaskModel>;
+  // suggestCloseTaskRequest: Thunk<
+  //   ITaskActions,
+  //   {
+  //     suggestComment: string;
+  //     callbackFn?: () => void;
+  //   }
+  // >;
+  // onSuggestCloseTaskRequest: ThunkOn<ITaskModel>;
 }
 
 /**
