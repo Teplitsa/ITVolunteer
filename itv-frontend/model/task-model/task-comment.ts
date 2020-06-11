@@ -52,7 +52,7 @@ export const graphqlQuery = {
         }
     }
     query TaskComments ($taskId: ID) {
-        comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
+        comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: DESC}) {
           nodes {
             ...TaskCommentFields
             replies: children {

@@ -23,6 +23,7 @@ function wp_ajax_login_by_auth_token()
             case "unpublish-task":
             case "approve-candidate":
             case "decline-candidate":
+            case "submit-comment":
             case "like-comment":
             case "add-candidate":
             case "get-task-timeline":
