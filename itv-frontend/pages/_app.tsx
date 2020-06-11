@@ -53,6 +53,7 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
         entrypoint: archiveEntrypoint,
         hasNextPage: archive.pageInfo.hasNextPage,
         lastViewedListItem: archive.pageInfo.endCursor,
+        seo: archive.seo,
       }) ||
       null,
   });
@@ -83,4 +84,3 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
 };
 
 export default ITVApp;
-

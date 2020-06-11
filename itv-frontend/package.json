@@ -28,10 +28,10 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
-    "@types/node": "^13.13.10",
+    "@types/node": "^13.13.12",
     "@types/react": "^16.9.35",
-    "@types/react-dom": "^16.0.6",
     "@types/react-datepicker": "^2.11.1",
+    "@types/react-dom": "^16.0.6",
     "@types/uuid": "^7.0.4",
     "file-loader": "^6.0.0",
     "typescript": "^3.9.5",

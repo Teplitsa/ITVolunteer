@@ -103,7 +103,7 @@ export interface ISessionUser {
 export interface ISessionActions {
   setState: Action<ISessionModel, ISessionState>;
   setSubscribeTaskList: Action<ISessionState, any>;
-  loadSubscribeTaskList: Thunk<ISessionActions>
+  loadSubscribeTaskList: Thunk<ISessionActions>;
 }
 
 export interface ISessionThunks {
@@ -145,8 +145,31 @@ export interface IPageState {
 }
 
 export interface IPageSEO {
+  canonical: string;
   title: string;
-  meta?: IPageSEOMeta;
+  metaDesc?: string;
+  focuskw?: string;
+  metaRobotsNoindex: string;
+  metaRobotsNofollow: string;
+  opengraphAuthor?: string;
+  opengraphDescription?: string;
+  opengraphTitle?: string;
+  opengraphImage?: {
+    sourceUrl: string;
+    srcSet?: string;
+    altText?: string;
+  };
+  opengraphUrl?: string;
+  opengraphSiteName?: string;
+  opengraphPublishedTime?: string;
+  opengraphModifiedTime?: string;
+  twitterTitle?: string;
+  twitterDescription?: string;
+  twitterImage?: {
+    sourceUrl: string;
+    srcSet?: string;
+    altText?: string;
+  };
 }
 
 export interface IPageSEOMeta {
@@ -439,10 +462,10 @@ export interface ITaskListActions {
 export interface ITaskListItemModel extends ITaskListItemState {}
 
 export interface ITaskListItemState {
-  id: string
-  title: string
-  slug: string
-  content: string
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
   date: string;
   dateGmt: string;
   viewsCount: number;
@@ -452,15 +475,16 @@ export interface ITaskListItemState {
   nextTaskSlug: string;
   approvedDoer?: ITaskApprovedDoer;
   author?: ITaskAuthor;
-  [x: string]: any
+  [x: string]: any;
 }
-
 
 /**
  * TaskListFilter
  */
 
-export interface ITaskListFilterModel extends ITaskListFilterState, ITaskListFilterActions {}
+export interface ITaskListFilterModel
+  extends ITaskListFilterState,
+    ITaskListFilterActions {}
 export interface ITaskListFilterState {
   optionCheck;
   statusStats;
@@ -497,8 +521,8 @@ export interface IUserNotifState {
 }
 
 export interface IUserNotifItem {
-  id
-  [x: string]: any
+  id;
+  [x: string]: any;
 }
 
 export interface IUserNotifActions {
@@ -516,7 +540,7 @@ export interface IUserNotifActions {
  */
 
 export interface IFetchResult {
-  status: string,
-  message: string,
-  [x: string]: any,
+  status: string;
+  message: string;
+  [x: string]: any;
 }

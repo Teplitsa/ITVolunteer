@@ -4,9 +4,49 @@ import { capitalize } from "../utilities/utilities";
 
 const pageState: IPageState = {
   slug: "",
+  seo: {
+    canonical: "",
+    title: "",
+    metaDesc: "",
+    focuskw: "",
+    metaRobotsNoindex: "",
+    metaRobotsNofollow: "",
+    opengraphAuthor: "",
+    opengraphDescription: "",
+    opengraphTitle: "",
+    opengraphImage: null,
+    opengraphUrl: "",
+    opengraphSiteName: "",
+    opengraphPublishedTime: "",
+    opengraphModifiedTime: "",
+    twitterTitle: "",
+    twitterDescription: "",
+    twitterImage: null,
+  },
 };
 
-export const queriedFields = Object.keys(pageState) as Array<keyof IPageState>;
+export const queriedFields = Object.keys(pageState).map((key) => {
+  if (key === "seo") {
+    return `${key} {
+      ${Object.keys(pageState.seo)
+        .map((imageKey) => {
+          if (/\w+Image/.test(imageKey)) {
+            const imageProps: Array<string> = [
+              "sourceUrl",
+              "srcSet",
+              "altText",
+            ];
+            return `${imageKey} {
+            ${imageProps.join("\n")}
+          }`;
+          }
+          return imageKey;
+        })
+        .join("\n")}
+    }`;
+  }
+  return key;
+}) as Array<keyof IPageState | string>;
 
 const withPostType = (
   postType: PostType,
