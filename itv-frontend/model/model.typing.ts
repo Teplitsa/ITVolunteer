@@ -324,7 +324,7 @@ export interface ITaskTimelineItemDoer {
   organizationName: string;
   organizationDescription: string;
   organizationLogo: string;
-  profileURL: string;
+  pemalinkUrl: string;
 }
 
 export interface ITaskActions {

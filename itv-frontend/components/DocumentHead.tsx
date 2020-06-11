@@ -4,9 +4,12 @@ import { useStoreState } from "../model/helpers/hooks";
 import Favicon from "../assets/img/favicon.svg";
 
 const DocumentHead: React.FunctionComponent = (): ReactElement => {
-  const entrypointTemplate = useStoreState(
-    (state) => state.app.entrypointTemplate
-  );
+  const seo = useStoreState(({ app: { entrypointTemplate }, entrypoint }) => {
+    return entrypoint[entrypointTemplate]?.seo;
+  });
+
+  if (!seo) return null;
+
   const {
     canonical,
     title,
@@ -25,13 +28,12 @@ const DocumentHead: React.FunctionComponent = (): ReactElement => {
     twitterTitle,
     twitterDescription,
     twitterImage,
-  } = useStoreState((state) => state.entrypoint[entrypointTemplate].seo);
+  } = seo;
 
   return (
     <Head>
       <title>{title}</title>
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-      {canonical && <link rel="canonical" href={canonical} />}
       {focuskw && <meta name="keywords" content={focuskw} />}
       {metaDesc && <meta name="description" content={metaDesc} />}
       {(metaRobotsNoindex || metaRobotsNofollow) && (
@@ -84,6 +86,7 @@ const DocumentHead: React.FunctionComponent = (): ReactElement => {
       {twitterImage?.altText && (
         <meta name="twitter:image:alt" content={twitterImage.altText} />
       )}
+      {canonical && <link rel="canonical" href={canonical} />}
       {Favicon && (
         <link rel="icon" href={Favicon} sizes="any" type="image/svg+xml" />
       )}
