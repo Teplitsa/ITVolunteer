@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { ReactElement } from "react";
 import { useStoreState } from "../model/helpers/hooks";
+import Favicon from "../assets/img/favicon.svg";
 
 const DocumentHead: React.FunctionComponent = (): ReactElement => {
   const entrypointTemplate = useStoreState(
@@ -82,6 +83,9 @@ const DocumentHead: React.FunctionComponent = (): ReactElement => {
       )}
       {twitterImage?.altText && (
         <meta name="twitter:image:alt" content={twitterImage.altText} />
+      )}
+      {Favicon && (
+        <link rel="icon" href={Favicon} sizes="any" type="image/svg+xml" />
       )}
     </Head>
   );
