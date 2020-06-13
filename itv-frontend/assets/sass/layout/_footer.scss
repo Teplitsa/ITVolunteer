@@ -192,3 +192,113 @@
     }
   }
 }
+
+// mobile
+@include media-breakpoint-down(md) {
+  .site-footer {
+    padding: 24px 16px 16px 24px;
+
+    .site-footer-inner {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+
+        .links-col {
+          display: block;          
+          padding-top: 16px;
+
+          li {
+            padding: 5px 0px;
+            a {
+              margin-left: 0px;
+            }
+          }
+
+          .submenu {
+            position: relative;
+            display: block;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            border-radius: 0px;
+            z-index: 0;
+            cursor: default;
+            padding: 5px 0px 0px 32px;
+            top: 0px;
+            left: 0px;
+
+            li {
+              padding: 5px 0px;
+
+              &:first-child {
+                display: none;
+              }
+
+              a {
+                @include text-line-sm;
+                color: $color-gray-dark-md;
+                margin-left: 0px;
+              }
+            }
+          }
+
+          .drop-menu {
+            &:after {
+              display: none;
+            }
+          }
+
+        }
+      }
+
+      .info {
+        flex-wrap: wrap;
+
+        .col-stats {
+          flex-basis: 100%;
+        }
+
+        .col-projects {
+          margin-left: 0px;
+          margin-top: 24px;
+
+          .projects {
+            flex-wrap: wrap;
+            justify-content: space-between;
+
+            .project {
+              flex-basis: 50%;
+              margin-right: 0px;
+              margin-bottom: 16px;
+            }
+          }
+
+        }
+
+        .col-social {
+          width: 100%;
+          max-width: unset;
+
+          .social-links {
+            justify-content: space-between;
+
+            a {
+              display: inline-block;
+              flex-basis: 50%;
+            }
+          }
+        }
+      }
+
+      .owner {
+        align-items: flex-start;
+
+        .col-text {
+          flex-basis: 70%;
+          margin-right: 5%;
+        }
+      }
+    }
+  }
+}
