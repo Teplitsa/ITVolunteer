@@ -75,9 +75,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </a>
 
         <ul className="submenu">
-          <li><Link href="/member-actions/member-tasks/"><a>Мои задачи</a></Link></li>
-          <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
-          <li><Link href={`/members/${user.username}`}><a>Мой профиль</a></Link></li>
+          <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
+          <li><a href="/task-actions/">Новая задача</a></li>
+          <li><a href={`/members/${user.username}`}>Мой профиль</a></li>
           <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
         </ul>
 
@@ -85,9 +85,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     </div>
 
     <ul className="submenu account-submenu-mobile">
-      <li><Link href="/member-actions/member-tasks/"><a>Мои задачи</a></Link></li>
-      <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
-      <li><Link href={`/members/${user.username}`}><a>Мой профиль</a></Link></li>
+      <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
+      <li><a href="/task-actions/">Новая задача</a></li>
+      <li><a href={`/members/${user.username}`}>Мой профиль</a></li>
       <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
     </ul>
   </>    

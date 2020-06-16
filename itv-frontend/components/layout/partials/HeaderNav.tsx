@@ -62,20 +62,18 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
             </Link>
           </li>
           <li>
-            <Link href="/members/hero">
-              <a>Волонтеры</a>
-            </Link>
+            <a href="/members/hero">Волонтеры</a>
           </li>
           <li className="drop-menu">
             <Link href="/about">
               <a className="drop-menu">О проекте</a>
             </Link>
             <ul className="submenu">
-              <li><Link href="/about"><a>О проекте</a></Link></li>
-              <li><Link href="/conditions"><a>Правила участия</a></Link></li>
-              <li><Link href="/news"><a>Новости</a></Link></li>
-              <li><Link href="/sovety-dlya-nko-uspeshnye-zadachi"><a>Советы НКО</a></Link></li>
-              <li><Link href="/contacts"><a>Контакты</a></Link></li>
+              <li><a href="/about">О проекте</a></li>
+              <li><a href="/conditions">Правила участия</a></li>
+              <li><a href="/news">Новости</a></li>
+              <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
+              <li><a href="/contacts">Контакты</a></li>
             </ul>                    
           </li>
         </ul>

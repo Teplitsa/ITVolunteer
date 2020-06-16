@@ -36,7 +36,7 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
                 )}
               </div>
               <div className="details">
-                <a className="name" href={toProfile} target="_blank">
+                <a className="name" href={toProfile}>
                   {fullName}
                 </a>
                 <span className="reviews">{`${doerReviewsCount} отзывов`}</span>

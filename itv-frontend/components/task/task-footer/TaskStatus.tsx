@@ -19,7 +19,6 @@ const TaskStatus: React.FunctionComponent = (): ReactElement => {
         <a
           href={`/task-actions/?task=${taskDataBaseId}`}
           className="edit"
-          target="_blank"
         >
           Редактировать
         </a>
