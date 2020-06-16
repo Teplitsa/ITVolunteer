@@ -55,16 +55,16 @@ export const graphqlQuery = {
         comments(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
           nodes {
             ...TaskCommentFields
-            replies: children {
+            replies: children(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
               nodes {
                 ...TaskCommentFields
-                replies: children {
+                replies: children(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
                   nodes {
                     ...TaskCommentFields
-                    replies: children {
+                    replies: children(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
                       nodes {
                         ...TaskCommentFields
-                        replies: children {
+                        replies: children(where: {contentId: $taskId, orderby: COMMENT_DATE, order: ASC}) {
                           nodes {
                             ...TaskCommentFields
                           }
