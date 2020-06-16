@@ -28,9 +28,7 @@ const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
           <div className="sidebar-users-block no-responses">
             <p>
               Мало просмотров и откликов на задачу? Возможно,{" "}
-              <Link href="/sovety-dlya-nko-uspeshnye-zadachi/">
-                <a target="_blank">наши советы помогут вам</a>
-              </Link>
+              <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">наши советы помогут вам</a>
             </p>
           </div>
         )}

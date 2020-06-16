@@ -65,9 +65,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
             <a href="/members/hero">Волонтеры</a>
           </li>
           <li className="drop-menu">
-            <Link href="/about">
-              <a className="drop-menu">О проекте</a>
-            </Link>
+            <a className="drop-menu" href="/about">О проекте</a>
             <ul className="submenu">
               <li><a href="/about">О проекте</a></li>
               <li><a href="/conditions">Правила участия</a></li>
