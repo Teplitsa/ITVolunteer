@@ -753,7 +753,7 @@ const taskThunks: ITaskThunks = {
 
         if (parentComment?.replies) {
           if (Array.isArray(parentComment.replies.nodes)) {
-            parentComment.replies.nodes.unshift(newComment);
+            parentComment.replies.nodes.push(newComment);
           } else {
             parentComment.replies = {
               nodes: [newComment],
@@ -761,7 +761,7 @@ const taskThunks: ITaskThunks = {
           }
         }
       } else {
-        comments.unshift(newComment);
+        comments.push(newComment);
       }
 
       updateComments([].concat(comments));
