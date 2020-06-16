@@ -33,7 +33,9 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         isOverdue ? "overdue" : ""
       }`}
     >
+      {/*
       <TaskTimelineDate date={timeline_date} />
+      */}
       <div className="info">
         <i className="point-circle"></i>
         <h4>
@@ -47,7 +49,9 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
               }).format(Date.parse(timeline_date))}
         </h4>
 
+        {/*
         {status === "future" && <div className="details">Ожидаемый срок</div>}
+        */}
 
         {type === "review" && taskStatus === "closed" && <TaskTimelineReviewType />}
         {type == "close" && taskStatus === "in_work" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && (

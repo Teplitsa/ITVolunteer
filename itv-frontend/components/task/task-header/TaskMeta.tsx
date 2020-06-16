@@ -30,8 +30,8 @@ function TaskMeta(props) {
   const [shareUrl, setShareUrl] = useState("")
 
   const withMetaIconCalendar: Array<string> = [
-    utils.getTheDate({ dateString: `${dateGmt}Z` }),
-    `Открыто ${utils.getTheIntervalToNow({ fromDateString: `${dateGmt}Z` })}`,
+    utils.formatDate({ date: utils.itvWpDateTimeToDate(dateGmt) }),
+    `Открыто ${utils.formatIntervalToNow({ fromDate: utils.itvWpDateTimeToDate(dateGmt) })}`,
     `${doerCandidatesCount} откликов`,
     `${viewsCount} просмотров`,
   ];

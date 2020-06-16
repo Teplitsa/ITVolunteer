@@ -545,6 +545,19 @@ body.itv-v2-header-footer {
     }
 }
 
+// mobile admin bar position fix
+@media screen and (max-width: 600px) {
+  body > .site-layout {
+      position: unset;
+  }
+
+  #wpadminbar {
+    #wp-admin-bar-wpseo-menu {
+      display: none;
+    }
+  }
+}
+
 // mobile header
 .site-header {  
 

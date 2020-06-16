@@ -367,3 +367,37 @@
         width: 200px;
     }
 }
+
+// mobile
+@include media-breakpoint-down(md) {
+  .site-main.page-task-list {
+
+    section.page-header {
+      width: 85%;
+      margin-left: auto;
+      margin-right: auto;
+      flex-wrap: wrap;
+
+      .stats {
+        flex-basis: 100%;
+        margin-top: 16px;
+      }
+    }
+
+    .page-sections {
+      align-items: center;
+
+      .task-list-filter {
+        margin-right: 0px;
+        max-width: unset;
+        min-width: unset;
+        width: calc(85% - 48px);
+      }
+
+      .task-list {
+        margin-top: 32px;
+        width: 85%;
+      }
+    }
+  }
+}

@@ -1247,3 +1247,66 @@
     }
   }
 }
+
+
+// mobile
+@include media-breakpoint-down(md) {
+  .site-main.page-task {
+    flex-direction: column;
+    align-items: center;
+    
+    & > section.content {
+      width: 85%;
+      margin-right: 0px;
+
+      .task-basic-actions-bar {
+        flex-direction: column-reverse;
+
+        .task-publication-actions {
+          text-align: center;
+
+          .accept-task {
+            margin-right: 0px;
+          }
+
+          .reject-task {
+            margin-top: 16px;
+          }
+        }
+      }
+
+      .stages .stages-list {
+        flex-wrap: wrap;
+
+        .stage {
+          flex-basis: 100%;
+
+          &.active {
+            background-color: $color-gray-light-xl;
+            background-image: url("../../img/pic-stage-done.svg");
+          }
+
+          &:first-child {
+            border-top-right-radius: 6px;
+          }
+
+          &.last {
+            border-top-right-radius: 0px;
+          }
+        }
+      }
+
+      .task-give-response {
+        .button-give-response {
+          width: 100%;
+        }
+      }
+    }
+
+    & > section.sidebar {
+      width: 85%;
+      min-width: unset;
+    }
+
+  }
+}

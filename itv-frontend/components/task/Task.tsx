@@ -33,7 +33,7 @@ const Task: React.FunctionComponent = (): ReactElement => {
         />
         <TaskFooter>
           <TaskStages />
-          {/* <TaskTimeline /> */}
+          <TaskTimeline />
           <TaskActionBar>
             <TaskActionButtons />
             <TaskStatus />

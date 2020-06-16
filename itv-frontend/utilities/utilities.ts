@@ -1,5 +1,6 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
+import moment from 'moment'
 
 export const getLocaleDateTimeISOString = (locale = "ru-RU"): string => {
   switch (locale) {
@@ -31,6 +32,19 @@ export const getTheDate = ({
   }
 };
 
+export const formatDate = ({
+  date = new Date(),
+  stringFormat = "do MMMM Y",
+}): string => {
+  return format(date, stringFormat, {
+    locale: ru,
+  });
+};
+
+export function itvWpDateTimeToDate(wpDateTime) {
+    return moment(wpDateTime + "Z").toDate()
+}
+
 export const getTheIntervalToNow = ({
   fromDateString = new Date().toISOString(),
 }): string => {
@@ -44,6 +58,15 @@ export const getTheIntervalToNow = ({
       `Instead of valid date string given: ${fromDateString}`
     );
   }
+};
+
+export const formatIntervalToNow = ({
+  fromDate = new Date(),
+}): string => {
+  return formatDistanceToNow(fromDate, {
+    locale: ru,
+    addSuffix: true,
+  });
 };
 
 export const getAjaxUrl = (action: string): string => {

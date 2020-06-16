@@ -2,6 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskComment } from "../../model/model.typing";
 import { getTheDate } from "../../utilities/utilities";
+import * as utils from "../../utilities/utilities";
 import UserCardSmall from "../UserCardSmall";
 import TaskCommentForm from "./TaskCommentForm";
 
@@ -47,7 +48,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
         <div className="comment-body">
           <time>
             {getTheDate({
-              dateString: new Date(dateGmt).toISOString(),
+              dateString: new Date(utils.itvWpDateTimeToDate(dateGmt)).toISOString(),
               stringFormat: "dd.MM.yyyy в HH:mm",
             })}
           </time>
