@@ -8,7 +8,13 @@ export const findCommentById = (
     if (comment.id === commentId) {
       return comment;
     } else if (Array.isArray(comment.replies?.nodes)) {
-      return findCommentById(commentId, comment.replies.nodes);
+      let commentFound: ITaskComment | undefined = findCommentById(
+        commentId,
+        comment.replies.nodes
+      );
+      if (commentFound) {
+        return commentFound;
+      }
     }
   }
 };
