@@ -12,10 +12,12 @@
 
 @import "layout/header";
 @import "layout/footer";
+@import "layout/main";
+@import "layout/article";
 @import "base/common";
 @import "pages/task";
 @import "pages/task-list";
-
+@import "pages/paseka";
 @import "components/notif";
 @import "components/contact-form";
 

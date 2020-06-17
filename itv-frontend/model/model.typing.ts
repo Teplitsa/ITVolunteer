@@ -189,10 +189,32 @@ export interface IPageActions {
 export interface IComponentsModel extends IComponentsState {}
 
 export interface IComponentsState {
+  paseka?: IPasekaPageModel;
   task?: ITaskModel;
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
+}
+
+/**
+ * Paseka
+ */
+
+export interface IPasekaPageModel
+  extends IPasekaPageState,
+    IPasekaPageActions {}
+
+export interface IPasekaPageState {
+  id: string;
+  databaseId: number;
+  title: string;
+  slug: string;
+  content: string;
+}
+
+export interface IPasekaPageActions {
+  initializeState: Action<IPasekaPageModel>;
+  setState: Action<IPasekaPageModel, IPasekaPageState>;
 }
 
 /**

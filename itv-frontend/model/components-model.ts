@@ -1,11 +1,12 @@
 import { IComponentsModel, IComponentsState } from "./model.typing";
+import pasekaPageModel from "./components/paseka-model";
 import taskModel from "./task-model/task-model";
 import taskListModel from "./task-model/task-list-model";
 import taskListFilterModel from "./task-model/task-list-filter-model";
 import userNotifModel from "./user-notif-model";
-import { action } from "easy-peasy";
 
 const componentsState: IComponentsState = {
+  paseka: pasekaPageModel,
   task: taskModel,
   taskList: taskListModel,
   taskListFilter: taskListFilterModel,
