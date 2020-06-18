@@ -1,4 +1,8 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import {
+  IFetchResult,
+} from "../model/model.typing";
+import * as utils from "../utilities/utilities"
 
 const basicStats: {
   activeMemebersCount: number;
@@ -6,28 +10,54 @@ const basicStats: {
   workTasksCount: number;
   newTasksCount: number;
 } = {
-  activeMemebersCount: 1,
-  closedTasksCount: 2,
-  workTasksCount: 3,
-  newTasksCount: 4,
+  activeMemebersCount: null,
+  closedTasksCount: null,
+  workTasksCount: null,
+  newTasksCount: null,
 };
 
 const Stats: React.FunctionComponent = ({ children }): ReactElement => {
-  const {
-    activeMemebersCount,
-    closedTasksCount,
-    workTasksCount,
-    newTasksCount,
-  } = basicStats;
+  const [stats, setStats] = useState(basicStats);
+
+  useEffect(() => {
+    let formData = new FormData()
+
+    let action = 'get_general_stats'
+    fetch(utils.getAjaxUrl(action), {
+        method: 'post',
+        body: formData,
+    })
+    .then(res => {
+        try {
+            return res.json()
+        } catch(ex) {
+            utils.showAjaxError({action, error: ex})
+            return {}
+        }
+    })
+    .then(
+        (result: IFetchResult) => {
+            if(result.status == 'fail') {
+                return utils.showAjaxError({message: result.message})
+            }
+
+            setStats(result.stats);
+        },
+        (error) => {
+            utils.showAjaxError({action, error})
+        }
+    )
+  }, [])
+
   return (
     <div className="col-stats">
       <h3>Статистика проекта</h3>
       <div className="stats">
-        <p>{`Всего участников: ${activeMemebersCount}`}</p>
+        <p>{`Всего участников: ${stats.activeMemebersCount}`}</p>
         <p>{`Всего задач: ${
-          closedTasksCount + workTasksCount + newTasksCount
+          stats.closedTasksCount + stats.workTasksCount + stats.newTasksCount
         }`}</p>
-        <p>{`Задач решено: ${closedTasksCount}`}</p>
+        <p>{`Задач решено: ${stats.closedTasksCount}`}</p>
       </div>
     </div>
   );

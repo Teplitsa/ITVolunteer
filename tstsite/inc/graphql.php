@@ -93,6 +93,12 @@ function itv_register_task_graphql_fields() {
                     return wp_create_nonce('we-are-receiving-a-letter-goshujin-sama');
                 },
             ],
+            'hasCloseSuggestion' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return false;
+                },
+            ],
         ]
     );
 }

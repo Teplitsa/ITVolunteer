@@ -250,8 +250,8 @@ function ajax_approve_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['doer_gql_id'])
-        || empty($_POST['task_gql_id'])
+        (empty($_POST['doer_gql_id']) && empty($_POST['doer-id']))
+        || (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
 //         empty($_POST['doer-id'])
 //         || empty($_POST['task-id'])
 //         || empty($_POST['nonce'])
@@ -263,12 +263,22 @@ function ajax_approve_candidate() {
         )));
     }
     
-    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
-    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
     
-    $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
-    $doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
-
+    if(!empty($_POST['doer_gql_id'])) {
+        $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+        $doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    }
+    else {
+        $doer_id = !empty($_POST['doer-id']) ? (int)$_POST['doer-id'] : 0;
+    }
+    
     if(!$doer_id 
         || !$task_id
     ) {
@@ -437,7 +447,7 @@ function ajax_add_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['task_gql_id'])
+        (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
 //         empty($_POST['task-id'])
 //         || empty($_POST['nonce'])
 //         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
@@ -448,8 +458,13 @@ function ajax_add_candidate() {
         )));
     }
     
-    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
-    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
     
     if(!is_user_logged_in() 
         || !$task_id
@@ -512,7 +527,7 @@ function ajax_remove_candidate() {
 //     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['task_gql_id'])
+        (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
 //         || empty($_POST['nonce'])
 //         || !wp_verify_nonce($_POST['nonce'], 'task-remove-candidate')
     ) {
@@ -522,8 +537,13 @@ function ajax_remove_candidate() {
         )));
     }
 
-    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
-    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
     
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
@@ -579,7 +599,7 @@ function ajax_remove_candidate() {
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
         // Task is automatically switched "publish":
-        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
+        wp_update_post(array('ID' => (int)$task_id, 'post_status' => 'publish'));
     }
     
     //
@@ -600,8 +620,8 @@ add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 /** Decline a candidate by task author **/
 function ajax_decline_candidate() {
     if(
-        empty($_POST['doer_gql_id'])
-        || empty($_POST['task_gql_id'])
+        (empty($_POST['doer_gql_id']) && empty($_POST['doer-id']))
+        || (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -609,11 +629,21 @@ function ajax_decline_candidate() {
         )));
     }
     
-    $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
-    $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
     
-    $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
-    $task_doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    if(!empty($_POST['doer_gql_id'])) {
+        $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+        $task_doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    }
+    else {
+        $task_doer_id = !empty($_POST['doer-id']) ? (int)$_POST['doer-id'] : 0;
+    }
     
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);

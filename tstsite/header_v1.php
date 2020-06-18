@@ -20,6 +20,100 @@
 	<!--Microsoft -->
     <meta http-equiv="cleartype" content="on">
     <meta name="yandex-verification" content="804eab4aa1555391" />
+	
+	<script>
+		function itvSwitchToV2(){
+			Cookies.remove('itvOldDesign');
+			document.location.reload();
+			return false;
+		}
+		
+		function itvSwitchToV1(){
+			Cookies.set('itvOldDesign', "true", {"period": 30});
+			document.location.reload();
+			return false;
+		}
+	</script>
+	
+	<style type="text/css">
+        .itv-switch-to-new-design-bar {
+            background-color: #0EA36C;
+        }
+	   
+        .itv-switch-to-new-design-bar .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('<?php echo get_template_directory_uri() . '/src_spa/src/img/pic-switch-to-new-design.svg'; ?>');
+            background-size: 360px 96px;
+            background-position: 7% center;
+            background-repeat: no-repeat;
+            height: 96px;
+        }
+	   
+        .itv-switch-to-new-design-bar .text {
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            height: 45px;
+        }
+        
+        .itv-switch-to-new-design-bar .text > span {
+            display: block;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 40px;
+            display: flex;
+            align-items: center;
+            letter-spacing: -0.01em;
+            margin-right: 24px;
+            margin-left: 24px;            
+        }
+
+        .itv-switch-to-new-design-bar .text > .text-arrow {
+            background-image: url('<?php echo get_template_directory_uri() . '/src_spa/src/img/icon-arrow-right-white.svg'; ?>');            
+            background-size: 32px 32px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border-radius: 42px;
+            width: 42px;
+            height: 42px;
+            border: 2px solid #FFFFFF;
+        }
+        
+        #page {
+            padding-top: 142px;
+        }
+        
+        @media only screen and (max-width: 991.98px) {
+            .itv-switch-to-new-design-bar .container {
+                flex-wrap: wrap;
+                background-image: none;
+            }
+            
+            .itv-switch-to-new-design-bar .text {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .itv-switch-to-new-design-bar .text > span {
+                font-size: 20px;
+                line-height: 25px;
+                margin-right: 0px;
+                margin-left: 0px;            
+            }
+            
+            .itv-switch-to-new-design-bar .text > .text-arrow {
+                background-size: 16px 16px;
+                border-radius: 24px;
+                width: 24px;
+                height: 24px;
+                margin-top: 12px;
+            }
+        }        
+    </style>
 		
 </head>
 <?php flush(); ?>
@@ -29,6 +123,16 @@
 
 <div class="site-layout-container">
 <nav id="site_navigation" class="site-navigation" role="navigation">
+	<?php if(!empty($_COOKIE["itvOldDesign"])):?>
+	<div class="itv-switch-to-new-design-bar">
+		<div class="container">
+			<div class="text" onclick="return itvSwitchToV2();">
+				<span>Переходите на новый дизайн</span>
+				<div class="text-arrow"> </div>
+			</div>
+		</div>
+	</div>
+	<?php endif;?>
 	<div class="container">
 		<?php get_template_part('partials/navbar');?>
 	</div>

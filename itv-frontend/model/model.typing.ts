@@ -227,6 +227,7 @@ export interface ITaskState {
   };
   isApproved: boolean;
   nonceContactForm?: string;
+  hasCloseSuggestion?: Computed<ITaskModel>;
 }
 
 export interface ITaskReviewer {
@@ -309,6 +310,7 @@ export interface ITaskTimelineItem {
   isOverdue: boolean;
   timeline_date: string;
   doer?: ITaskTimelineItemDoer;
+  taskHasCloseSuggestion?: boolean;
 }
 
 export interface ITaskTimelineItemDoer {
@@ -347,6 +349,7 @@ export interface ITaskActions {
 }
 
 export interface ITaskThunks {
+  taskRequest: Thunk<ITaskActions>;
   manageDoerRequest: Thunk<
     ITaskActions,
     {
@@ -409,6 +412,7 @@ export interface ITaskThunks {
     }
   >;
   onAcceptSuggestedCloseRequest: ThunkOn<ITaskModel>;
+  onAcceptSuggestedCloseRequestUpdateTimeline: ThunkOn<ITaskModel>;
   rejectSuggestedCloseRequest: Thunk<
     ITaskActions,
     {

@@ -7,7 +7,7 @@ import TaskTimelineItem from "./TaskTimelineItem";
 
 const TaskTimeline: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn } = useStoreState((state) => state.session);
-  const { timeline } = useStoreState((state) => state.components.task);
+  const { timeline, hasCloseSuggestion } = useStoreState((state) => state.components.task);
   const { timelineRequest, reviewsRequest } = useStoreActions(
     (actions) => actions.components.task
   );
@@ -23,7 +23,7 @@ const TaskTimeline: React.FunctionComponent = (): ReactElement => {
         <h3>Календарь задачи</h3>
         <div className="timeline-list">
           {timeline.map((timelineItem) => (
-            <TaskTimelineItem key={timelineItem.id} {...timelineItem} />
+            <TaskTimelineItem key={timelineItem.id} {...timelineItem} taskHasCloseSuggestion={hasCloseSuggestion} />
           ))}
         </div>
       </div>

@@ -15,15 +15,20 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
 
   const updateDoers = useStoreActions((actions) => actions.components.task?.updateDoers);
   const manageDoer = useStoreActions((actions) => actions.components.task?.manageDoerRequest);
+  const {
+    taskRequest,
+    timelineRequest,
+  } = useStoreActions((actions) => actions.components.task);
 
   const calcelFn = manageDoer.bind(null, {
     action: "remove-candidate",
     taskId,
     doer: user,
-    callbackFn: updateDoers.bind(
-      null,
-      doers ? doers.filter(({ id }) => id !== user.id) : []
-    ),
+    callbackFn: () => {
+      updateDoers(doers ? doers.filter(({ id }) => id !== user.id) : []);
+      taskRequest();
+      timelineRequest();
+    }
   });
 
   return (

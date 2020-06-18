@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/tstsite\n"
 "POT-Creation-Date: 2020-06-08T03:21:58+00:00\n"
-"PO-Revision-Date: 2020-06-08 05:28+0200\n"
+"PO-Revision-Date: 2020-06-17 08:36+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -3756,10 +3756,8 @@ msgstr "Задачи"
 
 # @ tst
 #: partials/navbar.php:25
-#, fuzzy
-#| msgid "Member"
 msgid "Members"
-msgstr "Участник"
+msgstr "Участники"
 
 # @ tst
 #: partials/navbar.php:30 partials/navbar.php:32

@@ -13,7 +13,7 @@ const TaskTimelineOpenCloseSuggest: React.FunctionComponent<{
   const typeIn = (
     event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>
   ) => {
-    setSuggestComment(event.target.value.trim());
+    setSuggestComment(event.target.value);
   };
   const callbackFn = (): void => {
     // setOpenCloseSuggest.bind(null, false);
