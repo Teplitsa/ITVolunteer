@@ -62,11 +62,14 @@ function App(props) {
     )
 }
 
-render(
-    <ApolloProvider client={client}>
-        <StoreProvider store={itvStore}>
-            <App />
-        </StoreProvider>
-    </ApolloProvider>,
-    document.querySelector('#itv-wp-pages-footer-container')
-);
+let itvAppContainer = document.querySelector('#itv-wp-pages-footer-container')
+if(itvAppContainer) {
+    render(
+        <ApolloProvider client={client}>
+            <StoreProvider store={itvStore}>
+                <App />
+            </StoreProvider>
+        </ApolloProvider>,
+        itvAppContainer
+    );    
+}

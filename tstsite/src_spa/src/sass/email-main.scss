@@ -34,14 +34,21 @@
     line-height: 16px;
 }
 
+html {
+    vertical-align: inherit;
+}
+
 body {
     @include text;
     text-align: center;
     background-color: $color-gray-light-xl;
     padding-bottom: 59px;
+    vertical-align: inherit;
 }
 
 .header {
+    text-align: center;
+    
     .itv-logo {
         width: 132px;
         height: 38px;
@@ -51,6 +58,7 @@ body {
 }
 
 .footer {
+    text-align: center;
     color: $color-gray-dark-md;
 
     .teplitsa-logo {
@@ -58,6 +66,7 @@ body {
         height: 37px;
         display: inline-block;
         margin: 41px auto 0px auto;
+        text-align: center;
     }
 
     .join-community {
@@ -66,10 +75,12 @@ body {
         margin-top: 41px;
         margin-left: auto;
         margin-right: auto;
+        text-align: center;
     }
 
     .build-team {
         margin-top: 32px;
+        text-align: center;
 
         .btn {
             @include a-no-hover-underline;
@@ -82,6 +93,7 @@ body {
             color: $color-sec;
             padding-top: $base;
             padding-bottom: $base;
+            text-align: center;
 
             .btn-build-team {
 
@@ -95,6 +107,7 @@ body {
         margin-top: $base * 2;
         margin-left: auto;
         margin-right: auto;
+        text-align: center;
 
         a {
             @include a-hover-underline;

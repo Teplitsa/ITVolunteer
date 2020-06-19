@@ -17,6 +17,9 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="details actions">
+
+      {/* temporary disable the funciton
+
       {!isTaskAuthorLoggedIn &&
       <a
         href="#"
@@ -38,6 +41,9 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         Предложить новую дату
       </a>
       }
+
+      */}
+      
       <a
         href="#"
         className={`action close-task ${

@@ -1,4 +1,4 @@
-import { action, thunk, thunkOn } from "easy-peasy";
+import { action, thunk, thunkOn, computed } from "easy-peasy";
 import {
   IStoreModel,
   ITaskState,
@@ -20,6 +20,7 @@ import {
   stripTags,
   getAjaxUrl,
 } from "../../utilities/utilities";
+import * as _ from "lodash"
 
 const taskState: ITaskState = {
   id: "",
@@ -42,6 +43,9 @@ const taskState: ITaskState = {
   reviews: null,
   isApproved: false,
   nonceContactForm: "",
+  hasCloseSuggestion: computed((taskState) => {
+    return _.some(taskState.timeline, item => item.type === "close_suggest" && item.status === "current")
+  }),
 };
 
 export const queriedFields = Object.entries(taskState).reduce(
@@ -150,6 +154,32 @@ const taskActions: ITaskActions = {
 };
 
 const taskThunks: ITaskThunks = {
+  taskRequest: thunk(async ({ setState }, _, { getStoreState }) => {
+    const {
+      session: { validToken: token },
+      components: {
+        task: { id: taskId, slug: taskSlug},
+      },
+    } = getStoreState() as IStoreModel;
+
+    import("graphql-request").then(async ({ GraphQLClient }) => {
+      const getTaskStateQuery = graphqlQuery.getBySlug;
+      const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      try {
+        const { task } = await graphQLClient.request(getTaskStateQuery, {
+          taskSlug: String(taskSlug),
+        });
+        setState(task);
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+  }),
   suggestCloseTaskRequest: thunk(
     async (actions, { suggestComment, callbackFn }, { getStoreState }) => {
       if (!suggestComment) return;
@@ -157,7 +187,7 @@ const taskThunks: ITaskThunks = {
       const {
         session: { validToken: token },
         components: {
-          task: { databaseId: taskId },
+          task: { databaseId: taskId, slug: taskSlug },
         },
       } = getStoreState() as IStoreModel;
       const action = "suggest-close-task";
@@ -185,6 +215,8 @@ const taskThunks: ITaskThunks = {
           callbackFn && callbackFn();
           return {
             responseStatus,
+            taskSlug,
+            token,
           };
         }
       } catch (error) {
@@ -194,9 +226,10 @@ const taskThunks: ITaskThunks = {
   ),
   onSuggestCloseTaskRequest: thunkOn(
     (actions) => actions.suggestCloseTaskRequest.successType,
-    ({ timelineRequest }, { result }) => {
+    ({ timelineRequest, taskRequest }, { result }) => {
       if (result?.responseStatus !== "ok") return;
 
+      taskRequest();
       timelineRequest();
     }
   ),
@@ -400,32 +433,18 @@ const taskThunks: ITaskThunks = {
   ),
   onAcceptSuggestedCloseRequest: thunkOn(
     (actions) => actions.acceptSuggestedCloseRequest.successType,
-    ({ setState: setTaskState }, { result }) => {
+    ({ taskRequest }, { result }) => {
       if (result?.responseStatus !== "ok") return;
 
-      const { pageSlug, token } = result;
+      taskRequest();
+    }
+  ),
+  onAcceptSuggestedCloseRequestUpdateTimeline: thunkOn(
+    (actions) => actions.acceptSuggestedCloseRequest.successType,
+    ({ timelineRequest }, { result }) => {
+      if (result?.responseStatus !== "ok") return;
 
-      import("graphql-request").then(async ({ GraphQLClient }) => {
-        const { v4: uuidv4 } = await import("uuid");
-        const updateTaskStateQuery = graphqlQuery.getBySlug;
-        const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-
-        try {
-          const { task } = await graphQLClient.request(updateTaskStateQuery, {
-            input: {
-              clientMutationId: uuidv4(),
-              taskSlug: pageSlug,
-            },
-          });
-          setTaskState(task);
-        } catch (error) {
-          console.error(error.message);
-        }
-      });
+      timelineRequest();
     }
   ),
   rejectSuggestedCloseRequest: thunk(
@@ -468,7 +487,7 @@ const taskThunks: ITaskThunks = {
     }
   ),
   onRejectSuggestedCloseRequest: thunkOn(
-    (actions) => actions.newReviewRequest.successType,
+    (actions) => actions.rejectSuggestedCloseRequest.successType,
     ({ timelineRequest }, { result }) => {
       if (result?.responseStatus !== "ok") return;
 
@@ -570,8 +589,7 @@ const taskThunks: ITaskThunks = {
       });
 
       import("graphql-request").then(async ({ GraphQLClient }) => {
-        const { v4: uuidv4 } = await import("uuid");
-        const updateTaskStateQuery = graphqlQuery.getBySlug;
+        const getTaskStateQuery = graphqlQuery.getBySlug;
         const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
           headers: {
             authorization: `Bearer ${token}`,
@@ -579,11 +597,8 @@ const taskThunks: ITaskThunks = {
         });
 
         try {
-          const { task } = await graphQLClient.request(updateTaskStateQuery, {
-            input: {
-              clientMutationId: uuidv4(),
-              taskSlug: pageSlug,
-            },
+          const { task } = await graphQLClient.request(getTaskStateQuery, {
+            taskSlug: String(pageSlug),
           });
           setTaskState(task);
         } catch (error) {

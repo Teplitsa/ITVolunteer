@@ -1,5 +1,5 @@
 {
-    "name"        : "tst/itv/install",
+    "name"        : "tst/itv",
     "description" : "ITV website",
     "authors"     : [
         {
@@ -16,7 +16,8 @@
     },
    "require"     : {
         "composer/installers": "~1.0",
-        "tareq1988/wp-eloquent": "dev-master"
+        "tareq1988/wp-eloquent": "dev-master",
+        "pelago/emogrifier": "^3.1.0"
     },
     "require-dev" : {
     },

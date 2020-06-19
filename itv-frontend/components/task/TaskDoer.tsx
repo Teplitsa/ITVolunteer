@@ -10,6 +10,8 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     manageDoerRequest: manageDoer,
     updateApprovedDoer,
     updateDoers,
+    taskRequest,
+    timelineRequest,
   } = useStoreActions((actions) => actions.components.task);
   const {
     fullName,
@@ -23,7 +25,11 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     action: "approve-candidate",
     taskId,
     doer,
-    callbackFn: updateApprovedDoer.bind(null, doer),
+    callbackFn: function() {
+      updateApprovedDoer(doer);
+      taskRequest();
+      timelineRequest();
+    }
   });
   const declineFn = manageDoer.bind(null, {
     action: "decline-candidate",

@@ -460,6 +460,7 @@ function ajax_suggest_close_task() {
             $timeline->complete_current_items($task->ID);
             
             $close_timeline_item->status = TimelineModel::$STATUS_PAST;
+            $close_timeline_item->message = $message;
             $close_timeline_item->save();
             
             $reviews_timeline_item->status = TimelineModel::$STATUS_CURRENT;
@@ -1297,3 +1298,20 @@ function ajax_decline_task() {
     )));    
 }
 add_action('wp_ajax_decline-task', 'ajax_decline_task');
+
+
+function ajax_get_general_stats() {
+    $basic_stats = [
+        'activeMemebersCount' => tst_get_active_members_count(),
+        'closedTasksCount' => tst_get_closed_tasks_count(),
+        'workTasksCount' => tst_get_work_tasks_count(),
+        'newTasksCount' => tst_get_new_tasks_count(),
+    ];
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'stats' => $basic_stats,
+    )));    
+}
+add_action('wp_ajax_get_general_stats', 'ajax_get_general_stats');
+add_action('wp_ajax_nopriv_get_general_stats', 'ajax_get_general_stats');

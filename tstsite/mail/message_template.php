@@ -1,4 +1,13 @@
-<body><style><?php include(get_template_directory() . "/assets_email/css/email-main.css");?></style>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>it-волонтёр</title>
+    <style><?php include(get_template_directory() . "/assets_email/css/email-main.css");?></style>
+</head>
+
+<body>
 
 <div class="header">
 	<img class="itv-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-itv.png";?>" />
@@ -16,7 +25,7 @@
 		<div>Включитесь вместе в решение интересных кейсов, получайте больший эффект от помощи.</div>
 	</div>
 	<div class="build-team">
-		<a href="#" class="btn danger btn-build-team">Собрать команду</a>
+		<a href="https://itv.te-st.ru" class="btn danger btn-build-team">Собрать команду</a>
 	</div>
 	<a href="https://te-st.ru">
 		<img class="teplitsa-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-teplitsa.png";?>" />
@@ -27,3 +36,6 @@
 </div>
 
 </body>
+
+
+</html>

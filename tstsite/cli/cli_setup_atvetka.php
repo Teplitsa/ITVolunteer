@@ -3,6 +3,8 @@
 set_time_limit (0);
 ini_set('memory_limit','256M');
 
+use Pelago\Emogrifier\CssInliner;
+
 try {
 	$time_start = microtime(true);
 	include('cli_common.php');
@@ -22,6 +24,9 @@ try {
 	    ob_start();
 	    include(get_template_directory() . '/mail/message_template.php');
 	    $message_content = ob_get_clean();
+	    
+	    $message_content = CssInliner::fromHtml($message_content)->inlineCss()->render();
+	    $message_content = preg_replace('/[\r\n]/', '', $message_content);
 	    
 	    $posts_data[] = [
             'post_title' => $message_title,

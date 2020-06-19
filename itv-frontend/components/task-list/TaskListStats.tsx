@@ -1,4 +1,5 @@
 import { ReactElement, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import {
   IFetchResult,
@@ -20,6 +21,9 @@ const TaskListStats: React.FunctionComponent = (): ReactElement => {
 
   const statusStats = useStoreState(store => store.components.taskListFilter.statusStats)
   const setStatusStats = useStoreActions((actions) => actions.components.taskListFilter.setStatusStats);
+
+  const router = useRouter()
+  // const { slug } = router.query
 
   useEffect(() => {
       if(optionCheck === null) {
@@ -55,6 +59,14 @@ const TaskListStats: React.FunctionComponent = (): ReactElement => {
           }
       )
   }, [optionCheck])
+
+  useEffect(() => {
+    let statusMatch = router.asPath.match(/\/tasks\/(publish|closed|in_work)\/?/)
+    if(statusMatch) {
+      setOptionCheck({...optionCheck, status: statusMatch[1]})
+      saveOptionCheck()
+    }
+  }, [])
 
   function statusFilterClickHandler(e, status) {
       e.preventDefault()

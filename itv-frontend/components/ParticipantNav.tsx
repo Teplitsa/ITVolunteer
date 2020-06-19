@@ -38,7 +38,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     let id = setInterval(loadFreshNotifList, 1000 * 20);
-    return () => clearInterval(id);
+    return () => {
+      clearInterval(id);
+    }
   });
 
   return (
