@@ -28,10 +28,12 @@ export function itvAjaxUrl(action) {
 export function itvShowAjaxError(errorData) {
     let $ = jQuery;
     if(errorData.message) {
-        alert($('<div>').html(errorData.message).text())
+        // alert($('<div>').html(errorData.message).text())
+        console.log($('<div>').html(errorData.message).text())
     }
     else {
-        alert('Ошибка!')
+        // alert('Ошибка!')
+        console.log('Ошибка!')
     }
 
     if(errorData.action) {
