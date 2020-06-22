@@ -201,6 +201,7 @@
 
     .task-body-text p:not(:last-child) {
       margin: 0 0 10px;
+      word-break: break-all;
     }
 
     .task-basic-actions-bar {

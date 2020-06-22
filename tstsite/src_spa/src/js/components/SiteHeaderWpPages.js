@@ -180,7 +180,7 @@ export function SiteHeader(props) {
                     <a href="/tasks/publish/">Задачи</a>
                   </li>
                   <li>
-                    <a href={C.ITV_URLS.volunteers} target="_blank">Волонтеры</a>
+                    <a href={C.ITV_URLS.volunteers}>Волонтеры</a>
                   </li>
                   <li className="drop-menu">
                     <a href="#">О проекте</a>

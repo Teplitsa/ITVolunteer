@@ -70,8 +70,10 @@ function SiteFooter(props) {
             </div>
             <div className="owner">
                 <div className="col-text">
-                    <p>Теплица социальных технологий.</p>
-                    <p>Материалы сайта доступны по лицензии Creative Commons СС-BY-SA. 3.0</p>
+                    <p>Платформа «IT-волонтер» – проект <a href="https://te-st.ru" target="_blank">Теплицы социальных технологий</a></p>
+                    <p>
+                      Материалы сайта доступны по лицензии <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ru" target="_blank">Creative Commons СС-BY-SA. 4.0</a>
+                    </p>
                 </div>
                 <a className="col-logo" href="https://te-st.ru">
                     <img src={logoTeplitsa} className="logo" alt="Теплица социальных технологий" />

@@ -285,6 +285,7 @@
             @include htext-lg-bold;
             color: $color-main;
             margin-top: 12px;
+            word-break: break-all;
         }
 
         .meta-info {
@@ -319,6 +320,7 @@
             margin-top: 20px;
             padding-bottom: 16px;
             border-bottom: 1px solid $color-gray-light-md;
+            word-break: break-all;
         }
 
         .meta-terms {
