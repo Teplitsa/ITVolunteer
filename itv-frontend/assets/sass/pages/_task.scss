@@ -197,11 +197,11 @@
       padding-bottom: 20px;
       border-bottom: 1px solid $color-gray-light-md;
       font-weight: 400;
+      word-break: break-all;
     }
 
     .task-body-text p:not(:last-child) {
       margin: 0 0 10px;
-      word-break: break-all;
     }
 
     .task-basic-actions-bar {
