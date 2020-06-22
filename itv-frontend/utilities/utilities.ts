@@ -89,10 +89,12 @@ export function showAjaxError(errorData) {
     if(errorData.message) {
         let el = document.createElement('div')
         el.innerHTML = errorData.message
-        alert(el.textContent)
+        // alert(el.textContent)
+        console.log(el.textContent);
     }
     else {
-        alert('Ошибка!')
+        // alert('Ошибка!')
+        console.log('Ошибка!');
     }
 
     if(errorData.action) {
