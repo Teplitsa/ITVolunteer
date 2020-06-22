@@ -16,12 +16,12 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-define('ITV_FRONTEND_VERSION', '1.0.10' . "." . rand());
+define('ITV_FRONTEND_VERSION', '1.0.11' . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
 define('ITV_FORCE_THEME_MOD_SETUP', false);
 
 function tst_get_version_num(){
 	
-	if(false !== strpos(site_url(), 'testplugins.ngo2.ru')){
+	if(false !== strpos(site_url(), 'itv.ngo2.ru')){
 		//on dev force random number to avoid cache problems
 		$num = rand();
 	}

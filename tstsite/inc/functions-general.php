@@ -203,7 +203,7 @@ function itv_html_email_with_cc($to, $subject, $message, $other_emails = [], $em
 
 function itv_notify_user( $user, $notification_id, $params, $task = NULL ) {
     ItvAtvetka::instance()->mail($notification_id, array_merge([
-        'to' => $user->user_email,
+        'mailto' => $user->user_email,
     ], $params));
     
     $itv_log = ItvLog::instance ();

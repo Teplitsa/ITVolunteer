@@ -19,7 +19,7 @@ try {
         
 	    $message_content = !empty(\ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]) ? \ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]['text'] : $email_template['text'];
 	    $message_content = preg_replace('/\{\{([a-z_]+)\}\}/', '{\1}', $message_content);
-	    $message_content = wpautop( $message_content );	    
+// 	    $message_content = wpautop( $message_content );	    
 	    
 	    ob_start();
 	    include(get_template_directory() . '/mail/message_template.php');
@@ -27,6 +27,8 @@ try {
 	    
 	    $message_content = CssInliner::fromHtml($message_content)->inlineCss()->render();
 	    $message_content = preg_replace('/[\r\n]/', '', $message_content);
+	    $message_content = preg_replace('/%7D/', '}', $message_content);
+	    $message_content = preg_replace('/%7B/', '{', $message_content);
 	    
 	    $posts_data[] = [
             'post_title' => $message_title,

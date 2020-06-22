@@ -458,7 +458,7 @@ class ItvConsult {
             $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
             
             ItvAtvetka::instance()->mail('consult_needed_author_notification', [
-                'to' => $to,
+                'mailto' => $to,
                 'consult_week_day' => $consult_moment['week_day_str'],
                 'consult_date' => $consult_moment['date_str'],
                 'consult_time' => $consult_moment['time_str'],
