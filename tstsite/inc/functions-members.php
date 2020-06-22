@@ -438,7 +438,7 @@ function tst_send_activation_email($user) {
 	$link = is_multisite() ? network_site_url($account_activation_url) : home_url($account_activation_url);
 	
     ItvAtvetka::instance()->mail('activate_account_notice', [
-        'to' => $user_email,
+        'mailto' => $user_email,
         'login' => $user_login,
         'complete_reg_url' => $link,
     ]);

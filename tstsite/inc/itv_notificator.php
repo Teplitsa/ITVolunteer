@@ -188,7 +188,7 @@ class ItvNotificator {
             if (! $this->is_skip_sending) {
                 try {
                     ItvAtvetka::instance()->mail('task_no_doer_notif', [
-                        'to' => $user_email,
+                        'mailto' => $user_email,
                         'username' => $user_nicename,
                         'task_link' => $task_permalink, 
                     ]);
@@ -216,7 +216,7 @@ class ItvNotificator {
         
         /* notice to candidate: */
         ItvAtvetka::instance()->mail('account_activated_notice', [
-            'to' => $user->user_email,
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'status_message' => $task_status_message,
@@ -232,7 +232,7 @@ class ItvNotificator {
         
         /* notice to candidate: */
         ItvAtvetka::instance()->mail('task_status_changed_doer', [
-            'to' => $user->user_email,
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'status_message' => $task_status_message,
@@ -247,7 +247,7 @@ class ItvNotificator {
         $task_permalink .= '#leave_review_for_doer';
     
         ItvAtvetka::instance()->mail('task_status_closed_author', [
-            'to' => $user->user_email,
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
@@ -261,7 +261,7 @@ class ItvNotificator {
         $task_permalink .= '#leave_review_for_author';
         
         ItvAtvetka::instance()->mail('task_status_closed_doer', [
-            'to' => $user->user_email,
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
@@ -366,7 +366,7 @@ class ItvNotificator {
                 try {
                     
                     ItvAtvetka::instance()->mail($notif_key, [
-                        'to' => $user_email,
+                        'mailto' => $user_email,
                         'username' => $user_nicename,
                         'task_link' => $task_permalink,
                         'days_in_status' => $task_notif_days,

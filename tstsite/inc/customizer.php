@@ -925,7 +925,7 @@ function ajax_add_message() {
     }
 
     ItvAtvetka::instance()->mail('message_added_notification', [
-        'to' => get_option('admin_email'),
+        'mailto' => get_option('admin_email'),
         'page_url' => isset($_POST['page_url']) ? $_POST['page_url'] : '',
         'name' => $_POST['name'],
         'email' => $_POST['email'],
