@@ -3,9 +3,7 @@ import { useStoreState } from "../../model/helpers/hooks";
 import IconPaseka from "../../assets/img/icon-paseka.svg";
 
 const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
-  const approvedDoer = useStoreState(
-    (state) => state.components.task.approvedDoer
-  );
+  const { approvedDoer, status: taskStatus } = useStoreState((state) => state.components.task);  
 
   if (!approvedDoer) return null;
 
@@ -20,7 +18,7 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
 
   return (
     <>
-      <h2>Над задачей работает</h2>
+      <h2>{taskStatus === "closed" ? "Помогли успешно решить задачу" : "Над задачей работает"}</h2>
       <div className="sidebar-users-block responses approved-doer">
         <div className="user-cards-list">
           <div className="user-card">
