@@ -337,7 +337,7 @@ body.itv-v2-header-footer {
                         background-image: url('../img/icon-social-fb.svg');
                     }
 
-                    &[href^="https://teleg.run"]:before {
+                    &[href^="https://teleg.run"]:before, &[href^="https://t.me"]:before {
                         background-image: url('../img/icon-social-tg.svg');
                     }
 

@@ -3,23 +3,16 @@ import { ReactElement } from "react";
 const TeplitsaProjectLinks: React.FunctionComponent = (): ReactElement => {
   const links: Map<string, { title: string; description: string }> = new Map([
     [
-      "https://knd.te-st.ru",
-      { title: "Кандинский", description: "Сайт-конструктор для НКО" },
-    ],
-    [
-      "https://audit.te-st.ru",
-      { title: "Аудит", description: "Интерактивная система аудита сайта НКО" },
+      "https://teplo.social/",
+      { title: "Теплосеть", description: "Платформа непрерывного образования" },
     ],
     [
       "https://leyka.te-st.ru",
       { title: "Лейка", description: "Сбор пожертвований на сайте" },
     ],
     [
-      "https://teplo.social",
-      {
-        title: "Онлайн курс",
-        description: "Как создать, развивать и продвигать сайт НКО",
-      },
+      "https://knd.te-st.ru",
+      { title: "Кандинский", description: "Сайт-конструктор для НКО" },
     ],
   ]);
 

@@ -7,6 +7,21 @@ import { ITV_URLS } from '../const'
 function SiteFooter(props) {
     const basicStats = ITV_BASIC_STATS;
 
+    const links = [
+      [
+        "https://teplo.social/",
+        { title: "Теплосеть", description: "Платформа непрерывного образования" },
+      ],
+      [
+        "https://leyka.te-st.ru",
+        { title: "Лейка", description: "Сбор пожертвований на сайте" },
+      ],
+      [
+        "https://knd.te-st.ru",
+        { title: "Кандинский", description: "Сайт-конструктор для НКО" },
+      ],
+    ];
+
     return (
         <footer className="site-footer" role="contentinfo"><div className="site-footer-inner">
             <div className="header">
@@ -40,29 +55,25 @@ function SiteFooter(props) {
                 <div className="col-projects">
                     <h3>Проекты Теплицы</h3>
                     <div className="projects">
-                        <div className="project">
-                            <a href="https://knd.te-st.ru" target="_blank">Кандинский</a>
-                            <p>Сайт-конструктор для НКО</p>
-                        </div>
-                        <div className="project">
-                            <a href="https://audit.te-st.ru" target="_blank">Аудит</a>
-                            <p>Интерактивная система аудита сайта НКО</p>
-                        </div>
-                        <div className="project">
-                            <a href="https://leyka.te-st.ru" target="_blank">Лейка</a>
-                            <p>Сбор пожертвований на сайте</p>
-                        </div>
-                        <div className="project">
-                            <a href="https://teplo.social" target="_blank">Онлайн курс</a>
-                            <p>Как создать, развивать и продвигать сайт НКО</p>
-                        </div>
+                        {links.map(
+                          ([url, { title, description }], i) => {
+                            return (
+                              <div className="project" key={i}>
+                                <a href={url} target="_blank">
+                                  {title}
+                                </a>
+                                <p>{description}</p>
+                              </div>
+                            );
+                          }
+                        )}
                     </div>
                 </div>
                 <div className="col-social">
                     <h3>Соцсети</h3>
                     <div className="social-links">
                         <a href="https://www.facebook.com/TeplitsaST" target="_blank">Facebook</a>
-                        <a href="https://teleg.run/teplitsa" target="_blank">Телеграм</a>
+                        <a href="https://t.me/itvolunteers" target="_blank">Телеграм</a>
                         <a href="https://vk.com/teplitsast" target="_blank">Вконтакте</a>
                         <a href="https://itv.te-st.ru/feed/" target="_blank">RSS-канал</a>
                     </div>

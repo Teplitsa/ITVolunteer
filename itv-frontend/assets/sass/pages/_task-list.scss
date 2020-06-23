@@ -70,7 +70,7 @@
         @include text-sm;
         color: $color-gray-dark-lg;
         margin-top: 12px;
-        padding: 8px 12px;
+        padding: 8px 12px 8px 12px;
         background-color: $color-gray-light-xl;
         border: 1px solid $color-gray-light-md;
         border-radius: 6px;
@@ -82,28 +82,34 @@
         .filter-tip-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
+            align-items: top;
 
             .filter-tip-title {
                 @include text-sm-bold;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
                 color: $color-gray-dark-md;
 
                 & > span {
-                    display: inline-block;
-                    margin-top: 0px;
-                    vertical-align: middle;
+                    display: block;
                 }
 
                 img {
                     margin-right: 4px;
-                    vertical-align: text-bottom;
+                    width: 16px;
+                    height: 16px;
+                    display: block;
                 }
             }
 
             .filter-tip-close {
-                background-image: url('../../img/icon-filter-close.svg');
-                width: 16px;
-                height: 16px;
+                background-image: url('../../img/icon-filter-close-tip.svg');
+                background-size: 8px 8px;
+                width: 8px;
+                height: 8px;
+                margin-top: 2px;
             }
         }
     }
@@ -117,15 +123,19 @@
                 color: $color-gray-dark-md;
                 border-bottom: 1px solid $color-gray-light-md;
                 padding-bottom: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
 
                 & > img {
                     margin-right: 4px;
                     width: 16px;
                     height: 16px;
-                    vertical-align: middle;
+                    display: block;
                 }
 
                 & > span {
+                  display: block;
                 }
             }
 

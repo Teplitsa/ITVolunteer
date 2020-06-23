@@ -16,7 +16,7 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-define('ITV_FRONTEND_VERSION', '2.0.1' . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
+define('ITV_FRONTEND_VERSION', '2.0.2' . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
 define('ITV_FORCE_THEME_MOD_SETUP', false);
 
 function tst_get_version_num(){
