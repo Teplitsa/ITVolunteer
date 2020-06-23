@@ -582,7 +582,7 @@
         }
       }
 
-      &.current {
+      &.current:not(.completed) {
         color: $color-main;
 
         &.overdue {
@@ -598,7 +598,7 @@
         }
       }
 
-      &.past {
+      &.past, &.completed {
         opacity: 0.5;
 
         .info {

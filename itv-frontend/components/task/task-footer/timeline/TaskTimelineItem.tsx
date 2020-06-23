@@ -28,11 +28,20 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
   const { approvedDoer, status: taskStatus } = useStoreState((state) => state.components.task);  
 
+  const reviewForDoer = useStoreState(
+    (state) => state.components.task?.reviews?.reviewForDoer
+  );
+
+  const reviewForAuthor = useStoreState(
+    (state) => state.components.task?.reviews?.reviewForAuthor
+  );
+
   return (type==="close" && taskHasCloseSuggestion) ? null : (
     <div
-      className={`checkpoint ${status} ${type} ${decision} ${
-        isOverdue ? "overdue-DISABLED" : ""
-      }`}
+      className={`checkpoint ${status} ${type} ${decision} 
+        ${isOverdue ? "overdue-DISABLED" : ""}
+        ${reviewForDoer && reviewForAuthor && taskStatus === "closed" ? "completed" : ""}
+      `}
     >
       {/* temporary disable dates
       <TaskTimelineDate date={timeline_date} />
