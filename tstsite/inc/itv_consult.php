@@ -457,29 +457,22 @@ class ItvConsult {
             $consult_moment = get_post_meta($consult->ID, 'consult_moment', true);
             $consult_moment = static::get_consult_moment_by_datetime($consult_moment);
             
-            $message = __('itv_email_test_consult_needed_notification', 'tst');
-            $data = array(
-                '{{consult_week_day}}' => $consult_moment['week_day_str'],
-                '{{consult_date}}' => $consult_moment['date_str'],
-                '{{consult_time}}' => $consult_moment['time_str'],
-                '{{task_url}}' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
-                '{{task_title}}' => get_the_title($post_id),
-                '{{consultant_name}}' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
-                '{{consultant_email}}' => $consultant->user_email,
-                '{{consultant_skype}}' => get_user_meta($consultant->ID, 'user_skype', true)
-            );
-            $message = str_replace(array_keys($data), $data, $message);
-            $message = str_replace("\\", "", $message);
-            $message = nl2br($message);
-    
-            $subject = __('itv_email_test_consult_needed_notification_subject', 'tst');
-    
-            $headers  = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-            $headers .= 'From: ' . __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>' . "\r\n";
-            $headers .= 'Bcc: ' . implode(', ', $consult_bcc_emails) . "\r\n";
-    
-            wp_mail($to, $subject, $message, $headers);
+            ItvAtvetka::instance()->mail('consult_needed_author_notification', [
+                'mailto' => $to,
+                'consult_week_day' => $consult_moment['week_day_str'],
+                'consult_date' => $consult_moment['date_str'],
+                'consult_time' => $consult_moment['time_str'],
+                'task_url' => '<a href="' . get_permalink($post_id) . '">' . get_permalink($post_id) . '</a>',
+                'task_title' => get_the_title($post_id),
+                'consultant_name' => $consultant->user_firstname . ' ' . $consultant->user_lastname,
+                'consultant_email' => $consultant->user_email,
+                'consultant_skype' => get_user_meta($consultant->ID, 'user_skype', true),
+                
+                'reply-email' => $consult_email_from,
+                'from' => __('ITVounteer', 'tst') . ' <'.$consult_email_from.'>',
+                'bcc' => implode(', ', $consult_bcc_emails),
+            ]);
+        
         }
     
     }

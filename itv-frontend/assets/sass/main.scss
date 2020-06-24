@@ -1,0 +1,22 @@
+@import "base/reset";
+@import "base/fonts";
+@import "bootstrap/scss/_functions";
+@import "bootstrap/scss/_variables";
+@import "bootstrap/scss/_mixins";
+@import "bootstrap/scss/mixins/_breakpoints";
+
+@import "base/presets";
+@import "base/typography";
+@import "helpers/mixins";
+@import "helpers/utils";
+
+@import "layout/header";
+@import "layout/footer";
+@import "base/common";
+@import "pages/task";
+@import "pages/task-list";
+
+@import "components/notif";
+@import "components/contact-form";
+
+@import "vendors/react-datepicker";

@@ -1,0 +1,447 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "INTERFACE",
+        "name": "Node",
+        "possibleTypes": [
+          {
+            "name": "NgoTaskTag"
+          },
+          {
+            "name": "Taxonomy"
+          },
+          {
+            "name": "PostType"
+          },
+          {
+            "name": "Task"
+          },
+          {
+            "name": "User"
+          },
+          {
+            "name": "Comment"
+          },
+          {
+            "name": "CommentAuthor"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Category"
+          },
+          {
+            "name": "PostFormat"
+          },
+          {
+            "name": "Tag"
+          },
+          {
+            "name": "RewardTag"
+          },
+          {
+            "name": "Page"
+          },
+          {
+            "name": "UserRole"
+          },
+          {
+            "name": "Menu"
+          },
+          {
+            "name": "MenuItem"
+          },
+          {
+            "name": "Plugin"
+          },
+          {
+            "name": "Theme"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "TermNode",
+        "possibleTypes": [
+          {
+            "name": "NgoTaskTag"
+          },
+          {
+            "name": "Category"
+          },
+          {
+            "name": "PostFormat"
+          },
+          {
+            "name": "Tag"
+          },
+          {
+            "name": "RewardTag"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "UniformResourceIdentifiable",
+        "possibleTypes": [
+          {
+            "name": "NgoTaskTag"
+          },
+          {
+            "name": "Task"
+          },
+          {
+            "name": "User"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Category"
+          },
+          {
+            "name": "PostFormat"
+          },
+          {
+            "name": "Tag"
+          },
+          {
+            "name": "RewardTag"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "ContentNode",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "CommentAuthorUnion",
+        "possibleTypes": [
+          {
+            "name": "User"
+          },
+          {
+            "name": "CommentAuthor"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "PostObjectUnion",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Task"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithTitle",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithContentEditor",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithAuthor",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithFeaturedImage",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithComments",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "HierarchicalContentNode",
+        "possibleTypes": [
+          {
+            "name": "MediaItem"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "ContentTemplateUnion",
+        "possibleTypes": [
+          {
+            "name": "DefaultTemplate"
+          },
+          {
+            "name": "HomepageTemplate"
+          },
+          {
+            "name": "AccountActivationTemplate"
+          },
+          {
+            "name": "MemberTasksTemplate"
+          },
+          {
+            "name": "MemberActionsTemplate"
+          },
+          {
+            "name": "MembersPageTemplate"
+          },
+          {
+            "name": "NKOTagsPageTemplate"
+          },
+          {
+            "name": "RegistrationTemplate"
+          },
+          {
+            "name": "TagsPageTemplate"
+          },
+          {
+            "name": "TaskActionsTemplate"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "ContentTemplate",
+        "possibleTypes": [
+          {
+            "name": "DefaultTemplate"
+          },
+          {
+            "name": "HomepageTemplate"
+          },
+          {
+            "name": "AccountActivationTemplate"
+          },
+          {
+            "name": "MemberTasksTemplate"
+          },
+          {
+            "name": "MemberActionsTemplate"
+          },
+          {
+            "name": "MembersPageTemplate"
+          },
+          {
+            "name": "NKOTagsPageTemplate"
+          },
+          {
+            "name": "RegistrationTemplate"
+          },
+          {
+            "name": "TagsPageTemplate"
+          },
+          {
+            "name": "TaskActionsTemplate"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithExcerpt",
+        "possibleTypes": [
+          {
+            "name": "Task"
+          },
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithTrackbacks",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithRevisions",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "TermObjectUnion",
+        "possibleTypes": [
+          {
+            "name": "Category"
+          },
+          {
+            "name": "Tag"
+          },
+          {
+            "name": "PostFormat"
+          },
+          {
+            "name": "RewardTag"
+          },
+          {
+            "name": "NgoTaskTag"
+          }
+        ]
+      },
+      {
+        "kind": "INTERFACE",
+        "name": "NodeWithPageAttributes",
+        "possibleTypes": [
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "ContentRevisionUnion",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "MenuItemObjectUnion",
+        "possibleTypes": [
+          {
+            "name": "Post"
+          },
+          {
+            "name": "Page"
+          },
+          {
+            "name": "Category"
+          },
+          {
+            "name": "Tag"
+          },
+          {
+            "name": "RewardTag"
+          },
+          {
+            "name": "NgoTaskTag"
+          },
+          {
+            "name": "MenuItem"
+          }
+        ]
+      }
+    ]
+  }
+}

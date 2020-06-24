@@ -79,6 +79,8 @@ __("user_xp_alert_%s_upload_photo", 'tst');
 __("user_xp_alert_%s_add_comment", 'tst');
 __("user_xp_alert_%s_create_task", 'tst');
 __("user_xp_alert_%s_add_as_candidate", 'tst');
+__("user_xp_alert_%s_add_as_candidate_0617", 'tst');
+__("user_xp_alert_%s_cancel_as_candidate_0617", 'tst');
 __("user_xp_alert_%s_task_done", 'tst');
 __("user_xp_alert_%s_my_task_done", 'tst');
 __("user_xp_alert_%s_review_for_doer", 'tst');

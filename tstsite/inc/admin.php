@@ -731,3 +731,31 @@ function itv_tasks_log_page_callback() {
 <?php 	
 	echo '</div>';
 }
+
+
+/* admin filter by tasks tag */
+add_action( 'restrict_manage_posts', 'tst_admin_tasks_filter' );
+function tst_admin_tasks_filter(){
+    global $wpdb;
+
+    $post_type = 'post';
+    if(isset($_GET['post_type'])) {
+        $post_type = $_GET['post_type'];
+    }
+    
+    if($post_type != 'tasks') {
+        return;
+    }
+    
+    ?>
+    <select name="nko_task_tag" id="ADMIN_NKO_TASK_TAGS_FILTER" class="tst-tasks-admin-filter">
+    	<option value=""><?php echo __('All NKO tags', 'tst') ?></option>
+    <?php
+    $tags = get_terms('nko_task_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
+    $selected_tasks_tag = isset($_GET['nko_task_tag']) ? $_GET['nko_task_tag'] : '';
+    foreach($tags as $tag) { ?>
+        <option value="<?php echo esc_attr($tag->slug);?>" <?php echo ($tag->slug == $selected_tasks_tag ? 'selected="selected"' : '');?>><?php echo apply_filters('frl_the_title', $tag->name);?></option>
+    <?php }?>
+    </select>
+    <?php
+}

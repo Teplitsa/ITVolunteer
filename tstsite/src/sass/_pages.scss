@@ -75,7 +75,15 @@
 		}
 	}
 }
-	
+
+#tst-about-video-modal {
+    z-index:10050;
+    
+    .modal-dialog {
+        width:671px;
+    }
+}
+
 .intro-panel-filters {	
 	color: $color-text;
 	text-align: center;
@@ -280,7 +288,7 @@
 	.form-control {
 		//padding: 4px 8px;	
 	}
-	
+    
 	max-width: 460px;
 }
 
@@ -290,8 +298,8 @@
 }
 
 .rl-error {
-	margin: 5px 0 0;
-	font-size: 11px;
+	margin: 8px 0 0;
+	font-size: 13px;
 	padding: 2px 7px;
 	letter-spacing: 0.5px;
 	background: #F2DEDE;

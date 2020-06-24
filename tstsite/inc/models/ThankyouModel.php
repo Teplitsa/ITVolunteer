@@ -46,14 +46,13 @@ class ThankyouModel extends ITVSingletonModel {
         \ItvLog::instance()->log_user_action(\ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
         
         $from_user = User::find($user_id);
-        $email_subject = \ItvEmailTemplates::instance()->get_title('thankyou_notification');
-        $email_body_template = \ItvEmailTemplates::instance()->get_text('thankyou_notification');
         
-        wp_mail(
-            $to_user->user_email,
-            $email_subject,
-            nl2br(itv_fill_template($email_body_template, ['to_username' => $to_user->display_name, 'from_username' => $from_user->display_name, 'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU)]))
-        );
+        ItvAtvetka::instance()->mail('thankyou_notification', [
+            'user_id' => $to_user->ID,
+            'to_username' => $to_user->display_name,
+            'from_username' => $from_user->display_name,
+            'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU),
+        ]);
         
         if($thankyou->counter > $this->THANKYOU_CONFIG['TOO_MUCH'] && !$thankyou->is_too_much_sent && count($this->THANKYOU_CONFIG['TOO_MUCH_ALERT_TEAM'])) {
             
@@ -93,7 +92,21 @@ class ThankyouModel extends ITVSingletonModel {
     
     private function is_said_recently_condition($thankyou) {
         return strtotime($thankyou->moment) > current_time('timestamp') - $this->THANKYOU_CONFIG['MIN_INTERVAL'] * 60;
-    } 
+    }
+
+    public function get_user_thankyou_count($to_uid) {
+        $query = ThankYou::where('to_uid', $to_uid);
+        return $query->sum('counter');
+    }
+
+    public function is_yourself($user_id, $to_uid) {
+        return $user_id == $to_uid;
+    }
+    
+    public function is_limit_exceeded($user_id) {
+        $thankyou_count = \ItvLog::instance()->count_user_actions_for_period($user_id, 'user_thankyou', date('Y-m-d H:i:s', time() - $this->THANKYOU_CONFIG['PERIOD_LIMIT_PERIOD']));
+        return $thankyou_count >= $this->THANKYOU_CONFIG['PERIOD_LIMIT'];
+    }
 }
 
 /* exceptions */

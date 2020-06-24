@@ -1,0 +1,13 @@
+body {
+  background-color: $color-gray-light-xl;
+  overflow-x: hidden;
+  @include text;
+
+  #itv-spa-container {
+  }
+
+  a {
+    @include a-hover-underline;
+    color: $color-main;
+  }
+}

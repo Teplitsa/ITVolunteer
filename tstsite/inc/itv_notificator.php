@@ -187,10 +187,12 @@ class ItvNotificator {
         if (! $this->is_notification_sent ( 'notif_no_task_doer_yet', $this->get_task_notif_key ( $task ), $user_email )) {
             if (! $this->is_skip_sending) {
                 try {
-                    wp_mail ( $user_email, $email_templates->get_title ( 'task_no_doer_notif' ), nl2br ( $this->fill_template ( $email_templates->get_text ( 'task_no_doer_notif' ), array (
+                    ItvAtvetka::instance()->mail('task_no_doer_notif', [
+                        'mailto' => $user_email,
                         'username' => $user_nicename,
-                        'task_link' => $task_permalink 
-                    ) ) ) );
+                        'task_link' => $task_permalink, 
+                    ]);
+                    
                     $this->pring_debug ( "SENT\n" );
                     $this->save_notification_fact ( 'notif_no_task_doer_yet', $this->get_task_notif_key ( $task ), $user_email );
                     
@@ -210,75 +212,62 @@ class ItvNotificator {
     /* notify candidate about task status change */
     function notif_candidate_about_task_status_change($user, $task) {
         $task_status_message = __ ( 'Task status become ' . $task->post_status, 'tst' );
-        
-        $email_templates = ItvEmailTemplates::instance ();
         $task_permalink = get_permalink ( $task );
         
-        $email_title = $email_templates->get_title ( 'task_status_changed' );
-        $email_text = $email_templates->get_text ( 'task_status_changed' );
-        
         /* notice to candidate: */
-        wp_mail ( $user->user_email, $email_title, nl2br ( $this->fill_template ( $email_text, array (
+        ItvAtvetka::instance()->mail('account_activated_notice', [
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'status_message' => $task_status_message,
             'task_link' => $task_permalink 
-        ) ) ) );
-        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_CANDIDATE_ABOUT_TASK_STATUS_CHANGED, $user->ID, $email_title, $task ? $task->ID : 0);
+        ]);
+        
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_CANDIDATE_ABOUT_TASK_STATUS_CHANGED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_changed'), $task ? $task->ID : 0);
     }
     
     function notif_doer_about_task_status_change($user, $task) {
         $task_status_message = __ ( 'Task status become ' . $task->post_status, 'tst' );
-        
-        $email_templates = ItvEmailTemplates::instance ();
         $task_permalink = get_permalink ( $task );
         
-        $email_title = $email_templates->get_title ( 'task_status_changed_doer' );
-        $email_text = $email_templates->get_text ( 'task_status_changed_doer' );
-        
         /* notice to candidate: */
-        wp_mail ( $user->user_email, $email_title, nl2br ( $this->fill_template ( $email_text, array (
+        ItvAtvetka::instance()->mail('task_status_changed_doer', [
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'status_message' => $task_status_message,
             'task_link' => $task_permalink
-        ) ) ) );
-        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_STATUS_CHANGED, $user->ID, $email_title, $task ? $task->ID : 0);
+        ]);
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_STATUS_CHANGED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_changed_doer'), $task ? $task->ID : 0);
     }
     
     /* notify author about task status change */
     function notif_author_about_task_closed($user, $task) {
-        $email_templates = ItvEmailTemplates::instance ();
         $task_permalink = get_permalink ( $task );
-    
-        $email_title = $email_templates->get_title ( 'task_status_closed_author' );
-        $email_text = $email_templates->get_text ( 'task_status_closed_author' );
         $task_permalink .= '#leave_review_for_doer';
     
-        wp_mail ( $user->user_email, $email_title, nl2br ( $this->fill_template ( $email_text, array (
+        ItvAtvetka::instance()->mail('task_status_closed_author', [
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
-        ) ) ) );
-        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_AUTHOR_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
+        ]);
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_AUTHOR_ABOUT_TASK_CLOSED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_closed_author'), $task ? $task->ID : 0);
     }
     
     /* notify doer about task status change */
     function notif_doer_about_task_closed($user, $task) {
-        $email_templates = ItvEmailTemplates::instance ();
         $task_permalink = get_permalink ( $task );
-    
-        $email_title = $email_templates->get_title ( 'task_status_closed_doer' );
-        $email_text = $email_templates->get_text ( 'task_status_closed_doer' );
         $task_permalink .= '#leave_review_for_author';
         
-        wp_mail ( $user->user_email, $email_title, nl2br ( $this->fill_template ( $email_text, array (
+        ItvAtvetka::instance()->mail('task_status_closed_doer', [
+            'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
             'task_link' => $task_permalink
-        ) ) ) );
+        ]);
         
-        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, $email_title, $task ? $task->ID : 0);
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_closed_doer'), $task ? $task->ID : 0);
     }
     
     /**
@@ -375,11 +364,14 @@ class ItvNotificator {
         if (! $this->is_notification_sent ( $notif_key, $this->get_task_last_edit_notif_key ( $task ), $user_email )) {
             if (! $this->is_skip_sending) {
                 try {
-                    wp_mail ( $user_email, $email_templates->get_title ( $notif_key ), nl2br ( $this->fill_template ( $email_templates->get_text ( $notif_key ), array (
+                    
+                    ItvAtvetka::instance()->mail($notif_key, [
+                        'mailto' => $user_email,
                         'username' => $user_nicename,
                         'task_link' => $task_permalink,
                         'days_in_status' => $task_notif_days,
-                    ) ) ) );
+                    ]);
+                    
                     $this->pring_debug ( "SENT\n" );
                     $this->notif_sent_count += 1;
                     $this->stats_by_actions[$notif_key]['notif_sent_count'] += 1;

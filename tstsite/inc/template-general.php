@@ -20,7 +20,11 @@ function frl_page_title(){
         $title = apply_filters('tag_archive_title', single_tag_title('', false));
 		$title = sprintf(__('Tasks by tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
     }
-	elseif(is_singular('tasks')) {
+    elseif(is_tax('nko_task_tag')) {
+        $title = apply_filters('tag_archive_title', single_tag_title('', false));
+		$title = sprintf(__('Tasks by NKO tag: %s ( %s )', 'tst'), $title, (int)$wp_query->found_posts);
+    }
+    elseif(is_singular('tasks')) {
 
 		//$id = intval($post->ID); 
 		$title = apply_filters('the_title', $post->post_title);
@@ -744,4 +748,19 @@ function tst_news_item_in_loop($news){
 <?php	
 }
 
-
+function itv_get_search_button_color_class($query) {
+    $task_status = $query->get('task_status');
+    if($task_status == 'in_work') {
+        $btn_class = "btn-warning";
+    }
+    elseif($task_status == 'archived') {
+        $btn_class = "btn-primary";
+    }
+    elseif($task_status == 'closed') {
+        $btn_class = "btn-default";
+    }
+    else {
+        $btn_class = "btn-success";
+    }
+    return $btn_class;
+}

@@ -109,6 +109,22 @@ class ItvReviews {
 		
 		return $reviews;
 	}
+	
+	public function count_doer_reviews($doer_id) {
+	    global $wpdb;
+	    
+	    $reviews_count = $wpdb->get_var(
+	        $wpdb->prepare(
+	            "
+                SELECT COUNT(*) AS cnt FROM $this->db_table
+				WHERE doer_id = %d
+				",
+	            $doer_id
+            )
+        );
+	    
+	    return $reviews_count;
+	}
 }
 
 class ItvReviewsAuthor {
@@ -219,4 +235,21 @@ class ItvReviewsAuthor {
 	
 		return $reviews;
 	}
+	
+	public function count_author_reviews($author_id) {
+	    global $wpdb;
+	    
+	    $reviews_count = $wpdb->get_var(
+	        $wpdb->prepare(
+	            "
+				SELECT COUNT(*) AS cnt FROM $this->db_table
+				WHERE author_id = %d
+				",
+	            $author_id
+            )
+        );
+	    
+	    return $reviews_count;
+	}
+	
 }

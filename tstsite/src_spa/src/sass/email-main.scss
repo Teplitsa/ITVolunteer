@@ -1,0 +1,212 @@
+@import 'reset';
+@import 'front/presets';
+@import 'front/mixins';
+
+@mixin text-lg-line-lg-condensed {
+    @include text-lg;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+}
+
+@mixin text-lg {
+    @include text;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+@mixin text {
+    font-family: Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: normal;
+    font-style: normal;
+}
+
+@mixin text-sm {
+    @include text;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+@mixin text-xs {
+    @include text;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+html {
+    vertical-align: inherit;
+}
+
+body {
+    @include text;
+}
+
+.body-inner {
+    text-align: center;
+    background-color: $color-gray-light-xl;
+    padding-bottom: 59px;
+    vertical-align: inherit;
+}
+
+.header {
+    text-align: center;
+    background-color: $color-gray-light-xl;
+    
+    .itv-logo {
+        width: 132px;
+        height: 38px;
+        display: inline-block;
+        margin: 59px auto 0px auto;
+    }
+}
+
+.footer {
+    text-align: center;
+    color: $color-gray-dark-md;
+    background-color: $color-gray-light-xl;
+
+    .teplitsa-logo {
+        width: 67.83px;
+        height: 37px;
+        display: inline-block;
+        margin: 41px auto 0px auto;
+        text-align: center;
+    }
+
+    .join-community {
+        @include text-sm;
+        max-width: 502px;
+        margin-top: 41px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+    }
+
+    .build-team {
+        margin-top: 32px;
+        text-align: center;
+
+        .btn {
+            @include a-no-hover-underline;
+            display: inline-block;
+            border-radius: 8px;
+            box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08), inset -1px -1px 1px rgba(129, 118, 111, 0.16);
+            width: 222px;
+            background-color: $color-white;
+            border: 1px solid $color-gray-light-md;        
+            color: $color-sec;
+            padding-top: $base;
+            padding-bottom: $base;
+            text-align: center;
+
+            .btn-build-team {
+
+            }
+        }
+    }
+
+    .owner-info {
+        @include text-xs;
+        max-width: 287px;
+        margin-top: $base * 2;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+
+        a {
+            @include a-hover-underline;
+            color: $color-gray-dark-md;
+        }
+    }
+}
+
+.content {
+    border: 2px solid $color-gray-light-md;
+    background-color: $color-white;
+    width: 600px;
+    min-height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 41px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    padding: 28px 80px 40px 80px;
+    color: $color-gray-dark-lg;
+    text-align: center;
+
+    & > img {
+        margin-top: 28px;
+    }
+
+    & > p {
+        margin-top: 16px;
+        text-align: center;
+
+        &:empty {
+            margin-top: 15px;
+            line-height: 1px;
+            height: 1px;
+        }
+    }
+
+    & > h1 {
+        @include text-lg-line-lg-condensed;
+        color: $color-gray-dark-xl;
+        margin-top: 28px;
+        padding-bottom: 32px;
+        border-bottom: 1px solid $color-gray-light-md;
+        text-align: center;
+    }
+
+    & > h2 {
+        @include text;
+        margin-top: 37px;
+        text-align: center;
+    }
+
+    & > h4 {
+        @include a-no-hover-underline;
+        display: inline-block;
+        border-radius: 8px;
+        box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+        width: 389px;
+        background-color: $color-main;
+        border: none;        
+        color: $color-white;
+        margin-top: 32px;
+        text-align: center;
+
+        & > a {
+            @include a-no-hover-underline;
+            @include text-lg;
+            color: $color-white;            
+            display: block;
+            width: 100%;
+            padding-top: $base * 2;
+            padding-bottom: $base * 2;
+        }
+    }
+
+    & > h5 {
+        @include text-sm;
+        margin-top: 32px;
+        text-align: center;
+
+        a {
+            color: $color-main;
+            display: block;
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    & > h6 {
+        @include text-sm;
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid $color-gray-light-md;
+        text-align: center;
+   }
+}

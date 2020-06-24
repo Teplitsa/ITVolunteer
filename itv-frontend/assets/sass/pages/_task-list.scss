@@ -1,0 +1,415 @@
+// task page
+.site-main.page-task-list {
+    max-width: $content-width;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+
+    section.page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > h1 {
+            @include htext-xl-bold;
+            color: $color-gray-dark-xl;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: flex-end;
+
+            span {
+                display: inline-block;
+                color: $color-gray-dark-xl;
+                @include text-xs-bold;
+                vertical-align: middle;
+                padding: 4px 0px 4px 0px;
+                cursor: pointer;
+
+                &:not(:first-child) {
+                    margin-left: $base * 2;
+                }
+
+                &.active {
+                    padding: 4px 12px 4px 12px;
+                    border-radius: 10px;
+                    background-color: $color-gray-light-md;
+                }
+            }
+        }
+    }
+
+    .page-sections {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 26px;
+        width: 100%;
+
+        @include media-breakpoint-down(md) {
+          flex-direction: column;
+        }
+    }
+}
+
+.site-main.page-task-list section.task-list-filter {
+    background-color: $color-gray-light-lg;
+    color: $color-gray-dark-xl;
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-right: $base * 4;
+    max-width: 352px; 
+    min-width: 352px;   
+
+    .filter-explain {
+        @include text-line-sm-light;        
+    }
+        
+    .filter-tip {
+        @include text-sm;
+        color: $color-gray-dark-lg;
+        margin-top: 12px;
+        padding: 8px 12px 8px 12px;
+        background-color: $color-gray-light-xl;
+        border: 1px solid $color-gray-light-md;
+        border-radius: 6px;
+
+        &.after-filter {
+            margin-top: $base * 3;
+        }
+
+        .filter-tip-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+            align-items: top;
+
+            .filter-tip-title {
+                @include text-sm-bold;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                color: $color-gray-dark-md;
+
+                & > span {
+                    display: block;
+                }
+
+                img {
+                    margin-right: 4px;
+                    width: 16px;
+                    height: 16px;
+                    display: block;
+                }
+            }
+
+            .filter-tip-close {
+                background-image: url('../../img/icon-filter-close-tip.svg');
+                background-size: 8px 8px;
+                width: 8px;
+                height: 8px;
+                margin-top: 2px;
+            }
+        }
+    }
+
+    .filter-sections {
+        .filter-section {
+            margin-top: $base * 3;
+
+            .filter-section-title {
+                @include text-sm-bold;                
+                color: $color-gray-dark-md;
+                border-bottom: 1px solid $color-gray-light-md;
+                padding-bottom: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+
+                & > img {
+                    margin-right: 4px;
+                    width: 16px;
+                    height: 16px;
+                    display: block;
+                }
+
+                & > span {
+                  display: block;
+                }
+            }
+
+            .filter-section-option-groups {
+                margin-top: 8px;
+            }
+
+            .filter-section-option-list {
+                &:not(:first-child) {
+                    margin-top: 12px;                    
+                }
+
+                .filter-section-option-list-header {
+                    @include text-sm;
+                    color: $color-gray-dark-lg;
+
+                    & > img {
+                        width: 16px;
+                        height: 16px;
+                        vertical-align: middle;
+                        margin-right: 6px;
+                    }
+
+                    & > span {
+                    }
+                }
+
+                &.expand {
+                    .filter-section-option-list-items {                    
+                        margin-left: 28px;
+                        display: none;
+                    }
+                }
+
+                &.active {
+                    .filter-section-option-list-header {
+                        color: $color-main;
+                    }
+
+                    .filter-section-option-list-items {
+                        display: block;
+                    }
+                }
+
+                .filter-section-option-list-items {
+                    margin-top: 12px;
+
+                    .filter-section-option-list-item {
+                        @include text-sm;
+                        color: $color-gray-dark-lg;
+                        display: flex;
+
+                        .check-title {
+                            cursor: pointer;
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+
+                            & > img {
+                                width: 16px;
+                                height: 16px;
+                                vertical-align: middle;
+                                margin-right: 6px;
+                            }
+
+                            & > span {
+
+                            }
+                        }
+
+                        .stats {
+                            flex-grow: 1;
+                            text-align: right;
+                            color: $color-gray-dark-md;
+                        }
+
+                        &.active {
+                            color: $color-main;
+                        }
+
+                        &:not(:first-child) {
+                            margin-top: 8px;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    .filter-actions {
+        margin-top: 24px;
+
+        .filter-subscribe {
+            @include button-primary-sm;
+            width: 100%;
+            box-shadow: none;
+        }
+
+        .filter-reset, .filter-unsubscribe {
+            @include button-secondary-sm;
+            width: 100%;
+            box-shadow: none;
+            margin-top: 16px;
+            background-color: $color-gray-light-xl;
+            border: 2px solid $color-gray;
+        }
+
+        .already-subscribed {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            & > span {
+                @include text-xs-bold-line-lg;
+                color: $color-gray-dark-md;
+                display: inline-block;
+                margin-top: 16px;
+                text-align: center;
+                max-width: 256px;
+            }
+        }
+    }
+}
+
+// tasks
+.site-main.page-task-list .page-sections .task-list {
+
+    padding-bottom: 56px;
+    flex-grow: 1;
+
+    .load-more-tasks {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+
+        .btn {
+            @include button-secondary;
+            font-weight: 600;
+            padding: 12px 40px;
+        }
+    }
+
+   .task-body {
+        padding-top: $base * 3;
+        padding-bottom: $base * 3;
+
+        &:first-child {
+            margin-top: 0px;
+        }
+
+        &:not(:first-child) {
+            margin-top: 32px;
+        }
+
+        h1 {
+            @include htext-lg-bold;
+            color: $color-main;
+            margin-top: 12px;
+            word-break: break-all;
+        }
+
+        .meta-info {
+            .tooltip.itv-approved {
+                display: inline-block;
+                vertical-align: middle;
+            }
+
+            .tooltip-buble {
+                @include text-xs;
+                background-color: $color-white;
+                color: $color-gray-dark-xl;
+
+                padding: 8px 12px;
+                z-index: 11;
+                top: 0;
+                left: 0;
+                transform: translate(-15%, 112%);
+
+                &:before {
+                    border-bottom: 8px solid $color-white;
+                    border-top: none;
+                    left: calc(15%);
+                    top: -7px;
+                }
+            }
+        }
+
+        .task-content {
+            @include text-sm;
+            color: $color-gray-dark-xl;
+            margin-top: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid $color-gray-light-md;
+            word-break: break-all;
+        }
+
+        .meta-terms {
+            margin-top: $base;
+        }
+
+        .task-author-meta {
+            display: flex;
+            justify-content: flex-start;
+            
+            .itv-user-small-view {
+                margin-right: $base * 3;
+            }            
+        }
+    }
+}
+
+// nothing found
+.task-list-nothing-found-block {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    border: 2px solid $color-gray-light-md;
+    box-sizing: border-box;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h2 {
+        @include htext-lg-bold;
+        letter-spacing: -0.01em;
+        color: $color-gray-dark-xl;
+    }
+
+    h3 {
+        @include text-lg;
+        color: $color-gray-dark-xl;
+    }
+
+    a.btn-reset-filter {
+        @include a-no-hover-underline;
+        @include action-button-secondary-md;
+        @include text-sm-bold;
+        margin-top: 20px;
+        display: inline-block;
+        width: 200px;
+    }
+}
+
+// mobile
+@include media-breakpoint-down(md) {
+  .site-main.page-task-list {
+
+    section.page-header {
+      width: 85%;
+      margin-left: auto;
+      margin-right: auto;
+      flex-wrap: wrap;
+
+      .stats {
+        flex-basis: 100%;
+        margin-top: 16px;
+      }
+    }
+
+    .page-sections {
+      align-items: center;
+
+      .task-list-filter {
+        margin-right: 0px;
+        max-width: unset;
+        min-width: unset;
+        width: calc(85% - 48px);
+      }
+
+      .task-list {
+        margin-top: 32px;
+        width: 85%;
+      }
+    }
+  }
+}

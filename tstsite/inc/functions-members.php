@@ -3,12 +3,38 @@
  * Members related functions after review
  **/
 
+use ITV\models\UserNotifModel;
+
 use ITV\models\UserXPModel;
 use ITV\models\ThankyouModel;
 use ITV\models\ItvThankyouRecentlySaidException;
 use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
 use \WeDevs\ORM\WP\UserMeta as UserMeta;
+use WPGraphQL\JWT_Authentication;
+
+/** Only lat symbols in filenames **/
+add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
+function itv_translit_sanitize($string) {
+	$rtl_translit = array (
+			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
+			"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
+			"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
+			"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
+			"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
+			"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
+			"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
+			"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
+			"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
+			"е"=>"e","ё"=>"yo","ж"=>"zh",
+			"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
+			"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
+			"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
+			"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
+			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
+	);
+	return strtr($string, $rtl_translit);
+}
 
 /* Define  roles */
 function tst_get_roles_list() {
@@ -279,6 +305,39 @@ function tst_calculate_member_tasks_solved_count_raw_sql($user) {
     return $wpdb->get_var($wpdb->prepare($sql, $user->ID));
 }
 
+function itv_get_unique_user_login($first_name, $last_name = '') {
+	$new_ok_login = sanitize_user($first_name, true);
+	$is_ok = false;
+	
+	if(!username_exists($new_ok_login)) {
+		$is_ok = true;
+	}
+	
+	if(!$is_ok && $last_name) {
+		$new_ok_login = sanitize_user($last_name, true);
+		if(!username_exists($new_ok_login)) {
+			$is_ok = true;
+		}
+	}
+	
+	if(!$is_ok) {
+		$user_login = sanitize_user($first_name . ($last_name ? '_' . $last_name : ''), true);
+		$new_ok_login = $user_login;
+		$iter = 1;
+		while(username_exists($new_ok_login) && $iter < 1000) {
+			$new_ok_login = $user_login . $iter;
+			$iter += 1;
+		}
+	}
+	
+	return $new_ok_login;
+}
+
+function tst_sanitize_user($user_login) {
+	return preg_replace("/\s+/", "_", $user_login);
+}
+add_filter('sanitize_user', 'tst_sanitize_user');
+
 function tst_register_user($user_params) {
 	$error_message = '';
 	$is_error = false;
@@ -366,7 +425,7 @@ function tst_is_valid_register_user_params($user_params) {
 	return $is_valid;
 }
 
-function tst_send_activation_email($user, $email_subject, $email_body_template) {
+function tst_send_activation_email($user) {
 	$user_id = $user->ID;
 	$user_email = $user->user_email;
 	$user_login = $user->user_login;
@@ -378,11 +437,11 @@ function tst_send_activation_email($user, $email_subject, $email_body_template) 
 	$account_activation_url = "/account-activation/?uid=$user_id&code=$activation_code";
 	$link = is_multisite() ? network_site_url($account_activation_url) : home_url($account_activation_url);
 	
-	wp_mail(
-		$user_email,
-		$email_subject,
-		nl2br(sprintf($email_body_template, $link, $user_login))
-	);
+    ItvAtvetka::instance()->mail('activate_account_notice', [
+        'mailto' => $user_email,
+        'login' => $user_login,
+        'complete_reg_url' => $link,
+    ]);
 }
 
 /* Last login data */
@@ -399,6 +458,10 @@ function get_user_last_login_time($user) {
 add_filter('show_admin_bar', 'tst_remove_admin_bar');
 function tst_remove_admin_bar($show){
 	
+	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+		return;
+	}
+	
 	if(!current_user_can('edit_others_posts'))
 		return false;
 	
@@ -408,13 +471,13 @@ function tst_remove_admin_bar($show){
 
 /** Leave a review for task doer */
 function ajax_leave_review() {
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+// 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	if(
 			empty($_POST['task-id'])
 			|| empty($_POST['doer-id'])
-			|| empty($_POST['nonce'])
-			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
+// 			|| empty($_POST['nonce'])
+// 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review')
 	) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
@@ -486,6 +549,10 @@ function ajax_leave_review() {
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
 	}
 
+	//
+	UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
+	UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
+	
 	wp_die(json_encode(array(
 	'status' => 'ok',
 	'message' => __('Review saved', 'tst'),
@@ -497,13 +564,13 @@ add_action('wp_ajax_nopriv_leave-review', 'ajax_leave_review');
 
 /** Leave a review for author */
 function ajax_leave_review_author() {
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+// 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	if(
 			empty($_POST['task-id'])
 			|| empty($_POST['author-id'])
-			|| empty($_POST['nonce'])
-			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review-author')
+// 			|| empty($_POST['nonce'])
+// 			|| !wp_verify_nonce($_POST['nonce'], 'task-leave-review-author')
 	) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
@@ -574,6 +641,10 @@ function ajax_leave_review_author() {
 		}
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
 	}
+	
+	//
+	UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_FEEDBACK_TASKDOER_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
+	UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_POST_FEEDBACK_TASKDOER_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
 
 	wp_die(json_encode(array(
 		'status' => 'ok',
@@ -582,6 +653,40 @@ function ajax_leave_review_author() {
 }
 add_action('wp_ajax_leave-review-author', 'ajax_leave_review_author');
 add_action('wp_ajax_nopriv_leave-review-author', 'ajax_leave_review_author');
+
+function ajax_get_task_reviews() {
+	if(
+			empty($_POST['task-id'])
+	) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+		)));
+	}
+
+	$task_id = (int)$_POST['task-id'];
+	$task = get_post($task_id);
+
+	if(!$task) {
+		wp_die(json_encode(array(
+		'status' => 'fail',
+		'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+		)));
+	}
+
+    $task_doers = tst_get_task_doers($task->ID, true);
+	$reviews = [
+	   'reviewForAuthor' => ItvReviewsAuthor::instance()->get_review_for_author_and_task($task->post_author, $task->ID),
+	   'reviewForDoer' => count($task_doers) > 0 ? ItvReviews::instance()->get_review_for_doer_and_task($task_doers[0]->ID, $task->ID) : null,
+	];
+
+	wp_die(json_encode(array(
+		'status' => 'ok',
+		'reviews' => $reviews,
+	)));
+}
+add_action('wp_ajax_get-task-reviews', 'ajax_get_task_reviews');
+add_action('wp_ajax_nopriv_get-task-reviews', 'ajax_get_task_reviews');
 
 # member activation button
 function itv_is_user_activated($user_id) {
@@ -596,30 +701,56 @@ function itv_get_user_activation_email_datetime($user) {
     return $activation_email_time;
 }
 
-function itv_extra_user_profile_fields( $user ) {
+function itv_is_activated_field ( $user ) {
     $is_user_activated = itv_is_user_activated($user->ID);
-    ?>
-<table class="form-table">
-<tr id="itv-is-activated-user-option">
-<th><label><?php _e("Is activated", 'tst'); ?></label></th>
-<td>
-<span id="itv-user-activated-yes-no-box">
-<?php if($is_user_activated):?>
-    <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
-<?php else: ?>
-    <font class="itv-option-bad-label"><?php _e('No'); ?></font>
-    <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email" <?php if(!itv_is_resend_activation_available($user->ID)):?>disabled="disabled"<?php endif;?>><?php _e('Resend activation email', 'tst'); ?></button>
-    <?php echo itv_get_confirm_email_date($user);?>
-<?php endif; ?>
-</span>
-<span id="itv-user-activation-mail-sent-box" style="display: none;">
-    <font class="itv-option-ok-label"><?php _e('Activation mail sent', 'tst'); ?></font>
-</span>
-</td>
-</tr>
-</table>
-
+?>
+    <table class="form-table">
+    <tr id="itv-is-activated-user-option">
+    <th><label><?php _e("Is activated", 'tst'); ?></label></th>
+    <td>
+    <span id="itv-user-activated-yes-no-box">
+    <?php if($is_user_activated):?>
+        <font class="itv-option-ok-label"><?php _e('Yes'); ?></font>
+    <?php else: ?>
+        <font class="itv-option-bad-label"><?php _e('No'); ?></font>
+        <button class="button button-primary itv-resend-activation-email" id="itv-resend-activation-email" <?php if(!itv_is_resend_activation_available($user->ID)):?>disabled="disabled"<?php endif;?>><?php _e('Resend activation email', 'tst'); ?></button>
+        <?php echo itv_get_confirm_email_date($user);?>
+    <?php endif; ?>
+    </span>
+    <span id="itv-user-activation-mail-sent-box" style="display: none;">
+        <font class="itv-option-ok-label"><?php _e('Activation mail sent', 'tst'); ?></font>
+    </span>
+    </td>
+    </tr>
+    </table>
+    
 <?php 
+}
+
+function itv_xp_field ( $user ) {
+    $user_xp = UserXPModel::instance()->get_user_xp($user->ID);
+?>
+    <table class="form-table">
+    <tr id="itv-userxp-user-option">
+    <th><label><?php _e('XP Rating', 'tst'); ?></label></th>
+    <td>
+        <b id="itv-userxp-value"><?php echo $user_xp; ?></b>
+        <input id="itv-userxp-inc" type="text" class="itv-userxp-inc" />
+        <button class="button button-primary" id="itv-userxp-add-btn"><?php _e('Add XP to user', 'tst'); ?></button>
+        <input type="hidden" id="inc_userxp_nonce" value="<?php echo wp_create_nonce('inc_userxp'); ?>"/>
+    </td>
+    </tr>
+    </table>
+<?php 
+}
+
+function itv_extra_user_profile_fields( $user ) {
+	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+		return;
+	}
+	
+    itv_is_activated_field( $user );
+    itv_xp_field( $user );
 }
 add_action( 'edit_user_profile', 'itv_extra_user_profile_fields' );
 
@@ -662,11 +793,7 @@ function itv_resend_activation_email_core($user) {
         return;
     }
     
-    $email_templates = ItvEmailTemplates::instance();
-    $email_subject = $email_templates->get_title('activate_account_notice');
-    $email_body_template = $email_templates->get_text('activate_account_notice');
-    
-    tst_send_activation_email($user, $email_subject, $email_body_template);
+    tst_send_activation_email($user);
     update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
     
     $activation_email_counter = get_user_meta($user->ID, 'activation_email_counter', true);
@@ -707,6 +834,10 @@ function itv_user_reg_date($user_id) {
 // activated/not activated users filter
 function admin_users_filter( $query ){
     global $pagenow, $wpdb;
+    
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
 
     if(is_admin() && $pagenow=='users.php') {
         if ( isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
@@ -763,6 +894,10 @@ function admin_users_filter( $query ){
 add_filter( 'pre_user_query', 'admin_users_filter' );
 
 function show_users_filter_by_activation() {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
+    
     $ret = "";
     
     $current_filter_val = isset($_GET['users_city']) ? filter_var($_GET['users_city'], FILTER_SANITIZE_STRING) : '';
@@ -784,6 +919,10 @@ function itv_filter_users_by_activation() {
 add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 
 function itv_add_user_custom_columns($columns) {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return $columns;
+    }
+    
     $columns['itv_user_role'] = __('ITV role', 'tst');
     $columns['is_activated'] = __('Is activated', 'tst');
     $columns['reg_date'] = __('Registration date', 'tst');
@@ -797,12 +936,20 @@ function itv_add_user_custom_columns($columns) {
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
 
 function itv_add_user_custom_sortable_columns($columns) {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return $columns;
+    }
+        
     $columns['user_xp'] = 'user_xp';
     return $columns;
 }
 add_filter( 'manage_users_sortable_columns', 'itv_add_user_custom_sortable_columns' );
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
+        
     if('is_activated' == $column_name) {
         $user = get_user_by('id', $user_id);
         return itv_is_user_activated($user_id) ? __('Yes') : __('No') . itv_get_confirm_email_date($user, true);
@@ -898,6 +1045,10 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
 }
 
 function itv_show_users_bulk_actions() {
+    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+        return;
+    }
+    
     $remain_to_resend = itv_get_users_to_resend_activation(0, true);
     $itv_config = ItvConfig::instance();
     $reactivation_emails_portion = $itv_config->get('BULK_ACTIVATION_EMAIL_SEND_LIMIT');
@@ -985,6 +1136,15 @@ function tst_get_new_active_members_count($from_date, $to_date) {
     return $user_query->get_total();
 }
 
+function itv_is_user_paseka_member($user_id) {
+    $user_participation = get_user_meta($user_id, 'user_participation');
+    return !empty($user_participation[0]) ? array_search('paseka', $user_participation[0]) !== false : false;
+}
+
+function itv_is_user_partner($user_id) {
+    return get_user_meta($user_id, 'user_test_partner', true);
+}
+
 /** Say thank you to member */
 function ajax_thankyou() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
@@ -1014,8 +1174,19 @@ function ajax_thankyou() {
         $error_message = __('Error!', 'tst');
         
         try {
-            ThankyouModel::instance()->do_thankyou($user_id, $to_uid);
-            $is_error = false;
+            
+            if(ThankyouModel::instance()->is_yourself($user_id, $to_uid)) {
+                $is_error = true;
+                $error_message = __('You can not thank yourself!', 'tst');
+            }
+            elseif(ThankyouModel::instance()->is_limit_exceeded($user_id)) {
+                $is_error = true;
+                $error_message = __('Your thankyou limit is exceeded for today!', 'tst');
+            }
+            else {
+                ThankyouModel::instance()->do_thankyou($user_id, $to_uid);
+                $is_error = false;
+            }
         }
         catch(\ITV\models\ItvThankyouRecentlySaidException $ex) {
             error_log($ex);
@@ -1064,3 +1235,137 @@ function itv_city_lookup() {
     wp_die(implode("\n", $cities));
 }
 add_action('wp_ajax_city_lookup', 'itv_city_lookup');
+
+/* inc user xp value */
+function ajax_inc_userxp_value() {
+    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+
+    if(
+            empty($_POST['user_id'])
+            || empty($_POST['user_xp'])
+            || !wp_verify_nonce($_POST['nonce'], 'inc_userxp')
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $user_id = (int)$_POST['user_id'];
+    $user_xp = (int)$_POST['user_xp'];
+
+    $is_error = true;
+    if($user_id && $user_xp) {
+        $error_message = __('Error!', 'tst');
+        
+        try {
+            $new_userxp_value = UserXPModel::instance()->inc_user_xp_value($user_id, $user_xp);
+            $is_error = false;
+        }
+        catch(\Exception $ex) {
+            error_log($ex);
+        }
+    }
+
+    $ret;
+    if($is_error) {
+        $ret = [
+            'status' => 'fail',
+            'message' => $error_message,
+        ];
+    }
+    else {
+        $ret = [
+            'status' => 'ok',
+            'user_xp' => $new_userxp_value,
+        ];
+    }
+    
+    wp_die(json_encode($ret));
+}
+add_action('wp_ajax_inc-userxp-value', 'ajax_inc_userxp_value');
+
+
+function itv_get_user_in_gql_format($user) {
+    $solved_key = 'solved';
+    $activity = tst_get_member_activity( $user->ID, $solved_key );
+    
+    $user_data = [
+        'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
+        'fullName' => tst_get_member_name( $user->ID ),
+        'name' => $user->user_login,
+        'username' => $user->user_login,
+        'memberRole' => tst_get_member_role_name( $user->ID ),
+        'itvAvatar' => itv_avatar_url( $user->ID ),
+        'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
+        'solvedTasksCount' => intval($activity[$solved_key]),
+        'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
+        'isPartner' => boolval(itv_is_user_partner($user->ID)),
+        'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
+        'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
+        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
+        'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
+        'profileURL' => tst_get_member_url($user),
+        'isAdmin' => user_can($user, 'manage_options'),
+    ];
+    
+    return $user_data;
+}
+
+function ajax_load_current_user() {
+    if(is_user_logged_in()) {
+        $user = wp_get_current_user();
+        $user_data = itv_get_user_in_gql_format($user);
+        $user_data['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
+    }
+    else {
+        $user_data = [
+            'id' => null,
+        ];
+    }
+    
+    wp_die(json_encode($user_data));    
+}
+add_action('wp_ajax_load-current-user', 'ajax_load_current_user');
+add_action('wp_ajax_nopriv_load-current-user', 'ajax_load_current_user');
+
+
+function ajax_get_current_user_jwt_auth_token() {
+    
+    if(is_user_logged_in()) {
+        
+        try {
+            $user = wp_get_current_user();
+            $token = WPGraphQL\JWT_Authentication\Auth::get_token( $user );
+            $gql_id = \GraphQLRelay\Relay::toGlobalId( 'user', $user->data->ID );
+            $gql_user = itv_get_user_in_gql_format($user);
+            $gql_user['databaseId'] = intval($user->data->ID);
+            $gql_user['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
+            
+    		$response = [
+    		    "status" => "ok",
+    		    "message" => "",
+    			'authToken'    => $token,
+    			'refreshToken' => WPGraphQL\JWT_Authentication\Auth::get_refresh_token( $user ),
+    			'user'         => $gql_user,
+    			'id'           => $gql_id,
+    		];
+    		
+            wp_die(json_encode($response));    
+    		
+        } catch (Exception $error) {
+            wp_die(json_encode(array(
+                "status" => "fail",
+                "message" => __("Unauthorized request.", "tst"),
+            )));
+        }
+    }
+    else {
+        wp_die(json_encode(array(
+            "status" => "fail",
+            "message" => __("Unauthorized request.", "tst"),
+        )));
+    }
+}
+add_action('wp_ajax_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');
+add_action('wp_ajax_nopriv_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');

@@ -76,6 +76,12 @@ class ITV_Query {
 		if(is_admin() || !$query->is_main_query())
 			return;
 		
+		if(is_search()) {
+		    $query->set('post_type', 'tasks');
+		    if(!$query->get('task_status')) {
+		        $query->set('task_status', 'publish');
+		    }
+		}
 		
 		if(is_feed() && !$query->get('post_type')){
 			$query->set('post_type', 'tasks'); //tasks in feed by default
@@ -102,7 +108,9 @@ class ITV_Query {
 			else {
 				$status = (in_array($query->get('task_status'), array('publish', 'in_work', 'closed', 'archived'))) ? $query->get('task_status') : 'publish';
 				$query->set('post_status', $status);
-				$query->set('set_users', 'yes');
+				if(!is_search()) {
+				    $query->set('set_users', 'yes');
+				}
 			}
 			
 			if($query->get('navpage')){
@@ -114,7 +122,7 @@ class ITV_Query {
 	
 	
 	/* Cache additional posts info by request */
-	function query_posts_adder($posts, &$query){
+	function query_posts_adder($posts, $query){
 						
 		if('yes' == $query->get('set_users')){
 			$ids = self::get_user_id_from_posts($posts);

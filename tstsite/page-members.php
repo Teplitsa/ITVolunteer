@@ -8,11 +8,7 @@ if(is_single_member()) {
 	
 	$tst_member = tst_get_current_member();	
     if( !$tst_member->ID ) {
-        $refer = stristr(wp_get_referer(), $_SERVER['REQUEST_URI']) !== false ? home_url() : wp_get_referer();
-        $back_url = $refer ? $refer : home_url();
-
-        wp_redirect($back_url);
-        exit;
+        itv_show_404();
     }
 }
 

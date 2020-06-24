@@ -1,5 +1,4 @@
 /* scripts */
-
 jQuery(function($){
 	$('html').removeClass('no-js').addClass('js');	
 	var windowWidth = $('#page').width();
@@ -63,15 +62,17 @@ jQuery(function($){
 	});
 	
 	
-	/* Modal on home */			
-	$('#myModal').on('shown.bs.modal', function () {
-		var targetSrc = $('#hp-mtr').find('a').attr('href');
-		$(this).find('iframe').attr({src : targetSrc});
+	/* Modal on home */
+	$('#tst-about-video-modal').on('shown.bs.modal', function () {
+	    if(tst_video_ready_to_play) {
+	        tst_youtube_player.playVideo();
+	    }
 	});
 	
-	$('#myModal').on('hidden.bs.modal', function() {
-		
-		$(this).find('iframe').removeAttr('src');
+	$('#tst-about-video-modal').on('hidden.bs.modal', function() {
+        if(tst_video_ready_to_play) {
+            tst_youtube_player.pauseVideo();
+        }
 	});
 	
 	
@@ -83,6 +84,13 @@ jQuery(function($){
         max_selected_options: 3,
         no_results_text: frontend.chosen_no_results_text,
 		width: '99%'
+    });
+
+    $('#task-nko-tags').chosen({
+        disable_search_threshold: 10,
+        max_selected_options: 1,
+        no_results_text: frontend.chosen_no_results_text,
+        width: '99%'
     });
 
     $('#task-delete').click(function(){
@@ -185,6 +193,7 @@ jQuery(function($){
         var $form = $(this),
 			$submit_used = $form.find('.e-clicked'),
             tags_list = $form.find('#task-tags').val(),
+            nko_tags_list = $form.find('#task-nko-tags').val(),
             form_is_valid = true,
             val = '';      
 
@@ -214,7 +223,6 @@ jQuery(function($){
                 $form.find('#about-author-org-vm').html(frontend.about_author_org_is_required).show();
             } else
                 $form.find('#about-author-org-vm').html('').hide();
-          
 
             val = tags_list;
             if( !val || !val.length ) {
@@ -241,7 +249,10 @@ jQuery(function($){
         if(tags_list)
             tags_list = tags_list.join(',');
 	    
-		//consultation
+        if(nko_tags_list)
+            nko_tags_list = nko_tags_list.join(',');
+
+        //consultation
 		var is_tst_consult_needed = 0;
 		if($form.find('#is_tst_consult_needed').prop('checked')) {
 			is_tst_consult_needed = 1;
@@ -257,7 +268,8 @@ jQuery(function($){
 			'is_tst_consult_needed': is_tst_consult_needed,                        
             'about_author_org'     : $form.find('#about-author-org').val(),            
             'reward'               : $form.find('#reward').val(),
-            'tags'                 : tags_list
+            'tags'                 : tags_list,
+            'nko_tags'             : nko_tags_list
 			
         }, function(resp){
 
@@ -1148,10 +1160,17 @@ jQuery(function($){
 var ITV_USER_XP_ACTIONS = jQuery.parseJSON(frontend.xp_actions);
 
 function itv_show_user_xp_alert(action, index) {
+    var message = ITV_USER_XP_ACTIONS[action];
+    itv_show_user_alert_message(message, index);
+}
+
+function itv_show_user_alert_message(message, index) {
+    var $ = jQuery;
+    
     var $new_xp_alert = $('#itv-xp-alert').clone();
     var $new_xp_alert_text = $new_xp_alert.find('.itv-xp-alert-text');
     $new_xp_alert.addClass('itv-xp-alert-item');
-    $new_xp_alert_text.html(ITV_USER_XP_ACTIONS[action]);
+    $new_xp_alert_text.html(message);
     
     $('#page').append($new_xp_alert);
     $new_xp_alert.show();
@@ -1166,6 +1185,10 @@ function itv_show_user_xp_alert(action, index) {
         top_offset += $adminbar.height();
     }
     
+    if(!index) {
+        index = 0;
+    }
+    
     $new_xp_alert.animate({
         'top': '' + (top_offset + index * 55) + 'px'
     }, 800, 'linear', function(){
@@ -1176,6 +1199,8 @@ function itv_show_user_xp_alert(action, index) {
 }
 
 function itv_hide_xp_alert_list() {
+    var $ = jQuery;
+    
     $('.itv-xp-alert-item').first().fadeOut( "slow", function() {
         $(this).remove();
     });
@@ -1197,6 +1222,8 @@ function itv_show_all_xp_alerts() {
 }
 
 function itv_thank_you($button) {
+    var $ = jQuery;
+    
     var $loader = $button.parent().find('.thankyou-loader');
     var $done_label = $button.parent().find('.itv-thankyou-done');
     
@@ -1223,9 +1250,15 @@ function itv_thank_you($button) {
         'nonce': $button.parent().find('#_wpnonce').val()
     }, null, 'json')
     .done(function(json){
+
         if(json.status == 'ok') {
             $loader.hide();
             $done_label.show();
+            itv_show_user_alert_message(frontend.you_said_thankyou);
+        }
+        else if(json.status == 'fail') {
+            $loader.hide();
+            alert(json.message);
         }
         else {
             alert(frontend.error);
@@ -1248,3 +1281,39 @@ jQuery(function($){
         return false;
     });
 });
+
+jQuery(function($){
+    $('.itv-search-nav').click(function(){
+        $('.submenu-search').toggle();
+    });
+});
+
+// contact us using formidable
+jQuery(function($){
+    var $contact_us_frm = $('#form_contact-us');
+    if( $contact_us_frm.length ) {
+        $contact_us_frm.find('.itv-contact-us-field-name input').val( frontend.user_full_name );
+        $contact_us_frm.find('.itv-contact-us-field-email input').val( frontend.user_email );
+    }
+});
+
+// youtube api init
+var tst_youtube_player;
+var tst_video_ready_to_play = false;
+
+var tag = document.createElement('script');
+tag.src = "//www.youtube.com/player_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+function onPlayerReady(event) {
+    tst_video_ready_to_play = true;
+}
+
+function onYouTubePlayerAPIReady() {
+    tst_youtube_player = new YT.Player('tst-about-video-iframe', {
+        events: {
+            'onReady': onPlayerReady
+        }
+    });
+}

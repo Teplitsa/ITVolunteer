@@ -4,6 +4,7 @@
  **/
 
 use ITV\models\UserXPModel;
+use ITV\models\ThankyouModel;
 
 function tst_task_in_tab($task){
 	
@@ -26,6 +27,7 @@ if(isset($_GET['update']) && $_GET['update']) {
 $user_login = $tst_member->user_login;
 $activity = tst_get_member_activity($tst_member->user_object);
 $is_thankyou_said_recently = \ITV\models\ThankyouModel::instance()->is_said_recently(get_current_user_id(), $tst_member->ID);
+$is_thankyou_yourself = \ITV\models\ThankyouModel::instance()->is_yourself(get_current_user_id(), $tst_member->ID);
 
 ?>
 <header class="page-heading member-header no-breadcrumbs">
@@ -63,7 +65,7 @@ $is_thankyou_said_recently = \ITV\models\ThankyouModel::instance()->is_said_rece
 					
 					<div class="itv-10x-btn-wrapper">
 					    <?php wp_nonce_field('thankyou-action');?>
-					    <?php if(!$is_thankyou_said_recently):?>
+					    <?php if(!$is_thankyou_said_recently && !$is_thankyou_yourself):?>
 					        <button class="btn btn-primary btn-xs itv-thankyou-btn" data-to_uid="<?php echo $tst_member->ID?>" data-from_uid="<?php echo get_current_user_id()?>"><i class="glyphicon glyphicon-thumbs-up"></i> <?php echo __('Say thank you', 'tst')?></button>
 					    <?php endif ?>
 				        <span class="label label-success itv-thankyou-done" <?php if(!$is_thankyou_said_recently): ?>style="display:none;"<?php endif;?>><?php echo __('You said thank you', 'tst')?></span>
@@ -244,6 +246,10 @@ $is_thankyou_said_recently = \ITV\models\ThankyouModel::instance()->is_said_rece
 							<tr>
 								<th><?php _e('Tasks created', 'tst');?></th>
 								<td class="num"><?php echo (int)$activity['created'].' / <span title="'.__('Closed from them', 'tst').'">'.(int)$activity['created_closed'].'</span>';?></td>
+							</tr>
+							<tr>
+								<th><?php _e('Thankyou times', 'tst');?></th>
+								<td class="num"><span><?php echo ThankyouModel::instance()->get_user_thankyou_count($tst_member->ID); ?></span></td>
 							</tr>
 						</tbody>
 					</table>

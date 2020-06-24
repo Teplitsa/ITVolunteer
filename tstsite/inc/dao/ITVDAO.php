@@ -7,3 +7,7 @@ class ITVDAO extends Model {
     protected $prefix = 'str_';
 }
 
+class UserNotif extends ITVDAO {
+//     public $timestamps = true;
+    protected $table = 'str_itv_user_notif';
+}

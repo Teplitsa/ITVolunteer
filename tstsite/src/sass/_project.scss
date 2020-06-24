@@ -25,39 +25,41 @@
 }
 */
  
- .fontello:before, [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontello";
-  font-style: normal;
-  font-weight: normal;
-  speak: none;
- 
-  display: inline-block;
-  text-decoration: inherit;
-  width: 1em;
-  margin-right: .2em;
-  text-align: center;
-  /* opacity: .8; */
- 
-  /* For safety - reset parent styles, that can break glyph codes*/
-  font-variant: normal;
-  text-transform: none;
- 
-  /* fix buttons height, for twitter bootstrap */
-  line-height: 1em;
- 
-  /* Animation center compensation - margins should be symmetric */
-  /* remove if not needed */
-  margin-left: .2em;
- 
-  /* you can be more comfortable with increased icons size */
-  /* font-size: 120%; */
- 
-  /* Font smoothing. That was taken from TWBS */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
- 
-  /* Uncomment for 3D effect */
-  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+@include for(small-screens) {
+    .fontello:before, [class^="icon-"]:before, [class*=" icon-"]:before {
+     font-family: "fontello";
+     font-style: normal;
+     font-weight: normal;
+     speak: none;
+
+     display: inline-block;
+     text-decoration: inherit;
+     width: 1em;
+     margin-right: .2em;
+     text-align: center;
+     /* opacity: .8; */
+
+     /* For safety - reset parent styles, that can break glyph codes*/
+     font-variant: normal;
+     text-transform: none;
+
+     /* fix buttons height, for twitter bootstrap */
+     line-height: 1em;
+
+     /* Animation center compensation - margins should be symmetric */
+     /* remove if not needed */
+     margin-left: .2em;
+
+     /* you can be more comfortable with increased icons size */
+     /* font-size: 120%; */
+
+     /* Font smoothing. That was taken from TWBS */
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+
+     /* Uncomment for 3D effect */
+     /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+   }
 }
  
 .icon-facebook:before { content: '\e800'; }  /* '' */
@@ -335,7 +337,7 @@ a {
 	padding-top:  $measure-columns-gut;	
 	.contact-form-result { display: none; }
 	.form-group .alert-danger {
-		padding: 5px 0;	
+		padding: 5px 0px 5px 5px;	
 		margin-top: 5px;
 	}
 }

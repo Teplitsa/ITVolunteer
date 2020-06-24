@@ -1,0 +1,37 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=dev
+    ports:
+      - "80:80"
+    volumes:
+      - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+      - /mnt/disk1/share/tep-itv/site-v1:/site/v1.tep-itv
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=dev
+    volumes:
+      - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+    stdin_open: true
+    tty: true
+  vsftpd:
+    build:
+      context: vsftpd
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=dev
+    ports:
+      - "21:21"
+      - "20:20"
+      - "21100-21110:21100-21110"
+    volumes:
+      - ./vsftpd/home:/home/vsftpd
+      - ./vsftpd/logs:/var/log/vsftpd    
+      - /mnt/disk1/share/tep-itv/site:/site/tep-itv

@@ -1,0 +1,48 @@
+//
+.contact-form {
+
+  background-color: $color-main-light;  
+  border-radius: 8px;
+  padding: 16px 24px;
+
+  .action-block {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+
+    .primary-button {
+      @include button-primary-sm;
+      margin-right: 16px; 
+    }
+
+    .secondary-button {
+      @include button-secondary-sm;
+      border-radius: 10px;
+      border-color: $color-gray-light-md;
+    }
+
+  }
+
+  .form-group {
+    margin-top: 16px;
+
+    label {
+      @include text;
+    }
+
+    .form-control {
+      &.input-sm {
+        @include text-sm;
+        width: 100%;
+        border-radius: 4px;
+        border: 1px solid $color-gray-light-md; 
+
+        &.error {
+          border: 1px solid $color-sec-dark; 
+        }
+      }
+    }
+  }
+}
+

@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.97');
+define('TST_WORKING_VERSION', '1.9.101');
 //require get_template_directory().'/inc/acf_keys.php';
 
 /**
@@ -16,10 +16,12 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
+define('ITV_FRONTEND_VERSION', '2.0.2' . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
+define('ITV_FORCE_THEME_MOD_SETUP', false);
 
 function tst_get_version_num(){
 	
-	if(false !== strpos(site_url(), 'testplugins.ngo2.ru')){
+	if(false !== strpos(site_url(), 'itv.ngo2.ru')){
 		//on dev force random number to avoid cache problems
 		$num = rand();
 	}
@@ -34,6 +36,15 @@ function tst_get_version_num(){
 	return $num;
 }
 
+function itv_is_spa() {
+//     return is_singular('tasks') || is_post_type_archive('tasks');
+    return false;
+}
+
+function itv_is_v1_version() {
+    return !empty($_COOKIE['itvOldDesign']);
+}
+
 if ( ! function_exists( 'tst_setup' ) ) :
 function tst_setup() {
 
@@ -46,7 +57,7 @@ function tst_setup() {
 	load_theme_textdomain( 'tst', get_template_directory() . '/lang' );
 	
 	#	can't find translation if load earlier
-	include(get_template_directory().'/inc/itv_email_templates.php');	
+	include(get_template_directory().'/mail/message_content_templates.php');	
 
 
 
@@ -190,6 +201,7 @@ require get_template_directory().'/itv_config.php';
 //classes
 require get_template_directory().'/inc/class-itv-cssjs.php';
 require get_template_directory().'/inc/class-itv-query.php';
+require_once( get_template_directory().'/inc/data_cache.php' );
 
 //templates and funcitons
 require get_template_directory().'/inc/template-general.php';
@@ -212,6 +224,8 @@ require_once get_template_directory().'/inc/stats-events.php';
 require_once get_template_directory().'/inc/itv_notificator.php';
 require_once get_template_directory().'/inc/itv_tasks_stats.php';
 require_once get_template_directory().'/inc/itv_consult.php';
+require_once(get_template_directory() . '/inc/user_notif.php');
+require_once(get_template_directory() . '/mail/atvetka.php');
 
 // ipgeo lib and wrapper
 require_once get_template_directory().'/ipgeo/ipgeobase.php';
@@ -222,3 +236,13 @@ require_once get_template_directory() . '/inc/models/UserXPModel.php';
 require_once get_template_directory() . '/inc/models/ThankyouModel.php';
 require_once get_template_directory() . '/inc/models/MailSendLogModel.php';
 require_once get_template_directory() . '/inc/models/ResultScreenshots.php';
+require_once get_template_directory() . '/inc/models/UserBlockModel.php';
+
+// grapql
+require get_template_directory().'/inc/graphql.php';
+require_once(get_template_directory() . '/inc/models/TimelineModel.php');
+require_once(get_template_directory() . '/inc/models/CommentsModel.php');
+require_once(get_template_directory() . '/inc/models/UserNotif.php');
+
+// task list filter
+require_once( get_template_directory().'/inc/task_list_filter.php' );

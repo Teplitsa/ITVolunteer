@@ -5,28 +5,56 @@
  ***/
 
 use ITV\models\MailSendLogModel;
+use WPGraphQL\JWT_Authentication;
 
-/** Only lat symbols in filenames **/
-add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
-function itv_translit_sanitize($string) {
-	$rtl_translit = array (
-			"Є"=>"YE","І"=>"I","Ѓ"=>"G","і"=>"i","№"=>"","є"=>"ye","ѓ"=>"g",
-			"А"=>"A","Б"=>"B","В"=>"V","Г"=>"G","Д"=>"D",
-			"Е"=>"E","Ё"=>"YO","Ж"=>"ZH",
-			"З"=>"Z","И"=>"I","Й"=>"J","К"=>"K","Л"=>"L",
-			"М"=>"M","Н"=>"N","О"=>"O","П"=>"P","Р"=>"R",
-			"С"=>"S","Т"=>"T","У"=>"U","Ф"=>"F","Х"=>"KH",
-			"Ц"=>"TS","Ч"=>"CH","Ш"=>"SH","Щ"=>"SHH","Ъ"=>"'",
-			"Ы"=>"Y","Ь"=>"","Э"=>"E","Ю"=>"YU","Я"=>"YA",
-			"а"=>"a","б"=>"b","в"=>"v","г"=>"g","д"=>"d",
-			"е"=>"e","ё"=>"yo","ж"=>"zh",
-			"з"=>"z","и"=>"i","й"=>"j","к"=>"k","л"=>"l",
-			"м"=>"m","н"=>"n","о"=>"o","п"=>"p","р"=>"r",
-			"с"=>"s","т"=>"t","у"=>"u","ф"=>"f","х"=>"kh",
-			"ц"=>"ts","ч"=>"ch","ш"=>"sh","щ"=>"shh","ъ"=>"",
-			"ы"=>"y","ь"=>"","э"=>"e","ю"=>"yu","я"=>"ya","«"=>"","»"=>"","—"=>"-"
-	);
-	return strtr($string, $rtl_translit);
+/** WPGraphQl JWT */
+
+add_filter("graphql_jwt_auth_secret_key", function() {
+    return '!aoRS- P`:Dl$swR+lx{<W+Sb%*9{G}:rn<+a_gie({xk~R-5d4c8yj2OmMkq0+P';
+});
+
+add_action("admin_init", "wp_ajax_login_by_auth_token");
+
+function wp_ajax_login_by_auth_token()
+{
+    if (wp_doing_ajax() && !is_user_logged_in()) {
+        switch ($_REQUEST["action"]) {
+            case "publish-task":
+            case "unpublish-task":
+            case "approve-candidate":
+            case "decline-candidate":
+            case "submit-comment":
+            case "like-comment":
+            case "add-candidate":
+            case "get-task-timeline":
+            case "get-task-reviews":
+            case "leave-review":
+            case "leave-review-author":
+            case "accept-close-date":
+            case "reject-close-date":
+            case "accept-close":
+            case "reject-close":
+            case "suggest-close-date":
+            case "suggest-close-task":
+                $_POST["auth_token"] = $_POST["auth_token"] ?? null;
+                try {
+                    $token = WPGraphQL\JWT_Authentication\Auth::validate_token($_POST["auth_token"]);
+                    if (is_wp_error($token)) {
+                        throw new Exception();
+                    }
+                    $user_id = $token->data->user->id;
+                    if($user_id) {
+                        wp_set_current_user($user_id);
+                    }
+                } catch (Exception $error) {
+                    wp_die(json_encode(array(
+                        "status" => "fail",
+                        "message" => __("Unauthorized request.", "tst"),
+                    )));
+                }
+                break;
+        }
+    }
 }
 
 /** Favicon  **/
@@ -173,7 +201,23 @@ function itv_html_email_with_cc($to, $subject, $message, $other_emails = [], $em
     return wp_mail($to, $subject, $message, $headers);
 }
 
+function itv_notify_user( $user, $notification_id, $params, $task = NULL ) {
+    ItvAtvetka::instance()->mail($notification_id, array_merge([
+        'mailto' => $user->user_email,
+    ], $params));
+    
+    $itv_log = ItvLog::instance ();
+    $itv_log->log_email_action( 'email_' . $notification_id, $user->ID, ItvEmailTemplates::instance()->get_title($notification_id), $task ? $task->ID : 0 );
+}
+
 function itv_wp_mail_log( $args ) {
     MailSendLogModel::instance()->log_send_action( $args );
 }
 add_filter( 'wp_mail', 'itv_wp_mail_log' );
+
+function itv_show_404() {
+	status_header( 404 );
+	nocache_headers();
+	get_template_part( '404' );
+	die();
+}

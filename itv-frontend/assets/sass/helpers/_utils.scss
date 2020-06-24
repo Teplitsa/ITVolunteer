@@ -1,0 +1,17 @@
+/** == Typography (_utils.scss) == **/
+
+// display
+.d-none {
+  display: none !important;
+}
+
+// loading
+.loading {
+  display: inline-block;
+  padding: $base;
+  color: $color-gray;
+
+  &.error {
+    color: #ff0000;
+  }
+}

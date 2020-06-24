@@ -124,15 +124,11 @@ gulp.task('revision', function(){
 
 // copy bootstrap for local fallback 
 gulp.task('copy-b-css', function(){
-
-    return gulp.src('bower_components/bootstrap/dist/css/bootstrap.min.css')
-        .pipe(gulp.dest(basePaths.dest+'css'));
 });
 
 gulp.task('copy-b-js', function(){
     
-    var vendor = ['bower_components/jquery/dist/jquery.min.js',
-                  'bower_components/bootstrap/dist/js/bootstrap.min.js'];
+    var vendor = [];
     
     return gulp.src(vendor)
         .pipe(plugins.concat('vendor.js'))//combine them into vendor.js        
@@ -144,7 +140,7 @@ gulp.task('copy-b-js', function(){
 gulp.task('copy-b-fonts', function(){
 
     return gulp.src('bower_components/bootstrap/dist/fonts/*')
-        .pipe(gulp.dest(basePaths.dest+'fonts'));
+        .pipe(gulp.dest(basePaths.dest+'fonts/bootstrap'));
 });
 
 gulp.task('copy-files', function(callback) {

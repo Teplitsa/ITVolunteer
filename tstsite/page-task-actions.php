@@ -66,7 +66,7 @@ get_header();?>
 	<div class="row">		
 		<div class="col-md-8">
 			<div class="form-group">			
-			    <input class="form-control input-lg" placeholder="<?php _e('Short task description (140 char.)', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="90" />
+			    <input class="form-control input-lg" placeholder="<?php _e('Short task description (140 char.)', 'tst');?>" type="text" id="task-title" value="<?php echo empty($task_data['task_title']) ? '' : $task_data['task_title'];?>" maxlength="140" />
                 <div id="task-title-vm" class="validation-message" style="display: none;"></div>
 			</div>
 		</div>
@@ -147,7 +147,29 @@ get_header();?>
             </select>
             <div id="task-tags-vm" class="validation-message" style="display: none;"></div>
         </div>
-	
+
+		<div class="form-group">
+            <label for="task-nko-tags"><?php _e('Task nko tags', 'tst');?></label>
+            <br />
+            <select id="task-nko-tags" multiple="10" data-placeholder="<?php _e('Choose NPO tag for the task...', 'tst');?>">
+            <?php if( !$new_task ) {
+                    $task_nko_tags = wp_get_post_terms($task->ID, 'nko_task_tag', array());
+                    function nko_tag_in_array($tag, $array) {
+                        foreach($array as $value) {
+                            if($tag->term_id == $value->term_id)
+                                return true;
+                        }
+                        return false;
+                    }
+                }
+				$tags = get_terms('nko_task_tag', array('hide_empty' => false, 'orderby' => 'count', 'order' => 'DESC'));
+                foreach($tags as $tag) { ?>
+                <option value="<?php echo esc_attr($tag->term_id);?>" <?php echo (!$new_task && nko_tag_in_array($tag, $task_nko_tags)) ? 'selected="selected"' : '';?>><?php echo apply_filters('frl_the_title', $tag->name);?></option>
+            <?php }?>
+            </select>
+            <div id="task-nko-tags-vm" class="validation-message" style="display: none;"></div>
+        </div>
+        
 		<div class="form-group">
 			<label for="reward"><?php _e('Reward', 'tst');?></label>
 			<select id="reward" class="form-control">
@@ -167,7 +189,7 @@ get_header();?>
 		</div>
        
 	
-		<div class="form-group checkbox">
+		<div class="form-group checkbox" style="display: none;">
 			<b><?php _e('itv_task_consult_needed_label', 'tst')?></b>
 			<label for="is_tst_consult_needed" class="itv-task-form-sublabel">
 				<input type="checkbox" name="is_tst_consult_needed" id="is_tst_consult_needed" class="itv-task-consult-needed" <?php if(isset($task_data['is_tst_consult_needed']) && $task_data['is_tst_consult_needed']):?>checked="checked"<?php endif; ?>/>

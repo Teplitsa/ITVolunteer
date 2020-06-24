@@ -9,10 +9,12 @@ class ItvConfig {
         $this->_config = array (
             'ADMIN_EMAILS' => array (
                 'support@te-st.ru',
+                'denis.cherniatev@gmail.com' 
             ),
             
             'TASK_COMLETE_NOTIF_EMAILS' => array (
-                'support@te-st.ru',
+                'vlad@te-st.ru',
+                'denis.cherniatev@gmail.com' 
             ),
             
             // ITV consultants emails list (for automatic consultation choose)
@@ -25,7 +27,7 @@ class ItvConfig {
             ),
             'CONSULTANT_CONFIG' => array(
                 'default' => array('time' => '12:00'),
-                'support@te-st.ru' => array('time' => '13:00'),
+                'support@te-st.ru' => array('time' => '21:00'),
             ),
             'CONSULT_BCC_EMAILS' => array (
                 'support@te-st.ru',
@@ -56,6 +58,8 @@ class ItvConfig {
                 'create_task' => -10,
                 // when restore activity suppose member connected as doer in 24 hours after task created date
                 'add_as_candidate' => 15,
+                'add_as_candidate_0617' => 2,
+                'cancel_as_candidate_0617' => -2,
                 // when restore activity suppose doer complete task in 14 days after task created date
                 'task_done' => 100,
                 'my_task_done' => 20,
@@ -68,11 +72,12 @@ class ItvConfig {
                 'always' => ['actions' => ['register', 'task_done', 'create_task', 'my_task_done']],
                 'never' => ['actions' => ['login']],
                 'less_only' => [
-                    ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'review_for_doer', 'review_for_author']],
+                    ['limit' => 20, 'actions' => ['fill_field', 'upload_photo', 'add_comment', 'add_as_candidate', 'add_as_candidate_0617', 'review_for_doer', 'review_for_author']],
                 ]
             ],
             'ALERT_TEAM' => array (
-                'support@te-st.ru',
+                'vlad@te-st.ru',
+                'denis.cherniatev@gmail.com'
             ),
             'RESULT_SCREENSHOTS' => [
                 'limit' => 6,
@@ -83,6 +88,8 @@ class ItvConfig {
             'MIN_INTERVAL' => 1, # minutes
             'TOO_MUCH' => 30,
             'TOO_MUCH_ALERT_TEAM' => $this->_config['ALERT_TEAM'],
+            'PERIOD_LIMIT' => 10, # times
+            'PERIOD_LIMIT_PERIOD' => 3600 * 24, # seconds
         ];
         
     }

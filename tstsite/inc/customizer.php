@@ -1,5 +1,10 @@
 <?php
+
 use ITV\models\UserXPModel;
+use ITV\models\UserBlockModel;
+use ITV\models\TimelineModel;
+use ITV\models\UserNotifModel;
+
 /**
  * Code for ITV functions
  */
@@ -51,12 +56,12 @@ function date_from_yymmdd_to_dd_mm_yy($date) {
 
 /** Publish task */
 function ajax_publish_task() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+//     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
         empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-publish-by-author')
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-publish-by-author')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -64,16 +69,50 @@ function ajax_publish_task() {
         )));
     }
 
-    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
-	if($author_id = get_post($upd_id)->post_author){
-		do_action('update_member_stats', array($author_id));
+    $task_id = (int)$_POST['task-id'];
+    $task = get_post($task_id);
+	$user_id = get_current_user_id();
+    
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
 	}
 	
-    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_PUBLISH, get_current_user_id());
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $user_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+    
+    wp_update_post(array('ID' => $task->ID, 'post_status' => 'publish'));
+	do_action('update_member_stats', array($task->post_author));
+	
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_PUBLISH, $user_id);
+    
+    $timeline = ITV\models\TimelineModel::instance();
+	if(!$timeline->get_first_item($task_id)) {
+        $timeline->create_task_timeline($task_id);		    
+	}
+		
+    $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+    
+    //
+    UserNotifModel::instance()->push_notif($user_id, UserNotifModel::$TYPE_TASK_PUBLISHED, ['task_id' => $task_id]);
+    
     
     wp_die(json_encode(array(
         'status' => 'ok',
-        'permalink' => get_permalink((int)$_POST['task-id'])
+        'permalink' => get_permalink($task->ID)
     )));
 }
 add_action('wp_ajax_publish-task', 'ajax_publish_task');
@@ -82,25 +121,51 @@ add_action('wp_ajax_nopriv_publish-task', 'ajax_publish_task');
 
 /** Remove task from publication */
 function ajax_unpublish_task() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+//     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
         empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-unpublish-by-author')
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-unpublish-by-author')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
-
-    $upd_id = wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'draft'));
-    if($author_id = get_post($upd_id)->post_author){
-		do_action('update_member_stats', array($author_id));
+    
+    $task_id = (int)$_POST['task-id'];
+    $task = get_post($task_id);
+	$user_id = get_current_user_id();
+    
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
 	}
 	
-    ItvLog::instance()->log_task_action((int)$_POST['task-id'], ItvLog::$ACTION_TASK_UNPUBLISH, get_current_user_id());
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+	if($task->post_author != $user_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
+
+    wp_update_post(array('ID' => $task->ID, 'post_status' => 'draft'));
+	do_action('update_member_stats', array($task->post_author));
+	
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_UNPUBLISH, $user_id);
+    
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->make_past_item_current($task_id, TimelineModel::$TYPE_PUBLICATION);
     
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -112,12 +177,12 @@ add_action('wp_ajax_nopriv_unpublish-task', 'ajax_unpublish_task');
 
 /** Send task to work */
 function ajax_task_to_work() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+//     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
         empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-send-to-work')
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-send-to-work')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -147,12 +212,12 @@ add_action('wp_ajax_nopriv_task-in-work', 'ajax_task_to_work');
 
 /** Close task */
 function ajax_close_task() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+//     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
         empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-close-by-author')
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-close-by-author')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -161,25 +226,17 @@ function ajax_close_task() {
     }
 
     $task_id = (int)$_POST['task-id'];
-    wp_update_post(array('ID' => $task_id, 'post_status' => 'closed'));
-    ItvLog::instance()->log_task_action($task_id, ItvLog::$ACTION_TASK_CLOSE, get_current_user_id());
-    UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_MY_TASK_DONE);
+    $task = get_post($task_id);
     
-    $doers = tst_get_task_doers($task_id, true);
-    $doer = array_shift($doers);
-    if($doer) {
-        UserXPModel::instance()->register_activity_from_gui($doer->ID, UserXPModel::$ACTION_TASK_DONE);
-    }
-    
-    tst_send_admin_notif_task_complete($task_id);
-    
-    $task = get_post($task_id);	
-	if($task) {
-		$users = tst_get_task_doers($task->ID);
-		$users[] = get_user_by('id', $task->post_author);;	
-		do_action('update_member_stats', $users);
-	}	
-
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> task not found.', 'tst'),
+        )));
+	}
+	
+	itv_close_task($task, get_current_user_id());
+	
     wp_die(json_encode(array(
         'status' => 'ok',
     )));
@@ -193,23 +250,80 @@ function ajax_approve_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['link-id'])
-        || empty($_POST['doer-id'])
-        || empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
+        (empty($_POST['doer_gql_id']) && empty($_POST['doer-id']))
+        || (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
+//         empty($_POST['doer-id'])
+//         || empty($_POST['task-id'])
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
+    
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
+    
+    if(!empty($_POST['doer_gql_id'])) {
+        $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+        $doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    }
+    else {
+        $doer_id = !empty($_POST['doer-id']) ? (int)$_POST['doer-id'] : 0;
+    }
+    
+    if(!$doer_id 
+        || !$task_id
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $task = get_post($task_id);
+    $doer = get_user_by('id', $doer_id);
+    
+    $approved_doers = tst_get_task_doers($task->ID, true);
+    if(count($approved_doers) > 0) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    $link_id = null;
+    if(empty($_POST['link-id']) && $task && $doer) {
+        $doers = tst_get_task_doers($task->ID);
+        foreach($doers as $candidate) {
+            if($candidate->ID == $doer->ID) {
+                $link_id = $candidate->p2p_id;
+            }
+        }
+    }
+    else {
+        $link_id = (int)$_POST['link-id'];
+    }
+    
+    error_log("link_id=" . $link_id);
+    
+    if(!$link_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
 
-    p2p_update_meta((int)$_POST['link-id'], 'is_approved', true);
+    p2p_update_meta($link_id, 'is_approved', true);
 
     // Send email to the task doer:
-    $task = get_post((int)$_POST['task-id']);
-    $doer = get_user_by('id', (int)$_POST['doer-id']);
     $task_author = get_user_by('id', $task->post_author);
     	
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_APPROVE_CANDIDATE, $doer->ID);
@@ -223,38 +337,47 @@ function ajax_approve_candidate() {
     // Notice to doer:
     $email_templates = ItvEmailTemplates::instance();
     
-    wp_mail(
-        $doer->user_email,
-        $email_templates->get_title('approve_candidate_doer_notice'),
-        nl2br(sprintf(
-            $email_templates->get_text('approve_candidate_doer_notice'),
-            $doer->first_name,
-            $task->post_title,
-            $task_author->user_email,
-            $task_author->user_email,
-            home_url('members/'.$task_author->user_login.'/')
-        ))
-    );
+    ItvAtvetka::instance()->mail('approve_candidate_doer_notice', [
+        'user_id' => $doer->ID,
+        'username' => $doer->first_name,
+        'task_title' => $task->post_title,
+        'author_email' => $task_author->user_email,
+        'author_profile_url' => home_url('members/'.$task_author->user_login.'/'),
+    ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_DOER, $doer->ID, $email_templates->get_title('approve_candidate_doer_notice'), $task ? $task->ID : 0);
 
     // Notice to author:
-    wp_mail(
-        $task_author->user_email,
-        $email_templates->get_title('approve_candidate_author_notice'),
-        nl2br(sprintf(
-            $email_templates->get_text('approve_candidate_author_notice'),
-            $task_author->first_name,
-            $task->post_title,
-            $doer->user_email,
-            $doer->user_email,
-            home_url('members/'.$doer->user_login.'/')
-        ))
-    );
+    ItvAtvetka::instance()->mail('approve_candidate_author_notice', [
+        'user_id' => $task_author->ID,
+        'username' => $task_author->first_name,
+        'task_title' => $task->post_title,
+        'doer_email' => $doer->user_email,
+        'doer_profile_url' => home_url('members/'.$doer->user_login.'/'),
+    ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('approve_candidate_author_notice'), $task ? $task->ID : 0);
 
     // Task is automatically switched "to work":
-    wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'in_work'));
-
+    wp_update_post(array('ID' => $task_id, 'post_status' => 'in_work'));
+    
+    //
+    $timeline = ITV\models\TimelineModel::instance();
+    if($timeline->get_first_item($task_id, TimelineModel::$TYPE_WORK, TimelineModel::$STATUS_FUTURE)) {
+        $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_WORK);
+    }
+    else {
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $doer_id]);
+    }
+    
+    //
+    UserNotifModel::instance()->push_notif($doer->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_author->ID]);
+    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_CHOOSE_TASKDOER_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_author->ID]);
+    foreach($doers as $candidate) {
+        if($doer->ID === $candidate->ID) {
+            continue;
+        }
+        UserNotifModel::instance()->push_notif($candidate->ID, UserNotifModel::$TYPE_CHOOSE_OTHER_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $doer->ID]);
+    }
+    
     wp_die(json_encode(array(
         'status' => 'ok',
     )));
@@ -271,8 +394,8 @@ function ajax_refuse_candidate() {
         empty($_POST['link-id'])
         || empty($_POST['doer-id'])
         || empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], $_POST['link-id'].'-candidate-'.$_POST['doer-id'])
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -299,17 +422,12 @@ function ajax_refuse_candidate() {
 		
     $email_templates = ItvEmailTemplates::instance();
 	
-    $user = get_user_by('id', (int)$_POST['doer-id']);
-    wp_mail(
-        $user->user_email,
-        $email_templates->get_title('refuse_candidate_doer_notice'),
-        nl2br(sprintf(
-            $email_templates->get_text('refuse_candidate_doer_notice'),
-            $doer->first_name,
-            $task->post_title
-        ))
-    );
-    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $user->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
+    ItvAtvetka::instance()->mail('refuse_candidate_doer_notice', [
+        'user_id' => $doer->ID,
+        'username' => $doer->first_name,
+        'task_title' => $task->post_title,
+    ]);
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $doer->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
         // Task is automatically switched "publish":
@@ -329,9 +447,27 @@ function ajax_add_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
+        (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
+//         empty($_POST['task-id'])
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-add-candidate')
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
+    
+    if(!is_user_logged_in() 
+        || !$task_id
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -339,17 +475,19 @@ function ajax_add_candidate() {
         )));
     }
 
-    $task_id = (int)$_POST['task-id'];
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
-
+	$is_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
+	
     p2p_type('task-doers')->connect($task_id, $task_doer_id, array());        
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_ADD_CANDIDATE, get_current_user_id());
     
-    if(!UserXPModel::instance()->is_reg_candidate_activity_exist(get_current_user_id(), $task->ID)) {
+    if(!$is_doer_already_candidate) {
         UserXPModel::instance()->register_activity_from_gui(get_current_user_id(), UserXPModel::$ACTION_ADD_AS_CANDIDATE);
-        UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
+        if(!UserXPModel::instance()->is_reg_candidate_activity_exist(get_current_user_id(), $task->ID)) {
+            UserXPModel::instance()->reg_candidate_activity_exist(get_current_user_id(), $task->ID);
+        }
     }
 		
 	if($task) {
@@ -359,22 +497,21 @@ function ajax_add_candidate() {
 		do_action('update_task_stats', $task);	
 	}	
 	
-	
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
-    wp_mail(
-        $task_author->user_email,
-        $email_templates->get_title('add_candidate_author_notice'),
-        nl2br(sprintf(
-            $email_templates->get_text('add_candidate_author_notice'),
-            $task_author->first_name,
-            $task->post_title,
-            filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING),
-            get_permalink($task_id)
-        ))
-    );
+    ItvAtvetka::instance()->mail('add_candidate_author_notice', [
+        'user_id' => $task_author->ID,
+        'username' => $task_author->first_name,
+        'task_title' => $task->post_title,
+        'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
+        'task_url' => get_permalink($task_id),
+    ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
+    
+    //
+    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_REACTION_TO_TASK_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer_id]);
+    UserNotifModel::instance()->push_notif($task_doer_id, UserNotifModel::$TYPE_REACTION_TO_TASK_USER, ['task_id' => $task_id, 'from_user_id' => $task_doer_id]);
 
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -387,12 +524,12 @@ add_action('wp_ajax_nopriv_add-candidate', 'ajax_add_candidate');
 
 /** Remove a candidate */
 function ajax_remove_candidate() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+//     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
-        empty($_POST['task-id'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'task-remove-candidate')
+        (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
+//         || empty($_POST['nonce'])
+//         || !wp_verify_nonce($_POST['nonce'], 'task-remove-candidate')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -400,16 +537,49 @@ function ajax_remove_candidate() {
         )));
     }
 
-    $task_id = (int)$_POST['task-id'];
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
+    
     $task = get_post($task_id);
     $task_author = get_user_by('id', $task->post_author);
 	$task_doer_id = get_current_user_id();
+	$was_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
+	
+	if(!$was_doer_already_candidate) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));	    
+	}
+	
+	if(!$task) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));	    
+	}
+	
+	if(!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+	}
 	
 	$task_doers = tst_get_task_doers($task_id, true);
 	$is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
 
     p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+    
+    if($was_doer_already_candidate) {
+        UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CANCEL_AS_CANDIDATE);
+    }
     
 	if($task){
 		do_action('update_task_stats', $task);	
@@ -419,23 +589,26 @@ function ajax_remove_candidate() {
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
-    wp_mail(
-        $task_author->user_email,
-        $email_templates->get_title('refuse_candidate_author_notice'),
-        nl2br(sprintf(
-            $email_templates->get_text('refuse_candidate_author_notice'),
-            $task_author->first_name,
-            $task->post_title,
-            filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING)
-        ))
-    );
+    ItvAtvetka::instance()->mail('refuse_candidate_author_notice', [
+        'user_id' => $task_author->ID,
+        'username' => $task_author->first_name,
+        'task_title' => $task->post_title,
+        'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
+    ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
         // Task is automatically switched "publish":
-        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
+        wp_update_post(array('ID' => (int)$task_id, 'post_status' => 'publish'));
     }
-	
+    
+    //
+    UserNotifModel::instance()->push_notif($task_author->ID, UserNotifModel::$TYPE_REACTION_TO_TASK_BACK, ['task_id' => $task_id, 'from_user_id' => $task_doer_id]);
+    
+    //
+    $timeline = ITV\models\TimelineModel::instance();
+    $timeline->add_current_item($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+    
     wp_die(json_encode(array(
         'status' => 'ok',
     )));
@@ -444,12 +617,106 @@ add_action('wp_ajax_remove-candidate', 'ajax_remove_candidate');
 add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 
 
+/** Decline a candidate by task author **/
+function ajax_decline_candidate() {
+    if(
+        (empty($_POST['doer_gql_id']) && empty($_POST['doer-id']))
+        || (empty($_POST['task_gql_id']) && empty($_POST['task-id']))
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+    
+    if(!empty($_POST['task_gql_id'])) {
+        $task_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['task_gql_id'] );
+        $task_id = !empty($task_identity['id']) ? (int)$task_identity['id'] : 0;
+    }
+    else {
+        $task_id = !empty($_POST['task-id']) ? (int)$_POST['task-id'] : 0;
+    }
+    
+    if(!empty($_POST['doer_gql_id'])) {
+        $doer_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['doer_gql_id'] );
+        $task_doer_id = !empty($doer_identity['id']) ? (int)$doer_identity['id'] : 0;
+    }
+    else {
+        $task_doer_id = !empty($_POST['doer-id']) ? (int)$_POST['doer-id'] : 0;
+    }
+    
+    $task = get_post($task_id);
+    $task_author = get_user_by('id', $task->post_author);
+    
+    $user = wp_get_current_user();
+    
+	$was_doer_already_candidate = tst_is_user_already_candidate($task_doer_id, $task_id);
+	
+    if(!$task 
+        || !is_user_logged_in() 
+        || !$task_author 
+        || !$was_doer_already_candidate
+        || $user->ID != $task_author->ID
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+        
+	$task_doers = tst_get_task_doers($task_id, true);
+	$is_doer_remove = count($task_doers) && ($task_doers[0]->ID == $task_doer_id);
+
+    p2p_type('task-doers')->disconnect($task_id, $task_doer_id);
+    ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_REMOVE_CANDIDATE, get_current_user_id());
+        
+//     if($was_doer_already_candidate) {
+//         UserXPModel::instance()->register_activity(get_current_user_id(), UserXPModel::$ACTION_CANCEL_AS_CANDIDATE);
+//     }
+        
+	if($task){
+		do_action('update_task_stats', $task);	
+		do_action('update_member_stats', array($task_doer_id, $task->post_author));
+	}
+	
+    // Send email to the task doer:
+    $email_templates = ItvEmailTemplates::instance();
+    
+    $doer = get_user_by('id', $task_doer_id);
+    ItvAtvetka::instance()->mail('refuse_candidate_doer_notice', [
+        'user_id' => $doer->ID,
+        'username' => $doer->first_name,
+        'task_title' => $task->post_title,
+    ]);
+    ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $doer->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
+
+    if($task && $task->post_status == 'in_work' && $is_doer_remove) {
+        // Task is automatically switched "publish":
+        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
+    }
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));
+        
+}
+add_action('wp_ajax_decline-candidate', 'ajax_decline_candidate');
+add_action('wp_ajax_nopriv_decline-candidate', 'ajax_decline_candidate');
+
+
 /** Add a new login check - is account active or not: */
 add_filter('authenticate', function($user, $username, $password){
-    if( !is_wp_error($user) && get_user_meta($user->ID, 'activation_code', true)) {
-        $err = new WP_Error('user-inactive', __('Your account is not active yet! Please check out your email.', 'tst'));
-        return $err;
+    if( !is_wp_error($user) ) {
+        if( get_user_meta($user->ID, 'activation_code', true)) {
+            $err = new WP_Error('user-inactive', __('Your account is not active yet! Please check out your email.', 'tst'));
+            return $err;
+        }
+        elseif( UserBlockModel::instance()->is_user_blocked( $user->ID ) ) {
+            $err = new WP_Error('user-blocked', sprintf( __( 'Your account is blocked till %s', 'tst' ), UserBlockModel::instance()->get_user_block_till_date( $user->ID ) ) );
+            return $err;
+        }
     }
+    
     return $user;
 }, 30, 3);
 
@@ -467,7 +734,7 @@ function ajax_login() {
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
-
+    
     $user = wp_signon(array(
         'user_login' => $_POST['login'],
         'user_password' => $_POST['pass'],
@@ -479,7 +746,7 @@ function ajax_login() {
             'message' => $user->get_error_message($user->get_error_code()),
         )));
     }
-
+    
     if($user) {
         UserXPModel::instance()->register_activity_from_gui($user->ID, UserXPModel::$ACTION_LOGIN);
     }
@@ -532,11 +799,7 @@ function ajax_user_register() {
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);
 			UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_REGISTER);
 				
-			$email_templates = ItvEmailTemplates::instance();
-			$email_subject = $email_templates->get_title('activate_account_notice');
-			$email_body_template = $email_templates->get_text('activate_account_notice');
-			
-			tst_send_activation_email($user, $email_subject, $email_body_template);
+			tst_send_activation_email($user);
 			update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
 			
 			wp_die(json_encode(array(
@@ -650,33 +913,29 @@ add_action('wp_ajax_delete-profile', 'ajax_delete_profile');
 add_action('wp_ajax_nopriv_delete-profile', 'ajax_delete_profile');
 
 function ajax_add_message() {
+    
+//     $ret = wp_verify_nonce($_POST['nonce'], 'we-are-receiving-a-letter-goshujin-sama');
+    $ret = true;
 
-    if(empty($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'we-are-receiving-a-letter-goshujin-sama')) {
+    if(empty($_POST['nonce']) || !$ret) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
     }
 
-    $email_templates = ItvEmailTemplates::instance();
+    ItvAtvetka::instance()->mail('message_added_notification', [
+        'mailto' => get_option('admin_email'),
+        'page_url' => isset($_POST['page_url']) ? $_POST['page_url'] : '',
+        'name' => $_POST['name'],
+        'email' => $_POST['email'],
+        'message' => $_POST['message'],
+    ]);
 
-    $success = wp_mail(
-        get_option('admin_email'),
-        $email_templates->get_title('message_added_notification'),
-        nl2br(sprintf(
-            $email_templates->get_text('message_added_notification'),
-            isset($_POST['page_url']) ? $_POST['page_url'] : '', $_POST['name'], $_POST['email'], $_POST['message']
-        ))
-    );
-
-    if($success) {
-        wp_die(json_encode(array(
-            'status' => 'ok',
-            'message' => __('Your message has been sent! Thanks a lot :)', 'tst'),
-        )));
-    } else {
-
-    }
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'message' => __('Your message has been sent! Thanks a lot :)', 'tst'),
+    )));
 }
 add_action('wp_ajax_add-message', 'ajax_add_message');
 add_action('wp_ajax_nopriv_add-message', 'ajax_add_message');
@@ -832,34 +1091,6 @@ function add_tst_consult_column( $columns, $post_type ) {
 }
 add_action( 'manage_posts_columns' , 'add_tst_consult_column', 2,2);
 
-
-function itv_get_unique_user_login($first_name, $last_name = '') {
-	$new_ok_login = sanitize_user($first_name, true);
-	$is_ok = false;
-	
-	if(!username_exists($new_ok_login)) {
-		$is_ok = true;
-	}
-	
-	if(!$is_ok && $last_name) {
-		$new_ok_login = sanitize_user($last_name, true);
-		if(!username_exists($new_ok_login)) {
-			$is_ok = true;
-		}
-	}
-	
-	if(!$is_ok) {
-		$user_login = sanitize_user($first_name . ($last_name ? '_' . $last_name : ''), true);
-		$new_ok_login = $user_login;
-		$iter = 1;
-		while(username_exists($new_ok_login) && $iter < 1000) {
-			$new_ok_login = $user_login . $iter;
-			$iter += 1;
-		}
-	}
-	
-	return $new_ok_login;
-}
 
 function itv_email_login_authenticate($user, $username, $password) {
 	if(is_a($user, 'WP_User')) {

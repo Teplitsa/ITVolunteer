@@ -1,0 +1,6 @@
+schema: http://tep-itv.dench/graphql
+overwrite: true
+generates:
+  ./src/fragmentTypes.json:
+    plugins:
+      - fragment-matcher

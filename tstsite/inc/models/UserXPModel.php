@@ -8,6 +8,7 @@ require_once dirname(__FILE__) . '/../dao/Review.php';
 
 use \ITV\models\ITVSingletonModel;
 use \ITV\dao\UserXP;
+use \ITV\dao\UserXPExtra;
 use \ITV\dao\UserXPActivity;
 use \ITV\dao\Review;
 use \ITV\dao\ReviewAuthor;
@@ -25,7 +26,8 @@ class UserXPModel extends ITVSingletonModel {
     public static $ACTION_UPLOAD_PHOTO = 'upload_photo';
     public static $ACTION_ADD_COMMENT = 'add_comment';
     public static $ACTION_CREATE_TASK = 'create_task';
-    public static $ACTION_ADD_AS_CANDIDATE = 'add_as_candidate';
+    public static $ACTION_ADD_AS_CANDIDATE = 'add_as_candidate_0617';
+    public static $ACTION_CANCEL_AS_CANDIDATE = 'cancel_as_candidate_0617';
     public static $ACTION_TASK_DONE = 'task_done';
     public static $ACTION_MY_TASK_DONE = 'my_task_done';
     public static $ACTION_REVIEW_FOR_DOER = 'review_for_doer';
@@ -88,7 +90,34 @@ class UserXPModel extends ITVSingletonModel {
     
     private function inc_user_xp($user_id, $action) {
         $user_xp = $this->get_user_xp($user_id);
-        $this->set_user_xp($user_id, $user_xp + $this->get_action_xp($action));
+        return $this->set_user_xp($user_id, $user_xp + $this->get_action_xp($action));
+    }
+    
+    public function inc_user_xp_value($user_id, $value) {
+        $user_xp = $this->get_user_xp($user_id);
+        $xp_extra = $this->get_extra_xp($user_id);
+        $user_xp -= $xp_extra->value;
+        
+        $xp_extra->value += $value;
+        $xp_extra->moment = current_time('mysql');
+        $xp_extra->save();
+        
+        return $this->set_user_xp($user_id, $user_xp + $xp_extra->value);
+    }
+    
+    private function get_extra_xp($user_id) {
+        $xp_extra = UserXPExtra::find($user_id);
+        if(!$xp_extra) {
+            $xp_extra = new UserXPExtra();
+            $xp_extra->user_id = $user_id;
+            $xp_extra->value = 0;
+        }
+        return $xp_extra;
+    }
+    
+    private function get_extra_xp_value($user_id) {
+        $xp_extra = UserXPExtra::find($user_id);
+        return $xp_extra ? $xp_extra->value : 0;
     }
     
     private function set_user_xp($user_id, $xp_val) {
@@ -99,6 +128,8 @@ class UserXPModel extends ITVSingletonModel {
         }
         $user_xp->xp = $xp_val;
         $user_xp->save();
+        
+        return $user_xp->xp;
     }
     
     public function get_action_xp($action) {
@@ -291,6 +322,7 @@ class UserXPModel extends ITVSingletonModel {
         if($this->is_benchmark_user) { echo "collect userXP: " . (microtime(true) - $start) . " sec.\n"; }
             
         $start = microtime(true);
+        $user_xp += $this->get_extra_xp_value($user->ID);
         $this->set_user_xp($user->ID, $user_xp);
         if($this->is_benchmark_user) { echo "set userXP: ".(microtime(true) - $start) . " sec.\n"; }
         

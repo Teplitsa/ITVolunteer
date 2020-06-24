@@ -1,4 +1,5 @@
 <?php
+
 function deregister_taxonomy_for_object_type( $taxonomy, $object_type) {
 	global $wp_taxonomies;
 
@@ -51,7 +52,44 @@ function itv_custom_content(){
         'show_admin_column' => false,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'reward', 'with_front' => false),
-        //'update_count_callback' => '',        
+        //'update_count_callback' => '', 
+        
+	    'show_in_graphql' => true,
+	    'graphql_single_name' => 'RewardTag',
+	    'graphql_plural_name' => 'RewardTags'
+    ));
+    
+    register_taxonomy('nko_task_tag', array('tasks'), array(
+        'labels' => array(
+            'name'                       => __('NPO Tags', 'tst'),
+            'singular_name'              => __('NPO Tag', 'tst'),
+            'menu_name'                  => __('NPO Tags', 'tst'),
+            'all_items'                  => __('All NPO Tags', 'tst'),
+            'edit_item'                  => __('Edit NPO Tag', 'tst'),
+            'view_item'                  => __('View NPO Tag', 'tst'),
+            'update_item'                => __('Update NPO Tag', 'tst'),
+            'add_new_item'               => __('Add new NPO Tag', 'tst'),
+            'new_item_name'              => __('New NPO Tag name', 'tst'),
+            'parent_item'                => __('Parent NPO Tag', 'tst'),
+            'parent_item_colon'          => __('Parent NPO Tag:', 'tst'),
+            'search_items'               => __('Search NPO Tags', 'tst'),
+            'popular_items'              => __('Popular NPO Tags', 'tst'),
+            'separate_items_with_commas' => __('Separate with commas', 'tst'),
+            'add_or_remove_items'        => __('Add or remove NPO Tag', 'tst'),
+            'choose_from_most_used'      => __('Choose from most used NPO Tags', 'tst'),
+            'not_found'                  => __('Not found NPO Tags', 'tst'),
+        ),
+        'hierarchical'      => true,
+        'show_ui'           => true,
+        'show_in_nav_menus' => true,
+        'show_tagcloud'     => true,
+        'show_admin_column' => false,
+        'query_var'         => true,
+        'rewrite'           => array('slug' => 'nko_task_tag'),
+        
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'NgoTaskTag',
+        'graphql_plural_name' => 'NgoTaskTags'
     ));
 	
     register_post_type('tasks', array(
@@ -87,6 +125,10 @@ function itv_custom_content(){
 		'menu_icon'          => 'dashicons-welcome-write-blog',
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
+        
+        'show_in_graphql'    =>  true,
+        'graphql_single_name' => 'task',
+        'graphql_plural_name' => 'tasks',
 	));
 	
 	if ( function_exists('p2p_register_connection_type') ) {
@@ -125,10 +167,5 @@ function itv_custom_content(){
 }
 
 }//if tst_custom_content
-    
-
-
-
-
-
-
+ 
+ 

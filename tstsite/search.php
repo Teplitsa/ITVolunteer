@@ -1,76 +1,65 @@
 <?php
 /**
- * The template for displaying Search Results pages.
- *
- * @package Blank
- */
+ * Template Name: MembersPage
+ **/
 
 global $wp_query;
 
- 
+$css = (isset($wp_query->posts[0]->post_type)) ? $wp_query->posts[0]->post_type : 'tasks';
+$search_str = isset($_GET['s']) ? $_GET['s'] : '';
+$search_str = trim($search_str);
+
 get_header(); ?>
 
-<header class="page-heading">
-
+<header class="page-heading <?php echo $css;?>-list-header <?php if(!is_home()){echo 'no-breadcrumbs'; }?>">
+	<h1 class="page-title"><?php echo frl_page_title();?></h1>
 	<div class="row">
-		<div class="col-md-8">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>
-		</div>
-		<div class="col-md-4">
-			&nbsp;
-		</div>
+		<?php tst_tasks_filters_search_menu($search_str);?>
 	</div>
-
 </header>
-	
+
 <div class="page-body">
-<div class="row">
-	
-	<div class="col-md-2">
-		<div class="res-count">
-			
-			<?php echo __('Results', 'tst');?>: <b><?php echo (int)$wp_query->found_posts;?></b>
-			
+    <div class="row int-search-page-input">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <form class="searchform" role="search" action="<?php echo home_url('/'); ?>" method="get">
+                <div class="row">
+                <div class="col-md-10">
+                <input class="search-field form-control" type="search" value="<?php echo stripslashes(get_search_query()); ?>" name="s">
+                </div>
+                <div class="col-md-2">
+                <div class="sbutton-holder">
+                <input class="search-submit btn <?php echo itv_get_search_button_color_class($wp_query)?> btn-block" type="submit" value="<?php _e('Search'); ?>">
+                <input type="hidden" value="<?php echo $wp_query->get('task_status') ?>" name="task_status" />
+                </div>
+                </div>
+                </div>
+            </form>
         </div>
-	</div>
+        <div class="col-md-3"></div>
+    </div>
+    <?php if(!$search_str): ?>
+        <?php get_template_part( 'partials/no-search-text', 'index' ); ?>
+        
+	<?php elseif ( have_posts() ) : ?>
+	<div class="row in-loop <?php echo $css;?>-list">
+		<?php
+			foreach($wp_query->posts as $qp){
+				if($qp->post_type == 'tasks')
+					tst_task_card_in_loop($qp);
+			}			
+		?>		
+	</div><!-- .row -->
+
+		<?php tst_content_nav( 'nav-below' ); ?>
+
+	<?php else : ?>
+
+		<?php get_template_part( 'no-results', 'index' ); ?>
+
+	<?php endif; ?>
 	
-	<div class="col-md-7">		
-			<div class="search-holder"><?php get_search_form();?></div>
-			
-			<?php if ( have_posts() ) : ?>
-				
-				<?php while ( have_posts() ) : the_post(); $pt = get_post_type(); ?>
-					
-				<article class="search-item <?php echo $pt;?>">
-					<h4>
-						<a href="<?php the_permalink(); ?>" rel="bookmark"><?php the_title();?></a>
-						<span class="title-part">
-						<?php
-							if($pt == 'tasks') {
-								echo " (#".get_the_ID().")";
-							}								
-						?>
-						</span>
-						<span class="nav-mark">&raquo;</span>	
-					</h4>
-					<div class="description"><?php the_excerpt();?></div>
-				</article>					
-	
-				<?php endwhile; ?>
-	
-				<?php tst_content_nav( 'nav-below' ); ?>
-	
-			<?php else : ?>
-	
-				<?php get_template_part( 'no-results', 'index' ); ?>
-	
-			<?php endif; ?>
-	
-	</div>
-	
-	<div class="col-md-3">&nbsp;</div>
-	
-</div></div>
-	
+
+</div><!-- .page-body -->
+
 <?php get_footer(); ?>

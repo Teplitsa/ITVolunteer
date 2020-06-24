@@ -1,4 +1,4 @@
-$(function(){
+jQuery(function($){
     // task result screenshots
     
     $("#upload_res_screen").ajaxUpload({

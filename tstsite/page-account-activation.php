@@ -45,14 +45,12 @@ get_header();?>
             <?php } else {
                 update_user_meta($user->ID, 'activation_code', '');
 
-                $email_templates = ItvEmailTemplates::instance();
-
-                wp_mail(
-                    $user->user_email,
-                    $email_templates->get_title('account_activated_notice'),
-                    sprintf($email_templates->get_text('account_activated_notice'), $user->user_login, home_url('/login/'))
-                );
-
+                ItvAtvetka::instance()->mail('account_activated_notice', [
+                    'mailto' => $user->user_email,
+                    'login' => $user->user_login,
+                    'activation_url' => home_url('/login/'),
+                ]);
+        
                 $link = '<a href="'.tst_get_login_url().'" class="alert-link">'.__('Enter on site', 'tst').'</a>';?>
 
                 <div class="alert alert-success"><?php printf(__('Your account is active now! Please %s.', 'tst'), $link);?></div>
