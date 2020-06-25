@@ -88,7 +88,7 @@ const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
         setMessageSent(false)
         setContactFormVisibility(true)
       }}>
-        Что-то не так с задачей? Напиши администратору
+        Что-то не так с задачей? Напишите администратору
       </a>
       }
 

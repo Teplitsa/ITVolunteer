@@ -5,6 +5,7 @@ const taskAuthor: ITaskAuthor = {
   databaseId: 0,
   fullName: "",
   itvAvatar: "",
+  profileURL: "",
   authorReviewsCount: 0,
   organizationName: "",
   organizationDescription: "",

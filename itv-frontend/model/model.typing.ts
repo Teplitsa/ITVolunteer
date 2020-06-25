@@ -226,6 +226,7 @@ export interface ITaskState {
     reviewForDoer?: ITaskReviewer;
   };
   isApproved: boolean;
+  pemalinkPath: string;
   nonceContactForm?: string;
   hasCloseSuggestion?: Computed<ITaskModel>;
 }
@@ -256,6 +257,7 @@ export interface ITaskAuthor {
   databaseId: number;
   fullName: string;
   itvAvatar: string;
+  profileURL: string;
   authorReviewsCount: number;
   organizationName: string;
   organizationDescription: string;

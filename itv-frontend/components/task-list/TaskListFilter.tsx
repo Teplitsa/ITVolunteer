@@ -182,7 +182,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
   return (
       <section className="task-list-filter">
-          <div className="filter-explain">Выберите категории задач, которые вам подоходят</div>
+          <div className="filter-explain">Выберите категории задач, которые вам интересны</div>
 
           {!tipClose[filterTips.newTaskNotif] &&
           <div className="filter-tip">
@@ -261,7 +261,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
                   </span>
                   <a href="#" className="filter-tip-close" onClick={(e) => {handleCloseTip(e, filterTips.subscribeAndEarnPoints)}}> </a>
               </div>
-              Подпишитесь на уведомления и получите 500 баллов
+              Подпишитесь на уведомления и получите 50 баллов
           </div>
           }
 
@@ -273,7 +273,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
               {subscribeTaskList !== null && 
               <div className="already-subscribed">
                   <a href="#" className="filter-unsubscribe" onClick={(e) => {handleUnsubscribe(e)}}>Отменить подписку</a>
-                  <span>У вас настроена рассылка на выбранные категории задач</span>
+                  <span>У вас настроена подписка на выбранную категорию задач</span>
               </div>
               }
           </div>

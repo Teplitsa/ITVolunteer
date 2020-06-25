@@ -20,7 +20,7 @@ const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
 
         {!doers?.length && isLoggedIn && !isTaskAuthorLoggedIn && (
           <div className="sidebar-users-block no-responses">
-            <p>Откликов пока нет. Воспользуйся возможностью получить задачу</p>
+            <p>Откликнитесь первыми и получите задачу</p>
           </div>
         )}
 

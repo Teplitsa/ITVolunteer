@@ -86,6 +86,12 @@ function itv_register_task_graphql_fields() {
                     return boolval(get_post_meta($task->ID, 'itv-approved', true));
                 },
             ],
+            'pemalinkPath' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return str_replace(site_url(), "", get_permalink($task->ID));
+                },
+            ],
             'nonceContactForm' => [
                 'type'        => 'String',
                 'description' => __( 'Contact form nonce', 'tst' ),
