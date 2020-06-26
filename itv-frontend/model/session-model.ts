@@ -74,11 +74,7 @@ const sessionState: ISessionState = {
       (state, storeState) => storeState.components.task?.author?.databaseId,
       (state, storeState) => storeState.components.task?.doers,
     ],
-    (userId, authorId, doers) =>
-      Boolean(userId) &&
-      ((Boolean(authorId) && userId === authorId) ||
-        (Array.isArray(doers) &&
-          doers.findIndex((doer) => doer.databaseId === userId) >= 0))
+    (userId, authorId, doers) => Boolean(userId)
   ),
 };
 

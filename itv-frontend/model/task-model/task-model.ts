@@ -42,6 +42,7 @@ const taskState: ITaskState = {
   timeline: null,
   reviews: null,
   isApproved: false,
+  pemalinkPath: "",
   nonceContactForm: "",
   hasCloseSuggestion: computed((taskState) => {
     return _.some(taskState.timeline, item => item.type === "close_suggest" && item.status === "current")

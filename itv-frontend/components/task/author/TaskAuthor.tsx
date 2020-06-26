@@ -10,6 +10,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
   const {
     itvAvatar: avatarImage,
     fullName,
+    profileURL: toProfile,
     authorReviewsCount: reviewsCount,
   } = author;
 
@@ -27,7 +28,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
             />
             <div className="details">
               <span className="status">Заказчик</span>
-              <span className="name">{fullName}</span>
+              <a className="name" href={toProfile}>{fullName}</a>
               <span className="reviews">{`${reviewsCount} отзывов`}</span>
             </div>
           </div>
