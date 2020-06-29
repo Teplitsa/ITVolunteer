@@ -1,4 +1,9 @@
 import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
+import {
+  ICoreHeadingBlock,
+  ICoreParagraphBlock,
+  ICoreMediaTextBlock,
+} from "./gutenberg/gutenberg.typing";
 
 /**
  * Model helpers
@@ -189,6 +194,7 @@ export interface IPageActions {
 export interface IComponentsModel extends IComponentsState {}
 
 export interface IComponentsState {
+  honors?: IHonorsPageModel;
   paseka?: IPasekaPageModel;
   task?: ITaskModel;
   taskList?: ITaskListModel;
@@ -215,6 +221,27 @@ export interface IPasekaPageState {
 export interface IPasekaPageActions {
   initializeState: Action<IPasekaPageModel>;
   setState: Action<IPasekaPageModel, IPasekaPageState>;
+}
+
+/**
+ * Honors
+ */
+
+export interface IHonorsPageModel
+  extends IHonorsPageState,
+    IHonorsPageActions {}
+
+export interface IHonorsPageState {
+  id: string;
+  databaseId: number;
+  title: string;
+  slug: string;
+  blocks?: Array<ICoreHeadingBlock | ICoreParagraphBlock | ICoreMediaTextBlock>;
+}
+
+export interface IHonorsPageActions {
+  initializeState: Action<IHonorsPageModel>;
+  setState: Action<IHonorsPageModel, IHonorsPageState>;
 }
 
 /**

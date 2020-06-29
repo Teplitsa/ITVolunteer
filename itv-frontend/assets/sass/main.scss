@@ -10,6 +10,8 @@
 @import "helpers/mixins";
 @import "helpers/utils";
 
+@import "animation/animation";
+
 @import "layout/header";
 @import "layout/footer";
 @import "layout/main";
@@ -18,6 +20,7 @@
 @import "pages/task";
 @import "pages/task-list";
 @import "pages/paseka";
+@import "pages/nagrady";
 @import "components/notif";
 @import "components/contact-form";
 

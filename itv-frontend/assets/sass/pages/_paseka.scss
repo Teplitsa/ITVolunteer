@@ -27,8 +27,12 @@
   &__content {
     text-align: center;
     @include screen-from(sm) {
-      display: flex;
       text-align: left;
+    }
+    &_paseka {
+      @include screen-from(sm) {
+        display: flex;
+      }
     }
     &-left {
       @include screen-from(md) {
@@ -55,7 +59,9 @@
       }
     }
     &-text {
-      margin: 0 0 15px;
+      &_paseka {
+        margin: 0 0 15px;
+      }
     }
   }
 }

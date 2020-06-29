@@ -1,0 +1,27 @@
+.slide-in {
+  transform: scale(0.25);
+  opacity: 0;
+  transition: opacity 0.3s ease-in, transform 0.3s ease;
+  @include screen-from(sm) {
+    max-width: 100%;
+  }
+  &_full-width {
+    > * {
+      width: 100%;
+    }
+  }
+  &_from-left {
+    @include screen-from(sm) {
+      transform: scale(0.5) translate(-100%, 0);
+    }
+  }
+  &_from-right {
+    @include screen-from(sm) {
+      transform: scale(0.5) translate(100%, 0);
+    }
+  }
+  &_active {
+    transform: none;
+    opacity: 1;
+  }
+}

@@ -16,14 +16,14 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
 
   return (
     <article className="article article_paseka">
-      <div className="article__content">
+      <div className="article__content article__content_paseka">
         <div className="article__content-left">
           <h1
             className="article__title article__title_paseka"
             dangerouslySetInnerHTML={{ __html: title }}
           />
           <div
-            className="article__content-text"
+            className="article__content-text article__content-text_paseka"
             dangerouslySetInnerHTML={{
               __html: content,
             }}

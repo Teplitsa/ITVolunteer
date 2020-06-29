@@ -33,9 +33,9 @@ const pasekaPageActions: IPasekaPageActions = {
   }),
 };
 
-const archiveModel: IPasekaPageModel = {
+const pasekaModel: IPasekaPageModel = {
   ...pasekaPageState,
   ...pasekaPageActions,
 };
 
-export default archiveModel;
+export default pasekaModel;
