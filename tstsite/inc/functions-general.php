@@ -7,6 +7,18 @@
 use ITV\models\MailSendLogModel;
 use WPGraphQL\JWT_Authentication;
 
+/** Add SVG to allowed file uploads */
+
+add_filter('upload_mimes', 'itv_svg_mime_type');
+
+function itv_svg_mime_type($mimes = array())
+{
+    $mimes['svg']  = 'image/svg';
+    $mimes['svgz'] = 'image/svg';
+
+    return $mimes;
+}
+
 /** WPGraphQl JWT */
 
 add_filter("graphql_jwt_auth_secret_key", function() {
