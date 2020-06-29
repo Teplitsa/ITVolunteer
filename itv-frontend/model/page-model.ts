@@ -48,22 +48,27 @@ export const queriedFields = Object.keys(pageState).map((key) => {
   return key;
 }) as Array<keyof IPageState | string>;
 
-const withPostType = (
-  postType: PostType,
-  fields: string = queriedFields.join("\n")
-): string => {
+export const withPostType = ({
+  postType,
+  fields = queriedFields.join("\n"),
+  queryVar = "slug"
+}: {
+  postType: PostType;
+  fields?: string;
+  queryVar?: string;
+}): string => {
   return `
-  query Get${capitalize(postType)}($slug: String!) {
-    ${postType}By(slug: $slug) {
+  query Get${capitalize(postType)}($${queryVar}: String!) {
+    ${postType}By(${queryVar}: $${queryVar}) {
       ${fields}
     }
   }`;
 };
 
 export const graphqlQuery = {
-  getPageBySlug: withPostType("page"),
-  getPostBySlug: withPostType("post"),
-  getTaskBySlug: withPostType("task"),
+  getPageBySlug: withPostType({ postType: "page", queryVar: "uri" }),
+  getPostBySlug: withPostType({ postType: "post" }),
+  getTaskBySlug: withPostType({ postType: "task" }),
 };
 
 const pageActions: IPageActions = {
