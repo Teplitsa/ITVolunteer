@@ -162,44 +162,9 @@
 
 // icons
 @mixin pic-small {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-}
-
-// menu
-@mixin dd-submenu {
-  .submenu {
-    position: absolute;
-    display: none;
-    top: 21px;
-    background-color: $color-white;
-    border: 1px solid $color-gray-light-md;
-    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
-    border-radius: 0px 0px 8px 8px;
-    z-index: 10;
-    cursor: default;
-    padding: 5px 0px 11px 0px;
-    min-width: 130px;
-
-    &:hover {
-      display: block;
-    }
-
-    li {
-      padding: 5px 10px 5px 10px;
-
-      &:hover {
-        background-color: $color-gray-light-xl;
-      }
-    }
-
-    a {
-      @include text-xs-bold-line-lg;
-      color: $color-gray-dark-md;
-      color: $color-gray-dark-xl;
-    }
-  }
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
 }
 
 /**
@@ -231,8 +196,7 @@
       @media (min-width: $size_from) {
         @content;
       }
-    }
-    @else {
+    } @else {
       $screen_to_index: $screen_from_index + 1;
       $screen_to: nth($screens, $screen_to_index);
       $size_to: map-get($breakpoints, $screen_to) - 1px;
