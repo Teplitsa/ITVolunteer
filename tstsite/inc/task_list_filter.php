@@ -31,7 +31,7 @@ class TaskListFilter {
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => true ? [] : array_map(function($term){
+            'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
@@ -160,7 +160,7 @@ class TaskListFilter {
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => true ? [] : array_map(function($term){
+            'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
