@@ -25,7 +25,7 @@ class TaskListFilter {
                         ),                                
                     ]),
                 ];
-            }, get_terms('post_tag')),
+            }, array_values(get_terms('post_tag'))),
         ];
     
         $sections[] = [
@@ -45,7 +45,7 @@ class TaskListFilter {
                         ),                                
                     ]),
                 ];
-            }, get_terms('nko_task_tag')),
+            }, array_values(get_terms('nko_task_tag'))),
         ];
         
         $sections[] = [
@@ -154,7 +154,7 @@ class TaskListFilter {
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
                 ];
-            }, get_terms('post_tag')),
+            }, array_values(get_terms('post_tag'))),
         ];
     
         $sections[] = [
@@ -165,7 +165,7 @@ class TaskListFilter {
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
                 ];
-            }, get_terms('nko_task_tag')),
+            }, array_values(get_terms('nko_task_tag'))),
         ];
         
         $sections[] = [
