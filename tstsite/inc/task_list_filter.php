@@ -31,20 +31,19 @@ class TaskListFilter {
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => array_map(function($term){
+            'items' => true ? [] : array_map(function($term){
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
-                    'task_count' => 0,
-                    // 'task_count' => $this->count_tasks_in_filter_option([
-                        // 'tax_query' => array(
-                            // array(
-                                // 'taxonomy' => 'nko_task_tag',
-                                // 'field'    => 'term_id',
-                                // 'terms'    => $term->term_id,
-                            // ),
-                        // ),                                
-                    // ]),
+                    'task_count' => $this->count_tasks_in_filter_option([
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => 'nko_task_tag',
+                                'field'    => 'term_id',
+                                'terms'    => $term->term_id,
+                            ),
+                        ),                                
+                    ]),
                 ];
             }, get_terms('nko_task_tag')),
         ];
@@ -161,7 +160,7 @@ class TaskListFilter {
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => array_map(function($term){
+            'items' => true ? [] : array_map(function($term){
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
