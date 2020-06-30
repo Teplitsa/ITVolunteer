@@ -289,7 +289,7 @@ function FilterSection(props) {
     const optionClickHandler = props.optionClickHandler
     const optionCheck = props.optionCheck
 
-    if(!sectionId) {
+    if(!sectionId || !sectionItems) {
         return null
     }
 
