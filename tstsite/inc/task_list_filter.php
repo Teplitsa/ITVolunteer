@@ -35,15 +35,16 @@ class TaskListFilter {
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
-                    'task_count' => $this->count_tasks_in_filter_option([
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'nko_task_tag',
-                                'field'    => 'term_id',
-                                'terms'    => $term->term_id,
-                            ),
-                        ),                                
-                    ]),
+                    'task_count' => 0,
+                    // 'task_count' => $this->count_tasks_in_filter_option([
+                        // 'tax_query' => array(
+                            // array(
+                                // 'taxonomy' => 'nko_task_tag',
+                                // 'field'    => 'term_id',
+                                // 'terms'    => $term->term_id,
+                            // ),
+                        // ),                                
+                    // ]),
                 ];
             }, get_terms('nko_task_tag')),
         ];
