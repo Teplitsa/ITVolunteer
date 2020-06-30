@@ -1,0 +1,89 @@
+.article {
+  &_paseka {
+    background-color: #fff;
+    margin: 2rem auto 0;
+    padding: 30px;
+    max-width: 1168px;
+    box-shadow: 0px 4px 24px rgba(75, 93, 3, 0.08);
+    border-radius: 32px;
+    @include screen-from(sm) {
+      padding: 66px 57px 66px 112px;
+    }
+  }
+  &__title {
+    &_paseka {
+      background: url(../../img/paseka.svg) 50% 50% no-repeat;
+      background-size: contain;
+      margin: 0 auto 2.5rem;
+      width: 15.375rem;
+      height: 3.4375rem;
+      max-width: 100%;
+      text-indent: -9999px;
+      @include screen-from(sm) {
+        margin-left: 0;
+      }
+    }
+  }
+  &__content {
+    text-align: center;
+    @include screen-from(sm) {
+      text-align: left;
+    }
+    &_paseka {
+      @include screen-from(sm) {
+        display: flex;
+      }
+    }
+    &-left {
+      @include screen-from(md) {
+        flex-basis: 54.3543%;
+      }
+      @include screen(sm) {
+        flex-basis: 50%;
+      }
+    }
+    &-right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      @include screen-from(md) {
+        flex-basis: 45.6457%;
+        flex-shrink: 10;
+      }
+      @include screen-from(sm) {
+        padding-left: 15px;
+      }
+      @include screen(sm) {
+        flex-basis: 50%;
+      }
+    }
+    &-text {
+      &_paseka {
+        margin: 0 0 15px;
+      }
+    }
+  }
+}
+
+.pasechnik-image {
+  max-width: 50%;
+  transform: scale(0.25);
+  opacity: 0;
+  transition: opacity 0.3s ease-in, transform 0.3s ease;
+  @include screen-from(sm) {
+    max-width: 100%;
+    transform: scale(0.5) translate(100%, 0);
+  }
+  &_active {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.paseka-participation-btn {
+  @include button-primary-lg;
+  margin-bottom: 20px;
+  width: 380px;
+  max-width: 100%;
+}

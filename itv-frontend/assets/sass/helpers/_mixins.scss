@@ -162,42 +162,47 @@
 
 // icons
 @mixin pic-small {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
 }
 
-// menu
-@mixin dd-submenu {
-  .submenu {
-    position: absolute;
-    display: none;
-    top: 21px;
-    background-color: $color-white;
-    border: 1px solid $color-gray-light-md;
-    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
-    border-radius: 0px 0px 8px 8px;
-    z-index: 10;
-    cursor: default;
-    padding: 5px 0px 11px 0px;
-    min-width: 130px;
+/**
+ * Screen
+ */
 
-    &:hover {
-      display: block;
+@mixin screen-from($from) {
+  @if (map-has-key($breakpoints, $from)) {
+    $size: map-get($breakpoints, $from);
+    @media (min-width: $size) {
+      @content;
     }
-
-    li {
-      padding: 5px 10px 5px 10px;
-
-      &:hover {
-        background-color: $color-gray-light-xl;
+  }
+}
+@mixin screen-to($to) {
+  @if (map-has-key($breakpoints, $to)) {
+    $size: map-get($breakpoints, $to);
+    @media (max-width: $size - 1px) {
+      @content;
+    }
+  }
+}
+@mixin screen($screen_from) {
+  @if (map-has-key($breakpoints, $screen_from)) {
+    $size_from: map-get($breakpoints, $screen_from);
+    $screens: map-keys($breakpoints);
+    $screen_from_index: index($screens, $screen_from);
+    @if ($screen_from_index == length($screens)) {
+      @media (min-width: $size_from) {
+        @content;
       }
-    }
-
-    a {
-      @include text-xs-bold-line-lg;
-      color: $color-gray-dark-md;
-      color: $color-gray-dark-xl;
+    } @else {
+      $screen_to_index: $screen_from_index + 1;
+      $screen_to: nth($screens, $screen_to_index);
+      $size_to: map-get($breakpoints, $screen_to) - 1px;
+      @media (min-width: $size_from) and (max-width: $size_to) {
+        @content;
+      }
     }
   }
 }
