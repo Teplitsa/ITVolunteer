@@ -285,7 +285,7 @@ function FilterSection(props) {
     const sectionId = _.get(props, "sectionData.id", "")
     const sectionTitle = _.get(props, "sectionData.title", "")
     const sectionIcon = _.get(filterSectionIcons, sectionId, "")
-    const sectionItems = _.get(props, "sectionData.items", "")
+    const sectionItems = _.get(props, "sectionData.items", [])
     const optionClickHandler = props.optionClickHandler
     const optionCheck = props.optionCheck
 
