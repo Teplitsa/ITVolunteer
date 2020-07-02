@@ -1,138 +1,148 @@
 //
 .notif-list {
-    width: 358px;
+  background: $color-white;
+  border: 1px solid $color-gray-light-lg;
+  width: 358px;
+  box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+  border-radius: $base;
+  z-index: 10;
+  cursor: default;
+
+  &__title {
+    margin: 16px 20px 0;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  &__container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 146px);
+    border-radius: $base;
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
+  }
+
+  &__item {
+    @include a-no-hover-underline;
+    display: block;
+    position: relative;
     background-color: $color-white;
-    border: 1px solid $color-gray-light-md;
-    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
+    padding: 12px 20px;
+
+    &_read {
+      background-color: $color-gray-light-xl;
+      border-bottom: 1px solid $color-gray-light-lg;
+    }
+
+    .itv-user-small-view {
+      .avatar-wrapper {
+        margin-right: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid $color-gray-light-md;
+      }
+    }
+  }
+
+  &__item-content {
+    display: flex;
+  }
+
+  &__item-icon {
+    flex-shrink: 0;
+    margin-right: 16px;
+
+    img {
+      padding: 6px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid $color-gray-light-md;
+      box-sizing: border-box;
+    }
+  }
+
+  &__item-title {
+    display: inline;
+    @include text-xs-bold-line-lg;
+    color: $color-gray-dark-md;
+
+    a {
+      color: $color-gray-dark-xl;
+    }
+
+    b {
+      color: $color-gray-dark-xl;
+      margin-right: 4px;
+    }
+
+    span {
+    }
+  }
+
+  &__item-task {
+    @include text-xs-bold;
+    display: inline;
+    margin-left: 4px;
+    line-height: 16px;
+    color: $color-gray-dark-xl;
+  }
+
+  &__item-time {
+    @include text-xs-bold;
+    margin-top: 5px;
+    line-height: 16px;
+    color: $color-gray-dark-md;
+
+    img {
+      width: 12px;
+      height: 12px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+  }
+
+  &__item-set-read {
+    position: absolute;
+    display: block;
+    right: 8px;
+    top: 6px;
+    background-image: url("../../img/icon-filter-close.svg");
+    background-size: 12px 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  &__view-all {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: $color-white;
     border-radius: 0px 0px 8px 8px;
-    z-index: 10;
-    cursor: default;
 
-    &:before {
-        content: "";
-        display:block;
-        width:0;
-        height:0;
-        position:absolute;
-        border-left: 13px solid transparent;
-        border-right: 13px solid transparent;
-        border-bottom: 13px solid $color-gray-light-md;
-        left: calc(50% - 12px);
-        top: -14px;
+    a {
+      @include text-xs-line-lg;
+      color: $color-main;
+      padding-right: 12px;
+      margin-right: 19px;
+      background-position: right center;
+      background-repeat: no-repeat;
+      background-size: 12px 12px;
+      background-image: url("../../img/icon-arrow-right-green.svg");
     }
-
-    &__container {
-        overflow-y: auto;
-        overflow-x: hidden;
-        max-height: calc(100vh - 146px);
-    }
-
-    &__item {
-        @include a-no-hover-underline;
-        display: block;
-        position: relative;
-        background-color: $color-gray-light-xl;
-        border-bottom: 1px solid $color-gray-light-md;
-        padding: 10px 16px 14px 10px;
-
-        &__read {
-            background-color: $color-white;
-            border-bottom: 1px solid $color-gray-light-lg;
-        }
-
-        .itv-user-small-view {
-            .avatar-wrapper {
-                width: 20px;
-                height: 20px;
-                margin-right: 4px;
-            }
-        }
-    }
-
-    &__item-content {
-        display: flex;
-    }
-
-    &__item-icon {
-        margin-right: 4px;
-
-        img {
-            @include pic-small;
-            border: 1px solid $color-gray-light-md;
-        }
-    }
-
-    &__item-body {
-        margin-top: 2px;
-    }
-
-    &__item-title {
-        @include text-xs-bold-line-lg;
-        color: $color-gray-dark-md;
-
-        a {
-           color: $color-gray-dark-xl; 
-        }
-
-        b {
-            color: $color-gray-dark-xl;
-            margin-right: 4px;
-        }
-
-        span {
-        }
-    }
-
-    &__item-task {
-        @include text-xs-bold;
-        display: block;
-        color: $color-gray-dark-xl;
-        margin-top: 2px;
-    }
-
-    &__item-time {
-        @include text-xs-bold;        
-        color: $color-gray-dark-md;
-        margin-top: 5px;
-
-        img {
-            width: 12px;
-            height: 12px;
-            margin-right: 6px;
-            vertical-align: middle;
-        }
-    }
-
-    &__item-set-read {
-        position: absolute;
-        display: block;
-        right: 8px;
-        top: 6px;
-        background-image: url("../../img/icon-filter-close.svg");
-        background-size: 12px 12px;
-        width: 12px;
-        height: 12px;
-    }
-
-    &__view-all {
-        width: 100%;
-        height: 45px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        background-color: $color-white;
-        border-radius: 0px 0px 8px 8px;
-
-        a {
-            @include text-xs-line-lg;
-            color: $color-main;
-            padding-right: 12px;
-            margin-right: 19px;
-            background-position: right center;
-            background-repeat: no-repeat;
-            background-size: 12px 12px;
-            background-image: url("../../img/icon-arrow-right-green.svg");
-        }
-    }
+  }
 }
-
