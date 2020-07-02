@@ -17,9 +17,8 @@ const PasekaPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req: { url },
-}) => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const url: string = "/nagrady";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
