@@ -49,7 +49,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
       <div className="open-notif">
 
-          <div onClick={handleNotifClick}>
+          <div className="open-notif__action" onClick={handleNotifClick}>
               <img src={Bell} alt="Сообщения" />
 
               {!_.isEmpty(notifList) && 

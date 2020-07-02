@@ -87,12 +87,16 @@
     }
 
     .account-col {
+      position: relative;
       display: flex;
       justify-content: flex-end;
+      align-items: center;
+      align-self: stretch;
 
       .account-symbols {
         display: flex;
         justify-content: flex-end;
+        border-left: 1px solid $color-gray-light-md;
       }
 
       .account-enter-links {
@@ -137,11 +141,16 @@
         border-radius: 10px;
         width: 44px;
         height: 44px;
-        margin-right: 36px;
-        margin-left: 12px;
+        margin-right: 20px;
+        margin-left: 20px;
         box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08),
           inset -1px -1px 1px rgba(129, 118, 111, 0.16);
         cursor: pointer;
+
+        &__action {
+          position: relative;
+          width: 100%;
+        }
 
         & > img {
           display: inline-block;
