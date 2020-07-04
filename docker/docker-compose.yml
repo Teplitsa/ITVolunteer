@@ -10,7 +10,9 @@ services:
       - "80:80"
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
-      - /mnt/disk1/share/tep-itv/site-v1:/site/v1.tep-itv
+    extra_hosts:
+      - "v1.tep-itv.dench:127.0.0.1"
+      - "tep-itv.dench:0.0.0.0"
   frontend:
     build:
       context: frontend
