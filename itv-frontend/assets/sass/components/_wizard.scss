@@ -1,0 +1,102 @@
+.wizard-form {
+  width: 600px;
+
+  & > h1 {
+    color: $color-gray-dark-md;
+    @include htext-bold;
+    margin-bottom: 16px;
+
+    & > span {
+      @include text-lg;
+      margin-right: 8px;
+    }
+  }
+
+  &__required-star {
+    color: $color-sec-dark;
+  }
+
+}
+
+
+.wizard-bottom-bar {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+
+  &__container {
+    max-width: $content-width-wizard;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 64px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+
+    & > img {
+      margin-right: 3px;
+    }
+
+    & > span {
+      @include text-sm-bold;
+      color: $color-gray-dark-md;
+    }
+  }
+}
+
+
+.wizard-progressbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__fraction {
+    @include text-sm-bold;
+    color: $color-gray-dark-md;
+    margin-right: 10px;
+  }
+
+  &__total {
+    height: 9px;
+    border-radius: 20px;    
+    background-color: $color-gray-light-md;
+    width: 336px;
+  }
+
+  &__complete {
+    height: 9px;
+    border-radius: 20px;    
+    background-color: $color-main;
+  }
+}
+
+
+.wizard-field {
+  .wizard-field__limit-help {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  .wizard-field__limit {
+    @include text-xs-bold;
+    color: $color-gray-dark-md;
+  }
+
+  .wizard-field__icon {
+    margin-right: 4px;
+  }
+
+  .wizard-field__help {
+    display: flex;
+    align-items: center;
+    @include text-sm-bold;
+    color: $color-main;
+  }
+}
