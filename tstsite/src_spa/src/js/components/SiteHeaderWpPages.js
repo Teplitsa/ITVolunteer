@@ -36,11 +36,11 @@ const ITV_USER_NOTIF_TEXT = {
     suggest_new_deadline_to_taskdoer: 'Вы предложили новый дедлайн задачи',
     task_closing_taskauthor: 'Вы закрыли задачу',
     task_closing_taskdoer: 'закрыл(а) задачу',
-    post_feedback_taskauthor_to_taskdoer: 'Вы оставили отзыв волонтёру по задаче',
-    post_feedback_taskdoer_to_taskdoer: 'оставил(а) вам отзыв по задаче',
-    post_feedback_taskauthor_to_taskauthor: 'оставил(а) вам отзыв по задаче',
-    post_feedback_taskdoer_to_taskauthor: 'Вы оставили отзыв автору задачи',
-    reaction_to_task_back: 'отозвал свой отклик на задачу',
+    post_feedback_taskauthor_to_taskdoer: "оставил(а) вам отзыв по задаче",
+    post_feedback_taskdoer_to_taskdoer: "Вы оставили отзыв автору задачи",
+    post_feedback_taskauthor_to_taskauthor: "Вы оставили отзыв волонтёру по задаче",
+    post_feedback_taskdoer_to_taskauthor: "оставил(а) вам отзыв по задаче",
+    reaction_to_task_back: "отозвал свой отклик на задачу",
 }
 
 function AccountInHeader({userId}) {
