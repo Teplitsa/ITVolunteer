@@ -341,6 +341,7 @@ function ajax_approve_candidate() {
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
         'author_email' => $task_author->user_email,
         'author_profile_url' => home_url('members/'.$task_author->user_login.'/'),
     ]);
@@ -351,6 +352,7 @@ function ajax_approve_candidate() {
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
         'doer_email' => $doer->user_email,
         'doer_profile_url' => home_url('members/'.$doer->user_login.'/'),
     ]);
@@ -426,6 +428,7 @@ function ajax_refuse_candidate() {
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $doer->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 
@@ -504,6 +507,7 @@ function ajax_add_candidate() {
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
         'task_url' => get_permalink($task_id),
     ]);
@@ -593,6 +597,7 @@ function ajax_remove_candidate() {
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
@@ -687,6 +692,7 @@ function ajax_decline_candidate() {
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
         'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $doer->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 

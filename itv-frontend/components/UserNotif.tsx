@@ -13,28 +13,28 @@ import logoNoText from '../assets/img/pic-logo-itv-notext.svg'
 import iconNotifRock from '../assets/img/icon-filter-mood-rock.svg'
 
 const ITV_USER_NOTIF_TEXT = {
-    task_published: 'Вы опубликовали новую задачу',
-    post_comment_taskauthor: 'прокомментировал(а) вашу задачу',
-    post_comment_user: 'Вы прокомментировали задачу',
-    reaction_to_task_user: 'Вы откликнулись на задачу',
-    reaction_to_task_taskauthor: 'откликнулся на задачу',
-    task_approved_taskauthor: 'Модератор одобрил вашу задачу',
-    task_disapproved_taskauthor: 'Вы выбрали волонтёра для задачи',
-    choose_taskdoer_to_taskdoer: 'выбрал(а) вас на задачу',
-    choose_taskdoer_to_taskauthor: 'Вы выбрали волонтёра для задачи',
-    choose_other_taskdoer: 'выбрал(а) другого исполнителя на задачу',
-    deadline_update_taskauthor: 'Вы изменили дедлайн задачи',
-    deadline_update_taskdoer: 'изменил(а) дедлайн задачи',
-    suggest_new_deadline_to_taskauthor: 'предложил(а) новый дедлайн задачи',
-    suggest_new_deadline_to_taskdoer: 'Вы предложили новый дедлайн задачи',
-    task_closing_taskauthor: 'Вы закрыли задачу',
-    task_closing_taskdoer: 'закрыл(а) задачу',
-    post_feedback_taskauthor_to_taskdoer: 'Вы оставили отзыв волонтёру по задаче',
-    post_feedback_taskdoer_to_taskdoer: 'оставил(а) вам отзыв по задаче',
-    post_feedback_taskauthor_to_taskauthor: 'оставил(а) вам отзыв по задаче',
-    post_feedback_taskdoer_to_taskauthor: 'Вы оставили отзыв автору задачи',
-    reaction_to_task_back: 'отозвал свой отклик на задачу',
-}
+  task_published: "Вы опубликовали новую задачу",
+  post_comment_taskauthor: "прокомментировал(а) вашу задачу",
+  post_comment_user: "Вы прокомментировали задачу",
+  reaction_to_task_user: "Вы откликнулись на задачу",
+  reaction_to_task_taskauthor: "откликнулся на задачу",
+  task_approved_taskauthor: "Модератор одобрил вашу задачу",
+  task_disapproved_taskauthor: "Вы выбрали волонтёра для задачи",
+  choose_taskdoer_to_taskdoer: "выбрал(а) вас на задачу",
+  choose_taskdoer_to_taskauthor: "Вы выбрали волонтёра для задачи",
+  choose_other_taskdoer: "выбрал(а) другого исполнителя на задачу",
+  deadline_update_taskauthor: "Вы изменили дедлайн задачи",
+  deadline_update_taskdoer: "изменил(а) дедлайн задачи",
+  suggest_new_deadline_to_taskauthor: "предложил(а) новый дедлайн задачи",
+  suggest_new_deadline_to_taskdoer: "Вы предложили новый дедлайн задачи",
+  task_closing_taskauthor: "Вы закрыли задачу",
+  task_closing_taskdoer: "закрыл(а) задачу",
+  post_feedback_taskauthor_to_taskdoer: "оставил(а) вам отзыв по задаче",
+  post_feedback_taskdoer_to_taskdoer: "Вы оставили отзыв автору задачи",
+  post_feedback_taskauthor_to_taskauthor: "Вы оставили отзыв волонтёру по задаче",
+  post_feedback_taskdoer_to_taskauthor: "оставил(а) вам отзыв по задаче",
+  reaction_to_task_back: "отозвал свой отклик на задачу",
+};
 
 export function NotifList(props) {
     const user = useStoreState(store => store.session.user)
@@ -146,7 +146,7 @@ function NotifItem({notif, user}) {
                     
                     <div className="notif-list__item-time">
                         <img src={iconNotifRock} alt="" />
-                        <span>{`${utils.getTheIntervalToNow(notif.dateGmt)}`}</span>
+            <span>{`${utils.formatIntervalToNow({fromDate: utils.itvWpDateTimeToDate(notif.dateGmt)})}`}</span>
                     </div>
                 </div>
                 <a href="#" className="notif-list__item-set-read" onClick={handleNotifItemClick}></a>

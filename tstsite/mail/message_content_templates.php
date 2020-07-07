@@ -114,23 +114,23 @@ class ItvEmailTemplates {
         $this->email_templates_atvetka_style = array(
             'approve_candidate_doer_notice' => array(
                 'title' => __('IT-Volunteer: you have been approved as participant!', 'tst'),
-                'text' => __("Greetings, {{username}}!\n\nYou have been approved to participate in task: {{task_title}}.\n\nYou can contact the task author for details with email: <a href='mailto:{{author_email}}'>{{author_email}}</a> or in some other ways (see <a href='{{author_profile_url}}'>author's profile</a>).\n\nHave a nice day!", 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYou have been approved to participate in task: {{task_link}}.\n\nYou can contact the task author for details with email: <a href='mailto:{{author_email}}'>{{author_email}}</a> or in some other ways (see <a href='{{author_profile_url}}'>author's profile</a>).\n\nHave a nice day!", 'tst'),
             ),
             'approve_candidate_author_notice' => array(
                 'title' => __('IT-Volunteer: participant approved!', 'tst'),
-                'text' => __("Greetings, {{username}}!\n\nYou have approved some volunteer to participate in task: {{task_title}}.\n\nYou can contact the task doer for details with email: <a href='mailto:{{doer_email}}'>{{doer_email}}</a> or in some other ways (see <a href='{{doer_profile_url}}'>doer's profile</a>).\n\nHave a nice day!", 'tst'),
+                'text' => __("Greetings, {{username}}!\n\nYou have approved some volunteer to participate in task: {{task_link}}.\n\nYou can contact the task doer for details with email: <a href='mailto:{{doer_email}}'>{{doer_email}}</a> or in some other ways (see <a href='{{doer_profile_url}}'>doer's profile</a>).\n\nHave a nice day!", 'tst'),
             ),
             'refuse_candidate_doer_notice' => array(
                 'title' => __('IT-Volunteer: you have been disapproved as participant', 'tst'),
-                'text' => __("Hello, {{username}}.\n\nYou have been disapproved to participate in task: {{task_title}}.\n\nHave a nice day!", 'tst'),
+                'text' => __("Hello, {{username}}.\n\nYou have been disapproved to participate in task: {{task_link}}.\n\nHave a nice day!", 'tst'),
             ),
             'refuse_candidate_author_notice' => array(
                 'title' => __('IT-Volunteer: a volunteer for your task removed himself!', 'tst'),
-                'text' => __("Hello, {{username}}.\n\nSomeone has been removed himself from a volunteers for your task: {{task_title}}.\n\nHis message is:\n{{message}}\n\nHave a nice day!", 'tst'),
+                'text' => __("Hello, {{username}}.\n\nSomeone has been removed himself from a volunteers for your task: {{task_link}}.\n\nHis message is:\n{{message}}\n\nHave a nice day!", 'tst'),
             ),
             'add_candidate_author_notice' => array(
                 'title' => __('IT-Volunteer: a volunteer for your task appeared!', 'tst'),
-                'text' => __("Hello, {{username}}.\n\nSomeone is wishing to participate in your task: {{task_title}}.\nThis volunteer is writing to you this: {{message}}.\n\nYou can approve him if you wish on the task page: {{task_url}}.\n\nHave a nice day!", 'tst'),
+                'text' => __("Hello, {{username}}.\n\nSomeone is wishing to participate in your task: {{task_link}}.\nThis volunteer is writing to you this: {{message}}.\n\nYou can approve him if you wish on the task <a href=\"{{task_url}}\">page</a>.\n\nHave a nice day!", 'tst'),
             ),
             'activate_account_notice' => array(
                 'title' => __('ITVolunteer - activate your account', 'tst'),
