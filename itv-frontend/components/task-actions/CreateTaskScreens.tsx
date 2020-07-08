@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
-import { WizardScreenBottomBar, WizardStringField, WizardTextField } from "../layout/WizardScreen";
+import { WizardScreenBottomBar, WizardStringField, WizardTextField, WizardForm } from "../layout/WizardScreen";
 import BottomIcon from "../../assets/img/icon-task-list-gray.svg";
 
 
@@ -20,19 +20,17 @@ export const SetTaskTitleScreen = (props) => {
 
   return (
     <div className="wizard-screen">
-
-      <div className="wizard-form">
-        <h1>
-          <span>{props.step + 1} →</span>
-          Название задачи <span className="wizard-form__required-star">*</span>
-        </h1>
+      <WizardForm
+        title="Название задачи"
+        isRequired={true}
+        {...props}
+      >
         <WizardStringField {...props} 
           placeholder="Например, «Разместить счётчик на сайте»" 
           howtoTitle="Как правильно дать название задачи" 
           maxLength={50}
         />
-      </div>
-
+      </WizardForm>
       <WizardScreenBottomBar {...props} icon={BottomIcon} title="Создание задачи" />
     </div>
   );

@@ -67,6 +67,41 @@ export const WizardScreenBottomBar = (props) => {
   )
 }
 
+
+export const WizardForm = (props) => {
+  return (
+      <div className="wizard-form">
+        <WizardFormTitle {...props} />
+        {props.children}
+        <WizardFormActionBar {...props} />
+      </div>
+  )
+}
+
+
+export const WizardFormActionBar = (props) => {
+  return (
+    <div className="wizard-form-action-bar">
+      <a href="#" className="wizard-form-action-bar__primary-button">Продолжить</a>
+      <a href="#" className="wizard-form-action-bar__secondary-button">{props.step ? "Вернуться" : "Отмена"}</a>
+    </div>
+  )
+}
+
+
+export const WizardFormTitle = (props) => {
+  return (
+    <h1>
+      <span>{props.step + 1} →</span>
+      {props.title}
+      {props.isRequired &&
+      <span className="wizard-form__required-star">*</span>
+      }
+    </h1>
+  )
+}
+
+
 export const WizardLimitedTextField = ({children, ...props}) => {
   return (
     <div className="wizard-field">
@@ -74,7 +109,7 @@ export const WizardLimitedTextField = ({children, ...props}) => {
       <div className="wizard-field__limit-help">
         <div className="wizard-field__help">
           <img src={howToIcon} className="wizard-field__icon" />
-          {props.howtoTitle}
+          <span>{props.howtoTitle}</span>
         </div>
         <div className="wizard-field__limit">{`1/${props.maxLength}`}</div>
       </div>
