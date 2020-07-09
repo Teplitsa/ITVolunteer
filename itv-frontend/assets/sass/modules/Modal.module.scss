@@ -1,0 +1,65 @@
+@import "../base/presets";
+
+.modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  padding: 15px;
+  z-index: 888;
+  visibility: hidden;
+  transition: all 0.3s ease-in-out 0s;
+  &_active {
+    background-color: rgba($color-gray-dark-xl, 0.3);
+    visibility: visible;
+    > [class*="__dialog"] {
+      transform: none;
+      opacity: 1;
+    }
+  }
+  &__dialog {
+    background: $color-white;
+    border: 1px solid $color-gray-light-lg;
+    padding: 16px;
+    width: 537px;
+    max-width: 100%;
+    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transform: scale(0.5);
+    opacity: 0;
+    transition: all 0.3s linear 0s;
+  }
+  &__header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  &__title {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+  }
+  &__close {
+    background-color: transparent;
+    border-style: none;
+    padding: 0;
+    outline: none;
+    &::before {
+      content: "";
+      display: block;
+      background: url(../../img/icon-modal-close.svg) 50% 50% no-repeat;
+      width: 24px;
+      height: 20px;
+    }
+    cursor: pointer;
+  }
+}

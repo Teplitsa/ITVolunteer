@@ -1,4 +1,5 @@
 import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
+import { ISnackbarMessage } from "../context/global-scripts";
 import {
   ICoreHeadingBlock,
   ICoreParagraphBlock,
@@ -488,6 +489,14 @@ export interface ITaskThunks {
     }
   >;
   onSuggestCloseTaskRequest: ThunkOn<ITaskModel>;
+  adminSupportRequest: Thunk<
+    ITaskActions,
+    {
+      messageText: string;
+      addSnackbar: (message: ISnackbarMessage) => void;
+      callbackFn?: () => void;
+    }
+  >;
 }
 
 /**

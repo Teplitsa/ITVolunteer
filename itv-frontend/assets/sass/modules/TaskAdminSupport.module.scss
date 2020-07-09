@@ -1,0 +1,41 @@
+@import "../base/presets";
+
+.form {
+  &__group {
+    margin: 0 0 20px;
+  }
+  &__control {
+    &_textarea {
+      background: $color-gray-light-xl;
+      border: 1px solid $color-gray-light-lg;
+      padding: 8px 10px 11px;
+      min-height: 9rem;
+      box-sizing: border-box;
+      border-radius: 4px;
+      font: 600 13px/20px "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+    }
+  }
+  &__action-panel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+  }
+  &__btn {
+    background-color: transparent;
+    border-style: none;
+    padding: 7px 10px;
+    font: 600 16px/20px "IBM Plex Sans", sans-serif;
+    border-radius: 8px;
+    outline: none;
+    &_cancel {
+      color: $color-gray-dark-lg;
+    }
+    &_submit {
+      background-color: $color-main;
+      margin-left: 20px;
+      color: $color-white;
+      box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+    }
+  }
+}

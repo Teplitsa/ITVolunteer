@@ -1,6 +1,23 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
-import moment from 'moment'
+import moment from "moment";
+
+export const generateUniqueKey = ({
+  base,
+  prefix = "",
+}: {
+  base: string;
+  prefix?: string;
+}) => {
+  return (
+    (prefix ? `${prefix}-` : "") +
+    Array.from(base).reduce(
+      (result, char) =>
+        (/[a-zа-я]/i.test(char) && result + char.charCodeAt(0)) || result,
+      0
+    )
+  );
+};
 
 export const getLocaleDateTimeISOString = (locale = "ru-RU"): string => {
   switch (locale) {
@@ -42,7 +59,7 @@ export const formatDate = ({
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-    return moment(wpDateTime + "Z").toDate()
+  return moment(wpDateTime + "Z").toDate();
 }
 
 export const getTheIntervalToNow = ({
@@ -60,9 +77,7 @@ export const getTheIntervalToNow = ({
   }
 };
 
-export const formatIntervalToNow = ({
-  fromDate = new Date(),
-}): string => {
+export const formatIntervalToNow = ({ fromDate = new Date() }): string => {
   return formatDistanceToNow(fromDate, {
     locale: ru,
     addSuffix: true,
@@ -86,48 +101,50 @@ export default {
 };
 
 export function showAjaxError(errorData) {
-    if(errorData.message) {
-        let el = document.createElement('div')
-        el.innerHTML = errorData.message
-        // alert(el.textContent)
-        console.log(el.textContent);
-    }
-    else {
-        // alert('Ошибка!')
-        console.log('Ошибка!');
-    }
+  if (errorData.message) {
+    let el = document.createElement("div");
+    el.innerHTML = errorData.message;
+    // alert(el.textContent)
+    console.log(el.textContent);
+  } else {
+    // alert('Ошибка!')
+    console.log("Ошибка!");
+  }
 
-    if(errorData.action) {
-        console.log(errorData.action + " failed")
-    }
+  if (errorData.action) {
+    console.log(errorData.action + " failed");
+  }
 
-    if(errorData.error) {
-        console.log(errorData.error)
-    }
+  if (errorData.error) {
+    console.log(errorData.error);
+  }
 }
 
 export function decodeHtmlEntities(textWithEntities) {
-  if(!document) {
-    return textWithEntities
+  if (!document) {
+    return textWithEntities;
   }
 
   try {
-    let el = document.createElement("div")
-    el.innerHTML = textWithEntities
-    return el.innerText
-  }
-  catch(ex) {
-    console.log("decode failed:", ex)
-    console.log("source text:", textWithEntities)
-    return textWithEntities
+    let el = document.createElement("div");
+    el.innerHTML = textWithEntities;
+    return el.innerText;
+  } catch (ex) {
+    console.log("decode failed:", ex);
+    console.log("source text:", textWithEntities);
+    return textWithEntities;
   }
 }
 
-export function getSiteUrl(path="") {
-  if(!window) {
+export function getSiteUrl(path = "") {
+  if (!window) {
     return path;
   }
 
-  let rootUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+  let rootUrl =
+    window.location.protocol +
+    "//" +
+    window.location.hostname +
+    (window.location.port ? ":" + window.location.port : "");
   return rootUrl + path;
 }

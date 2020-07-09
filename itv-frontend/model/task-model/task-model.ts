@@ -1,5 +1,6 @@
 import { action, thunk, thunkOn, computed } from "easy-peasy";
 import {
+  IFetchResult,
   IStoreModel,
   ITaskState,
   ITaskActions,
@@ -20,7 +21,7 @@ import {
   stripTags,
   getAjaxUrl,
 } from "../../utilities/utilities";
-import * as _ from "lodash"
+import * as _ from "lodash";
 
 const taskState: ITaskState = {
   id: "",
@@ -45,7 +46,10 @@ const taskState: ITaskState = {
   pemalinkPath: "",
   nonceContactForm: "",
   hasCloseSuggestion: computed((taskState) => {
-    return _.some(taskState.timeline, item => item.type === "close_suggest" && item.status === "current")
+    return _.some(
+      taskState.timeline,
+      (item) => item.type === "close_suggest" && item.status === "current"
+    );
   }),
 };
 
@@ -155,11 +159,65 @@ const taskActions: ITaskActions = {
 };
 
 const taskThunks: ITaskThunks = {
+  adminSupportRequest: thunk(
+    async (
+      actions,
+      { messageText, addSnackbar, callbackFn },
+      { getStoreState }
+    ) => {
+      if (!messageText) return;
+
+      const {
+        session: { validToken: token },
+        components: {
+          task: { slug: taskSlug, nonceContactForm: nonce },
+        },
+      } = getStoreState() as IStoreModel;
+      const action = "add-message";
+      const formData = new FormData();
+
+      formData.append("name", "");
+      formData.append("email", "");
+      formData.append("message", messageText);
+      formData.append("page_url", `/tasks/${taskSlug}`);
+      formData.append("nonce", nonce);
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<IFetchResult>
+        >result.json());
+        if (responseStatus === "fail") {
+          addSnackbar({
+            context: "error",
+            text: stripTags(responseMessage),
+          });
+        } else {
+          callbackFn && callbackFn();
+          addSnackbar({
+            context: "success",
+            text: "Сообщение успешно отправлено.",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        addSnackbar({
+          context: "error",
+          text: "Во время отправки сообщения произашла ошибка.",
+        });
+      }
+    }
+  ),
   taskRequest: thunk(async ({ setState }, _, { getStoreState }) => {
     const {
       session: { validToken: token },
       components: {
-        task: { id: taskId, slug: taskSlug},
+        task: { id: taskId, slug: taskSlug },
       },
     } = getStoreState() as IStoreModel;
 

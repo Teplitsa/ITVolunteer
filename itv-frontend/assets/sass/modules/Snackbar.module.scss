@@ -1,0 +1,63 @@
+@import "../base/presets";
+
+.snackbar {
+  &-list {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    padding: 0 15px 3rem;
+    max-width: 100%;
+    transform: translate(-50%, 0);
+    z-index: 999;
+    &__item {
+      display: flex;
+      align-items: flex-start;
+      padding: 4px 12px;
+      opacity: 0;
+      transform: translate(0, 100%);
+      transform-origin: top;
+      visibility: hidden;
+      box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out 0s;
+      &:not(:last-child) {
+        margin: 0 0 15px;
+      }
+      &_success {
+        background-color: $color-main;
+      }
+      &_error {
+        background-color: $color-sec-dark;
+      }
+      &_active {
+        opacity: 1;
+        transform: none;
+        visibility: visible;
+      }
+      &-text {
+        font-weight: 600;
+        font-size: 13px;
+        line-height: 20px;
+        color: $color-white;
+      }
+      &-close {
+        background-color: transparent;
+        border-style: none;
+        margin-left: 8px;
+        padding: 0;
+        outline: none;
+        &::before {
+          content: "";
+          display: block;
+          background: url(../../img/icon-snackbar-close.svg) 50% 50% no-repeat;
+          width: 20px;
+          height: 20px;
+        }
+        cursor: pointer;
+      }
+    }
+  }
+}

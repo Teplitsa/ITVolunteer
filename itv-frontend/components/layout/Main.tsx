@@ -1,8 +1,10 @@
 import { ReactElement } from "react";
+import WithGlobalScripts from "../hoc/withGlobalScripts";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
 import FooterNav from "./partials/FooterNav";
 import FooterSectionInfo from "./partials/FooterSectionInfo";
+import FooterScripts from "./partials/FooterScripts";
 import Stats from "../Stats";
 import TeplitsaProjectLinks from "../TeplitsaProjectLinks";
 import Socials from "../Socials";
@@ -11,7 +13,7 @@ import HeaderNav from "./partials/HeaderNav";
 
 const Main: React.FunctionComponent = ({ children }): ReactElement => {
   return (
-    <>
+    <WithGlobalScripts>
       <Header>
         <HeaderNav />
       </Header>
@@ -25,7 +27,8 @@ const Main: React.FunctionComponent = ({ children }): ReactElement => {
         </FooterSectionInfo>
         <Copyright />
       </Footer>
-    </>
+      <FooterScripts />
+    </WithGlobalScripts>
   );
 };
 
