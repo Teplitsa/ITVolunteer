@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
-import withGutenbergBlock from "../gutenberg/helpers/withGutenbergBlock";
+import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
 import HonorsListItemIndex from "./HonorsListItemIndex";
 
 const Honors: React.FunctionComponent = (): ReactElement => {
