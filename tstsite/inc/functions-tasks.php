@@ -247,6 +247,10 @@ function tst_is_user_already_candidate($candidate_user_id, $task_id) {
     return $is_already_candidate;
 }
 
+function itv_get_task_link($task) {
+    return sprintf('<a href="%s">%s</a>', get_permalink($task), $task->post_title);
+}
+
 
 add_action('update_task_stats', 'tst_actualize_task_stats'); //store numbers as metas
 function tst_actualize_task_stats($task) {
