@@ -23,6 +23,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-top: 24px;
 
   &__primary-button {
     @include button-primary;

@@ -35,26 +35,27 @@
 }
 
 @mixin solid-underline($color: transparent) {
-    border-bottom-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: $color;
+  @include a-no-hover-underline;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: $color;
 
-    &:hover {
-        border-bottom-color: transparent;
-    }
+  &:hover {
+    border-bottom-color: transparent;
+  }
 }
 
 @mixin dashed-underline($color: transparent) {
-    @include solid-underline($color);
-    border-bottom-style: dashed;    
+  @include solid-underline($color);
+  border-bottom-style: dashed;    
 }
 
 @mixin hover-underline($color: transparent) {
-    border-bottom-color: transparent;
+  border-bottom-color: transparent;
 
-    &:hover {
-        border-bottom-color: $color;
-    }
+  &:hover {
+    border-bottom-color: $color;
+  }
 }
 
 @mixin drop-down-arrow($height: 16px) {

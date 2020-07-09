@@ -2,12 +2,8 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
 
 import logo from "../../assets/img/pic-logo-itv.svg";
-import howToIcon from "../../assets/img/icon-question-green.svg";
 
-const WizardScreen: React.FunctionComponent<{
-  goNextStep,
-  goPrevStep,
-}> = ({ children, ...props }): ReactElement => {
+const WizardScreen = ({ children, ...props }): ReactElement => {
 
   return (
     <main className="wizard">
@@ -68,33 +64,66 @@ export const WizardScreenBottomBar = (props) => {
 }
 
 
-export const WizardForm = (props) => {
+export const WizardForm = ({children, ...props}) => {
   return (
       <div className="wizard-form">
         <WizardFormTitle {...props} />
-        {props.children}
+        {children}
         <WizardFormActionBar {...props} />
       </div>
   )
 }
 
 
-export const WizardFormActionBar = (props) => {
+export const WizardFormActionBar = ({
+  onNexClick,
+  onPrevClick,
+  goNextStep,
+  goPrevStep,  
+  isAllowPrevButton,
+  ...props
+}) => {
+
+  const handleNextClick = (e) => {
+    e.preventDefault()
+
+    let isMayGoNextStep = onNexClick ? onNexClick(props) : true;
+    if(isMayGoNextStep) {
+      goNextStep();
+    }    
+  }
+
+  const handlePrevClick = (e) => {
+    e.preventDefault();
+
+    let isMayGoPrevStep = onPrevClick ? onPrevClick(props) : true;
+    if(isMayGoPrevStep) {
+      goPrevStep();
+    }
+  }
+
   return (
     <div className="wizard-form-action-bar">
-      <a href="#" className="wizard-form-action-bar__primary-button">Продолжить</a>
-      <a href="#" className="wizard-form-action-bar__secondary-button">{props.step ? "Вернуться" : "Отмена"}</a>
+      <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
+      {!!isAllowPrevButton &&
+      <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.step ? "Вернуться" : "Отмена"}</a>
+      }
     </div>
   )
 }
 
 
-export const WizardFormTitle = (props) => {
+export const WizardFormTitle = ({
+  visibleStep,
+  title,
+  isRequired,
+  ...props
+}) => {
   return (
     <h1>
-      <span>{props.step + 1} →</span>
-      {props.title}
-      {props.isRequired &&
+      <span>{visibleStep} →</span>
+      {title}
+      {isRequired &&
       <span className="wizard-form__required-star">*</span>
       }
     </h1>
@@ -102,36 +131,50 @@ export const WizardFormTitle = (props) => {
 }
 
 
-export const WizardLimitedTextField = ({children, ...props}) => {
+export const WizardLimitedTextFieldWithHelp = ({
+  children,
+  formHelpComponent,
+  maxLength,
+  ...props
+}) => {
   return (
     <div className="wizard-field">
       {children}
       <div className="wizard-field__limit-help">
-        <div className="wizard-field__help">
-          <img src={howToIcon} className="wizard-field__icon" />
-          <span>{props.howtoTitle}</span>
-        </div>
-        <div className="wizard-field__limit">{`1/${props.maxLength}`}</div>
+        {!!formHelpComponent &&
+          formHelpComponent
+        }
+        {!formHelpComponent &&
+          <div />
+        }
+        <div className="wizard-field__limit">{`1/${maxLength}`}</div>
       </div>
     </div>
   )
 }
 
 
-export const WizardStringField = (props) => {
+export const WizardStringField = ({
+  placeholder,
+  ...props
+}) => {
+
   return (
-    <WizardLimitedTextField {...props}>
-      <input type="text" placeholder={props.placeholder} />
-    </WizardLimitedTextField>
+    <WizardLimitedTextFieldWithHelp {...props}>
+      <input type="text" placeholder={placeholder} />
+    </WizardLimitedTextFieldWithHelp>
   )
 }
 
 
-export const WizardTextField = (props) => {
+export const WizardTextField = ({
+  placeholder,
+  ...props
+}) => {
   return (
-    <WizardLimitedTextField {...props}>
-      <textarea placeholder={props.placeholder}></textarea>
-    </WizardLimitedTextField>
+    <WizardLimitedTextFieldWithHelp {...props}>
+      <textarea placeholder={placeholder}></textarea>
+    </WizardLimitedTextFieldWithHelp>
   )
 }
 
