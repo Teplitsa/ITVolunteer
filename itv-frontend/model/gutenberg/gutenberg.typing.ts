@@ -4,13 +4,13 @@ import { ReactElement } from "react";
  * Gutenberg
  */
 
-export type ICoreBlockTypes =
+export type CoreBlockTypes =
   | "CoreParagraphBlock"
   | "CoreHeadingBlock"
   | "CoreMediaTextBlock";
 
 export interface ICoreBlock {
-  __typename: ICoreBlockTypes;
+  __typename: CoreBlockTypes;
 }
 
 export interface ICoreHeadingBlock extends ICoreBlock {

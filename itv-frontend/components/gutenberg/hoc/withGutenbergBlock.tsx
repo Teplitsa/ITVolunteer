@@ -1,6 +1,6 @@
 import { ReactElement, createElement } from "react";
 import {
-  ICoreBlockTypes,
+  CoreBlockTypes,
   ICoreHeadingBlock,
   ICoreParagraphBlock,
   ICoreMediaTextBlock,
@@ -19,7 +19,7 @@ const withGutenbergBlock = ({
   elementName,
   props,
 }: {
-  elementName: ICoreBlockTypes;
+  elementName: CoreBlockTypes;
   props: any;
 }): ReactElement => {
   return createElement<

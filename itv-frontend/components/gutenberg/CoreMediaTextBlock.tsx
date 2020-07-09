@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { ICoreMediaTextBlock } from "../../model/gutenberg/gutenberg.typing";
-import withGutenbergBlock from "../gutenberg/helpers/withGutenbergBlock";
+import withGutenbergBlock from "./hoc/withGutenbergBlock";
 import withSlideIn from "../hoc/withSlideIn";
 
 const Image: React.FunctionComponent<{
