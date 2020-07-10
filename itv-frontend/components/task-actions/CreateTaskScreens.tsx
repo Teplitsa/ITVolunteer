@@ -32,8 +32,6 @@ export const CreateTaskHelp = (props) => {
 
 export const SetTaskTitleScreen = (props) => {
 
-  console.log("props:", props)
-
   return (
     <div className="wizard-screen">
       <WizardForm
@@ -42,6 +40,7 @@ export const SetTaskTitleScreen = (props) => {
         {...props}
       >
         <WizardStringField {...props} 
+          name="title"
           placeholder="Например, «Разместить счётчик на сайте»" 
           maxLength={50}
           formHelpComponent={<CreateTaskHelp {...props} />}
@@ -58,21 +57,259 @@ export const SetTaskDescriptionScreen = (props) => {
 
   return (
     <div className="wizard-screen">
+      <WizardForm
+        title="Опишите, что нужно сделать"
+        isRequired={true}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="description"
+          placeholder="Какая задача стоит перед IT-волонтером?" 
+          howtoTitle="Как правильно составить описание задачи" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
 
-      <div className="wizard-form">
-        <WizardForm
-          title="Опишите, что нужно сделать"
-          isRequired={true}
-          {...props}
-        >
-          <WizardTextField {...props} 
-            placeholder="Какая задача стоит перед IT-волонтером?" 
-            howtoTitle="Как правильно дать название задачи" 
-            maxLength={250}
-          />
-        </WizardForm>
-      </div>
+};
 
+
+export const SetTaskResultScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Что должно получится в результате"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="result"
+          placeholder="Каково ваше видение завершенной задачи" 
+          howtoTitle="Как правильно составить описание задачи" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SetTaskImpactScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Эффект от работы. Чем будет гордиться IT-волонтер?"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="impact"
+          placeholder="Кому поможет проект, в котором будет помогать волонтер" 
+          howtoTitle="Как правильно составить описание задачи" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SetTaskReferencesScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Есть ли какие-то примеры, которые вам нравятся"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="references"
+          placeholder={`Примеры или "референсы" позволят волонтеру значительно лучше понять ваш замысел`} 
+          howtoTitle="Как правильно составить описание задачи" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SetTaskRemoteResourcesScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Добавьте ссылки на внешние файлы"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="externalFileLinks"
+          placeholder="Например, на Техническое задание или какие-то другие внешние файлы" 
+          howtoTitle="Как правильно составить описание задачи" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const UploadTaskFilesScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Добавьте файлы к задаче"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="files"
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskTagsScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Категория задачи"
+        isRequired={true}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="taskTags"
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskNgoTagsScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Направление помощи"
+        isRequired={true}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="ngoTags"
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskPreferredDoerScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Кто может откликнуться на задачу?"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="preferredDoers"
+          howtoTitle="Что такое пасека" 
+          maxLength={250}
+          formHelpComponent={<CreateTaskHelp {...props} />}
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskRewardScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Какое будет вознагрождение"
+        isRequired={true}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="reward"
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskPreferredDurationScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Желаемый срок завершения задачи"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="preferredDuration"
+        />
+      </WizardForm>
+      <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+    </div>
+  );
+
+};
+
+
+export const SelectTaskCoverScreen = (props) => {
+
+  return (
+    <div className="wizard-screen">
+      <WizardForm
+        title="Добавьте обложку к задаче, это увеличит ее привлекательность"
+        isRequired={false}
+        {...props}
+      >
+        <WizardTextField {...props} 
+          name="cover"
+        />
+      </WizardForm>
       <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
     </div>
   );

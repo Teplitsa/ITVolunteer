@@ -2,7 +2,13 @@ import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
-import { AgreementScreen, SetTaskTitleScreen, SetTaskDescriptionScreen } from "../components/task-actions/CreateTaskScreens";
+import { 
+  AgreementScreen, SetTaskTitleScreen, SetTaskDescriptionScreen,
+  SetTaskResultScreen, SetTaskImpactScreen, SetTaskReferencesScreen,
+  SetTaskRemoteResourcesScreen, UploadTaskFilesScreen,
+  SelectTaskTagsScreen, SelectTaskNgoTagsScreen, SelectTaskPreferredDoerScreen,
+  SelectTaskRewardScreen, SelectTaskPreferredDurationScreen, SelectTaskCoverScreen
+} from "../components/task-actions/CreateTaskScreens";
 import WizardScreen from "../components/layout/WizardScreen";
 import Wizard from "../components/hoc/Wizard";
 
@@ -10,17 +16,15 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const step = useStoreState((state) => state.components.createTaskWizard.step)
-  const wizardName = useStoreState((state) => state.components.createTaskWizard.wizardName)
   const setStep = useStoreActions((actions) => actions.components.createTaskWizard.setStep)
   const loadWizardData = useStoreActions((actions) => actions.components.createTaskWizard.loadWizardData)
   const saveWizardData = useStoreActions((actions) => actions.components.createTaskWizard.saveWizardData)
 
   useEffect(() => {
-      loadWizardData({wizardName})
+    loadWizardData()
   }, [])  
 
   useEffect(() => {
-      console.log("step changed:", step)
   }, [step])  
 
   return (
@@ -36,20 +40,17 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         <AgreementScreen isIgnoreStepNumber={true} />
         <SetTaskTitleScreen />
         <SetTaskDescriptionScreen />
-      {/*
         <SetTaskResultScreen />
         <SetTaskImpactScreen />
         <SetTaskReferencesScreen />
         <SetTaskRemoteResourcesScreen />
         <UploadTaskFilesScreen />
-        <SelectTaskCategoryScreen />
         <SelectTaskTagsScreen />
         <SelectTaskNgoTagsScreen />
         <SelectTaskPreferredDoerScreen />
         <SelectTaskRewardScreen />
         <SelectTaskPreferredDurationScreen />
-        <SelectTaskPosterScreen />
-      */}
+        <SelectTaskCoverScreen />
       </Wizard>
     </>
   );

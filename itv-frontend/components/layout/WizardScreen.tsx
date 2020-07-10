@@ -43,9 +43,13 @@ export const WizardScreenBottomBar = (props) => {
           {!!props.icon && 
             <img src={props.icon} alt="icon" />
           }        
+          {!!props.title &&
           <span>{props.title}</span>
+          }
         </div>
         <div>
+          #DEBUG#
+          <br />
           <a href="#" onClick={handleNextClick}>Далее</a>
           <br />
           <a href="#" onClick={handlePrevClick}>Назад</a>
@@ -131,15 +135,34 @@ export const WizardFormTitle = ({
 }
 
 
+/*
+ *  Fields
+ */
 export const WizardLimitedTextFieldWithHelp = ({
-  children,
+  field: Field,
   formHelpComponent,
   maxLength,
+  placeholder,
+  name,
+  formData,
+  setFormData,
   ...props
 }) => {
+  const inputUseRef = useRef(null)
+  const fieldValue = _.get(formData, name, "")
+  const [inputTextLength, setInputTextLength] = useState(fieldValue.length)
+
+  function handleInput(e) {
+    setInputTextLength(e.target.value.length)
+
+    if(!!setFormData) {
+      setFormData({[name]: e.target.value})
+    }
+  }
+
   return (
     <div className="wizard-field">
-      {children}
+      <Field placeholder={placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} />
       <div className="wizard-field__limit-help">
         {!!formHelpComponent &&
           formHelpComponent
@@ -147,7 +170,9 @@ export const WizardLimitedTextFieldWithHelp = ({
         {!formHelpComponent &&
           <div />
         }
-        <div className="wizard-field__limit">{`1/${maxLength}`}</div>
+        {maxLength > 0 &&
+        <div className="wizard-field__limit">{`${inputTextLength}/${maxLength}`}</div>
+        }
       </div>
     </div>
   )
@@ -155,29 +180,51 @@ export const WizardLimitedTextFieldWithHelp = ({
 
 
 export const WizardStringField = ({
-  placeholder,
   ...props
 }) => {
 
   return (
-    <WizardLimitedTextFieldWithHelp {...props}>
-      <input type="text" placeholder={placeholder} />
+    <WizardLimitedTextFieldWithHelp 
+      {...props}
+      field={WizardStringFieldInput}
+    >
     </WizardLimitedTextFieldWithHelp>
   )
 }
 
+export const WizardStringFieldInput = ({
+  placeholder,
+  handleInput,
+  inputUseRef,
+  value,
+}) => {
+
+  return (
+    <input type="text" placeholder={placeholder} onKeyDown={handleInput} ref={inputUseRef} defaultValue={value} />
+  )
+}
 
 export const WizardTextField = ({
-  placeholder,
   ...props
 }) => {
   return (
-    <WizardLimitedTextFieldWithHelp {...props}>
-      <textarea placeholder={placeholder}></textarea>
+    <WizardLimitedTextFieldWithHelp {...props}
+      field={WizardTextFieldInput}
+    >      
     </WizardLimitedTextFieldWithHelp>
   )
 }
 
-
+export const WizardTextFieldInput = ({
+  placeholder,
+  handleInput,
+  inputUseRef,
+  value,
+  ...props
+}) => {
+  return (
+      <textarea placeholder={placeholder} onKeyUp={handleInput} ref={inputUseRef} defaultValue={value}></textarea>
+  )
+}
 
 export default WizardScreen;

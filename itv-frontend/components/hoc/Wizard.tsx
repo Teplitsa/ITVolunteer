@@ -12,7 +12,6 @@ const Wizard = ({ component: Component, children, saveWizardData, step, setStep,
         vs -= 1
       }
     }    
-    console.log("vs:", vs)
     setVisibleStep(vs)
   }, [step]);
 
@@ -63,7 +62,7 @@ const Wizard = ({ component: Component, children, saveWizardData, step, setStep,
           setIgnoredStepNumbers([...ignoredStepNumbers, ...[index]])
         }
 
-        return step === index ? cloneElement(child, {...screenProps, ...props, visibleStep}) : null
+        return step === index ? cloneElement(child, {...screenProps, ...props, visibleStep, step, setStep, formData, setFormData}) : null
       })}
     </Component>
   );
