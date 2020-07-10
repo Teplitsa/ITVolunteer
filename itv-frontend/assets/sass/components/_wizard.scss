@@ -1,0 +1,144 @@
+.wizard-form {
+  width: 600px;
+
+  & > h1 {
+    color: $color-gray-dark-md;
+    @include htext-bold;
+    margin-bottom: 16px;
+
+    & > span {
+      @include text-lg;
+      margin-right: 8px;
+    }
+  }
+
+  &__required-star {
+    color: $color-sec-dark;
+    margin-left: 8px;
+  }
+}
+
+
+.wizard-form-action-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 24px;
+
+  &__primary-button {
+    @include button-primary;
+    @include htext-lg-bold;
+    width: 380px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    margin-right: 32px;
+  }
+
+  &__secondary-button {
+    display: inline-block;
+    @include text-bold-line-sm;
+    @include solid-underline($color-gray-dark-md);
+    color: $color-gray-dark-md;
+  }
+}
+
+
+.wizard-bottom-bar {
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+
+  &__container {
+    max-width: $content-width-wizard;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 64px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+
+    & > img {
+      margin-right: 3px;
+    }
+
+    & > span {
+      @include text-sm-bold;
+      color: $color-gray-dark-md;
+    }
+  }
+}
+
+
+.wizard-progressbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &__fraction {
+    @include text-sm-bold;
+    color: $color-gray-dark-md;
+    margin-right: 10px;
+  }
+
+  &__total {
+    height: 9px;
+    border-radius: 20px;    
+    background-color: $color-gray-light-md;
+    width: 336px;
+  }
+
+  &__complete {
+    height: 9px;
+    border-radius: 20px;    
+    background-color: $color-main;
+  }
+}
+
+
+.wizard-field {
+  &__limit-help {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+
+  &__limit {
+    @include text-xs-bold;
+    color: $color-gray-dark-md;
+  }
+
+  &__icon {
+    margin-right: 4px;
+  }
+
+  &__help {
+    display: flex;
+    align-items: center;
+    @include text-sm-bold;
+    color: $color-main;
+
+    & > span {
+        display: inline-block;
+        cursor: pointer;
+        @include dashed-underline($color-main);
+    }
+  }
+
+  textarea {
+    @include wizard-field-input;
+    padding: 13px 16px;
+    height: 182px;
+  }
+
+  input[type=text] {
+    @include wizard-field-input;
+    padding: 13px 16px;
+  }
+
+}

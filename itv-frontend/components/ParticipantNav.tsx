@@ -78,7 +78,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
         <ul className="submenu">
           <li><a href="/member-actions/member-tasks/">Мои задачи</a></li>
-          <li><a href="/task-actions/">Новая задача</a></li>
+          <li><Link href="/task-actions/"><a>Новая задача</a></Link></li>
           <li><a href={`/members/${user.username}`}>Мой профиль</a></li>
           <li><a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a></li>
         </ul>

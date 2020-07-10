@@ -201,6 +201,8 @@ export interface IComponentsState {
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
+  createTaskWizard?: any;
+  completeTaskWizard?: any;
 }
 
 /**
