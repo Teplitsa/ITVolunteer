@@ -67,10 +67,10 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
           <a href="#" onClick={handlePrevClick}>Назад</a>
         </div>
         <div className="wizard-progressbar">
-          <div className="wizard-progressbar__fraction">{`${props.step + 1}/${props.stepsCount}`}</div>
+          <div className="wizard-progressbar__fraction">{`${props.visibleStep}/${props.visibleStepsCount}`}</div>
           <div className="wizard-progressbar__total">
             <div className="wizard-progressbar__complete" style={{
-              width: `${100 * (props.step + 1) / props.stepsCount}%`,
+              width: `${100 * props.visibleStep / props.visibleStepsCount}%`,
             }}></div>
           </div>
         </div>

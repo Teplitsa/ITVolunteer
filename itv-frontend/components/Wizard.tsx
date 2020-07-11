@@ -3,10 +3,11 @@ import {
   IWizardScreenProps,
 } from "../model/model.typing";
 
-const Wizard = ({ children, saveWizardData, step, setStep, formData, setFormData, ...props }) => {
+const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
   const [ignoredStepNumbers, setIgnoredStepNumbers] = useState([])
   const [visibleStep, setVisibleStep] = useState(1)
   const stepsCount = Children.count(children)
+  const visibleStepsCount = stepsCount - ignoredStepNumbers.length
 
   useEffect(() => {
     let vs = step + 1
@@ -27,7 +28,8 @@ const Wizard = ({ children, saveWizardData, step, setStep, formData, setFormData
     formHelpComponent: null,
     isAllowPrevButton: true,
     isIgnoreStepNumber: false,
-    visibleStep: 0,    
+    visibleStep: visibleStep,
+    visibleStepsCount: visibleStepsCount,
 
     goNextStep: () => {
       if(step >= stepsCount - 1) {
@@ -65,7 +67,7 @@ const Wizard = ({ children, saveWizardData, step, setStep, formData, setFormData
           setIgnoredStepNumbers([...ignoredStepNumbers, ...[index]])
         }
 
-        return step === index ? cloneElement(child, {...screenProps, ...props, visibleStep, step, setStep, formData, setFormData}) : null
+        return step === index ? cloneElement(child, {...screenProps, ...props}) : null
       })}
     </>
   );

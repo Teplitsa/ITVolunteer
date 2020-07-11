@@ -634,6 +634,7 @@ export interface IWizardScreenProps {
   isAllowPrevButton?: boolean;
   isIgnoreStepNumber?: boolean;
   visibleStep?: number;
+  visibleStepsCount?: number;
   goNextStep?: any;
   goPrevStep?: any;
   icon?: any;
