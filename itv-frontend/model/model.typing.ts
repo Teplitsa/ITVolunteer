@@ -643,6 +643,7 @@ export interface IWizardScreenProps {
   maxLength?: number;
   placeholder?: string;
   howtoTitle?: string;
+  isShowHeader?: boolean;
 }
 
 export interface IWizardInputProps {

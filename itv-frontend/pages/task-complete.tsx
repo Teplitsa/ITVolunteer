@@ -5,8 +5,7 @@ import DocumentHead from "../components/DocumentHead";
 import { 
   CongratulationsScreen, RateRequirementsQuality
 } from "../components/task-actions/CompleteTaskScreens";
-import WizardScreen from "../components/layout/WizardScreen";
-import Wizard from "../components/hoc/Wizard";
+import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
   const formData = useStoreState((state) => state.components.completeTaskWizard.formData)
@@ -26,7 +25,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
-      <Wizard component={WizardScreen} 
+      <Wizard
         step={step} 
         formData={formData} 
         setStep={setStep} 

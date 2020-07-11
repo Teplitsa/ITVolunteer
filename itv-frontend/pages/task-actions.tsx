@@ -9,8 +9,7 @@ import {
   SelectTaskTagsScreen, SelectTaskNgoTagsScreen, SelectTaskPreferredDoerScreen,
   SelectTaskRewardScreen, SelectTaskPreferredDurationScreen, SelectTaskCoverScreen
 } from "../components/task-actions/CreateTaskScreens";
-import WizardScreen from "../components/layout/WizardScreen";
-import Wizard from "../components/hoc/Wizard";
+import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
@@ -30,7 +29,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
-      <Wizard component={WizardScreen} 
+      <Wizard
         step={step} 
         formData={formData} 
         setStep={setStep} 

@@ -9,15 +9,21 @@ import { useStoreState } from "../../model/helpers/hooks";
 
 import logo from "../../assets/img/pic-logo-itv.svg";
 
-const WizardScreen = ({ children, ...props }): ReactElement => {
+export const WizardScreen = ({ children, ...props }): ReactElement => {
+  const defaultProps = {
+    isShowHeader: true,
+  }
+  props = {...defaultProps, ...props}
 
   return (
     <main className="wizard">
       <div className="wizard__container wizard__ornament">
 
+        {props.isShowHeader &&
         <header>
           <img src={logo} className="wizard__logo" alt="IT-волонтер" />
         </header>
+        }
 
         <div className="wizard__content">
           {children}
@@ -89,7 +95,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
   const handleNextClick = (e) => {
     console.log("handleNextClick...")
-    
+
     e.preventDefault()
 
     let isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
@@ -198,5 +204,3 @@ export const WizardTextFieldInput = (props: IWizardInputProps) => {
       <textarea placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value}></textarea>
   )
 }
-
-export default WizardScreen;
