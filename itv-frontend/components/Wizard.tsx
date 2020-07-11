@@ -6,8 +6,8 @@ import {
 const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
   const [ignoredStepNumbers, setIgnoredStepNumbers] = useState([])
   const [visibleStep, setVisibleStep] = useState(1)
+  const [visibleStepsCount, setVisibleStepsCount] = useState(1)
   const stepsCount = Children.count(children)
-  const visibleStepsCount = stepsCount - ignoredStepNumbers.length
 
   useEffect(() => {
     let vs = step + 1
@@ -18,6 +18,10 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
     }    
     setVisibleStep(vs)
   }, [step]);
+
+  useEffect(() => {
+    setVisibleStepsCount(stepsCount - ignoredStepNumbers.length)
+  }, [ignoredStepNumbers])
 
   const screenProps: IWizardScreenProps = {
     step,
