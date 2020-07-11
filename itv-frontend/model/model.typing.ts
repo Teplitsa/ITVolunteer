@@ -201,8 +201,8 @@ export interface IComponentsState {
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
-  createTaskWizard?: any;
-  completeTaskWizard?: any;
+  createTaskWizard?: IWizardModel;
+  completeTaskWizard?: IWizardModel;
 }
 
 /**
@@ -609,3 +609,60 @@ export interface IFetchResult {
   message: string;
   [x: string]: any;
 }
+
+export interface IAnyState {
+  [x: string]: any;
+}
+
+/**
+ * Wizard
+ */
+
+export interface IWizardState {
+  wizardName: string;
+  formData: object;
+  step: number;
+}
+
+export interface IWizardScreenProps {
+  step?: number;
+  setStep?: any;
+  stepsCount?: any;
+  onPrevClick?: any;
+  onNextClick?: any;
+  formHelpComponent?: any;
+  isAllowPrevButton?: boolean;
+  isIgnoreStepNumber?: boolean;
+  visibleStep?: number;
+  goNextStep?: any;
+  goPrevStep?: any;
+  icon?: any;
+  title?: string;
+  isRequired?: boolean;
+  name?: string;
+  maxLength?: number;
+  placeholder?: string;
+  howtoTitle?: string;
+}
+
+export interface IWizardInputProps {
+  placeholder?: string;
+  handleInput: any;
+  inputUseRef: any;
+  value?: any;
+  name?: string;
+  maxLength?: number;
+}
+
+export interface IWizardActions {
+  setState: Action<IAnyState, IAnyState>;
+  setFormData: Action<IAnyState, object>;
+  setStep: Action<IAnyState, number>;
+}
+
+export interface IWizardThunks {
+  loadWizardData: Thunk<IWizardActions>;
+  saveWizardData: Thunk<IWizardActions>;
+}
+
+export interface IWizardModel extends IWizardState, IWizardActions, IWizardThunks {}

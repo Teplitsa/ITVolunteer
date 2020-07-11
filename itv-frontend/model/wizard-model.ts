@@ -1,20 +1,24 @@
 import { action, thunk } from "easy-peasy";
+import * as _ from "lodash"
 import {
   IFetchResult,
   IStoreModel,
+  IWizardActions,
+  IWizardThunks,
+  IWizardModel,
+  IWizardState,
 } from "./model.typing";
 import * as utils from "../utilities/utilities"
-import * as _ from "lodash"
 
 const storeJsLocalStorage = require('store')
 
-const wizardState = {
+const wizardState: IWizardState = {
   wizardName: "",
   formData: {},
   step: 0,
 };
 
-const createTaskWizardActions = {
+const wizardActions: IWizardActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState)
   }),
@@ -24,7 +28,22 @@ const createTaskWizardActions = {
   setStep: action((state, payload) => {
     state.step = payload
   }),
-  loadWizardData: thunk(async (actions, _miss, {getStoreState}) => {
+};
+
+const createTaskWizardActions: IWizardActions = {
+  setState: action((prevState, newState) => {
+    Object.assign(prevState, newState)
+  }),
+  setFormData: action((state, payload) => {
+    state.formData = {...state.formData, ...payload}
+  }),
+  setStep: action((state, payload) => {
+    state.step = payload
+  }),
+};
+
+const createTaskWizardThunks: IWizardThunks = {
+  loadWizardData: thunk(async (actions, payload, {getStoreState}) => {
     const {
       components: {
         createTaskWizard: { wizardName },
@@ -35,16 +54,21 @@ const createTaskWizardActions = {
       actions.setFormData(_.get(wizardData, "formData", {}))
       actions.setStep(_.get(wizardData, "step", 0))
     }
-  }),    
-  saveWizardData: action((state) => {
+  }),  
+  saveWizardData: thunk(async (actions, payload, {getStoreState}) => {
+    const {
+      components: {
+        createTaskWizard: state,
+      },
+    } = getStoreState() as IStoreModel;
     storeJsLocalStorage.set('wizard.' + state.wizardName + '.data', {
       formData: state.formData,
       step: state.step,
     })
   }),
-};
+}  
 
-const completeTaskWizardActions = {
+const completeTaskWizardActions: IWizardActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState)
   }),
@@ -54,7 +78,10 @@ const completeTaskWizardActions = {
   setStep: action((state, payload) => {
     state.step = payload
   }),
-  loadWizardData: thunk(async (actions, _miss, {getStoreState}) => {
+};
+
+const completeTaskWizardThunks: IWizardThunks = {
+  loadWizardData: thunk(async (actions, payload, {getStoreState}) => {
     const {
       components: {
         completeTaskWizard: { wizardName },
@@ -65,17 +92,22 @@ const completeTaskWizardActions = {
       actions.setFormData(_.get(wizardData, "formData", {}))
       actions.setStep(_.get(wizardData, "step", 0))
     }
-  }),    
-  saveWizardData: action((state) => {
+  }),  
+  saveWizardData: thunk(async (actions, payload, {getStoreState}) => {
+    const {
+      components: {
+        completeTaskWizard: state,
+      },
+    } = getStoreState() as IStoreModel;
     storeJsLocalStorage.set('wizard.' + state.wizardName + '.data', {
       formData: state.formData,
       step: state.step,
     })
   }),
-};
+}  
 
 const createTaskWizardState = {...wizardState, ...{wizardName: "createTaskWizard"}}
 const completeTaskWizardState = {...wizardState, ...{wizardName: "completeTaskWizard"}}
 
-export const createTaskWizardModel = { ...createTaskWizardState, ...createTaskWizardActions }
-export const completeTaskWizardModel = { ...completeTaskWizardState, ...completeTaskWizardActions }
+export const createTaskWizardModel = { ...createTaskWizardState, ...createTaskWizardActions, ...createTaskWizardThunks }
+export const completeTaskWizardModel = { ...completeTaskWizardState, ...completeTaskWizardActions, ...completeTaskWizardThunks }

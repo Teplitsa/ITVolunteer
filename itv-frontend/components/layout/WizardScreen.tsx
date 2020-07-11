@@ -1,4 +1,10 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
+import * as _ from "lodash"
+
+import {
+  IWizardScreenProps,
+  IWizardInputProps,
+} from "../../model/model.typing";
 import { useStoreState } from "../../model/helpers/hooks";
 
 import logo from "../../assets/img/pic-logo-itv.svg";
@@ -24,7 +30,7 @@ const WizardScreen = ({ children, ...props }): ReactElement => {
 };
 
 
-export const WizardScreenBottomBar = (props) => {
+export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
 
   function handleNextClick(e) {
     e.preventDefault();
@@ -71,45 +77,42 @@ export const WizardScreenBottomBar = (props) => {
 export const WizardForm = ({children, ...props}) => {
   return (
       <div className="wizard-form">
-        <WizardFormTitle {...props} />
+        <WizardFormTitle {...props as IWizardScreenProps} />
         {children}
-        <WizardFormActionBar {...props} />
+        <WizardFormActionBar {...props as IWizardScreenProps} />
       </div>
   )
 }
 
 
-export const WizardFormActionBar = ({
-  onNexClick,
-  onPrevClick,
-  goNextStep,
-  goPrevStep,  
-  isAllowPrevButton,
-  ...props
-}) => {
+export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
   const handleNextClick = (e) => {
+    console.log("handleNextClick...")
+    
     e.preventDefault()
 
-    let isMayGoNextStep = onNexClick ? onNexClick(props) : true;
+    let isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
+    console.log("isMayGoNextStep:", isMayGoNextStep)
+
     if(isMayGoNextStep) {
-      goNextStep();
+      props.goNextStep();
     }    
   }
 
   const handlePrevClick = (e) => {
     e.preventDefault();
 
-    let isMayGoPrevStep = onPrevClick ? onPrevClick(props) : true;
+    let isMayGoPrevStep = props.onPrevClick ? props.onPrevClick(props) : true;
     if(isMayGoPrevStep) {
-      goPrevStep();
+      props.goPrevStep();
     }
   }
 
   return (
     <div className="wizard-form-action-bar">
       <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
-      {!!isAllowPrevButton &&
+      {!!props.isAllowPrevButton &&
       <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.step ? "Вернуться" : "Отмена"}</a>
       }
     </div>
@@ -117,17 +120,12 @@ export const WizardFormActionBar = ({
 }
 
 
-export const WizardFormTitle = ({
-  visibleStep,
-  title,
-  isRequired,
-  ...props
-}) => {
+export const WizardFormTitle = (props: IWizardScreenProps) => {
   return (
     <h1>
-      <span>{visibleStep} →</span>
-      {title}
-      {isRequired &&
+      <span>{props.visibleStep} →</span>
+      {props.title}
+      {props.isRequired &&
       <span className="wizard-form__required-star">*</span>
       }
     </h1>
@@ -138,40 +136,31 @@ export const WizardFormTitle = ({
 /*
  *  Fields
  */
-export const WizardLimitedTextFieldWithHelp = ({
-  field: Field,
-  formHelpComponent,
-  maxLength,
-  placeholder,
-  name,
-  formData,
-  setFormData,
-  ...props
-}) => {
+export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
   const inputUseRef = useRef(null)
-  const fieldValue = _.get(formData, name, "")
+  const fieldValue = _.get(props.formData, props.name, "")
   const [inputTextLength, setInputTextLength] = useState(fieldValue.length)
 
   function handleInput(e) {
     setInputTextLength(e.target.value.length)
 
-    if(!!setFormData) {
-      setFormData({[name]: e.target.value})
+    if(!!props.setFormData) {
+      props.setFormData({[props.name]: e.target.value})
     }
   }
 
   return (
     <div className="wizard-field">
-      <Field placeholder={placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} />
+      <Field placeholder={props.placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} />
       <div className="wizard-field__limit-help">
-        {!!formHelpComponent &&
-          formHelpComponent
+        {!!props.formHelpComponent &&
+          props.formHelpComponent
         }
-        {!formHelpComponent &&
+        {!props.formHelpComponent &&
           <div />
         }
-        {maxLength > 0 &&
-        <div className="wizard-field__limit">{`${inputTextLength}/${maxLength}`}</div>
+        {props.maxLength > 0 &&
+        <div className="wizard-field__limit">{`${inputTextLength}/${props.maxLength}`}</div>
         }
       </div>
     </div>
@@ -179,10 +168,7 @@ export const WizardLimitedTextFieldWithHelp = ({
 }
 
 
-export const WizardStringField = ({
-  ...props
-}) => {
-
+export const WizardStringField = (props: IWizardScreenProps) => {
   return (
     <WizardLimitedTextFieldWithHelp 
       {...props}
@@ -192,21 +178,13 @@ export const WizardStringField = ({
   )
 }
 
-export const WizardStringFieldInput = ({
-  placeholder,
-  handleInput,
-  inputUseRef,
-  value,
-}) => {
-
+export const WizardStringFieldInput = (props: IWizardInputProps) => {
   return (
-    <input type="text" placeholder={placeholder} onKeyDown={handleInput} ref={inputUseRef} defaultValue={value} />
+    <input type="text" placeholder={props.placeholder} onKeyDown={props.handleInput} ref={props.inputUseRef} defaultValue={props.value} />
   )
 }
 
-export const WizardTextField = ({
-  ...props
-}) => {
+export const WizardTextField = (props: IWizardScreenProps) => {
   return (
     <WizardLimitedTextFieldWithHelp {...props}
       field={WizardTextFieldInput}
@@ -215,15 +193,9 @@ export const WizardTextField = ({
   )
 }
 
-export const WizardTextFieldInput = ({
-  placeholder,
-  handleInput,
-  inputUseRef,
-  value,
-  ...props
-}) => {
+export const WizardTextFieldInput = (props: IWizardInputProps) => {
   return (
-      <textarea placeholder={placeholder} onKeyUp={handleInput} ref={inputUseRef} defaultValue={value}></textarea>
+      <textarea placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value}></textarea>
   )
 }
 

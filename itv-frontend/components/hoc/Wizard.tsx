@@ -1,4 +1,7 @@
 import { Children, cloneElement, ReactElement, useState, useEffect, useRef } from "react";
+import {
+  IWizardScreenProps,
+} from "../../model/model.typing";
 
 const Wizard = ({ component: Component, children, saveWizardData, step, setStep, formData, setFormData, ...props }) => {
   const [ignoredStepNumbers, setIgnoredStepNumbers] = useState([])
@@ -15,7 +18,7 @@ const Wizard = ({ component: Component, children, saveWizardData, step, setStep,
     setVisibleStep(vs)
   }, [step]);
 
-  const screenProps = {
+  const screenProps: IWizardScreenProps = {
     step,
     setStep,
     stepsCount: stepsCount,
@@ -24,7 +27,7 @@ const Wizard = ({ component: Component, children, saveWizardData, step, setStep,
     formHelpComponent: null,
     isAllowPrevButton: true,
     isIgnoreStepNumber: false,
-    visibleStep: null,
+    visibleStep: 0,
 
     goNextStep: () => {
       if(step >= stepsCount - 1) {
