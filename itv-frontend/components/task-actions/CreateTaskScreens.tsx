@@ -1,4 +1,9 @@
 import { ReactElement } from "react";
+import * as _ from "lodash"
+
+import {
+  IWizardScreenProps,
+} from "../../model/model.typing";
 import { useStoreState } from "../../model/helpers/hooks";
 import { WizardScreenBottomBar, WizardStringField, WizardTextField, WizardForm } from "../layout/WizardScreen";
 
@@ -6,7 +11,7 @@ import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
 import howToIcon from "../../assets/img/icon-question-green.svg";
 
 
-export const AgreementScreen = (props) => {
+export const AgreementScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen agreement">
@@ -18,7 +23,7 @@ export const AgreementScreen = (props) => {
 };
 
 
-export const CreateTaskHelp = (props) => {
+export const CreateTaskHelp = (props: IWizardScreenProps) => {
   const howtoTitle = _.get(props, "howtoTitle", "Как правильно дать название задачи")
 
   return (
@@ -30,7 +35,7 @@ export const CreateTaskHelp = (props) => {
 }
 
 
-export const SetTaskTitleScreen = (props) => {
+export const SetTaskTitleScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -53,7 +58,7 @@ export const SetTaskTitleScreen = (props) => {
 };
 
 
-export const SetTaskDescriptionScreen = (props) => {
+export const SetTaskDescriptionScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -77,7 +82,7 @@ export const SetTaskDescriptionScreen = (props) => {
 };
 
 
-export const SetTaskResultScreen = (props) => {
+export const SetTaskResultScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -101,7 +106,7 @@ export const SetTaskResultScreen = (props) => {
 };
 
 
-export const SetTaskImpactScreen = (props) => {
+export const SetTaskImpactScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -125,7 +130,7 @@ export const SetTaskImpactScreen = (props) => {
 };
 
 
-export const SetTaskReferencesScreen = (props) => {
+export const SetTaskReferencesScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -149,7 +154,7 @@ export const SetTaskReferencesScreen = (props) => {
 };
 
 
-export const SetTaskRemoteResourcesScreen = (props) => {
+export const SetTaskRemoteResourcesScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -173,7 +178,7 @@ export const SetTaskRemoteResourcesScreen = (props) => {
 };
 
 
-export const UploadTaskFilesScreen = (props) => {
+export const UploadTaskFilesScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -194,7 +199,7 @@ export const UploadTaskFilesScreen = (props) => {
 };
 
 
-export const SelectTaskTagsScreen = (props) => {
+export const SelectTaskTagsScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -214,7 +219,7 @@ export const SelectTaskTagsScreen = (props) => {
 };
 
 
-export const SelectTaskNgoTagsScreen = (props) => {
+export const SelectTaskNgoTagsScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -234,7 +239,7 @@ export const SelectTaskNgoTagsScreen = (props) => {
 };
 
 
-export const SelectTaskPreferredDoerScreen = (props) => {
+export const SelectTaskPreferredDoerScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -257,7 +262,7 @@ export const SelectTaskPreferredDoerScreen = (props) => {
 };
 
 
-export const SelectTaskRewardScreen = (props) => {
+export const SelectTaskRewardScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -277,7 +282,7 @@ export const SelectTaskRewardScreen = (props) => {
 };
 
 
-export const SelectTaskPreferredDurationScreen = (props) => {
+export const SelectTaskPreferredDurationScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
@@ -297,7 +302,7 @@ export const SelectTaskPreferredDurationScreen = (props) => {
 };
 
 
-export const SelectTaskCoverScreen = (props) => {
+export const SelectTaskCoverScreen = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-screen">
