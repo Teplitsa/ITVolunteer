@@ -1,7 +1,7 @@
 import { Children, cloneElement, ReactElement, useState, useEffect, useRef } from "react";
 import {
   IWizardScreenProps,
-} from "../../model/model.typing";
+} from "../model/model.typing";
 
 const Wizard = ({ children, saveWizardData, step, setStep, formData, setFormData, ...props }) => {
   const [ignoredStepNumbers, setIgnoredStepNumbers] = useState([])
