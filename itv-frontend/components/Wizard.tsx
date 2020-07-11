@@ -23,6 +23,14 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
     setVisibleStepsCount(stepsCount - ignoredStepNumbers.length)
   }, [ignoredStepNumbers])
 
+  useEffect(() => {
+    Children.map(children, (child, index) => {
+      if(child.props.isIgnoreStepNumber && ignoredStepNumbers.findIndex((ignoredStep) => ignoredStep === index) === -1) {
+        setIgnoredStepNumbers([...ignoredStepNumbers, ...[index]])
+      }
+    })
+  })
+
   const screenProps: IWizardScreenProps = {
     step,
     setStep,
@@ -32,8 +40,6 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
     formHelpComponent: null,
     isAllowPrevButton: true,
     isIgnoreStepNumber: false,
-    visibleStep: visibleStep,
-    visibleStepsCount: visibleStepsCount,
 
     goNextStep: () => {
       if(step >= stepsCount - 1) {
@@ -63,15 +69,7 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
   return (
     <>
       {Children.map(children, (child, index) => {
-        // console.log("child index:", index)
-        // console.log("child step:", step)
-        // console.log("child.props.isIgnoreStepNumber:", child.props.isIgnoreStepNumber)
-
-        if(child.props.isIgnoreStepNumber && ignoredStepNumbers.findIndex((ignoredStep) => ignoredStep === index) === -1) {
-          setIgnoredStepNumbers([...ignoredStepNumbers, ...[index]])
-        }
-
-        return step === index ? cloneElement(child, {...screenProps, ...props}) : null
+        return step === index ? cloneElement(child, {...screenProps, ...props, visibleStep, visibleStepsCount}) : null
       })}
     </>
   );
