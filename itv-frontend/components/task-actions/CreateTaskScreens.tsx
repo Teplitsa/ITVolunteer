@@ -1,23 +1,93 @@
-import { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import * as _ from "lodash"
 
 import {
   IWizardScreenProps,
 } from "../../model/model.typing";
-import { useStoreState } from "../../model/helpers/hooks";
-import { WizardScreen, WizardScreenBottomBar, WizardStringField, WizardTextField, WizardForm } from "../layout/WizardScreen";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import { WizardScreen, WizardScreenBottomBar,  WizardForm, 
+  WizardStringField, WizardTextField, WizardRadioSetField
+} from "../layout/WizardScreen";
 
 import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
 import howToIcon from "../../assets/img/icon-question-green.svg";
+import inputCheckOn from "../../assets/img/icon-wizard-check-on.svg";
+import inputCheckOff from "../../assets/img/icon-wizard-check-off.svg";
 
+export const AgreementScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "AgreementScreen",
+  }
 
-export const AgreementScreen = (props: IWizardScreenProps) => {
+  const [isValid, setIsValid] = useState(false)
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+  const agreementItems = ["isNgo", "isKnowVolunteer"]
+
+  useEffect(() => {
+    let isValidTmp = agreementItems.reduce((isValidAccum, agreementItemName) => {
+      return isValidAccum && _.get(formData, "agreement." + agreementItemName, false)
+    }, true)
+    setIsValid(isValidTmp)
+  }, [formData])
+
+  function handleAgreementItemCheckClick(e, agreementItemName) {
+    _.set(formData, "agreement." + agreementItemName, !_.get(formData, "agreement." + agreementItemName, false))
+    setFormData(formData)
+  }
+
+  function handleContinueClick(e) {
+    e.preventDefault();
+    if(!isValid) {
+      return
+    }
+    props.goNextStep();
+  }
 
   return (
     <WizardScreen {...props} isShowHeader={false}>
-      <div className="wizard-screen agreement">
-        <h1>Что должен знать автор задачи перед ее постановкой</h1>
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+      <div className={`wizard-screen screen-agreement ${isValid ? "" : "invalid"}`}>
+        <div className="screen-agreement__content">
+          <h1>Что должен знать автор задачи перед ее постановкой</h1>
+          <p className="screen-agreement__explanation">Публикуя задачу на платформе IT-волонтер, я соглашаюсь с правилами.</p>
+          <div className="screen-agreement-list">
+            <div className="screen-agreement-list__item">
+              <h2>Я ставлю задачу от имени некоммерческой организации или инициативы</h2>
+              <div className="screen-agreement-list__check" onClick={(e) => handleAgreementItemCheckClick(e, "isNgo")}>
+                <img src={_.get(formData, "agreement.isNgo", false) ? inputCheckOn : inputCheckOff} />
+              </div>
+              <p>
+                Для IT-волонтеров важны некоммерческие цели и социальный эффект от той помощи, которую они вам оказывают. Поэтому они готовы помогать только социально ориентированным некоммерческим организациям, социальным проектам и инициативам.              
+              </p>
+              <p>
+                К сожалению, на платформе не публикуются задачи от коммерческих, религиозных или политических организаций. Почему? (Линк на правила со списком СО НКО.)
+              </p>
+            </div>
+            <div className="screen-agreement-list__item">
+              <h2>Я понимаю, как работать с волонтерами, и хочу заботиться об их мотивации</h2>
+              <div className="screen-agreement-list__check" onClick={(e) => handleAgreementItemCheckClick(e, "isKnowVolunteer")}>
+                <img src={_.get(formData, "agreement.isKnowVolunteer", false) ? inputCheckOn : inputCheckOff} />
+              </div>
+              <p>
+                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
+              </p>
+              <p>
+                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
+              </p>
+              <p>
+                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
+              </p>
+              <p>
+                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="screen-agreement__list-overlay"></div>
+        <div className="screen-agreement__bottom-bar">
+          <a href="#" onClick={handleContinueClick} className={`screen-agreement__primary-button ${isValid ? "" : "disabled"}`}>Соглашаюсь с правилами</a>
+        </div>
       </div>
     </WizardScreen>
   );
@@ -26,10 +96,16 @@ export const AgreementScreen = (props: IWizardScreenProps) => {
 
 
 export const CreateTaskHelp = (props: IWizardScreenProps) => {
+  const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
   const howtoTitle = _.get(props, "howtoTitle", "Как правильно дать название задачи")
 
+  function handleShowHelpClick(e) {
+    e.preventDefault();
+    setShowScreenHelpModalState({[props.screenName]: true});
+  }
+
   return (
-      <div className="wizard-field__help">
+      <div className="wizard-field__help" onClick={handleShowHelpClick}>
         <img src={howToIcon} className="wizard-field__icon" />
         <span>{howtoTitle}</span>
       </div>
@@ -37,7 +113,11 @@ export const CreateTaskHelp = (props: IWizardScreenProps) => {
 }
 
 
-export const SetTaskTitleScreen = (props: IWizardScreenProps) => {
+export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskTitleScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -62,7 +142,11 @@ export const SetTaskTitleScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SetTaskDescriptionScreen = (props: IWizardScreenProps) => {
+export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskDescriptionScreen",
+  }
 
   return (
     <WizardScreen>
@@ -88,7 +172,11 @@ export const SetTaskDescriptionScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SetTaskResultScreen = (props: IWizardScreenProps) => {
+export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskResultScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -114,7 +202,11 @@ export const SetTaskResultScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SetTaskImpactScreen = (props: IWizardScreenProps) => {
+export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskImpactScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -140,7 +232,11 @@ export const SetTaskImpactScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SetTaskReferencesScreen = (props: IWizardScreenProps) => {
+export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskReferencesScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -166,7 +262,11 @@ export const SetTaskReferencesScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SetTaskRemoteResourcesScreen = (props: IWizardScreenProps) => {
+export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SetTaskRemoteResourcesScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -192,7 +292,11 @@ export const SetTaskRemoteResourcesScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const UploadTaskFilesScreen = (props: IWizardScreenProps) => {
+export const UploadTaskFilesScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "UploadTaskFilesScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -215,7 +319,11 @@ export const UploadTaskFilesScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SelectTaskTagsScreen = (props: IWizardScreenProps) => {
+export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskTagsScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -237,7 +345,11 @@ export const SelectTaskTagsScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SelectTaskNgoTagsScreen = (props: IWizardScreenProps) => {
+export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskNgoTagsScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -259,7 +371,11 @@ export const SelectTaskNgoTagsScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SelectTaskPreferredDoerScreen = (props: IWizardScreenProps) => {
+export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskPreferredDoerScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -269,10 +385,10 @@ export const SelectTaskPreferredDoerScreen = (props: IWizardScreenProps) => {
           isRequired={false}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardRadioSetField {...props} 
+            selectOptions={[{value: 1, title: "Любой волонтёр"}, {value: 2, title: "Пасека"}]}
             name="preferredDoers"
             howtoTitle="Что такое пасека" 
-            maxLength={250}
             formHelpComponent={<CreateTaskHelp {...props} />}
           />
         </WizardForm>
@@ -284,7 +400,11 @@ export const SelectTaskPreferredDoerScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SelectTaskRewardScreen = (props: IWizardScreenProps) => {
+export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskRewardScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -306,7 +426,11 @@ export const SelectTaskRewardScreen = (props: IWizardScreenProps) => {
 };
 
 
-export const SelectTaskPreferredDurationScreen = (props: IWizardScreenProps) => {
+export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskPreferredDurationScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -328,7 +452,11 @@ export const SelectTaskPreferredDurationScreen = (props: IWizardScreenProps) => 
 };
 
 
-export const SelectTaskCoverScreen = (props: IWizardScreenProps) => {
+export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "SelectTaskCoverScreen",
+  }
 
   return (
     <WizardScreen {...props}>

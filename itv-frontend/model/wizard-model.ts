@@ -16,18 +16,7 @@ const wizardState: IWizardState = {
   wizardName: "",
   formData: {},
   step: 0,
-};
-
-const wizardActions: IWizardActions = {
-  setState: action((prevState, newState) => {
-    Object.assign(prevState, newState)
-  }),
-  setFormData: action((state, payload) => {
-    state.formData = {...state.formData, ...payload}
-  }),
-  setStep: action((state, payload) => {
-    state.step = payload
-  }),
+  showScreenHelpModalState: {},
 };
 
 const createTaskWizardActions: IWizardActions = {
@@ -39,6 +28,9 @@ const createTaskWizardActions: IWizardActions = {
   }),
   setStep: action((state, payload) => {
     state.step = payload
+  }),
+  setShowScreenHelpModalState: action((state, payload) => {
+    state.showScreenHelpModalState = {...state.showScreenHelpModalState, ...payload}
   }),
 };
 
@@ -77,6 +69,9 @@ const completeTaskWizardActions: IWizardActions = {
   }),
   setStep: action((state, payload) => {
     state.step = payload
+  }),
+  setShowScreenHelpModalState: action((state, payload) => {
+    state.showScreenHelpModalState = {...state.showScreenHelpModalState, ...payload}
   }),
 };
 

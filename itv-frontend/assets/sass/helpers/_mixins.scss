@@ -130,6 +130,11 @@
   padding: 8px;
   border-radius: 12px;
   box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+
+  &.disabled {
+    background: $color-main;
+    opacity: 0.5;
+  }
 }
 
 @mixin button-secondary {
@@ -182,6 +187,31 @@
 @mixin action-button-secondary-lg {
   @include action-button-secondary;
   @include actiion-button-lg;
+}
+
+// custom buttons
+@mixin contact-admin-button {
+  @include text-xs-line-lg;
+  @include a-no-hover-underline;
+  width: 100%;
+  padding-top: $base;
+  padding-bottom: $base;
+  border: 1px solid $color-gray-light-md;
+  background-color: $color-gray-light-xl;
+  color: $color-gray-dark-md;
+  box-sizing: border-box;
+  border-radius: 8px;
+  text-align: center;
+  display: inline-block;
+}
+
+// wizard
+@mixin wizard-button-primary {
+  @include button-primary;
+  @include htext-bold;
+  width: 380px;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 // icons

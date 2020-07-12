@@ -622,6 +622,7 @@ export interface IWizardState {
   wizardName: string;
   formData: object;
   step: number;
+  showScreenHelpModalState: object;
 }
 
 export interface IWizardScreenProps {
@@ -645,6 +646,9 @@ export interface IWizardScreenProps {
   placeholder?: string;
   howtoTitle?: string;
   isShowHeader?: boolean;
+  formData?: object;
+  screenName?: string;
+  selectOptions?: Array<any>;
 }
 
 export interface IWizardInputProps {
@@ -654,12 +658,14 @@ export interface IWizardInputProps {
   value?: any;
   name?: string;
   maxLength?: number;
+  selectOptions?: Array<any>;
 }
 
 export interface IWizardActions {
-  setState: Action<IAnyState, IAnyState>;
-  setFormData: Action<IAnyState, object>;
-  setStep: Action<IAnyState, number>;
+  setState: Action<IWizardState, IWizardState>;
+  setFormData: Action<IWizardState, object>;
+  setStep: Action<IWizardState, number>;
+  setShowScreenHelpModalState: Action<IWizardState, object>;
 }
 
 export interface IWizardThunks {

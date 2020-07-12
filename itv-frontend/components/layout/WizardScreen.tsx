@@ -5,11 +5,16 @@ import {
   IWizardScreenProps,
   IWizardInputProps,
 } from "../../model/model.typing";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 import logo from "../../assets/img/pic-logo-itv.svg";
+import closeModalIcon from "../../assets/img/icon-wizard-modal-close.svg";
+import radioCheckOn from "../../assets/img/icon-wizard-radio-on.svg";
+import radioCheckOff from "../../assets/img/icon-wizard-radio-off.svg";
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
+  const showScreenHelpModalState = useStoreState((state) => state.components.createTaskWizard.showScreenHelpModalState)
+
   const defaultProps = {
     isShowHeader: true,
   }
@@ -28,6 +33,10 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
         <div className="wizard__content">
           {children}
         </div>
+
+        {_.get(showScreenHelpModalState, props.screenName, false) &&
+          <WizardHelpModal {...props} />
+        }
 
       </div>
     </main>
@@ -94,12 +103,10 @@ export const WizardForm = ({children, ...props}) => {
 export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
   const handleNextClick = (e) => {
-    console.log("handleNextClick...")
 
     e.preventDefault()
 
     let isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
-    console.log("isMayGoNextStep:", isMayGoNextStep)
 
     if(isMayGoNextStep) {
       props.goNextStep();
@@ -142,6 +149,74 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
 /*
  *  Fields
  */
+ export const WizardHelpModal = (props: IWizardScreenProps) => {
+   const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
+
+   function handleCloseClick(e) {
+     e.preventDefault();
+     setShowScreenHelpModalState({[props.screenName]: false});
+   }
+
+  console.log("props.screenName:", props.screenName)
+
+   return (
+     <div className="wizard-help-modal">
+       <header>
+         <div className="wizard-help-modal__path-wrapper">
+           <ul className="wizard-help-modal__path">
+             <li>Справочный центр</li>
+             <li>Советы для организаций</li>
+             <li>Составление задачи на ITV</li>
+           </ul>
+           <div className="wizard-help-modal__path-overlay"></div>
+         </div>
+         <a href="#" className="wizard-help-modal__close" onClick={handleCloseClick}>
+           <img src={closeModalIcon} />
+         </a>
+       </header>
+       <div className="wizard-help-modal-article">
+         <div className="wizard-help-modal-article__content">
+           <article>
+             <h1>Как правильно дать название задачи?</h1>
+             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
+             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
+             <p>В хорошем заголовке должны быть указана желаемая технология, например:</p>
+             <ul>
+               <li>сайт на WP</li>
+               <li>приложение под андроид</li>
+               <li>макет в EPS</li>
+               <li>и так далее.</li>
+             </ul>
+             <p>Указание на то, для чего это всё (кратко, в два-три слова):</p>
+             <ul>
+               <li>поиск граждан,</li>
+               <li>помощь детям,</li>
+               <li>помощь домашним животным,</li>
+               <li>помощь врачам.</li>
+             </ul>
+             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
+             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
+             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
+             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
+             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
+             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
+           </article>
+         </div>
+         <div className="wizard-help-modal-article__content-overlay"></div>
+       </div>
+       <footer>
+          <a
+            href="#"
+            className="contact-admin"
+          >
+            Всё ещё нужна помощь? Напишите администратору
+          </a>
+       </footer>
+     </div>
+   )
+}
+
+
 export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
   const inputUseRef = useRef(null)
   const fieldValue = _.get(props.formData, props.name, "")
@@ -157,7 +232,7 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
 
   return (
     <div className="wizard-field">
-      <Field placeholder={props.placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} />
+      <Field placeholder={props.placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} selectOptions={props.selectOptions} />
       <div className="wizard-field__limit-help">
         {!!props.formHelpComponent &&
           props.formHelpComponent
@@ -202,5 +277,39 @@ export const WizardTextField = (props: IWizardScreenProps) => {
 export const WizardTextFieldInput = (props: IWizardInputProps) => {
   return (
       <textarea placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value}></textarea>
+  )
+}
+
+export const WizardRadioSetField = (props: IWizardScreenProps) => {
+  return (
+    <WizardLimitedTextFieldWithHelp {...props}
+      field={WizardRadioSetFieldInput}
+    >      
+    </WizardLimitedTextFieldWithHelp>
+  )
+}
+
+export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+
+  function handleOptionClick(e, value) {
+    _.set(formData, props.name + ".value", String(value))
+    setFormData(formData)
+  }
+
+  return (
+    <div>
+      {props.selectOptions.map((option) => {
+        return (
+          <div className="wizard-radio-option">
+            <div className="wizard-radio-option__check" onClick={(e) => {handleOptionClick(e, option.value)}}>
+              <img src={_.get(formData, props.name + ".value", "") === String(option.value) ? radioCheckOn : radioCheckOff} />
+            </div>
+            <span className="wizard-radio-option__title">{option.title}</span>
+          </div>
+        )
+      })}
+    </div>
   )
 }
