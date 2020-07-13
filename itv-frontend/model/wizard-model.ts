@@ -1,5 +1,7 @@
 import { action, thunk } from "easy-peasy";
 import * as _ from "lodash"
+import moment from "moment"
+
 import {
   IFetchResult,
   IStoreModel,
@@ -17,6 +19,7 @@ const wizardState: IWizardState = {
   formData: {},
   step: 0,
   showScreenHelpModalState: {},
+  now: moment(),
 };
 
 const createTaskWizardActions: IWizardActions = {

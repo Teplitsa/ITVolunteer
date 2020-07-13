@@ -623,6 +623,7 @@ export interface IWizardState {
   formData: object;
   step: number;
   showScreenHelpModalState: object;
+  now: any;
 }
 
 export interface IWizardScreenProps {
@@ -649,6 +650,7 @@ export interface IWizardScreenProps {
   formData?: object;
   screenName?: string;
   selectOptions?: Array<any>;
+  customOptions?: Array<any>;
 }
 
 export interface IWizardInputProps {
@@ -659,6 +661,7 @@ export interface IWizardInputProps {
   name?: string;
   maxLength?: number;
   selectOptions?: Array<any>;
+  customOptions?: Array<any>;
 }
 
 export interface IWizardActions {

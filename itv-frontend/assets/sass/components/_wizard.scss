@@ -125,25 +125,11 @@
         @include dashed-underline($color-main);
     }
   }
-
-  textarea {
-    @include wizard-field-input;
-    padding: 13px 16px;
-    height: 182px;
-  }
-
-  input[type=text] {
-    @include wizard-field-input;
-    padding: 13px 16px;
-  }
-
 }
 
 .wizard-screen {
-
   &.invalid {
   }
-
 }
 
 // agreement
@@ -355,13 +341,127 @@
 
 }
 
-.wizard-radio-option {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 16px;
+// fields
+.wizard-field {
+  textarea {
+    @include wizard-field-input;
+    padding: 13px 16px;
+    height: 182px;
+  }
 
-  &__check {
-    margin-right: 8px;
+  input[type=text] {
+    @include wizard-field-input;
+    padding: 13px 16px;
+  }
+
+}
+
+.wizard-radio-option-set {
+  .wizard-radio-option {
     cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 16px;
+    width: fit-content;
+    position: relative;
+
+    &__datepicker {
+      position: absolute;
+      bottom: -10px;
+      left: 0px;
+      transform: translate(0, 100%);
+    }
+
+    &__check {
+      margin-right: 8px;
+    }
+  }  
+}
+
+.wizard-select {
+  position: relative;
+
+  &__box {
+    @include wizard-field-input;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__title {
+      padding: 13px 12px;
+      color: $color-gray-dark-xl;
+      height: 24px;
+
+      &.placeholder {
+        color: $color-gray-dark-md;
+      }
+    }
+
+    &__galka {
+      margin-right: 12px;
+    }
+
+    &__selected-set {
+      padding: 12px 12px;
+      height: 26px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    &__selected-item {
+      @include text-sm;
+      color: $color-gray-dark-lg;
+      margin-right: 8px;
+      background: $color-gray-light-lg;
+      border: 1px solid $color-gray-light-md;
+      border-radius: 10px;    
+      padding: 4px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > span {
+        margin-right: 8px;
+      }
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+  }
+
+  &__list {
+    position: absolute;
+    top: 53px;
+    left: 0;
+    background-color: $color-white;
+    border: 1px solid $color-gray-light-lg;
+    padding: 0;
+    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+    border-radius: 8px;
+    cursor: default;
+    min-width: 186px;
+    transform-origin: 50% 0;
+    transition: all 0.15s ease-out 0.15s;
+    overflow: hidden;
+    will-change: transform, opacity;
+    width: 100%;
+
+    li {
+      height: 24px;
+      padding: 13px 12px;
+      transition: opacity 0.15s ease-in 0s;
+      transition: background-color 0.15s ease-in-out 0s;
+
+      &:hover {
+        background-color: $color-gray-light-xl;
+        text-decoration: none;
+      }
+    }
+
+  }
+
+  &__list-option {
   }
 }

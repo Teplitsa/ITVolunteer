@@ -11,6 +11,8 @@ import logo from "../../assets/img/pic-logo-itv.svg";
 import closeModalIcon from "../../assets/img/icon-wizard-modal-close.svg";
 import radioCheckOn from "../../assets/img/icon-wizard-radio-on.svg";
 import radioCheckOff from "../../assets/img/icon-wizard-radio-off.svg";
+import selectGalka from "../../assets/img/icon-wizard-select-galka.svg";
+import selectItemRemove from "../../assets/img/icon-select-item-remove.svg";
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
   const showScreenHelpModalState = useStoreState((state) => state.components.createTaskWizard.showScreenHelpModalState)
@@ -116,6 +118,11 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
   const handlePrevClick = (e) => {
     e.preventDefault();
 
+    if(props.visibleStep === 1) {
+      document.location.href = "/tasks/"
+      return
+    }
+
     let isMayGoPrevStep = props.onPrevClick ? props.onPrevClick(props) : true;
     if(isMayGoPrevStep) {
       props.goPrevStep();
@@ -126,7 +133,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
     <div className="wizard-form-action-bar">
       <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
       {!!props.isAllowPrevButton &&
-      <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.step ? "Вернуться" : "Отмена"}</a>
+      <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.visibleStep > 1 ? "Вернуться" : "Отмена"}</a>
       }
     </div>
   )
@@ -232,7 +239,15 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
 
   return (
     <div className="wizard-field">
-      <Field placeholder={props.placeholder} handleInput={handleInput} inputUseRef={inputUseRef} value={fieldValue} selectOptions={props.selectOptions} />
+      <Field 
+        name={props.name} 
+        placeholder={props.placeholder} 
+        handleInput={handleInput} 
+        inputUseRef={inputUseRef} 
+        value={fieldValue} 
+        selectOptions={props.selectOptions}
+        customOptions={props.customOptions}
+      />
       <div className="wizard-field__limit-help">
         {!!props.formHelpComponent &&
           props.formHelpComponent
@@ -248,7 +263,7 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
   )
 }
 
-
+// input text
 export const WizardStringField = (props: IWizardScreenProps) => {
   return (
     <WizardLimitedTextFieldWithHelp 
@@ -265,6 +280,7 @@ export const WizardStringFieldInput = (props: IWizardInputProps) => {
   )
 }
 
+// textarea
 export const WizardTextField = (props: IWizardScreenProps) => {
   return (
     <WizardLimitedTextFieldWithHelp {...props}
@@ -280,6 +296,7 @@ export const WizardTextFieldInput = (props: IWizardInputProps) => {
   )
 }
 
+// radio
 export const WizardRadioSetField = (props: IWizardScreenProps) => {
   return (
     <WizardLimitedTextFieldWithHelp {...props}
@@ -299,17 +316,181 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
   }
 
   return (
-    <div>
-      {props.selectOptions.map((option) => {
+    <div className="wizard-radio-option-set">
+      {props.selectOptions.map((option, index) => {
         return (
-          <div className="wizard-radio-option">
-            <div className="wizard-radio-option__check" onClick={(e) => {handleOptionClick(e, option.value)}}>
+          <div className="wizard-radio-option" key={index} onClick={(e) => {handleOptionClick(e, option.value)}}>
+            <div className="wizard-radio-option__check">
               <img src={_.get(formData, props.name + ".value", "") === String(option.value) ? radioCheckOn : radioCheckOff} />
             </div>
             <span className="wizard-radio-option__title">{option.title}</span>
           </div>
         )
       })}
+      {Array.isArray(props.customOptions) && props.customOptions.map((customOptionElement, index) => {
+        return (
+          <div key={index}>
+            {!!customOptionElement &&
+              customOptionElement
+            }
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+export const WizardSelectField = (props: IWizardScreenProps) => {
+  return (
+    <WizardLimitedTextFieldWithHelp {...props}
+      field={WizardSelectFieldInput}
+    >      
+    </WizardLimitedTextFieldWithHelp>
+  )
+}
+
+export const WizardSelectFieldInput = (props: IWizardInputProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+
+  function handleOptionClick(e, index) {
+    let fd = {...formData}
+    _.set(fd, props.name + ".index", index)
+    let selectedOption = props.selectOptions[index]
+    _.set(fd, props.name + ".value", String(selectedOption.value))
+    setFormData({...fd})
+    setIsOpen(false)
+  }
+
+  function handleBoxClick(e) {
+    setIsOpen(!isOpen)
+  }
+
+  function getSelectedOptionIndex() {
+    return _.get(formData, props.name + ".index", null)
+  }
+
+  function getSelectedOption() {
+    let index = getSelectedOptionIndex()
+    return index !== null ? props.selectOptions[index] : null
+  }
+
+  function getSelectedOptionValue() {
+    let option = getSelectedOption()
+    return option ? _.get(option, "value", "") : ""
+  }
+
+  function getSelectedOptionTitle() {
+    let option = getSelectedOption()
+    return option ? _.get(option, "title", "") : ""
+  }
+
+  return (
+    <div className="wizard-select">
+      <div className="wizard-select__box" onClick={handleBoxClick}>
+        <div className="wizard-select__box__title">{getSelectedOptionTitle()}</div>
+        <div className="wizard-select__box__galka">
+          <img src={selectGalka} />
+        </div>
+      </div>
+      {isOpen &&
+      <ul className="wizard-select__list">
+      {props.selectOptions.map((option, index) => {
+        return (
+          <li key={index} className="wizard-select__list__item" onClick={(e) => {handleOptionClick(e, index)}}>{option.title}</li>
+        )
+      })}
+      </ul>
+      }
+    </div>
+  )
+}
+
+export const WizardMultiSelectField = (props: IWizardScreenProps) => {
+  return (
+    <WizardLimitedTextFieldWithHelp {...props}
+      field={WizardMultiSelectFieldInput}
+    >      
+    </WizardLimitedTextFieldWithHelp>
+  )
+}
+
+export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+
+  function handleOptionClick(e, index) {
+    let fd = {...formData}
+
+    let selectedValueList = _.get(fd, props.name + ".value", [])
+    if(!Array.isArray(selectedValueList)) {
+      selectedValueList = []
+    }
+    let selectedOption = _.get(props.selectOptions[index], "value", "")
+    selectedValueList = _.uniq([...selectedValueList, ...[String(selectedOption)]])
+
+    _.set(fd, props.name + ".value", selectedValueList)
+    setFormData({...fd})
+    setIsOpen(false)
+  }
+
+  function handleRemoveItemClick(e) {
+    e.stopPropagation()
+    console.log("formData:", formData)
+    let value = e.target.dataset.value
+    console.log("value:", value)
+
+    let fd = {...formData}
+
+    let selectedValueList = _.get(fd, props.name + ".value", [])
+    if(!Array.isArray(selectedValueList)) {
+      selectedValueList = []
+    }
+    selectedValueList = selectedValueList.filter((item) => item !== value)
+    console.log("selectedValueList:", selectedValueList)
+
+    _.set(fd, props.name + ".value", selectedValueList)
+    setFormData({...fd})
+  }
+
+  function handleBoxClick(e) {
+    setIsOpen(!isOpen)
+  }
+
+  function getSelectedOptions() {
+    let selectedValueList = _.get(formData, props.name + ".value", [])
+    if(!Array.isArray(selectedValueList)) {
+      selectedValueList = []
+    }
+    return props.selectOptions.filter((item, i) => selectedValueList.findIndex((value) => String(item.value) === value) > -1)
+  }
+
+  return (
+    <div className="wizard-select">
+      <div className="wizard-select__box" onClick={handleBoxClick}>
+        <div className="wizard-select__box__selected-set">{getSelectedOptions().map((option, index) => {
+          return (
+            <div key={index} className="wizard-select__box__selected-item">
+              <span>{option.title}</span>
+              <img src={selectItemRemove} onClick={handleRemoveItemClick} data-value={option.value} />
+            </div>
+          )
+        })}</div>
+        <div className="wizard-select__box__galka">
+          <img src={selectGalka} />
+        </div>
+      </div>
+      {isOpen &&
+      <ul className="wizard-select__list">
+      {props.selectOptions.map((option, index) => {
+        return (
+          <li key={index} className="wizard-select__list__item" onClick={(e) => {handleOptionClick(e, index)}}>{option.title}</li>
+        )
+      })}
+      </ul>
+      }
     </div>
   )
 }

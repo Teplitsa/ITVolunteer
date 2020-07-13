@@ -1,18 +1,23 @@
 import { ReactElement, useState, useEffect } from "react";
-import * as _ from "lodash"
+import * as _ from "lodash";
+import moment from "moment";
+import DatePicker, { registerLocale } from "react-datepicker";
+import ru from "date-fns/locale/ru";
 
 import {
   IWizardScreenProps,
 } from "../../model/model.typing";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { WizardScreen, WizardScreenBottomBar,  WizardForm, 
-  WizardStringField, WizardTextField, WizardRadioSetField
+  WizardStringField, WizardTextField, WizardRadioSetField, WizardSelectField,
+  WizardMultiSelectField,
 } from "../layout/WizardScreen";
 
 import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
 import howToIcon from "../../assets/img/icon-question-green.svg";
 import inputCheckOn from "../../assets/img/icon-wizard-check-on.svg";
 import inputCheckOff from "../../assets/img/icon-wizard-check-off.svg";
+import calendarIcon from "../../assets/img/icon-wizard-calendar.svg";
 
 export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   const props = {
@@ -333,8 +338,9 @@ export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
           isRequired={true}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardMultiSelectField {...props} 
             name="taskTags"
+            selectOptions={[{value: 1, title: "Сайт на ВП"}, {value: 2, title: "Дизайн"}, {value: 3, title: "SMM"}, {value: 4, title: "Легко"}]}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -359,8 +365,13 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
           isRequired={true}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardMultiSelectField {...props} 
             name="ngoTags"
+            selectOptions={[
+              {value: 1, title: "Благотворительность"}, 
+              {value: 2, title: "Животные"}, 
+              {value: 3, title: "Экология"}, 
+              {value: 4, title: "Права человека"}]}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -410,11 +421,12 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
     <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
-          title="Какое будет вознагрождение"
+          title="Какое будет вознаграждение"
           isRequired={true}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardSelectField {...props} 
+            selectOptions={[{value: 1, title: "Грантовое финансирование"}, {value: 2, title: "Коллективное селфи"}]}
             name="reward"
           />
         </WizardForm>
@@ -426,7 +438,69 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
 };
 
 
+export const CustomDeadlineDate = (props: IWizardScreenProps) => {
+  const [customDate, setCustomDate] = useState(null)
+  const [isShowDatePicker, setIsShowDatePicker] = useState(false)
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+
+  useEffect(() => {
+    let selectedValue = _.get(formData, props.name + ".value", "")
+    let date = _.get(formData, props.name + ".customDate", null)
+
+    if(customDate && selectedValue !== moment(customDate).toISOString()) {
+      setCustomDate(null)
+      _.set(formData, props.name + ".customDate", null)
+    }
+    else if(!customDate && date) {
+      setCustomDate(date)
+      _.set(formData, props.name + ".value", moment(date).toISOString())
+    }
+
+  }, [formData])
+
+  useEffect(() => {
+  }, [formData])
+
+  function handleOptionClick(e) {
+    setIsShowDatePicker(!isShowDatePicker)
+  }
+
+  function handleDatePickerClick(e) {
+    e.stopPropagation()
+  }
+
+  return (
+      <div className="wizard-radio-option" onClick={handleOptionClick}>
+        <div className="wizard-radio-option__check">
+          <img src={calendarIcon} />
+        </div>
+        <span className="wizard-radio-option__title">{customDate ? moment(customDate).format("DD-MM-YYYY") : "Выбрать свой срок"}</span>
+
+        {!!isShowDatePicker &&
+        <div className="wizard-radio-option__datepicker" onClick={handleDatePickerClick}>
+          <DatePicker
+            selected={customDate}
+            dateFormat="YYYY-MM-DD"
+            locale="ru-RU"
+            inline
+            onChange={(date) => {
+              _.set(formData, props.name + ".value", moment(date).toISOString())
+              _.set(formData, props.name + ".customDate", date)
+              setCustomDate(date)
+              setFormData(formData)
+              setIsShowDatePicker(false)
+            }}
+          />
+        </div>
+        }
+      </div>
+  )
+}
+
+
 export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProps) => {
+  const nowDateTime = useStoreState((state) => state.components.createTaskWizard.now)
   const props = {
     ...screenProps,
     screenName: "SelectTaskPreferredDurationScreen",
@@ -440,7 +514,13 @@ export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProp
           isRequired={false}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardRadioSetField {...props} 
+            selectOptions={[
+              {value: "", title: "Неважно"}, 
+              {value: moment(nowDateTime).add(3, 'days').toISOString(), title: "Через 3 дня"}, 
+              {value: moment(nowDateTime).add(7, 'days').toISOString(), title: "Через неделю"}
+            ]}
+            customOptions={[<CustomDeadlineDate {...props} name="preferredDuration" />]}
             name="preferredDuration"
           />
         </WizardForm>
