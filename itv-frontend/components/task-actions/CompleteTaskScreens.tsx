@@ -6,7 +6,11 @@ import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
 import howToIcon from "../../assets/img/icon-question-green.svg";
 
 
-export const CongratulationsScreen = (props) => {
+export const CongratulationsScreen = (screenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "CongratulationsScreen",
+  }
 
   return (
     <WizardScreen {...props}>
@@ -20,7 +24,11 @@ export const CongratulationsScreen = (props) => {
 };
 
 
-export const RateRequirementsQuality = (props) => {
+export const RateRequirementsQuality = (screenProps) => {
+  const props = {
+    ...screenProps,
+    screenName: "RateRequirementsQuality",
+  }
 
   return (
     <WizardScreen {...props}>
