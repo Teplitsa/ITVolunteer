@@ -26,7 +26,7 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
 
         {props.isShowHeader &&
         <header>
-          <img src={logo} className="wizard__logo" alt="IT-волонтер" />
+          <a href="/"><img src={logo} className="wizard__logo" alt="IT-волонтер" /></a>
         </header>
         }
 
