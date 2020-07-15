@@ -10,32 +10,32 @@
   "dependencies": {
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-sass": "^1.0.1",
+    "bootstrap": "^4.5.0",
     "date-fns": "^2.14.0",
     "easy-peasy": "^3.3.0",
     "graphql-request": "^1.8.2",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.19",
+    "moment": "^2.27.0",
     "next": "9.3.6",
     "next-images": "^1.4.0",
     "node-sass": "^4.14.1",
     "react": "16.13.1",
     "react-datepicker": "^2.16.0",
     "react-dom": "16.13.1",
-    "uuid": "^8.1.0",
-    "lodash": "^4.17.15",
+    "react-share": "^4.2.1",
     "store": "^2.0.12",
-    "react-share": "^4.2.0",
-    "bootstrap": "^4.5.0",
-    "moment": "^2.25.3"
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
-    "@types/node": "^13.13.12",
-    "@types/react": "^16.9.35",
+    "@types/node": "^13.13.14",
+    "@types/react": "^16.9.43",
     "@types/react-datepicker": "^2.11.1",
     "@types/react-dom": "^16.0.6",
     "@types/uuid": "^7.0.4",
     "file-loader": "^6.0.0",
-    "typescript": "^3.9.5",
+    "typescript": "^3.9.6",
     "url-loader": "^4.1.0"
   }
 }
