@@ -5,6 +5,7 @@ import taskModel from "./task-model/task-model";
 import taskListModel from "./task-model/task-list-model";
 import taskListFilterModel from "./task-model/task-list-filter-model";
 import userNotifModel from "./user-notif-model";
+import { createTaskWizardModel, completeTaskWizardModel } from "./wizard-model";
 
 const componentsState: IComponentsState = {
   honors: honorsPageModel,
@@ -13,6 +14,8 @@ const componentsState: IComponentsState = {
   taskList: taskListModel,
   taskListFilter: taskListFilterModel,
   userNotif: userNotifModel,
+  createTaskWizard: createTaskWizardModel,
+  completeTaskWizard: completeTaskWizardModel,
 };
 
 export const componentList = Object.keys(componentsState) as Array<

@@ -34,6 +34,30 @@
   }
 }
 
+@mixin solid-underline($color: transparent) {
+  @include a-no-hover-underline;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: $color;
+
+  &:hover {
+    border-bottom-color: transparent;
+  }
+}
+
+@mixin dashed-underline($color: transparent) {
+  @include solid-underline($color);
+  border-bottom-style: dashed;    
+}
+
+@mixin hover-underline($color: transparent) {
+  border-bottom-color: transparent;
+
+  &:hover {
+    border-bottom-color: $color;
+  }
+}
+
 @mixin drop-down-arrow($height: 16px) {
   &:after {
     content: " ";
@@ -106,6 +130,11 @@
   padding: 8px;
   border-radius: 12px;
   box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+
+  &.disabled {
+    background: $color-main;
+    opacity: 0.5;
+  }
 }
 
 @mixin button-secondary {
@@ -160,6 +189,40 @@
   @include actiion-button-lg;
 }
 
+// custom buttons
+@mixin contact-admin-button {
+  @include text-xs-line-lg;
+  @include a-no-hover-underline;
+  width: 100%;
+  padding-top: $base;
+  padding-bottom: $base;
+  border: 1px solid $color-gray-light-md;
+  background-color: $color-gray-light-xl;
+  color: $color-gray-dark-md;
+  box-sizing: border-box;
+  border-radius: 8px;
+  text-align: center;
+  display: inline-block;
+}
+
+// wizard
+@mixin wizard-button-primary {
+  @include button-primary;
+  @include htext-bold;
+  width: 380px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+@mixin wizard-button-upload {
+  @include button-primary;
+  @include text-sm-bold;
+  padding: 8px 24px;
+  background: #0EA36C;
+  box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+  border-radius: 4px;
+}
+
 // icons
 @mixin pic-small {
   width: 20px;
@@ -205,4 +268,16 @@
       }
     }
   }
+}
+
+// form elements
+@mixin wizard-field-input {
+    @include text;
+    color: $color-gray-dark-md;
+    background: $color-white;
+    border: 1px solid $color-gray-light-lg;
+    box-sizing: border-box;
+    box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+    border-radius: 10px;
+    width: 100%;
 }

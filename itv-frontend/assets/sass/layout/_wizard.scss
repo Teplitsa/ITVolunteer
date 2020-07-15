@@ -1,0 +1,41 @@
+.wizard {
+  box-sizing: border-box;
+
+  &__container {
+    max-width: $content-width-wizard;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 64px;
+
+    & > header {      
+    }
+  }
+
+  &__logo {
+    width: 210px;
+  }
+
+  &__ornament {
+    overflow: visible;
+    position: relative;
+    background-image: url(../../img/bg-modal-ornament.svg);
+    background-size: 1025.68px 637.11px;
+    background-position: 276px 52px;
+    background-repeat: no-repeat;
+
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+
+}
+
+.wizard-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 304px);
+}

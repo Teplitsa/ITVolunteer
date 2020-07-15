@@ -414,18 +414,7 @@
   margin-top: 62px;
 
   .contact-admin {
-    @include text-xs-line-lg;
-    @include a-no-hover-underline;
-    width: 100%;
-    padding-top: $base;
-    padding-bottom: $base;
-    border: 1px solid $color-gray-light-md;
-    background-color: $color-gray-light-xl;
-    color: $color-gray-dark-md;
-    box-sizing: border-box;
-    border-radius: 8px;
-    text-align: center;
-    display: inline-block;
+    @include contact-admin-button
   }
 }
 

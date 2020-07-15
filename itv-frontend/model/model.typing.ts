@@ -209,6 +209,8 @@ export interface IComponentsState {
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
+  createTaskWizard?: ICreateTaskWizardModel;
+  completeTaskWizard?: IWizardModel;
 }
 
 /**
@@ -642,3 +644,90 @@ export interface IFetchResult {
   message: string;
   [x: string]: any;
 }
+
+export interface IAnyState {
+  [x: string]: any;
+}
+
+/**
+ * Wizard
+ */
+
+export interface IWizardState {
+  wizardName: string;
+  formData: object;
+  step: number;
+  showScreenHelpModalState: object;
+  now: any;
+}
+
+export interface IWizardScreenProps {
+  step?: number;
+  setStep?: any;
+  stepsCount?: any;
+  onPrevClick?: any;
+  onNextClick?: any;
+  formHelpComponent?: any;
+  isAllowPrevButton?: boolean;
+  isIgnoreStepNumber?: boolean;
+  visibleStep?: number;
+  visibleStepsCount?: number;
+  goNextStep?: any;
+  goPrevStep?: any;
+  icon?: any;
+  title?: string;
+  isRequired?: boolean;
+  name?: string;
+  maxLength?: number;
+  placeholder?: string;
+  howtoTitle?: string;
+  isShowHeader?: boolean;
+  formData?: object;
+  screenName?: string;
+  selectOptions?: Array<any>;
+  customOptions?: Array<any>;
+  onWizardComplete?: any;
+}
+
+export interface IWizardInputProps {
+  placeholder?: string;
+  handleInput: any;
+  inputUseRef: any;
+  value?: any;
+  name?: string;
+  maxLength?: number;
+  selectOptions?: Array<any>;
+  customOptions?: Array<any>;
+}
+
+export interface IWizardActions {
+  setState: Action<IWizardState, IWizardState>;
+  setFormData: Action<IWizardState, object>;
+  setStep: Action<IWizardState, number>;
+  setShowScreenHelpModalState: Action<IWizardState, object>;
+}
+
+export interface IWizardThunks {
+  loadWizardData: Thunk<IWizardActions>;
+  saveWizardData: Thunk<IWizardActions>;
+}
+
+export interface IWizardModel extends IWizardState, IWizardActions, IWizardThunks {}
+
+export interface ICreateTaskWizardState extends IWizardState {
+  rewardList: Array<object>,
+  taskTagList: Array<object>,
+  ngoTagList: Array<object>,
+};
+
+export interface ICreateTaskWizardActions extends IWizardActions {
+  setRewardList: Action<ICreateTaskWizardState, Array<object>>;
+  setTaskTagList: Action<ICreateTaskWizardState, Array<object>>;
+  setNgoTagList: Action<ICreateTaskWizardState, Array<object>>;
+}
+
+export interface ICreateTaskWizardThunks extends IWizardThunks {
+  loadTaxonomyData: Thunk<ICreateTaskWizardActions>;  
+}
+
+export interface ICreateTaskWizardModel extends ICreateTaskWizardState, ICreateTaskWizardActions, ICreateTaskWizardThunks {}

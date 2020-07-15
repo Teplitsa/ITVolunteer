@@ -163,6 +163,76 @@ add_action('wp_ajax_add-edit-task', 'ajax_add_edit_task');
 add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
 
 
+function ajax_submit_task(){
+
+    error_log("task POST: " . print_r($_POST, true));
+
+    // $task_id = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
+    $itv_log = ItvLog::instance();
+    
+    $params = array(
+        'post_type' => 'tasks',
+        'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
+        'post_content' => filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING),
+        'tags_input' => array_map(function($item) {
+            return is_numeric($item) ? intval($item) : 0;
+        }, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))),
+    );
+    error_log("params: " . print_r($params, true));
+  
+    $is_new_task = true;
+    $params['post_status'] = 'publish';
+   
+    $task_id = wp_insert_post($params);
+
+    if($task_id) {
+        update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
+        wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
+        wp_set_post_terms($task_id, array_map(function($item) {
+            return is_numeric($item) ? intval($item) : 0;
+        }, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), 'nko_task_tag');
+        update_post_meta($task_id, 'is_tst_consult_needed', false);
+
+        update_post_meta($task_id, 'result', @$_POST['result']);
+        update_post_meta($task_id, 'impact', @$_POST['impact']);
+        update_post_meta($task_id, 'references', @$_POST['references']);
+        update_post_meta($task_id, 'references', @$_POST['references']);
+        update_post_meta($task_id, 'preferredDoers', @$_POST['preferredDoers']);
+        update_post_meta($task_id, 'preferredDuration', @$_POST['preferredDuration']);
+        update_post_meta($task_id, 'cover', @$_POST['cover']);
+        update_post_meta($task_id, 'files', @$_POST['files']);
+
+        $timeline = ITV\models\TimelineModel::instance();
+
+        if(!$timeline->get_first_item($task_id)) {
+                $timeline->create_task_timeline($task_id);        
+        }
+    
+        if($is_new_task) {
+            tst_send_admin_notif_new_task($task_id);
+        }
+
+        $task = get_post($task_id);
+
+        wp_die(json_encode(array(
+            'status' => 'saved',
+            'id' => $task_id,
+            'taskSlug' => $task->post_name,
+        )));
+
+    } else {
+
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => empty($params['ID']) ?
+                __('<strong>Error:</strong> something occured due to the task addition.', 'tst') :
+                __('<strong>Error:</strong> something occured due to task edition.', 'tst'),
+        )));
+    }
+}
+add_action('wp_ajax_submit-task', 'ajax_submit_task');
+add_action('wp_ajax_nopriv_submit-task', 'ajax_submit_task');
+
 /** Correct tags calculations for tasks */
 add_action('edited_term_taxonomy', 'tst_correct_tag_count', 2, 2);
 function tst_correct_tag_count($term_taxonomy_id, $taxonomy){
@@ -1319,3 +1389,25 @@ function ajax_get_general_stats() {
 }
 add_action('wp_ajax_get_general_stats', 'ajax_get_general_stats');
 add_action('wp_ajax_nopriv_get_general_stats', 'ajax_get_general_stats');
+
+
+function ajax_get_task_taxonomy_data() {
+    $tax_data = [
+        'taskTagList' => get_terms('post_tag', array(
+            'hide_empty' => false,
+        )),
+        'ngoTagList' => get_terms('nko_task_tag', array(
+            'hide_empty' => false,
+        )),
+        'rewardList' => get_terms('reward', array(
+            'hide_empty' => false,
+        )),
+    ];
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'data' => $tax_data,
+    )));    
+}
+add_action('wp_ajax_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
+add_action('wp_ajax_nopriv_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
