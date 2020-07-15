@@ -35,7 +35,17 @@ const snackbarReducer = (
     case "add":
       return {
         ...state,
-        ...{ messages: state.messages.concat(action.payload.messages) },
+        ...{
+          messages: state.messages.concat(
+            action.payload.messages.filter((message) => {
+              return !state.messages.find(
+                (storedMessage) =>
+                  storedMessage.text.trim().toLocaleLowerCase() ===
+                  message.text.trim().toLocaleLowerCase()
+              );
+            })
+          ),
+        },
       };
     case "delete":
       return {

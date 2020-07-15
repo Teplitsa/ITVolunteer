@@ -63,6 +63,38 @@ export const queriedFields = Object.entries(taskState).reduce(
   []
 ) as Array<keyof ITaskState>;
 
+export const graphqlFeaturedImage  = `
+  featuredImage {
+    sourceUrl(size: LARGE)
+  }
+`;
+
+export const graphqlTags  = `
+  tags {
+    nodes {
+      id
+      name
+      slug
+    }
+  }
+
+  rewardTags {
+    nodes {
+      id
+      name
+      slug
+    }
+  }
+
+  ngoTaskTags {
+    nodes {
+      id
+      name
+      slug
+    }
+  }
+`;
+
 export const graphqlQuery = {
   updateStatus: `
   mutation updateTaskStatus($input: UpdateTaskInput!) {
@@ -85,33 +117,9 @@ export const graphqlQuery = {
         ${authorQueriedFields.join("\n")}
       }
       
-      featuredImage {
-        sourceUrl(size: LARGE)
-      }        
+      ${graphqlFeaturedImage}
 
-      tags {
-        nodes {
-          id
-          name
-          slug
-        }
-      }
-
-      rewardTags {
-        nodes {
-          id
-          name
-          slug
-        }
-      }
-
-      ngoTaskTags {
-        nodes {
-          id
-          name
-          slug
-        }
-      }
+      ${graphqlTags}
     }
   }`,
 };

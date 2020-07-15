@@ -1,0 +1,15 @@
+.search-from {
+  &__group {
+    display: flex;
+    flex-flow: row nowrap;
+    margin: 0 0 32px;
+  }
+  &__control {
+    &_input {
+      @extend .from__control_input;
+    }
+    &_submit {
+      @extend .from__control_submit;
+    }
+  }
+}

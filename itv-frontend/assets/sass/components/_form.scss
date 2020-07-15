@@ -1,0 +1,22 @@
+.from {
+    &__group {
+      display: flex;
+      flex-flow: column nowrap;
+      margin: 0 0 32px;
+    }
+    &__control {
+      &_input {
+        background-color: $color-white;
+        border: 1px solid #e3eaed;
+        margin: 0 15px 0 0;
+        padding: 10px !important;
+        box-sizing: border-box;
+        box-shadow: 6px 6px 20px rgba(55, 84, 170, 0.06),
+          inset 2px 2px 4px rgba(117, 152, 163, 0.15);
+        border-radius: 10px;
+      }
+      &_submit {
+        @extend .btn_primary;
+      }
+    }
+  }

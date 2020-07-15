@@ -18,9 +18,9 @@
       align-items: center;
       height: 101px;
 
-      & > * {
-        width: 33.3%;
-      }
+      // & > * {
+      //   width: 33.3%;
+      // }
     }
 
     .logo-col {
@@ -33,6 +33,7 @@
       display: flex;
       justify-content: center;
       @include screen-from(md) {
+        flex-grow: 20;
         align-self: stretch;
       }
 
@@ -128,7 +129,7 @@
         border: 2px solid $color-gray-light-md;
         background-color: $color-gray-light-xl;
         margin-right: 20px;
-        padding: 12px 20px;
+        padding: 10px 20px;
         line-height: 20px;
         font-style: normal;
         font-size: 13px;
@@ -216,6 +217,89 @@
         .submenu {
           top: 45px;
           left: -20px;
+        }
+      }
+    }
+  }
+}
+
+.header-search {
+  margin: 0 20px 20px 0;
+  width: auto !important;
+  @include screen-from(md) {
+    flex-grow: 0;
+    flex-shrink: 10;
+    margin: 0 20px 0 20px;
+    transition: all 0.3s step-end 0s;
+  }
+  &_expanded {
+    @include screen-from(md) {
+      flex-grow: 10;
+      flex-shrink: unset;
+      transition: all 0.3s step-start 0s;
+    }
+  }
+  &-form {
+    &__group {
+      display: flex;
+      flex-flow: row nowrap;
+      border: 1px solid $color-gray-light-md;
+      border-radius: 10px;
+      @include screen-from(md) {
+        border-style: none;
+        overflow: hidden;
+      }
+    }
+    &__input {
+      flex-grow: 10;
+      background-color: $color-white;
+      border-style: none;
+      padding: 12px !important;
+      font: 400 16px/20px "IBM Plex Sans", sans-serif;
+      border-radius: 10px;
+
+      @include screen-from(md) {
+        position: relative;
+        border: 1px solid $color-gray-light-md;
+        border-right-style: none;
+        padding: 10px 0 !important;
+        text-indent: 12px;
+        border-radius: 10px 0 0 10px;
+        right: calc(-100% + 44px);
+        transition: all 0.3s linear 0s;
+      }
+      &_shown {
+        @include screen-from(md) {
+          right: 0;
+        }
+      }
+      &::placeholder {
+        font: 400 16px/20px "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-md;
+      }
+    }
+    &__toggle {
+      display: none;
+      @include screen-from(md) {
+        display: block;
+        background: url("../../img/icon-search.svg") 50% 50% no-repeat
+          $color-white;
+        border: 1px solid $color-gray-light-md;
+        padding: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        outline: none;
+        z-index: 10;
+        transition: all 0.3s step-end 0s;
+      }
+      &_close-icon {
+        @include screen-from(md) {
+          background: url("../../img/icon-header-search-close.svg") 50% 50%
+            no-repeat $color-white;
+          border-left-style: none;
+          border-radius: 0 10px 10px 0;
+          transition: all 0.3s step-start 0s;
         }
       }
     }
@@ -325,6 +409,7 @@
           }
 
           .go-old {
+            margin-left: 20px;
             margin-right: 0px;
           }
 

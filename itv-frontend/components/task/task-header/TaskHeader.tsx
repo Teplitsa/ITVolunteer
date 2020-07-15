@@ -10,8 +10,8 @@ const TaskHeader: React.FunctionComponent = (): ReactElement => {
   return (
     <header>
       <h1 dangerouslySetInnerHTML={{ __html: title }} />
-      <TaskMeta task={task} />
-      <TaskTags task={task} />
+      <TaskMeta {...task} />
+      <TaskTags {...task} />
     </header>
   );
 };

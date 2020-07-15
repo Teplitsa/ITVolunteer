@@ -1,4 +1,11 @@
-import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
+import {
+  Action,
+  ActionOn,
+  Thunk,
+  ThunkOn,
+  Computed,
+  ActionMapper,
+} from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
   ICoreHeadingBlock,
@@ -133,6 +140,7 @@ export interface IArchiveState {
 export interface IArchiveActions {
   initializeState: Action<IArchiveModel>;
   setState: Action<IArchiveModel, IArchiveState>;
+  onLoadMoreTasksRequestSuccess: ThunkOn<IArchiveModel, any, IStoreModel>;
 }
 
 /**
@@ -279,6 +287,18 @@ export interface ITaskState {
   pemalinkPath: string;
   nonceContactForm?: string;
   hasCloseSuggestion?: Computed<ITaskModel>;
+  tags?: {
+    nodes: Array<ITaskTag>;
+  };
+  rewardTags?: {
+    nodes: Array<ITaskTag>;
+  };
+  ngoTaskTags?: {
+    nodes: Array<ITaskTag>;
+  };
+  featuredImage?: {
+    sourceUrl: string;
+  };
 }
 
 export interface ITaskReviewer {
@@ -313,6 +333,7 @@ export interface ITaskAuthor {
   organizationDescription: string;
   organizationLogo: string;
   isPartner: boolean;
+  memberRole: string;
 }
 
 export interface ITaskDoer {
@@ -379,6 +400,12 @@ export interface ITaskTimelineItemDoer {
   organizationDescription: string;
   organizationLogo: string;
   pemalinkUrl: string;
+}
+
+export interface ITaskTag {
+  id: string;
+  name: string;
+  slug: string;
 }
 
 export interface ITaskActions {
@@ -503,7 +530,10 @@ export interface ITaskThunks {
  * TaskList
  */
 
-export interface ITaskListModel extends ITaskListState, ITaskListActions {}
+export interface ITaskListModel
+  extends ITaskListState,
+    ITaskListActions,
+    ITaskListThunks {}
 
 export interface ITaskListState {
   items: Array<ITaskListItemState>;
@@ -516,6 +546,11 @@ export interface ITaskListActions {
   resetTaskListLoaded: Action<ITaskListModel>;
   appendTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
   setTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
+}
+
+export interface ITaskListThunks {
+  loadMoreTasksRequest: Thunk<ITaskListActions, { searchPhrase: string }>;
+  onLoadMoreTasksRequestSuccess: ThunkOn<ITaskListModel>;
 }
 
 /**

@@ -11,6 +11,7 @@ const taskAuthor: ITaskAuthor = {
   organizationDescription: "",
   organizationLogo: "",
   isPartner: false,
+  memberRole: "",
 };
 
 export const queriedFields = Object.keys(taskAuthor) as Array<

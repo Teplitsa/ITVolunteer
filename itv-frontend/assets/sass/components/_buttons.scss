@@ -1,0 +1,13 @@
+.btn {
+  padding: 10px 20px;
+  font: 600 13px/20px "IBM Plex Sans", sans-serif;
+  outline: none;
+  &_primary {
+    @extend .btn;
+    background-color: $color-main;
+    border-style: none;
+    box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+    border-radius: 12px;
+    color: $color-white;
+  }
+}

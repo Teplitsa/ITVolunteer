@@ -15,7 +15,7 @@ const pageModel = async (request, postType, pageQueryVars) => {
 
 const archiveModel = async (request, postType, archiveQueryVars) => {
   const archiveModel = await import("../archive-model");
-  const archiveQuery = archiveModel.graphqlQuery[`get${capitalize(postType)}s`];
+  const archiveQuery = archiveModel.graphqlQuery[archiveQueryVars.searchPhrase ? `${postType}Search` : `get${capitalize(postType)}s`];
   const { [`${postType}s`]: archive } = await request(
     process.env.GraphQLServer,
     archiveQuery,
@@ -23,15 +23,31 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
   );
 
   if (postType === "task") {
-    Object.assign(archive, {
-      seo: {
-        canonical: "https://itv.te-st.ru/tasks",
-        title: "Задачи - it-волонтер",
-        opengraphTitle: "Задачи - it-волонтер",
-        opengraphUrl: "https://itv.te-st.ru/tasks",
-        opengraphSiteName: "it-волонтер",
-      },
-    });
+    if (archiveQueryVars.searchPhrase) {
+      Object.assign(archive, {
+        seo: {
+          canonical: encodeURI(
+            `https://itv.te-st.ru/search?s=${archiveQueryVars.searchPhrase}`
+          ),
+          title: `Результаты поиска по запросу '${archiveQueryVars.searchPhrase}' - it-волонтер`,
+          metaRobotsNoindex: "noindex",
+          metaRobotsNofollow: "nofollow",
+          opengraphTitle: `Результаты поиска по запросу '${archiveQueryVars.searchPhrase}' - it-волонтер`,
+          opengraphUrl: `https://itv.te-st.ru/search?s=${archiveQueryVars.searchPhrase}`,
+          opengraphSiteName: "it-волонтер",
+        },
+      });
+    } else {
+      Object.assign(archive, {
+        seo: {
+          canonical: "https://itv.te-st.ru/tasks",
+          title: "Задачи - it-волонтер",
+          opengraphTitle: "Задачи - it-волонтер",
+          opengraphUrl: "https://itv.te-st.ru/tasks",
+          opengraphSiteName: "it-волонтер",
+        },
+      });
+    }
   }
 
   return ["archive", archive];

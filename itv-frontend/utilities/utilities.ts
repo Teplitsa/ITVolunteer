@@ -64,6 +64,8 @@ export function itvWpDateTimeToDate(wpDateTime) {
 
 export const getTheIntervalToNow = ({
   fromDateString = new Date().toISOString(),
+}: {
+  fromDateString: string;
 }): string => {
   try {
     return formatDistanceToNow(new Date(fromDateString), {
@@ -90,33 +92,21 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
-export default {
-  getLocaleDateTimeISOString,
-  stripTags,
-  capitalize,
-  toCamelCase,
-  getTheDate,
-  getTheIntervalToNow,
-  getAjaxUrl,
-};
-
 export function showAjaxError(errorData) {
   if (errorData.message) {
     let el = document.createElement("div");
     el.innerHTML = errorData.message;
-    // alert(el.textContent)
-    console.log(el.textContent);
+    console.error(el.textContent);
   } else {
-    // alert('Ошибка!')
-    console.log("Ошибка!");
+    console.error("Ошибка!");
   }
 
   if (errorData.action) {
-    console.log(errorData.action + " failed");
+    console.error(errorData.action + " failed");
   }
 
   if (errorData.error) {
-    console.log(errorData.error);
+    console.error(errorData.error);
   }
 }
 
@@ -130,8 +120,8 @@ export function decodeHtmlEntities(textWithEntities) {
     el.innerHTML = textWithEntities;
     return el.innerText;
   } catch (ex) {
-    console.log("decode failed:", ex);
-    console.log("source text:", textWithEntities);
+    console.error("decode failed:", ex);
+    console.error("source text:", textWithEntities);
     return textWithEntities;
   }
 }

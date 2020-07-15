@@ -1,11 +1,17 @@
 import {
+  IStoreModel,
   IArchiveModel,
   IArchiveState,
   IArchiveActions,
   PostTypeWithArchive,
 } from "./model.typing";
-import { action } from "easy-peasy";
-import { queriedFields as taskQueriedFields } from "./task-model/task-model";
+import { action, thunkOn } from "easy-peasy";
+import {
+  queriedFields as taskQueriedFields,
+  graphqlFeaturedImage,
+  graphqlTags,
+} from "./task-model/task-model";
+import { queriedFields as authorQueriedFields } from "./task-model/task-author";
 import { capitalize } from "../utilities/utilities";
 
 const archiveState: IArchiveState = {
@@ -37,11 +43,16 @@ export const queriedFields: Array<string> = ["hasNextPage", "endCursor"];
 
 const withPostType = (
   postType: PostTypeWithArchive,
-  listItemFields: Array<string>
+  listItemFields: Array<string>,
+  isSearch: boolean = false
 ): string => {
   return `
-  query Get${capitalize(postType)}List($first: Int, $after: String) {
-    ${postType}s(first: $first, after: $after) {
+  query Get${capitalize(postType)}List($first: Int, $after: String${
+    isSearch ? ", $searchPhrase: String" : ""
+  }) {
+    ${postType}s(first: $first, after: $after${
+    isSearch ? ", where: { search: $searchPhrase}" : ""
+  }) {
       pageInfo {
         ${queriedFields.join("\n")}
       }
@@ -49,6 +60,9 @@ const withPostType = (
         cursor
         node {
           ${listItemFields.join("\n")}
+          ${isSearch ? `author {\n${authorQueriedFields.join("\n")}}` : ""}
+          ${isSearch ? graphqlFeaturedImage : ""}
+          ${isSearch ? graphqlTags : ""}
         }
       }
     }
@@ -58,6 +72,7 @@ const withPostType = (
 export const graphqlQuery = {
   getPosts: withPostType("post", ["id", "title"]),
   getTasks: withPostType("task", taskQueriedFields),
+  taskSearch: withPostType("task", taskQueriedFields, true),
 };
 
 const archiveActions: IArchiveActions = {
@@ -67,6 +82,15 @@ const archiveActions: IArchiveActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
+  onLoadMoreTasksRequestSuccess: thunkOn(
+    (actions, storeActions) =>
+      storeActions.components.taskList.loadMoreTasksRequest.successType,
+    ({ setState }, { result }) => {
+      const { archiveState } = result;
+
+      setState(archiveState);
+    }
+  ),
 };
 
 const archiveModel: IArchiveModel = { ...archiveState, ...archiveActions };

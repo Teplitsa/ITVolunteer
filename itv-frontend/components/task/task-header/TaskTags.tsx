@@ -1,24 +1,19 @@
 import { ReactElement } from "react";
-import { useStoreState } from "../../../model/helpers/hooks";
+import { ITaskState } from "../../../model/model.typing";
 import IconTags from "../../../assets/img/icon-color-picker.svg";
 import IconNgoTags from "../../../assets/img/icon-people.svg";
 import IconRewardTags from "../../../assets/img/icon-gift-box.svg";
 import TaskTagGroup from "./TaskTagGroup";
 import { capitalize, toCamelCase } from "../../../utilities/utilities";
 
-function TaskTags(props) {
-  const {
-    tags: { nodes: tags },
-    rewardTags: { nodes: rewardTags },
-    ngoTaskTags: { nodes: ngoTags },
-  } = props.task;
-
+const TaskTags: React.FunctionComponent<ITaskState> = ({ tags, rewardTags, ngoTaskTags: ngoTags }): ReactElement => {
   const tagGroups = [];
 
-  tags?.length && tagGroups.push(["tags", IconTags, tags]);
-  ngoTags?.length && tagGroups.push(["ngoTags", IconNgoTags, ngoTags]);
-  rewardTags?.length &&
-    tagGroups.push(["rewardTags", IconRewardTags, rewardTags]);
+  tags?.nodes?.length && tagGroups.push(["tags", IconTags, tags.nodes]);
+  ngoTags?.nodes?.length &&
+    tagGroups.push(["ngoTags", IconNgoTags, ngoTags.nodes]);
+  rewardTags?.nodes?.length &&
+    tagGroups.push(["rewardTags", IconRewardTags, rewardTags.nodes]);
 
   return (
     <div className="meta-terms">
@@ -42,6 +37,6 @@ function TaskTags(props) {
       })}
     </div>
   );
-}
+};
 
 export default TaskTags;

@@ -2,6 +2,10 @@ import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
+import GlobalScripts, {
+  ISnackbarMessage,
+} from "../../../context/global-scripts";
+import HeaderSearch from "./HeaderSearch";
 import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
@@ -9,11 +13,14 @@ import iconMobileMenu from "../../../assets/img/icon-mobile-menu.png";
 import Cookies from "js-cookie";
 import * as C from "const";
 
+const { SnackbarContext } = GlobalScripts;
+
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
   const login = useStoreActions((actions) => actions.session.login);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
   useEffect(() => {
     console.log("run login...");
@@ -62,74 +69,93 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
         <a href="/" className="logo-col">
           <img src={Logo} className="logo" alt="IT-волонтер" />
         </a>
-        <ul className="main-menu-col">
-          <li>
-            <Link href="/tasks">
-              <a
-                className={
-                  router.pathname === "/tasks" ? "main-menu__link_active" : ""
-                }
-              >
-                Задачи
+        {!isHeaderSearchOpen && (
+          <ul className="main-menu-col">
+            <li>
+              <Link href="/tasks">
+                <a
+                  className={
+                    router.pathname === "/tasks" ? "main-menu__link_active" : ""
+                  }
+                >
+                  Задачи
+                </a>
+              </Link>
+            </li>
+            <li>
+              <a href="/members/hero">Волонтеры</a>
+            </li>
+            <li className="drop-menu">
+              <a className="drop-menu" onClick={() => false}>
+                О проекте
               </a>
-            </Link>
-          </li>
-          <li>
-            <a href="/members/hero">Волонтеры</a>
-          </li>
-          <li className="drop-menu">
-            <a className="drop-menu" onClick={() => false}>
-              О проекте
-            </a>
-            <ul className="submenu">
-              <li>
-                <a href="/about">Что такое ИТВ?</a>
-              </li>
-              <li>
-                <a href="/conditions">Правила участия</a>
-              </li>
-              <li>
-                <Link href="/paseka">
-                  <a
-                    className={
-                      router.pathname === "/paseka"
-                        ? "main-menu__link_active"
-                        : ""
-                    }
-                  >
-                    Пасека
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <Link href="/nagrady">
-                  <a
-                    className={
-                      router.pathname === "/nagrady"
-                        ? "main-menu__link_active"
-                        : ""
-                    }
-                  >
-                    Награды
-                  </a>
-                </Link>
-              </li>
-              <li>
-                <a href="/news">Новости</a>
-              </li>
-              <li>
-                <a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a>
-              </li>
-              <li>
-                <a href="/contacts">Контакты</a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+              <ul className="submenu">
+                <li>
+                  <a href="/about">Что такое ИТВ?</a>
+                </li>
+                <li>
+                  <a href="/conditions">Правила участия</a>
+                </li>
+                <li>
+                  <Link href="/paseka">
+                    <a
+                      className={
+                        router.pathname === "/paseka"
+                          ? "main-menu__link_active"
+                          : ""
+                      }
+                    >
+                      Пасека
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/nagrady">
+                    <a
+                      className={
+                        router.pathname === "/nagrady"
+                          ? "main-menu__link_active"
+                          : ""
+                      }
+                    >
+                      Награды
+                    </a>
+                  </Link>
+                </li>
+                <li>
+                  <a href="/news">Новости</a>
+                </li>
+                <li>
+                  <a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a>
+                </li>
+                <li>
+                  <a href="/contacts">Контакты</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        )}
+
+        <SnackbarContext.Consumer>
+          {({ dispatch }) => {
+            const addSnackbar = (message: ISnackbarMessage) => {
+              dispatch({ type: "add", payload: { messages: [message] } });
+            };
+            return (
+              <HeaderSearch
+                {...{
+                  addSnackbar,
+                  isOpen: isHeaderSearchOpen,
+                  setOpen: setHeaderSearchOpen,
+                }}
+              />
+            );
+          }}
+        </SnackbarContext.Consumer>
 
         <div className={`account-col ${isLoggedIn ? "logged-in" : ""}`}>
           <a className="go-old" onClick={handleOldDesignClick}>
-            Старый дизайн
+            Старый&nbsp;дизайн
           </a>
           {(isLoggedIn && <ParticipantNav />) || <GuestNav />}
         </div>

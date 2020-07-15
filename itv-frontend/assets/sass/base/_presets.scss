@@ -1,22 +1,28 @@
 /** == Settings and variables (_presets.scss)  == **/
 
-$base:						8px;
-$content-width:             1144px;
-$breakpoints: (xs: 0, sm: 768px, md: 992px, lg: 1200px);
+$base: 8px;
+$content-width: 1144px;
+$breakpoints: (
+  xs: 0,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+);
 
-$color-white:               #ffffff;
+$color-white: #ffffff;
 
-$color-gray-dark-xl:        #322E28;
-$color-gray-dark-lg:        #575552;
-$color-gray-dark-md:        #81766F;
-$color-gray:                #BAB5AB;
-$color-gray-light-md:       #E6DFD1;
-$color-gray-light-lg:       #F3EFE7;
-$color-gray-light-xl:       #FBF8F4;
+$color-gray-dark-xl: #322e28;
+$color-gray-dark-lg: #575552;
+$color-gray-dark-md: #81766f;
+$color-gray: #bab5ab;
+$color-gray-light-sm: #e3eaed;
+$color-gray-light-md: #e6dfd1;
+$color-gray-light-lg: #f3efe7;
+$color-gray-light-xl: #fbf8f4;
 
-$color-main-dark:           #026D49;
-$color-main:                #0EA36C;
-$color-main-light:          #EBF5F1;
+$color-main-dark: #026d49;
+$color-main: #0ea36c;
+$color-main-light: #ebf5f1;
 
-$color-sec-dark:            #E64825;
-$color-sec:                 #FA7355;
+$color-sec-dark: #e64825;
+$color-sec: #fa7355;
