@@ -17,14 +17,13 @@
       justify-content: space-between;
       align-items: center;
       height: 101px;
-
-      // & > * {
-      //   width: 33.3%;
-      // }
     }
 
     .logo-col {
       @include no-outline;
+      @include screen-from(md) {
+        margin-right: 20px;
+      }
       img.logo {
       }
     }
@@ -35,6 +34,7 @@
       @include screen-from(md) {
         flex-grow: 20;
         align-self: stretch;
+        transform: translate(calc(196px / 2), 0);
       }
 
       & > li {
@@ -229,7 +229,7 @@
   @include screen-from(md) {
     flex-grow: 0;
     flex-shrink: 10;
-    margin: 0 20px 0 20px;
+    margin: 0 20px 0 0;
     transition: all 0.3s step-end 0s;
   }
   &_expanded {
