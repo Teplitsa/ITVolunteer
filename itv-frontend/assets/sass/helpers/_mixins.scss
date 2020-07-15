@@ -214,6 +214,15 @@
   padding-bottom: 16px;
 }
 
+@mixin wizard-button-upload {
+  @include button-primary;
+  @include text-sm-bold;
+  padding: 8px 24px;
+  background: #0EA36C;
+  box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+  border-radius: 4px;
+}
+
 // icons
 @mixin pic-small {
   width: 20px;

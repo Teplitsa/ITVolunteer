@@ -1,5 +1,8 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import { useRouter } from 'next/router'
+import * as _ from "lodash"
+
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import { 
@@ -9,22 +12,69 @@ import {
   SelectTaskTagsScreen, SelectTaskNgoTagsScreen, SelectTaskPreferredDoerScreen,
   SelectTaskRewardScreen, SelectTaskPreferredDurationScreen, SelectTaskCoverScreen
 } from "../components/task-actions/CreateTaskScreens";
+import {
+  IFetchResult,
+} from "../model/model.typing";
 import Wizard from "../components/Wizard";
+import * as utils from "../utilities/utilities"
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const step = useStoreState((state) => state.components.createTaskWizard.step)
   const setStep = useStoreActions((actions) => actions.components.createTaskWizard.setStep)
   const loadWizardData = useStoreActions((actions) => actions.components.createTaskWizard.loadWizardData)
   const saveWizardData = useStoreActions((actions) => actions.components.createTaskWizard.saveWizardData)
+  const loadTaxonomyData = useStoreActions((actions) => actions.components.createTaskWizard.loadTaxonomyData)
 
   useEffect(() => {
     loadWizardData()
+    loadTaxonomyData()
   }, [])  
 
   useEffect(() => {
-  }, [step])  
+  }, [step]) 
+
+  function handleCompleteWizard() {
+    const submitFormData = new FormData(); 
+    for(let name in formData) {
+      let value = typeof formData[name] === "string" ? formData[name] : _.get(formData, name + ".value", "")
+      submitFormData.append( 
+        name, 
+        value        
+      )
+    }
+
+    let action = "submit-task"
+    fetch(utils.getAjaxUrl(action), {
+        method: 'post',
+        body: submitFormData,
+    })
+    .then(res => {
+        try {
+            return res.json()
+        } catch(ex) {
+            utils.showAjaxError({action, error: ex})
+            return {}
+        }
+    })
+    .then(
+        (result: IFetchResult) => {
+            if(result.status == 'error') {
+                return utils.showAjaxError({message: "Ошибка!"})
+            }
+
+            router.push("/tasks/" + result.taskSlug)
+            setFormData({})
+            setStep(1)
+            saveWizardData()
+        },
+        (error) => {
+            utils.showAjaxError({action, error})
+        }
+    )    
+  } 
 
   return (
     <>
@@ -35,6 +85,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         setStep={setStep} 
         setFormData={setFormData} 
         saveWizardData={saveWizardData}
+        onWizardComplete={handleCompleteWizard}
       >
         <AgreementScreen isIgnoreStepNumber={true} />
         <SetTaskTitleScreen />

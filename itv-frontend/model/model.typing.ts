@@ -201,7 +201,7 @@ export interface IComponentsState {
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
-  createTaskWizard?: IWizardModel;
+  createTaskWizard?: ICreateTaskWizardModel;
   completeTaskWizard?: IWizardModel;
 }
 
@@ -651,6 +651,7 @@ export interface IWizardScreenProps {
   screenName?: string;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
+  onWizardComplete?: any;
 }
 
 export interface IWizardInputProps {
@@ -677,3 +678,21 @@ export interface IWizardThunks {
 }
 
 export interface IWizardModel extends IWizardState, IWizardActions, IWizardThunks {}
+
+export interface ICreateTaskWizardState extends IWizardState {
+  rewardList: Array<object>,
+  taskTagList: Array<object>,
+  ngoTagList: Array<object>,
+};
+
+export interface ICreateTaskWizardActions extends IWizardActions {
+  setRewardList: Action<ICreateTaskWizardState, Array<object>>;
+  setTaskTagList: Action<ICreateTaskWizardState, Array<object>>;
+  setNgoTagList: Action<ICreateTaskWizardState, Array<object>>;
+}
+
+export interface ICreateTaskWizardThunks extends IWizardThunks {
+  loadTaxonomyData: Thunk<ICreateTaskWizardActions>;  
+}
+
+export interface ICreateTaskWizardModel extends ICreateTaskWizardState, ICreateTaskWizardActions, ICreateTaskWizardThunks {}

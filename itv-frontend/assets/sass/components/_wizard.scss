@@ -128,6 +128,16 @@
 }
 
 .wizard-screen {
+  .wizard-loading {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .spinner-border {
+      color: $color-gray-light-md !important;
+    }
+  }
+
   &.invalid {
   }
 }
@@ -402,8 +412,8 @@
     }
 
     &__selected-set {
-      padding: 12px 12px;
-      height: 26px;
+      padding: 12px 12px 6px 12px;
+      min-height: 32px;
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-start;
@@ -420,6 +430,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 6px;
 
       & > span {
         margin-right: 8px;
@@ -447,6 +458,9 @@
     overflow: hidden;
     will-change: transform, opacity;
     width: 100%;
+    z-index: 3;
+    max-height: 50vh;
+    overflow-y: scroll;
 
     li {
       height: 24px;
@@ -463,5 +477,74 @@
   }
 
   &__list-option {
+  }
+}
+
+.wizard-upload {
+  position: relative;
+  height: 112px;
+
+  & > input[type=file] {
+    position: absolute;
+    display: block;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 112px;
+    z-index: 1;
+    cursor: pointer;
+    outline: none;
+    padding-top: 30px;
+    padding-left: 30px;
+  }
+
+  &__inner {
+    background: $color-white;
+    border: 1px dashed $color-gray-light-md;
+    border-radius: 10px;  
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 112px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 66px 28px 36px;
+    pointer-events: none;
+
+    & > img {
+      margin-right: 12px;
+      pointer-events: none;
+    }
+
+  }
+
+  &__btn  {
+    @include wizard-button-upload;
+    pointer-events: none;
+  }
+
+  &__title {
+    @include text-xs-bold-line-lg;
+    color: $color-gray-dark-md;
+    flex-grow: 1;
+    margin-right: 12px;
+    pointer-events: none;
+  }
+
+  &__spinner {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+
+    & > .spinner-border {
+      color: $color-gray-light-lg !important;
+    }
   }
 }

@@ -4,8 +4,10 @@ import * as _ from "lodash"
 import {
   IWizardScreenProps,
   IWizardInputProps,
+  IFetchResult,
 } from "../../model/model.typing";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import * as utils from "../../utilities/utilities"
 
 import logo from "../../assets/img/pic-logo-itv.svg";
 import closeModalIcon from "../../assets/img/icon-wizard-modal-close.svg";
@@ -13,6 +15,8 @@ import radioCheckOn from "../../assets/img/icon-wizard-radio-on.svg";
 import radioCheckOff from "../../assets/img/icon-wizard-radio-off.svg";
 import selectGalka from "../../assets/img/icon-wizard-select-galka.svg";
 import selectItemRemove from "../../assets/img/icon-select-item-remove.svg";
+import cloudUpload from "../../assets/img/icon-wizard-cloud-upload.svg";
+
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
   const showScreenHelpModalState = useStoreState((state) => state.components.createTaskWizard.showScreenHelpModalState)
@@ -71,11 +75,13 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
           }
         </div>
         <div>
+          {/*
           #DEBUG#
           <br />
           <a href="#" onClick={handleNextClick}>Далее</a>
           <br />
           <a href="#" onClick={handlePrevClick}>Назад</a>
+          */}
         </div>
         <div className="wizard-progressbar">
           <div className="wizard-progressbar__fraction">{`${props.visibleStep}/${props.visibleStepsCount}`}</div>
@@ -103,6 +109,7 @@ export const WizardForm = ({children, ...props}) => {
 
 
 export const WizardFormActionBar = (props: IWizardScreenProps) => {
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleNextClick = (e) => {
 
@@ -111,8 +118,14 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
     let isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
 
     if(isMayGoNextStep) {
-      props.goNextStep();
-    }    
+      if(props.visibleStep < props.visibleStepsCount) {
+        props.goNextStep();
+      }
+      else if(props.onWizardComplete) {
+        setIsLoading(true);
+        props.onWizardComplete();
+      }
+    }
   }
 
   const handlePrevClick = (e) => {
@@ -131,8 +144,15 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
   return (
     <div className="wizard-form-action-bar">
+      {isLoading &&
+        <div className="wizard-loading">
+          <div className="spinner-border" role="status"></div>
+        </div>          
+      }
+      {!isLoading &&
       <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
-      {!!props.isAllowPrevButton &&
+      }
+      {!isLoading && !!props.isAllowPrevButton &&
       <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.visibleStep > 1 ? "Вернуться" : "Отмена"}</a>
       }
     </div>
@@ -248,9 +268,10 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
         selectOptions={props.selectOptions}
         customOptions={props.customOptions}
       />
+      {(!!props.formHelpComponent || props.maxLength > 0) &&
       <div className="wizard-field__limit-help">
         {!!props.formHelpComponent &&
-          props.formHelpComponent
+          <props.formHelpComponent {...props}/>
         }
         {!props.formHelpComponent &&
           <div />
@@ -259,6 +280,7 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
         <div className="wizard-field__limit">{`${inputTextLength}/${props.maxLength}`}</div>
         }
       </div>
+      }
     </div>
   )
 }
@@ -327,12 +349,10 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
           </div>
         )
       })}
-      {Array.isArray(props.customOptions) && props.customOptions.map((customOptionElement, index) => {
+      {Array.isArray(props.customOptions) && props.customOptions.map((CustomOption, index) => {
         return (
           <div key={index}>
-            {!!customOptionElement &&
-              customOptionElement
-            }
+            <CustomOption {...props}/>
           </div>
         )
       })}
@@ -491,6 +511,106 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
       })}
       </ul>
       }
+    </div>
+  )
+}
+
+
+export const WizardUploadImageField = (props: IWizardScreenProps) => {
+  return (
+    <WizardLimitedTextFieldWithHelp {...props}
+      field={WizardUploadImageFieldInput}
+    >      
+    </WizardLimitedTextFieldWithHelp>
+  )
+}
+
+export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
+  const [fileName, setFileName] = useState("")
+  const [isFileUploading, setIsFileUploading] = useState(false)
+  const formData = useStoreState((state) => state.components.createTaskWizard.formData)
+  const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+  const fieldDescription = "Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”"
+
+  useEffect(() => {
+    let val = _.get(formData, props.name, null)
+    if(!val) {
+      return
+    }
+
+    setFileName(_.get(val, "fileName", ""))
+
+  }, [formData])
+
+  function handleFileChange(e) {
+    let fullPath = e.target.value
+    let fileName = fullPath.replace(/^.*[\\\/]/, '')
+    setFileName(fileName)
+
+    setIsFileUploading(true)
+
+    const formData = new FormData(); 
+    formData.append( 
+      "file", 
+      e.target.files[0], 
+      e.target.files[0].name
+    )
+
+    let action = "upload-file"
+    fetch(utils.getAjaxUrl(action), {
+        method: 'post',
+        body: formData,
+    })
+    .then(res => {
+        try {
+            return res.json()
+        } catch(ex) {
+            utils.showAjaxError({action, error: ex})
+            return {}
+        }
+    })
+    .then(
+        (result: IFetchResult) => {
+            if(result.status == 'error') {
+                return utils.showAjaxError({message: "Ошибка!"})
+            }
+
+            let fd = {...formData}
+            _.set(fd, props.name + ".value", result.file_id)
+            _.set(fd, props.name + ".fileName", fileName)
+            setFormData({...fd})
+
+            setIsFileUploading(false)
+        },
+        (error) => {
+            utils.showAjaxError({action, error})
+        }
+    )
+  }
+
+  function handleRemoveItemClick(e) {
+    e.stopPropagation()
+  }
+
+  return (
+    <div className="wizard-upload">
+      <input type="file" onChange={handleFileChange} title="" />
+      <div className="wizard-upload__inner">
+        <div className="wizard-upload__box">
+          <img src={cloudUpload} />
+          {isFileUploading &&
+            <div className="wizard-upload__spinner">
+              <div className="spinner-border" role="status"></div>
+            </div>          
+          }
+          {!isFileUploading &&
+          <div className="wizard-upload__title">{fileName ? fileName : fieldDescription}</div>
+          }
+          {!isFileUploading &&
+          <a href="#" className="wizard-upload__btn">Загрузить</a>
+          }
+        </div>
+      </div>
     </div>
   )
 }

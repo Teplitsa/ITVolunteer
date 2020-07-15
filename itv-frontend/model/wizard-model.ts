@@ -9,6 +9,10 @@ import {
   IWizardThunks,
   IWizardModel,
   IWizardState,
+  ICreateTaskWizardState,
+  ICreateTaskWizardActions,
+  ICreateTaskWizardThunks,
+  ICreateTaskWizardModel,
 } from "./model.typing";
 import * as utils from "../utilities/utilities"
 
@@ -22,7 +26,15 @@ const wizardState: IWizardState = {
   now: moment(),
 };
 
-const createTaskWizardActions: IWizardActions = {
+const createTaskWizardState: ICreateTaskWizardState = {
+  ...wizardState,
+  wizardName: "createTaskWizard",
+  rewardList: [],
+  taskTagList: [],
+  ngoTagList: [],
+}
+
+const createTaskWizardActions: ICreateTaskWizardActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState)
   }),
@@ -35,9 +47,18 @@ const createTaskWizardActions: IWizardActions = {
   setShowScreenHelpModalState: action((state, payload) => {
     state.showScreenHelpModalState = {...state.showScreenHelpModalState, ...payload}
   }),
+  setRewardList: action((state, payload) => {
+    state.rewardList = payload
+  }),
+  setTaskTagList: action((state, payload) => {
+    state.taskTagList = payload
+  }),
+  setNgoTagList: action((state, payload) => {
+    state.ngoTagList = payload
+  }),
 };
 
-const createTaskWizardThunks: IWizardThunks = {
+const createTaskWizardThunks: ICreateTaskWizardThunks = {
   loadWizardData: thunk(async (actions, payload, {getStoreState}) => {
     const {
       components: {
@@ -61,6 +82,35 @@ const createTaskWizardThunks: IWizardThunks = {
       step: state.step,
     })
   }),
+  loadTaxonomyData: thunk(async (actions, payload) => {
+    let action = "get-task-taxonomy-data"
+
+    fetch(utils.getAjaxUrl(action), {
+      method: 'post',
+    })
+    .then(res => {
+      try {
+        return res.json()
+      } catch(ex) {
+        utils.showAjaxError({action, error: ex})
+        return {}
+      }
+    })
+    .then(
+      (result: IFetchResult) => {
+        if(result.status == 'error') {
+          return utils.showAjaxError({message: "Ошибка!"})
+        }
+
+        actions.setTaskTagList(result.data.taskTagList)
+        actions.setNgoTagList(result.data.ngoTagList)
+        actions.setRewardList(result.data.rewardList)
+      },
+      (error) => {
+        utils.showAjaxError({action, error})
+      }
+    )    
+  }),  
 }  
 
 const completeTaskWizardActions: IWizardActions = {
@@ -104,8 +154,7 @@ const completeTaskWizardThunks: IWizardThunks = {
   }),
 }  
 
-const createTaskWizardState = {...wizardState, ...{wizardName: "createTaskWizard"}}
 const completeTaskWizardState = {...wizardState, ...{wizardName: "completeTaskWizard"}}
 
-export const createTaskWizardModel = { ...createTaskWizardState, ...createTaskWizardActions, ...createTaskWizardThunks }
+export const createTaskWizardModel: ICreateTaskWizardModel = { ...createTaskWizardState, ...createTaskWizardActions, ...createTaskWizardThunks }
 export const completeTaskWizardModel = { ...completeTaskWizardState, ...completeTaskWizardActions, ...completeTaskWizardThunks }

@@ -10,7 +10,7 @@ import {
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { WizardScreen, WizardScreenBottomBar,  WizardForm, 
   WizardStringField, WizardTextField, WizardRadioSetField, WizardSelectField,
-  WizardMultiSelectField,
+  WizardMultiSelectField, WizardUploadImageField,
 } from "../layout/WizardScreen";
 
 import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
@@ -31,6 +31,7 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   const agreementItems = ["isNgo", "isKnowVolunteer"]
 
   useEffect(() => {
+    console.log("formData:", formData)
     let isValidTmp = agreementItems.reduce((isValidAccum, agreementItemName) => {
       return isValidAccum && _.get(formData, "agreement." + agreementItemName, false)
     }, true)
@@ -136,7 +137,7 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
             name="title"
             placeholder="Например, «Разместить счётчик на сайте»" 
             maxLength={50}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -166,7 +167,7 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Какая задача стоит перед IT-волонтером?" 
             howtoTitle="Как правильно составить описание задачи" 
             maxLength={250}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -196,7 +197,7 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Каково ваше видение завершенной задачи" 
             howtoTitle="Как правильно составить описание задачи" 
             maxLength={250}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -226,7 +227,7 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Кому поможет проект, в котором будет помогать волонтер" 
             howtoTitle="Как правильно составить описание задачи" 
             maxLength={250}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -256,7 +257,7 @@ export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
             placeholder={`Примеры или "референсы" позволят волонтеру значительно лучше понять ваш замысел`} 
             howtoTitle="Как правильно составить описание задачи" 
             maxLength={250}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -286,7 +287,7 @@ export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) =>
             placeholder="Например, на Техническое задание или какие-то другие внешние файлы" 
             howtoTitle="Как правильно составить описание задачи" 
             maxLength={250}
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -311,9 +312,8 @@ export const UploadTaskFilesScreen = (screenProps: IWizardScreenProps) => {
           isRequired={false}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardUploadImageField {...props} 
             name="files"
-            formHelpComponent={<CreateTaskHelp {...props} />}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -330,6 +330,8 @@ export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
     screenName: "SelectTaskTagsScreen",
   }
 
+  const taskTagList = useStoreState((state) => state.components.createTaskWizard.taskTagList)
+
   return (
     <WizardScreen {...props}>
       <div className="wizard-screen">
@@ -340,7 +342,10 @@ export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
         >
           <WizardMultiSelectField {...props} 
             name="taskTags"
-            selectOptions={[{value: 1, title: "Сайт на ВП"}, {value: 2, title: "Дизайн"}, {value: 3, title: "SMM"}, {value: 4, title: "Легко"}]}
+            selectOptions={taskTagList.map((term: any) => {return {
+              value: term.term_id, 
+              title: term.name
+            }})}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -357,6 +362,8 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
     screenName: "SelectTaskNgoTagsScreen",
   }
 
+  const ngoTagList = useStoreState((state) => state.components.createTaskWizard.ngoTagList)
+
   return (
     <WizardScreen {...props}>
       <div className="wizard-screen">
@@ -367,11 +374,10 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
         >
           <WizardMultiSelectField {...props} 
             name="ngoTags"
-            selectOptions={[
-              {value: 1, title: "Благотворительность"}, 
-              {value: 2, title: "Животные"}, 
-              {value: 3, title: "Экология"}, 
-              {value: 4, title: "Права человека"}]}
+            selectOptions={ngoTagList.map((term: any) => {return {
+              value: term.term_id, 
+              title: term.name
+            }})}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -400,7 +406,7 @@ export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) =
             selectOptions={[{value: 1, title: "Любой волонтёр"}, {value: 2, title: "Пасека"}]}
             name="preferredDoers"
             howtoTitle="Что такое пасека" 
-            formHelpComponent={<CreateTaskHelp {...props} />}
+            formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
@@ -416,6 +422,7 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
     ...screenProps,
     screenName: "SelectTaskRewardScreen",
   }
+  const rewardList = useStoreState((state) => state.components.createTaskWizard.rewardList)
 
   return (
     <WizardScreen {...props}>
@@ -426,7 +433,10 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
           {...props}
         >
           <WizardSelectField {...props} 
-            selectOptions={[{value: 1, title: "Грантовое финансирование"}, {value: 2, title: "Коллективное селфи"}]}
+            selectOptions={rewardList.map((term: any) => {return {
+              value: term.term_id, 
+              title: term.name
+            }})}
             name="reward"
           />
         </WizardForm>
@@ -520,7 +530,7 @@ export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProp
               {value: moment(nowDateTime).add(3, 'days').toISOString(), title: "Через 3 дня"}, 
               {value: moment(nowDateTime).add(7, 'days').toISOString(), title: "Через неделю"}
             ]}
-            customOptions={[<CustomDeadlineDate {...props} name="preferredDuration" />]}
+            customOptions={[CustomDeadlineDate]}
             name="preferredDuration"
           />
         </WizardForm>
@@ -546,7 +556,7 @@ export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
           isRequired={false}
           {...props}
         >
-          <WizardTextField {...props} 
+          <WizardUploadImageField {...props} 
             name="cover"
           />
         </WizardForm>

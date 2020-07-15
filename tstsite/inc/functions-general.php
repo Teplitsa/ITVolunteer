@@ -234,3 +234,40 @@ function itv_show_404() {
 	get_template_part( '404' );
 	die();
 }
+
+function ajax_upload_file() {
+  $member = wp_get_current_user();
+  
+  $res = null;
+  if(!$member) {
+    $res = array(
+      'status' => 'error',
+      'message' => 'restricted method',
+    );
+  }
+  else {
+    $image_id = media_handle_upload( 'file', 0 );
+    if( $image_id ) {
+      $res = array(
+        'status' => 'ok',
+        'file_id' => $image_id,
+        'image' => wp_attachment_is_image($image_id) ? str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'logo' )) : "",
+      );
+    } else {
+      $res = array(
+        'status' => 'error',
+        'message' => 'upload error',
+      );
+    }
+  }
+  
+  if($res === null) {
+    $res = array(
+      'status' => 'error',
+      'message' => 'unkown error',
+    );
+  }
+  
+  wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-file', 'ajax_upload_file');
