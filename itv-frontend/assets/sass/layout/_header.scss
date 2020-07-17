@@ -34,7 +34,6 @@
       @include screen-from(md) {
         flex-grow: 20;
         align-self: stretch;
-        transform: translate(calc(196px / 2), 0);
       }
 
       & > li {
@@ -181,12 +180,16 @@
         .notif-list {
           position: absolute;
           top: 80%;
-          left: 20px;
+          left: auto;
+          right: 88px;
+          @include screen-from(xl) {
+            left: 20px;
+            right: auto;
+          }
         }
       }
 
       .open-account-menu {
-        position: relative;
         cursor: pointer;
 
         a {
@@ -215,8 +218,13 @@
         }
 
         .submenu {
-          top: 45px;
-          left: -20px;
+          top: 80px;
+          left: auto;
+          right: 0;
+          @include screen-from(xl) {
+            left: 84px;
+            right: auto;
+          }
         }
       }
     }
@@ -246,6 +254,7 @@
       border: 1px solid $color-gray-light-md;
       border-radius: 10px;
       @include screen-from(md) {
+        position: relative;
         border-style: none;
         overflow: hidden;
       }
@@ -262,7 +271,7 @@
         position: relative;
         border: 1px solid $color-gray-light-md;
         border-right-style: none;
-        padding: 10px 0 !important;
+        padding: 11px 0 !important;
         text-indent: 12px;
         border-radius: 10px 0 0 10px;
         right: calc(-100% + 44px);
@@ -270,7 +279,13 @@
       }
       &_shown {
         @include screen-from(md) {
+          position: relative;
           right: 0;
+        }
+      }
+      &_hidden {
+        @include screen-from(md) {
+          position: absolute;
         }
       }
       &::placeholder {
@@ -285,7 +300,7 @@
         background: url("../../img/icon-search.svg") 50% 50% no-repeat
           $color-white;
         border: 1px solid $color-gray-light-md;
-        padding: 0;
+        padding: 21px;
         width: 44px;
         height: 44px;
         border-radius: 10px;

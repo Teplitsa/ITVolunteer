@@ -56,8 +56,14 @@
 
         .submenu {
           text-align: left;
-          left: 40px;
-          top: 24px;
+          top: 34px;
+          left: auto;
+          right: 0;
+
+          @include screen-from(xl) {
+            left: 40px;
+            right: auto;
+          }
 
           a {
             margin-left: 0px;
