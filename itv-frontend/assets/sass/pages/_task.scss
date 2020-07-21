@@ -198,6 +198,10 @@
       border-bottom: 1px solid $color-gray-light-md;
       font-weight: 400;
       word-break: break-word;
+
+      &__section {
+        margin-top: 12px;
+      }
     }
 
     .task-body-text p:not(:last-child) {

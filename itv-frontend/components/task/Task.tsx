@@ -17,7 +17,7 @@ export const status: Map<TaskStatusType, string> = new Map([
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
-  const { content, id: taskId } = useStoreState((state) => state.components.task);
+  const { content, id: taskId, result, impact, references, files, cover } = useStoreState((state) => state.components.task);
 
   if(!taskId) {
     return null
@@ -27,10 +27,21 @@ const Task: React.FunctionComponent = (): ReactElement => {
     <div className="task-body">
       <article>
         <TaskHeader />
-        <div
-          className="task-body-text"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+        <div className="task-body-text">
+
+          <div dangerouslySetInnerHTML={{ __html: content }} />
+          <div className="task-body-text__section">{result}</div>
+          <div className="task-body-text__section">{impact}</div>
+          <div className="task-body-text__section">{references}</div>
+          <div className="task-body-text__section">{files.map((file) => {
+            return (
+              <div>
+                <a target="_blank" href={file.mediaItemUrl}>{file.mediaItemUrl.replace(/^.*[\\\/]/, '')}</a>
+              </div>
+            )
+          })}</div>
+
+        </div>
         <TaskFooter>
           <TaskStages />
           <TaskTimeline />

@@ -506,9 +506,11 @@
     left: 0px;
     top: 0px;
     width: 100%;
-    height: 112px;
+    min-height: 112px;
     z-index: 2;
     pointer-events: none;
+    display: flex;
+    align-items: center;
   }
 
   &__box {
@@ -517,6 +519,7 @@
     align-items: center;
     padding: 28px 66px 28px 36px;
     pointer-events: none;
+    width: 100%;
 
     & > img {
       margin-right: 12px;
@@ -537,6 +540,41 @@
     margin-right: 12px;
     pointer-events: none;
   }
+
+  &__files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__file {
+    @include text-xs-bold;
+    color: $color-gray-light-lg;
+    margin-right: 4px;
+    background: $color-gray-dark-md;
+    border: 1px solid $color-gray-dark-md;
+    border-radius: 10px;    
+    padding: 4px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3px;
+    margin-bottom: 3px;
+
+    & > span {
+      margin-right: 8px;
+    }
+
+    & > img {
+      cursor: pointer;
+    }
+
+    pointer-events: auto;
+  }
+
+&__remove-file {
+    cursor: pointer;
+}
 
   &__spinner {
     display: flex;

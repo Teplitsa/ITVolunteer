@@ -313,6 +313,7 @@ export const UploadTaskFilesScreen = (screenProps: IWizardScreenProps) => {
           {...props}
         >
           <WizardUploadImageField {...props} 
+            isMultiple={true}
             name="files"
           />
         </WizardForm>

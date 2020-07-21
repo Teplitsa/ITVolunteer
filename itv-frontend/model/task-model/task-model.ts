@@ -45,6 +45,13 @@ const taskState: ITaskState = {
   isApproved: false,
   pemalinkPath: "",
   nonceContactForm: "",
+  result: "",
+  impact: "",
+  references: "",
+  preferredDoers: "",
+  preferredDuration: "",
+  cover: null,
+  files: [],
   hasCloseSuggestion: computed((taskState) => {
     return _.some(
       taskState.timeline,
@@ -55,7 +62,7 @@ const taskState: ITaskState = {
 
 export const queriedFields = Object.entries(taskState).reduce(
   (fields, [fieldKey, fieldValue]) => {
-    if (!Object.is(fieldValue, null)) {
+    if (!Object.is(fieldValue, null) && ['files'].findIndex((fl) => fl === fieldKey) === -1 ) {
       fields.push(fieldKey);
     }
     return fields;
@@ -73,6 +80,7 @@ export const graphqlTags  = `
   tags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -81,6 +89,7 @@ export const graphqlTags  = `
   rewardTags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -89,6 +98,7 @@ export const graphqlTags  = `
   ngoTaskTags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -120,6 +130,16 @@ export const graphqlQuery = {
       ${graphqlFeaturedImage}
 
       ${graphqlTags}
+
+      cover {
+        databaseId
+        mediaItemUrl
+      }
+
+      files {
+        databaseId
+        mediaItemUrl
+      }
     }
   }`,
 };

@@ -16,6 +16,7 @@ import radioCheckOff from "../../assets/img/icon-wizard-radio-off.svg";
 import selectGalka from "../../assets/img/icon-wizard-select-galka.svg";
 import selectItemRemove from "../../assets/img/icon-select-item-remove.svg";
 import cloudUpload from "../../assets/img/icon-wizard-cloud-upload.svg";
+import removeFile from "../../assets/img/icon-wizard-remove-file.svg";
 
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
@@ -131,11 +132,6 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
   const handlePrevClick = (e) => {
     e.preventDefault();
 
-    if(props.visibleStep === 1) {
-      document.location.href = "/tasks/"
-      return
-    }
-
     let isMayGoPrevStep = props.onPrevClick ? props.onPrevClick(props) : true;
     if(isMayGoPrevStep) {
       props.goPrevStep();
@@ -153,7 +149,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
       <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
       }
       {!isLoading && !!props.isAllowPrevButton &&
-      <a href="#" onClick={handlePrevClick} className="wizard-form-action-bar__secondary-button">{props.visibleStep > 1 ? "Вернуться" : "Отмена"}</a>
+      <a href="#" onClick={props.visibleStep > 1 ? handlePrevClick : props.onWizardCancel} className="wizard-form-action-bar__secondary-button">{props.visibleStep > 1 ? "Вернуться" : "Отмена"}</a>
       }
     </div>
   )
@@ -267,6 +263,7 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
         value={fieldValue} 
         selectOptions={props.selectOptions}
         customOptions={props.customOptions}
+        isMultiple={props.isMultiple}
       />
       {(!!props.formHelpComponent || props.maxLength > 0) &&
       <div className="wizard-field__limit-help">
@@ -387,13 +384,10 @@ export const WizardSelectFieldInput = (props: IWizardInputProps) => {
     setIsOpen(!isOpen)
   }
 
-  function getSelectedOptionIndex() {
-    return _.get(formData, props.name + ".index", null)
-  }
-
   function getSelectedOption() {
-    let index = getSelectedOptionIndex()
-    return index !== null ? props.selectOptions[index] : null
+    let value = _.get(formData, props.name + ".value", null)
+    let index = props.selectOptions.findIndex(item => String(item.value) === String(value))
+    return index > -1 ? props.selectOptions[index] : null
   }
 
   function getSelectedOptionValue() {
@@ -526,7 +520,7 @@ export const WizardUploadImageField = (props: IWizardScreenProps) => {
 }
 
 export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
-  const [fileName, setFileName] = useState("")
+  const [files, setFiles] = useState([])
   const [isFileUploading, setIsFileUploading] = useState(false)
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
@@ -538,28 +532,28 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
       return
     }
 
-    setFileName(_.get(val, "fileName", ""))
-
+    setFiles(val)
   }, [formData])
 
   function handleFileChange(e) {
     let fullPath = e.target.value
     let fileName = fullPath.replace(/^.*[\\\/]/, '')
-    setFileName(fileName)
 
     setIsFileUploading(true)
 
-    const formData = new FormData(); 
-    formData.append( 
-      "file", 
-      e.target.files[0], 
-      e.target.files[0].name
-    )
+    const form = new FormData(); 
+    for(let fi = 0; fi < e.target.files.length; fi++) {
+      form.append( 
+        "file_" + fi, 
+        e.target.files[fi], 
+        e.target.files[fi].name
+      )
+    }
 
     let action = "upload-file"
     fetch(utils.getAjaxUrl(action), {
         method: 'post',
-        body: formData,
+        body: form,
     })
     .then(res => {
         try {
@@ -576,8 +570,16 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
             }
 
             let fd = {...formData}
-            _.set(fd, props.name + ".value", result.file_id)
-            _.set(fd, props.name + ".fileName", fileName)
+
+            let fileFormValue = props.isMultiple ? _.get(fd, props.name, []) : []
+
+            for(let fi in result.files) {
+              fileFormValue.push({
+                value: result.files[fi].file_id,
+                fileName: result.files[fi].file_url.replace(/^.*[\\\/]/, ''),
+              })
+            }
+            _.set(fd, props.name, fileFormValue)
             setFormData({...fd})
 
             setIsFileUploading(false)
@@ -588,24 +590,47 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
     )
   }
 
-  function handleRemoveItemClick(e) {
+  function handleRemoveFileClick(e) {
     e.stopPropagation()
+
+    let value = parseInt(e.target.dataset.value)
+    let fd = {...formData}
+    _.set(fd, props.name, _.get(fd, props.name, []).filter((item) => item.value !== value))
+    setFormData({...fd})
   }
 
   return (
     <div className="wizard-upload">
-      <input type="file" onChange={handleFileChange} title="" />
+      <input type="file" onChange={handleFileChange} title="" multiple={!!props.isMultiple} />
       <div className="wizard-upload__inner">
         <div className="wizard-upload__box">
+          {!isFileUploading && !files.length &&
           <img src={cloudUpload} />
+          }
+
           {isFileUploading &&
-            <div className="wizard-upload__spinner">
-              <div className="spinner-border" role="status"></div>
-            </div>          
+          <div className="wizard-upload__spinner">
+            <div className="spinner-border" role="status"></div>
+          </div>          
           }
-          {!isFileUploading &&
-          <div className="wizard-upload__title">{fileName ? fileName : fieldDescription}</div>
+
+          {!isFileUploading && !!files.length &&
+          <div className="wizard-upload__files">
+            {files.map(({fileName, value}, key) => {
+              return (
+                <div className="wizard-upload__file" key={key}>
+                  <span>{fileName}</span>
+                  <img src={removeFile} className="wizard-upload__remove-file" onClick={handleRemoveFileClick} data-value={value} />
+                </div>
+              )
+            })}
+          </div>
           }
+
+          {!isFileUploading && !files.length &&
+          <div className="wizard-upload__title">{fieldDescription}</div>
+          }
+
           {!isFileUploading &&
           <a href="#" className="wizard-upload__btn">Загрузить</a>
           }

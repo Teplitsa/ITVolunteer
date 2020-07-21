@@ -301,6 +301,13 @@ export interface ITaskState {
   featuredImage?: {
     sourceUrl: string;
   };
+  result: string;
+  impact: string;
+  references: string;
+  preferredDoers: string;
+  preferredDuration: string;
+  cover: any;
+  files: Array<any>;
 }
 
 export interface ITaskReviewer {
@@ -687,6 +694,8 @@ export interface IWizardScreenProps {
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
   onWizardComplete?: any;
+  onWizardCancel?: any;
+  isMultiple?: boolean;
 }
 
 export interface IWizardInputProps {
@@ -698,6 +707,7 @@ export interface IWizardInputProps {
   maxLength?: number;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
+  isMultiple?: boolean;
 }
 
 export interface IWizardActions {

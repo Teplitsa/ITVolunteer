@@ -6,7 +6,7 @@ const TaskStatus: React.FunctionComponent = (): ReactElement => {
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
   );
-  const { status, databaseId: taskDataBaseId } = useStoreState(
+  const { status, databaseId: taskDataBaseId, slug } = useStoreState(
     (state) => state.components.task
   );
   const statusLabel: boolean | string = status && statusMap.get(status);
@@ -17,7 +17,7 @@ const TaskStatus: React.FunctionComponent = (): ReactElement => {
 
       {isTaskAuthorLoggedIn && (
         <a
-          href={`/task-actions/?task=${taskDataBaseId}`}
+          href={`/task-actions/${slug}`}
           className="edit"
         >
           Редактировать
