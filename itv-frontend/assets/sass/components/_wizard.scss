@@ -298,8 +298,12 @@
     border-top: 1px solid $color-gray-light-md;
     padding-top: 20px;
 
-    .contact-admin {
-      @include contact-admin-button;
+    .something-wrong-with-task {
+      margin-top: 0px;
+
+      .contact-admin {
+        @include contact-admin-button;
+      }
     }
   }
 
@@ -482,32 +486,32 @@
 
 .wizard-upload {
   position: relative;
-  height: 112px;
+  min-height: 112px;
 
   & > input[type=file] {
     position: absolute;
     display: block;
-    left: 0px;
-    top: 0px;
+    left: 2px;
+    top: 2px;
     width: 100%;
-    height: 112px;
-    z-index: 1;
+    min-height: 112px;
+    border-radius: 10px;
+    // z-index: 1;
     cursor: pointer;
     outline: none;
-    padding-top: 30px;
-    padding-left: 30px;
+    padding-top: 0px;
+    padding-left: 0px;
+    //visibility: hidden;
   }
 
   &__inner {
     background: $color-white;
     border: 1px dashed $color-gray-light-md;
+    position: relative;
     border-radius: 10px;  
-    position: absolute;
-    left: 0px;
-    top: 0px;
     width: 100%;
     min-height: 112px;
-    z-index: 2;
+    // z-index: 2;
     pointer-events: none;
     display: flex;
     align-items: center;
@@ -548,28 +552,7 @@
   }
 
   &__file {
-    @include text-xs-bold;
-    color: $color-gray-light-lg;
-    margin-right: 4px;
-    background: $color-gray-dark-md;
-    border: 1px solid $color-gray-dark-md;
-    border-radius: 10px;    
-    padding: 4px 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 3px;
-    margin-bottom: 3px;
-
-    & > span {
-      margin-right: 8px;
-    }
-
-    & > img {
-      cursor: pointer;
-    }
-
-    pointer-events: auto;
+    @include wizard-file-item;
   }
 
 &__remove-file {

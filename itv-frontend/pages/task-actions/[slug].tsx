@@ -3,8 +3,10 @@ import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router'
 import Router from 'next/router'
 import * as _ from "lodash"
+import { request } from "graphql-request";
 
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import * as taskModel from "../../model/task-model/task-model";
 import DocumentHead from "../../components/DocumentHead";
 import { 
   AgreementScreen, SetTaskTitleScreen, SetTaskDescriptionScreen,
@@ -24,24 +26,63 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
+  const resetWizard = useStoreActions((actions) => actions.components.createTaskWizard.resetWizard)
   const step = useStoreState((state) => state.components.createTaskWizard.step)
   const setStep = useStoreActions((actions) => actions.components.createTaskWizard.setStep)
   const loadWizardData = useStoreActions((actions) => actions.components.createTaskWizard.loadWizardData)
   const saveWizardData = useStoreActions((actions) => actions.components.createTaskWizard.saveWizardData)
   const loadTaxonomyData = useStoreActions((actions) => actions.components.createTaskWizard.loadTaxonomyData)
+  const setTaskState = useStoreActions((actions) => actions.components.task.setState)
+  const taskState = useStoreState((state) => state.components.task)
+  
+  useEffect(() => {
+    setTaskState(task)
+  }, [task])  
 
   useEffect(() => {
-    console.log("task:", task)
+    // console.log("task:", taskState)
+    // console.log("taskState111:", taskState)
+
+    if(!taskState || !taskState.slug) {
+      return;
+    }
+
+    if(taskState.status === 'draft' && !taskState.databaseId) {
+      // console.log("refetch task on client...")
+      const taskQuery = taskModel.graphqlQuery.getBySlug;
+      request(
+        process.env.GraphQLServer,
+        taskQuery,
+        { taskSlug: taskState.slug }
+      ).then(({ task: updatedTask }) => {
+        // console.log("updatedTask: ", updatedTask)
+        setTaskState(updatedTask)
+      });
+
+      return;
+    }
+
+    // console.log("taskState222:", taskState)
+
+  }, [taskState])
+
+  useEffect(() => {
+    if(!taskState.databaseId) {
+      return
+    }
+
+    console.log("taskState:", taskState)
+
     setFormData({
-      ...task,
-      title: task.title,
-      description: task.content ? task.content.replace(/(<([^>]+)>)/ig, "") : null,
-      cover: task.cover ? [{
-        url: task.cover.mediaItemUrl,
-        value: task.cover.databaseId,
-        fileName: task.cover.mediaItemUrl.replace(/^.*[\\\/]/, '')
+      ...taskState,
+      title: taskState.title,
+      description: taskState.content ? taskState.content.replace(/(<([^>]+)>)/ig, "") : null,
+      cover: taskState.cover ? [{
+        url: taskState.cover.mediaItemUrl,
+        value: taskState.cover.databaseId,
+        fileName: taskState.cover.mediaItemUrl.replace(/^.*[\\\/]/, '')
       }] : [],
-      files: task.files.map((file) => {
+      files: taskState.files.map((file) => {
         return {
           url: file.mediaItemUrl,
           value: file.databaseId,
@@ -49,20 +90,20 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         }
       }),
       taskTags: {
-        value: task.tags.nodes.map((node: any) => {
+        value: taskState.tags.nodes.map((node: any) => {
           return String(node.databaseId)
         })
       },
       ngoTags: {
-        value: task.ngoTaskTags.nodes.map((node: any) => {
+        value: taskState.ngoTaskTags.nodes.map((node: any) => {
           return String(node.databaseId)
         })
       },
       reward: {
-        value: String(_.get(task.rewardTags.nodes, "0.databaseId", "")),
+        value: String(_.get(taskState.rewardTags.nodes, "0.databaseId", "")),
       },
     })
-  }, [task])
+  }, [taskState])
 
   useEffect(() => {
     // loadWizardData()
@@ -112,8 +153,21 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
                 return utils.showAjaxError({message: "Ошибка!"})
             }
 
-            router.push("/tasks/" + result.taskSlug)
-            setFormData({})
+            const taskQuery = taskModel.graphqlQuery.getBySlug;
+            request(
+              process.env.GraphQLServer,
+              taskQuery,
+              { taskSlug: taskState.slug }
+            ).then(({ task: updatedTask }) => {
+              console.log(task)
+              setTaskState(updatedTask)
+            });
+
+            Router.push("/tasks/[slug]", "/tasks/" + taskState.slug)
+
+            setTimeout(() => {
+              resetWizard()
+            }, 2000)
         },
         (error) => {
             utils.showAjaxError({action, error})
@@ -123,7 +177,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 
   function handleCancelWizard(e) {
     e.preventDefault()
-    Router.push("/tasks/" + task.slug)
+    Router.push("/tasks/[slug]", "/tasks/" + taskState.slug)
   }
 
   return (
@@ -167,7 +221,6 @@ export const getServerSideProps: GetServerSideProps = async ({
     entrypointQueryVars: { uri: "task-actions", slug },
     entrypointType: "page",
     componentModel: async (request) => {
-      const taskModel = await import("../../model/task-model/task-model");
       const taskQuery = taskModel.graphqlQuery.getBySlug;
       const { task: component } = await request(
         process.env.GraphQLServer,

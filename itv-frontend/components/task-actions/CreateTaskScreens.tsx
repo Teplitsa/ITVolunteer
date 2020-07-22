@@ -12,6 +12,8 @@ import { WizardScreen, WizardScreenBottomBar,  WizardForm,
   WizardStringField, WizardTextField, WizardRadioSetField, WizardSelectField,
   WizardMultiSelectField, WizardUploadImageField,
 } from "../layout/WizardScreen";
+import TaskAdminSupport from "../../components/task/TaskAdminSupport";
+import * as utils from "../../utilities/utilities"
 
 import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
 import howToIcon from "../../assets/img/icon-question-green.svg";
@@ -31,7 +33,7 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   const agreementItems = ["isNgo", "isKnowVolunteer"]
 
   useEffect(() => {
-    console.log("formData:", formData)
+    // console.log("formData:", formData)
     let isValidTmp = agreementItems.reduce((isValidAccum, agreementItemName) => {
       return isValidAccum && _.get(formData, "agreement." + agreementItemName, false)
     }, true)
@@ -103,17 +105,24 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
 
 export const CreateTaskHelp = (props: IWizardScreenProps) => {
   const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
-  const howtoTitle = _.get(props, "howtoTitle", "Как правильно дать название задачи")
+  const howtoTitle = _.get(props, "howtoTitle", "")
 
   function handleShowHelpClick(e) {
     e.preventDefault();
+    // console.log("[CreateTaskHelp] props.screenName:", props.screenName)
     setShowScreenHelpModalState({[props.screenName]: true});
   }
 
   return (
       <div className="wizard-field__help" onClick={handleShowHelpClick}>
-        <img src={howToIcon} className="wizard-field__icon" />
-        <span>{howtoTitle}</span>
+
+        {!!howtoTitle &&
+        <>
+          <img src={howToIcon} className="wizard-field__icon" />
+          <span>{howtoTitle}</span>
+        </>
+        }
+
       </div>
   )
 }
@@ -136,6 +145,7 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
           <WizardStringField {...props} 
             name="title"
             placeholder="Например, «Разместить счётчик на сайте»" 
+            howtoTitle="Как правильно дать название задачи"
             maxLength={50}
             formHelpComponent={CreateTaskHelp}
           />
@@ -155,7 +165,7 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen>
+    <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
           title="Опишите, что нужно сделать"
@@ -456,21 +466,19 @@ export const CustomDeadlineDate = (props: IWizardScreenProps) => {
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
 
   useEffect(() => {
-    let selectedValue = _.get(formData, props.name + ".value", "")
-    let date = _.get(formData, props.name + ".customDate", null)
+    // console.log("customDate:", customDate)
+    // console.log("formData:", formData)
+    let selectedValue = _.get(formData, props.name, "")
+    let isCustomDateSelected = selectedValue.match(/\d+-\d+-\d+/)
 
-    if(customDate && selectedValue !== moment(customDate).toISOString()) {
+    if(customDate && !isCustomDateSelected) {
       setCustomDate(null)
-      _.set(formData, props.name + ".customDate", null)
     }
-    else if(!customDate && date) {
-      setCustomDate(date)
-      _.set(formData, props.name + ".value", moment(date).toISOString())
+    else if(!customDate && isCustomDateSelected) {
+      setCustomDate(selectedValue)
+      _.set(formData, props.name, selectedValue)
     }
 
-  }, [formData])
-
-  useEffect(() => {
   }, [formData])
 
   function handleOptionClick(e) {
@@ -486,19 +494,20 @@ export const CustomDeadlineDate = (props: IWizardScreenProps) => {
         <div className="wizard-radio-option__check">
           <img src={calendarIcon} />
         </div>
-        <span className="wizard-radio-option__title">{customDate ? moment(customDate).format("DD-MM-YYYY") : "Выбрать свой срок"}</span>
+        <span className="wizard-radio-option__title">{customDate ? utils.getTheDate({dateString: customDate}) : "Выбрать свой срок"}</span>
 
         {!!isShowDatePicker &&
         <div className="wizard-radio-option__datepicker" onClick={handleDatePickerClick}>
           <DatePicker
-            selected={customDate}
+            selected={customDate ? moment(customDate).toDate() : null}
             dateFormat="YYYY-MM-DD"
             locale="ru-RU"
             inline
+            minDate={moment().add(1, 'days').toDate()}
             onChange={(date) => {
-              _.set(formData, props.name + ".value", moment(date).toISOString())
-              _.set(formData, props.name + ".customDate", date)
-              setCustomDate(date)
+              let dateStr = moment(date).format("YYYY-MM-DD")
+              _.set(formData, props.name, dateStr)
+              setCustomDate(dateStr)
               setFormData(formData)
               setIsShowDatePicker(false)
             }}
@@ -528,8 +537,8 @@ export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProp
           <WizardRadioSetField {...props} 
             selectOptions={[
               {value: "", title: "Неважно"}, 
-              {value: moment(nowDateTime).add(3, 'days').toISOString(), title: "Через 3 дня"}, 
-              {value: moment(nowDateTime).add(7, 'days').toISOString(), title: "Через неделю"}
+              {value: 3, title: "Через 3 дня"}, 
+              {value: 7, title: "Через неделю"}
             ]}
             customOptions={[CustomDeadlineDate]}
             name="preferredDuration"

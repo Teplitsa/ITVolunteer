@@ -43,9 +43,18 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         ${reviewForDoer && reviewForAuthor && taskStatus === "closed" ? "completed" : ""}
       `}
     >
-      {/* temporary disable dates
-      <TaskTimelineDate date={timeline_date} />
-      */}
+      {type !== "close" && (status === "current" || status === "past") &&
+        <TaskTimelineDate date={timeline_date} />
+      }
+
+      {type === "close" &&
+        <TaskTimelineDate date={timeline_date} />
+      }
+
+      {type !== "close" && status !== "current" && status !== "past" &&
+        <div className="date"></div>
+      }
+
       <div className="info">
         <i className="point-circle"></i>
         <h4>
@@ -59,9 +68,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
               }).format(Date.parse(timeline_date))}
         </h4>
 
-        {/* temporary disable dates
-        {status === "future" && <div className="details">Ожидаемый срок</div>}
-        */}
+        {status === "future" && type === "close" && <div className="details">Ожидаемый срок</div>}
 
         {type === "review" && taskStatus === "closed" && <TaskTimelineReviewType />}
         {type === "close" && taskStatus === "in_work" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && !taskHasCloseSuggestion && (

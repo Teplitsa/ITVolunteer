@@ -42,8 +42,8 @@ function itv_register_task_graphql_fields() {
                 'type'        => 'User',
                 'description' => __( 'Task doer candidates count', 'tst' ),
                 'resolve'     => function( $task, $args, $context ) {
-	               $task_doers = tst_get_task_doers($task->ID, true);
-	               return count($task_doers) ? \WPGraphQL\Data\DataSource::resolve_user( $task_doers[0]->ID, $context ) : null;
+                    $task_doers = tst_get_task_doers($task->ID, true);
+                    return count($task_doers) ? \WPGraphQL\Data\DataSource::resolve_user( $task_doers[0]->ID, $context ) : null;
                 },
             ],
             'reviewsDone' => [
@@ -105,6 +105,110 @@ function itv_register_task_graphql_fields() {
                     return false;
                 },
             ],
+            'result' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'result', true);
+                },
+            ],
+            'impact' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'impact', true);
+                },
+            ],
+            'references' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'references', true);
+                },
+            ],
+            'referencesHtml' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    $refs = get_post_meta($task->ID, 'references', true);
+                    preg_match_all("/(http[s]?:\/\/\S*)/", $refs, $matches);
+
+                    $offset = 0;
+                    foreach($matches[1] as $url) {
+                      $url_len = strlen($url);
+                      $url_pos = strpos($refs, $url, $offset);
+                      $a_tag = "<a href=\"$url\" target=\"_blank\">$url</a>";
+                      $a_tag_len = strlen($a_tag);
+
+                      $refs = substr_replace($refs, $a_tag, $url_pos, $url_len);
+                      $offset = $url_pos + $a_tag_len;
+                    }
+                    return $refs;
+                },
+            ],
+            'referencesList' => [
+                'type'        => [ 'list_of' => 'String' ],
+                'resolve'     => function( $task, $args, $context ) {
+                    $refs = get_post_meta($task->ID, 'references', true);
+                    preg_match_all("/(http[s]?:\/\/\S*)/", $refs, $matches);
+                    return $matches[1];
+                },
+            ],
+            'externalFileLinks' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'externalFileLinks', true);
+                },
+            ],
+            'externalFileLinksList' => [
+                'type'        => [ 'list_of' => 'String' ],
+                'resolve'     => function( $task, $args, $context ) {
+                    $links = get_post_meta($task->ID, 'externalFileLinks', true);
+                    preg_match_all("/(http[s]?:\/\/\S*)/", $links, $matches);
+                    return $matches[1];
+                },
+            ],
+            'preferredDoers' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'preferredDoers', true);
+                },
+            ],
+            'preferredDuration' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return get_post_meta($task->ID, 'preferredDuration', true);
+                },
+            ],
+            'cover' => [
+                'type'        => 'MediaItem',
+                'resolve'     => function( $task, $args, $context ) {
+                    $file_id = intval(get_post_thumbnail_id($task->ID));
+                    if($file_id) {
+                        return \WPGraphQL\Data\DataSource::resolve_post_object( intval($file_id), $context );
+                    }
+                    return null;                    
+                },
+            ],
+            'coverImgSrcLong' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return itv_get_task_cover_image_src($task->ID, 'long');
+                },
+            ],
+            'files' => [
+                'type'        => [ 'list_of' => 'MediaItem' ],
+                'resolve'     => function( $task, $args, $context ) {
+                    $file_id_list = get_post_meta($task->ID, 'files', true);
+                    if(!is_array($file_id_list)) {
+                        $file_id_list = $file_id_list ? [$file_id_list] : [];
+                    }
+
+                    $files = [];
+                    foreach ($file_id_list as $key => $file_id) {
+                        if($file_id) {
+                            $files[] = \WPGraphQL\Data\DataSource::resolve_post_object( intval($file_id), $context );
+                        }
+                    }
+                    return $files;
+                },
+            ],            
         ]
     );
 }
@@ -118,7 +222,26 @@ function itv_graphql_task_private_filter($is_private, $model_name, $data, $visib
         return $is_private;
     }
     
-    return !(in_array($data->post_status, ['in_work', 'closed', 'archived']) || current_user_can("manage_options"));
+    return !(in_array($data->post_status, ['in_work', 'closed', 'archived', 'draft']) || current_user_can("manage_options"));
+}
+
+add_filter('graphql_object_visibility', "itv_graphql_task_visibility_filter", 10, 6);
+function itv_graphql_task_visibility_filter($visibility, $model_name, $data, $owner, $current_user) {
+    if($model_name !== 'PostObject'
+        || $data->post_type != 'tasks'
+        || $visibility === 'public'
+    ) {
+        return $visibility;
+    }
+    
+    if(in_array($data->post_status, ['in_work', 'closed', 'archived'])) {
+        return 'public';
+    }
+    elseif(in_array($data->post_status, ['draft'])) {
+        return 'restricted';
+    }
+
+    return $visibility;
 }
 
 // users
@@ -233,6 +356,21 @@ function itv_graphql_user_private_filter($is_private, $model_name, $data, $visib
     return !!$data->deleted;
 }
 
+add_filter('graphql_object_visibility', "itv_graphql_user_visibility_filter", 10, 6);
+function itv_graphql_user_visibility_filter($visibility, $model_name, $data, $owner, $current_user) {
+    if($model_name !== 'UserObject'
+        || $visibility === 'public'
+    ) {
+        return $visibility;
+    }
+    
+    if(!!$data->deleted) {
+        return 'public';
+    }
+
+    return $visibility;
+}
+
 add_action( 'graphql_register_types', 'itv_register_doers_graphql_query' );
 function itv_register_doers_graphql_query() {
     register_graphql_field(
@@ -337,4 +475,15 @@ function itv_graphql_comment_private_filter($is_private, $model_name, $data, $vi
     }
     
     return false;
+}
+
+add_filter('graphql_object_visibility', "itv_graphql_comment_visibility_filter", 10, 6);
+function itv_graphql_comment_visibility_filter($visibility, $model_name, $data, $owner, $current_user) {
+    if(!in_array($model_name, ['CommentObject', 'CommentAuthorObject'])
+        || $visibility === 'public'
+    ) {
+        return $visibility;
+    }
+    
+    return 'public';
 }

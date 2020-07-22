@@ -165,9 +165,9 @@ add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
 
 function ajax_submit_task(){
 
-    error_log("task POST: " . print_r($_POST, true));
+    // error_log("task POST: " . print_r($_POST, true));
 
-    // $task_id = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
+    $task_id = (int)$_POST['databaseId'] > 0 ? (int)$_POST['databaseId'] : 0;
     $itv_log = ItvLog::instance();
     
     $params = array(
@@ -178,9 +178,14 @@ function ajax_submit_task(){
             return is_numeric($item) ? intval($item) : 0;
         }, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))),
     );
-    error_log("params: " . print_r($params, true));
-  
+
     $is_new_task = true;
+    if($task_id) {
+      $is_new_task = false;
+      $params['ID'] = $task_id;
+    }
+
+    // error_log("params: " . print_r($params, true));
     $params['post_status'] = 'publish';
    
     $task_id = wp_insert_post($params);
@@ -193,19 +198,54 @@ function ajax_submit_task(){
         }, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
 
+        $durationValue = @$_POST['preferredDuration'];
+        $isDeadlineChanged = false;
+        $newDeadlineDateStr = "";
+        $oldPreferredDurationInput = get_post_meta($task_id, 'preferredDurationInput', true);
+        if($durationValue != $oldPreferredDurationInput) {
+          if(preg_match("/\d+-\d+\d+/", $durationValue)) {
+              $newDeadlineDateStr = $durationValue;
+          }
+          elseif($durationValue) {
+              $newDeadlineDateStr = date("Y-m-d", time() * 24 * intval($durationValue));
+          }
+
+          $isDeadlineChanged = true;
+          update_post_meta($task_id, 'preferredDuration', $newDeadlineDateStr);          
+          update_post_meta($task_id, 'preferredDurationInput', $durationValue);
+        }
+
         update_post_meta($task_id, 'result', @$_POST['result']);
         update_post_meta($task_id, 'impact', @$_POST['impact']);
         update_post_meta($task_id, 'references', @$_POST['references']);
-        update_post_meta($task_id, 'references', @$_POST['references']);
+        update_post_meta($task_id, 'externalFileLinks', @$_POST['externalFileLinks']);        
         update_post_meta($task_id, 'preferredDoers', @$_POST['preferredDoers']);
-        update_post_meta($task_id, 'preferredDuration', @$_POST['preferredDuration']);
-        update_post_meta($task_id, 'cover', @$_POST['cover']);
-        update_post_meta($task_id, 'files', @$_POST['files']);
+
+        $thumbnail_id = intval(@$_POST['cover']);
+        if($thumbnail_id) {
+            set_post_thumbnail( $task_id, $thumbnail_id );
+        }
+        else {
+            delete_post_thumbnail( $task_id );
+        }
+        
+        update_post_meta($task_id, 'files', @$_POST['files'] ? explode(",", @$_POST['files']) : [] );
 
         $timeline = ITV\models\TimelineModel::instance();
 
         if(!$timeline->get_first_item($task_id)) {
-                $timeline->create_task_timeline($task_id);        
+            $timeline->create_task_timeline($task_id, $newDeadlineDateStr);        
+            $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+        }
+        elseif($isDeadlineChanged) {
+            $items = $timeline->get_items($task_id, TimelineModel::$TYPE_CLOSE, TimelineModel::$STATUS_FUTURE);
+
+            $items_count = count($items);
+            if($items_count > 0) {
+              $close_item = $items[$items_count - 1];
+              $close_item->due_date = $newDeadlineDateStr;
+              $close_item->save();
+            }
         }
     
         if($is_new_task) {
@@ -445,13 +485,14 @@ function itv_ajax_get_task_timeline(){
                 $ti_data['due_date'] = null;
             }
             
-            if(in_array($ti->type, [TimelineModel::$TYPE_CLOSE_SUGGEST])) {
-                $ti_data['timeline_date'] = $ti_data['created_at'];
-            }
-            else {
-                $ti_data['timeline_date'] = $ti_data['due_date'] ? $ti_data['due_date'] : $ti_data['created_at'];
-            }
-            
+            // if(in_array($ti->type, [TimelineModel::$TYPE_CLOSE_SUGGEST])) {
+            //     $ti_data['timeline_date'] = $ti_data['created_at'];
+            // }
+            // else {
+            //     $ti_data['timeline_date'] = $ti_data['due_date'] ? $ti_data['due_date'] : $ti_data['created_at'];
+            // }
+            $ti_data['timeline_date'] = $ti_data['due_date'];
+
             $res[] = $ti_data;
         }
         
@@ -634,6 +675,30 @@ function ajax_suggest_close_date() {
 add_action('wp_ajax_suggest-close-date', 'ajax_suggest_close_date');
 add_action('wp_ajax_nopriv_suggest-close-date', 'ajax_suggest_close_date');
 
+function itv_get_task_cover_image_src($task_id, $size) {
+  $file_id = intval(get_post_thumbnail_id($task_id));
+
+  if($file_id) {
+      $image_params = wp_get_attachment_image_src($file_id, $size);
+      return $image_params ? $image_params[0] : "";
+  }
+
+  return "";
+}
+
+function itv_get_task_cover($task_id) {
+  $file_id = intval(get_post_meta($task_id, 'cover', true));
+
+  if($file_id) {
+      return [
+        'mediaItemUrl' => wp_get_attachment_url($file_id),
+        'databaseId' => $file_id,
+      ];
+  }
+
+  return null;                    
+}
+
 function itv_get_ajax_task_short($task) {
     $author = get_user_by('id', $task->post_author);
     
@@ -655,6 +720,8 @@ function itv_get_ajax_task_short($task) {
         'rewardTags' => ['nodes' => wp_get_post_terms( $task->ID, 'reward')],
         'author' => itv_get_user_in_gql_format($author),
         'isApproved' => boolval(get_post_meta($task->ID, 'itv-approved', true)),
+        'cover' => itv_get_task_cover($task->ID),
+        'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'long'),
 //         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }

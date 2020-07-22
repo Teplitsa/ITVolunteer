@@ -1,7 +1,7 @@
 import { ReactElement, createElement } from "react";
 
 const TaskTimelineDate: React.FunctionComponent<{
-  date: string;
+  date: string,
 }> = ({ date }): ReactElement => {
   return (
     <div className="date">

@@ -144,8 +144,8 @@ class TimelineModel extends ITVSingletonModel {
         return date( 'Y-m-d H:i:s', $now_timestamp );
     }
     
-    public function create_task_timeline($task_id) {
-        $due_date = date( 'Y-m-d H:i:s' );
+    public function create_task_timeline($task_id, $input_due_date = "") {
+        $due_date = date( 'Y-m-d H:i:s', $input_due_date ? strtotime($input_due_date) : time() );
         
         foreach($this->BASIC_TIMELINE_TYPES as $type) {
             $args = [];
@@ -154,8 +154,10 @@ class TimelineModel extends ITVSingletonModel {
             }
             
             // set due date
-            $due_date = $this->get_next_checkpoint_date($due_date, $type);
-            $args['due_date'] = $due_date;
+            // $due_date = $this->get_next_checkpoint_date($due_date, $type);
+            if($input_due_date && $type == TimelineModel::$TYPE_CLOSE) {
+                $args['due_date'] = $due_date;
+            }
             
             $this->add_item($task_id, $type, $args);
         }
@@ -218,6 +220,10 @@ class TimelineModel extends ITVSingletonModel {
         if($item) {
             $this->complete_current_items($task_id);
             $item->status = TimelineModel::$STATUS_CURRENT;
+            
+            if($item->type !== TimelineModel::$TYPE_CLOSE) {
+                $item->due_date = date( 'Y-m-d H:i:s' );
+            }
             $item->save();
         }        
     }

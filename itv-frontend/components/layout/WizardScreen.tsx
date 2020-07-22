@@ -7,6 +7,9 @@ import {
   IFetchResult,
 } from "../../model/model.typing";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import WithGlobalScripts from "../hoc/withGlobalScripts";
+import FooterScripts from "./partials/FooterScripts";
+import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import * as utils from "../../utilities/utilities"
 
 import logo from "../../assets/img/pic-logo-itv.svg";
@@ -27,7 +30,10 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
   }
   props = {...defaultProps, ...props}
 
+  // console.log("[WizardScreen] props.screenName:", props.screenName)
+
   return (
+    <WithGlobalScripts>
     <main className="wizard">
       <div className="wizard__container wizard__ornament">
 
@@ -47,6 +53,8 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
 
       </div>
     </main>
+    <FooterScripts />
+    </WithGlobalScripts>
   );
 
 };
@@ -180,7 +188,7 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
      setShowScreenHelpModalState({[props.screenName]: false});
    }
 
-  console.log("props.screenName:", props.screenName)
+  // console.log("[WizardHelpModal] props.screenName:", props.screenName)
 
    return (
      <div className="wizard-help-modal">
@@ -228,12 +236,7 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
          <div className="wizard-help-modal-article__content-overlay"></div>
        </div>
        <footer>
-          <a
-            href="#"
-            className="contact-admin"
-          >
-            Всё ещё нужна помощь? Напишите администратору
-          </a>
+          <TaskAdminSupport buttonTitle="Всё ещё нужна помощь? Напишите администратору" />
        </footer>
      </div>
    )
@@ -243,7 +246,7 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
 export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
   const inputUseRef = useRef(null)
   const fieldValue = _.get(props.formData, props.name, "")
-  const [inputTextLength, setInputTextLength] = useState(fieldValue.length)
+  const [inputTextLength, setInputTextLength] = useState(fieldValue ? fieldValue.length : 0)
 
   function handleInput(e) {
     setInputTextLength(e.target.value.length)
@@ -330,9 +333,11 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
 
   function handleOptionClick(e, value) {
-    _.set(formData, props.name + ".value", String(value))
+    _.set(formData, props.name, String(value))
     setFormData(formData)
   }
+
+  // console.log("formData:", formData)
 
   return (
     <div className="wizard-radio-option-set">
@@ -340,7 +345,7 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
         return (
           <div className="wizard-radio-option" key={index} onClick={(e) => {handleOptionClick(e, option.value)}}>
             <div className="wizard-radio-option__check">
-              <img src={_.get(formData, props.name + ".value", "") === String(option.value) ? radioCheckOn : radioCheckOff} />
+              <img src={_.get(formData, props.name, "") === String(option.value) ? radioCheckOn : radioCheckOff} />
             </div>
             <span className="wizard-radio-option__title">{option.title}</span>
           </div>
@@ -452,9 +457,9 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
 
   function handleRemoveItemClick(e) {
     e.stopPropagation()
-    console.log("formData:", formData)
+    // console.log("formData:", formData)
     let value = e.target.dataset.value
-    console.log("value:", value)
+    // console.log("value:", value)
 
     let fd = {...formData}
 
@@ -463,7 +468,7 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
       selectedValueList = []
     }
     selectedValueList = selectedValueList.filter((item) => item !== value)
-    console.log("selectedValueList:", selectedValueList)
+    // console.log("selectedValueList:", selectedValueList)
 
     _.set(fd, props.name + ".value", selectedValueList)
     setFormData({...fd})
@@ -566,7 +571,8 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
     .then(
         (result: IFetchResult) => {
             if(result.status == 'error') {
-                return utils.showAjaxError({message: "Ошибка!"})
+              setIsFileUploading(false)
+              return utils.showAjaxError({message: "Ошибка!"})
             }
 
             let fd = {...formData}

@@ -304,9 +304,14 @@ export interface ITaskState {
   result: string;
   impact: string;
   references: string;
+  referencesHtml: string;
+  referencesList: Array<string>;
+  externalFileLinks: string;
+  externalFileLinksList: Array<string>;
   preferredDoers: string;
   preferredDuration: string;
   cover: any;
+  coverImgSrcLong: string;
   files: Array<any>;
 }
 
@@ -446,7 +451,7 @@ export interface ITaskThunks {
       callbackFn?: () => void;
     }
   >;
-  statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus }>;
+  statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus, callbackFn?: () => void }>;
   moderateRequest: Thunk<
     ITaskActions,
     {
@@ -582,6 +587,9 @@ export interface ITaskListItemState {
   nextTaskSlug: string;
   approvedDoer?: ITaskApprovedDoer;
   author?: ITaskAuthor;
+  cover: any;
+  coverImgSrcLong: string;
+  files: Array<any>;
   [x: string]: any;
 }
 
@@ -715,6 +723,7 @@ export interface IWizardActions {
   setFormData: Action<IWizardState, object>;
   setStep: Action<IWizardState, number>;
   setShowScreenHelpModalState: Action<IWizardState, object>;
+  resetWizard: Action<IWizardState>;
 }
 
 export interface IWizardThunks {

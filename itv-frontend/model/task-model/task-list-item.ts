@@ -11,6 +11,9 @@ const taskState: ITaskListItemState = {
   doerCandidatesCount: 0,
   reviewsDone: false,
   nextTaskSlug: "",
+  cover: null,
+  coverImgSrcLong: "",
+  files: [],
 };
 
 export const queriedFields = Object.keys(taskState) as Array<

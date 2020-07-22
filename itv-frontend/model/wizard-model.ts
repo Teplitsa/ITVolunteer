@@ -56,6 +56,10 @@ const createTaskWizardActions: ICreateTaskWizardActions = {
   setNgoTagList: action((state, payload) => {
     state.ngoTagList = payload
   }),
+  resetWizard: action((state, payload) => {
+    state.step = 0
+    state.formData = {}
+  }),
 };
 
 const createTaskWizardThunks: ICreateTaskWizardThunks = {
@@ -125,6 +129,10 @@ const completeTaskWizardActions: IWizardActions = {
   }),
   setShowScreenHelpModalState: action((state, payload) => {
     state.showScreenHelpModalState = {...state.showScreenHelpModalState, ...payload}
+  }),
+  resetWizard: action((state, payload) => {
+    state.step = 0
+    state.formData = {}
   }),
 };
 

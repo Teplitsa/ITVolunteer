@@ -281,3 +281,27 @@
     border-radius: 10px;
     width: 100%;
 }
+
+@mixin wizard-file-item {
+  @include text-xs-bold;
+  color: $color-gray-light-lg;
+  margin-right: 4px;
+  background: $color-gray-dark-md;
+  border: 1px solid $color-gray-dark-md;
+  border-radius: 10px;    
+  padding: 4px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+
+  & > span {
+    margin-right: 8px;
+  }
+
+  & > img {
+    cursor: pointer;
+  }
+
+  pointer-events: auto;
+}

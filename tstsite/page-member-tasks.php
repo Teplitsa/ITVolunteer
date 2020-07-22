@@ -78,7 +78,7 @@ get_header();?>
                 <div class="tab-pane fade in active" id="tasks-created">
                     <?php if($tasks_created) { foreach($tasks_created as $task) {?>
                         <div class="task-row">
-                            <h5><a href="<?php echo get_permalink($task->ID);?>"><?php echo $task->post_title;?></a></h5>
+                            <h5><a href="<?php echo tst_get_view_task_url($task);?>"><?php echo $task->post_title;?></a></h5>
                             <div class="row">
 								<div class="col-md-2 task-row-meta"><b><?php _e('Date:', 'tst');?></b> <?php echo date(get_option('date_format'), strtotime($task->post_date));?></div>								
 								<div class="col-md-2 task-row-meta"><?php echo tst_get_task_status_label($task->post_status);?></div>
@@ -86,7 +86,7 @@ get_header();?>
 							
 							<div class="col-md-6 task-row-action">
 								<a href="<?php echo tst_get_edit_task_url($task);?>" class="btn btn-primary btn-xs"><?php _e('Edit', 'tst');?></a>
-								<a href="<?php echo get_permalink($task);?>" class="btn btn-default btn-xs"><?php _e('View task', 'tst');?></a>
+								<a href="<?php echo tst_get_view_task_url($task);?>" class="btn btn-default btn-xs"><?php _e('View task', 'tst');?></a>
 							</div>
 							</div>
 						</div>

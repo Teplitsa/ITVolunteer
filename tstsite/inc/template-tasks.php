@@ -354,7 +354,16 @@ function tst_get_edit_task_url($task = null){
 	if(!$task)
 		$task = $post;
 	
-	return add_query_arg('task', intval($task->ID), home_url('/task-actions/'));
+	return home_url('/task-actions/') . $task->post_name;
+}
+
+function tst_get_view_task_url($task = null){
+  global $post;
+  
+  if(!$task)
+    $task = $post;
+  
+  return home_url('/tasks/') . $task->post_name;
 }
 
 function tst_is_user_candidate($user_id = false, $task_id = false) {

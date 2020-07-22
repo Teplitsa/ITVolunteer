@@ -4,16 +4,16 @@ import TaskMeta from "./TaskMeta";
 import TaskTags from "./TaskTags";
 
 const TaskHeader: React.FunctionComponent = (): ReactElement => {
-  const { title, cover } = useStoreState((state) => state.components.task);
+  const { title, coverImgSrcLong } = useStoreState((state) => state.components.task);
   const task = useStoreState((state) => state.components.task);
 
   return (
     <header>
       <h1 dangerouslySetInnerHTML={{ __html: title }} />
       <TaskMeta {...task} />
-      {!!cover &&
+      {!!coverImgSrcLong &&
         <div className="task-cover">
-          <img src={cover.mediaItemUrl} />
+          <img src={coverImgSrcLong} />
         </div>
       }
       <TaskTags {...task} />

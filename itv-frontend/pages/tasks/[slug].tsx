@@ -29,7 +29,9 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   }, [task])
 
   useEffect(() => {
-    if(task.id || !slug || !isLoggedIn) {
+    console.log("input:", task.databaseId, slug, isLoggedIn)
+
+    if(task.databaseId || !slug || !isLoggedIn) {
       return
     }
 
@@ -52,7 +54,7 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
     <>
       <DocumentHead />
       <Main>
-        {taskState.id &&
+        {taskState.id && taskState.databaseId &&
         <main id="site-main" className="site-main page-task" role="main">
           <section className="content">
             <h2>Задача</h2>
@@ -66,7 +68,7 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
             <TaskReplyStatus />
             <TaskApprovedDoer />
             <TaskVolonteerFeedback />
-            <TaskAdminSupport />
+            <TaskAdminSupport buttonTitle="Что-то не так с задачей? Напишите администратору" />
           </Sidebar>
         </main>
         }

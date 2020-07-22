@@ -15,6 +15,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
   const moderateTaskRequest = useStoreActions((actions) => actions.components.task.moderateRequest);
   const updateTaskStatus = useStoreActions((actions) => actions.components.task.updateStatus);
   const updateModerationStatus = useStoreActions((actions) => actions.components.task.updateModerationStatus);
+  const timelineRequest = useStoreActions((actions) => actions.components.task.timelineRequest);
 
   const approveTask = moderateTaskRequest.bind(null, {
     action: "approve-task",
@@ -42,7 +43,8 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
               className="accept-task"
               onClick={(event) => {
                 event.preventDefault();
-                taskStatusChange({ status: "publish" });
+                taskStatusChange({ status: "publish", callbackFn: () => {timelineRequest()} });
+                timelineRequest()
               }}
             >
               Опубликовать
@@ -54,7 +56,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
               className="reject-task danger"
               onClick={(event) => {
                 event.preventDefault();
-                taskStatusChange({ status: "draft" });
+                taskStatusChange({ status: "draft", callbackFn: () => {timelineRequest()} });                
               }}
             >
               Снять с публикации

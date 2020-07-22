@@ -17,7 +17,7 @@ export const status: Map<TaskStatusType, string> = new Map([
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
-  const { content, id: taskId, result, impact, references, files, cover } = useStoreState((state) => state.components.task);
+  const { content, id: taskId, result, impact, referencesHtml, externalFileLinksList, files, cover } = useStoreState((state) => state.components.task);
 
   if(!taskId) {
     return null
@@ -29,17 +29,55 @@ const Task: React.FunctionComponent = (): ReactElement => {
         <TaskHeader />
         <div className="task-body-text">
 
-          <div dangerouslySetInnerHTML={{ __html: content }} />
-          <div className="task-body-text__section">{result}</div>
-          <div className="task-body-text__section">{impact}</div>
-          <div className="task-body-text__section">{references}</div>
-          <div className="task-body-text__section">{files.map((file) => {
-            return (
-              <div>
-                <a target="_blank" href={file.mediaItemUrl}>{file.mediaItemUrl.replace(/^.*[\\\/]/, '')}</a>
+          <div className="task-body-text__section">
+            <h3>Суть задачи</h3>
+            <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: content }} />
+          </div>
+
+          {!!String(result).trim &&
+          <div className="task-body-text__section">
+            <h3>Какой результат ожидаем</h3>
+            <div className="task-body-text__section-content">{result}</div>
+          </div>
+          }
+
+          {!!String(impact).trim &&
+          <div className="task-body-text__section">
+            <h3>Какую пользу принесет решение задачи</h3>
+            <div className="task-body-text__section-content">{impact}</div>
+          </div>
+          }
+
+          {!!String(referencesHtml).trim &&
+          <div className="task-body-text__section">
+            <h3>Хорошие примеры реализации</h3>
+            <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: referencesHtml }} />
+          </div>
+          }
+
+          {(files.length > 0 || externalFileLinksList.length > 0) &&
+          <div className="task-body-text__section">
+            <h3>Файлы</h3>
+            <div className="task-body-text__section-content">
+              <div className="task-body-text__section-files">
+                {externalFileLinksList.map((url, key) => {
+                  return (
+                    <div className="task-body-text__section-file-item" key={key}>
+                      <a target="_blank" href={url}>{url.replace(/^.*[\\\/]/, '')}</a>
+                    </div>
+                  )
+                })}
+                {files.map((file, key) => {
+                  return (
+                    <div className="task-body-text__section-file-item" key={key}>
+                      <a target="_blank" href={file.mediaItemUrl}>{file.mediaItemUrl.replace(/^.*[\\\/]/, '')}</a>
+                    </div>
+                  )
+                })}
               </div>
-            )
-          })}</div>
+            </div>
+          </div>
+          }
 
         </div>
         <TaskFooter>
