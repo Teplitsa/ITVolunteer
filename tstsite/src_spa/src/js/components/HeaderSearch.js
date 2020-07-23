@@ -18,7 +18,7 @@ function HeaderSearch({isOpen, setOpen}) {
   };
   const submit = () => {
     if (searchPhrase) {
-      document.location.href = "/search?s=" + searchPhrase
+      document.location.href = "/search/?s=" + searchPhrase
     }
   };
 
