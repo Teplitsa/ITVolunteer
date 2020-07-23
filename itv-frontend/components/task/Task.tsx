@@ -29,26 +29,28 @@ const Task: React.FunctionComponent = (): ReactElement => {
         <TaskHeader />
         <div className="task-body-text">
 
+          {!!String(content).trim() &&
           <div className="task-body-text__section">
             <h3>Суть задачи</h3>
             <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
+          }
 
-          {!!String(result).trim &&
+          {!!String(result).trim() &&
           <div className="task-body-text__section">
             <h3>Какой результат ожидаем</h3>
             <div className="task-body-text__section-content">{result}</div>
           </div>
           }
 
-          {!!String(impact).trim &&
+          {!!String(impact).trim() &&
           <div className="task-body-text__section">
             <h3>Какую пользу принесет решение задачи</h3>
             <div className="task-body-text__section-content">{impact}</div>
           </div>
           }
 
-          {!!String(referencesHtml).trim &&
+          {!!String(referencesHtml).trim() &&
           <div className="task-body-text__section">
             <h3>Хорошие примеры реализации</h3>
             <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: referencesHtml }} />
