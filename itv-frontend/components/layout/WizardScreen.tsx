@@ -262,7 +262,7 @@ export const WizardHelpModal = (props: IWizardScreenProps) => {
 
             <li>Справочный центр</li>
 
-            {!!helpPageState.helpCategories && helpPageState.helpCategories.nodes.length > 0 &&
+            {!!helpPageState.helpCategories &&
             <li>{_.get(helpPageState.helpCategories, "nodes.0.name", "")}</li>
             }
 
