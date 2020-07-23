@@ -77,6 +77,7 @@
     h1 {
       @include htext-xl;
       color: $color-gray-dark-xl;
+      overflow: hidden;
     }
 
     .meta-info {
@@ -226,6 +227,7 @@
         display: flex;
         justify-content: flex-start;
         align-item: center;
+        flex-wrap: wrap;
       }
 
       &__section-file-item {

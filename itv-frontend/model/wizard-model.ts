@@ -24,6 +24,7 @@ const wizardState: IWizardState = {
   step: 0,
   showScreenHelpModalState: {},
   now: moment(),
+  isNeedReset: false,
 };
 
 const createTaskWizardState: ICreateTaskWizardState = {
@@ -32,6 +33,7 @@ const createTaskWizardState: ICreateTaskWizardState = {
   rewardList: [],
   taskTagList: [],
   ngoTagList: [],
+  helpPageSlug: "",
 }
 
 const createTaskWizardActions: ICreateTaskWizardActions = {
@@ -60,6 +62,15 @@ const createTaskWizardActions: ICreateTaskWizardActions = {
     state.step = 0
     state.formData = {}
   }),
+  setNeedReset: action((state, payload) => {
+    state.isNeedReset = payload
+  }),
+  setWizardName: action((state, payload) => {
+    state.wizardName = payload
+  }),
+  setHelpPageSlug: action((state, payload) => {
+    state.helpPageSlug = payload
+  }),
 };
 
 const createTaskWizardThunks: ICreateTaskWizardThunks = {
@@ -69,10 +80,12 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
         createTaskWizard: { wizardName },
       },
     } = getStoreState() as IStoreModel;
-    const wizardData = storeJsLocalStorage.get('wizard.' + wizardName + '.data')
+    const wizardData = await storeJsLocalStorage.get('wizard.' + wizardName + '.data')
     if(!!wizardData) {
+      // console.log("wizardData:", wizardData)
       actions.setFormData(_.get(wizardData, "formData", {}))
       actions.setStep(_.get(wizardData, "step", 0))
+      actions.setNeedReset(_.get(wizardData, "isNeedReset", false))
     }
   }),  
   saveWizardData: thunk(async (actions, payload, {getStoreState}) => {
@@ -81,9 +94,10 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
         createTaskWizard: state,
       },
     } = getStoreState() as IStoreModel;
-    storeJsLocalStorage.set('wizard.' + state.wizardName + '.data', {
+    await storeJsLocalStorage.set('wizard.' + state.wizardName + '.data', {
       formData: state.formData,
       step: state.step,
+      isNeedReset: state.isNeedReset,
     })
   }),
   loadTaxonomyData: thunk(async (actions, payload) => {
@@ -134,6 +148,12 @@ const completeTaskWizardActions: IWizardActions = {
     state.step = 0
     state.formData = {}
   }),
+  setNeedReset: action((state, payload) => {
+    state.isNeedReset = payload
+  }),
+  setWizardName: action((state, payload) => {
+    state.wizardName = payload
+  }),
 };
 
 const completeTaskWizardThunks: IWizardThunks = {
@@ -147,6 +167,7 @@ const completeTaskWizardThunks: IWizardThunks = {
     if(!!wizardData) {
       actions.setFormData(_.get(wizardData, "formData", {}))
       actions.setStep(_.get(wizardData, "step", 0))
+      actions.setNeedReset(_.get(wizardData, "isNeedReset", false))
     }
   }),  
   saveWizardData: thunk(async (actions, payload, {getStoreState}) => {
@@ -158,6 +179,7 @@ const completeTaskWizardThunks: IWizardThunks = {
     storeJsLocalStorage.set('wizard.' + state.wizardName + '.data', {
       formData: state.formData,
       step: state.step,
+      isNeedReset: state.isNeedReset,
     })
   }),
 }  

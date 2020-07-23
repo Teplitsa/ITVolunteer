@@ -1,18 +1,22 @@
 import { ReactElement, useState, useEffect } from "react";
+import Router from 'next/router'
 import * as _ from "lodash";
 import moment from "moment";
 import DatePicker, { registerLocale } from "react-datepicker";
+import { request } from "graphql-request";
 import ru from "date-fns/locale/ru";
 
 import {
   IWizardScreenProps,
 } from "../../model/model.typing";
+import * as createTaskAgreementModel from "../../model/components/create-task-agreement-model";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { WizardScreen, WizardScreenBottomBar,  WizardForm, 
   WizardStringField, WizardTextField, WizardRadioSetField, WizardSelectField,
   WizardMultiSelectField, WizardUploadImageField,
 } from "../layout/WizardScreen";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
+import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
 import * as utils from "../../utilities/utilities"
 
 import bottomIcon from "../../assets/img/icon-task-list-gray.svg";
@@ -28,6 +32,7 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   }
 
   const [isValid, setIsValid] = useState(false)
+  const [createTaskAgreement, setCreateTaskAgreement] = useState(null)
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const agreementItems = ["isNgo", "isKnowVolunteer"]
@@ -39,6 +44,14 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
     }, true)
     setIsValid(isValidTmp)
   }, [formData])
+
+  useEffect(() => {
+    loadCreateTaskAgreementPageData()
+  }, [])
+
+  useEffect(() => {
+    // console.log("createTaskAgreement:", createTaskAgreement)
+  }, [createTaskAgreement])  
 
   function handleAgreementItemCheckClick(e, agreementItemName) {
     _.set(formData, "agreement." + agreementItemName, !_.get(formData, "agreement." + agreementItemName, false))
@@ -53,43 +66,70 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
     props.goNextStep();
   }
 
+  async function loadCreateTaskAgreementPageData() {
+    const pageQuery = createTaskAgreementModel.graphqlQuery;
+    const { pageBy: component } = await request(
+      process.env.GraphQLServer,
+      pageQuery,
+      { uri: "/create_task_agreement" }
+    );
+    setCreateTaskAgreement(component)
+  }
+
+  if(!createTaskAgreement) {
+    return null
+  }
+
+  let itemIndex = 0;
+
   return (
     <WizardScreen {...props} isShowHeader={false}>
       <div className={`wizard-screen screen-agreement ${isValid ? "" : "invalid"}`}>
         <div className="screen-agreement__content">
-          <h1>Что должен знать автор задачи перед ее постановкой</h1>
-          <p className="screen-agreement__explanation">Публикуя задачу на платформе IT-волонтер, я соглашаюсь с правилами.</p>
+          <h1>{createTaskAgreement.title}</h1>
+          <p className="screen-agreement__explanation">{_.get(createTaskAgreement, "blocks.0.attributes.content", "")}</p>
           <div className="screen-agreement-list">
-            <div className="screen-agreement-list__item">
-              <h2>Я ставлю задачу от имени некоммерческой организации или инициативы</h2>
-              <div className="screen-agreement-list__check" onClick={(e) => handleAgreementItemCheckClick(e, "isNgo")}>
-                <img src={_.get(formData, "agreement.isNgo", false) ? inputCheckOn : inputCheckOff} />
-              </div>
-              <p>
-                Для IT-волонтеров важны некоммерческие цели и социальный эффект от той помощи, которую они вам оказывают. Поэтому они готовы помогать только социально ориентированным некоммерческим организациям, социальным проектам и инициативам.              
-              </p>
-              <p>
-                К сожалению, на платформе не публикуются задачи от коммерческих, религиозных или политических организаций. Почему? (Линк на правила со списком СО НКО.)
-              </p>
-            </div>
-            <div className="screen-agreement-list__item">
-              <h2>Я понимаю, как работать с волонтерами, и хочу заботиться об их мотивации</h2>
-              <div className="screen-agreement-list__check" onClick={(e) => handleAgreementItemCheckClick(e, "isKnowVolunteer")}>
-                <img src={_.get(formData, "agreement.isKnowVolunteer", false) ? inputCheckOn : inputCheckOff} />
-              </div>
-              <p>
-                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
-              </p>
-              <p>
-                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
-              </p>
-              <p>
-                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
-              </p>
-              <p>
-                Прочитайте (ссылка), какие советы дают опытные IT-волонтеры: как правильно поставить задачу, как мотивировать помогать вам, как избежать распространенных ошибок.
-              </p>
-            </div>
+
+            {createTaskAgreement.blocks.map((block1, i1) => {
+              let itemName = _.get(agreementItems, itemIndex, "")
+
+              if(block1.__typename === "CoreHeadingBlock") {
+
+                let itemTextBlocks = []
+                for(let i2 in createTaskAgreement.blocks) {
+
+                  let block2 = createTaskAgreement.blocks[i2]
+
+                  if(i2 > i1) {
+                    if(block2.__typename === "CoreHeadingBlock") {
+                      break
+                    }
+                    else {
+                      itemTextBlocks.push(block2)
+                    }
+                  }
+                }
+
+                itemIndex += 1
+
+                return (
+                  <div className="screen-agreement-list__item" key={i1}>
+                    <h2>{_.get(block1, "attributes.content", "")}</h2>
+                    <div className="screen-agreement-list__check" onClick={(e) => handleAgreementItemCheckClick(e, itemName)}>
+                      <img src={_.get(formData, "agreement." + itemName, false) ? inputCheckOn : inputCheckOff} />
+                    </div>
+                    {itemTextBlocks.map((block2, i2) => {
+                      return withGutenbergBlock({
+                        elementName: block2.__typename,
+                        props: { key: `Block-${i2}`, ...block2 },
+                      });
+                    })}
+                  </div>
+                )
+              }
+
+            })}
+
           </div>
         </div>
         <div className="screen-agreement__list-overlay"></div>
@@ -105,12 +145,20 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
 
 export const CreateTaskHelp = (props: IWizardScreenProps) => {
   const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
+  const setHelpPageSlug = useStoreActions((actions) => actions.components.createTaskWizard.setHelpPageSlug)
   const howtoTitle = _.get(props, "howtoTitle", "")
+  const howtoUrl = _.get(props, "howtoUrl", "")  
 
   function handleShowHelpClick(e) {
     e.preventDefault();
     // console.log("[CreateTaskHelp] props.screenName:", props.screenName)
-    setShowScreenHelpModalState({[props.screenName]: true});
+    if(howtoUrl) {
+      Router.push(howtoUrl)
+    }
+    else {
+      setHelpPageSlug(props.helpPageSlug)
+      setShowScreenHelpModalState({[props.screenName]: true});
+    }
   }
 
   return (
@@ -146,6 +194,7 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
             name="title"
             placeholder="Например, «Разместить счётчик на сайте»" 
             howtoTitle="Как правильно дать название задачи"
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
             maxLength={50}
             formHelpComponent={CreateTaskHelp}
           />
@@ -175,7 +224,8 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
           <WizardTextField {...props} 
             name="description"
             placeholder="Какая задача стоит перед IT-волонтером?" 
-            howtoTitle="Как правильно составить описание задачи" 
+            howtoTitle="Как правильно составить описание задачи"
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi" 
             maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
@@ -206,6 +256,7 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
             name="result"
             placeholder="Каково ваше видение завершенной задачи" 
             howtoTitle="Как правильно составить описание задачи" 
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
             maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
@@ -236,6 +287,7 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
             name="impact"
             placeholder="Кому поможет проект, в котором будет помогать волонтер" 
             howtoTitle="Как правильно составить описание задачи" 
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
             maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
@@ -266,6 +318,7 @@ export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
             name="references"
             placeholder={`Примеры или "референсы" позволят волонтеру значительно лучше понять ваш замысел`} 
             howtoTitle="Как правильно составить описание задачи" 
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
             maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
@@ -296,6 +349,7 @@ export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) =>
             name="externalFileLinks"
             placeholder="Например, на Техническое задание или какие-то другие внешние файлы" 
             howtoTitle="Как правильно составить описание задачи" 
+            helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
             maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
@@ -417,6 +471,7 @@ export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) =
             selectOptions={[{value: 1, title: "Любой волонтёр"}, {value: 2, title: "Пасека"}]}
             name="preferredDoers"
             howtoTitle="Что такое пасека" 
+            howtoUrl="/paseka" 
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>

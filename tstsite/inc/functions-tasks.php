@@ -721,7 +721,7 @@ function itv_get_ajax_task_short($task) {
         'author' => itv_get_user_in_gql_format($author),
         'isApproved' => boolval(get_post_meta($task->ID, 'itv-approved', true)),
         'cover' => itv_get_task_cover($task->ID),
-        'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'long'),
+        'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'medium_large'),
 //         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }

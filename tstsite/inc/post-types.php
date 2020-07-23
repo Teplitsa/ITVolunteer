@@ -130,7 +130,79 @@ function itv_custom_content(){
         'graphql_single_name' => 'task',
         'graphql_plural_name' => 'tasks',
 	));
-	
+
+    register_taxonomy('help_category', array('help'), array(
+        'labels' => array(
+            'name'                       => __('Help Categories', 'tst'),
+            'singular_name'              => __('Help Category', 'tst'),
+            'menu_name'                  => __('Help Categories', 'tst'),
+            'all_items'                  => __('All Help Categories', 'tst'),
+            'edit_item'                  => __('Edit Help Category', 'tst'),
+            'view_item'                  => __('View Help Category', 'tst'),
+            'update_item'                => __('Update Help Category', 'tst'),
+            'add_new_item'               => __('Add new Help Category', 'tst'),
+            'new_item_name'              => __('New Help Category name', 'tst'),
+            'parent_item'                => __('Parent Help Category', 'tst'),
+            'parent_item_colon'          => __('Parent Help Category:', 'tst'),
+            'search_items'               => __('Search Help Categories', 'tst'),
+            'popular_items'              => __('Popular Help Categories', 'tst'),
+            'separate_items_with_commas' => __('Separate with commas', 'tst'),
+            'add_or_remove_items'        => __('Add or remove Help Category', 'tst'),
+            'choose_from_most_used'      => __('Choose from most used Help Categories', 'tst'),
+            'not_found'                  => __('Not found Help Categories', 'tst'),
+        ),
+        'hierarchical'      => true,
+        'show_ui'           => true,
+        'show_in_nav_menus' => true,
+        'show_tagcloud'     => true,
+        'show_admin_column' => false,
+        'query_var'         => true,
+        'rewrite'           => array('slug' => 'help_category'),
+        
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'HelpCategory',
+        'graphql_plural_name' => 'HelpCategories'
+    ));
+  
+    register_post_type('help', array(
+        'labels' => array(
+            'name'               => __('Help', 'tst'),
+            'singular_name'      => __('Help', 'tst'),
+            'menu_name'          => __('Help', 'tst'),
+            'name_admin_bar'     => __('Add help', 'tst'),
+            'add_new'            => __('Add new', 'tst'),
+            'add_new_item'       => __('Add help', 'tst'),
+            'new_item'           => __('New help', 'tst'),
+            'edit_item'          => __('Edit help', 'tst'),
+            'view_item'          => __('View help', 'tst'),
+            'all_items'          => __('All help', 'tst'),
+            'search_items'       => __('Search help', 'tst'),
+            'parent_item_colon'  => __('Parent help', 'tst'),
+            'not_found'          => __('No help found', 'tst'),
+            'not_found_in_trash' => __('No help found in Trash', 'tst'),
+       ),
+        'public'             => true,
+        'exclude_from_search'=> false,
+        'publicly_queryable' => true,
+        'show_ui'            => true,
+        'show_in_nav_menus'  => false,
+        'show_in_menu'       => true,
+        'show_in_admin_bar'  => true,
+        //'query_var'          => true,        
+        'capability_type'    => 'post',
+        'has_archive'        => 'tasks/all',
+        'rewrite'            => array('slug' => 'helpList', 'with_front' => false),
+        'hierarchical'       => false,
+        'menu_position'      => 5,
+    'menu_icon'          => 'dashicons-welcome-write-blog',
+        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
+        'taxonomies'         => array('help_category'),
+        
+        'show_in_graphql'    =>  true,
+        'graphql_single_name' => 'help',
+        'graphql_plural_name' => 'helpList',
+  ));
+
 	if ( function_exists('p2p_register_connection_type') ) {
         p2p_register_connection_type(array(
             'name' => 'task-doers',

@@ -34,7 +34,12 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const loadTaxonomyData = useStoreActions((actions) => actions.components.createTaskWizard.loadTaxonomyData)
   const setTaskState = useStoreActions((actions) => actions.components.task.setState)
   const taskState = useStoreState((state) => state.components.task)
-  
+  const setWizardName = useStoreActions((actions) => actions.components.createTaskWizard.setWizardName)
+
+  useEffect(() => {
+    setWizardName("editTaskWizard");
+  }, [])  
+
   useEffect(() => {
     setTaskState(task)
   }, [task])  
@@ -71,7 +76,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
       return
     }
 
-    console.log("taskState:", taskState)
+    // console.log("taskState:", taskState)
 
     setFormData({
       ...taskState,
@@ -159,7 +164,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
               taskQuery,
               { taskSlug: taskState.slug }
             ).then(({ task: updatedTask }) => {
-              console.log(task)
+              // console.log(task)
               setTaskState(updatedTask)
             });
 
@@ -167,7 +172,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 
             setTimeout(() => {
               resetWizard()
-            }, 2000)
+            }, 3000)
         },
         (error) => {
             utils.showAjaxError({action, error})

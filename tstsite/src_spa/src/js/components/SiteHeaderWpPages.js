@@ -18,6 +18,7 @@ import iconMobileMenu from "../../img/icon-mobile-menu.png";
 import * as C from '../const'
 import * as utils from "../utils"
 import {UserSmallPicView} from './User'
+import HeaderSearch from './HeaderSearch'
 
 const ITV_USER_NOTIF_TEXT = {
     task_published: 'Вы опубликовали новую задачу',
@@ -84,7 +85,7 @@ function AccountInHeader({userId}) {
             <div className="account-symbols">
                 <div className="open-notif">
 
-                    <div onClick={handleNotifClick}>
+                    <div onClick={handleNotifClick} className="open-notif__action">
                         <img src={bell} alt="Сообщения" />
 
                         {!_.isEmpty(notifList) && 
@@ -144,6 +145,7 @@ export function SiteHeader(props) {
     const user = useStoreState(store => store.user.data)
     const [headerRef, setHeaderRef] = useState(null)
     const [mobileOpen, setMobileOpen] = useState(false)
+    const [isHeaderSearchOpen, setHeaderSearchOpen] = useState(false);
 
     useEffect(() => {
         if(!headerRef) {
@@ -175,24 +177,36 @@ export function SiteHeader(props) {
                 <a href={C.ITV_URLS.home} className="logo-col">
                     <img src={logo} className="logo" alt="IT-волонтер" />
                 </a>
+        {!isHeaderSearchOpen && (
                 <ul className="main-menu-col">
                   <li>
                     <a href="/tasks/publish/">Задачи</a>
                   </li>
                   <li>
-                    <a href={C.ITV_URLS.volunteers}>Волонтеры</a>
+                    <a href={C.ITV_URLS.volunteers} className={window.location.href.match(/\/members\//) ? "main-menu__link_active" : ""}>Волонтеры</a>
                   </li>
                   <li className="drop-menu">
-                    <a href="#">О проекте</a>
+                    <a href="#" className={window.location.href.match(/\/(about|conditions|news|sovety-dlya-nko-uspeshnye-zadachi|contacts)\//) ? "main-menu__link_active" : ""}>О проекте</a>
                     <ul className="submenu">
                       <li><a href="/about">О проекте</a></li>
                       <li><a href="/conditions">Правила участия</a></li>
+                      <li><a href="/paseka">Пасека</a></li>
+                      <li><a href="/nagrady">Награды</a></li>		      		      
                       <li><a href="/news">Новости</a></li>
                       <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
                       <li><a href="/contacts">Контакты</a></li>
                     </ul>                    
                   </li>
                 </ul>
+		)}
+		
+              <HeaderSearch
+                {...{
+                  isOpen: isHeaderSearchOpen,
+                  setOpen: setHeaderSearchOpen,
+                }}
+              />
+	      		
                 <AccountInHeader />
 
               </div>
@@ -225,6 +239,7 @@ function NotifList(props) {
     return (
         <div className={`notif-list`} ref={(ref) => setNotifListRef(ref)}>
             <div className={`notif-list__container`}>
+        <div className="notif-list__title">Оповещения</div>
             {notifList.map((item, index) => {
                 return <NotifItem key={`NotifListItem${index}`} notif={item} />
             })}

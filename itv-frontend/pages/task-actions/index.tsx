@@ -1,6 +1,7 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router'
+import Router from 'next/router'
 import * as _ from "lodash"
 
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
@@ -19,7 +20,6 @@ import Wizard from "../../components/Wizard";
 import * as utils from "../../utilities/utilities"
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
-  const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const step = useStoreState((state) => state.components.createTaskWizard.step)
@@ -27,14 +27,33 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   const loadWizardData = useStoreActions((actions) => actions.components.createTaskWizard.loadWizardData)
   const saveWizardData = useStoreActions((actions) => actions.components.createTaskWizard.saveWizardData)
   const loadTaxonomyData = useStoreActions((actions) => actions.components.createTaskWizard.loadTaxonomyData)
+  const resetWizard = useStoreActions((actions) => actions.components.createTaskWizard.resetWizard)
+  const setWizardName = useStoreActions((actions) => actions.components.createTaskWizard.setWizardName)
+
+  const [isPreventReset, setIsPreventReset] = useState(false)
+  const isNeedReset = useStoreState((state) => state.components.createTaskWizard.isNeedReset)
+  const setNeedReset = useStoreActions((actions) => actions.components.createTaskWizard.setNeedReset)
 
   useEffect(() => {
-    loadWizardData()
+    setWizardName("createTaskWizard");
     loadTaxonomyData()
+    loadWizardData()
   }, [])  
 
   useEffect(() => {
   }, [step]) 
+
+  useEffect(() => {
+    // console.log("isNeedReset:", isNeedReset)
+    // console.log("isPreventReset:", isPreventReset)
+
+    if(isNeedReset && !isPreventReset) {
+      // console.log("reset...")
+      resetWizard()
+      setNeedReset(false)
+      saveWizardData()
+    }
+  }, [isNeedReset, isPreventReset]) 
 
   function handleCompleteWizard() {
     const submitFormData = new FormData(); 
@@ -70,16 +89,27 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
                 return utils.showAjaxError({message: "Ошибка!"})
             }
 
-            router.push("/tasks/" + result.taskSlug)
-            setFormData({})
-            setStep(1)
+            setIsPreventReset(true)
+            setNeedReset(true)
             saveWizardData()
+
+            Router.push("/tasks/[slug]", "/tasks/" + result.taskSlug)
         },
         (error) => {
             utils.showAjaxError({action, error})
         }
     )    
   } 
+
+  function handleCancelWizard(e) {
+    e.preventDefault()
+
+    setIsPreventReset(true)
+    setNeedReset(true)
+    saveWizardData()
+
+    Router.push("/tasks/publish/")
+  }
 
   return (
     <>
@@ -91,6 +121,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         setFormData={setFormData} 
         saveWizardData={saveWizardData}
         onWizardComplete={handleCompleteWizard}
+        onWizardCancel={handleCancelWizard}
       >
         <AgreementScreen isIgnoreStepNumber={true} />
         <SetTaskTitleScreen />

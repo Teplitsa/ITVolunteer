@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
+import { Children, ReactElement, useState, useEffect, useRef } from "react";
 import * as _ from "lodash"
 
 import {
@@ -107,11 +107,25 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
 
 
 export const WizardForm = ({children, ...props}) => {
+  const [formFieldNameList, setFormFieldNameList] = useState(null)
+
+  useEffect(() => {
+    if(formFieldNameList !== null) {
+      return
+    }
+
+    let nameList = []
+    {Children.map(children, (child, index) => {
+      nameList.push(child.props.name)
+    })}
+    setFormFieldNameList([...nameList])
+  }, [formFieldNameList])
+
   return (
       <div className="wizard-form">
         <WizardFormTitle {...props as IWizardScreenProps} />
         {children}
-        <WizardFormActionBar {...props as IWizardScreenProps} />
+        <WizardFormActionBar {...props as IWizardScreenProps} formFieldNameList={formFieldNameList ? formFieldNameList : []} />
       </div>
   )
 }
@@ -124,7 +138,10 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
     e.preventDefault()
 
-    let isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
+    let isMayGoNextStep = isFieldValid()
+    if(isMayGoNextStep) {
+      isMayGoNextStep = props.onNextClick ? props.onNextClick(props) : true;
+    }
 
     if(isMayGoNextStep) {
       if(props.visibleStep < props.visibleStepsCount) {
@@ -146,6 +163,32 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
     }
   }
 
+  function isFieldValid() {
+    // console.log("props:", props)
+
+    if(!props.isRequired) {
+      return true
+    }
+
+    // console.log("props.formFieldNameList:", props.formFieldNameList)
+
+    let isValid = props.formFieldNameList.reduce((accum, fieldName) => {
+
+      let fieldValue = _.get(props.formData, fieldName + ".value", "")
+      if(!fieldValue) {
+         fieldValue = _.get(props.formData, fieldName, "")
+      }
+
+      // console.log("!!fieldValue:", !!fieldValue)
+
+      return accum && !!fieldValue
+    }, true)
+
+    // console.log("isValid:", isValid)
+
+    return isValid
+  }
+
   return (
     <div className="wizard-form-action-bar">
       {isLoading &&
@@ -154,7 +197,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
         </div>          
       }
       {!isLoading &&
-      <a href="#" onClick={handleNextClick} className="wizard-form-action-bar__primary-button">Продолжить</a>
+      <a href="#" onClick={handleNextClick} className={`wizard-form-action-bar__primary-button ${isFieldValid() ? "" : " disabled"}`}>Продолжить</a>
       }
       {!isLoading && !!props.isAllowPrevButton &&
       <a href="#" onClick={props.visibleStep > 1 ? handlePrevClick : props.onWizardCancel} className="wizard-form-action-bar__secondary-button">{props.visibleStep > 1 ? "Вернуться" : "Отмена"}</a>
@@ -180,66 +223,76 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
 /*
  *  Fields
  */
- export const WizardHelpModal = (props: IWizardScreenProps) => {
-   const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
+export const WizardHelpModal = (props: IWizardScreenProps) => {
+  // console.log("props:", props)
+  const setShowScreenHelpModalState = useStoreActions((actions) => actions.components.createTaskWizard.setShowScreenHelpModalState)
+  const helpPageRequest = useStoreActions((actions) => actions.components.helpPage.helpPageRequest)
+  const helpPageState = useStoreState((state) => state.components.helpPage)
+  const helpPageSlug = useStoreState((state) => state.components.createTaskWizard.helpPageSlug)
 
-   function handleCloseClick(e) {
-     e.preventDefault();
-     setShowScreenHelpModalState({[props.screenName]: false});
-   }
+  useEffect(() => {
+    // console.log("try load helpPage:", helpPageSlug)
+    // console.log("helpPageState:", helpPageState)
+
+    if(!helpPageSlug) {
+      return
+    }
+
+    if(helpPageState.slug === helpPageSlug) {
+      return
+    }
+
+    // console.log("load helpPage...")
+    helpPageRequest(helpPageSlug)
+
+  }, [helpPageState, helpPageSlug])
+
+  function handleCloseClick(e) {
+    e.preventDefault();
+    setShowScreenHelpModalState({[props.screenName]: false});
+  }
 
   // console.log("[WizardHelpModal] props.screenName:", props.screenName)
 
-   return (
-     <div className="wizard-help-modal">
-       <header>
-         <div className="wizard-help-modal__path-wrapper">
-           <ul className="wizard-help-modal__path">
-             <li>Справочный центр</li>
-             <li>Советы для организаций</li>
-             <li>Составление задачи на ITV</li>
-           </ul>
-           <div className="wizard-help-modal__path-overlay"></div>
-         </div>
-         <a href="#" className="wizard-help-modal__close" onClick={handleCloseClick}>
-           <img src={closeModalIcon} />
-         </a>
-       </header>
-       <div className="wizard-help-modal-article">
-         <div className="wizard-help-modal-article__content">
-           <article>
-             <h1>Как правильно дать название задачи?</h1>
-             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
-             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
-             <p>В хорошем заголовке должны быть указана желаемая технология, например:</p>
-             <ul>
-               <li>сайт на WP</li>
-               <li>приложение под андроид</li>
-               <li>макет в EPS</li>
-               <li>и так далее.</li>
-             </ul>
-             <p>Указание на то, для чего это всё (кратко, в два-три слова):</p>
-             <ul>
-               <li>поиск граждан,</li>
-               <li>помощь детям,</li>
-               <li>помощь домашним животным,</li>
-               <li>помощь врачам.</li>
-             </ul>
-             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
-             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
-             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
-             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
-             <p>Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её специфики.</p>
-             <p>Например: «сделать сайт благотворительной организации» — плохой заголовок. «Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
-           </article>
-         </div>
-         <div className="wizard-help-modal-article__content-overlay"></div>
-       </div>
-       <footer>
-          <TaskAdminSupport buttonTitle="Всё ещё нужна помощь? Напишите администратору" />
-       </footer>
-     </div>
-   )
+  return (
+    <div className="wizard-help-modal">
+      <header>
+        <div className="wizard-help-modal__path-wrapper">
+          <ul className="wizard-help-modal__path">
+
+            <li>Справочный центр</li>
+
+            {!!helpPageState.helpCategories && helpPageState.helpCategories.nodes.length > 0 &&
+            <li>{_.get(helpPageState.helpCategories, "nodes.0.name", "")}</li>
+            }
+
+            {!!helpPageState.id &&
+            <li>{helpPageState.title}</li>
+            }
+
+          </ul>
+          <div className="wizard-help-modal__path-overlay"></div>
+        </div>
+        <a href="#" className="wizard-help-modal__close" onClick={handleCloseClick}>
+          <img src={closeModalIcon} />
+        </a>
+      </header>
+      {!helpPageState.id &&
+        <div className="spinner-border" role="status"></div>
+      }
+      {!!helpPageState.id &&
+      <div className="wizard-help-modal-article">
+        <div className="wizard-help-modal-article__content">
+          <article dangerouslySetInnerHTML={{ __html: helpPageState.content }} />
+        </div>
+        <div className="wizard-help-modal-article__content-overlay"></div>
+      </div>
+      }
+      <footer>
+         <TaskAdminSupport buttonTitle="Всё ещё нужна помощь? Напишите администратору" />
+      </footer>
+    </div>
+  )
 }
 
 
@@ -256,6 +309,8 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
     }
   }
 
+  // console.log("[WizardLimitedTextFieldWithHelp] props:", props)
+
   return (
     <div className="wizard-field">
       <Field 
@@ -267,6 +322,7 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
         selectOptions={props.selectOptions}
         customOptions={props.customOptions}
         isMultiple={props.isMultiple}
+        maxLength={props.maxLength}
       />
       {(!!props.formHelpComponent || props.maxLength > 0) &&
       <div className="wizard-field__limit-help">
@@ -298,7 +354,7 @@ export const WizardStringField = (props: IWizardScreenProps) => {
 
 export const WizardStringFieldInput = (props: IWizardInputProps) => {
   return (
-    <input type="text" placeholder={props.placeholder} onKeyDown={props.handleInput} ref={props.inputUseRef} defaultValue={props.value} />
+    <input type="text" maxLength={props.maxLength} placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value} />
   )
 }
 
@@ -314,7 +370,7 @@ export const WizardTextField = (props: IWizardScreenProps) => {
 
 export const WizardTextFieldInput = (props: IWizardInputProps) => {
   return (
-      <textarea placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value}></textarea>
+      <textarea maxLength={props.maxLength} placeholder={props.placeholder} onKeyUp={props.handleInput} ref={props.inputUseRef} defaultValue={props.value}></textarea>
   )
 }
 

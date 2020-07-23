@@ -211,6 +211,8 @@ export interface IComponentsState {
   userNotif?: IUserNotifModel;
   createTaskWizard?: ICreateTaskWizardModel;
   completeTaskWizard?: IWizardModel;
+  createTaskAgreement?: ICreateTaskAgreementPageModel;
+  helpPage?: IHelpPageModel;
 }
 
 /**
@@ -253,6 +255,27 @@ export interface IHonorsPageState {
 export interface IHonorsPageActions {
   initializeState: Action<IHonorsPageModel>;
   setState: Action<IHonorsPageModel, IHonorsPageState>;
+}
+
+/**
+ * Create task agreement
+ */
+
+export interface ICreateTaskAgreementPageModel
+  extends ICreateTaskAgreementPageState,
+    IHonorsPageActions {}
+
+export interface ICreateTaskAgreementPageState {
+  id: string;
+  databaseId: number;
+  title: string;
+  slug: string;
+  blocks?: Array<ICoreHeadingBlock | ICoreParagraphBlock | ICoreMediaTextBlock>;
+}
+
+export interface ICreateTaskAgreementPageActions {
+  initializeState: Action<ICreateTaskAgreementPageModel>;
+  setState: Action<ICreateTaskAgreementPageModel, ICreateTaskAgreementPageState>;
 }
 
 /**
@@ -674,6 +697,7 @@ export interface IWizardState {
   step: number;
   showScreenHelpModalState: object;
   now: any;
+  isNeedReset: boolean;
 }
 
 export interface IWizardScreenProps {
@@ -696,6 +720,7 @@ export interface IWizardScreenProps {
   maxLength?: number;
   placeholder?: string;
   howtoTitle?: string;
+  howtoUrl?: string;
   isShowHeader?: boolean;
   formData?: object;
   screenName?: string;
@@ -704,6 +729,8 @@ export interface IWizardScreenProps {
   onWizardComplete?: any;
   onWizardCancel?: any;
   isMultiple?: boolean;
+  helpPageSlug?: string;
+  formFieldNameList?: Array<string>;
 }
 
 export interface IWizardInputProps {
@@ -724,6 +751,8 @@ export interface IWizardActions {
   setStep: Action<IWizardState, number>;
   setShowScreenHelpModalState: Action<IWizardState, object>;
   resetWizard: Action<IWizardState>;
+  setNeedReset: Action<IWizardState, boolean>;
+  setWizardName: Action<IWizardState, string>;
 }
 
 export interface IWizardThunks {
@@ -737,12 +766,14 @@ export interface ICreateTaskWizardState extends IWizardState {
   rewardList: Array<object>,
   taskTagList: Array<object>,
   ngoTagList: Array<object>,
+  helpPageSlug: string,
 };
 
 export interface ICreateTaskWizardActions extends IWizardActions {
   setRewardList: Action<ICreateTaskWizardState, Array<object>>;
   setTaskTagList: Action<ICreateTaskWizardState, Array<object>>;
   setNgoTagList: Action<ICreateTaskWizardState, Array<object>>;
+  setHelpPageSlug: Action<ICreateTaskWizardState, string>;
 }
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
@@ -750,3 +781,28 @@ export interface ICreateTaskWizardThunks extends IWizardThunks {
 }
 
 export interface ICreateTaskWizardModel extends ICreateTaskWizardState, ICreateTaskWizardActions, ICreateTaskWizardThunks {}
+
+/**
+ * Help center page
+ */
+
+export interface IHelpPageState {
+  id: string
+  databaseId: number
+  title: string
+  slug: string
+  content: string
+  status: string
+  helpCategories: Array<any>
+}
+
+export interface IHelpPageActions {
+  initializeState: Action<IHelpPageModel>;
+  setState: Action<IHelpPageState, IHelpPageState>;
+}
+
+export interface IHelpPageThunks {
+  helpPageRequest: Thunk<IHelpPageActions, string>;
+}
+
+export interface IHelpPageModel extends IHelpPageState, IHelpPageActions, IHelpPageThunks {}

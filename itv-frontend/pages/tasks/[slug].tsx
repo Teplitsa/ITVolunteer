@@ -29,7 +29,7 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   }, [task])
 
   useEffect(() => {
-    console.log("input:", task.databaseId, slug, isLoggedIn)
+    // console.log("input:", task.databaseId, slug, isLoggedIn)
 
     if(task.databaseId || !slug || !isLoggedIn) {
       return

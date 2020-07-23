@@ -189,7 +189,7 @@ function itv_register_task_graphql_fields() {
             'coverImgSrcLong' => [
                 'type'        => 'String',
                 'resolve'     => function( $task, $args, $context ) {
-                    return itv_get_task_cover_image_src($task->ID, 'long');
+                    return itv_get_task_cover_image_src($task->ID, 'medium_large');
                 },
             ],
             'files' => [

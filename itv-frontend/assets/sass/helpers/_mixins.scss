@@ -34,6 +34,19 @@
   }
 }
 
+@mixin a-underline {
+  text-decoration: underline;
+
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 @mixin solid-underline($color: transparent) {
   @include a-no-hover-underline;
   border-bottom-width: 1px;
@@ -273,6 +286,7 @@
 // form elements
 @mixin wizard-field-input {
     @include text;
+    @include placeholder-color($color-gray-light-sm);
     color: $color-gray-dark-md;
     background: $color-white;
     border: 1px solid $color-gray-light-lg;
@@ -304,4 +318,19 @@
   }
 
   pointer-events: auto;
+}
+
+@mixin placeholder-color($color) {
+  &::-webkit-input-placeholder { /* WebKit browsers */
+      color: $color;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: $color;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: $color;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+      color: $color;
+  }
 }

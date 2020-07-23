@@ -321,8 +321,8 @@
   }
 }
 
-// mobile
-.site-header {
+// mobile header
+.site-header {  
   .nav-mobile {
     display: none;
   }
@@ -424,7 +424,7 @@
           }
 
           .go-old {
-            margin-left: 20px;
+            margin-left: 0px;
             margin-right: 0px;
           }
 
@@ -449,6 +449,10 @@
           }
 
           .account-symbols {
+            &:before {
+              border-left: none;
+            }
+
             flex-direction: row-reverse;
 
             .open-notif {
@@ -473,9 +477,10 @@
             display: block;
             flex-basis: 100%;
             padding-left: 0px;
+            margin-top: 8px;
 
             a {
-              color: $color-gray-dark-xl;
+              // color: $color-gray-dark-xl;
             }
           }
         }

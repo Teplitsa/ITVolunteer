@@ -1,0 +1,84 @@
+.search-from__control_submit {
+  font-size: 16px;
+  line-height: 24px;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  background-color: #0ea36c;
+  color: #fff;
+  display: inline-block;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 12px;
+  box-shadow: inset -1px -1px 1px rgba(0, 89, 56, .53);
+  background-color: #fff;
+  color: #0ea36c;
+  box-shadow: 1px 1px 4px rgba(129, 118, 111, .08), inset -1px -1px 1px rgba(129, 118, 111, .16);
+  font-weight: 600;
+  padding: 12px 40px
+}
+
+.search-phrase {
+  margin-top: -16px;
+  margin-bottom: 22px;
+  width: 85%
+}
+
+@media (min-width:992px) {
+  .search-phrase {
+    width: 100%
+  }
+}
+
+.search-phrase__value {
+  font-size: 1.5em;
+  color: #fa7355
+}
+
+.search-from {
+  width: 85%
+}
+
+@media (min-width:992px) {
+  .search-from {
+    width: 100%
+  }
+}
+
+.search-from__control_submit {
+  padding: 10px 20px;
+  font: 600 13px/20px IBM Plex Sans, sans-serif;
+  outline: none
+}
+
+.search-from__control_submit {
+  background-color: #0ea36c;
+  border-style: none;
+  box-shadow: inset -1px -1px 1px rgba(0, 89, 56, .53);
+  border-radius: 12px;
+  color: #fff
+}
+
+.from__group {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: 0 0 32px
+}
+
+.search-from__control_input {
+  background-color: #fff;
+  border: 1px solid #e3eaed;
+  margin: 0 15px 0 0;
+  padding: 10px!important;
+  box-sizing: border-box;
+  box-shadow: 6px 6px 20px rgba(55, 84, 170, .06), inset 2px 2px 4px rgba(117, 152, 163, .15);
+  border-radius: 10px
+}
+
+.search-from__group {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 0 0 32px
+}
