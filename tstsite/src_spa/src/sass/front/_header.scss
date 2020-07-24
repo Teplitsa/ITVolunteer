@@ -18,6 +18,7 @@ body.itv-v2-header-footer {
   @import 'reset';
 
   background-color: $color-gray-light-xl;
+  border-bottom: 1px solid $color-gray-light-md;
   overflow-x: hidden;
 
   nav {
