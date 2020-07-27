@@ -28,7 +28,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
         </Link>
       </h1>
       <TaskMeta {...task} />
-      {!!task.coverImgSrcLong &&
+      {!!task && !!task.coverImgSrcLong &&
         <div className="task-cover">
           <img src={task.coverImgSrcLong} />
         </div>

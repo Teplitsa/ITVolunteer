@@ -393,6 +393,7 @@
       bottom: -10px;
       left: 0px;
       transform: translate(0, 100%);
+      z-index: 2;
     }
 
     &__check {
@@ -579,6 +580,7 @@
   }
 }
 
+// mobiles
 @include media-breakpoint-down(md) {
   .wizard-form {
     width: 100%;
@@ -605,7 +607,9 @@
     }
   }
 
-  .wizard-bottom-bar {
+ .wizard-bottom-bar {
+    position: relative;
+
     &__container {
       flex-direction: column-reverse;
 
@@ -619,4 +623,11 @@
     }
 
   }
+
+  .wizard-progressbar {
+    &__total {
+      width: 80%;
+    }
+  }
+
 }

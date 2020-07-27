@@ -39,3 +39,9 @@
   align-items: center;
   height: calc(100vh - 304px);
 }
+
+@include media-breakpoint-down(md) {
+  .wizard-screen {
+    height: auto;
+  }
+}

@@ -524,7 +524,7 @@ export const CustomDeadlineDate = (props: IWizardScreenProps) => {
     // console.log("customDate:", customDate)
     // console.log("formData:", formData)
     let selectedValue = _.get(formData, props.name, "")
-    let isCustomDateSelected = selectedValue.match(/\d+-\d+-\d+/)
+    let isCustomDateSelected = selectedValue ? selectedValue.match(/\d+-\d+-\d+/) : false
 
     if(customDate && !isCustomDateSelected) {
       setCustomDate(null)

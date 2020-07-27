@@ -24,7 +24,7 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
   const [shareUrl, setShareUrl] = useState("");
 
   const withMetaIconCalendar: Array<string> = [
-    utils.formatDate({ date: new Date(dateGmt) }),
+    utils.formatDate({ date: utils.itvWpDateTimeToDate(dateGmt) }),
     `Открыто ${utils.getTheIntervalToNow({
       fromDateString: dateGmt,
     })}`,

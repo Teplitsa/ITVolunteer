@@ -59,8 +59,10 @@ export const formatDate = ({
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-  if(!wpDateTime.match(/.*[Z]{1}$/)) {
-    wpDateTime += "Z"
+  if(wpDateTime && !wpDateTime.match(/.*[Z]{1}$/)) {
+    if(wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
+      wpDateTime += "Z"
+    }
   }
 
   return moment(wpDateTime).toDate();
