@@ -1,0 +1,58 @@
+/**
+ * Menu
+ */
+
+.submenu {
+  position: absolute;
+  top: 80%;
+  left: 0;
+  background-color: $color-white;
+  border: 1px solid $color-gray-light-lg;
+  padding: 0;
+  box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+  border-radius: 8px;
+  cursor: default;
+  z-index: 10;
+  @include screen-from(md) {
+    min-width: 186px;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(1, 0);
+    transform-origin: 50% 0;
+    transition: all 0.15s ease-out 0.15s;
+    overflow: hidden;
+    will-change: transform, opacity;
+  }
+  :hover > & {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1, 1);
+    transition: all 0.15s ease-out 0s;
+    > li {
+      opacity: 1;
+      transition: opacity 0.15s ease-out 0.15s;
+    }
+  }
+
+  li {
+    @include screen-from(md) {
+      opacity: 0;
+      transition: opacity 0.15s ease-in 0s;
+    }
+  }
+
+  a {
+    display: block;
+    font-size: 13px !important;
+    @include screen-from(md) {
+      padding: 12px 20px;
+      transition: background-color 0.15s ease-in-out 0s;
+      &[class*="active"],
+      &:hover {
+        background-color: $color-gray-light-xl;
+        text-decoration: none;
+      }
+    }
+    color: $color-gray-dark-md;
+  }
+}

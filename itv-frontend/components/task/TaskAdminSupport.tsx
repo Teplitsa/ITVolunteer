@@ -19,7 +19,9 @@ const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({
   );
 };
 
-const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
+const TaskAdminSupport: React.FunctionComponent<{
+  buttonTitle?: string,
+}> = ({buttonTitle}): ReactElement => {
   return (
     <div className="something-wrong-with-task">
       <ModalContext.Consumer>
@@ -39,7 +41,7 @@ const TaskAdminSupport: React.FunctionComponent = (): ReactElement => {
               dispatch({ type: "open" });
             }}
           >
-            Что-то не так с задачей? Напишите администратору
+            {buttonTitle}
           </a>
         )}
       </ModalContext.Consumer>

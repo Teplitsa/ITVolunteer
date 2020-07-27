@@ -2,11 +2,15 @@
 .notif-list {
   background: $color-white;
   border: 1px solid $color-gray-light-lg;
-  width: 358px;
+  width: 338px;
   box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
   border-radius: $base;
   z-index: 10;
   cursor: default;
+
+  @include screen-from(xl) {
+    width: 358px;
+  }
 
   &__title {
     margin: 16px 20px 0;

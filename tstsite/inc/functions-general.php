@@ -246,17 +246,30 @@ function ajax_upload_file() {
     );
   }
   else {
-    $image_id = media_handle_upload( 'file', 0 );
-    if( $image_id ) {
-      $res = array(
-        'status' => 'ok',
-        'file_id' => $image_id,
-        'image' => wp_attachment_is_image($image_id) ? str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'logo' )) : "",
-      );
-    } else {
+    $files = [];
+
+    $file_counter = 0;
+    while(!empty($_FILES['file_' . $file_counter])) {
+      $image_id = media_handle_upload( 'file_' . $file_counter, 0 );
+      if( $image_id ) {
+        $files[] = array(
+          'file_id' => $image_id,
+          'file_url' => wp_get_attachment_url( $image_id ),
+        );
+      }
+      $file_counter += 1;
+    }
+
+    if(empty($files)) {
       $res = array(
         'status' => 'error',
         'message' => 'upload error',
+      );
+    }
+    else {
+      $res = array(
+        'status' => 'ok',
+        'files' => $files,
       );
     }
   }

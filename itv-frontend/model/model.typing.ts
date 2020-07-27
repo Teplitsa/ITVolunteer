@@ -211,6 +211,8 @@ export interface IComponentsState {
   userNotif?: IUserNotifModel;
   createTaskWizard?: ICreateTaskWizardModel;
   completeTaskWizard?: ICompleteTaskWizardModel;
+  createTaskAgreement?: ICreateTaskAgreementPageModel;
+  helpPage?: IHelpPageModel;
 }
 
 /**
@@ -253,6 +255,30 @@ export interface IHonorsPageState {
 export interface IHonorsPageActions {
   initializeState: Action<IHonorsPageModel>;
   setState: Action<IHonorsPageModel, IHonorsPageState>;
+}
+
+/**
+ * Create task agreement
+ */
+
+export interface ICreateTaskAgreementPageModel
+  extends ICreateTaskAgreementPageState,
+    IHonorsPageActions {}
+
+export interface ICreateTaskAgreementPageState {
+  id: string;
+  databaseId: number;
+  title: string;
+  slug: string;
+  blocks?: Array<ICoreHeadingBlock | ICoreParagraphBlock | ICoreMediaTextBlock>;
+}
+
+export interface ICreateTaskAgreementPageActions {
+  initializeState: Action<ICreateTaskAgreementPageModel>;
+  setState: Action<
+    ICreateTaskAgreementPageModel,
+    ICreateTaskAgreementPageState
+  >;
 }
 
 /**
@@ -301,6 +327,18 @@ export interface ITaskState {
   featuredImage?: {
     sourceUrl: string;
   };
+  result: string;
+  impact: string;
+  references: string;
+  referencesHtml: string;
+  referencesList: Array<string>;
+  externalFileLinks: string;
+  externalFileLinksList: Array<string>;
+  preferredDoers: string;
+  preferredDuration: string;
+  cover: any;
+  coverImgSrcLong: string;
+  files: Array<any>;
 }
 
 export interface ITaskReviewer {
@@ -439,7 +477,10 @@ export interface ITaskThunks {
       callbackFn?: () => void;
     }
   >;
-  statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus }>;
+  statusChangeRequest: Thunk<
+    ITaskActions,
+    { status: TaskStatus; callbackFn?: () => void }
+  >;
   moderateRequest: Thunk<
     ITaskActions,
     {
@@ -575,6 +616,9 @@ export interface ITaskListItemState {
   nextTaskSlug: string;
   approvedDoer?: ITaskApprovedDoer;
   author?: ITaskAuthor;
+  cover: any;
+  coverImgSrcLong: string;
+  files: Array<any>;
   [x: string]: any;
 }
 
@@ -659,6 +703,7 @@ export interface IWizardState {
   step: number;
   showScreenHelpModalState: object;
   now: any;
+  isNeedReset: boolean;
 }
 
 export interface IWizardScreenProps {
@@ -681,12 +726,17 @@ export interface IWizardScreenProps {
   maxLength?: number;
   placeholder?: string;
   howtoTitle?: string;
+  howtoUrl?: string;
   isShowHeader?: boolean;
   formData?: object;
   screenName?: string;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
   onWizardComplete?: any;
+  onWizardCancel?: any;
+  isMultiple?: boolean;
+  helpPageSlug?: string;
+  formFieldNameList?: Array<string>;
 }
 
 export interface IWizardInputProps {
@@ -698,6 +748,7 @@ export interface IWizardInputProps {
   maxLength?: number;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
+  isMultiple?: boolean;
 }
 
 export interface IWizardActions {
@@ -705,6 +756,9 @@ export interface IWizardActions {
   setFormData: Action<IWizardState, object>;
   setStep: Action<IWizardState, number>;
   setShowScreenHelpModalState: Action<IWizardState, object>;
+  resetWizard: Action<IWizardState>;
+  setNeedReset: Action<IWizardState, boolean>;
+  setWizardName: Action<IWizardState, string>;
 }
 
 export interface IWizardThunks {
@@ -721,12 +775,14 @@ export interface ICreateTaskWizardState extends IWizardState {
   rewardList: Array<object>;
   taskTagList: Array<object>;
   ngoTagList: Array<object>;
+  helpPageSlug: string;
 }
 
 export interface ICreateTaskWizardActions extends IWizardActions {
   setRewardList: Action<ICreateTaskWizardState, Array<object>>;
   setTaskTagList: Action<ICreateTaskWizardState, Array<object>>;
   setNgoTagList: Action<ICreateTaskWizardState, Array<object>>;
+  setHelpPageSlug: Action<ICreateTaskWizardState, string>;
 }
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
@@ -759,3 +815,31 @@ export interface ICompleteTaskWizardModel
   extends ICompleteTaskWizardState,
     ICompleteTaskWizardActions,
     ICompleteTaskWizardThunks {}
+
+/**
+ * Help center page
+ */
+
+export interface IHelpPageState {
+  id: string;
+  databaseId: number;
+  title: string;
+  slug: string;
+  content: string;
+  status: string;
+  helpCategories: Array<any>;
+}
+
+export interface IHelpPageActions {
+  initializeState: Action<IHelpPageModel>;
+  setState: Action<IHelpPageState, IHelpPageState>;
+}
+
+export interface IHelpPageThunks {
+  helpPageRequest: Thunk<IHelpPageActions, string>;
+}
+
+export interface IHelpPageModel
+  extends IHelpPageState,
+    IHelpPageActions,
+    IHelpPageThunks {}

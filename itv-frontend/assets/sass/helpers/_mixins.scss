@@ -34,6 +34,19 @@
   }
 }
 
+@mixin a-underline {
+  text-decoration: underline;
+
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 @mixin solid-underline($color: transparent) {
   @include a-no-hover-underline;
   border-bottom-width: 1px;
@@ -273,6 +286,7 @@
 // form elements
 @mixin wizard-field-input {
     @include text;
+    @include placeholder-color($color-gray-light-sm);
     color: $color-gray-dark-md;
     background: $color-white;
     border: 1px solid $color-gray-light-lg;
@@ -280,4 +294,43 @@
     box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
     border-radius: 10px;
     width: 100%;
+}
+
+@mixin wizard-file-item {
+  @include text-xs-bold;
+  color: $color-gray-light-lg;
+  margin-right: 4px;
+  background: $color-gray-dark-md;
+  border: 1px solid $color-gray-dark-md;
+  border-radius: 10px;    
+  padding: 4px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+
+  & > span {
+    margin-right: 8px;
+  }
+
+  & > img {
+    cursor: pointer;
+  }
+
+  pointer-events: auto;
+}
+
+@mixin placeholder-color($color) {
+  &::-webkit-input-placeholder { /* WebKit browsers */
+      color: $color;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: $color;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: $color;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+      color: $color;
+  }
 }

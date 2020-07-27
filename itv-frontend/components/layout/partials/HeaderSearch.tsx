@@ -65,7 +65,7 @@ const HeaderSearch: React.FunctionComponent<{
           <input
             className={`header-search-form__input ${
               isOpenLocally ? "header-search-form__input_shown" : ""
-            }`}
+            } ${isOpen ? "" : "header-search-form__input_hidden"}`}
             type="search"
             value={searchPhrase}
             onChange={typeIn}

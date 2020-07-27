@@ -59,7 +59,7 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
       if (step >= stepsCount - 1) {
         return;
       }
-      console.log("set step:", step + 1);
+      // console.log("set step:", step + 1)
 
       setStep(step + 1);
 

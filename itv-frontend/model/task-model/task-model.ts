@@ -45,6 +45,18 @@ const taskState: ITaskState = {
   isApproved: false,
   pemalinkPath: "",
   nonceContactForm: "",
+  result: "",
+  impact: "",
+  references: "",
+  referencesHtml: "",
+  referencesList: [],
+  externalFileLinks: "",
+  externalFileLinksList: [],
+  preferredDoers: "",
+  preferredDuration: "",
+  cover: null,
+  coverImgSrcLong: "",
+  files: [],
   hasCloseSuggestion: computed((taskState) => {
     return _.some(
       taskState.timeline,
@@ -55,7 +67,7 @@ const taskState: ITaskState = {
 
 export const queriedFields = Object.entries(taskState).reduce(
   (fields, [fieldKey, fieldValue]) => {
-    if (!Object.is(fieldValue, null)) {
+    if(!Object.is(fieldValue, null) && ['files'].findIndex((fl) => fl === fieldKey) === -1) {
       fields.push(fieldKey);
     }
     return fields;
@@ -73,6 +85,7 @@ export const graphqlTags  = `
   tags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -81,6 +94,7 @@ export const graphqlTags  = `
   rewardTags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -89,6 +103,7 @@ export const graphqlTags  = `
   ngoTaskTags {
     nodes {
       id
+      databaseId
       name
       slug
     }
@@ -107,6 +122,8 @@ export const graphqlQuery = {
   getBySlug: `
   query Task($taskSlug: ID!) {
     task(id: $taskSlug, idType: SLUG) {
+      isRestricted
+      
       ${queriedFields.join("\n")}
 
       approvedDoer {
@@ -120,6 +137,16 @@ export const graphqlQuery = {
       ${graphqlFeaturedImage}
 
       ${graphqlTags}
+
+      cover {
+        databaseId
+        mediaItemUrl
+      }
+
+      files {
+        databaseId
+        mediaItemUrl
+      }
     }
   }`,
 };
@@ -1036,7 +1063,7 @@ const taskThunks: ITaskThunks = {
     }
   }),
   statusChangeRequest: thunk(
-    async ({ updateStatus }, { status }, { getStoreState }) => {
+    async ({ updateStatus }, { status, callbackFn }, { getStoreState }) => {
       const {
         session: { validToken: token },
         components: {
@@ -1063,6 +1090,7 @@ const taskThunks: ITaskThunks = {
           console.error(stripTags(responseMessage));
         } else {
           updateStatus({ status });
+          callbackFn && callbackFn();
         }
       } catch (error) {
         console.error(error);

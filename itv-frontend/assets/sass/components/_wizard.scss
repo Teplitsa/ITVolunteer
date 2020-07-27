@@ -250,6 +250,10 @@
     & > p {
       @include text-lg;
       padding-top: 4px;
+
+      a {
+        @include solid-underline($color-main);
+      }
     }
   }
 
@@ -338,8 +342,12 @@
     border-top: 1px solid $color-gray-light-md;
     padding-top: 20px;
 
-    .contact-admin {
-      @include contact-admin-button;
+    .something-wrong-with-task {
+      margin-top: 0px;
+
+      .contact-admin {
+        @include contact-admin-button;
+      }
     }
   }
 
@@ -365,6 +373,11 @@
         margin-top: 4px;
       }
     }
+  }
+
+  .spinner-border {
+    align-self: center;
+    color: $color-gray-light-lg !important;
   }
 }
 
@@ -523,33 +536,35 @@
 
 .wizard-upload {
   position: relative;
-  height: 112px;
+  min-height: 112px;
 
   & > input[type="file"] {
     position: absolute;
     display: block;
-    left: 0px;
-    top: 0px;
+    left: 2px;
+    top: 2px;
     width: 100%;
-    height: 112px;
-    z-index: 1;
+    min-height: 112px;
+    border-radius: 10px;
+    // z-index: 1;
     cursor: pointer;
     outline: none;
-    padding-top: 30px;
-    padding-left: 30px;
+    padding-top: 0px;
+    padding-left: 0px;
+    //visibility: hidden;
   }
 
   &__inner {
     background: $color-white;
     border: 1px dashed $color-gray-light-md;
-    border-radius: 10px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
+    position: relative;
+    border-radius: 10px;  
     width: 100%;
-    height: 112px;
-    z-index: 2;
+    min-height: 112px;
+    // z-index: 2;
     pointer-events: none;
+    display: flex;
+    align-items: center;
   }
 
   &__box {
@@ -558,6 +573,7 @@
     align-items: center;
     padding: 28px 66px 28px 36px;
     pointer-events: none;
+    width: 100%;
 
     & > img {
       margin-right: 12px;
@@ -578,6 +594,20 @@
     pointer-events: none;
   }
 
+  &__files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__file {
+    @include wizard-file-item;
+  }
+
+&__remove-file {
+    cursor: pointer;
+}
+
   &__spinner {
     display: flex;
     justify-content: center;
@@ -586,5 +616,47 @@
     & > .spinner-border {
       color: $color-gray-light-lg !important;
     }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .wizard-form {
+    width: 100%;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .wizard-help-modal {
+    width: calc(100% - 64px);
+  }
+
+  .wizard-form-action-bar {
+    flex-direction: column;
+    align-items: center;
+
+    &__primary-button {
+      margin-right: 0px;
+      width: unset;
+      min-width: 280px;
+    }
+
+    &__secondary-button {
+      margin-top: 24px;
+    }
+  }
+
+  .wizard-bottom-bar {
+    &__container {
+      flex-direction: column-reverse;
+
+      .wizard-progressbar {
+        width: 100%;
+      }
+    }
+
+    &__title {
+      margin-top: 24px;
+    }
+
   }
 }

@@ -7,7 +7,6 @@ const TaskAdminSupportForm: React.FunctionComponent<{
   closeModal: () => void;
   addSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ closeModal, addSnackbar }): ReactElement => {
-  let timerId: NodeJS.Timeout = null;
   const [messageText, setMessageText] = useState<string>("");
   const adminSupportRequest = useStoreActions(
     (actions) => actions.components.task.adminSupportRequest
@@ -31,13 +30,11 @@ const TaskAdminSupportForm: React.FunctionComponent<{
         addSnackbar,
         callbackFn: () => {
           setMessageText("");
-          timerId = setTimeout(closeModal, 10000);
+          closeModal();
         },
       });
     }
   };
-
-  useEffect(() => () => clearTimeout(timerId), []);
 
   return (
     <>
