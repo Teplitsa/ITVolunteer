@@ -1,13 +1,59 @@
 .wizard {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  min-height: 100vh;
   box-sizing: border-box;
 
+  &_ornament {
+    overflow: visible;
+    position: relative;
+    background-image: url(../../img/bg-modal-ornament.svg);
+    background-size: 71.2277vw 83.7201vh;
+    background-position: 19.1666vw 6.8331vh;
+    background-repeat: no-repeat;
+  }
+
+  &_complete-intro {
+    overflow: visible;
+    position: relative;
+    background-image: url(../../img/bg-modal-ornament.svg),
+      url(../../img/bg-complete-task-intro.svg);
+    background-size: calc(100vw - 64px), 50vw;
+    background-position: 50% 50%, 50% 100%;
+    background-repeat: no-repeat, no-repeat;
+    padding: 0 0 50vw;
+    @include screen-from(md) {
+      background-size: 71.2277vw 83.7201vh, 38.6111vw 52.0367vh;
+      background-position: 19.1666vw 6.8331vh, 0 100%;
+      padding: 0;
+    }
+  }
+
+  &_complete-fireworks {
+    background-image: url(../../img/bg-modal-ornament.svg),
+      url(../../img/bg-complete-task-fireworks.svg);
+    background-size: calc(100vw - 64px), calc(100vw - 64px);
+    background-position: 50% 50%, 50% 50%;
+    background-repeat: no-repeat, no-repeat;
+    @include screen-from(md) {
+      background-size: 71.2277vw 83.7201vh, 38.8194vw 73.5873vh;
+      background-position: 19.1666vw 6.8331vh, 29.4444vw 7.4901vh;
+    }
+  }
+
   &__container {
-    max-width: $content-width-wizard;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: stretch;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding: 64px;
-
-    & > header {      
+    padding: 32px;
+    flex-basis: $content-width-wizard;
+    box-sizing: border-box;
+    @include screen-from(md) {
+      padding: 64px;
     }
   }
 
@@ -15,21 +61,19 @@
     width: 210px;
   }
 
-  &__ornament {
-    overflow: visible;
-    position: relative;
-    background-image: url(../../img/bg-modal-ornament.svg);
-    background-size: 1025.68px 637.11px;
-    background-position: 276px 52px;
-    background-repeat: no-repeat;
-
+  &__header {
+    padding: 0 0 64px;
+    text-align: center;
+    @include screen-from(md) {
+      text-align: left;
+    }
   }
 
   &__content {
     display: flex;
     justify-content: center;
+    flex-grow: 10;
   }
-
 }
 
 .wizard-screen {
@@ -37,5 +81,121 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 304px);
+  flex-grow: 10;
+  width: 100%;
+  @include screen-from(md) {
+    width: auto;
+  }
+  &__main-title {
+    margin: 0 0 15px;
+    font: 600 30px/40px "IBM Plex Sans", sans-serif;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: $color-gray-dark-xl;
+  }
+
+  &__subtitle {
+    margin: 0 0 45px;
+    font: 400 20px/32px "IBM Plex Sans", sans-serif;
+    text-align: center;
+    color: $color-gray-dark-lg;
+  }
+
+  &__subtitle-mark {
+    @include text-primary;
+  }
+
+  &__button {
+    display: inline-block;
+    padding: 16px 32px;
+    border-radius: 12px;
+    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    max-width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    @include screen-from(md) {
+      padding: 16px 8px;
+      width: 380px;
+    }
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+    &_primary {
+      background-color: $color-main;
+      box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
+      color: $color-white;
+    }
+  }
+
+  &__tip {
+    display: block;
+    font: 600 13px/20px "IBM Plex Sans", sans-serif;
+    &::before {
+      content: "";
+      display: inline-block;
+      background: none 50% 50% no-repeat;
+      margin: 0 5px 0 0;
+      width: 16px;
+      height: 16px;
+      vertical-align: middle;
+    }
+    &_primary {
+      color: $color-white;
+      &::before {
+        content: "";
+        background-image: url(../../img/icon-rewards-rating.svg);
+      }
+    }
+  }
+}
+
+.wizard-rating {
+  display: flex;
+  flex-flow: row nowrap;
+  max-width: 210px;
+  align-self: center;
+  @include screen-from(md) {
+    max-width: 370px;
+    align-self: auto;
+  }
+  &__star {
+    background-image: none;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    width: 42px;
+    height: 42px;
+    cursor: pointer;
+    transition: all 0.15s linear;
+    @include screen-from(md) {
+      background-size: 64px 64px;
+      width: 74px;
+      height: 74px;
+    }
+    &:not(:last-child) {
+      padding: 0 5px;
+      box-sizing: border-box;
+    }
+    &,
+    :hover > &:hover + &,
+    :hover > &:hover + & + &,
+    :hover > &:hover + & + & + &,
+    :hover > &:hover + & + & + & + & {
+      background-image: url(../../img/icon-rating-star.svg);
+    }
+    :hover > & {
+      background-image: url(../../img/icon-rating-star-active.svg);
+    }
+    &_active {
+      background-image: url(../../img/icon-rating-star-active.svg) !important;
+    }
+  }
+}
+
+.wizard-progressbar {
+  &__complete {
+    width: 0;
+    transition: all 0.15s linear;
+  }
 }

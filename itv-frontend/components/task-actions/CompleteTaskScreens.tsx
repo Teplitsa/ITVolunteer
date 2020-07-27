@@ -11,7 +11,7 @@ export const CongratulationsScreen = (screenProps) => {
     ...screenProps,
     screenName: "CongratulationsScreen",
   }
-
+console.log(props)
   return (
     <WizardScreen {...props}>
       <div className="wizard-screen agreement">

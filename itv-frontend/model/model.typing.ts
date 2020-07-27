@@ -210,7 +210,7 @@ export interface IComponentsState {
   taskListFilter?: ITaskListFilterModel;
   userNotif?: IUserNotifModel;
   createTaskWizard?: ICreateTaskWizardModel;
-  completeTaskWizard?: IWizardModel;
+  completeTaskWizard?: ICompleteTaskWizardModel;
 }
 
 /**
@@ -712,13 +712,16 @@ export interface IWizardThunks {
   saveWizardData: Thunk<IWizardActions>;
 }
 
-export interface IWizardModel extends IWizardState, IWizardActions, IWizardThunks {}
+export interface IWizardModel
+  extends IWizardState,
+    IWizardActions,
+    IWizardThunks {}
 
 export interface ICreateTaskWizardState extends IWizardState {
-  rewardList: Array<object>,
-  taskTagList: Array<object>,
-  ngoTagList: Array<object>,
-};
+  rewardList: Array<object>;
+  taskTagList: Array<object>;
+  ngoTagList: Array<object>;
+}
 
 export interface ICreateTaskWizardActions extends IWizardActions {
   setRewardList: Action<ICreateTaskWizardState, Array<object>>;
@@ -727,7 +730,32 @@ export interface ICreateTaskWizardActions extends IWizardActions {
 }
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
-  loadTaxonomyData: Thunk<ICreateTaskWizardActions>;  
+  loadTaxonomyData: Thunk<ICreateTaskWizardActions>;
 }
 
-export interface ICreateTaskWizardModel extends ICreateTaskWizardState, ICreateTaskWizardActions, ICreateTaskWizardThunks {}
+export interface ICreateTaskWizardModel
+  extends ICreateTaskWizardState,
+    ICreateTaskWizardActions,
+    ICreateTaskWizardThunks {}
+
+export interface ICompleteTaskWizardState extends IWizardState {
+  taskId: string;
+  taskDatabaseId: number;
+}
+
+export interface ICompleteTaskWizardActions extends IWizardActions {
+  setTaskId: Action<
+    ICompleteTaskWizardState,
+    {
+      taskId: string;
+      taskDatabaseId: number;
+    }
+  >;
+}
+
+export interface ICompleteTaskWizardThunks extends IWizardThunks {}
+
+export interface ICompleteTaskWizardModel
+  extends ICompleteTaskWizardState,
+    ICompleteTaskWizardActions,
+    ICompleteTaskWizardThunks {}

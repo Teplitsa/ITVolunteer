@@ -2,38 +2,54 @@ import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
-import { 
-  CongratulationsScreen, RateRequirementsQuality
-} from "../components/task-actions/CompleteTaskScreens";
+import CompleteTaskCongratulations from "../components/task-actions/complete-task/CompleteTaskCongratulations";
+import CompleteTaskQualityRating from "../components/task-actions/complete-task/CompleteTaskQualityRating";
+import CompleteTaskCommunicationsRating from "../components/task-actions/complete-task/CompleteTaskCommunicationsRating";
+import CompleteTaskReview from "../components/task-actions/complete-task/CompleteTaskReview";
+import CompleteTaskThanks from "../components/task-actions/complete-task/CompleteTaskThanks";
 import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
-  const formData = useStoreState((state) => state.components.completeTaskWizard.formData)
-  const setFormData = useStoreActions((actions) => actions.components.completeTaskWizard.setFormData)
-  const step = useStoreState((state) => state.components.completeTaskWizard.step)
-  const setStep = useStoreActions((actions) => actions.components.completeTaskWizard.setStep)
-  const loadWizardData = useStoreActions((actions) => actions.components.completeTaskWizard.loadWizardData)
-  const saveWizardData = useStoreActions((actions) => actions.components.completeTaskWizard.saveWizardData)
+  const formData = useStoreState(
+    (state) => state.components.completeTaskWizard.formData
+  );
+  const setFormData = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setFormData
+  );
+  const step = useStoreState(
+    (state) => state.components.completeTaskWizard.step
+  );
+  const setStep = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setStep
+  );
+  const loadWizardData = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.loadWizardData
+  );
+  const saveWizardData = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.saveWizardData
+  );
 
   useEffect(() => {
-    loadWizardData()
-  }, [])  
+    loadWizardData();
+  }, []);
 
-  useEffect(() => {
-  }, [step])  
+  useEffect(() => {}, [step]);
 
   return (
     <>
       <DocumentHead />
       <Wizard
-        step={step} 
-        formData={formData} 
-        setStep={setStep} 
-        setFormData={setFormData} 
+        step={step}
+        formData={formData}
+        setStep={setStep}
+        setFormData={setFormData}
         saveWizardData={saveWizardData}
       >
-        <CongratulationsScreen isIgnoreStepNumber={true} />
-        <RateRequirementsQuality />
+        <CompleteTaskCongratulations isIgnoreStepNumber={true} />
+        <CompleteTaskQualityRating />
+        <CompleteTaskCommunicationsRating />
+        <CompleteTaskReview />
+        <CompleteTaskThanks isIgnoreStepNumber={true} />
       </Wizard>
     </>
   );

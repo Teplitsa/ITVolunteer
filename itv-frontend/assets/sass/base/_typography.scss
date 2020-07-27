@@ -114,3 +114,9 @@ $body-font-family: "IBM Plex Sans";
   @include text-bold-line-sm;
   color: $color-gray-dark-xl;
 }
+
+// Context information
+
+@mixin text-primary {
+  color: $color-main;
+}
