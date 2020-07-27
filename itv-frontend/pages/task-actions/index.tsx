@@ -68,6 +68,11 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
       else {
         value = formData[name]
       }
+
+      submitFormData.append( 
+        name, 
+        value        
+      )
     }
 
     let action = "submit-task"
