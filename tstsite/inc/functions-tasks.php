@@ -201,18 +201,18 @@ function ajax_submit_task(){
         $durationValue = @$_POST['preferredDuration'];
         $isDeadlineChanged = false;
         $newDeadlineDateStr = "";
-        $oldPreferredDurationInput = get_post_meta($task_id, 'preferredDurationInput', true);
+        $oldPreferredDurationInput = get_post_meta($task_id, 'preferredDuration', true);
         if($durationValue != $oldPreferredDurationInput) {
           if(preg_match("/\d+-\d+\d+/", $durationValue)) {
               $newDeadlineDateStr = $durationValue;
           }
           elseif($durationValue) {
-              $newDeadlineDateStr = date("Y-m-d", time() * 24 * intval($durationValue));
+              $newDeadlineDateStr = date("Y-m-d", time() + 24 * intval($durationValue) * 3600);
           }
 
           $isDeadlineChanged = true;
-          update_post_meta($task_id, 'preferredDuration', $newDeadlineDateStr);          
-          update_post_meta($task_id, 'preferredDurationInput', $durationValue);
+          update_post_meta($task_id, 'preferredDurationDeadline', $newDeadlineDateStr);          
+          update_post_meta($task_id, 'preferredDuration', $durationValue);
         }
 
         update_post_meta($task_id, 'result', @$_POST['result']);

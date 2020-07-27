@@ -1,4 +1,9 @@
 body.itv-v2-header-footer {
+
+    &:not(.admin-bar) {
+      margin-top: 0px !important;
+    }
+
     #page {
         // padding-top: 0px;
     }
