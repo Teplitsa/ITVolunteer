@@ -263,6 +263,11 @@
     & > li {
       margin-right: 6px;
       white-space: nowrap;
+
+      a {
+        @include a-hover-underline;
+        color: $color-gray-dark-md;
+      }
     }
 
     & > li:not(:first-child) {

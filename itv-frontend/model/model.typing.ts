@@ -325,7 +325,10 @@ export interface ITaskState {
     sourceUrl: string;
   };
   result: string;
+  resultHtml: string;
   impact: string;
+  impactHtml: string;
+  contentHtml: string;
   references: string;
   referencesHtml: string;
   referencesList: Array<string>;

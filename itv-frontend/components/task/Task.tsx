@@ -17,7 +17,7 @@ export const status: Map<TaskStatusType, string> = new Map([
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
-  const { content, id: taskId, result, impact, referencesHtml, externalFileLinksList, files, cover } = useStoreState((state) => state.components.task);
+  const { content, id: taskId, resultHtml, impactHtml, referencesHtml, externalFileLinksList, files, cover } = useStoreState((state) => state.components.task);
 
   if(!taskId) {
     return null
@@ -36,17 +36,17 @@ const Task: React.FunctionComponent = (): ReactElement => {
           </div>
           }
 
-          {!!result && String(result).trim().length > 0 &&
+          {!!resultHtml && String(resultHtml).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Какой результат ожидаем</h3>
-            <div className="task-body-text__section-content">{result}</div>
+            <div className="task-body-text__section-content">{resultHtml}</div>
           </div>
           }
 
-          {!!impact && String(impact).trim().length > 0 &&
+          {!!impactHtml && String(impactHtml).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Какую пользу принесет решение задачи</h3>
-            <div className="task-body-text__section-content">{impact}</div>
+            <div className="task-body-text__section-content">{impactHtml}</div>
           </div>
           }
 

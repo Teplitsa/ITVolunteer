@@ -260,7 +260,9 @@ export const WizardHelpModal = (props: IWizardScreenProps) => {
         <div className="wizard-help-modal__path-wrapper">
           <ul className="wizard-help-modal__path">
 
-            <li>Справочный центр</li>
+            <li>
+              <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">Справочный центр</a>
+            </li>
 
             {!!helpPageState.helpCategories &&
             <li>{_.get(helpPageState.helpCategories, "nodes.0.name", "")}</li>
