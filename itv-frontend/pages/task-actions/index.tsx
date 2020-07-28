@@ -156,7 +156,9 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         <UploadTaskFilesScreen />
         <SelectTaskTagsScreen />
         <SelectTaskNgoTagsScreen />
+        {/*
         <SelectTaskPreferredDoerScreen />
+        */}
         <SelectTaskRewardScreen />
         <SelectTaskPreferredDurationScreen />
         <SelectTaskCoverScreen />

@@ -228,7 +228,9 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         <UploadTaskFilesScreen />
         <SelectTaskTagsScreen />
         <SelectTaskNgoTagsScreen />
+        {/*
         <SelectTaskPreferredDoerScreen />
+        */}
         <SelectTaskRewardScreen />
         <SelectTaskPreferredDurationScreen />
         <SelectTaskCoverScreen />
