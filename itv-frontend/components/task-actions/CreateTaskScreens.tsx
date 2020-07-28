@@ -437,7 +437,7 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
           isRequired={true}
           {...props}
         >
-          <WizardMultiSelectField {...props} 
+          <WizardSelectField {...props} 
             name="ngoTags"
             selectOptions={ngoTagList.map((term: any) => {return {
               value: term.term_id, 
@@ -623,6 +623,8 @@ export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
         >
           <WizardUploadImageField {...props} 
             name="cover"
+            description="Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”. Поддерживаются файлы форматов .jpg и .png"
+            acceptFileFormat=".jpg,.png"
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />

@@ -731,6 +731,8 @@ export interface IWizardScreenProps {
   isMultiple?: boolean;
   helpPageSlug?: string;
   formFieldNameList?: Array<string>;
+  description?: string;
+  acceptFileFormat?: string;
 }
 
 export interface IWizardInputProps {

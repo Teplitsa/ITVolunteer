@@ -313,7 +313,8 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
 
   return (
     <div className="wizard-field">
-      <Field 
+      <Field
+        {...props}
         name={props.name} 
         placeholder={props.placeholder} 
         handleInput={handleInput} 
@@ -585,7 +586,8 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
   const [isFileUploading, setIsFileUploading] = useState(false)
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
-  const fieldDescription = "Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”"
+  const fieldDescription = _.get(props, "description", "Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”")
+  const acceptFileFormat = _.get(props, "acceptFileFormat", "")  
 
   useEffect(() => {
     let val = _.get(formData, props.name, null)
@@ -663,7 +665,7 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
 
   return (
     <div className="wizard-upload">
-      <input type="file" onChange={handleFileChange} title="" multiple={!!props.isMultiple} />
+      <input type="file" onChange={handleFileChange} title="" multiple={!!props.isMultiple} accept={acceptFileFormat} />
       <div className="wizard-upload__inner">
         <div className="wizard-upload__box">
           {!isFileUploading && !files.length &&

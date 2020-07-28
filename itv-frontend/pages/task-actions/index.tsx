@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import { useRouter } from 'next/router'
 import Router from 'next/router'
 import * as _ from "lodash"
 
@@ -20,6 +19,8 @@ import Wizard from "../../components/Wizard";
 import * as utils from "../../utilities/utilities"
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
+  const { isLoggedIn, token } = useStoreState((state) => state.session);
+
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const step = useStoreState((state) => state.components.createTaskWizard.step)
@@ -38,10 +39,23 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     setWizardName("createTaskWizard");
     loadTaxonomyData()
     loadWizardData()
-  }, [])  
+  }, [])
 
   useEffect(() => {
-  }, [step]) 
+    console.log("isLoggedIn:", isLoggedIn)
+    console.log("token:", token)
+
+    if(!token) {
+      return
+    }
+
+    if(isLoggedIn) {
+      return
+    }
+
+    Router.push("/tasks/publish/")
+
+  }, [isLoggedIn, token]) 
 
   useEffect(() => {
     // console.log("isNeedReset:", isNeedReset)
@@ -56,6 +70,10 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, [isNeedReset, isPreventReset]) 
 
   function handleCompleteWizard() {
+    if(!isLoggedIn) {
+      return
+    }
+
     const submitFormData = new FormData(); 
     for(let name in formData) {
       let value;

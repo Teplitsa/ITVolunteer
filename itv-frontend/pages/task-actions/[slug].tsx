@@ -23,6 +23,7 @@ import Wizard from "../../components/Wizard";
 import * as utils from "../../utilities/utilities"
 
 const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
+  const { isLoggedIn, token, user } = useStoreState((state) => state.session);
   const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
@@ -43,6 +44,27 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   useEffect(() => {
     setTaskState(task)
   }, [task])  
+
+  useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn)
+    console.log("token:", token)
+    console.log("task.author:", task.author)
+
+    if(!token) {
+      return
+    }
+
+    if(!task.databaseId) {
+      return
+    }
+
+    if(isLoggedIn && task.author.databaseId === user.databaseId) {
+      return
+    }
+
+    Router.push("/tasks/publish/")
+
+  }, [isLoggedIn, token, task]) 
 
   useEffect(() => {
     // console.log("task:", taskState)

@@ -285,9 +285,9 @@
 
 // form elements
 @mixin wizard-field-input {
-    @include text;
-    @include placeholder-color($color-gray-light-sm);
-    color: $color-gray-dark-md;
+    @include text-light;
+    @include placeholder-color($color-gray-dark-md);
+    color: $color-gray-dark-xl;
     background: $color-white;
     border: 1px solid $color-gray-light-lg;
     box-sizing: border-box;
