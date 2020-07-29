@@ -23,6 +23,8 @@ import removeFile from "../../assets/img/icon-wizard-remove-file.svg";
 
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
+  const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
+  const login = useStoreActions((actions) => actions.session.login);  
   const showScreenHelpModalState = useStoreState((state) => state.components.createTaskWizard.showScreenHelpModalState)
 
   const defaultProps = {
@@ -31,6 +33,20 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
   props = {...defaultProps, ...props}
 
   // console.log("[WizardScreen] props.screenName:", props.screenName)
+
+  useEffect(() => {
+    console.log("run login in wizard...");
+
+    if (!process.browser) {
+      return;
+    }
+
+    if (isLoggedIn) {
+      return;
+    }
+
+    login({ username: "", password: "" });
+  }, []);
 
   return (
     <WithGlobalScripts>

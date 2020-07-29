@@ -79,6 +79,7 @@ export interface ISessionModel
     ISessionThunks {}
 
 export interface ISessionState {
+  isLoaded: boolean;
   token: ISessionToken;
   user: ISessionUser;
   validToken?: Computed<ISessionModel, string>;
@@ -115,6 +116,7 @@ export interface ISessionUser {
 
 export interface ISessionActions {
   setState: Action<ISessionModel, ISessionState>;
+  setIsLoaded: Action<ISessionState, boolean>;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
 }

@@ -23,7 +23,7 @@ import Wizard from "../../components/Wizard";
 import * as utils from "../../utilities/utilities"
 
 const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
-  const { isLoggedIn, token, user } = useStoreState((state) => state.session);
+  const { isLoggedIn, token, user, isLoaded: isSessionLoaded } = useStoreState((state) => state.session);
   const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
@@ -47,10 +47,9 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 
   useEffect(() => {
     console.log("isLoggedIn:", isLoggedIn)
-    console.log("token:", token)
-    console.log("task.author:", task.author)
+    console.log("isSessionLoaded:", isSessionLoaded)
 
-    if(!token) {
+    if(!isSessionLoaded) {
       return
     }
 
@@ -64,7 +63,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 
     Router.push("/tasks/publish/")
 
-  }, [isLoggedIn, token, task]) 
+  }, [isLoggedIn, isSessionLoaded, task]) 
 
   useEffect(() => {
     // console.log("task:", taskState)
