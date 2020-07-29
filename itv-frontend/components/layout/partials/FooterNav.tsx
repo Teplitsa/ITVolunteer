@@ -16,6 +16,8 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
             <ul className="submenu">
               <li><a href="/about">О проекте</a></li>
               <li><a href="/conditions">Правила участия</a></li>
+              <li><Link href="/paseka"><a>Пасека</a></Link></li>
+              <li><Link href="/nagrady"><a>Награды</a></Link></li>
               <li><a href="/news">Новости</a></li>
               <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
               <li><a href="/contacts">Контакты</a></li>
