@@ -91,7 +91,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               </a>
               <ul className="submenu">
                 <li>
-                  <a href="/about">Что такое ИТВ?</a>
+                  <a href="/about">О проекте</a>
                 </li>
                 <li>
                   <a href="/conditions">Правила участия</a>

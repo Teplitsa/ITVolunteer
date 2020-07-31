@@ -22,9 +22,9 @@ import cloudUpload from "../../assets/img/icon-wizard-cloud-upload.svg";
 import removeFile from "../../assets/img/icon-wizard-remove-file.svg";
 
 export const WizardScreen = ({ children, ...props }): ReactElement => {
-  const showScreenHelpModalState = useStoreState(
-    (state) => state.components.createTaskWizard.showScreenHelpModalState
-  );
+  const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
+  const login = useStoreActions((actions) => actions.session.login);  
+  const showScreenHelpModalState = useStoreState((state) => state.components.createTaskWizard.showScreenHelpModalState)
 
   const defaultProps = {
     isShowHeader: true,
@@ -33,6 +33,20 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
   props = { ...defaultProps, ...props };
 
   // console.log("[WizardScreen] props.screenName:", props.screenName)
+
+  useEffect(() => {
+    console.log("run login in wizard...");
+
+    if (!process.browser) {
+      return;
+    }
+
+    if (isLoggedIn) {
+      return;
+    }
+
+    login({ username: "", password: "" });
+  }, []);
 
   return (
     <WithGlobalScripts>
@@ -255,7 +269,9 @@ export const WizardHelpModal = (props: IWizardScreenProps) => {
         <div className="wizard-help-modal__path-wrapper">
           <ul className="wizard-help-modal__path">
 
-            <li>Справочный центр</li>
+            <li>
+              <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">Справочный центр</a>
+            </li>
 
             {!!helpPageState.helpCategories &&
             <li>{_.get(helpPageState.helpCategories, "nodes.0.name", "")}</li>
@@ -308,11 +324,12 @@ export const WizardLimitedTextFieldWithHelp = ({field: Field, ...props}) => {
   return (
     <div className="wizard-field">
       <Field
-        name={props.name}
-        placeholder={props.placeholder}
-        handleInput={handleInput}
-        inputUseRef={inputUseRef}
-        value={fieldValue}
+        {...props}
+        name={props.name} 
+        placeholder={props.placeholder} 
+        handleInput={handleInput} 
+        inputUseRef={inputUseRef} 
+        value={fieldValue} 
         selectOptions={props.selectOptions}
         customOptions={props.customOptions}
         isMultiple={props.isMultiple}
@@ -623,7 +640,8 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
   const [isFileUploading, setIsFileUploading] = useState(false)
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
-  const fieldDescription = "Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”"
+  const fieldDescription = _.get(props, "description", "Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”")
+  const acceptFileFormat = _.get(props, "acceptFileFormat", "")  
 
   useEffect(() => {
     let val = _.get(formData, props.name, null);
@@ -701,7 +719,7 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
 
   return (
     <div className="wizard-upload">
-      <input type="file" onChange={handleFileChange} title="" multiple={!!props.isMultiple} />
+      <input type="file" onChange={handleFileChange} title="" multiple={!!props.isMultiple} accept={acceptFileFormat} />
       <div className="wizard-upload__inner">
         <div className="wizard-upload__box">
           {!isFileUploading && !files.length &&

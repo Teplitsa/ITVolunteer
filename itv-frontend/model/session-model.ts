@@ -34,6 +34,7 @@ const sessionTokenState: ISessionToken = {
 };
 
 const sessionState: ISessionState = {
+  isLoaded: false,
   user: sessionUserState,
   token: sessionTokenState,
   validToken: computed(
@@ -103,6 +104,9 @@ const sessionActions: ISessionActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
+  setIsLoaded: action((state, payload) => {
+    state.isLoaded = payload;
+  }),
   setSubscribeTaskList: action((state, payload) => {
       state.user.subscribeTaskList = payload
   }),
@@ -135,7 +139,7 @@ const sessionActions: ISessionActions = {
 };
 
 const sessionThunks: ISessionThunks = {
-  login: thunk(async ({ setState }, { username, password }) => {
+  login: thunk(async ({ setState, setIsLoaded }, { username, password }) => {
     const { request } = await import("graphql-request");
     const { v4: uuidv4 } = await import("uuid");
     const loginQuery: string = graphqlQuery.login;
@@ -161,20 +165,27 @@ const sessionThunks: ISessionThunks = {
 
       if (responseStatus === "fail") {
         console.error(stripTags(responseMessage));
+        console.error("set session isLoaded on fail");
 
         setState({
           token: { timestamp: Date.now(), authToken: null, refreshToken: null },
           user: sessionUserState,
+          isLoaded: true,
         });        
 
       } else {
+        console.error("set session isLoaded on ok");
+
         setState({
           token: { timestamp: Date.now(), authToken, refreshToken },
           user,
+          isLoaded: true,
         });
       }
 
     } catch (error) {
+      console.error("set session isLoaded on exception");
+      setIsLoaded(true)
       console.error(error);
     }    
 

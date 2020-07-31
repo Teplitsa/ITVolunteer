@@ -23,6 +23,7 @@ import Wizard from "../../components/Wizard";
 import * as utils from "../../utilities/utilities"
 
 const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
+  const { isLoggedIn, token, user, isLoaded: isSessionLoaded } = useStoreState((state) => state.session);
   const router = useRouter()
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
@@ -43,6 +44,26 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   useEffect(() => {
     setTaskState(task)
   }, [task])  
+
+  useEffect(() => {
+    console.log("isLoggedIn:", isLoggedIn)
+    console.log("isSessionLoaded:", isSessionLoaded)
+
+    if(!isSessionLoaded) {
+      return
+    }
+
+    if(!task.databaseId) {
+      return
+    }
+
+    if(isLoggedIn && task.author.databaseId === user.databaseId) {
+      return
+    }
+
+    Router.push("/tasks/publish/")
+
+  }, [isLoggedIn, isSessionLoaded, task]) 
 
   useEffect(() => {
     // console.log("task:", taskState)
@@ -206,7 +227,9 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         <UploadTaskFilesScreen />
         <SelectTaskTagsScreen />
         <SelectTaskNgoTagsScreen />
+        {/*
         <SelectTaskPreferredDoerScreen />
+        */}
         <SelectTaskRewardScreen />
         <SelectTaskPreferredDurationScreen />
         <SelectTaskCoverScreen />

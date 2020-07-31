@@ -195,7 +195,7 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Например, «Разместить счётчик на сайте»" 
             howtoTitle="Как правильно дать название задачи"
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={50}
+            maxLength={150}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -226,7 +226,7 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Какая задача стоит перед IT-волонтером?" 
             howtoTitle="Как правильно составить описание задачи"
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi" 
-            maxLength={250}
+            maxLength={1000}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -257,7 +257,7 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Каково ваше видение завершенной задачи" 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={250}
+            maxLength={1000}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -288,7 +288,7 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Кому поможет проект, в котором будет помогать волонтер" 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={250}
+            maxLength={1000}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -319,7 +319,7 @@ export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
             placeholder={`Примеры или "референсы" позволят волонтеру значительно лучше понять ваш замысел`} 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={250}
+            maxLength={1000}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -350,7 +350,7 @@ export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) =>
             placeholder="Например, на Техническое задание или какие-то другие внешние файлы" 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={250}
+            maxLength={1000}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -437,7 +437,7 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
           isRequired={true}
           {...props}
         >
-          <WizardMultiSelectField {...props} 
+          <WizardSelectField {...props} 
             name="ngoTags"
             selectOptions={ngoTagList.map((term: any) => {return {
               value: term.term_id, 
@@ -524,7 +524,7 @@ export const CustomDeadlineDate = (props: IWizardScreenProps) => {
     // console.log("customDate:", customDate)
     // console.log("formData:", formData)
     let selectedValue = _.get(formData, props.name, "")
-    let isCustomDateSelected = selectedValue.match(/\d+-\d+-\d+/)
+    let isCustomDateSelected = selectedValue ? selectedValue.match(/\d+-\d+-\d+/) : false
 
     if(customDate && !isCustomDateSelected) {
       setCustomDate(null)
@@ -623,6 +623,8 @@ export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
         >
           <WizardUploadImageField {...props} 
             name="cover"
+            description="Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”. Поддерживаются файлы форматов .jpg и .png"
+            acceptFileFormat=".jpg,.png"
           />
         </WizardForm>
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />

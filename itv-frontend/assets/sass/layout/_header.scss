@@ -417,6 +417,7 @@
         .account-col {
           flex-wrap: wrap;
           flex-direction: column-reverse;
+          align-items: flex-start;
 
           &.logged-in {
             flex-direction: row-reverse;
@@ -440,7 +441,7 @@
               margin-left: 0px;
               padding: 5px 0px;
               font-size: 13px;
-              color: $color-gray-dark-md;
+              
               &:hover {
                 text-decoration: none;
                 color: $color-gray-dark-xl;

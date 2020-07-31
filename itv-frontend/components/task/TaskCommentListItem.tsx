@@ -48,7 +48,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
         <div className="comment-body">
           <time>
             {getTheDate({
-              dateString: new Date(utils.itvWpDateTimeToDate(dateGmt)).toISOString(),
+              dateString: dateGmt,
               stringFormat: "dd.MM.yyyy в HH:mm",
             })}
           </time>

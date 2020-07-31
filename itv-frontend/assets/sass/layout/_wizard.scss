@@ -199,3 +199,10 @@
     transition: all 0.15s linear;
   }
 }
+
+// mobile
+@include media-breakpoint-down(md) {
+  .wizard-screen {
+    height: auto;
+  }
+}

@@ -41,7 +41,7 @@ export const getTheDate = ({
   stringFormat = "do MMMM Y",
 }): string => {
   try {
-    return format(new Date(dateString), stringFormat, {
+    return format(itvWpDateTimeToDate(dateString), stringFormat, {
       locale: ru,
     });
   } catch (e) {
@@ -59,7 +59,13 @@ export const formatDate = ({
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-  return moment(wpDateTime + "Z").toDate();
+  if(wpDateTime && !wpDateTime.match(/.*[Z]{1}$/)) {
+    if(wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
+      wpDateTime += "Z"
+    }
+  }
+
+  return moment(wpDateTime).toDate();
 }
 
 export const getTheIntervalToNow = ({
@@ -68,7 +74,7 @@ export const getTheIntervalToNow = ({
   fromDateString: string;
 }): string => {
   try {
-    return formatDistanceToNow(new Date(fromDateString), {
+    return formatDistanceToNow(itvWpDateTimeToDate(fromDateString), {
       locale: ru,
       addSuffix: true,
     });

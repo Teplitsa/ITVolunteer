@@ -68,13 +68,11 @@
                   }              
                 }  
 
-                @include dd-submenu;
-
                 .submenu {
                   text-align: left;
-                  width: 186px;
-                  left: 0px;
-                  top: 24px;
+                  top: -10px;
+                  left: auto;
+                  right: 0;
 
                   a {
                     margin-left: 0px;

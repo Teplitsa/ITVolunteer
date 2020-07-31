@@ -284,3 +284,20 @@ function ajax_upload_file() {
   wp_die(json_encode($res));
 }
 add_action('wp_ajax_upload-file', 'ajax_upload_file');
+
+function itv_urls2links($text) {
+  preg_match_all("/(http[s]?:\/\/\S*)/", $text, $matches);
+
+  $offset = 0;
+  foreach($matches[1] as $url) {
+    $url_len = strlen($url);
+    $url_pos = strpos($text, $url, $offset);
+    $a_tag = "<a href=\"$url\" target=\"_blank\">$url</a>";
+    $a_tag_len = strlen($a_tag);
+
+    $text = substr_replace($text, $a_tag, $url_pos, $url_len);
+    $offset = $url_pos + $a_tag_len;
+  }
+
+  return $text;
+}

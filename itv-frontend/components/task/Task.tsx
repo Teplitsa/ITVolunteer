@@ -17,7 +17,7 @@ export const status: Map<TaskStatusType, string> = new Map([
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
-  const { content, id: taskId, result, impact, referencesHtml, externalFileLinksList, files, cover } = useStoreState((state) => state.components.task);
+  const { content, id: taskId, resultHtml, impactHtml, referencesHtml, externalFileLinksList, files, cover } = useStoreState((state) => state.components.task);
 
   if(!taskId) {
     return null
@@ -29,28 +29,28 @@ const Task: React.FunctionComponent = (): ReactElement => {
         <TaskHeader />
         <div className="task-body-text">
 
-          {!!String(content).trim() &&
+          {!!content && String(content).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Суть задачи</h3>
             <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: content }} />
           </div>
           }
 
-          {!!String(result).trim() &&
+          {!!resultHtml && String(resultHtml).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Какой результат ожидаем</h3>
-            <div className="task-body-text__section-content">{result}</div>
+            <div className="task-body-text__section-content">{resultHtml}</div>
           </div>
           }
 
-          {!!String(impact).trim() &&
+          {!!impactHtml && String(impactHtml).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Какую пользу принесет решение задачи</h3>
-            <div className="task-body-text__section-content">{impact}</div>
+            <div className="task-body-text__section-content">{impactHtml}</div>
           </div>
           }
 
-          {!!String(referencesHtml).trim() &&
+          {!!referencesHtml && String(referencesHtml).trim().length > 0 &&
           <div className="task-body-text__section">
             <h3>Хорошие примеры реализации</h3>
             <div className="task-body-text__section-content" dangerouslySetInnerHTML={{ __html: referencesHtml }} />

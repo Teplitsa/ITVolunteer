@@ -187,9 +187,8 @@
 
     .task-cover {
       width: 100%;
-      height: 216px;
+      max-height: 216px;
       border-radius: 16px;
-      background-color: #c4c4c4;
       margin-top: 12px;
       display: flex;
       align-items: center;

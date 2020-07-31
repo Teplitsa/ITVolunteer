@@ -111,10 +111,34 @@ function itv_register_task_graphql_fields() {
                     return get_post_meta($task->ID, 'result', true);
                 },
             ],
+            'resultHtml' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    $text = get_post_meta($task->ID, 'result', true);
+                    $text = itv_urls2links($text);
+                    return $text;
+                },
+            ],
             'impact' => [
                 'type'        => 'String',
                 'resolve'     => function( $task, $args, $context ) {
                     return get_post_meta($task->ID, 'impact', true);
+                },
+            ],
+            'impactHtml' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    $text = get_post_meta($task->ID, 'impact', true);
+                    $text = itv_urls2links($text);
+                    return $text;
+                },
+            ],
+            'contentHtml' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    $text = $task->body;
+                    $text = itv_urls2links($text);
+                    return $text;
                 },
             ],
             'references' => [
@@ -127,18 +151,7 @@ function itv_register_task_graphql_fields() {
                 'type'        => 'String',
                 'resolve'     => function( $task, $args, $context ) {
                     $refs = get_post_meta($task->ID, 'references', true);
-                    preg_match_all("/(http[s]?:\/\/\S*)/", $refs, $matches);
-
-                    $offset = 0;
-                    foreach($matches[1] as $url) {
-                      $url_len = strlen($url);
-                      $url_pos = strpos($refs, $url, $offset);
-                      $a_tag = "<a href=\"$url\" target=\"_blank\">$url</a>";
-                      $a_tag_len = strlen($a_tag);
-
-                      $refs = substr_replace($refs, $a_tag, $url_pos, $url_len);
-                      $offset = $url_pos + $a_tag_len;
-                    }
+                    $refs = itv_urls2links($refs);
                     return $refs;
                 },
             ],

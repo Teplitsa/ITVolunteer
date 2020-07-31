@@ -1,4 +1,9 @@
 body.itv-v2-header-footer {
+
+    &:not(.admin-bar) {
+      margin-top: 0px !important;
+    }
+
     #page {
         // padding-top: 0px;
     }
@@ -131,6 +136,7 @@ body.itv-v2-header-footer {
 
         a {
           @include text-sm-bold;
+          color: $color-main;
 
           &:first-child {
             margin-left: $base * 4;
@@ -446,6 +452,7 @@ body.itv-v2-header-footer {
         .account-col {
           flex-wrap: wrap;
           flex-direction: column-reverse;
+          align-items: flex-start;
 
           &.logged-in {
             flex-direction: row-reverse;
@@ -470,7 +477,7 @@ body.itv-v2-header-footer {
               margin-left: 0px;
               padding: 5px 0px;
               font-size: 13px;
-              color: $color-gray-dark-md;
+              
               &:hover {
                 text-decoration: none;
                 color: $color-gray-dark-xl;
