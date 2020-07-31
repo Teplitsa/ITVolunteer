@@ -16,16 +16,16 @@ class ItvReviews {
 		return ItvReviews::$_instance;
 	}
 	
-	public function add_review($author_id, $doer_id, $task_id, $message, $rating) {
+	public function add_review($author_id, $doer_id, $task_id, $message, $rating, $communication_rating = 0) {
 		global $wpdb;
 		
 		$wpdb->query(
 				$wpdb->prepare(
-						"
-						INSERT INTO $this->db_table
-						SET author_id = %d, doer_id = %d, task_id = %d, message = %s, rating = %d, time_add = NOW()
-						",
-						$author_id, $doer_id, $task_id, $message, (int)$rating
+					"
+					INSERT INTO $this->db_table
+					SET author_id = %d, doer_id = %d, task_id = %d, message = %s, rating = %d, communication_rating = %d, time_add = NOW()
+					",
+					$author_id, $doer_id, $task_id, $message, (int) $rating, (int) $communication_rating
 				)
 		);
 		ItvLog::instance()->log_review_action(ItvLog::$ACTION_REVIEW_FOR_DOER, $author_id, $doer_id, $task_id, $rating);
@@ -142,16 +142,16 @@ class ItvReviewsAuthor {
 		return ItvReviewsAuthor::$_instance;
 	}
 
-	public function add_review($author_id, $doer_id, $task_id, $message, $rating) {
+	public function add_review($author_id, $doer_id, $task_id, $message, $rating, $communication_rating = 0) {
 		global $wpdb;
 	
 		$wpdb->query(
 				$wpdb->prepare(
-						"
-						INSERT INTO $this->db_table
-						SET author_id = %d, doer_id = %d, task_id = %d, message = %s, rating = %d, time_add = NOW()
-						",
-						$author_id, $doer_id, $task_id, $message, (int)$rating
+					"
+					INSERT INTO $this->db_table
+					SET author_id = %d, doer_id = %d, task_id = %d, message = %s, rating = %d, communication_rating = %d, time_add = NOW()
+					",
+					$author_id, $doer_id, $task_id, $message, (int) $rating, (int) $communication_rating
 				)
 		);
 		ItvLog::instance()->log_review_action(ItvLog::$ACTION_REVIEW_FOR_AUTHOR, $doer_id, $author_id, $task_id, $rating);

@@ -556,13 +556,7 @@ function ajax_suggest_close_task() {
 		)));
 	}
 
-	$message = filter_var(trim(isset($_POST['message']) ? $_POST['message'] : ''), FILTER_SANITIZE_STRING);
-	if(!$message) {
-		wp_die(json_encode(array(
-		'status' => 'fail',
-		'message' => __('<strong>Error:</strong> empty message.', 'tst'),
-		)));
-	}
+	$message = filter_var(trim($_POST['message'] ?? ''), FILTER_SANITIZE_STRING);
 	
     $timeline = ITV\models\TimelineModel::instance();
     if($task->post_author == get_current_user_id()) {

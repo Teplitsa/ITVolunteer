@@ -530,8 +530,9 @@ function ajax_leave_review() {
 		)));
 	}
 
-	$rating = (int)trim(isset($_POST['review-rating']) ? $_POST['review-rating'] : '');
-	if(!$rating) {
+	$rating = (int) trim($_POST['review-rating'] ?? '');
+	$communication_rating = (int) trim($_POST['communication-rating'] ?? '');
+	if(!($rating || $communication_rating)) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
 		'message' => __('Please rate doer work result', 'tst'),
@@ -546,7 +547,7 @@ function ajax_leave_review() {
 			'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
 			)));
 		}
-		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
+		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
 	}
 
 	//
@@ -623,8 +624,9 @@ function ajax_leave_review_author() {
 		)));
 	}
 
-	$rating = (int)trim(isset($_POST['review-rating']) ? $_POST['review-rating'] : '');
-	if(!$rating) {
+	$rating = (int) trim($_POST['review-rating'] ?? '');
+	$communication_rating = (int) trim($_POST['communication-rating'] ?? '');
+	if(!($rating || $communication_rating)) {
 		wp_die(json_encode(array(
 			'status' => 'fail',
 			'message' => __('Please rate doer work result', 'tst'),
@@ -639,7 +641,7 @@ function ajax_leave_review_author() {
 				'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
 			)));
 		}
-		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating);
+		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
 	}
 	
 	//
@@ -1292,6 +1294,7 @@ function itv_get_user_in_gql_format($user) {
     
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
+        'databaseId' => $user->ID,
         'fullName' => tst_get_member_name( $user->ID ),
         'name' => $user->user_login,
         'username' => $user->user_login,
