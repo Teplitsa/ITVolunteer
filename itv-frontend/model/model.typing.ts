@@ -554,7 +554,7 @@ export interface ITaskThunks {
   suggestCloseTaskRequest: Thunk<
     ITaskActions,
     {
-      suggestComment: string;
+      suggestComment?: string;
       callbackFn?: () => void;
     }
   >;
@@ -752,13 +752,13 @@ export interface IWizardInputProps {
 }
 
 export interface IWizardActions {
+  setWizardName: Action<IWizardState, string>;
   setState: Action<IWizardState, IWizardState>;
   setFormData: Action<IWizardState, object>;
   setStep: Action<IWizardState, number>;
-  setShowScreenHelpModalState: Action<IWizardState, object>;
-  resetWizard: Action<IWizardState>;
-  setNeedReset: Action<IWizardState, boolean>;
-  setWizardName: Action<IWizardState, string>;
+  setShowScreenHelpModalState?: Action<IWizardState, object>;
+  resetWizard?: Action<IWizardState>;
+  setNeedReset?: Action<IWizardState, boolean>;
 }
 
 export interface IWizardThunks {
@@ -794,22 +794,55 @@ export interface ICreateTaskWizardModel
     ICreateTaskWizardActions,
     ICreateTaskWizardThunks {}
 
+export interface ICompleteTaskWizardPartner {
+  databaseId: number;
+  name: string;
+}
+
+export interface ICompleteTaskWizardUser {
+  databaseId: number;
+  name: string;
+  isAuthor: boolean;
+}
+
+export interface ICompleteTaskWizardMeta {
+  databaseId: number;
+  title?: string;
+}
+
 export interface ICompleteTaskWizardState extends IWizardState {
-  taskId: string;
-  taskDatabaseId: number;
+  user: ICompleteTaskWizardUser;
+  partner: ICompleteTaskWizardPartner;
+  task: ICompleteTaskWizardMeta;
 }
 
 export interface ICompleteTaskWizardActions extends IWizardActions {
-  setTaskId: Action<
-    ICompleteTaskWizardState,
+  setInitState: Action<
+    IWizardState,
     {
-      taskId: string;
-      taskDatabaseId: number;
+      user: ICompleteTaskWizardUser;
+      partner: ICompleteTaskWizardPartner;
+      task: ICompleteTaskWizardMeta;
+    }
+  >;
+  resetFormData: Action<ICompleteTaskWizardState>;
+  resetStep: Action<ICompleteTaskWizardState>;
+}
+
+export interface ICompleteTaskWizardThunks extends IWizardThunks {
+  loadWizardData: Thunk<ICompleteTaskWizardActions>;
+  newReviewRequest: Thunk<
+    ICompleteTaskWizardActions,
+    {
+      user: ICompleteTaskWizardUser;
+      partner: ICompleteTaskWizardPartner;
+      task: ICompleteTaskWizardMeta;
+      reviewRating: number;
+      communicationRating: number;
+      reviewText: string;
     }
   >;
 }
-
-export interface ICompleteTaskWizardThunks extends IWizardThunks {}
 
 export interface ICompleteTaskWizardModel
   extends ICompleteTaskWizardState,

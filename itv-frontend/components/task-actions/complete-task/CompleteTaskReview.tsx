@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { useStoreState } from "../../../model/helpers/hooks";
 import {
   WizardScreen,
   WizardForm,
@@ -7,10 +8,14 @@ import {
 } from "../../layout/WizardScreen";
 
 const CompleteTaskReview = (screenProps): ReactElement => {
+  const isAuthor = useStoreState(
+    (state) => state.components.completeTaskWizard.user.isAuthor
+  );
   const props = {
     ...screenProps,
     screenName: "Review",
     onNextClick: () => {
+      props.onWizardComplete();
       props.setStep(props.step + 1);
     },
   };
@@ -19,8 +24,12 @@ const CompleteTaskReview = (screenProps): ReactElement => {
     <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
-          title="Оставьте ваш отзыв о волонтере"
-          isRequired={false}
+          title={
+            isAuthor
+              ? "Оставьте ваш отзыв о волонтере"
+              : "Оставьте ваш отзыв о заказчике"
+          }
+          isRequired={true}
           {...props}
         >
           <WizardTextField

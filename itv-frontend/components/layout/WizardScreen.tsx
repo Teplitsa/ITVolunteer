@@ -75,8 +75,8 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
     <div className="wizard-bottom-bar">
       <div className="wizard-bottom-bar__container">
         <div className="wizard-bottom-bar__title">
-          {!!props.icon && <img src={props.icon} alt="icon" />}
-          {!!props.title && <span>{props.title}</span>}
+          {props.icon && props.title && <img src={props.icon} alt="icon" />}
+          {props.title && <span>{props.title}</span>}
         </div>
         <div>
           {/*
@@ -744,7 +744,7 @@ export const WizardRating = (props: IWizardInputProps): ReactElement => {
   const formData = useStoreState(
     (state) => state.components.completeTaskWizard.formData
   );
-  const [rating, setRating] = useState<number>(null);
+  const [rating, setRating] = useState<number>(formData[props.name] ?? null);
   const setFormData = useStoreActions(
     (actions) => actions.components.completeTaskWizard.setFormData
   );

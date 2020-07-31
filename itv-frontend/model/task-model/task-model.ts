@@ -276,8 +276,6 @@ const taskThunks: ITaskThunks = {
   }),
   suggestCloseTaskRequest: thunk(
     async (actions, { suggestComment, callbackFn }, { getStoreState }) => {
-      if (!suggestComment) return;
-
       const {
         session: { validToken: token },
         components: {
@@ -287,9 +285,12 @@ const taskThunks: ITaskThunks = {
       const action = "suggest-close-task";
       const formData = new FormData();
 
-      formData.append("message", suggestComment);
       formData.append("task-id", String(taskId));
       formData.append("auth_token", String(token));
+
+      if (suggestComment) {
+        formData.append("message", suggestComment);
+      }
 
       try {
         const result = await fetch(getAjaxUrl(action), {

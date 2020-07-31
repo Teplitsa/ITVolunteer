@@ -1,5 +1,6 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import Router from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import CompleteTaskCongratulations from "../components/task-actions/complete-task/CompleteTaskCongratulations";
@@ -10,30 +11,54 @@ import CompleteTaskThanks from "../components/task-actions/complete-task/Complet
 import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
-  const formData = useStoreState(
-    (state) => state.components.completeTaskWizard.formData
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const { step, formData, user, partner, task } = useStoreState(
+    (state) => state.components.completeTaskWizard
   );
-  const setFormData = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setFormData
-  );
-  const step = useStoreState(
-    (state) => state.components.completeTaskWizard.step
-  );
-  const setStep = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setStep
-  );
-  const loadWizardData = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.loadWizardData
-  );
-  const saveWizardData = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.saveWizardData
-  );
+  const {
+    setStep,
+    setFormData,
+    resetFormData,
+    loadWizardData,
+    saveWizardData,
+    newReviewRequest,
+  } = useStoreActions((actions) => actions.components.completeTaskWizard);
 
   useEffect(() => {
     loadWizardData();
+    setLoading(false);
   }, []);
 
-  useEffect(() => {}, [step]);
+  useEffect(() => {
+    if (!isLoading && (!user.name || !partner.name || !task.databaseId)) {
+      Router.push("/tasks");
+    }
+  }, [isLoading, user, partner, task]);
+
+  function handleCompleteWizard() {
+    const { reviewRating, communicationRating, reviewText } = formData as {
+      reviewRating: number;
+      communicationRating: number;
+      reviewText: string;
+    };
+    newReviewRequest({
+      reviewRating,
+      communicationRating,
+      reviewText,
+      user,
+      partner,
+      task,
+    });
+    resetFormData();
+    saveWizardData();
+  }
+
+  function handleCancelWizard(event) {
+    event.preventDefault();
+    resetFormData();
+    saveWizardData();
+    Router.push("/tasks");
+  }
 
   return (
     <>
@@ -44,6 +69,8 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         setStep={setStep}
         setFormData={setFormData}
         saveWizardData={saveWizardData}
+        onWizardComplete={handleCompleteWizard}
+        onWizardCancel={handleCancelWizard}
       >
         <CompleteTaskCongratulations isIgnoreStepNumber={true} />
         <CompleteTaskQualityRating />

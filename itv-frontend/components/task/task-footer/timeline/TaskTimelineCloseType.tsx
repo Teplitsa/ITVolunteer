@@ -4,41 +4,79 @@ import {
   useStoreState,
   useStoreActions,
 } from "../../../../model/helpers/hooks";
-// import TaskTimelineDateSuggest from "./TaskTimelineDateSuggest";
-// import TaskTimelineSuggestComment from "./TaskTimelineSuggestComment";
-// import TaskTimelineOpenCloseSuggest from "./TaskTimelineOpenCloseSuggest";
+import TaskTimelineDateSuggest from "./TaskTimelineDateSuggest";
+import TaskTimelineSuggestComment from "./TaskTimelineSuggestComment";
+import TaskTimelineOpenCloseSuggest from "./TaskTimelineOpenCloseSuggest";
 
 const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
+  const { databaseId: userId, fullName: userName } = useStoreState(
+    (state) => state.session.user
+  );
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
   );
-  const { id, databaseId } = useStoreState((state) => state.components.task);
-
+  const {
+    databaseId,
+    title,
+    approvedDoer: { databaseId: partnerId, fullName: partnerName },
+  } = useStoreState((state) => state.components.task);
   const setCompleteTaskWizardState = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setTaskId
+    (actions) => actions.components.completeTaskWizard.setInitState
   );
+  const suggestCloseTaskRequest = useStoreActions(
+    (actions) => actions.components.task.suggestCloseTaskRequest
+  );
+  const [isOpenDateSuggest, setOpenDateSuggest] = useState<boolean>(false);
+  const [suggestedCloseDate, setSuggestedCloseDate] = useState<Date | null>(
+    null
+  );
+  const [isOpenDateSuggestComment, setOpenDateSuggestComment] = useState<
+    boolean
+  >(false);
+  const [isOpenCloseSuggest, setOpenCloseSuggest] = useState<boolean>(false);
+
   const completeTask = () => {
+    suggestCloseTaskRequest({});
     setCompleteTaskWizardState({
-      taskId: id,
-      taskDatabaseId: databaseId,
+      user: {
+        databaseId: userId,
+        name: userName,
+        isAuthor: isTaskAuthorLoggedIn,
+      },
+      partner: { databaseId: partnerId, name: partnerName },
+      task: { databaseId, title },
     });
+
     Router.push({
       pathname: "/task-complete",
     });
   };
 
-  // const [isOpenDateSuggest, setOpenDateSuggest] = useState<boolean>(false);
-  // const [suggestedCloseDate, setSuggestedCloseDate] = useState<Date | null>(
-  //   null
-  // );
-  // const [isOpenDateSuggestComment, setOpenDateSuggestComment] = useState<
-  //   boolean
-  // >(false);
-  // const [isOpenCloseSuggest, setOpenCloseSuggest] = useState<boolean>(false);
-
   return (
-    isTaskAuthorLoggedIn && (
-      <div className="details actions">
+    <div className="details actions">
+      {!isTaskAuthorLoggedIn && (
+        <a
+          href="#"
+          className={`action suggest-date ${
+            ((isOpenDateSuggest || isOpenDateSuggestComment) && "active") || ""
+          }`}
+          onClick={(event) => {
+            event.preventDefault();
+            if (isOpenDateSuggestComment) {
+              setOpenDateSuggestComment(false);
+            } else if (isOpenDateSuggest) {
+              setOpenDateSuggest(false);
+            } else {
+              setOpenCloseSuggest(false);
+              setOpenDateSuggest(true);
+            }
+          }}
+        >
+          Предложить новую дату
+        </a>
+      )}
+
+      {isTaskAuthorLoggedIn && (
         <a
           href="#"
           className="action close-task"
@@ -49,32 +87,9 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         >
           Закрыть задачу
         </a>
+      )}
 
-        {/* temporary disable the funciton
-
-      {!isTaskAuthorLoggedIn &&
-      <a
-        href="#"
-        className={`action suggest-date ${
-          ((isOpenDateSuggest || isOpenDateSuggestComment) && "active") || ""
-        }`}
-        onClick={(event) => {
-          event.preventDefault();
-          if (isOpenDateSuggestComment) {
-            setOpenDateSuggestComment(false);
-          } else if (isOpenDateSuggest) {
-            setOpenDateSuggest(false);
-          } else {
-            setOpenCloseSuggest(false);
-            setOpenDateSuggest(true);
-          }
-        }}
-      >
-        Предложить новую дату
-      </a>
-      }
-
-      <a
+      {/* <a
         href="#"
         className={`action close-task ${
           (isOpenCloseSuggest && "active") || ""
@@ -91,7 +106,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         }}
       >
         Закрыть задачу
-      </a>
+      </a> */}
 
       {isOpenDateSuggest && (
         <TaskTimelineDateSuggest
@@ -116,10 +131,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
       {isOpenCloseSuggest && (
         <TaskTimelineOpenCloseSuggest {...{ setOpenCloseSuggest }} />
       )}
-
-      */}
-      </div>
-    )
+    </div>
   );
 };
 

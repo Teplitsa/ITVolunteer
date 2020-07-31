@@ -149,4 +149,13 @@
       background-image: url("../../img/icon-arrow-right-green.svg");
     }
   }
+
+  &__leave-review {
+    margin: 15px 0;
+    .btn {
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 }

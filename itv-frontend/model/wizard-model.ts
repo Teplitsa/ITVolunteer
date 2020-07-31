@@ -139,8 +139,19 @@ const completeTaskWizardState: ICompleteTaskWizardState = {
   ...wizardState,
   ...{
     wizardName: "completeTaskWizard",
-    taskId: "",
-    taskDatabaseId: 0,
+    user: {
+      databaseId: 0,
+      name: "",
+      isAuthor: false,
+    },
+    partner: {
+      databaseId: 0,
+      name: "",
+    },
+    task: {
+      databaseId: 0,
+      title: "",
+    },
   },
 };
 
@@ -148,9 +159,8 @@ const completeTaskWizardActions: ICompleteTaskWizardActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
-  setTaskId: action((prevState, newState) => {
-    prevState.taskId = newState.taskId;
-    prevState.taskDatabaseId = newState.taskDatabaseId;
+  setInitState: action((prevState, { user, partner, task }) => {
+    Object.assign(prevState, { user, partner, task });
   }),
   setFormData: action((state, payload) => {
     state.formData = { ...state.formData, ...payload };
@@ -158,18 +168,11 @@ const completeTaskWizardActions: ICompleteTaskWizardActions = {
   setStep: action((state, payload) => {
     state.step = payload;
   }),
-  setShowScreenHelpModalState: action((state, payload) => {
-    state.showScreenHelpModalState = {
-      ...state.showScreenHelpModalState,
-      ...payload,
-    };
-  }),
-  resetWizard: action((state, payload) => {
-    state.step = 0;
+  resetFormData: action((state) => {
     state.formData = {};
   }),
-  setNeedReset: action((state, payload) => {
-    state.isNeedReset = payload;
+  resetStep: action((state) => {
+    state.step = 0;
   }),
   setWizardName: action((state, payload) => {
     state.wizardName = payload;
@@ -183,27 +186,79 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
         completeTaskWizard: { wizardName },
       },
     } = getStoreState() as IStoreModel;
-    const wizardData = storeJsLocalStorage.get(
-      "wizard." + wizardName + ".data"
-    );
-    if (!!wizardData) {
-      actions.setFormData(_.get(wizardData, "formData", {}));
-      actions.setStep(_.get(wizardData, "step", 0));
-      actions.setNeedReset(_.get(wizardData, "isNeedReset", false));
+    const wizardData = storeJsLocalStorage.get(`wizard.${wizardName}.data`);
+    if (wizardData) {
+      actions.setInitState({
+        user: wizardData.user ?? {},
+        partner: wizardData.partner ?? {},
+        task: wizardData.task ?? {},
+      });
+      actions.setFormData(wizardData.formData ?? {});
+      actions.setStep(wizardData.step ?? 0);
     }
   }),
   saveWizardData: thunk(async (actions, payload, { getStoreState }) => {
     const {
       components: {
-        completeTaskWizard: { wizardName, formData, step, isNeedReset },
+        completeTaskWizard: { wizardName, formData, step, user, partner, task },
       },
     } = getStoreState() as IStoreModel;
-    storeJsLocalStorage.set("wizard." + wizardName + ".data", {
-      formData: formData,
-      step: step,
-      isNeedReset: isNeedReset,
+    storeJsLocalStorage.set(`wizard.${wizardName}.data`, {
+      formData,
+      step,
+      user,
+      partner,
+      task,
     });
   }),
+  newReviewRequest: thunk(
+    async (
+      actions,
+      {
+        user,
+        partner,
+        task,
+        reviewRating,
+        communicationRating,
+        reviewText,
+      }
+    ) => {
+      const formData = new FormData();
+      formData.append("review-rating", String(reviewRating));
+      formData.append("communication-rating", String(communicationRating));
+      formData.append("review-message", reviewText);
+      formData.append("task-id", String(task.databaseId));
+
+      let action = "";
+
+      if (user.isAuthor) {
+        action = "leave-review";
+        formData.append("doer-id", String(partner.databaseId));
+      } else {
+        action = "leave-review-author";
+        formData.append("author-id", String(partner.databaseId));
+      }
+
+      try {
+        const result = await fetch(utils.getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(utils.stripTags(responseMessage));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
 };
 
 export const createTaskWizardModel: ICreateTaskWizardModel = {

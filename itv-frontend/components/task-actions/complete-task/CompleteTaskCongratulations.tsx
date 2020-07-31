@@ -1,7 +1,14 @@
 import { ReactElement } from "react";
+import { useStoreState } from "../../../model/helpers/hooks";
 import { WizardScreen } from "../../layout/WizardScreen";
 
 const CompleteTaskCongratulations = (screenProps): ReactElement => {
+  const isAuthor = useStoreState(
+    (state) => state.components.completeTaskWizard.user.isAuthor
+  );
+  const partnerName = useStoreState(
+    (state) => state.components.completeTaskWizard.partner.name
+  );
   const props = {
     ...screenProps,
     screenName: "Congratulations",
@@ -18,7 +25,10 @@ const CompleteTaskCongratulations = (screenProps): ReactElement => {
           Поздравляем с закрытием задачи!
         </h1>
         <div className="wizard-screen__subtitle">
-          Александр Гусев будет рад услышать отзыв о его работе
+          {partnerName}{" "}
+          {isAuthor
+            ? "будет рад(а) услышать отзыв о работе"
+            : "будет рад(а) услышать отзыв о его(её) задаче"}
         </div>
         <a
           href="#"

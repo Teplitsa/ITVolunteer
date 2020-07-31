@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import Router from "next/router";
 import { WizardScreen } from "../../layout/WizardScreen";
 
@@ -13,8 +13,6 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
       pathname: "/tasks",
     });
   };
-
-  //useEffect(() => () => props.setStep(1));
 
   return (
     <WizardScreen {...props} modifierClassNames={["wizard_complete-fireworks"]}>

@@ -1,4 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
+import Router from "next/router";
 import { IFetchResult, IUserNotifItem } from "../model/model.typing";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
@@ -85,6 +86,9 @@ function NotifItem({ notif, user }) {
   const removeNotifFromList = useStoreActions(
     (actions) => actions.components.userNotif.removeNotifFromList
   );
+  const setCompleteTaskWizardState = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setInitState
+  );
 
   function handleNotifItemClick(e) {
     removeNotifFromList(notif);
@@ -117,6 +121,18 @@ function NotifItem({ notif, user }) {
       );
   }
 
+  const completeTask = () => {
+    setCompleteTaskWizardState({
+      user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false },
+      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName },
+      task: { databaseId: notif.task.databaseId, title: notif.task.title },
+    });
+
+    Router.push({
+      pathname: "/task-complete",
+    });
+  };
+
   return (
     <div
       className={`notif-list__item ${
@@ -147,6 +163,16 @@ function NotifItem({ notif, user }) {
             <Link href="/tasks/[slug]" as={`/tasks/${notif.task.slug}`}>
               <a className="notif-list__item-task">{notif.task.title}</a>
             </Link>
+          )}
+
+          {notif.type === "post_feedback_taskauthor_to_taskdoer" && (
+            <div className="notif-list__leave-review">
+              <a href="#" className="btn btn_primary" onClick={
+                (event) => {
+                  event.preventDefault();
+                  completeTask();
+              }}>Оставить отзыв</a>
+            </div>
           )}
 
           <div className="notif-list__item-time">

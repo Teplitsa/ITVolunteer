@@ -88,6 +88,7 @@
     margin: 0 0 15px;
     @include screen-from(md) {
       margin: 0;
+      max-width: 50%;
     }
 
     & > img {
@@ -97,6 +98,12 @@
     & > span {
       @include text-sm-bold;
       color: $color-gray-dark-md;
+      @include screen-from(md) {
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 0 5px 0 0;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
@@ -558,7 +565,7 @@
     background: $color-white;
     border: 1px dashed $color-gray-light-md;
     position: relative;
-    border-radius: 10px;  
+    border-radius: 10px;
     width: 100%;
     min-height: 112px;
     // z-index: 2;
@@ -604,9 +611,9 @@
     @include wizard-file-item;
   }
 
-&__remove-file {
+  &__remove-file {
     cursor: pointer;
-}
+  }
 
   &__spinner {
     display: flex;
@@ -657,6 +664,5 @@
     &__title {
       margin-top: 24px;
     }
-
   }
 }

@@ -1,6 +1,10 @@
 import { ReactElement, useState } from "react";
-import TaskTimelineReviewForm from "./TaskTimelineReviewForm";
-import { useStoreState } from "../../../../model/helpers/hooks";
+import Router from "next/router";
+// import TaskTimelineReviewForm from "./TaskTimelineReviewForm";
+import {
+  useStoreState,
+  useStoreActions,
+} from "../../../../model/helpers/hooks";
 
 const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
   const approvedDoer = useStoreState(
@@ -12,10 +16,37 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
   const reviewForAuthor = useStoreState(
     (state) => state.components.task?.reviews?.reviewForAuthor
   );
+  const { databaseId, title } = useStoreState((state) => state.components.task);
   const { user, isTaskAuthorLoggedIn } = useStoreState(
     (state) => state.session
   );
-  const [isReviewFormShown, toggleReviewForm] = useState<boolean>(false);
+  const setCompleteTaskWizardState = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setInitState
+  );
+  // const [isReviewFormShown, toggleReviewForm] = useState<boolean>(false);
+
+  const writeReview = () => {
+    setCompleteTaskWizardState({
+      user: {
+        databaseId: isTaskAuthorLoggedIn
+          ? user.databaseId
+          : approvedDoer.databaseId,
+        name: isTaskAuthorLoggedIn ? user.fullName : approvedDoer.fullName,
+        isAuthor: isTaskAuthorLoggedIn,
+      },
+      partner: {
+        databaseId: isTaskAuthorLoggedIn
+          ? approvedDoer.databaseId
+          : user.databaseId,
+        name: isTaskAuthorLoggedIn ? approvedDoer.fullName : user.fullName,
+      },
+      task: { databaseId, title },
+    });
+
+    Router.push({
+      pathname: "/task-complete",
+    });
+  };
 
   return (
     ((approvedDoer?.id === user.id && !reviewForAuthor) ||
@@ -34,17 +65,18 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
             }`}
             onClick={(event) => {
               event.preventDefault();
-              toggleReviewForm(!isReviewFormShown);
+              writeReview();
+              // toggleReviewForm(!isReviewFormShown);
             }}
           >
             Написать отзыв
           </a>
         </div>
-        {isReviewFormShown && (
+        {/* {isReviewFormShown && (
           <TaskTimelineReviewForm
             hideReviewForm={toggleReviewForm.bind(null, false)}
           />
-        )}
+        )} */}
       </>
     )
   );
