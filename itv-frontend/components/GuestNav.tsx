@@ -7,8 +7,12 @@ const GuestNav: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="account-enter-links">
-      <a href="/registration" className="account-enter-link account-login">Вход</a>
-      <a href="/registration" className="account-enter-link account-registration">Регистрация</a>
+      <Link href="/login">
+        <a className="account-enter-link account-login">Вход</a>
+      </Link>
+      <Link href="/registration">
+        <a className="account-enter-link account-registration">Регистрация</a>
+      </Link>
     </div>
   );
 };

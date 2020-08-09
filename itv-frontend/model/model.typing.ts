@@ -123,6 +123,8 @@ export interface ISessionActions {
 
 export interface ISessionThunks {
   login: Thunk<ISessionActions, { username: string; password: string }>;
+  register: Thunk<ISessionActions, {formData: object; successCallbackFn: (message: string) => void; errorCallbackFn: (message: string) => void}>;
+  userLogin: Thunk<ISessionActions, {formData: object; successCallbackFn: () => void; errorCallbackFn: (message: string) => void}>;
 }
 
 /**
