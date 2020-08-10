@@ -732,8 +732,8 @@ function ajax_login() {
 
     if(
         empty($_POST['login'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'user-login')
+        || ( false && empty($_POST['nonce']) ) // disable nonce
+        || ( false && !wp_verify_nonce($_POST['nonce'], 'user-login') )
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -769,11 +769,17 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 function ajax_user_register() {
 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
-	if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
+	// disable nonce temporarily
+  if( false && !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
 		'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
 		)));
+  } elseif( is_user_logged_in() ) {
+    wp_die(json_encode(array(
+    'status' => 'fail',
+    'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+    )));
 	} else {
 		$user_params = array(
 				'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
