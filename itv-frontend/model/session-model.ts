@@ -206,7 +206,10 @@ const sessionThunks: ISessionThunks = {
     try {
       const result = await fetch(getAjaxUrl("user-register"), {
         method: "post",
-        body: formData,
+        body: utils.formDataToJSON(formData),
+        headers: {
+            'Content-Type': 'application/json'
+        }        
       });
 
       const { status: responseStatus, message: responseMessage } = await (<
@@ -226,7 +229,10 @@ const sessionThunks: ISessionThunks = {
     try {
       const result = await fetch(getAjaxUrl("login"), {
         method: "post",
-        body: formData,
+        body: utils.formDataToJSON(formData),
+        headers: {
+            'Content-Type': 'application/json',
+        }        
       });
 
       const { status: responseStatus, message: responseMessage } = await (<

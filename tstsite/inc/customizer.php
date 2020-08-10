@@ -728,6 +728,9 @@ add_filter('authenticate', function($user, $username, $password){
 
 /** User logging in: */
 function ajax_login() {
+    $inputJSON = file_get_contents('php://input');
+    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
@@ -744,7 +747,7 @@ function ajax_login() {
     $user = wp_signon(array(
         'user_login' => $_POST['login'],
         'user_password' => $_POST['pass'],
-        'remember' => $_POST['remember'],
+        'remember' => !empty($_POST['remember']) ? !!$_POST['remember'] : false,
     ));
     if(is_wp_error($user)) {
         wp_die(json_encode(array(
@@ -767,6 +770,9 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 
 /** Register a new user */
 function ajax_user_register() {
+  $inputJSON = file_get_contents('php://input');
+  $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+
 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	// disable nonce temporarily
