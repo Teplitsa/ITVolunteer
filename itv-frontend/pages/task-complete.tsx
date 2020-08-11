@@ -43,10 +43,10 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && (!user.name || !partner.name || !task.databaseId)) {
+    if (!isLoading && step < 4 && (!user.name || !partner.name || !task.databaseId)) {
       Router.push("/tasks");
     }
-  }, [isLoading, user, partner, task]);
+  }, [isLoading, step, user, partner, task]);
 
   function handleCompleteWizard() {
     const { reviewRating, communicationRating, reviewText } = formData as {
