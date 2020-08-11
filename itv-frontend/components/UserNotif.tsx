@@ -128,12 +128,6 @@ function NotifItem({ notif, user }) {
       task: { databaseId: notif.task.databaseId, title: notif.task.title },
     });
 
-    console.log("CompleteTaskInit", {
-      user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false },
-      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName },
-      task: { databaseId: notif.task.databaseId, title: notif.task.title },
-    });
-
     Router.push({
       pathname: "/task-complete",
     });
