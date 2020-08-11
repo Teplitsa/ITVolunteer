@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import Router from "next/router";
+import { useStoreActions } from "../../../model/helpers/hooks";
 import { WizardScreen } from "../../layout/WizardScreen";
 
 const CompleteTaskThanks = (screenProps): ReactElement => {
@@ -7,8 +8,14 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
     ...screenProps,
     screenName: "Thanks",
   };
+  const { resetStep, saveWizardData, setNeedReset } = useStoreActions(
+    (actions) => actions.components.completeTaskWizard
+  );
   const exitWizard = (event) => {
     event.preventDefault();
+    setNeedReset(true);
+    resetStep();
+    saveWizardData();
     Router.push({
       pathname: "/tasks",
     });

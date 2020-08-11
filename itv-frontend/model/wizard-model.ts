@@ -174,8 +174,26 @@ const completeTaskWizardActions: ICompleteTaskWizardActions = {
   resetStep: action((state) => {
     state.step = 0;
   }),
+  resetWizard: action((state) => {
+    state.partner = {
+      databaseId: 0,
+      name: "",
+    };
+    state.task = {
+      databaseId: 0,
+      title: "",
+    };
+    state.user = {
+      databaseId: 0,
+      name: "",
+      isAuthor: false,
+    };
+  }),
   setWizardName: action((state, payload) => {
     state.wizardName = payload;
+  }),
+  setNeedReset: action((state, payload) => {
+    state.isNeedReset = payload;
   }),
 };
 
@@ -195,12 +213,21 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
       });
       actions.setFormData(wizardData.formData ?? {});
       actions.setStep(wizardData.step ?? 0);
+      actions.setNeedReset(wizardData.isNeedReset ?? false);
     }
   }),
   saveWizardData: thunk(async (actions, payload, { getStoreState }) => {
     const {
       components: {
-        completeTaskWizard: { wizardName, formData, step, user, partner, task },
+        completeTaskWizard: {
+          wizardName,
+          formData,
+          step,
+          user,
+          partner,
+          task,
+          isNeedReset,
+        },
       },
     } = getStoreState() as IStoreModel;
     storeJsLocalStorage.set(`wizard.${wizardName}.data`, {
@@ -209,19 +236,13 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
       user,
       partner,
       task,
+      isNeedReset,
     });
   }),
   newReviewRequest: thunk(
     async (
       actions,
-      {
-        user,
-        partner,
-        task,
-        reviewRating,
-        communicationRating,
-        reviewText,
-      }
+      { user, partner, task, reviewRating, communicationRating, reviewText }
     ) => {
       const formData = new FormData();
       formData.append("review-rating", String(reviewRating));

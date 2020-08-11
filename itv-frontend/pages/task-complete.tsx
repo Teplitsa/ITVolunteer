@@ -12,21 +12,34 @@ import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const { step, formData, user, partner, task } = useStoreState(
+  const { step, formData, user, partner, task, isNeedReset } = useStoreState(
     (state) => state.components.completeTaskWizard
   );
   const {
     setStep,
+    resetStep,
     setFormData,
     resetFormData,
     loadWizardData,
     saveWizardData,
     newReviewRequest,
+    resetWizard,
+    setNeedReset,
   } = useStoreActions((actions) => actions.components.completeTaskWizard);
 
   useEffect(() => {
     loadWizardData();
     setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (isNeedReset) {
+      resetWizard();
+      resetFormData();
+      resetStep();
+      setNeedReset(false);
+      saveWizardData();
+    }
   }, []);
 
   useEffect(() => {
@@ -49,13 +62,17 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
       partner,
       task,
     });
+    resetWizard();
     resetFormData();
+    setStep(4);
     saveWizardData();
   }
 
   function handleCancelWizard(event) {
     event.preventDefault();
+    resetWizard();
     resetFormData();
+    resetStep();
     saveWizardData();
     Router.push("/tasks");
   }
