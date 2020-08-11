@@ -841,6 +841,7 @@ export interface ICompleteTaskWizardActions extends IWizardActions {
 
 export interface ICompleteTaskWizardThunks extends IWizardThunks {
   loadWizardData: Thunk<ICompleteTaskWizardActions>;
+  removeWizardData: Thunk<ICompleteTaskWizardActions>;
   newReviewRequest: Thunk<
     ICompleteTaskWizardActions,
     {

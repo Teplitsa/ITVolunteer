@@ -239,6 +239,14 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
       isNeedReset,
     });
   }),
+  removeWizardData: thunk(async (actions, payload, { getStoreState }) => {
+    const {
+      components: {
+        completeTaskWizard: { wizardName },
+      },
+    } = getStoreState() as IStoreModel;
+    storeJsLocalStorage.remove(`wizard.${wizardName}.data`);
+  }),
   newReviewRequest: thunk(
     async (
       actions,

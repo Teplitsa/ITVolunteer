@@ -22,6 +22,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     resetFormData,
     loadWizardData,
     saveWizardData,
+    removeWizardData,
     newReviewRequest,
     resetWizard,
     setNeedReset,
@@ -34,19 +35,20 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     if (isNeedReset) {
-      resetWizard();
-      resetFormData();
-      resetStep();
       setNeedReset(false);
       saveWizardData();
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (!isLoading && step < 4 && (!user.name || !partner.name || !task.databaseId)) {
-  //     Router.push("/tasks");
-  //   }
-  // }, [isLoading, step, user, partner, task]);
+  useEffect(() => {
+    if (
+      !isLoading &&
+      step < 4 &&
+      (!user.name || !partner.name || !task.databaseId)
+    ) {
+      Router.push("/tasks");
+    }
+  }, [isLoading, step, user, partner, task]);
 
   function handleCompleteWizard() {
     const { reviewRating, communicationRating, reviewText } = formData as {
@@ -73,7 +75,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     resetWizard();
     resetFormData();
     resetStep();
-    saveWizardData();
+    removeWizardData();
     Router.push("/tasks");
   }
 
