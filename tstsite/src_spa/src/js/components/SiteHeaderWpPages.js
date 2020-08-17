@@ -133,7 +133,7 @@ function AccountInHeader({userId}) {
 
             {!user.id &&
             <div className="account-enter-links">
-                <a href="/registration" className="account-enter-link account-login">Вход</a>
+                <a href="/login" className="account-enter-link account-login">Вход</a>
                 <a href="/registration" className="account-enter-link account-registration">Регистрация</a>
             </div>
             }
