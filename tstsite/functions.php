@@ -1,5 +1,5 @@
 <?php
-define('TST_WORKING_VERSION', '1.9.103');
+define('TST_WORKING_VERSION', '2.2.0');
 //require get_template_directory().'/inc/acf_keys.php';
 
 /**
@@ -16,7 +16,7 @@ if(!isset($content_width))
 
 
 define('ACCOUNT_DELETED_ID', 30); // ID of "account-deleted" special service user
-define('ITV_FRONTEND_VERSION', '2.0.4' . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
+define('ITV_FRONTEND_VERSION', TST_WORKING_VERSION . (false !== strpos(site_url(), 'itv.ngo2.ru') || false !== strpos(site_url(), 'tep-itv.dench') ? "." . rand() : ""));
 define('ITV_FORCE_THEME_MOD_SETUP', false);
 
 function tst_get_version_num(){
