@@ -836,10 +836,12 @@ export interface ICompleteTaskWizardActions extends IWizardActions {
   >;
   resetFormData: Action<ICompleteTaskWizardState>;
   resetStep: Action<ICompleteTaskWizardState>;
+  resetWizard?: Action<ICompleteTaskWizardState>;
 }
 
 export interface ICompleteTaskWizardThunks extends IWizardThunks {
   loadWizardData: Thunk<ICompleteTaskWizardActions>;
+  removeWizardData: Thunk<ICompleteTaskWizardActions>;
   newReviewRequest: Thunk<
     ICompleteTaskWizardActions,
     {

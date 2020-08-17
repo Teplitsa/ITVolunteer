@@ -218,7 +218,7 @@ const sessionThunks: ISessionThunks = {
       if (responseStatus === "fail") {
         errorCallbackFn(stripTags(responseMessage))
       } else {
-        successCallbackFn(stripTags(responseMessage))
+        successCallbackFn(responseMessage)
       }
     } catch (error) {
       console.error(error);

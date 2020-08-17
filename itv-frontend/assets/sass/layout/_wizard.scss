@@ -38,7 +38,8 @@
     background-repeat: no-repeat, no-repeat;
     @include screen-from(md) {
       background-size: 71.2277vw 83.7201vh, 38.8194vw 73.5873vh;
-      background-position: 19.1666vw 6.8331vh, 29.4444vw 7.4901vh;
+      background-position: 50% 50%, 50% 50%;
+      // background-position: 19.1666vw 6.8331vh, 29.4444vw 7.4901vh;
     }
   }
 
@@ -53,6 +54,7 @@
     flex-basis: $content-width-wizard;
     box-sizing: border-box;
     @include screen-from(md) {
+      position: relative;
       padding: 64px;
     }
   }
@@ -65,6 +67,9 @@
     padding: 0 0 64px;
     text-align: center;
     @include screen-from(md) {
+      position: absolute;
+      top: 64px;
+      left: 64px;
       text-align: left;
     }
   }
@@ -73,6 +78,14 @@
     display: flex;
     justify-content: center;
     flex-grow: 10;
+    @include screen-from(md) {
+      padding: 126px 0 0;
+    }
+    [class*="_complete-fireworks"] & {
+      @include screen-from(md) {
+        padding: 0;
+      }
+    }
   }
 }
 

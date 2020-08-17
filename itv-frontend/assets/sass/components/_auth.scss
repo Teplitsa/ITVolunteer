@@ -155,17 +155,16 @@
   }
 
   &__success-text {
-    padding-top: 80px;
-    padding-bottom: 80px;
-    border: 2px solid $color-main;
+    @include text-lg;
+    color: $color-gray-dark-xl;
+    //background-color: rgba($color-gray-light-xl, 60%);
+    background-color: rgba(251, 248, 244, 0.6);
+    padding: 40px;
     box-sizing: border-box;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: $color-gray-light-xl;
-    @include text-lg;
-    color: $color-gray-dark-xl;
   }
 
 }
