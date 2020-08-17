@@ -24,6 +24,11 @@ const Registration: React.FunctionComponent<{
   useEffect(() => {
     var allowed = true;
     for(var k in isAgree) {
+
+      if(k === "mailing") {
+        continue;
+      }
+
       allowed = allowed && !!isAgree[k];
     }
     setIsSubmitAllowed(allowed)
@@ -130,7 +135,7 @@ const Registration: React.FunctionComponent<{
             <div className="auth-page__loading"><div className="spinner-border" role="status"></div></div>
           }
           {!!registrationSuccessText && !isRegistrationLoading &&
-            <div className="auth-page__success-text">{registrationSuccessText}</div>
+            <div className="auth-page__success-text" dangerouslySetInnerHTML={{ __html: registrationSuccessText }} />
           }
           {!registrationSuccessText && !isRegistrationLoading &&
           <form action="" method="post" className="auth-page-form" onSubmit={handleSubmit} ref={formRef}>
