@@ -23,7 +23,7 @@ const SnackbarListItem: React.FunctionComponent<{
     const timerId = setTimeout(() => closeSnackbar(), 10000);
     setActivity(true);
     return () => clearTimeout(timerId);
-  }, []);
+  }, [isActive]);
 
   return (
     <div

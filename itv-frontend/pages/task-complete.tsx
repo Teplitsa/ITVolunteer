@@ -12,16 +12,20 @@ import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const { step, formData, user, partner, task } = useStoreState(
+  const { step, formData, user, partner, task, isNeedReset } = useStoreState(
     (state) => state.components.completeTaskWizard
   );
   const {
     setStep,
+    resetStep,
     setFormData,
     resetFormData,
     loadWizardData,
     saveWizardData,
+    removeWizardData,
     newReviewRequest,
+    resetWizard,
+    setNeedReset,
   } = useStoreActions((actions) => actions.components.completeTaskWizard);
 
   useEffect(() => {
@@ -30,10 +34,21 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && (!user.name || !partner.name || !task.databaseId)) {
-      Router.push("/tasks");
+    if (isNeedReset) {
+      setNeedReset(false);
+      saveWizardData();
     }
-  }, [isLoading, user, partner, task]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (
+  //     !isLoading &&
+  //     step < 4 &&
+  //     (!user.name || !partner.name || !task.databaseId)
+  //   ) {
+  //     Router.push("/tasks");
+  //   }
+  // }, [isLoading, step, user, partner, task]);
 
   function handleCompleteWizard() {
     const { reviewRating, communicationRating, reviewText } = formData as {
@@ -49,14 +64,18 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
       partner,
       task,
     });
+    resetWizard();
     resetFormData();
+    setStep(4);
     saveWizardData();
   }
 
   function handleCancelWizard(event) {
     event.preventDefault();
+    resetWizard();
     resetFormData();
-    saveWizardData();
+    resetStep();
+    removeWizardData();
     Router.push("/tasks");
   }
 

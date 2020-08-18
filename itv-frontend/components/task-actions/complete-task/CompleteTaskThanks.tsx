@@ -1,5 +1,6 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import Router from "next/router";
+import { useStoreActions } from "../../../model/helpers/hooks";
 import { WizardScreen } from "../../layout/WizardScreen";
 
 const CompleteTaskThanks = (screenProps): ReactElement => {
@@ -7,12 +8,27 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
     ...screenProps,
     screenName: "Thanks",
   };
+  const { resetStep, removeWizardData, setNeedReset } = useStoreActions(
+    (actions) => actions.components.completeTaskWizard
+  );
   const exitWizard = (event) => {
     event.preventDefault();
+    setNeedReset(true);
+    resetStep();
+    removeWizardData();
     Router.push({
       pathname: "/tasks",
     });
   };
+
+  useEffect(() => {
+    window.addEventListener("blur", exitWizard);
+    window.addEventListener("beforeunload", exitWizard);
+    return () => {
+      window.removeEventListener("blur", exitWizard);
+      window.removeEventListener("beforeunload", exitWizard);
+    };
+  }, []);
 
   return (
     <WizardScreen {...props} modifierClassNames={["wizard_complete-fireworks"]}>

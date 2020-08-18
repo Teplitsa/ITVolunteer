@@ -56,6 +56,13 @@ const snackbarReducer = (
           ),
         },
       };
+    case "clear":
+      return {
+        ...state,
+        ...{
+          messages: [],
+        },
+      };
     default:
       throw new Error(
         `Неизвестное действие '${action.type}' модуля  Snackbar.`

@@ -728,12 +728,15 @@ add_filter('authenticate', function($user, $username, $password){
 
 /** User logging in: */
 function ajax_login() {
+    $inputJSON = file_get_contents('php://input');
+    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
         empty($_POST['login'])
-        || empty($_POST['nonce'])
-        || !wp_verify_nonce($_POST['nonce'], 'user-login')
+        || ( false && empty($_POST['nonce']) ) // disable nonce
+        || ( false && !wp_verify_nonce($_POST['nonce'], 'user-login') )
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
@@ -744,7 +747,7 @@ function ajax_login() {
     $user = wp_signon(array(
         'user_login' => $_POST['login'],
         'user_password' => $_POST['pass'],
-        'remember' => $_POST['remember'],
+        'remember' => !empty($_POST['remember']) ? !!$_POST['remember'] : false,
     ));
     if(is_wp_error($user)) {
         wp_die(json_encode(array(
@@ -767,13 +770,22 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 
 /** Register a new user */
 function ajax_user_register() {
+  $inputJSON = file_get_contents('php://input');
+  $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+
 	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
-	if( !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
+	// disable nonce temporarily
+  if( false && !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {
 		wp_die(json_encode(array(
 		'status' => 'fail',
 		'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
 		)));
+  } elseif( is_user_logged_in() ) {
+    wp_die(json_encode(array(
+    'status' => 'fail',
+    'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+    )));
 	} else {
 		$user_params = array(
 				'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),

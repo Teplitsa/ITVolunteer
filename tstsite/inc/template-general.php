@@ -207,13 +207,13 @@ function frl_custom_excerpt_more( $output ) {
 function tst_get_login_url($redirect = true) {
 
     if(is_bool($redirect))
-        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'registration') ? home_url() : wp_get_referer());
+        $redirect = '?redirect_to='.urlencode(stripos(wp_get_referer(), 'login') ? home_url() : wp_get_referer());
     elseif(strlen($redirect) > 1)
         $redirect = '?redirect_to='.urlencode($redirect);
     else
         $redirect = '';
 
-	return home_url('registration/'.$redirect);
+	return home_url('login/'.$redirect);
 }
 
 function tst_get_register_url() {

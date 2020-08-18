@@ -257,7 +257,7 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Каково ваше видение завершенной задачи" 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={1000}
+            maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
@@ -288,7 +288,7 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
             placeholder="Кому поможет проект, в котором будет помогать волонтер" 
             howtoTitle="Как правильно составить описание задачи" 
             helpPageSlug="kak-pravilno-dat-nazvanie-zadachi"
-            maxLength={1000}
+            maxLength={250}
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>

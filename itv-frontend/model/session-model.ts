@@ -202,6 +202,52 @@ const sessionThunks: ISessionThunks = {
     //   user,
     // });
   }),
+  register: thunk(async (actions, {formData, successCallbackFn, errorCallbackFn}) => {
+    try {
+      const result = await fetch(getAjaxUrl("user-register"), {
+        method: "post",
+        body: utils.formDataToJSON(formData),
+        headers: {
+            'Content-Type': 'application/json'
+        }        
+      });
+
+      const { status: responseStatus, message: responseMessage } = await (<
+        Promise<IFetchResult>
+      >result.json());
+      if (responseStatus === "fail") {
+        errorCallbackFn(stripTags(responseMessage))
+      } else {
+        successCallbackFn(responseMessage)
+      }
+    } catch (error) {
+      console.error(error);
+      errorCallbackFn("Во время регистрации произашла ошибка.")
+    }
+  }),
+  userLogin: thunk(async (actions, {formData, successCallbackFn, errorCallbackFn}) => {
+    try {
+      const result = await fetch(getAjaxUrl("login"), {
+        method: "post",
+        body: utils.formDataToJSON(formData),
+        headers: {
+            'Content-Type': 'application/json',
+        }        
+      });
+
+      const { status: responseStatus, message: responseMessage } = await (<
+        Promise<IFetchResult>
+      >result.json());
+      if (responseStatus === "fail") {
+        errorCallbackFn(stripTags(responseMessage))
+      } else {
+        successCallbackFn()
+      }
+    } catch (error) {
+      console.error(error);
+      errorCallbackFn("Во время входа произашла ошибка.")
+    }
+  }),
 };
 
 const sessionModel: ISessionModel = {
