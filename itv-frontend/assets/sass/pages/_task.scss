@@ -158,33 +158,6 @@
       }
     }
 
-    .meta-terms {
-      margin-top: 4px;
-      display: flex;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-
-      .terms {
-        margin-right: $base * 3;
-
-        img {
-          margin-right: $base;
-          vertical-align: middle;
-        }
-
-        span {
-          @include text-xs;
-          margin-top: $base;
-          display: inline-block;
-          padding: 4px 12px;
-          border: 1px solid $color-gray-light-md;
-          border-radius: 10px;
-          margin-right: 4px;
-          white-space: nowrap;
-        }
-      }
-    }
-
     .task-cover {
       width: 100%;
       max-height: 216px;
@@ -995,35 +968,6 @@
   & > a {
     @include button-secondary;
     width: 203px;
-  }
-}
-
-// user small view
-.itv-user-small-view {
-  .avatar-wrapper {
-    display: inline-block;
-    border-radius: 4px;
-    border: 1px solid #e5e6e0;
-    overflow: hidden;
-    width: 20px;
-    height: 20px;
-    margin-right: $base;
-    background-size: cover;
-    background-position: center;
-    margin-right: 8px;
-    vertical-align: middle;
-  }
-
-  .name {
-    @include text-xs-line-lg;
-    color: $color-gray;
-    display: inline-block;
-    vertical-align: middle;
-
-    span {
-      color: $color-gray-dark-lg;
-      // margin-right: 2px;
-    }
   }
 }
 

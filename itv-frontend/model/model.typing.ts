@@ -205,6 +205,9 @@ export interface IPageActions {
 export interface IComponentsModel extends IComponentsState {}
 
 export interface IComponentsState {
+  memberAccount?: IMemberAccountPageModel;
+  memberProfile?: IMemberProfilePageModel;
+  memberSecurity?: IMemberSecurityPageModel;
   honors?: IHonorsPageModel;
   paseka?: IPasekaPageModel;
   task?: ITaskModel;
@@ -215,6 +218,138 @@ export interface IComponentsState {
   completeTaskWizard?: ICompleteTaskWizardModel;
   createTaskAgreement?: ICreateTaskAgreementPageModel;
   helpPage?: IHelpPageModel;
+}
+
+/**
+ * Member Account
+ */
+
+export interface IMemberAccountPageModel
+  extends IMemberAccountPageState,
+    IMemberAccountPageActions {}
+
+export interface IMemberTaskCard {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: {
+    avatar?: string;
+    fullName: string;
+    memberRole: string;
+  };
+  created: string;
+  doerCount: number;
+  tags?: {
+    nodes: Array<ITaskTag>;
+  };
+  rewardTags?: {
+    nodes: Array<ITaskTag>;
+  };
+  ngoTaskTags?: {
+    nodes: Array<ITaskTag>;
+  };
+}
+
+export interface IMemberReview {
+  rating: number;
+  communicationRating: number;
+  excerpt: string;
+  author: {
+    avatar?: string;
+    fullName: string;
+    memberRole: string;
+  };
+  task: {
+    id: string;
+    slug: string;
+    title: string;
+  };
+}
+
+export interface IMemberAccountPageState {
+  coverImage?: string;
+  userCard?: {
+    avatar?: string;
+    isPasekaMember?: boolean;
+    fullName?: string;
+    status?: string;
+    calculatedRating?: number;
+    reviewCount?: number;
+    organization?: {
+      logo?: string;
+      name?: string;
+      description?: string;
+      site?: string;
+    };
+    contacts?: {
+      facebook?: string;
+      twitter?: string;
+      vk?: string;
+    };
+    registrationDate: string;
+  };
+  tasks?: {
+    filter: "open" | "close" | "draft";
+    list: Array<IMemberTaskCard>;
+  };
+  reviews?: Array<IMemberReview>;
+}
+
+export interface IMemberAccountPageActions {
+  initializeState: Action<IMemberAccountPageModel>;
+  setState: Action<IMemberAccountPageModel, IMemberAccountPageState>;
+}
+
+/**
+ * Member Profile
+ */
+
+export interface IMemberProfilePageModel
+  extends IMemberProfilePageState,
+    IMemberProfilePageActions {}
+
+export interface IMemberProfilePageState {
+  user?: {
+    name?: string;
+    surname?: string;
+    contacts?: {
+      skype?: string;
+      twitter?: string;
+      facebook?: string;
+      vk?: string;
+    };
+  };
+  organization?: {
+    name?: string;
+    description?: string;
+    site?: string;
+  };
+}
+
+export interface IMemberProfilePageActions {
+  initializeState: Action<IMemberSecurityPageModel>;
+  setState: Action<IMemberProfilePageModel, IMemberProfilePageState>;
+}
+
+/**
+ * Member Security
+ */
+
+export interface IMemberSecurityPageModel
+  extends IMemberSecurityPageState,
+    IMemberSecurityPageActions {}
+
+export interface IMemberSecurityPageState {
+  login: string;
+  email: string;
+  newPassword?: string;
+  newPasswordRepeat?: string;
+}
+
+export interface IMemberSecurityPageActions {
+  initializeState: Action<IMemberSecurityPageModel>;
+  setState: Action<IMemberSecurityPageModel, IMemberSecurityPageState>;
 }
 
 /**

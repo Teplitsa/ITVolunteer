@@ -23,6 +23,7 @@
 @import "pages/task-list";
 @import "pages/paseka";
 @import "pages/nagrady";
+@import "pages/member-account";
 @import "components/buttons";
 @import "components/form";
 @import "components/search-form";
@@ -30,5 +31,12 @@
 @import "components/submenu";
 @import "components/notif";
 @import "components/wizard";
+@import "components/tabs";
+@import "components/task-card";
+@import "components/meta-terms";
+@import "components/user-small-view";
+@import "components/member-card";
+@import "components/review-card";
+@import "components/review-rating";
 
 @import "vendors/react-datepicker";

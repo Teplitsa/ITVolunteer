@@ -1,0 +1,199 @@
+.member-card {
+  background: $color-white;
+  border: 2px solid $color-gray-light-md;
+  margin: 20px 0;
+  padding: 20px 25px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  @include screen-from(md) {
+    margin-top: 0;
+  }
+  & + .btn {
+    margin: 0 0 20px;
+  }
+  &__bage {
+    margin: 0 0 20px;
+    text-align: center;
+  }
+  &__avatar {
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    margin: 0 0 10px;
+    &-upload {
+      position: absolute;
+      left: calc(50% + 28px);
+      bottom: 0;
+      background: url(../../img/icon-camera_32x32.svg) 50% 50% no-repeat;
+      border: 1px solid $color-gray-light-md;
+      width: 32px;
+      height: 32px;
+      text-indent: -9999px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px $color-gray-light-xl;
+      &:focus {
+        outline: none;
+      }
+      &-input {
+        display: none;
+      }
+    }
+  }
+  &__name {
+    margin: 0 0 5px;
+    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-xl;
+  }
+  &__role {
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-lg;
+  }
+  &__stats {
+    border-bottom: 1px solid $color-gray-light-lg;
+    margin: 0 0 20px;
+    padding: 0 0 20px;
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-md;
+    @include screen-from(md) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &::before,
+    &::after {
+      @include screen-from(md) {
+        content: "";
+        display: block;
+        background-color: $color-gray-light-md;
+        width: 1px;
+        height: 28px;
+      }
+    }
+    &::before {
+      @include screen-from(md) {
+        order: 2;
+      }
+    }
+    &::after {
+      @include screen-from(md) {
+        order: 4;
+      }
+    }
+  }
+  &__stats-item {
+    &_calculated-rating {
+      @include screen-from(md) {
+        order: 1;
+      }
+    }
+    &_review-count {
+      @include screen-from(md) {
+        order: 3;
+      }
+    }
+    &_xp {
+      @include screen-from(md) {
+        order: 5;
+      }
+    }
+  }
+  &__review-count {
+    color: $color-main;
+  }
+  &__xp {
+    background: url("../../img/icon-award_20x20.svg") 0 50% no-repeat;
+    padding: 0 0 0 25px;
+  }
+  &__calculated-rating {
+    display: flex;
+    align-items: center;
+    &-value {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $color-sec-dark;
+      margin: 0 8px;
+      width: 28px;
+      height: 28px;
+      color: $color-white;
+      border-radius: 50%;
+    }
+  }
+  &__organization {
+    &-header {
+      margin: 0 0 20px;
+      @include screen-from(md) {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+    &-logo {
+      border: 1px solid $color-gray-light-md;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-sizing: border-box;
+    }
+    &-top {
+      margin: 0 0 0 15px;
+      flex-basis: calc(100% - 95px);
+    }
+    &-name {
+      margin: 0 0 5px;
+      font: 600 16px/20px "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+    }
+    &-site {
+      font: 600 11px/16px "IBM Plex Sans", sans-serif;
+    }
+    &-description {
+      margin: 0 0 20px;
+      font: 500 13px/20px "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+    }
+  }
+  &__bottom {
+    margin: 0 0 20px;
+  }
+  &__registration-date {
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+    color: $color-gray;
+  }
+  &__divider {
+    margin: 20px 0;
+    background-color: transparent;
+    border-style: none;
+    border-bottom: 1px solid $color-gray-light-lg;
+  }
+  &__bottom {
+    @include screen-from(md) {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  &__socials {
+    display: flex;
+    &-item {
+      margin: 0 10px 0 0;
+      width: 24px;
+      height: 24px;
+      text-indent: -9999px;
+      &_facebook {
+        background: url(../../img/icon-facebook_24x24.svg) 50% 50% no-repeat;
+      }
+      &_instagram {
+        background: url(../../img/icon-instagram_24x24.svg) 50% 50% no-repeat;
+      }
+      &_vk {
+        background: url(../../img/icon-vk_24x24.svg) 50% 50% no-repeat;
+      }
+    }
+  }
+  &__action {
+    .btn:first-child {
+      margin: 0 0 10px;
+    }
+  }
+}

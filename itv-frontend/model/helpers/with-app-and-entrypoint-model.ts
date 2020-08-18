@@ -1,4 +1,8 @@
-import { IModelWithAppAndEntrypoint, PostType } from "../model.typing";
+import {
+  IModelWithAppAndEntrypoint,
+  IPageState,
+  PostType,
+} from "../model.typing";
 import { capitalize } from "../../utilities/utilities";
 
 const pageModel = async (request, postType, pageQueryVars) => {
@@ -15,7 +19,12 @@ const pageModel = async (request, postType, pageQueryVars) => {
 
 const archiveModel = async (request, postType, archiveQueryVars) => {
   const archiveModel = await import("../archive-model");
-  const archiveQuery = archiveModel.graphqlQuery[archiveQueryVars.searchPhrase ? `${postType}Search` : `get${capitalize(postType)}s`];
+  const archiveQuery =
+    archiveModel.graphqlQuery[
+      archiveQueryVars.searchPhrase
+        ? `${postType}Search`
+        : `get${capitalize(postType)}s`
+    ];
   const { [`${postType}s`]: archive } = await request(
     process.env.GraphQLServer,
     archiveQuery,
@@ -55,6 +64,11 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
 
 const withAppAndEntrypointModel = async ({
   isArchive = false,
+  isCustomPage = false,
+  customPageModel = async (): Promise<Array<string | IPageState>> => [
+    "page",
+    { slug: "" },
+  ],
   entrypointQueryVars = null,
   entrypointType = "page" as PostType,
   componentModel,
@@ -71,6 +85,8 @@ const withAppAndEntrypointModel = async ({
 
   const [entrypointTemplate, entrypointModel] = isArchive
     ? await archiveModel(request, entrypointType, entrypointQueryVars)
+    : isCustomPage
+    ? await customPageModel()
     : await pageModel(request, entrypointType, entrypointQueryVars);
 
   const componentData = isArchive
