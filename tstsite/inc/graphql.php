@@ -282,9 +282,16 @@ function itv_register_user_graphql_fields() {
             ],
             'itvAvatar' => [
                 'type' => 'String',
-                'description' => __( 'User profile URL', 'tst' ),
+                'description' => __( 'User avatar URL', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_avatar_url( $user->userId );
+                }
+            ],
+            'cover' => [
+                'type' => 'String',
+                'description' => __( 'User cover URL', 'tst' ),
+                'resolve' => function ($user) {
+                    return itv_member_cover_url( $user->userId );
                 }
             ],
             'memberRole' => [
