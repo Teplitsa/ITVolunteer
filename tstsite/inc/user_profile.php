@@ -109,6 +109,7 @@ function ajax_delete_user_avatar() {
 		$image_id = get_user_meta($member->ID, 'user_avatar', true);
 		if( $image_id ) {
 			wp_delete_attachment( $image_id, true );
+      update_user_meta($member->ID, 'user_avatar', '');
 			$res = array(
 					'status' => 'ok',
 			);
@@ -173,6 +174,126 @@ function ajax_upload_user_avatar() {
 }
 add_action('wp_ajax_upload-user-avatar', 'ajax_upload_user_avatar');
 
+function ajax_upload_user_avatar_v2() {
+  $member = wp_get_current_user();
+
+  $res = null;
+  if(!$member) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'restricted method',
+    );
+  }
+  else {
+    error_log(print_r($_FILES, true));
+    $image_id = media_handle_upload( 'user_avatar', 0 );
+    $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+    wp_update_attachment_metadata( $image_id,  $attach_data );
+        
+    if( $image_id ) {
+      update_user_meta($member->ID, 'user_avatar', $image_id);
+      UserXPModel::instance()->register_activity_from_gui($member->ID, UserXPModel::$ACTION_UPLOAD_PHOTO);
+            
+      $res = array(
+          'status' => 'ok',
+          'imageUrl' => itv_avatar_url( $member->ID ),
+      );
+    } else {
+      $res = array(
+          'status' => 'error',
+          'message' => 'upload image error',
+      );
+    }
+  }
+
+  if($res === null) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'unkown error',
+    );
+  }
+
+  wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-user-avatar-v2', 'ajax_upload_user_avatar_v2');
+
+function ajax_upload_user_cover() {
+  $member = wp_get_current_user();
+
+  $res = null;
+  if(!$member) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'restricted method',
+    );
+  }
+  else {
+    $image_id = media_handle_upload( 'user_cover', 0 );
+    $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
+    wp_update_attachment_metadata( $image_id,  $attach_data );
+        
+    if( $image_id ) {
+      update_user_meta($member->ID, 'user_cover', $image_id);
+            
+      $res = array(
+          'status' => 'ok',
+          'imageUrl' => itv_member_cover_url( $member->ID ),
+      );
+    } else {
+      $res = array(
+          'status' => 'error',
+          'message' => 'upload image error',
+      );
+    }
+  }
+
+  if($res === null) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'unkown error',
+    );
+  }
+
+  wp_die(json_encode($res));
+}
+add_action('wp_ajax_upload-user-cover', 'ajax_upload_user_cover');
+
+function ajax_delete_user_cover() {
+  $member = wp_get_current_user();
+
+  $res = null;
+  if(!$member) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'restricted method',
+    );
+  }
+  else {
+    $image_id = get_user_meta($member->ID, 'user_cover', true);
+    if( $image_id ) {
+      wp_delete_attachment( $image_id, true );
+      update_user_meta($member->ID, 'user_cover', '');
+      $res = array(
+          'status' => 'ok',
+      );
+    } else {
+      $res = array(
+          'status' => 'error',
+          'message' => 'image not found',
+      );
+    }
+  }
+
+  if($res === null) {
+    $res = array(
+        'status' => 'error',
+        'message' => 'unkown error',
+    );
+  }
+
+  wp_die(json_encode($res));
+}
+add_action('wp_ajax_delete-user-cover', 'ajax_delete_user_cover');
 
 // user skills
 function tst_get_user_skills($member_id) {

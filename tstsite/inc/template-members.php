@@ -239,6 +239,35 @@ function itv_avatar_url($member_id = null){
     return $itv_user_avatar;
 }
 
+function itv_member_cover_url($member_id = null){
+    
+    if( !$member_id ) {
+        $member_id = tst_get_current_member()->ID;
+    }
+    elseif(is_object($member_id)) {
+        $member_id = $member_id->ID;
+    }
+        
+    $image_id = get_user_meta($member_id, 'user_cover', true);
+    $img_url = '';
+    
+    if($image_id) {
+        $res = wp_get_attachment_image_src( $image_id, 'large');
+        $img_url = $res ? $res[0] : '';
+    }
+
+    $img_fpath = str_replace(home_url() . "/wp-content", WP_CONTENT_DIR, $img_url);
+    
+    if(!$img_url) {
+        $img_url = '';
+    }
+    elseif(!is_file($img_fpath)) {
+        $img_url = '';
+    }
+    
+    return $img_url;
+}
+
 function tst_get_member_user_avatar($member_id) {
 	$image_id = get_user_meta($member_id, 'user_avatar', true);
 	$res = '';
