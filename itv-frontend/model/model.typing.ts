@@ -88,6 +88,7 @@ export interface ISessionState {
   isTaskAuthorLoggedIn?: Computed<ISessionModel, boolean, IStoreModel>;
   isUserTaskCandidate?: Computed<ISessionModel, boolean, IStoreModel>;
   canUserReplyToComment?: Computed<ISessionModel, boolean, IStoreModel>;
+  isAccountOwner?: Computed<ISessionModel, boolean, IStoreModel>;
 }
 
 export interface ISessionToken {
@@ -123,8 +124,22 @@ export interface ISessionActions {
 
 export interface ISessionThunks {
   login: Thunk<ISessionActions, { username: string; password: string }>;
-  register: Thunk<ISessionActions, {formData: object; successCallbackFn: (message: string) => void; errorCallbackFn: (message: string) => void}>;
-  userLogin: Thunk<ISessionActions, {formData: object; successCallbackFn: () => void; errorCallbackFn: (message: string) => void}>;
+  register: Thunk<
+    ISessionActions,
+    {
+      formData: object;
+      successCallbackFn: (message: string) => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
+  userLogin: Thunk<
+    ISessionActions,
+    {
+      formData: object;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
 }
 
 /**
@@ -258,12 +273,10 @@ export interface IMemberReview {
   communicationRating: number;
   excerpt: string;
   author: {
-    avatar?: string;
     fullName: string;
-    memberRole: string;
+    avatar?: string;
   };
   task: {
-    id: string;
     slug: string;
     title: string;
   };

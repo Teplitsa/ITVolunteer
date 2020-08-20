@@ -27,6 +27,26 @@
       margin: 0 0 0 40px;
     }
   }
+  &__create-task {
+    padding: 20px 0 0;
+    @include screen-from(md) {
+      position: relative;
+      padding: 0;
+    }
+    &-button {
+      @include screen-from(md) {
+        position: absolute;
+        top: 22px;
+        right: 0;
+      }
+      .btn {
+        width: 100%;
+        @include screen-from(md) {
+          width: auto;
+        }
+      }
+    }
+  }
 }
 
 .member-tasks {
@@ -48,10 +68,8 @@
       display: flex;
     }
     li {
-      @include screen-from(md) {
-        &:not(:last-child) {
-          margin: 0 20px 0 0;
-        }
+      &:not(:last-child) {
+        margin: 0 20px 0 0;
       }
     }
     &-control {
@@ -96,6 +114,10 @@
     font: 600 24px/32px "IBM Plex Sans", sans-serif;
   }
   &__stats {
+    margin: 5px 0 0;
+    @include screen-from(md) {
+      margin: 0;
+    }
     ul {
       display: flex;
     }

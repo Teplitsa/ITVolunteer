@@ -9,8 +9,8 @@ import {
 } from "./model.typing";
 import { thunk, action, computed } from "easy-peasy";
 import { getAjaxUrl, stripTags } from "../utilities/utilities";
-import * as utils from "../utilities/utilities"
-import * as _ from "lodash"
+import * as utils from "../utilities/utilities";
+import * as _ from "lodash";
 
 const sessionUserState: ISessionUser = {
   id: "",
@@ -56,7 +56,7 @@ const sessionState: ISessionState = {
       (state, storeState) => storeState.components.task?.author?.databaseId,
     ],
     (userId, authorId) => {
-      return Boolean(userId) && Boolean(authorId) && userId === authorId
+      return Boolean(userId) && Boolean(authorId) && userId === authorId;
     }
   ),
   isUserTaskCandidate: computed(
@@ -76,6 +76,19 @@ const sessionState: ISessionState = {
       (state, storeState) => storeState.components.task?.doers,
     ],
     (userId, authorId, doers) => Boolean(userId)
+  ),
+  isAccountOwner: computed(
+    [
+      (state) => state.user.username,
+      (state, storeState) => storeState.entrypoint.page.slug,
+    ],
+    (userName, pageSlug) => {
+      if (!pageSlug) return false;
+
+      const [slug, memberName] = pageSlug.match(/members\/(\w+)/);
+
+      return userName === memberName;
+    }
   ),
 };
 
@@ -108,34 +121,34 @@ const sessionActions: ISessionActions = {
     state.isLoaded = payload;
   }),
   setSubscribeTaskList: action((state, payload) => {
-      state.user.subscribeTaskList = payload
+    state.user.subscribeTaskList = payload;
   }),
   loadSubscribeTaskList: thunk((actions, payload) => {
-      let action = 'get-task-list-subscription'
-      fetch(utils.getAjaxUrl(action), {
-          method: 'get',
-      })
-      .then(res => {
-          try {
-              return res.json()
-          } catch(ex) {
-              utils.showAjaxError({action, error: ex})
-              return {}
-          }
+    let action = "get-task-list-subscription";
+    fetch(utils.getAjaxUrl(action), {
+      method: "get",
+    })
+      .then((res) => {
+        try {
+          return res.json();
+        } catch (ex) {
+          utils.showAjaxError({ action, error: ex });
+          return {};
+        }
       })
       .then(
-          (result: IFetchResult) => {
-              if(result.status == 'fail') {
-                  return utils.showAjaxError({message: result.message})
-              }
-
-              actions.setSubscribeTaskList(result.filter)
-          },
-          (error) => {
-              utils.showAjaxError({action, error})
+        (result: IFetchResult) => {
+          if (result.status == "fail") {
+            return utils.showAjaxError({ message: result.message });
           }
-      )
-  }),    
+
+          actions.setSubscribeTaskList(result.filter);
+        },
+        (error) => {
+          utils.showAjaxError({ action, error });
+        }
+      );
+  }),
 };
 
 const sessionThunks: ISessionThunks = {
@@ -144,21 +157,27 @@ const sessionThunks: ISessionThunks = {
     const { v4: uuidv4 } = await import("uuid");
     const loginQuery: string = graphqlQuery.login;
 
-    console.log("sessionThunks...")
+    console.log("sessionThunks...");
 
     try {
       const result = await fetch(getAjaxUrl("itv-get-jwt-auth-token"), {
         method: "post",
       });
 
-      const { 
-        status: responseStatus, 
-        message: responseMessage, 
+      const {
+        status: responseStatus,
+        message: responseMessage,
         authToken: authToken,
         refreshToken: refreshToken,
-        user: user, 
+        user: user,
       } = await (<
-        Promise<{ status: string; message: string; authToken: string; refreshToken: string; user: any }>
+        Promise<{
+          status: string;
+          message: string;
+          authToken: string;
+          refreshToken: string;
+          user: any;
+        }>
       >result.json());
 
       // console.log("authToken:", authToken)
@@ -171,8 +190,7 @@ const sessionThunks: ISessionThunks = {
           token: { timestamp: Date.now(), authToken: null, refreshToken: null },
           user: sessionUserState,
           isLoaded: true,
-        });        
-
+        });
       } else {
         console.error("set session isLoaded on ok");
 
@@ -182,12 +200,11 @@ const sessionThunks: ISessionThunks = {
           isLoaded: true,
         });
       }
-
     } catch (error) {
       console.error("set session isLoaded on exception");
-      setIsLoaded(true)
+      setIsLoaded(true);
       console.error(error);
-    }    
+    }
 
     // const {
     //   login: { authToken, refreshToken, user },
@@ -202,52 +219,56 @@ const sessionThunks: ISessionThunks = {
     //   user,
     // });
   }),
-  register: thunk(async (actions, {formData, successCallbackFn, errorCallbackFn}) => {
-    try {
-      const result = await fetch(getAjaxUrl("user-register"), {
-        method: "post",
-        body: utils.formDataToJSON(formData),
-        headers: {
-            'Content-Type': 'application/json'
-        }        
-      });
+  register: thunk(
+    async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
+      try {
+        const result = await fetch(getAjaxUrl("user-register"), {
+          method: "post",
+          body: utils.formDataToJSON(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const { status: responseStatus, message: responseMessage } = await (<
-        Promise<IFetchResult>
-      >result.json());
-      if (responseStatus === "fail") {
-        errorCallbackFn(stripTags(responseMessage))
-      } else {
-        successCallbackFn(responseMessage)
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<IFetchResult>
+        >result.json());
+        if (responseStatus === "fail") {
+          errorCallbackFn(stripTags(responseMessage));
+        } else {
+          successCallbackFn(responseMessage);
+        }
+      } catch (error) {
+        console.error(error);
+        errorCallbackFn("Во время регистрации произашла ошибка.");
       }
-    } catch (error) {
-      console.error(error);
-      errorCallbackFn("Во время регистрации произашла ошибка.")
     }
-  }),
-  userLogin: thunk(async (actions, {formData, successCallbackFn, errorCallbackFn}) => {
-    try {
-      const result = await fetch(getAjaxUrl("login"), {
-        method: "post",
-        body: utils.formDataToJSON(formData),
-        headers: {
-            'Content-Type': 'application/json',
-        }        
-      });
+  ),
+  userLogin: thunk(
+    async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
+      try {
+        const result = await fetch(getAjaxUrl("login"), {
+          method: "post",
+          body: utils.formDataToJSON(formData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const { status: responseStatus, message: responseMessage } = await (<
-        Promise<IFetchResult>
-      >result.json());
-      if (responseStatus === "fail") {
-        errorCallbackFn(stripTags(responseMessage))
-      } else {
-        successCallbackFn()
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<IFetchResult>
+        >result.json());
+        if (responseStatus === "fail") {
+          errorCallbackFn(stripTags(responseMessage));
+        } else {
+          successCallbackFn();
+        }
+      } catch (error) {
+        console.error(error);
+        errorCallbackFn("Во время входа произашла ошибка.");
       }
-    } catch (error) {
-      console.error(error);
-      errorCallbackFn("Во время входа произашла ошибка.")
     }
-  }),
+  ),
 };
 
 const sessionModel: ISessionModel = {

@@ -1,37 +1,35 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import {useRouter} from 'next/router'
-
-import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
+import { useRouter } from "next/router";
+import { useStoreState } from "../../../model/helpers/hooks";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
-import EditMemberSecurity from "../../../components/member/EditMemberSecurity";
-import GlobalScripts, { ISnackbarMessage } from "../../../context/global-scripts";
-import SnackbarList from "../../../components/global-scripts/SnackbarList";
+import EditMemberSecurity from "../../../components/page/EditMemberSecurity";
+import GlobalScripts, {
+  ISnackbarMessage,
+} from "../../../context/global-scripts";
 
 const { SnackbarContext } = GlobalScripts;
 
-const MemberSecurityPage: React.FunctionComponent = (): ReactElement => {
+const SecurityPage: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn, isLoaded } = useStoreState((state) => state.session);
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    if(!isLoaded) {
-      return
+    if (!isLoaded) {
+      return;
     }
 
-    if(!isLoggedIn) {
-      router.push("/tasks/")
+    if (!isLoggedIn) {
+      router.push("/tasks/");
     }
-
-  }, [isLoggedIn, isLoaded, router])
+  }, [isLoggedIn, isLoaded, router]);
 
   return (
     <>
       <DocumentHead />
       <Main>
         <main id="site-main" className="site-main" role="main">
-
           <SnackbarContext.Consumer>
             {({ dispatch }) => {
               const addSnackbar = (message: ISnackbarMessage) => {
@@ -43,34 +41,45 @@ const MemberSecurityPage: React.FunctionComponent = (): ReactElement => {
               const deleteSnackbar = (message: ISnackbarMessage) => {
                 dispatch({ type: "delete", payload: { messages: [message] } });
               };
-              return <EditMemberSecurity {...{ addSnackbar, clearSnackbar, deleteSnackbar }} />;
+              return (
+                <EditMemberSecurity
+                  {...{ addSnackbar, clearSnackbar, deleteSnackbar }}
+                />
+              );
             }}
           </SnackbarContext.Consumer>
-          
         </main>
       </Main>
     </>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/paseka";
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
-    entrypointQueryVars: { uri: "paseka" },
+    isCustomPage: true,
     entrypointType: "page",
-    componentModel: async (request) => {
-      const pasekaPageModel = await import("../../../model/components/paseka-model");
-      const pasekaPageQuery = pasekaPageModel.graphqlQuery;
-      const { pageBy: component } = await request(
-        process.env.GraphQLServer,
-        pasekaPageQuery,
-        { uri: url }
+    customPageModel: async () => [
+      "page",
+      {
+        slug: `members/${query.username}/security`,
+        seo: {
+          canonical: `https://itv.te-st.ru/members/${query.username}/security`,
+          title: "Управление аккаунтом - it-волонтер",
+          metaRobotsNoindex: "noindex",
+          metaRobotsNofollow: "nofollow",
+          opengraphTitle: "Управление аккаунтом - it-волонтер",
+          opengraphUrl: `https://itv.te-st.ru/members/${query.username}/security`,
+          opengraphSiteName: "it-волонтер",
+        },
+      },
+    ],
+    componentModel: async () => {
+      const { memberSecurityPageState } = await import(
+        "../../../model/components/member-security-model"
       );
-
-      return ["paseka", component];
+      return ["memberSecurity", memberSecurityPageState];
     },
   });
 
@@ -79,4 +88,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default MemberSecurityPage;
+export default SecurityPage;

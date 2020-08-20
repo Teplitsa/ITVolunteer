@@ -17,7 +17,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
     formData.append(
       "avatar",
       event.currentTarget.files[0],
-      `${memberName}.jpg`
+      `${memberName}.${imageExtension}`
     );
   };
 

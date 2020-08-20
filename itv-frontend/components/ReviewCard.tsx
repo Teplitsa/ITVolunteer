@@ -1,13 +1,15 @@
 import { ReactElement } from "react";
-import UserCardSmall from "./UserCardSmall";
+import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
 
 const ReviewCard: React.FunctionComponent = (): ReactElement => {
-  const userCardSmallProps = {
-    id: "",
+  const reviewerCardSmallProps = {
     fullName: "НКО «Леопарды Дальнего Востока»",
-    itvAvatar: null,
-    memberRole: "Организация",
+    task: 
+    {
+      slug: "nuszhen-sajt-dlja-wordpress",
+      title: "Нужен сайт на Word Press для нашей организации"
+    },
   };
 
   return (
@@ -28,7 +30,7 @@ const ReviewCard: React.FunctionComponent = (): ReactElement => {
       </div>
       <div className="review-card__footer">
         <div className="review-card__footer-item">
-          <UserCardSmall {...userCardSmallProps} />
+          <ReviewerCardSmall {...reviewerCardSmallProps} />
         </div>
         <div className="review-card__footer-item">
           <span className="review-card__date">3 часа назад</span>

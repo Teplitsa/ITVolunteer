@@ -1,6 +1,10 @@
 .review-rating {
   display: flex;
+  justify-content: space-between;
   align-items: center;
+  @include screen-from(md) {
+    justify-content: flex-start;
+  }
   &__caption {
     margin: 0 10px 0 0;
     font: 500 13px/20px "IBM Plex Sans", sans-serif;

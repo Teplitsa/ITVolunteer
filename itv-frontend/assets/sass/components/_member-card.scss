@@ -50,15 +50,19 @@
     color: $color-gray-dark-lg;
   }
   &__stats {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
     border-bottom: 1px solid $color-gray-light-lg;
-    margin: 0 0 20px;
-    padding: 0 0 20px;
+    margin: 0 0 25px;
+    padding: 0 0 25px;
     font: 500 13px/20px "IBM Plex Sans", sans-serif;
     color: $color-gray-dark-md;
     @include screen-from(md) {
-      display: flex;
+      flex-flow: row;
       justify-content: space-between;
-      align-items: center;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
     }
     &::before,
     &::after {
@@ -80,21 +84,27 @@
         order: 4;
       }
     }
-  }
-  &__stats-item {
-    &_calculated-rating {
-      @include screen-from(md) {
-        order: 1;
+    &-item {
+      &:not(:last-child) {
+        margin: 0 0 5px;
+        @include screen-from(md) {
+          margin: 0;
+        }
       }
-    }
-    &_review-count {
-      @include screen-from(md) {
-        order: 3;
+      &_calculated-rating {
+        @include screen-from(md) {
+          order: 1;
+        }
       }
-    }
-    &_xp {
-      @include screen-from(md) {
-        order: 5;
+      &_review-count {
+        @include screen-from(md) {
+          order: 3;
+        }
+      }
+      &_xp {
+        @include screen-from(md) {
+          order: 5;
+        }
       }
     }
   }
@@ -121,6 +131,10 @@
     }
   }
   &__organization {
+    text-align: center;
+    @include screen-from(md) {
+      text-align: left;
+    }
     &-header {
       margin: 0 0 20px;
       @include screen-from(md) {
@@ -129,11 +143,15 @@
       }
     }
     &-logo {
+      margin: 0 auto 20px;
       border: 1px solid $color-gray-light-md;
       width: 80px;
       height: 80px;
       border-radius: 50%;
       box-sizing: border-box;
+      @include screen-from(md) {
+        margin: 0;
+      }
     }
     &-top {
       margin: 0 0 0 15px;
@@ -167,14 +185,20 @@
     border-bottom: 1px solid $color-gray-light-lg;
   }
   &__bottom {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
     @include screen-from(md) {
-      display: flex;
+      flex-flow: row;
       justify-content: space-between;
-      align-items: center;
     }
   }
   &__socials {
     display: flex;
+    margin: 0 0 5px;
+    @include screen-from(md) {
+      margin: 0;
+    }
     &-item {
       margin: 0 10px 0 0;
       width: 24px;
@@ -195,5 +219,12 @@
     .btn:first-child {
       margin: 0 0 10px;
     }
+  }
+  &__thank-count {
+    display: flex;
+    justify-content: center;
+    margin: 20 0 0;
+    font: 600 13px/20px "IBM Plex Sans", sans-serfif;
+    color: $color-gray-dark-lg;
   }
 }

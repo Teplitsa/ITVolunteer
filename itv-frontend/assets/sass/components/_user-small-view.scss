@@ -15,6 +15,7 @@
     vertical-align: middle;
   }
   .name {
+    flex-shrink: 10;
     font: 600 11px/16px "IBM Plex Sans", sans-serif;
     color: $color-gray-dark-md;
     span {

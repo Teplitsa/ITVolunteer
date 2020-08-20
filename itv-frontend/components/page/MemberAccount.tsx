@@ -4,12 +4,13 @@ import withTabs from "../../components/hoc/withTabs";
 import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
+import MemberUploadCover from "../../components/members/MemberUploadCover";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
-  const isLoggedIn = useStoreState((state) => state.session.isLoggedIn);
-  const memberAccount = useStoreState(
-    (state) => state.components.memberAccount
-  );
+  const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
+  // const memberAccount = useStoreState(
+  //   (state) => state.components.memberAccount
+  // );
 
   const Tabs = withTabs({
     tabs: [
@@ -22,15 +23,22 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     <div className="member-account">
       <div className="member-account__content">
         <div className="member-account__top">
-          <button className="btn btn_upload-cover" type="button">
-            Загрузить обложку
-          </button>
+          <MemberUploadCover />
         </div>
         <div className="member-account__columns">
           <div className="member-account__left-column">
             <MemberCard />
           </div>
           <div className="member-account__right-column">
+            {isAccountOwner && (
+              <div className="member-account__create-task">
+                <div className="member-account__create-task-button">
+                  <button className="btn btn_primary" type="button">
+                    Создать новую задачу
+                  </button>
+                </div>
+              </div>
+            )}
             <Tabs />
           </div>
         </div>
