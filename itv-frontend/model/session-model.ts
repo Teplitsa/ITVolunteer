@@ -85,9 +85,14 @@ const sessionState: ISessionState = {
     (userName, pageSlug) => {
       if (!pageSlug) return false;
 
-      const [slug, memberName] = pageSlug.match(/members\/(\w+)/);
+      const destructedUri = pageSlug.match(/members\/([^\/|\s]+)/);
 
-      return userName === memberName;
+      if (Object.is(destructedUri, null)) {
+        return false;
+      } else {
+        const [slug, memberName] = destructedUri;
+        return userName === memberName;
+      }
     }
   ),
 };

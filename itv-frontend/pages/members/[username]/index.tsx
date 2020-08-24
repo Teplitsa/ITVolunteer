@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import MemberAccount from "../../../components/page/MemberAccount";
+import { getAjaxUrl } from "../../../utilities/utilities";
 
 const AccountPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -18,7 +19,14 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const [wordpressLoggedInCookie, memberName] = decodeURIComponent(
+    req.headers.cookie
+  ).match(/wordpress_logged_in_[a-z0-9]+=([^|]+)[^;]+/);
+  const isAccountOwner = memberName === query.username;
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -40,11 +48,61 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         },
       },
     ],
-    componentModel: async () => {
-      const { memberAccountPageState } = await import(
+    componentModel: async (request) => {
+      const { memberAccountPageState, graphqlQuery } = await import(
         "../../../model/components/member-account-model"
       );
-      return ["memberAccount", memberAccountPageState];
+      let member = null;
+
+      const memberDataResponse = await fetch(process.env.GraphQLServer, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          cookie: req.headers.cookie,
+        },
+        body: JSON.stringify({
+          query: graphqlQuery.member,
+          variables: { username: query.username },
+        }),
+      });
+      const {
+        data: { user },
+      } = await memberDataResponse.json();
+      member = user;
+
+      const { memberTasks: taskList } = await request(
+        process.env.GraphQLServer,
+        graphqlQuery.memberTasks,
+        {
+          username: query.username,
+          page: memberAccountPageState.tasks.page,
+        }
+      );
+
+      member = Object.assign(member ?? {}, {
+        tasks: {
+          filter: memberAccountPageState.tasks.filter,
+          page: memberAccountPageState.tasks.page,
+          list: taskList ?? [],
+        },
+      });
+
+      const memberReviewsResponse = await fetch(
+        `${getAjaxUrl("get-member-reviews")}${`&username=${
+          query.username
+        }&page=${0}`}`
+      );
+      const {
+        status: memberReviewsStatus = "error",
+        data: memberReviews = null,
+      } = await memberReviewsResponse.json();
+
+      memberReviewsStatus === "ok" &&
+        (member = Object.assign(member ?? {}, {
+          reviews: memberReviews,
+        }));
+
+      return ["memberAccount", { ...memberAccountPageState, ...member }];
     },
   });
 

@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
-import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import Link from "next/link";
+import { useStoreState } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
 import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
@@ -8,9 +9,9 @@ import MemberUploadCover from "../../components/members/MemberUploadCover";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  // const memberAccount = useStoreState(
-  //   (state) => state.components.memberAccount
-  // );
+  const coverImage = useStoreState(
+    (state) => state.components.memberAccount.cover
+  );
 
   const Tabs = withTabs({
     tabs: [
@@ -22,8 +23,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   return (
     <div className="member-account">
       <div className="member-account__content">
-        <div className="member-account__top">
-          <MemberUploadCover />
+        <div
+          className="member-account__top"
+          style={coverImage ? { backgroundImage: `url(${coverImage})` } : {}}
+        >
+          {isAccountOwner && <MemberUploadCover />}
         </div>
         <div className="member-account__columns">
           <div className="member-account__left-column">
@@ -33,9 +37,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             {isAccountOwner && (
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
-                  <button className="btn btn_primary" type="button">
-                    Создать новую задачу
-                  </button>
+                  <Link href="/task-actions">
+                    <a className="btn btn_primary" target="_blank">
+                      Создать новую задачу
+                    </a>
+                  </Link>
                 </div>
               </div>
             )}

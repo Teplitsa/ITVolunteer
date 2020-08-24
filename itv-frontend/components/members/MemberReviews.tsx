@@ -1,9 +1,17 @@
 import { ReactElement } from "react";
+
+import { useStoreState } from "../../model/helpers/hooks";
 import ReviewCard from "../../components/ReviewCard";
 
 const MemberReviews: React.FunctionComponent = (): ReactElement => {
-  const reviewCount = 230;
-  const reviewCalculatedRating = 4.4;
+  const { rating, reviewsCount, reviews } = useStoreState(
+    (store) => store.components.memberAccount
+  );
+
+  const reviewsCountModulo =
+    reviewsCount < 10
+      ? reviewsCount
+      : Number([...Array.from(String(reviewsCount))].pop());
 
   return (
     <div className="member-reviews">
@@ -11,17 +19,22 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         <div className="member-reviews__title">Отзывы</div>
         <div className="member-reviews__stats">
           <ul>
-            <li>{reviewCount} отзывов</li>
-            <li>Оценка {reviewCalculatedRating} из 5</li>
+            <li>
+              {reviewsCount}{" "}
+              {reviewsCountModulo === 1
+                ? "отзыв"
+                : [2, 3, 4].includes(reviewsCountModulo)
+                ? "отзыва"
+                : "отзывов"}
+            </li>
+            <li>Оценка {rating} из 5</li>
           </ul>
         </div>
       </div>
       <div className="member-reviews__list">
-        {Array(3)
-          .fill(null)
-          .map((card, i) => (
-            <ReviewCard key={i} />
-          ))}
+        {reviews.map((review) => (
+          <ReviewCard key={`Review-${review.id}`} {...review} />
+        ))}
       </div>
       <div className="member-reviews__footer">
         <a href="#" className="member-reviews__more-link">

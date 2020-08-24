@@ -445,6 +445,20 @@ function itv_register_user_graphql_fields() {
                     return UserXPModel::instance()->get_user_xp($user->userId);
                 }
             ],
+            'registrationDate' => [
+                'type' => 'Int',
+                'description' => __( 'User registration date', 'tst' ),
+                'resolve' => function ($user) {
+                    return strtotime(tst_get_member_field( 'user_date', $user->userId ));
+                }
+            ],
+            'organizationSite' => [
+                'type' => 'String',
+                'description' => __( 'User organization site', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'user_website', $user->userId );
+                }
+            ],
         ]
     );
 

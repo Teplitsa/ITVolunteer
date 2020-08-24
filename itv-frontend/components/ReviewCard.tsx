@@ -1,14 +1,17 @@
 import { ReactElement } from "react";
+import { IMemberReview } from "../model/model.typing";
 import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
+import { getTheIntervalToNow, stripTags } from "../utilities/utilities";
 
-const ReviewCard: React.FunctionComponent = (): ReactElement => {
+const ReviewCard: React.FunctionComponent<IMemberReview> = (
+  review
+): ReactElement => {
   const reviewerCardSmallProps = {
     fullName: "НКО «Леопарды Дальнего Востока»",
-    task: 
-    {
+    task: {
       slug: "nuszhen-sajt-dlja-wordpress",
-      title: "Нужен сайт на Word Press для нашей организации"
+      title: "Нужен сайт на Word Press для нашей организации",
     },
   };
 
@@ -16,16 +19,20 @@ const ReviewCard: React.FunctionComponent = (): ReactElement => {
     <div className="review-card">
       <div className="review-card__header">
         <div className="review-card__header-item">
-          <ReviewRatingSmall caption={`Точно составлено ТЗ`} rating={4} />
+          <ReviewRatingSmall
+            caption={`Точно составлено ТЗ`}
+            rating={review.rating}
+          />
         </div>
         <div className="review-card__header-item">
-          <ReviewRatingSmall caption={`Комфортное общение`} rating={4} />
+          <ReviewRatingSmall
+            caption={`Комфортное общение`}
+            rating={review.communication_rating}
+          />
         </div>
       </div>
       <div className="review-card__excerpt">
-        Делаем сайт для всех кто хочет сохранить популяцию леопародов. Это сайт
-        который поможет им расставить приоритеты. Сайт нужен на WordPress. Как
-        хочу чтобы работало: 1. Eсть уже на сайте галерея карт…{" "}
+        {stripTags(review.message).trim().substr(0, 109)}…{" "}
         <a href="#">Подробнее</a>
       </div>
       <div className="review-card__footer">
@@ -33,7 +40,11 @@ const ReviewCard: React.FunctionComponent = (): ReactElement => {
           <ReviewerCardSmall {...reviewerCardSmallProps} />
         </div>
         <div className="review-card__footer-item">
-          <span className="review-card__date">3 часа назад</span>
+          <span className="review-card__date">
+            {getTheIntervalToNow({
+              fromDateString: review.time_add,
+            })}
+          </span>
         </div>
       </div>
     </div>

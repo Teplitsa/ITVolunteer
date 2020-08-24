@@ -243,20 +243,18 @@ export interface IComponentsState {
 
 export interface IMemberAccountPageModel
   extends IMemberAccountPageState,
-    IMemberAccountPageActions {}
+    IMemberAccountPageActions,
+    IMemberAccountPageThunks {}
 
 export interface IMemberTaskCard {
   id: string;
   slug: string;
+  status: "open" | "closed" | "draft" | "in_work";
   title: string;
-  excerpt: string;
-  author: {
-    avatar?: string;
-    fullName: string;
-    memberRole: string;
-  };
-  created: string;
-  doerCount: number;
+  content: string;
+  author: ITaskCommentAuthor;
+  dateGmt: string;
+  doerCandidatesCount: number;
   tags?: {
     nodes: Array<ITaskTag>;
   };
@@ -269,43 +267,36 @@ export interface IMemberTaskCard {
 }
 
 export interface IMemberReview {
+  id: string;
+  author_id: string;
+  doer_id: string;
+  task_id: string;
+  message: string;
   rating: number;
-  communicationRating: number;
-  excerpt: string;
-  author: {
-    fullName: string;
-    avatar?: string;
-  };
-  task: {
-    slug: string;
-    title: string;
-  };
+  communication_rating: number;
+  time_add: string;
+  type: "as_author" | "as_doer";
 }
 
 export interface IMemberAccountPageState {
-  coverImage?: string;
-  userCard?: {
-    avatar?: string;
-    isPasekaMember?: boolean;
-    fullName?: string;
-    status?: string;
-    calculatedRating?: number;
-    reviewCount?: number;
-    organization?: {
-      logo?: string;
-      name?: string;
-      description?: string;
-      site?: string;
-    };
-    contacts?: {
-      facebook?: string;
-      twitter?: string;
-      vk?: string;
-    };
-    registrationDate: string;
-  };
+  cover?: string;
+  name: string;
+  fullName: string;
+  itvAvatar?: string;
+  rating?: number;
+  reviewsCount?: number;
+  xp?: number;
+  organizationLogo?: string;
+  organizationName?: string;
+  organizationDescription?: string;
+  organizationSite?: string;
+  facebook?: string;
+  instagram?: string;
+  vk?: string;
+  registrationDate: number;
   tasks?: {
-    filter: "open" | "close" | "draft";
+    filter: "open" | "closed" | "draft";
+    page: number;
     list: Array<IMemberTaskCard>;
   };
   reviews?: Array<IMemberReview>;
@@ -314,6 +305,35 @@ export interface IMemberAccountPageState {
 export interface IMemberAccountPageActions {
   initializeState: Action<IMemberAccountPageModel>;
   setState: Action<IMemberAccountPageModel, IMemberAccountPageState>;
+  setAvatar: Action<IMemberAccountPageModel, string>;
+  setCover: Action<IMemberAccountPageModel, string>;
+  setTaskListFilter: Action<
+    IMemberAccountPageModel,
+    "open" | "closed" | "draft"
+  >;
+}
+
+export interface IMemberAccountPageThunks {
+  uploadUserAvatarRequest: Thunk<
+    IMemberAccountPageActions,
+    {
+      userAvatar: File;
+      fileName: string;
+    }
+  >;
+  uploadUserCoverRequest: Thunk<
+    IMemberAccountPageActions,
+    {
+      userCover: File;
+    }
+  >;
+  getMemberReviewsRequest: Thunk<
+    IMemberAccountPageActions,
+    {
+      username: string;
+      page: number;
+    }
+  >;
 }
 
 /**

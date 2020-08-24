@@ -1,14 +1,16 @@
 import { ReactElement, SyntheticEvent, useRef } from "react";
+import { useStoreActions } from "../../model/helpers/hooks";
 
 const MemberUploadCover: React.FunctionComponent = (): ReactElement => {
   const coverUploadInput = useRef<HTMLInputElement>(null);
+  const uploadUserCoverRequest = useStoreActions(
+    (actions) => actions.components.memberAccount.uploadUserCoverRequest
+  );
 
   const uploadCover = (event: SyntheticEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files[0]) return;
 
-    const formData = new FormData();
-
-    formData.append("cover", event.currentTarget.files[0]);
+    uploadUserCoverRequest({ userCover: event.currentTarget.files[0] });
   };
   return (
     <>
