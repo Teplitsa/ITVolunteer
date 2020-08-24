@@ -1308,11 +1308,12 @@ function itv_get_user_in_gql_format($user) {
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
         'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
-        'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
-        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
-        'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
+        'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
+        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
+        'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),
         'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
+        'thankyouCount' => ThankyouModel::instance()->get_user_thankyou_count($user->ID),
     ];
     
     return $user_data;
@@ -1499,12 +1500,32 @@ function ajax_get_member_reviews() {
     $reviews_as_author = ReviewAuthor::where(['author_id' => $user->ID])->get();
     foreach($reviews_as_author as $review) {
         $review['type'] = 'as_author';
+
+        $author = get_user_by( 'id', $review['author_id'] );
+        $review['author'] = $author ? itv_get_user_in_gql_format($author) : null;
+
+        $doer = get_user_by( 'id', $review['doer_id'] );
+        $review['doer'] = $doer ? itv_get_user_in_gql_format($doer) : null;
+
+        $task = get_post($review['task_id']);
+        $review['task'] = $task ? itv_get_ajax_task_short($task) : null;
+
         $reviews[] = $review;
     }
 
     $reviews_as_doer = Review::where(['doer_id' => $user->ID])->get();
     foreach($reviews_as_doer as $review) {
         $review['type'] = 'as_doer';
+
+        $author = get_user_by( 'id', $review['author_id'] );
+        $review['author'] = $author ? itv_get_user_in_gql_format($author) : null;
+
+        $doer = get_user_by( 'id', $review['doer_id'] );
+        $review['doer'] = $doer ? itv_get_user_in_gql_format($doer) : null;
+
+        $task = get_post($review['task_id']);
+        $review['task'] = $task ? itv_get_ajax_task_short($task) : null;
+
         $reviews[] = $review;
     }
 
@@ -1516,7 +1537,7 @@ function ajax_get_member_reviews() {
         return $a->time_add > $b->time_add ? -1 : 1;
     });
 
-    error_log(print_r($reviews, true));
+    // error_log(print_r($reviews, true));
 
     $paged_reviews = [];
     $posts_per_page = 3;
