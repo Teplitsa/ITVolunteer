@@ -185,7 +185,7 @@ function ajax_upload_user_avatar_v2() {
     );
   }
   else {
-    error_log(print_r($_FILES, true));
+    // error_log(print_r($_FILES, true));
     $image_id = media_handle_upload( 'user_avatar', 0 );
     $attach_data = wp_generate_attachment_metadata( $image_id, get_attached_file( $image_id ) );
     wp_update_attachment_metadata( $image_id,  $attach_data );

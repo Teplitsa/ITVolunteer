@@ -8,6 +8,7 @@ use \WPGraphQL\Data\DataSource;
 use \ITV\models\TimelineModel;
 use \ITV\models\CommentsLikeModel;
 use \ITV\models\UserXPModel;
+use \ITV\models\ThankyouModel;
 use \ITV\dao\ReviewAuthor;
 use \ITV\dao\Review;
 
@@ -436,6 +437,13 @@ function itv_register_user_graphql_fields() {
                     $as_author = ReviewAuthor::where(['author_id' => $user->userId])->count();
                     $as_doer = Review::where(['doer_id' => $user->userId])->count();
                     return $as_author + $as_doer;
+                }
+            ],
+            'thankyouCount' => [
+                'type' => 'Int',
+                'description' => __( 'User thankyouCount', 'tst' ),
+                'resolve' => function ($user) {
+                    return ThankyouModel::instance()->get_user_thankyou_count($user->userId);
                 }
             ],
             'xp' => [
