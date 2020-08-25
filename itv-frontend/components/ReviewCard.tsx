@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { IMemberReview } from "../model/model.typing";
 import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
@@ -7,6 +7,7 @@ import { getTheIntervalToNow, stripTags } from "../utilities/utilities";
 const ReviewCard: React.FunctionComponent<IMemberReview> = (
   review
 ): ReactElement => {
+  const [isFullDescription, setFullDescription] = useState<boolean>(false);
   const reviewerCardSmallProps = {
     fullName: "НКО «Леопарды Дальнего Востока»",
     task: {
@@ -32,8 +33,19 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
         </div>
       </div>
       <div className="review-card__excerpt">
-        {stripTags(review.message).trim().substr(0, 109)}…{" "}
-        <a href="#">Подробнее</a>
+        {(isFullDescription && stripTags(review.message).trim()) ||
+          `${stripTags(review.message).trim().substr(0, 109)}…`}{" "}
+        {!isFullDescription && (
+          <a
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              setFullDescription(true);
+            }}
+          >
+            Подробнее
+          </a>
+        )}
       </div>
       <div className="review-card__footer">
         <div className="review-card__footer-item">

@@ -5,11 +5,15 @@ import {
   IMemberAccountPageActions,
   IMemberAccountPageThunks,
   IFetchResult,
+  IMemberReview,
+  IMemberTaskCard,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import { stripTags, getAjaxUrl } from "../../utilities/utilities";
 
 export const memberAccountPageState: IMemberAccountPageState = {
+  id: "",
+  databaseId: 0,
   cover: "",
   name: "",
   fullName: "",
@@ -25,12 +29,16 @@ export const memberAccountPageState: IMemberAccountPageState = {
   instagram: "",
   vk: "",
   registrationDate: Date.now(),
+  thankyouCount: 0,
   tasks: {
     filter: "open",
     page: 0,
     list: null,
   },
-  reviews: null,
+  reviews: {
+    page: 0,
+    list: null,
+  },
 };
 
 export const graphqlQuery: {
@@ -96,8 +104,23 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   setCover: action((prevState, newCover) => {
     prevState.cover = newCover;
   }),
+  setThankyouCount: action((prevState, newThankyouCount) => {
+    prevState.thankyouCount = newThankyouCount;
+  }),
   setTaskListFilter: action((prevState, newFilter) => {
     prevState.tasks.filter = newFilter;
+  }),
+  setTasksPage: action((prevState, newPage) => {
+    prevState.tasks.page = newPage;
+  }),
+  showMoreTasks: action((prevState, newTasks) => {
+    prevState.tasks.list = [].concat(prevState.tasks.list, newTasks);
+  }),
+  setReviewsPage: action((prevState, newPage) => {
+    prevState.reviews.page = newPage;
+  }),
+  showMoreReviews: action((prevState, newReviews) => {
+    prevState.reviews.list = [].concat(prevState.reviews.list, newReviews);
   }),
 };
 
@@ -164,6 +187,116 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           console.error(stripTags(responseMessage));
         } else {
           setCover(imageUrl);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  getMemberTasksRequest: thunk(
+    async ({ setTasksPage, showMoreTasks }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: {
+            name,
+            tasks: { page },
+          },
+        },
+      } = getStoreState() as IStoreModel;
+      const nextPage = page + 1;
+      const { request } = await import("graphql-request");
+      const { graphqlQuery } = await import(
+        "../../model/components/member-account-model"
+      );
+
+      try {
+        const { memberTasks: taskList } = await request(
+          process.env.GraphQLServer,
+          graphqlQuery.memberTasks,
+          {
+            username: name,
+            page: nextPage,
+          }
+        );
+
+        if (taskList.length > 0) {
+          setTasksPage(nextPage);
+          showMoreTasks(taskList);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  getMemberReviewsRequest: thunk(
+    async ({ setReviewsPage, showMoreReviews }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: {
+            name,
+            reviews: { page },
+          },
+        },
+      } = getStoreState() as IStoreModel;
+      const nextPage = page + 1;
+
+      try {
+        const result = await fetch(
+          `${getAjaxUrl(
+            "get-member-reviews"
+          )}${`&username=${name}&page=${nextPage}`}`
+        );
+
+        const {
+          status: responseStatus,
+          message: responseMessage,
+          data: responseData,
+        } = await (<
+          Promise<{
+            status: string;
+            message?: string;
+            data?: Array<IMemberReview>;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else if (responseData?.length > 0) {
+          setReviewsPage(nextPage);
+          showMoreReviews(responseData);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  giveThanksRequest: thunk(
+    async ({ setThankyouCount }, params, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        components: {
+          memberAccount: { databaseId: toUid, thankyouCount },
+        },
+      } = getStoreState() as IStoreModel;
+
+      const action = "thankyou";
+      const formData = new FormData();
+
+      formData.append("to-uid", String(toUid));
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<IFetchResult>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          setThankyouCount(thankyouCount + 1);
         }
       } catch (error) {
         console.error(error);

@@ -101,7 +101,10 @@ export interface ISessionUser {
   id: string;
   databaseId: number;
   username: string;
+  email: string;
   fullName: string;
+  firstName: string;
+  lastName: string;
   profileURL: string;
   memberRole: string;
   itvAvatar: string;
@@ -110,6 +113,14 @@ export interface ISessionUser {
   doerReviewsCount: number;
   isPasekaMember: boolean;
   isPartner: boolean;
+  organizationName: string;
+  organizationDescription: string;
+  organizationSite: string;
+  skype: string;
+  twitter: string;
+  facebook: string;
+  vk: string;
+  instagram: string;
   subscribeTaskList?: any | null;
   logoutUrl?: string;
   isAdmin?: boolean;
@@ -279,6 +290,8 @@ export interface IMemberReview {
 }
 
 export interface IMemberAccountPageState {
+  id: string;
+  databaseId: number;
   cover?: string;
   name: string;
   fullName: string;
@@ -294,12 +307,16 @@ export interface IMemberAccountPageState {
   instagram?: string;
   vk?: string;
   registrationDate: number;
+  thankyouCount: number;
   tasks?: {
     filter: "open" | "closed" | "draft";
     page: number;
     list: Array<IMemberTaskCard>;
   };
-  reviews?: Array<IMemberReview>;
+  reviews?: {
+    page: number;
+    list: Array<IMemberReview>;
+  };
 }
 
 export interface IMemberAccountPageActions {
@@ -307,10 +324,15 @@ export interface IMemberAccountPageActions {
   setState: Action<IMemberAccountPageModel, IMemberAccountPageState>;
   setAvatar: Action<IMemberAccountPageModel, string>;
   setCover: Action<IMemberAccountPageModel, string>;
+  setThankyouCount: Action<IMemberAccountPageModel, number>;
   setTaskListFilter: Action<
     IMemberAccountPageModel,
     "open" | "closed" | "draft"
   >;
+  setTasksPage: Action<IMemberAccountPageModel, number>;
+  showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
+  setReviewsPage: Action<IMemberAccountPageModel, number>;
+  showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -327,13 +349,9 @@ export interface IMemberAccountPageThunks {
       userCover: File;
     }
   >;
-  getMemberReviewsRequest: Thunk<
-    IMemberAccountPageActions,
-    {
-      username: string;
-      page: number;
-    }
-  >;
+  getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
+  getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
+  giveThanksRequest: Thunk<IMemberAccountPageActions>;
 }
 
 /**
@@ -342,29 +360,22 @@ export interface IMemberAccountPageThunks {
 
 export interface IMemberProfilePageModel
   extends IMemberProfilePageState,
-    IMemberProfilePageActions {}
+    IMemberProfilePageActions,
+    IMemberProfilePageThunks {}
 
-export interface IMemberProfilePageState {
-  user?: {
-    name?: string;
-    surname?: string;
-    contacts?: {
-      skype?: string;
-      twitter?: string;
-      facebook?: string;
-      vk?: string;
-    };
-  };
-  organization?: {
-    name?: string;
-    description?: string;
-    site?: string;
-  };
-}
+export interface IMemberProfilePageState {}
 
 export interface IMemberProfilePageActions {
-  initializeState: Action<IMemberSecurityPageModel>;
+  initializeState: Action<IMemberProfilePageModel>;
   setState: Action<IMemberProfilePageModel, IMemberProfilePageState>;
+}
+
+export interface IMemberProfilePageThunks {
+  updateProfileRequest: Thunk<IMemberProfilePageActions, {
+    formData: FormData;
+    successCallbackFn?: (message: string) => void;
+    errorCallbackFn?: (message: string) => void;
+  }>;
 }
 
 /**
@@ -373,18 +384,22 @@ export interface IMemberProfilePageActions {
 
 export interface IMemberSecurityPageModel
   extends IMemberSecurityPageState,
-    IMemberSecurityPageActions {}
+    IMemberSecurityPageActions,
+    IMemberSecurityPageThunks {}
 
-export interface IMemberSecurityPageState {
-  login: string;
-  email: string;
-  newPassword?: string;
-  newPasswordRepeat?: string;
-}
+export interface IMemberSecurityPageState {}
 
 export interface IMemberSecurityPageActions {
   initializeState: Action<IMemberSecurityPageModel>;
   setState: Action<IMemberSecurityPageModel, IMemberSecurityPageState>;
+}
+
+export interface IMemberSecurityPageThunks {
+  updateUserLoginDataRequest: Thunk<IMemberSecurityPageActions, {
+    formData: FormData;
+    successCallbackFn?: (message: string) => void;
+    errorCallbackFn?: (message: string) => void;
+  }>;
 }
 
 /**

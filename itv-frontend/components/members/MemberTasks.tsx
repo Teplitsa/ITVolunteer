@@ -3,6 +3,7 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCard from "../../components/TaskCard";
 
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
+  const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
   const { tasks } = useStoreState((state) => state.components.memberAccount);
   const filters: {
     open: number;
@@ -16,8 +17,8 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     },
     { open: 0, closed: 0, draft: 0, in_work: 0 }
   );
-  const setTaskListFilter = useStoreActions(
-    (actions) => actions.components.memberAccount.setTaskListFilter
+  const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
+    (actions) => actions.components.memberAccount
   );
 
   const filter = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -53,20 +54,22 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
                 Открытые ({filters.open + filters.in_work})
               </a>
             </li>
-            <li>
-              <a
-                className={`member-tasks__filter-control ${
-                  tasks.filter === "draft"
-                    ? "member-tasks__filter-control_active"
-                    : ""
-                }`}
-                href="#"
-                data-filter={["draft"]}
-                onClick={filter}
-              >
-                Черновики ({filters.draft})
-              </a>
-            </li>
+            {isAccountOwner && (
+              <li>
+                <a
+                  className={`member-tasks__filter-control ${
+                    tasks.filter === "draft"
+                      ? "member-tasks__filter-control_active"
+                      : ""
+                  }`}
+                  href="#"
+                  data-filter={["draft"]}
+                  onClick={filter}
+                >
+                  Черновики ({filters.draft})
+                </a>
+              </li>
+            )}
             <li>
               <a
                 className={`member-tasks__filter-control ${
@@ -96,7 +99,14 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
           ))}
       </div>
       <div className="member-tasks__footer">
-        <a href="#" className="member-tasks__more-link">
+        <a
+          href="#"
+          className="member-tasks__more-link"
+          onClick={(event) => {
+            event.preventDefault();
+            getMemberTasksRequest();
+          }}
+        >
           Показать ещё
         </a>
       </div>

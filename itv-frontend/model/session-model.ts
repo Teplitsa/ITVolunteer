@@ -16,7 +16,10 @@ const sessionUserState: ISessionUser = {
   id: "",
   databaseId: 0,
   username: "",
+  email: "",
   fullName: "",
+  firstName: "",
+  lastName: "",
   profileURL: "",
   memberRole: "",
   itvAvatar: "",
@@ -25,6 +28,14 @@ const sessionUserState: ISessionUser = {
   doerReviewsCount: 0,
   isPasekaMember: false,
   isPartner: false,
+  organizationName: "",
+  organizationDescription: "",
+  organizationSite: "",
+  skype: "",
+  twitter: "",
+  facebook: "",
+  vk: "",
+  instagram: "",
 };
 
 const sessionTokenState: ISessionToken = {

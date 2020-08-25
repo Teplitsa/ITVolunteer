@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MemberCardBage from "components/members/MemberCardBage";
 import MemberCardStats from "components/members/MemberCardStats";
 import MemberCardOrganization from "components/members/MemberCardOrganization";
@@ -8,14 +8,17 @@ import MemberCardBottom from "components/members/MemberCardBottom";
 
 const MemberCard: React.FunctionComponent = (): ReactElement => {
   const {
+    isLoggedIn,
     isAccountOwner,
     isLoaded: isSessionLoaded,
     user: { logoutUrl },
   } = useStoreState((state) => state.session);
-  const { name: memberName, organizationName } = useStoreState(
+  const { name: memberName, organizationName, thankyouCount } = useStoreState(
     (state) => state.components.memberAccount
   );
-  const thankCount = 123;
+  const giveThanksRequest = useStoreActions(
+    (actions) => actions.components.memberAccount.giveThanksRequest
+  );
 
   return (
     <>
@@ -42,14 +45,17 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
               </>
             )) || (
               <>
-                <button
-                  className="btn btn_primary btn_full-width"
-                  type="button"
-                >
-                  Сказать «Спасибо»
-                </button>
+                {isLoggedIn && (
+                  <button
+                    className="btn btn_primary btn_full-width"
+                    type="button"
+                    onClick={() => giveThanksRequest()}
+                  >
+                    Сказать «Спасибо»
+                  </button>
+                )}
                 <span className="member-card__thank-count">
-                  Сказали спасибо: {123}
+                  Сказали спасибо: {thankyouCount}
                 </span>
               </>
             )}

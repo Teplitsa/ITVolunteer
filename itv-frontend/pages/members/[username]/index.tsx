@@ -39,10 +39,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         slug: `members/${query.username}`,
         seo: {
           canonical: `https://itv.te-st.ru/members/${query.username}`,
-          title: "Аккаунт - it-волонтер",
+          title: `${query.username} - аккаунт на сайте it-волонтер`,
           metaRobotsNoindex: "noindex",
           metaRobotsNofollow: "nofollow",
-          opengraphTitle: "Аккаунт - it-волонтер",
+          opengraphTitle: `${query.username} - аккаунт на сайте it-волонтер`,
           opengraphUrl: `https://itv.te-st.ru/members/${query.username}`,
           opengraphSiteName: "it-волонтер",
         },
@@ -99,7 +99,10 @@ export const getServerSideProps: GetServerSideProps = async ({
 
       memberReviewsStatus === "ok" &&
         (member = Object.assign(member ?? {}, {
-          reviews: memberReviews,
+          reviews: {
+            page: memberAccountPageState.reviews.page,
+            list: memberReviews,
+          },
         }));
 
       return ["memberAccount", { ...memberAccountPageState, ...member }];

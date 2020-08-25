@@ -4,22 +4,50 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
 
-import checkboxOn from "../../assets/img/auth-form-check-on.svg";
-import checkboxOff from "../../assets/img/auth-form-check-off.svg";
-
 const EditMemberProfile: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
   const formRef = useRef(null);
-  const username = useStoreState((state) => state.session.user.username);
-  const register = useStoreActions((actions) => actions.session.register);
+  const {
+    username,
+    firstName,
+    lastName,
+    organizationName,
+    organizationDescription,
+    organizationSite,
+    skype,
+    twitter,
+    facebook,
+    vk,
+    instagram,
+  } = useStoreState((state) => state.session.user);
+  const updateProfileRequest = useStoreActions(
+    (actions) => actions.components.memberProfile.updateProfileRequest
+  );
   const [isAgree, setIsAgree] = useState({ pd: false, mailing: false });
   const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [stateFormData, setStateFormData] = useState(null);
+
+  useEffect(() => {
+    const profile = new FormData();
+
+    profile.append("first_name", firstName);
+    profile.append("last_name", lastName);
+    profile.append("user_workplace", organizationName);
+    profile.append("user_workplace_desc", organizationDescription);
+    profile.append("user_website", organizationSite);
+    profile.append("user_skype", skype);
+    profile.append("twitter", twitter);
+    profile.append("facebook", facebook);
+    profile.append("vk", vk);
+    profile.append("instagram", instagram);
+
+    setStateFormData(profile);
+  }, []);
 
   useEffect(() => {
     var allowed = true;
@@ -33,12 +61,12 @@ const EditMemberProfile: React.FunctionComponent<{
     setIsAgree({ ...isAgree, ...{ [agreeName]: !isAgree[agreeName] } });
   }
 
-  function successCallback(message) {
+  function successCallback(message: string) {
     setRegistrationSuccessText(message);
     setIsLoading(false);
   }
 
-  function errorCallback(message) {
+  function errorCallback(message: string) {
     addSnackbar({
       context: "error",
       text: message,
@@ -85,11 +113,11 @@ const EditMemberProfile: React.FunctionComponent<{
 
     if (validateFormData(formData)) {
       setIsLoading(true);
-      // callUpdateProfileDataThunkHere({
-      //   formData,
-      //   successCallbackFn: successCallback,
-      //   errorCallbackFn: errorCallback
-      // });
+      updateProfileRequest({
+        formData,
+        successCallbackFn: successCallback,
+        errorCallbackFn: errorCallback,
+      });
     }
   }
 
@@ -165,20 +193,20 @@ const EditMemberProfile: React.FunctionComponent<{
 
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">
-                  Название организации
+                  Описание организации
                 </label>
-                <input
+                <textarea
                   className="auth-page-form__control-input"
-                  type="text"
                   name="user_workplace_desc"
                   maxLength={500}
+                  rows={6}
                   placeholder=""
                   defaultValue={
                     stateFormData
                       ? stateFormData.get("user_workplace_desc")
                       : ""
                   }
-                />
+                ></textarea>
               </div>
 
               <div className="auth-page-form__group">

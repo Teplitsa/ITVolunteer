@@ -1,11 +1,14 @@
 import { ReactElement } from "react";
 
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import ReviewCard from "../../components/ReviewCard";
 
 const MemberReviews: React.FunctionComponent = (): ReactElement => {
   const { rating, reviewsCount, reviews } = useStoreState(
     (store) => store.components.memberAccount
+  );
+  const getMemberReviewsRequest = useStoreActions(
+    (actions) => actions.components.memberAccount.getMemberReviewsRequest
   );
 
   const reviewsCountModulo =
@@ -32,12 +35,19 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-reviews__list">
-        {reviews.map((review) => (
+        {reviews.list.map((review) => (
           <ReviewCard key={`Review-${review.id}`} {...review} />
         ))}
       </div>
       <div className="member-reviews__footer">
-        <a href="#" className="member-reviews__more-link">
+        <a
+          href="#"
+          className="member-reviews__more-link"
+          onClick={(event) => {
+            event.preventDefault();
+            getMemberReviewsRequest();
+          }}
+        >
           Показать ещё
         </a>
       </div>

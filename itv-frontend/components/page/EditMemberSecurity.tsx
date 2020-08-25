@@ -4,22 +4,33 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
 
-import checkboxOn from "../../assets/img/auth-form-check-on.svg";
-import checkboxOff from "../../assets/img/auth-form-check-off.svg";
-
 const EditMemberSecurity: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
   const formRef = useRef(null);
-  const username = useStoreState((state) => state.session.user.username);
-  const register = useStoreActions((actions) => actions.session.register);
+  const { username, email } = useStoreState((state) => state.session.user);
+  const updateUserLoginDataRequest = useStoreActions(
+    (actions) => actions.components.memberSecurity.updateUserLoginDataRequest
+  );
+
   const [isAgree, setIsAgree] = useState({ pd: false, mailing: false });
   const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [regFormData, setRegFormData] = useState(null);
+
+  useEffect(() => {
+    const security = new FormData();
+
+    security.append("first_name", username);
+    security.append("email", email);
+    security.append("pass", "");
+    security.append("passRepeat", "");
+
+    setRegFormData(security);
+  }, []);
 
   useEffect(() => {
     var allowed = true;
@@ -103,11 +114,11 @@ const EditMemberSecurity: React.FunctionComponent<{
 
     if (validateFormData(formData)) {
       setIsLoading(true);
-      // callUpdateSecurityDataThunkHere({
-      //   formData,
-      //   successCallbackFn: successCallback,
-      //   errorCallbackFn: errorCallback
-      // });
+      updateUserLoginDataRequest({
+        formData,
+        successCallbackFn: successCallback,
+        errorCallbackFn: errorCallback,
+      });
     }
   }
 
