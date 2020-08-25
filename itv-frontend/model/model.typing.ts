@@ -233,6 +233,7 @@ export interface IPageActions {
 export interface IComponentsModel extends IComponentsState {}
 
 export interface IComponentsState {
+  members?: IMembersPageModel;
   memberAccount?: IMemberAccountPageModel;
   memberProfile?: IMemberProfilePageModel;
   memberSecurity?: IMemberSecurityPageModel;
@@ -246,6 +247,30 @@ export interface IComponentsState {
   completeTaskWizard?: ICompleteTaskWizardModel;
   createTaskAgreement?: ICreateTaskAgreementPageModel;
   helpPage?: IHelpPageModel;
+}
+
+/**
+ * Members
+ */
+
+export interface IMembersPageModel
+  extends IMembersPageState,
+    IMembersPageActions {}
+
+export interface IMemberListItem {
+  id: string;
+  name: string;
+}
+
+export interface IMembersPageState {
+  perPage: number;
+  paged: number;
+  list: Array<IMemberListItem>;
+}
+
+export interface IMembersPageActions {
+  initializeState: Action<IMembersPageModel>;
+  setState: Action<IMembersPageModel, IMembersPageState>;
 }
 
 /**
@@ -371,11 +396,14 @@ export interface IMemberProfilePageActions {
 }
 
 export interface IMemberProfilePageThunks {
-  updateProfileRequest: Thunk<IMemberProfilePageActions, {
-    formData: FormData;
-    successCallbackFn?: (message: string) => void;
-    errorCallbackFn?: (message: string) => void;
-  }>;
+  updateProfileRequest: Thunk<
+    IMemberProfilePageActions,
+    {
+      formData: FormData;
+      successCallbackFn?: (message: string) => void;
+      errorCallbackFn?: (message: string) => void;
+    }
+  >;
 }
 
 /**
@@ -395,11 +423,14 @@ export interface IMemberSecurityPageActions {
 }
 
 export interface IMemberSecurityPageThunks {
-  updateUserLoginDataRequest: Thunk<IMemberSecurityPageActions, {
-    formData: FormData;
-    successCallbackFn?: (message: string) => void;
-    errorCallbackFn?: (message: string) => void;
-  }>;
+  updateUserLoginDataRequest: Thunk<
+    IMemberSecurityPageActions,
+    {
+      formData: FormData;
+      successCallbackFn?: (message: string) => void;
+      errorCallbackFn?: (message: string) => void;
+    }
+  >;
 }
 
 /**

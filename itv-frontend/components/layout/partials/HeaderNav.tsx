@@ -83,7 +83,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li>
-              <a href="/members/hero">Волонтеры</a>
+              <a href="/members">Волонтеры</a>
             </li>
             <li className="drop-menu">
               <a className="drop-menu" onClick={() => false}>
