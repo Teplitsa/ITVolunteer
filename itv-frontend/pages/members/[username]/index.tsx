@@ -97,8 +97,6 @@ export const getServerSideProps: GetServerSideProps = async ({
         data: memberReviews = null,
       } = await memberReviewsResponse.json();
 
-      console.log("memberReviews:", memberReviews);
-
       memberReviewsStatus === "ok" &&
         (member = Object.assign(member ?? {}, {
           reviews: {

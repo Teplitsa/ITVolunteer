@@ -19,10 +19,14 @@ const ReviewerCardSmall: React.FunctionComponent<{
       />
       <span className="name">
         <span>{fullName}</span>
-        {" / "}
-        <Link href={`/tasks/${task.slug}`}>
-          <a>{task.title}</a>
-        </Link>
+        {task && (
+          <>
+            {" / "}
+            <Link href={`${task.slug}`}>
+              <a>{task.title}</a>
+            </Link>
+          </>
+        )}
       </span>
     </div>
   );

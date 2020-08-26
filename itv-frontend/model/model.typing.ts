@@ -331,6 +331,7 @@ export interface IMemberAccountPageState {
   databaseId: number;
   cover?: string;
   name: string;
+  username: string;
   fullName: string;
   itvAvatar?: string;
   rating?: number;

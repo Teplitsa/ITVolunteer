@@ -12,10 +12,12 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
   const reviewerCardSmallProps = {
     avatar: reviewer.itvAvatar,
     fullName: reviewer.organizationName || reviewer.fullName,
-    task: {
-      slug: `/tasks/${review.task.slug}`,
-      title: review.task.title,
-    },
+    task: review.task
+      ? {
+          slug: `/tasks/${review.task.slug}`,
+          title: review.task.title,
+        }
+      : null,
   };
 
   return (

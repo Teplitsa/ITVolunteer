@@ -16,6 +16,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   databaseId: 0,
   cover: "",
   name: "",
+  username: "",
   fullName: "",
   itvAvatar: "",
   rating: 0,
@@ -233,7 +234,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       const {
         components: {
           memberAccount: {
-            name,
+            username,
             reviews: { page },
           },
         },
@@ -244,7 +245,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         const result = await fetch(
           `${getAjaxUrl(
             "get-member-reviews"
-          )}${`&username=${name}&page=${nextPage}`}`
+          )}${`&username=${username}&page=${nextPage}`}`
         );
 
         const {
