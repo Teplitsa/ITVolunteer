@@ -8,8 +8,16 @@ import userNotifModel from "./user-notif-model";
 import { createTaskWizardModel, completeTaskWizardModel } from "./wizard-model";
 import createTaskAgreementPageModel from "./components/create-task-agreement-model";
 import helpPageModel from "./components/help-model";
+import memberSecurityPageModel from "./components/member-security-model";
+import memberProfilePageModel from "./components/member-profile-model";
+import memberAccountPageModel from "./components/member-account-model";
+import membersPageModel from "./components/members-model";
 
 const componentsState: IComponentsState = {
+  members: membersPageModel,
+  memberAccount: memberAccountPageModel,
+  memberProfile: memberProfilePageModel,
+  memberSecurity: memberSecurityPageModel,
   honors: honorsPageModel,
   paseka: pasekaPageModel,
   task: taskModel,

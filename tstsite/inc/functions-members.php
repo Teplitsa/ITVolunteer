@@ -12,6 +12,9 @@ use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
 use \WeDevs\ORM\WP\UserMeta as UserMeta;
 use WPGraphQL\JWT_Authentication;
+use \ITV\dao\ReviewAuthor;
+use \ITV\dao\Review;
+
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -1305,11 +1308,12 @@ function itv_get_user_in_gql_format($user) {
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
         'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
-        'organizationName' => tst_get_member_field( 'user_workplace', $user->userId ),
-        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->userId ),
-        'organizationLogo' => tst_get_member_user_company_logo_src( $user->userId ),
+        'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
+        'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
+        'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),
         'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
+        'thankyouCount' => ThankyouModel::instance()->get_user_thankyou_count($user->ID),
     ];
     
     return $user_data;
@@ -1372,3 +1376,191 @@ function ajax_get_current_user_jwt_auth_token() {
 }
 add_action('wp_ajax_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');
 add_action('wp_ajax_nopriv_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_auth_token');
+
+
+/** Register a new user */
+function ajax_update_user_login_data() {
+
+  if( !is_user_logged_in() ) {
+    wp_die(json_encode(array(
+    'status' => 'fail',
+    'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+    )));
+  } else {
+    $user_params = array(
+        'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+        'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
+        'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
+    );
+
+    if(!empty($_POST['pass'])) {
+      $user_params['user_pass'] = $_POST['pass'];
+    }
+
+    $reg_result = wp_update_user($user_params);
+    
+    if(is_wp_error($reg_result)) {
+      wp_die(json_encode(array(
+        'status' => 'fail',
+        'message' => '<div class="alert alert-danger">' . $reg_result->get_error_message() . '</div>',
+      )));
+    }
+    else {
+      $user_id = $reg_result;
+      $user = get_user_by( 'id', $user_id );
+        
+      // tst_send_activation_email($user);
+      // update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
+      
+      wp_die(json_encode(array(
+        'status' => 'ok',
+        'message' => 'Данные для входа на сайт обновлены',
+      )));
+    }
+  }
+}
+add_action('wp_ajax_update-user-login-data', 'ajax_update_user_login_data');
+add_action('wp_ajax_nopriv_update-user-login-data', 'ajax_update_user_login_data');
+
+
+/** Update profile v.2 */
+function ajax_update_profile_v2() {
+    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+    $member = wp_get_current_user();
+
+    if( false && !wp_verify_nonce($_POST['nonce'], 'member_action') ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+        )));
+    } else if($member->user_email != $_POST['email'] && email_exists($_POST['email'])) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => '<div class="alert alert-danger">'.__('Email already exists!', 'tst').'</div>',
+        )));
+    } else {
+        $params = array(
+            'ID' => (int)$_POST['id'],
+            'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+            'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
+            'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
+            'user_url' => filter_var($_POST['user_website'], FILTER_SANITIZE_STRING),
+        );
+        if( !empty($_POST['pass']) )
+            $params['user_pass'] = $_POST['pass'];
+
+        $user_id = wp_update_user($params);
+        if(is_wp_error($user_id)) {
+            wp_die(json_encode(array(
+                'status' => 'fail',
+                'message' => '<div class="alert alert-danger">'.__('We are very sorry :( Some error occured while updating your profile.', 'tst').'</div>',
+            )));
+        } else {
+            // Update another fields...
+            update_user_meta($member->ID, 'description', filter_var($_POST['bio'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_workplace', filter_var(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_workplace_desc', filter_var(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_skype', filter_var($_POST['user_skype'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'twitter', filter_var($_POST['twitter'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'facebook', filter_var($_POST['facebook'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'vk', filter_var($_POST['vk'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'instagram', filter_var($_POST['instagram'], FILTER_SANITIZE_STRING));
+           
+            do_action('update_member_stats', array($user_id));
+
+            $itv_log = ItvLog::instance();
+            $itv_log->log_user_action(ItvLog::$ACTION_USER_UPDATE, $user_id, $member->user_login);
+            UserXPModel::instance()->register_fill_profile_activity_from_gui($user_id);
+            
+            wp_die(json_encode(array(
+                'status' => 'ok',
+                'message' => '<div class="alert alert-success">'.sprintf(__('Your profile is successfully updated! <a href="%s" class="alert-link">View it</a>', 'tst'), tst_get_member_url($member)).'</div>',
+            )));
+        }
+    }
+}
+add_action('wp_ajax_update-profile-v2', 'ajax_update_profile_v2');
+add_action('wp_ajax_nopriv_update-profile-v2', 'ajax_update_profile_v2');
+
+
+function ajax_get_member_reviews() {
+    $user = get_user_by( 'login', @$_GET['username'] );
+
+    if(!$user) {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'data' => [],
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));      
+    }
+
+    $page = !empty($_GET['page']) ? intval($_GET['page']) : 0;
+    $reviews = [];
+
+    $reviews_as_author = ReviewAuthor::where(['author_id' => $user->ID])->get();
+    foreach($reviews_as_author as $review) {
+        $review['type'] = 'as_author';
+
+        $author = get_user_by( 'id', $review['author_id'] );
+        $review['author'] = $author ? itv_get_user_in_gql_format($author) : null;
+
+        $doer = get_user_by( 'id', $review['doer_id'] );
+        $review['doer'] = $doer ? itv_get_user_in_gql_format($doer) : null;
+
+        $task = get_post($review['task_id']);
+        $review['task'] = $task ? itv_get_ajax_task_short($task) : null;
+
+        $reviews[] = $review;
+    }
+
+    $reviews_as_doer = Review::where(['doer_id' => $user->ID])->get();
+    foreach($reviews_as_doer as $review) {
+        $review['type'] = 'as_doer';
+
+        $author = get_user_by( 'id', $review['author_id'] );
+        $review['author'] = $author ? itv_get_user_in_gql_format($author) : null;
+
+        $doer = get_user_by( 'id', $review['doer_id'] );
+        $review['doer'] = $doer ? itv_get_user_in_gql_format($doer) : null;
+
+        $task = get_post($review['task_id']);
+        $review['task'] = $task ? itv_get_ajax_task_short($task) : null;
+
+        $reviews[] = $review;
+    }
+
+    usort($reviews, function($a, $b) {
+        if($a->time_add === $b->time_add) {
+            return 0;
+        }
+
+        return $a->time_add > $b->time_add ? -1 : 1;
+    });
+
+    // error_log(print_r($reviews, true));
+
+    $paged_reviews = [];
+    $posts_per_page = 3;
+    $post_offset = $page * $posts_per_page;
+
+    foreach($reviews as $k => $review) {
+
+        if($post_offset > $k) {
+            continue;
+        }
+
+        if($post_offset + $posts_per_page <= $k) {
+            break;
+        }
+
+        $paged_reviews[] = $review;
+    }
+
+    
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'data' => $paged_reviews,
+    )));    
+}
+add_action('wp_ajax_get-member-reviews', 'ajax_get_member_reviews');
+add_action('wp_ajax_nopriv_get-member-reviews', 'ajax_get_member_reviews');

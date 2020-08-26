@@ -1,0 +1,25 @@
+.review-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  @include screen-from(md) {
+    justify-content: flex-start;
+  }
+  &__caption {
+    margin: 0 10px 0 0;
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-md;
+  }
+  &__star {
+    display: inline-block;
+    background: url("../../img/icon-star.svg") 50% 50% no-repeat;
+    width: 16px;
+    height: 16px;
+    &:not(:last-child) {
+      margin: 0 5px 0 0;
+    }
+    &_active {
+      background: url("../../img/icon-star_active.svg") 50% 50% no-repeat;
+    }
+  }
+}

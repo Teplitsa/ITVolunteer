@@ -1,12 +1,22 @@
 import { ReactElement } from "react";
-import { ITaskState } from "../../../model/model.typing";
+import { ITaskTag } from "../../../model/model.typing";
 import IconTags from "../../../assets/img/icon-color-picker.svg";
 import IconNgoTags from "../../../assets/img/icon-people.svg";
 import IconRewardTags from "../../../assets/img/icon-gift-box.svg";
 import TaskTagGroup from "./TaskTagGroup";
 import { capitalize, toCamelCase } from "../../../utilities/utilities";
 
-const TaskTags: React.FunctionComponent<ITaskState> = ({ tags, rewardTags, ngoTaskTags: ngoTags }): ReactElement => {
+const TaskTags: React.FunctionComponent<{
+  tags?: {
+    nodes: Array<ITaskTag>;
+  };
+  rewardTags?: {
+    nodes: Array<ITaskTag>;
+  };
+  ngoTaskTags?: {
+    nodes: Array<ITaskTag>;
+  };
+}> = ({ tags, rewardTags, ngoTaskTags: ngoTags }): ReactElement => {
   const tagGroups = [];
 
   tags?.nodes?.length && tagGroups.push(["tags", IconTags, tags.nodes]);

@@ -1,0 +1,39 @@
+.task-card {
+  margin: 0 0 15px;
+  padding: 0 0 15px;
+  border-bottom: 1px solid $color-gray-light-md;
+  &__header {
+    margin: 0 0 5px;
+    @include screen-from(md) {
+      display: flex;
+      align-items: center;
+    }
+  }
+  &__date {
+    margin: 5px 0 0;
+    font: 600 11px/16px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-md;
+    @include screen-from(md) {
+      margin: 0 0 0 15px;
+    }
+  }
+  &__сandidate-сount {
+    margin: 5px 0 0;
+    font: 600 11px/16px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-md;
+    @include screen-from(md) {
+      margin: 0 0 0 15px;
+    }
+  }
+  &__title {
+    margin: 10px 0;
+    font: 600 18px/28px "IBM Plex Sans", sans-serif;
+    color: $color-main;
+    @include screen-from(md) {
+      margin: 0 0 10px;
+    }
+  }
+  &__excerpt {
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+  }
+}

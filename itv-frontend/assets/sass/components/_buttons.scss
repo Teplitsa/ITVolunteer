@@ -1,13 +1,47 @@
 .btn {
+  display: inline-block;
   padding: 10px 20px;
   font: 600 13px/20px "IBM Plex Sans", sans-serif;
   outline: none;
+  box-sizing: border-box;
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+  &_link {
+    background-color: transparent;
+    border-style: none;
+    border-radius: 12px;
+    color: $color-gray-dark-lg;
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+  }
   &_primary {
-    @extend .btn;
     background-color: $color-main;
     border-style: none;
     box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
     border-radius: 12px;
     color: $color-white;
+  }
+  &_default {
+    background-color: transparent;
+    border-style: none;
+    border-radius: 12px;
+    color: $color-gray-dark-lg;
+    border: 2px solid $color-gray-light-md;
+  }
+  &_full-width {
+    width: 100%;
+    text-align: center;
+  }
+  &_upload-cover {
+    background: url(../../img/icon-camera.svg) calc(100% - 20px) 50% no-repeat
+      $color-white;
+    border: 2px solid $color-white;
+    padding-right: 40px;
+    border-radius: 8px;
+    color: $color-gray-dark-md;
   }
 }

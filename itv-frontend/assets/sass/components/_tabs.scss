@@ -1,0 +1,43 @@
+.tabs {
+  &-nav {
+    display: flex;
+    border-bottom: 1px solid $color-gray-light-md;
+    &__item {
+      margin: 0 8px 0 0;
+      border-bottom: 3px solid transparent;
+      box-sizing: border-box;
+      transition: all 0.3s linear;
+      &-link {
+        display: inline-block;
+        padding: 31px 12px 30px;
+        font: 600 13px/20px "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-md;
+        transition: all 0.3s linear;
+        &:hover,
+        &:focus {
+          text-decoration: none;
+        }
+      }
+      &_active {
+        border-bottom: 3px solid $color-gray-dark-xl;
+        [class*="-link"] {
+          color: $color-gray-dark-xl;
+        }
+      }
+    }
+  }
+  &-content {
+    &__item {
+      height: 0;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      transition: all 0.3s linear;
+      &_active {
+        height: auto;
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+}

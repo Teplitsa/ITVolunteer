@@ -88,6 +88,7 @@ export interface ISessionState {
   isTaskAuthorLoggedIn?: Computed<ISessionModel, boolean, IStoreModel>;
   isUserTaskCandidate?: Computed<ISessionModel, boolean, IStoreModel>;
   canUserReplyToComment?: Computed<ISessionModel, boolean, IStoreModel>;
+  isAccountOwner?: Computed<ISessionModel, boolean, IStoreModel>;
 }
 
 export interface ISessionToken {
@@ -100,7 +101,10 @@ export interface ISessionUser {
   id: string;
   databaseId: number;
   username: string;
+  email: string;
   fullName: string;
+  firstName: string;
+  lastName: string;
   profileURL: string;
   memberRole: string;
   itvAvatar: string;
@@ -109,6 +113,14 @@ export interface ISessionUser {
   doerReviewsCount: number;
   isPasekaMember: boolean;
   isPartner: boolean;
+  organizationName: string;
+  organizationDescription: string;
+  organizationSite: string;
+  skype: string;
+  twitter: string;
+  facebook: string;
+  vk: string;
+  instagram: string;
   subscribeTaskList?: any | null;
   logoutUrl?: string;
   isAdmin?: boolean;
@@ -123,8 +135,22 @@ export interface ISessionActions {
 
 export interface ISessionThunks {
   login: Thunk<ISessionActions, { username: string; password: string }>;
-  register: Thunk<ISessionActions, {formData: object; successCallbackFn: (message: string) => void; errorCallbackFn: (message: string) => void}>;
-  userLogin: Thunk<ISessionActions, {formData: object; successCallbackFn: () => void; errorCallbackFn: (message: string) => void}>;
+  register: Thunk<
+    ISessionActions,
+    {
+      formData: object;
+      successCallbackFn: (message: string) => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
+  userLogin: Thunk<
+    ISessionActions,
+    {
+      formData: object;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
 }
 
 /**
@@ -207,6 +233,10 @@ export interface IPageActions {
 export interface IComponentsModel extends IComponentsState {}
 
 export interface IComponentsState {
+  members?: IMembersPageModel;
+  memberAccount?: IMemberAccountPageModel;
+  memberProfile?: IMemberProfilePageModel;
+  memberSecurity?: IMemberSecurityPageModel;
   honors?: IHonorsPageModel;
   paseka?: IPasekaPageModel;
   task?: ITaskModel;
@@ -217,6 +247,190 @@ export interface IComponentsState {
   completeTaskWizard?: ICompleteTaskWizardModel;
   createTaskAgreement?: ICreateTaskAgreementPageModel;
   helpPage?: IHelpPageModel;
+}
+
+/**
+ * Members
+ */
+
+export interface IMembersPageModel
+  extends IMembersPageState,
+    IMembersPageActions {}
+
+export interface IMemberListItem {
+  id: string;
+  name: string;
+}
+
+export interface IMembersPageState {
+  perPage: number;
+  paged: number;
+  list: Array<IMemberListItem>;
+}
+
+export interface IMembersPageActions {
+  initializeState: Action<IMembersPageModel>;
+  setState: Action<IMembersPageModel, IMembersPageState>;
+}
+
+/**
+ * Member Account
+ */
+
+export interface IMemberAccountPageModel
+  extends IMemberAccountPageState,
+    IMemberAccountPageActions,
+    IMemberAccountPageThunks {}
+
+export interface IMemberTaskCard {
+  id: string;
+  slug: string;
+  status: "open" | "closed" | "draft" | "in_work";
+  title: string;
+  content: string;
+  author: ITaskCommentAuthor;
+  dateGmt: string;
+  doerCandidatesCount: number;
+  tags?: {
+    nodes: Array<ITaskTag>;
+  };
+  rewardTags?: {
+    nodes: Array<ITaskTag>;
+  };
+  ngoTaskTags?: {
+    nodes: Array<ITaskTag>;
+  };
+}
+
+export interface IMemberReview {
+  id: string;
+  author_id: string;
+  doer_id: string;
+  task_id: string;
+  message: string;
+  rating: number;
+  communication_rating: number;
+  time_add: string;
+  type: "as_author" | "as_doer";
+}
+
+export interface IMemberAccountPageState {
+  id: string;
+  databaseId: number;
+  cover?: string;
+  name: string;
+  fullName: string;
+  itvAvatar?: string;
+  rating?: number;
+  reviewsCount?: number;
+  xp?: number;
+  organizationLogo?: string;
+  organizationName?: string;
+  organizationDescription?: string;
+  organizationSite?: string;
+  facebook?: string;
+  instagram?: string;
+  vk?: string;
+  registrationDate: number;
+  thankyouCount: number;
+  tasks?: {
+    filter: "open" | "closed" | "draft";
+    page: number;
+    list: Array<IMemberTaskCard>;
+  };
+  reviews?: {
+    page: number;
+    list: Array<IMemberReview>;
+  };
+}
+
+export interface IMemberAccountPageActions {
+  initializeState: Action<IMemberAccountPageModel>;
+  setState: Action<IMemberAccountPageModel, IMemberAccountPageState>;
+  setAvatar: Action<IMemberAccountPageModel, string>;
+  setCover: Action<IMemberAccountPageModel, string>;
+  setThankyouCount: Action<IMemberAccountPageModel, number>;
+  setTaskListFilter: Action<
+    IMemberAccountPageModel,
+    "open" | "closed" | "draft"
+  >;
+  setTasksPage: Action<IMemberAccountPageModel, number>;
+  showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
+  setReviewsPage: Action<IMemberAccountPageModel, number>;
+  showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
+}
+
+export interface IMemberAccountPageThunks {
+  uploadUserAvatarRequest: Thunk<
+    IMemberAccountPageActions,
+    {
+      userAvatar: File;
+      fileName: string;
+    }
+  >;
+  uploadUserCoverRequest: Thunk<
+    IMemberAccountPageActions,
+    {
+      userCover: File;
+    }
+  >;
+  getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
+  getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
+  giveThanksRequest: Thunk<IMemberAccountPageActions>;
+}
+
+/**
+ * Member Profile
+ */
+
+export interface IMemberProfilePageModel
+  extends IMemberProfilePageState,
+    IMemberProfilePageActions,
+    IMemberProfilePageThunks {}
+
+export interface IMemberProfilePageState {}
+
+export interface IMemberProfilePageActions {
+  initializeState: Action<IMemberProfilePageModel>;
+  setState: Action<IMemberProfilePageModel, IMemberProfilePageState>;
+}
+
+export interface IMemberProfilePageThunks {
+  updateProfileRequest: Thunk<
+    IMemberProfilePageActions,
+    {
+      formData: FormData;
+      successCallbackFn?: (message: string) => void;
+      errorCallbackFn?: (message: string) => void;
+    }
+  >;
+}
+
+/**
+ * Member Security
+ */
+
+export interface IMemberSecurityPageModel
+  extends IMemberSecurityPageState,
+    IMemberSecurityPageActions,
+    IMemberSecurityPageThunks {}
+
+export interface IMemberSecurityPageState {}
+
+export interface IMemberSecurityPageActions {
+  initializeState: Action<IMemberSecurityPageModel>;
+  setState: Action<IMemberSecurityPageModel, IMemberSecurityPageState>;
+}
+
+export interface IMemberSecurityPageThunks {
+  updateUserLoginDataRequest: Thunk<
+    IMemberSecurityPageActions,
+    {
+      formData: FormData;
+      successCallbackFn?: (message: string) => void;
+      errorCallbackFn?: (message: string) => void;
+    }
+  >;
 }
 
 /**

@@ -13,7 +13,7 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
       </a>
       <ul className="links-col">
           <li><Link href="/tasks"><a>Задачи</a></Link></li>
-          <li><a href="/members/hero">Волонтеры</a></li>
+          <li><a href="/members">Волонтеры</a></li>
           <li className="drop-menu">
             <a href="/about">О проекте</a>
             <ul className="submenu">

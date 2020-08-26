@@ -7,6 +7,10 @@ use \WPGraphQL\AppContext;
 use \WPGraphQL\Data\DataSource;
 use \ITV\models\TimelineModel;
 use \ITV\models\CommentsLikeModel;
+use \ITV\models\UserXPModel;
+use \ITV\models\ThankyouModel;
+use \ITV\dao\ReviewAuthor;
+use \ITV\dao\Review;
 
 add_filter('graphql_app_context_config', 'itv_graphql_app_context_config');
 function itv_graphql_app_context_config($config) {
@@ -279,9 +283,16 @@ function itv_register_user_graphql_fields() {
             ],
             'itvAvatar' => [
                 'type' => 'String',
-                'description' => __( 'User profile URL', 'tst' ),
+                'description' => __( 'User avatar URL', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_avatar_url( $user->userId );
+                }
+            ],
+            'cover' => [
+                'type' => 'String',
+                'description' => __( 'User cover URL', 'tst' ),
+                'resolve' => function ($user) {
+                    return itv_member_cover_url( $user->userId );
                 }
             ],
             'memberRole' => [
@@ -351,6 +362,109 @@ function itv_register_user_graphql_fields() {
                 'type' => 'Bool',
                 'resolve' => function ($user) {
                     return user_can($user->userId, 'manage_options');
+                }
+            ],
+            'skype' => [
+                'type' => 'String',
+                'description' => __( 'User skype', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'user_skype', $user->userId );
+                }
+            ],
+            'twitter' => [
+                'type' => 'String',
+                'description' => __( 'User twitter', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'twitter', $user->userId );
+                }
+            ],
+            'facebook' => [
+                'type' => 'String',
+                'description' => __( 'User facebook', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'facebook', $user->userId );
+                }
+            ],
+            'vk' => [
+                'type' => 'String',
+                'description' => __( 'User vk', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'vk', $user->userId );
+                }
+            ],
+            'instagram' => [
+                'type' => 'String',
+                'description' => __( 'User instagram', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'instagram', $user->userId );
+                }
+            ],
+            'rating' => [
+                'type' => 'Float',
+                'description' => __( 'User rating', 'tst' ),
+                'resolve' => function ($user) {
+                    $ratings = [];
+
+                    $reviews_as_author = ReviewAuthor::where(['author_id' => $user->userId])->get();
+                    foreach($reviews_as_author as $review) {
+                        if($review['rating']) {
+                            $ratings[] = $review['rating'];
+                        }
+
+                        if($review['communication_rating']) {
+                            $ratings[] = $review['communication_rating'];
+                        }
+                    }
+
+                    $reviews_as_doer = Review::where(['doer_id' => $user->userId])->get();
+                    foreach($reviews_as_doer as $review) {
+                        if($review['rating']) {
+                            $ratings[] = $review['rating'];
+                        }
+
+                        if($review['communication_rating']) {
+                            $ratings[] = $review['communication_rating'];
+                        }
+                    }
+                    
+                    return !empty($ratings) ? array_sum($ratings) / count($ratings) : 0;
+                }
+            ],
+            'reviewsCount' => [
+                'type' => 'Int',
+                'description' => __( 'User reviewsCount', 'tst' ),
+                'resolve' => function ($user) {
+                    $as_author = ReviewAuthor::where(['author_id' => $user->userId])->count();
+                    $as_doer = Review::where(['doer_id' => $user->userId])->count();
+                    return $as_author + $as_doer;
+                }
+            ],
+            'thankyouCount' => [
+                'type' => 'Int',
+                'description' => __( 'User thankyouCount', 'tst' ),
+                'resolve' => function ($user) {
+                    return ThankyouModel::instance()->get_user_thankyou_count($user->userId);
+                }
+            ],
+            'xp' => [
+                'type' => 'Int',
+                'description' => __( 'User xp', 'tst' ),
+                'resolve' => function ($user) {
+                    return UserXPModel::instance()->get_user_xp($user->userId);
+                }
+            ],
+            'registrationDate' => [
+                'type' => 'Int',
+                'description' => __( 'User registration date', 'tst' ),
+                'resolve' => function ($user) {
+                    return strtotime(tst_get_member_field( 'user_date', $user->userId ));
+                }
+            ],
+            'organizationSite' => [
+                'type' => 'String',
+                'description' => __( 'User organization site', 'tst' ),
+                'resolve' => function ($user) {
+                    return tst_get_member_field( 'user_website', $user->userId );
                 }
             ],
         ]
@@ -499,4 +613,81 @@ function itv_graphql_comment_visibility_filter($visibility, $model_name, $data, 
     }
     
     return 'public';
+}
+
+add_action( 'graphql_register_types', 'itv_register_member_tasks_graphql_query' );
+function itv_register_member_tasks_graphql_query() {
+    register_graphql_field(
+        'RootQuery',
+        'memberTasks',
+        [
+            'description' => __( 'Member tasks', 'tst' ),
+            'type' => [ 'list_of' => 'Task' ],
+            'args'        => [
+                'username'     => [
+                    'type' => [
+                        'non_null' => 'USERNAME',
+                    ],
+                ],
+                'page' => [
+                    'type' => 'Int',
+                ],
+            ],
+            'resolve' => function($source, array $args, AppContext $context) {
+                $user = get_user_by( 'login', $args['username'] );
+                $page = !empty($args['page']) ? intval( $args['page'] ) : 0;
+
+                if(!$user) {
+                    error_log("invalid username: " . print_r($args, true));
+                    return [];
+                }
+
+                $params = array(
+                    'post_type' => 'tasks',
+                    'connected_type' => 'task-doers',
+                    'connected_items' => $user->ID,
+                    'suppress_filters' => true,
+                    'nopaging' => true,
+                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                );
+                $posts_where_doer = get_posts($params);
+
+                $params = array(
+                    'post_type' => 'tasks',
+                    'author'        =>  $user->ID,
+                    'suppress_filters' => true,
+                    'nopaging' => true,
+                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                );
+                $posts_where_author = get_posts($params);
+
+                $posts = $posts_where_author + $posts_where_doer;
+                usort($posts, function($a, $b) {
+                    if($a->post_date === $b->post_date) {
+                        return 0;
+                    }
+
+                    return $a->post_date > $b->post_date ? -1 : 1;
+                });
+
+                $deferred_posts = [];
+                $posts_per_page = 3;
+                $post_offset = $page * $posts_per_page;
+                foreach($posts as $k => $post) {
+
+                    if($post_offset > $k) {
+                      continue;
+                    }
+
+                    if($post_offset + $posts_per_page <= $k) {
+                      break;
+                    }
+
+                    $deferred_posts[] = \WPGraphQL\Data\DataSource::resolve_post_object( $post->ID, $context );
+                }
+
+                return $deferred_posts;
+            },
+        ]
+    );
 }
