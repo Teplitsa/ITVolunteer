@@ -474,28 +474,37 @@ function itv_register_user_graphql_fields() {
 
 add_filter('graphql_data_is_private', "itv_graphql_user_private_filter", 10, 6);
 function itv_graphql_user_private_filter($is_private, $model_name, $data, $visibility, $owner, $current_user) {
+
     if($model_name !== 'UserObject'
         || $is_private === false
     ) {
         return $is_private;
     }
     
-    return !!$data->deleted;
+    return boolval($data->data->deleted); // data located in .data prop for users
 }
 
 add_filter('graphql_object_visibility', "itv_graphql_user_visibility_filter", 10, 6);
 function itv_graphql_user_visibility_filter($visibility, $model_name, $data, $owner, $current_user) {
+
     if($model_name !== 'UserObject'
         || $visibility === 'public'
     ) {
         return $visibility;
     }
     
-    if(!!$data->deleted) {
+     // data located in .data prop for users
+    if(!boolval($data->data->deleted)) {
         return 'public';
     }
 
     return $visibility;
+}
+
+add_filter( 'user_has_cap', 'itv_allow_everyone_to_list_users', 10, 4 );
+function itv_allow_everyone_to_list_users($allcaps, $caps, $args, $user) {
+    $allcaps['list_users'] = 1;
+    return $allcaps;
 }
 
 add_action( 'graphql_register_types', 'itv_register_doers_graphql_query' );
