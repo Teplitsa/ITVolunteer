@@ -8,11 +8,13 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
   review
 ): ReactElement => {
   const [isFullDescription, setFullDescription] = useState<boolean>(false);
+  const reviewer = review.type === "as_author" ? review.author : review.doer;
   const reviewerCardSmallProps = {
-    fullName: "НКО «Леопарды Дальнего Востока»",
+    avatar: reviewer.itvAvatar,
+    fullName: reviewer.organizationName || reviewer.fullName,
     task: {
-      slug: "nuszhen-sajt-dlja-wordpress",
-      title: "Нужен сайт на Word Press для нашей организации",
+      slug: `/tasks/${review.task.slug}`,
+      title: review.task.title,
     },
   };
 
