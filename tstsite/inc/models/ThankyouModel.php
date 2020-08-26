@@ -47,7 +47,7 @@ class ThankyouModel extends ITVSingletonModel {
         
         $from_user = User::find($user_id);
         
-        ItvAtvetka::instance()->mail('thankyou_notification', [
+        \ItvAtvetka::instance()->mail('thankyou_notification', [
             'user_id' => $to_user->ID,
             'to_username' => $to_user->display_name,
             'from_username' => $from_user->display_name,
