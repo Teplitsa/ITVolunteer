@@ -35,7 +35,7 @@ try {
             "post_author"  => 3442, // admin
             "post_title"   => "Пасека",
             "post_type"    => "page",
-            "post_name"    => "paseka",
+            "post_name"    => "about-paseka",
             "post_status"  => "publish",
             "post_content" => <<<HTML
                 <!-- wp:heading {"level":2} -->

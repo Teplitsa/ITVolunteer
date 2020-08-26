@@ -185,6 +185,11 @@ export interface IPageModel extends IPageState, IPageActions {}
 
 export interface IPageState {
   slug: string;
+  title?: string;
+  content?: string;
+  featuredImage?: any;
+  dateGmt?: string;
+  date?: string;
   seo?: IPageSEO;
 }
 
@@ -247,6 +252,10 @@ export interface IComponentsState {
   completeTaskWizard?: ICompleteTaskWizardModel;
   createTaskAgreement?: ICreateTaskAgreementPageModel;
   helpPage?: IHelpPageModel;
+  page?: IPageModel;
+  newsList?: INewsListModel;
+  newsItem?: INewsItemModel;
+  otherNewsList?: IOtherNewsListModel;
 }
 
 /**
@@ -1101,3 +1110,78 @@ export interface IHelpPageModel
   extends IHelpPageState,
     IHelpPageActions,
     IHelpPageThunks {}
+
+/**
+ * News
+ */
+
+export interface INewsListModel
+  extends INewsListState,
+    INewsListActions,
+    INewsListThunks {}
+
+export interface INewsListState {
+  items: Array<INewsItemState>;
+  isNewsListLoaded: boolean;
+  hasNextPage: boolean;
+  lastViewedListItem: string | null;
+}
+
+export interface INewsListActions {
+  initializeState: Action<INewsListModel>;
+  setState: Action<INewsListModel, INewsListState>;
+  resetNewsListLoaded: Action<INewsListModel>;
+  appendNewsList: Action<INewsListModel, Array<INewsItemState>>;
+  setNewsList: Action<INewsListModel, Array<INewsItemState>>;
+  setNewsListLoadMoreState: Action<INewsListModel, any>;
+}
+
+export interface INewsListThunks {
+  loadMoreNewsRequest: Thunk<INewsListActions>;
+  onLoadMoreNewsRequestSuccess: ThunkOn<INewsListModel>;
+}
+
+export interface IOtherNewsListModel
+  extends INewsListState,
+    INewsListActions,
+    IOtherNewsListThunks {}
+
+export interface IOtherNewsListThunks {  
+  loadOtherNewsRequest: Thunk<INewsListActions, {excludeNewsItem: INewsItemState}>;
+  onLoadOtherNewsRequestSuccess: ThunkOn<IOtherNewsListModel>;
+}
+
+/**
+ * NewsItem
+ */
+
+export interface INewsItemModel extends INewsItemState, INewsItemActions, INewsItemThunks {}
+
+export interface INewsItemState {
+  id: string;
+  title: string;
+  slug: string;
+  content?: string;
+  excerpt?: string;
+  date?: string;
+  dateGmt?: string;
+  seo?: IPageSEO;
+  featuredImage?: {
+    mediaItemUrl,
+    mediaDetails: {
+      sizes: Array<{
+        sourceUrl: string;
+        name: string;
+      }>
+    }
+  }  
+}
+
+export interface INewsItemActions {
+  initializeState: Action<INewsItemModel>;
+  setState: Action<INewsItemModel, INewsItemState>;
+}
+
+export interface INewsItemThunks {
+}
+

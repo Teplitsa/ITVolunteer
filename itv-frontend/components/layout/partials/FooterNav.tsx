@@ -20,9 +20,9 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
               <li><a href="/about">О проекте</a></li>
               <li><a href="/conditions">Правила участия</a></li>
               <li>
-                <Link href="/paseka">
+                <Link href="/about-paseka">
                   <a className={
-                    router.pathname === "/paseka"
+                    router.pathname === "/about-paseka"
                       ? "main-menu__link_active"
                       : ""
                   }>Пасека</a>

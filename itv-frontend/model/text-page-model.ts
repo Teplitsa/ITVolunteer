@@ -2,7 +2,7 @@ import { IPageModel, IPageState, IPageActions, PostType } from "./model.typing";
 import { action } from "easy-peasy";
 import { capitalize } from "../utilities/utilities";
 
-const pageState: IPageState = {
+const textPageState: IPageState = {
   slug: "",
   title: "",
   content: "",
@@ -27,10 +27,10 @@ const pageState: IPageState = {
   },
 };
 
-export const queriedFields = Object.keys(pageState).map((key) => {
+export const queriedFields = Object.keys(textPageState).map((key) => {
   if (key === "seo") {
     return `${key} {
-      ${Object.keys(pageState.seo)
+      ${Object.keys(textPageState.seo)
         .map((imageKey) => {
           if (/\w+Image/.test(imageKey)) {
             const imageProps: Array<string> = [
@@ -73,15 +73,15 @@ export const graphqlQuery = {
   getTaskBySlug: withPostType({ postType: "task" }),
 };
 
-const pageActions: IPageActions = {
+const textPageActions: IPageActions = {
   initializeState: action((prevState) => {
-    Object.assign(prevState, pageState);
+    Object.assign(prevState, textPageState);
   }),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
 };
 
-const pageModel: IPageModel = { ...pageState, ...pageActions };
+const textPageModel: IPageModel = { ...textPageState, ...textPageActions };
 
-export default pageModel;
+export default textPageModel;

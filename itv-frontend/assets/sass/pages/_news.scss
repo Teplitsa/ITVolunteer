@@ -1,0 +1,155 @@
+.news-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-bottom: 1px solid $color-gray-light-md;
+
+  &__item {
+    display: block;
+    text-decoration: none;
+    color: $color-gray-dark-xl;
+    max-width: calc(50% - 20px);
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:nth-child(2n) {
+    }
+  }
+
+  &__separator {
+    display: none;
+    width: 100%;
+    flex-basis: 100%;
+    border-bottom: 1px solid $color-gray-light-md;        
+    height: 0px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+    &:not(:last-child) {
+      display: block;
+    }
+  }
+}
+
+.signle-news-page {
+  & > .article-page > h5 {
+    @include text-bold-line-sm;
+    color: $color-gray-dark-md;
+    margin-bottom: 40px;
+  }
+
+  .news-list {
+    border-bottom: none;
+    padding-bottom: 0px;
+
+    &__separator {
+      margin-top: 56px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.news-list-page {
+  .article-page {
+    padding-bottom: 56px;
+  }  
+}
+
+.news-loading {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+
+  .spinner-border {
+    color: $color-gray-light-md !important;
+  }
+}
+
+.load-more-news {
+  text-align: center;
+  margin-top: 40px;
+
+  a {
+    @include text-bold-line-sm;
+    @include a-underline;
+    @include dashed-underline($color-main);
+  }
+}
+
+.news-list-item {
+
+  &__title {
+    .article-page__content & {
+      @include news-item-title;
+      margin-bottom: 10px;
+      margin-top: 0px;
+    }
+
+    .news-list__item:hover & {
+      text-decoration: underline;
+    }
+  }
+
+  &__img {
+    margin-bottom: 20px;
+
+    .article-page__content & {
+      margin-bottom: 40px;
+    }
+  }
+
+  &__date {
+    @include text-sm;
+    color: $color-gray-dark-md;
+    margin-bottom: 10px;
+
+    .article-page__content & {
+      margin-bottom: 16px;
+    }
+  }
+
+  &__excerpt {
+    @include text-light;
+    text-align: left;
+
+    & > *:last-child {
+      margin-bottom: 0px;
+    }
+
+    .news-list__item:hover & {
+      text-decoration: underline;
+    }
+  }
+}
+
+// mobile
+@include media-breakpoint-down(md) {
+  .news-list {
+    &__item {
+      max-width: unset;
+    }    
+
+    &-item {
+      &__excerpt {
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .news-list {
+    &__item {
+      text-align: center;
+    }    
+
+    &-item {
+      &__excerpt {
+        text-align: center;
+      }
+    }
+  }
+}

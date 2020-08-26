@@ -161,3 +161,22 @@ export function formDataToJSON(formData) {
   });
   return JSON.stringify(object);
 }
+
+
+export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
+  if(!postFeaturedImage) {
+    return ""
+  }
+
+  var fallbackImageUrl = "";
+  if(postFeaturedImage.mediaItemUrl) {
+    fallbackImageUrl = postFeaturedImage.mediaItemUrl;
+  }
+
+  if(!postFeaturedImage.mediaDetails || !postFeaturedImage.mediaDetails.sizes) {
+    return fallbackImageUrl;
+  }
+
+  let foundSize = postFeaturedImage.mediaDetails.sizes.find(imgSize => imgSize.name == size);
+  return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
+}

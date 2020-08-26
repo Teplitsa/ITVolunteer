@@ -11,6 +11,9 @@ import {
   graphqlFeaturedImage,
   graphqlTags,
 } from "./task-model/task-model";
+import {
+  queriedFields as newsQueriedFields,
+} from "./news-model/news-item-model";
 import { queriedFields as authorQueriedFields } from "./task-model/task-author";
 import { capitalize } from "../utilities/utilities";
 
@@ -63,6 +66,7 @@ const withPostType = (
           ${isSearch ? `author {\n${authorQueriedFields.join("\n")}}` : ""}
           ${isSearch ? graphqlFeaturedImage : ""}
           ${isSearch ? graphqlTags : ""}
+          ${postType == "post" ? " featuredImage { mediaItemUrl mediaDetails { sizes { sourceUrl name } } } " : ""}
         }
       }
     }
@@ -70,7 +74,7 @@ const withPostType = (
 };
 
 export const graphqlQuery = {
-  getPosts: withPostType("post", ["id", "title"]),
+  getPosts: withPostType("post", newsQueriedFields),
   getTasks: withPostType("task", taskQueriedFields),
   taskSearch: withPostType("task", taskQueriedFields, true),
 };
