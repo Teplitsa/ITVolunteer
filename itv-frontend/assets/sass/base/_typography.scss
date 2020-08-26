@@ -2,6 +2,14 @@
 
 $body-font-family: "IBM Plex Sans";
 
+@mixin htext-xxl-bold {
+  @include text;
+  font-size: 48px;
+  line-height: 64px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
 @mixin htext-xl-bold {
   @include htext-xl;
   font-weight: 600;
@@ -46,6 +54,14 @@ $body-font-family: "IBM Plex Sans";
   font-size: 20px;
   line-height: 32px;
   font-weight: 400;
+}
+
+@mixin news-item-title {
+  font-family: $body-font-family;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  font-style: normal;
 }
 
 @mixin text {

@@ -2,15 +2,15 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
-import Paseka from "../components/page/Paseka";
+import Page from "../components/page/Page";
 
-const PasekaPage: React.FunctionComponent = (): ReactElement => {
+const AboutPage: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
       <Main>
         <main id="site-main" className="site-main" role="main">
-          <Paseka />
+          <Page />
         </main>
       </Main>
     </>
@@ -18,23 +18,23 @@ const PasekaPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/paseka";
+  const url: string = "/sovety-dlya-nko-uspeshnye-zadachi";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
-    entrypointQueryVars: { uri: "paseka" },
+    entrypointQueryVars: { uri: "sovety-dlya-nko-uspeshnye-zadachi" },
     entrypointType: "page",
     componentModel: async (request) => {
-      const pasekaPageModel = await import("../model/components/paseka-model");
-      const pasekaPageQuery = pasekaPageModel.graphqlQuery;
+      const pageModel = await import("../model/page-model");
+      const pageQuery = pageModel.graphqlQuery.getPageBySlug;
       const { pageBy: component } = await request(
         process.env.GraphQLServer,
-        pasekaPageQuery,
+        pageQuery,
         { uri: url }
       );
 
-      return ["paseka", component];
+      return ["page", component];
     },
   });
 
@@ -43,4 +43,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default PasekaPage;
+export default AboutPage;

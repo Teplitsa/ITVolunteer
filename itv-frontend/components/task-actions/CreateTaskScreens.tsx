@@ -471,7 +471,7 @@ export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) =
             selectOptions={[{value: 1, title: "Любой волонтёр"}, {value: 2, title: "Пасека"}]}
             name="preferredDoers"
             howtoTitle="Что такое пасека" 
-            howtoUrl="/paseka" 
+            howtoUrl="/about-paseka" 
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
