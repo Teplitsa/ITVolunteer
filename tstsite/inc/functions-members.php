@@ -1297,10 +1297,12 @@ function itv_get_user_in_gql_format($user) {
     
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
-        'databaseId' => $user->ID,
+        // 'databaseId' => $user->ID,
         'fullName' => tst_get_member_name( $user->ID ),
         'name' => $user->user_login,
         'username' => $user->user_login,
+        'firstName' => get_user_meta($user->ID, 'first_name', true),
+        'lastName' => get_user_meta($user->ID, 'last_name', true),
         'memberRole' => tst_get_member_role_name( $user->ID ),
         'itvAvatar' => itv_avatar_url( $user->ID ),
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
@@ -1314,16 +1316,31 @@ function itv_get_user_in_gql_format($user) {
         'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
         'thankyouCount' => ThankyouModel::instance()->get_user_thankyou_count($user->ID),
+        'skype' => get_user_meta($user->ID, 'user_skype', true),
+        'twitter' => get_user_meta($user->ID, 'twitter', true),
+        'facebook' => get_user_meta($user->ID, 'facebook', true),
+        'vk' => get_user_meta($user->ID, 'vk', true),
+        'instagram' => get_user_meta($user->ID, 'instagram', true),
+        'organizationSite' =>  tst_get_member_field( 'user_website', $user->ID ),
     ];
     
     return $user_data;
+}
+
+function itv_append_user_private_data($user_data, $user) {
+
+  $user_data['databaseId'] = intval($user->ID);
+  $user_data['email'] = $user->user_email;
+  $user_data['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
+
+  return $user_data;
 }
 
 function ajax_load_current_user() {
     if(is_user_logged_in()) {
         $user = wp_get_current_user();
         $user_data = itv_get_user_in_gql_format($user);
-        $user_data['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
+        $user_data = itv_append_user_private_data($user_data, $user);
     }
     else {
         $user_data = [
@@ -1345,18 +1362,17 @@ function ajax_get_current_user_jwt_auth_token() {
             $user = wp_get_current_user();
             $token = WPGraphQL\JWT_Authentication\Auth::get_token( $user );
             $gql_id = \GraphQLRelay\Relay::toGlobalId( 'user', $user->data->ID );
-            $gql_user = itv_get_user_in_gql_format($user);
-            $gql_user['databaseId'] = intval($user->data->ID);
-            $gql_user['logoutUrl'] = wp_logout_url(tst_get_login_url().'&t=1');
+            $user_data = itv_get_user_in_gql_format($user);
+            $user_data = itv_append_user_private_data($user_data, $user);
             
-    		$response = [
-    		    "status" => "ok",
-    		    "message" => "",
-    			'authToken'    => $token,
-    			'refreshToken' => WPGraphQL\JWT_Authentication\Auth::get_refresh_token( $user ),
-    			'user'         => $gql_user,
-    			'id'           => $gql_id,
-    		];
+            $response = [
+                "status" => "ok",
+                "message" => "",
+                'authToken'    => $token,
+                'refreshToken' => WPGraphQL\JWT_Authentication\Auth::get_refresh_token( $user ),
+                'user'         => $user_data,
+                'id'           => $gql_id,
+            ];
     		
             wp_die(json_encode($response));    
     		
@@ -1380,44 +1396,45 @@ add_action('wp_ajax_nopriv_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_a
 
 /** Register a new user */
 function ajax_update_user_login_data() {
+    $current_user = wp_get_current_user();
 
-  if( !is_user_logged_in() ) {
-    wp_die(json_encode(array(
-    'status' => 'fail',
-    'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
-    )));
-  } else {
-    $user_params = array(
-        'email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-        'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
-        'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
-    );
+    if( !is_user_logged_in() || !$current_user) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
+        )));
+    } else {
+        $user_params = array(
+            'ID' => $current_user->ID,
+            'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+            'user_login' => filter_var($_POST['login'], FILTER_SANITIZE_STRING),
+        );
 
-    if(!empty($_POST['pass'])) {
-      $user_params['user_pass'] = $_POST['pass'];
-    }
+        if(!empty($_POST['pass'])) {
+            $user_params['user_pass'] = $_POST['pass'];
+        }
 
-    $reg_result = wp_update_user($user_params);
-    
-    if(is_wp_error($reg_result)) {
-      wp_die(json_encode(array(
-        'status' => 'fail',
-        'message' => '<div class="alert alert-danger">' . $reg_result->get_error_message() . '</div>',
-      )));
-    }
-    else {
-      $user_id = $reg_result;
-      $user = get_user_by( 'id', $user_id );
+        $reg_result = wp_update_user($user_params);
         
-      // tst_send_activation_email($user);
-      // update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
-      
-      wp_die(json_encode(array(
-        'status' => 'ok',
-        'message' => 'Данные для входа на сайт обновлены',
-      )));
+        if(is_wp_error($reg_result)) {
+            wp_die(json_encode(array(
+                'status' => 'fail',
+                'message' => '<div class="alert alert-danger">' . $reg_result->get_error_message() . '</div>',
+            )));
+        }
+        else {
+            $user_id = $reg_result;
+            $user = get_user_by( 'id', $user_id );
+            
+            // tst_send_activation_email($user);
+            // update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
+          
+            wp_die(json_encode(array(
+                'status' => 'ok',
+                'message' => 'Данные для входа на сайт обновлены',
+            )));
+        }
     }
-  }
 }
 add_action('wp_ajax_update-user-login-data', 'ajax_update_user_login_data');
 add_action('wp_ajax_nopriv_update-user-login-data', 'ajax_update_user_login_data');
@@ -1425,23 +1442,16 @@ add_action('wp_ajax_nopriv_update-user-login-data', 'ajax_update_user_login_data
 
 /** Update profile v.2 */
 function ajax_update_profile_v2() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
     $member = wp_get_current_user();
 
-    if( false && !wp_verify_nonce($_POST['nonce'], 'member_action') ) {
+    if( !is_user_logged_in() || !$member) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
-    } else if($member->user_email != $_POST['email'] && email_exists($_POST['email'])) {
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => '<div class="alert alert-danger">'.__('Email already exists!', 'tst').'</div>',
-        )));
     } else {
         $params = array(
-            'ID' => (int)$_POST['id'],
-            'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
+            'ID' => $member->ID,
             'first_name' => filter_var($_POST['first_name'], FILTER_SANITIZE_STRING),
             'last_name' => filter_var($_POST['last_name'], FILTER_SANITIZE_STRING),
             'user_url' => filter_var($_POST['user_website'], FILTER_SANITIZE_STRING),
@@ -1474,7 +1484,7 @@ function ajax_update_profile_v2() {
             
             wp_die(json_encode(array(
                 'status' => 'ok',
-                'message' => '<div class="alert alert-success">'.sprintf(__('Your profile is successfully updated! <a href="%s" class="alert-link">View it</a>', 'tst'), tst_get_member_url($member)).'</div>',
+                'message' => '<div class="alert alert-success">Ваш профиль успешно обновлен.</div>',
             )));
         }
     }

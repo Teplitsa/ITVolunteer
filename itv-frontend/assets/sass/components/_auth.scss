@@ -73,7 +73,9 @@
     input[type="email"], 
     input[type="url"], 
     input[type="password"], 
-    input[type="search"] {
+    input[type="search"],
+    textarea {
+      @include text-light;
       padding: 12px;
     }
 

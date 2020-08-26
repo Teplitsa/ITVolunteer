@@ -10,24 +10,10 @@ const EditMemberProfile: React.FunctionComponent<{
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
   const formRef = useRef(null);
-  const {
-    username,
-    firstName,
-    lastName,
-    organizationName,
-    organizationDescription,
-    organizationSite,
-    skype,
-    twitter,
-    facebook,
-    vk,
-    instagram,
-  } = useStoreState((state) => state.session.user);
+  const user = useStoreState((state) => state.session.user);
   const updateProfileRequest = useStoreActions(
     (actions) => actions.components.memberProfile.updateProfileRequest
   );
-  const [isAgree, setIsAgree] = useState({ pd: false, mailing: false });
-  const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [stateFormData, setStateFormData] = useState(null);
@@ -35,31 +21,19 @@ const EditMemberProfile: React.FunctionComponent<{
   useEffect(() => {
     const profile = new FormData();
 
-    profile.append("first_name", firstName);
-    profile.append("last_name", lastName);
-    profile.append("user_workplace", organizationName);
-    profile.append("user_workplace_desc", organizationDescription);
-    profile.append("user_website", organizationSite);
-    profile.append("user_skype", skype);
-    profile.append("twitter", twitter);
-    profile.append("facebook", facebook);
-    profile.append("vk", vk);
-    profile.append("instagram", instagram);
+    profile.append("first_name", user.firstName);
+    profile.append("last_name", user.lastName);
+    profile.append("user_workplace", user.organizationName);
+    profile.append("user_workplace_desc", user.organizationDescription);
+    profile.append("user_website", user.organizationSite);
+    profile.append("user_skype", user.skype);
+    profile.append("twitter", user.twitter);
+    profile.append("facebook", user.facebook);
+    profile.append("vk", user.vk);
+    profile.append("instagram", user.instagram);
 
     setStateFormData(profile);
-  }, []);
-
-  useEffect(() => {
-    var allowed = true;
-    for (var k in isAgree) {
-      allowed = allowed && !!isAgree[k];
-    }
-    setIsSubmitAllowed(allowed);
-  }, [isAgree]);
-
-  function toggleAgree(e, agreeName) {
-    setIsAgree({ ...isAgree, ...{ [agreeName]: !isAgree[agreeName] } });
-  }
+  }, [user]);
 
   function successCallback(message: string) {
     setRegistrationSuccessText(message);
@@ -101,10 +75,6 @@ const EditMemberProfile: React.FunctionComponent<{
     e.preventDefault();
 
     if (!formRef) {
-      return;
-    }
-
-    if (!isSubmitAllowed) {
       return;
     }
 
@@ -313,7 +283,7 @@ const EditMemberProfile: React.FunctionComponent<{
                 </button>
               </div>
               <div className="auth-page-form__group center">
-                <Link href={`/members/${username}`}>
+                <Link href={`/members/${user.username}`}>
                   <a className="auth-page-form__control-link-go-back">
                     Вернуться в режим просмотра
                   </a>

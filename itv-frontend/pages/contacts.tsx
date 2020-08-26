@@ -2,15 +2,15 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
-import Page from "../components/page/Page";
+import PageContacts from "../components/page/Contacts";
 
 const ContactsPage: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
       <Main>
-        <main id="site-main" className="site-main" role="main">
-          <Page />
+        <main id="site-main" className="site-main contacts-page" role="main">
+          <PageContacts />
         </main>
       </Main>
     </>

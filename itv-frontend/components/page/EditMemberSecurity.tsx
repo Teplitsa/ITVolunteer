@@ -15,8 +15,6 @@ const EditMemberSecurity: React.FunctionComponent<{
     (actions) => actions.components.memberSecurity.updateUserLoginDataRequest
   );
 
-  const [isAgree, setIsAgree] = useState({ pd: false, mailing: false });
-  const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [regFormData, setRegFormData] = useState(null);
@@ -24,25 +22,13 @@ const EditMemberSecurity: React.FunctionComponent<{
   useEffect(() => {
     const security = new FormData();
 
-    security.append("first_name", username);
+    security.append("login", username);
     security.append("email", email);
     security.append("pass", "");
     security.append("passRepeat", "");
 
     setRegFormData(security);
-  }, []);
-
-  useEffect(() => {
-    var allowed = true;
-    for (var k in isAgree) {
-      allowed = allowed && !!isAgree[k];
-    }
-    setIsSubmitAllowed(allowed);
-  }, [isAgree]);
-
-  function toggleAgree(e, agreeName) {
-    setIsAgree({ ...isAgree, ...{ [agreeName]: !isAgree[agreeName] } });
-  }
+  }, [username, email]);
 
   function successCallback(message) {
     setRegistrationSuccessText(message);
@@ -77,17 +63,7 @@ const EditMemberSecurity: React.FunctionComponent<{
       });
     }
 
-    console.log("form:", [...formData.entries()]);
-    console.log("pass:", formData.get("pass"));
-
-    if (!formData.get("pass") || !formData.get("pass").trim()) {
-      console.log("invalid password!!!");
-      isValid = false;
-      addSnackbar({
-        context: "error",
-        text: "Введите пароль",
-      });
-    } else if (formData.get("pass") != formData.get("passRepeat")) {
+    if (formData.get("pass") != formData.get("passRepeat")) {
       isValid = false;
       addSnackbar({
         context: "error",
@@ -102,10 +78,6 @@ const EditMemberSecurity: React.FunctionComponent<{
     e.preventDefault();
 
     if (!formRef) {
-      return;
-    }
-
-    if (!isSubmitAllowed) {
       return;
     }
 
@@ -154,7 +126,7 @@ const EditMemberSecurity: React.FunctionComponent<{
                   maxLength={50}
                   placeholder=""
                   defaultValue={
-                    regFormData ? regFormData.get("first_name") : ""
+                    regFormData ? regFormData.get("login") : ""
                   }
                 />
               </div>

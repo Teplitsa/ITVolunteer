@@ -36,6 +36,10 @@ const otherNewsListActions: INewsListActions = {
     state.items = payload;
     state.isNewsListLoaded = true;
   }),
+  setNewsListLoadMoreState: action((state, payload) => {
+    state.hasNextPage = payload.hasNextPage;
+    state.lastViewedListItem = payload.lastViewedListItem;
+  })
 };
 
 const otherNewsListThunks: IOtherNewsListThunks = {
@@ -47,7 +51,7 @@ const otherNewsListThunks: IOtherNewsListThunks = {
         process.env.GraphQLServer,
         archiveGraphqlQuery.getPosts,
         {
-          first: 3,
+          first: 5,
         }
       );
 

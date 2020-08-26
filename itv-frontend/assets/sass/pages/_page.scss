@@ -53,6 +53,16 @@
   }
 }
 
+.contacts-page {
+  .contact-form-wrapper {
+    max-width: 480px;
+
+    *[class*=TaskAdminSupport_form__btn_cancel_] {
+      display: none;
+    }
+  }
+}
+
 // mobile
 @include media-breakpoint-down(sm) {
   .article-page {

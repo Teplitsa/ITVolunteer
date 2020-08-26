@@ -315,7 +315,10 @@ export interface IMemberReview {
   id: string;
   author_id: string;
   doer_id: string;
+  author?: ISessionUser;
+  doer?: ISessionUser;
   task_id: string;
+  task?: ITaskState;
   message: string;
   rating: number;
   communication_rating: number;
@@ -1123,8 +1126,8 @@ export interface INewsListModel
 export interface INewsListState {
   items: Array<INewsItemState>;
   isNewsListLoaded: boolean;
-  hasNextPage: boolean;
-  lastViewedListItem: string | null;
+  hasNextPage?: boolean;
+  lastViewedListItem?: string | null;
 }
 
 export interface INewsListActions {
