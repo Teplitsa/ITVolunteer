@@ -1152,11 +1152,11 @@ function itv_is_user_partner($user_id) {
 
 /** Say thank you to member */
 function ajax_thankyou() {
-    $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+    // $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
     if(
             empty($_POST['to-uid'])
-            || !wp_verify_nonce($_POST['nonce'], 'thankyou-action')
+            // || !wp_verify_nonce($_POST['nonce'], 'thankyou-action')
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
