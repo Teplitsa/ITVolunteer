@@ -37,8 +37,8 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
       {organizationDescription && (
         <div className="member-card__organization-description">
           {(isFullDescription && organizationDescription) ||
-            `${organizationDescription.substr(0, 109)}…`}{" "}
-          {!isFullDescription && (
+            `${organizationDescription.trim().substr(0, 109)}…`}{" "}
+          {organizationDescription.trim().length > 109 && !isFullDescription && (
             <a
               href="#"
               onClick={(event) => {

@@ -200,6 +200,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         components: {
           memberAccount: {
             name,
+            username,
             tasks: { page },
           },
         },
@@ -215,7 +216,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           process.env.GraphQLServer,
           graphqlQuery.memberTasks,
           {
-            username: name,
+            username: username,
             page: nextPage,
           }
         );

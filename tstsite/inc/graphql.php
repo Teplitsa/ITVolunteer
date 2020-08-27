@@ -375,28 +375,28 @@ function itv_register_user_graphql_fields() {
                 'type' => 'String',
                 'description' => __( 'User twitter', 'tst' ),
                 'resolve' => function ($user) {
-                    return tst_get_member_field( 'twitter', $user->userId );
+                    return get_user_meta($user->userId, 'twitter', true);
                 }
             ],
             'facebook' => [
                 'type' => 'String',
                 'description' => __( 'User facebook', 'tst' ),
                 'resolve' => function ($user) {
-                    return tst_get_member_field( 'facebook', $user->userId );
+                    return get_user_meta($user->userId, 'facebook', true);
                 }
             ],
             'vk' => [
                 'type' => 'String',
                 'description' => __( 'User vk', 'tst' ),
                 'resolve' => function ($user) {
-                    return tst_get_member_field( 'vk', $user->userId );
+                    return get_user_meta($user->userId, 'vk', true);
                 }
             ],
             'instagram' => [
                 'type' => 'String',
                 'description' => __( 'User instagram', 'tst' ),
                 'resolve' => function ($user) {
-                    return tst_get_member_field( 'instagram', $user->userId );
+                    return get_user_meta($user->userId, 'instagram', true);
                 }
             ],
             'rating' => [

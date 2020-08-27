@@ -39,7 +39,7 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
       <div className="review-card__excerpt">
         {(isFullDescription && stripTags(review.message).trim()) ||
           `${stripTags(review.message).trim().substr(0, 109)}…`}{" "}
-        {!isFullDescription && (
+        {stripTags(review.message).trim().length > 109 && !isFullDescription && (
           <a
             href="#"
             onClick={(event) => {

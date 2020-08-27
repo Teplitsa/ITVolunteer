@@ -537,10 +537,6 @@ function tst_get_member_field($field, $member_id = null){
 		'user_email',
 		'user_workplace',
 		'user_workplace_desc',
-    'twitter',
-    'facebook',
-    'vk',
-    'instagram',
 	);
 	
 	if( !in_array($field, $fields) )
