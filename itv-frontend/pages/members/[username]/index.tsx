@@ -23,9 +23,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   req,
   query,
 }) => {
-  const [wordpressLoggedInCookie, memberName] = decodeURIComponent(
-    req.headers.cookie
-  ).match(/wordpress_logged_in_[a-z0-9]+=([^|]+)[^;]+/);
+  const parsedCookie = req.headers.cookie
+    ? decodeURIComponent(req.headers.cookie).match(
+        /wordpress_logged_in_[a-z0-9]+=([^|]+)[^;]+/
+      )
+    : null;
+  const memberName = Object.is(parsedCookie, null) ? "" : parsedCookie[1];
   const isAccountOwner = memberName === query.username;
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
