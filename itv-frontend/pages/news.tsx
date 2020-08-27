@@ -69,6 +69,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
     "../model/helpers/with-app-and-entrypoint-model"
   );
 
+  const entrypointModel = {
+    slug: "news",
+    seo: {
+      canonical: "https://itv.te-st.ru/news",
+      title: "Новости - it-волонтер",
+      metaRobotsNoindex: "noindex",
+      metaRobotsNofollow: "nofollow",
+      opengraphTitle: "Новости - it-волонтер",
+      opengraphUrl: "https://itv.te-st.ru/news",
+      opengraphSiteName: "it-волонтер",
+    },
+  };
+
   const model = await withAppAndEntrypointModel({
     isArchive: true,
     entrypointType: "post",
@@ -82,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   });
 
   return {
-    props: { ...model },
+    props: { ...model, ...{entrypoint: {...model.entrypoint, ...{archive: {...model.entrypoint.archive, ...entrypointModel}}}} },
   };
 };
 
