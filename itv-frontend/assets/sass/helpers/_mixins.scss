@@ -132,6 +132,11 @@
   }
 }
 
+@mixin disabled-primary-button {
+  background: $color-main;
+  opacity: 0.5;
+}
+
 @mixin button-primary {
   @include text-sm;
   @include a-no-hover-underline;
@@ -145,8 +150,7 @@
   box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
 
   &.disabled {
-    background: $color-main;
-    opacity: 0.5;
+    @include disabled-primary-button;
   }
 }
 

@@ -13,7 +13,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     isLoaded: isSessionLoaded,
     user: { logoutUrl },
   } = useStoreState((state) => state.session);
-  const { name: memberName, organizationName, thankyouCount } = useStoreState(
+  const { username: memberName, organizationName, thankyouCount } = useStoreState(
     (state) => state.components.memberAccount
   );
   const giveThanksRequest = useStoreActions(

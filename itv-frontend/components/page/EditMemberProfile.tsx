@@ -36,7 +36,11 @@ const EditMemberProfile: React.FunctionComponent<{
   }, [user]);
 
   function successCallback(message: string) {
-    setRegistrationSuccessText(message);
+    // setRegistrationSuccessText(message);
+    addSnackbar({
+      context: "success",
+      text: message,
+    });
     setIsLoading(false);
   }
 

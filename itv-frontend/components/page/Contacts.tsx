@@ -7,6 +7,11 @@ const { ModalContext, SnackbarContext } = GlobalScripts;
 
 const PageContacts: React.FunctionComponent = (): ReactElement => {
   const { title, content } = useStoreState((state) => state.components.page);
+  const [isShowForm, setIsShowForm] = useState(true);
+
+  function handleSuccess() {
+    setIsShowForm(false);
+  }
 
   return (
     <article className="article article-page">
@@ -21,20 +26,23 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
             __html: content,
           }}
         />
-        <div className="contact-form-wrapper">
-          <ContactFormContent />
+        <div className={`contact-form-wrapper ${!isShowForm && "disabled"}`}>
+          <ContactFormContent handleSuccess={handleSuccess} />
         </div>
       </div>
     </article>
   );
 };
 
-const ContactFormContent: React.FunctionComponent = () => {
+const ContactFormContent: React.FunctionComponent<{handleSuccess:() => void}> = ({handleSuccess}) => {
   return (
     <SnackbarContext.Consumer>
       {({ dispatch }) => {
         const addSnackbar = (message: ISnackbarMessage) => {
           dispatch({ type: "add", payload: { messages: [message] } });
+          if(message.context == "success") {
+            handleSuccess();
+          }
         };
         return <TaskAdminSupportForm {...{ closeModal: () => {}, addSnackbar }} />;
       }}

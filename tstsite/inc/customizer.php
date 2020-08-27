@@ -935,12 +935,12 @@ function ajax_add_message() {
 //     $ret = wp_verify_nonce($_POST['nonce'], 'we-are-receiving-a-letter-goshujin-sama');
     $ret = true;
 
-    if(empty($_POST['nonce']) || !$ret) {
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
-        )));
-    }
+    // if(empty($_POST['nonce']) || !$ret) {
+    //     wp_die(json_encode(array(
+    //         'status' => 'fail',
+    //         'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+    //     )));
+    // }
 
     ItvAtvetka::instance()->mail('message_added_notification', [
         'mailto' => get_option('admin_email'),

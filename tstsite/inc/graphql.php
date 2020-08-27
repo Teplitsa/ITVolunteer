@@ -467,6 +467,20 @@ function itv_register_user_graphql_fields() {
                     return tst_get_member_field( 'user_website', $user->userId );
                 }
             ],
+            'firstName' => [
+                'type' => 'String',
+                'description' => __( 'User first name', 'tst' ),
+                'resolve' => function ($user) {
+                    return get_user_meta($user->userId, 'first_name', true);
+                }
+            ],
+            'lastName' => [
+                'type' => 'String',
+                'description' => __( 'User last name', 'tst' ),
+                'resolve' => function ($user) {
+                    return get_user_meta($user->userId, 'last_name', true);
+                }
+            ],
         ]
     );
 

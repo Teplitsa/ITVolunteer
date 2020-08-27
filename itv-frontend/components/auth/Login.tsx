@@ -98,11 +98,11 @@ const Registration: React.FunctionComponent<{
           <form action="" method="post" className="auth-page-form" onSubmit={handleSubmit} ref={formRef}>
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Логин или e-mail</label>
-              <input className="auth-page-form__control-input" type="text" name="login" maxLength={50} placeholder="" defaultValue={formData ? formData.get("login") : ""} />
+              <input className="auth-page-form__control-input" type="text" name="login" maxLength={50} placeholder="" tabIndex={1} defaultValue={formData ? formData.get("login") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <label className="auth-page-form__label"><span>Пароль</span><a href="/wp-login.php?action=lostpassword">Забыли пароль?</a></label>
-              <input className="auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={formData ? formData.get("pass") : ""} />
+              <input className="auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" tabIndex={2} autoComplete="new-password" defaultValue={formData ? formData.get("pass") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <div className="auth-page-form__control-checkbox" onClick={toggleIsRememberMe}>
@@ -111,7 +111,7 @@ const Registration: React.FunctionComponent<{
               </div>
             </div>        
             <div className="auth-page-form__group">
-              <button type="submit" className={`auth-page-form__control-submit`} onClick={handleSubmit}>Войти</button>
+              <button type="submit" className={`auth-page-form__control-submit`} tabIndex={3} onClick={handleSubmit}>Войти</button>
             </div>        
           </form>
           }

@@ -45,12 +45,13 @@ const memberSecurityPageThunks: IMemberSecurityPageThunks = {
         const {
           status: responseStatus,
           message: responseMessage,
+          isMustRelogin: isMustRelogin,
         } = await (<Promise<IFetchResult>>result.json());
         if (responseStatus === "fail") {
-          errorCallbackFn && errorCallbackFn(stripTags(responseMessage));
+          errorCallbackFn && errorCallbackFn(stripTags(responseMessage), isMustRelogin);
           console.error(stripTags(responseMessage));
         } else {
-          successCallbackFn && successCallbackFn(stripTags(responseMessage));
+          successCallbackFn && successCallbackFn(stripTags(responseMessage), isMustRelogin);
         }
       } catch (error) {
         console.error(error);
