@@ -84,11 +84,12 @@ const userNotifActions: IUserNotifActions = {
       })
       .then(
           (result: IFetchResult) => {
-              if(result.status == 'error') {
-                  return utils.showAjaxError({message: result.message})
+              if(result.status == 'error' || result.status == 'fail') {
+                  return utils.showAjaxError({message: result.message});
               }
-
-              actions.prependNotifList(result.notifList)
+              else if(result.notifList) {
+                actions.prependNotifList(result.notifList);
+              }
           },
           (error) => {
               utils.showAjaxError({action, error})

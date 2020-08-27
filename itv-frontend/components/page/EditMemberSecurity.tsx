@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import {useRouter} from 'next/router'
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
@@ -9,8 +10,9 @@ const EditMemberSecurity: React.FunctionComponent<{
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
+  const router = useRouter();
   const formRef = useRef(null);
-  const { username, email } = useStoreState((state) => state.session.user);
+  const { username, email, logoutUrl } = useStoreState((state) => state.session.user);
   const updateUserLoginDataRequest = useStoreActions(
     (actions) => actions.components.memberSecurity.updateUserLoginDataRequest
   );
@@ -30,17 +32,24 @@ const EditMemberSecurity: React.FunctionComponent<{
     setRegFormData(security);
   }, [username, email]);
 
-  function successCallback(message) {
+  function successCallback(message, isMustRelogin) {
+    if(isMustRelogin) {
+        document.location.href = "/login/";
+    }
     setRegistrationSuccessText(message);
     setIsLoading(false);
   }
 
-  function errorCallback(message) {
+  function errorCallback(message, isMustRelogin) {
     addSnackbar({
       context: "error",
       text: message,
     });
     setIsLoading(false);
+
+    if(isMustRelogin) {
+        document.location.href = "/login/";
+    }
   }
 
   function validateFormData(formData) {

@@ -1396,6 +1396,7 @@ add_action('wp_ajax_nopriv_itv-get-jwt-auth-token', 'ajax_get_current_user_jwt_a
 
 /** Register a new user */
 function ajax_update_user_login_data() {
+    global $wpdb;
     $current_user = wp_get_current_user();
 
     if( !is_user_logged_in() || !$current_user) {
@@ -1403,19 +1404,46 @@ function ajax_update_user_login_data() {
             'status' => 'fail',
             'message' => '<div class="alert alert-danger">'.__('<strong>Error:</strong> wrong data given.', 'tst').'</div>',
         )));
+
     } else {
+
         $user_params = array(
             'ID' => $current_user->ID,
             'user_email' => filter_var($_POST['email'], FILTER_SANITIZE_EMAIL),
-            'user_login' => filter_var($_POST['login'], FILTER_SANITIZE_STRING),
         );
+
+        $optional_fields = ['user_email'];
+        foreach($optional_fields as $fld) {
+            if($user_params[$fld] === $current_user->$fld) {
+                unset($user_params[$fld]);
+            }
+        }
+
+        $is_auth_data_changed = false;
 
         if(!empty($_POST['pass'])) {
             $user_params['user_pass'] = $_POST['pass'];
+            $is_auth_data_changed = true;
         }
 
         $reg_result = wp_update_user($user_params);
-        
+
+        # means new login differs from old
+        $user_login = filter_var($_POST['login'], FILTER_SANITIZE_STRING);
+        if(trim($user_login) && $current_user->user_login != $user_login) {
+            $exist_user_login = get_user_by('login', $user_login);
+            if(!$exist_user_login) {
+                $wpdb->update($wpdb->users, array('user_login' => $user_login), array('ID' => $current_user->ID));
+                $is_auth_data_changed = true;
+            }
+            else {
+              wp_die(json_encode(array(
+                  'status' => 'fail',
+                  'message' => '<div class="alert alert-danger">Логин уже используется!</div>',
+              )));
+            }
+        }
+
         if(is_wp_error($reg_result)) {
             wp_die(json_encode(array(
                 'status' => 'fail',
@@ -1425,12 +1453,17 @@ function ajax_update_user_login_data() {
         else {
             $user_id = $reg_result;
             $user = get_user_by( 'id', $user_id );
+
+            if($is_auth_data_changed) {
+                wp_logout();
+            }
             
             // tst_send_activation_email($user);
             // update_user_meta($user->ID, 'activation_email_time', date('Y-m-d H:i:s'));
           
             wp_die(json_encode(array(
                 'status' => 'ok',
+                'isMustRelogin' => $is_auth_data_changed,
                 'message' => 'Данные для входа на сайт обновлены',
             )));
         }

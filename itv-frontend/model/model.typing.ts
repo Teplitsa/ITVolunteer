@@ -440,8 +440,8 @@ export interface IMemberSecurityPageThunks {
     IMemberSecurityPageActions,
     {
       formData: FormData;
-      successCallbackFn?: (message: string) => void;
-      errorCallbackFn?: (message: string) => void;
+      successCallbackFn?: (message: string, isMustRelogin: boolean) => void;
+      errorCallbackFn?: (message: string, isMustRelogin: boolean) => void;
     }
   >;
 }

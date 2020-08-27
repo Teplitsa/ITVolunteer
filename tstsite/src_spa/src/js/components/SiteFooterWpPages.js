@@ -36,7 +36,7 @@ function SiteFooter(props) {
                       <ul className="submenu">
                         <li><a href="/about">О проекте</a></li>
                         <li><a href="/conditions">Правила участия</a></li>
-                        <li><a href="/paseka">Пасека</a></li>
+                        <li><a href="/about-paseka">Пасека</a></li>
                         <li><a href="/nagrady">Награды</a></li>                    
                         <li><a href="/news">Новости</a></li>
                         <li><a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a></li>
