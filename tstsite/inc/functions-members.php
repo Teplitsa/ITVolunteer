@@ -1321,6 +1321,8 @@ function itv_get_user_in_gql_format($user) {
         'facebook' => get_user_meta($user->ID, 'facebook', true),
         'vk' => get_user_meta($user->ID, 'vk', true),
         'instagram' => get_user_meta($user->ID, 'instagram', true),
+        'telegram' => get_user_meta($user->ID, 'telegram', true),
+        'phone' => get_user_meta($user->ID, 'user_contacts', true),
         'organizationSite' =>  tst_get_member_field( 'user_website', $user->ID ),
     ];
     
@@ -1501,13 +1503,15 @@ function ajax_update_profile_v2() {
         } else {
             // Update another fields...
             update_user_meta($member->ID, 'description', filter_var($_POST['bio'], FILTER_SANITIZE_STRING));
-            update_user_meta($member->ID, 'user_workplace', filter_var(isset($_POST['user_workplace']) ? $_POST['user_workplace'] : '', FILTER_SANITIZE_STRING));
-            update_user_meta($member->ID, 'user_workplace_desc', filter_var(isset($_POST['user_workplace_desc']) ? $_POST['user_workplace_desc'] : '', FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_workplace', filter_var($_POST['user_workplace'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_workplace_desc', filter_var($_POST['user_workplace_desc'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'user_contacts', filter_var($_POST['phone'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'user_skype', filter_var($_POST['user_skype'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'twitter', filter_var($_POST['twitter'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'facebook', filter_var($_POST['facebook'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'vk', filter_var($_POST['vk'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'instagram', filter_var($_POST['instagram'], FILTER_SANITIZE_STRING));
+            update_user_meta($member->ID, 'telegram', filter_var($_POST['telegram'], FILTER_SANITIZE_STRING));
            
             do_action('update_member_stats', array($user_id));
 

@@ -399,6 +399,20 @@ function itv_register_user_graphql_fields() {
                     return get_user_meta($user->userId, 'instagram', true);
                 }
             ],
+            'telegram' => [
+                'type' => 'String',
+                'description' => __( 'User telegram', 'tst' ),
+                'resolve' => function ($user) {
+                    return get_user_meta($user->userId, 'telegram', true);
+                }
+            ],
+            'phone' => [
+                'type' => 'String',
+                'description' => __( 'User phone', 'tst' ),
+                'resolve' => function ($user) {
+                    return get_user_meta($user->userId, 'user_contacts', true);
+                }
+            ],
             'rating' => [
                 'type' => 'Float',
                 'description' => __( 'User rating', 'tst' ),

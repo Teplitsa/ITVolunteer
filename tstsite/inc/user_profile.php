@@ -52,9 +52,14 @@ function ajax_upload_user_company_logo() {
 		$image_id = media_handle_upload( 'user_company_logo', 0 );
 		if( $image_id ) {
 			update_user_meta($member->ID, 'user_company_logo', $image_id);
+
+      $img_url_data = wp_get_attachment_image_src( $image_id, 'thumbnail');
+      $img_url = $img_url_data ? $img_url_data[0] : '';
+
 			$res = array(
 				'status' => 'ok',
 				'image' => str_replace(array('<', '>'), '', wp_get_attachment_image( $image_id, 'logo' )),
+        'imageUrl' => $img_url,
 			);
 		} else {
 			$res = array(
