@@ -32,11 +32,11 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           <div className="member-card__action">
             {(isAccountOwner && (
               <>
-                <Link href="tasks">
+                {/* <Link href="tasks">
                   <a className="btn btn_primary btn_full-width" target="_blank">
                     Хочу помогать другим
                   </a>
-                </Link>
+                </Link> */}
                 <Link href={`/members/${memberName}/profile`}>
                   <a className="btn btn_link btn_full-width">
                     Редактировать профиль
