@@ -35,8 +35,14 @@ const EditMemberSecurity: React.FunctionComponent<{
   function successCallback(message, isMustRelogin) {
     if(isMustRelogin) {
         document.location.href = "/login/";
+        setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
     }
-    setRegistrationSuccessText(message);
+    else {
+      addSnackbar({
+        context: "success",
+        text: message,
+      });
+    }
     setIsLoading(false);
   }
 
@@ -49,6 +55,7 @@ const EditMemberSecurity: React.FunctionComponent<{
 
     if(isMustRelogin) {
         document.location.href = "/login/";
+        setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
     }
   }
 

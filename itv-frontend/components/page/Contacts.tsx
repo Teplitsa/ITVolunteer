@@ -26,11 +26,9 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
             __html: content,
           }}
         />
-        {isShowForm && 
-        <div className="contact-form-wrapper">
+        <div className={`contact-form-wrapper ${!isShowForm && "disabled"}`}>
           <ContactFormContent handleSuccess={handleSuccess} />
         </div>
-        }
       </div>
     </article>
   );
