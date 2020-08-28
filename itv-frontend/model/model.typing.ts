@@ -341,9 +341,13 @@ export interface IMemberAccountPageState {
   organizationName?: string;
   organizationDescription?: string;
   organizationSite?: string;
+  email?: string;
+  phone?: string;
   facebook?: string;
-  instagram?: string;
+  twitter?: string;
   vk?: string;
+  skype?: string;
+  telegram?: string;
   registrationDate: number;
   thankyouCount: number;
   tasks?: {

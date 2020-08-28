@@ -148,6 +148,9 @@
     }
   }
   &__organization {
+    border-bottom: 1px solid $color-gray-light-lg;
+    margin: 0 0 20px;
+    padding: 0 0 20px;
     text-align: center;
     @include screen-from(md) {
       text-align: left;
@@ -187,13 +190,9 @@
       font: 600 11px/16px "IBM Plex Sans", sans-serif;
     }
     &-description {
-      margin: 0 0 20px;
       font: 500 13px/20px "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-lg;
     }
-  }
-  &__bottom {
-    margin: 0 0 20px;
   }
   &__registration-date {
     font: 500 13px/20px "IBM Plex Sans", sans-serif;
@@ -209,16 +208,44 @@
     display: flex;
     flex-flow: column;
     align-items: center;
+    margin: 0 0 20px;
+  }
+  &__contacts {
     @include screen-from(md) {
-      flex-flow: row;
-      justify-content: space-between;
+      display: flex;
+      justify-content: center;
+      margin: 0 0 15px;
+    }
+    font: 500 13px/20px "IBM Plex Sans", sans-serif;
+    &-email {
+      margin: 0 0 5px;
+      @include screen-from(md) {
+        margin: 0;
+      }
+    }
+    &-phone {
+      margin: 0 0 5px;
+      @include screen-from(md) {
+        margin: 0;
+      }
+      &::before {
+        @include screen-from(md) {
+          content: "/";
+          display: inline-block;
+          padding: 0 10px;
+          color: $color-gray;
+        }
+      }
+      > :only-child {
+        color: $color-gray-dark-xl;
+      }
     }
   }
   &__socials {
     display: flex;
     margin: 0 0 5px;
     @include screen-from(md) {
-      margin: 0;
+      margin: 0 0 15px;
     }
     &-item {
       margin: 0 10px 0 0;
@@ -228,11 +255,17 @@
       &_facebook {
         background: url(../../img/icon-facebook_24x24.svg) 50% 50% no-repeat;
       }
-      &_instagram {
-        background: url(../../img/icon-instagram_24x24.svg) 50% 50% no-repeat;
+      &_twitter {
+        background: url(../../img/icon-twitter_24x24.svg) 50% 50% no-repeat;
       }
       &_vk {
         background: url(../../img/icon-vk_24x24.svg) 50% 50% no-repeat;
+      }
+      &_skype {
+        background: url(../../img/icon-skype_24x24.svg) 50% 50% no-repeat;
+      }
+      &_telegram {
+        background: url(../../img/icon-telegram_24x24.svg) 50% 50% no-repeat;
       }
     }
   }
