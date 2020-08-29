@@ -51,6 +51,19 @@
       margin-bottom: 16px;
     }
   }
+
+  .page-path {
+    margin-bottom: 24px;
+    
+    .page-path {
+      &__item {
+        @include text-bold-line-sm;
+        @include solid-underline($color-gray-dark-md);
+        color: $color-gray-dark-md;
+      }
+    }
+
+  }
 }
 
 .contacts-page {

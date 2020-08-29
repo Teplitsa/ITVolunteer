@@ -17,6 +17,7 @@ import memberSecurityPageModel from "./components/member-security-model";
 import memberProfilePageModel from "./components/member-profile-model";
 import memberAccountPageModel from "./components/member-account-model";
 import membersPageModel from "./components/members-model";
+import homePageModel from "./components/home-page-model";
 
 const componentsState: IComponentsState = {
   members: membersPageModel,
@@ -37,6 +38,7 @@ const componentsState: IComponentsState = {
   newsList: newsListModel,
   newsItem: newsItemModel,
   otherNewsList: otherNewsListModel,
+  homePage: homePageModel,
 };
 
 export const componentList = Object.keys(componentsState) as Array<

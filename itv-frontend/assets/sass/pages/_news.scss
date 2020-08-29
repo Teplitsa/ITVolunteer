@@ -82,12 +82,10 @@
 
 .news-list-item {
 
-  &__title {
-    .article-page__content & {
-      @include news-item-title;
-      margin-bottom: 10px;
-      margin-top: 0px;
-    }
+  h2.news-list-item__title {
+    @include news-item-title;
+    margin-bottom: 10px;
+    margin-top: 0px;
 
     .news-list__item:hover & {
       text-decoration: underline;
@@ -97,7 +95,7 @@
   &__img {
     margin-bottom: 20px;
 
-    .article-page__content & {
+    .signle-news-page .article-page__content & {
       margin-bottom: 40px;
     }
   }
@@ -107,7 +105,7 @@
     color: $color-gray-dark-md;
     margin-bottom: 10px;
 
-    .article-page__content & {
+    .signle-news-page .article-page__content & {
       margin-bottom: 16px;
     }
   }

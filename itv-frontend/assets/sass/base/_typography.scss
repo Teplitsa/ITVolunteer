@@ -2,6 +2,14 @@
 
 $body-font-family: "IBM Plex Sans";
 
+@mixin htext-xxl-home-stats-value {
+  @include text;
+  font-size: 56px;
+  line-height: 64px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
 @mixin htext-xxl-bold {
   @include text;
   font-size: 48px;

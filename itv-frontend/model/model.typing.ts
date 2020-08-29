@@ -256,6 +256,7 @@ export interface IComponentsState {
   newsList?: INewsListModel;
   newsItem?: INewsItemModel;
   otherNewsList?: IOtherNewsListModel;
+  homePage?: IHomePageModel;
 }
 
 /**
@@ -1191,5 +1192,13 @@ export interface INewsItemActions {
 }
 
 export interface INewsItemThunks {
+}
+
+export interface IHomePageModel extends IHomePageState, IPageActions {}
+
+export interface IHomePageState extends IPageState {
+  id: string;
+  taskList: Array<ITaskState>;
+  newsList: Array<INewsItemState>;
 }
 

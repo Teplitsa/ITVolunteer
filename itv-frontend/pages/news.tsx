@@ -15,7 +15,6 @@ const NewsListPage: React.FunctionComponent = (): ReactElement => {
   async function handleLoadMoreNews(e) {
     e.preventDefault();
     setIsLoading(true);
-    console.log("load more news");
     await loadMoreNewsRequest();
     setIsLoading(false);
   }
@@ -48,21 +47,6 @@ const NewsListPage: React.FunctionComponent = (): ReactElement => {
     </>
   );
 };
-
-const fetchNewsList = async () => {
-  let action = 'get-news-list'  
-  let res = await fetch(utils.getAjaxUrl(action), {
-    method: 'post',
-  })
-
-  try {
-    let result = await res.json()
-    return result.newsList      
-  } catch(ex) {
-    console.log("fetch news list failed")
-    return []
-  }
-}
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { default: withAppAndEntrypointModel } = await import(
