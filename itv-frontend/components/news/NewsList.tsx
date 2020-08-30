@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
+import { ReactElement, useState, useEffect, useRef, Fragment } from "react";
 import Link from "next/link";
 import { useStoreState } from "../../model/helpers/hooks";
 import { INewsListState } from "../../model/model.typing";
@@ -10,16 +10,16 @@ const NewsList: React.FunctionComponent<INewsListState> = ({ items }): ReactElem
     <div className="news-list">
     {items.map((item, key) => {
       return (
-        <>
-        <Link href="/blog/[slug]" as={`/blog/${item.slug}`} key={key}>
+        <Fragment key={`news-list-item-key-${key}`}>
+        <Link href="/blog/[slug]" as={`/blog/${item.slug}`}>
           <a className="news-list__item">
             <NewsListItem item={item} />
           </a>
         </Link>
         {!!(key % 2) &&
-          <div className="news-list__separator" />
+          <div className="news-list__separator"/>
         }
-        </>
+        </Fragment>
       )
     })}
     </div>

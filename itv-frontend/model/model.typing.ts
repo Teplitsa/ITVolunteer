@@ -1194,11 +1194,27 @@ export interface INewsItemActions {
 export interface INewsItemThunks {
 }
 
-export interface IHomePageModel extends IHomePageState, IPageActions {}
+/**
+ * HomePage
+ */
+
+export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomePageThunks {}
 
 export interface IHomePageState extends IPageState {
   id: string;
   taskList: Array<ITaskState>;
   newsList: Array<INewsItemState>;
+  stats: any;
+}
+
+export interface IHomePageActions {
+  initializeState: Action<IHomePageModel>;
+  setState: Action<IHomePageModel, IHomePageState>;
+  setStats: Action<IHomePageModel, any>;
+}
+
+export interface IHomePageThunks {
+  loadStatsRequest: Thunk<IHomePageActions>;
+  onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
 }
 

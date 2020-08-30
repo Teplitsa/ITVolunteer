@@ -1,8 +1,12 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
+import { ReactElement, useState, useEffect, useRef, Fragment } from "react";
 import Link from "next/link";
 import { useStoreState } from "../../model/helpers/hooks";
 
 import NewsList from "../news/NewsList";
+import { TaskListItemHome } from "../task-list/TaskListItem";
+import {
+  ITaskState
+} from "../../model/model.typing";
 
 import headerImage from "../../assets/img/home-head-pic.svg";
 
@@ -39,12 +43,12 @@ const Home: React.FunctionComponent = (): ReactElement => {
           <div className="home-stats__content">
             <div className="home-stats__list">
             {[
-              {value: 123, title: "Задачи ожидают волонтеров"},
-              {value: 123, title: "Задачи ожидают волонтеров"},
-              {value: 123, title: "Задачи ожидают волонтеров"},
-            ].map((statsItem) => {
+              {value: homePage.stats?.publish, title: "Задачи ожидают волонтеров"},
+              {value: homePage.stats?.in_work, title: "Задачи сейчас в работе"},
+              {value: homePage.stats?.closed, title: "Решеных задач"},
+            ].map((statsItem, index) => {
               return (
-                <div className="home-stats__item">
+                <div className="home-stats__item" key={`home-stats-item-${index}`}>
                   <div className="home-stats__item-value">{statsItem.value}</div>
                   <div className="home-stats__item-title">{statsItem.title}</div>
                 </div>
@@ -57,7 +61,23 @@ const Home: React.FunctionComponent = (): ReactElement => {
       <section className="home-tasks home-list-section">
         <div className="home-section-inner">
           <div className="home-list-section__title">Открытые задачи</div>
-          <div className="home-list-section__list"></div>
+          <div className="home-list-section__list">
+            <div className="task-list">
+              {homePage.taskList.map((task, index) => (
+                <Fragment key={`home-taskListItem-${task.id}-${index}`}>
+                  <TaskListItemHome                    
+                    index={index}
+                    task={task as ITaskState}
+                  />
+                  {!!(index % 2) &&
+                    <div className="task-list-item-separator">
+                      <div className="task-list-item-separator__line" />
+                    </div>
+                  }
+                </Fragment>
+              ))}
+            </div>
+          </div>
           <div className="home-list-section__footer">
             <Link href={"/tasks"}>
               <a className="home-list-section__footer-link">Все задачи</a>

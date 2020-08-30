@@ -815,6 +815,10 @@ function ajax_get_task_list() {
         'author__not_in' => array(ACCOUNT_DELETED_ID),
         'paged' => $page,
     );
+
+    if(!empty($_POST['limit'])) {
+      $args['posts_per_page'] = intval($_POST['limit']);
+    }
     
     if(!empty($filter)) {
         $tlf = new TaskListFilter();

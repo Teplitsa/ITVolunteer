@@ -1,12 +1,19 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import { useStoreState } from "../model/helpers/hooks";
+import FormData from 'form-data';
+import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import Home from "../components/page/Home";
 import * as utils from "../utilities/utilities";
 
 const HomePage: React.FunctionComponent = (): ReactElement => {
+  const loadStatsRequest = useStoreActions((actions) => actions.components.homePage.loadStatsRequest)
+
+  useEffect(() => {
+    loadStatsRequest();
+  });
+
   return (
     <>
       <DocumentHead />
@@ -20,17 +27,22 @@ const HomePage: React.FunctionComponent = (): ReactElement => {
 };
 
 const fetchTasksList = async () => {
-  let action = 'get-task-list'  
+  let action = 'get-task-list';
+
+  const form = new FormData();
+  form.append('limit', 10);  
+
   let res = await fetch(utils.getAjaxUrl(action), {
     method: 'post',
-  })
+    body: form,
+  });
 
   try {
-    let result = await res.json()
-    return result.taskList      
+    let result = await res.json();
+    return result.taskList;
   } catch(ex) {
-    console.log("fetch task list failed")
-    return []
+    console.log("fetch task list failed");
+    return [];
   }
 }
 

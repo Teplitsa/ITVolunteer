@@ -58,7 +58,8 @@
 
 // task
 .site-main.page-task .content,
-.site-main.page-task-list .task-list {
+.site-main.page-task-list .task-list,
+.site-main .home-list-section__list .task-list {
   .task-body {
     margin-top: 20px;
     border: 2px solid $color-gray-light-md;
@@ -74,7 +75,8 @@
       }
     }
 
-    h1 {
+    h1, 
+    .task-title {
       @include htext-xl;
       color: $color-gray-dark-xl;
       overflow: hidden;

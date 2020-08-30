@@ -265,7 +265,8 @@
 }
 
 // tasks
-.site-main.page-task-list .page-sections .task-list {
+.site-main.page-task-list .page-sections .task-list,
+.site-main .home-list-section__list .task-list {
   padding-bottom: 56px;
   flex-grow: 1;
 
