@@ -46,9 +46,9 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
   );
 };
 
-export const TaskListItemHome: React.FunctionComponent<ITaskState> = ({
+export const TaskListItemHome: React.FunctionComponent<ITaskState> = (
   task
-}): ReactElement => {
+): ReactElement => {
   return (
     <div className={`task-body`}>
       <div className="task-author-meta">
