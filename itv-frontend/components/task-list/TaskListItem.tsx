@@ -47,7 +47,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
 };
 
 export const TaskListItemHome: React.FunctionComponent<ITaskState> = ({
-  task,
+  task
 }): ReactElement => {
   return (
     <div className={`task-body`}>

@@ -67,7 +67,6 @@ const Home: React.FunctionComponent = (): ReactElement => {
                 <Fragment key={`home-taskListItem-${task.id}-${index}`}>
                   <div className={`task-body-wrapper index-${index % 2}`}>
                     <TaskListItemHome                    
-                      index={index}
                       task={task as ITaskState}
                     />
                   </div>
