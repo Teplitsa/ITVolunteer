@@ -89,7 +89,7 @@ const Home: React.FunctionComponent = (): ReactElement => {
         <div className="home-section-inner">
           <div className="home-list-section__title">Новости</div>
           <div className="home-list-section__list">
-            <NewsList items={homePage.newsList} />
+            <NewsList {...homePage.newsList} />
           </div>
           <div className="home-list-section__footer">
             <Link href={"/news"}>

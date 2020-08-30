@@ -2,6 +2,8 @@ import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import FormData from 'form-data';
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
+import { INewsListModel } from "../model/model.typing";
+
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import Home from "../components/page/Home";
@@ -74,7 +76,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
       const tasks = await fetchTasksList();
 
-      return ["homePage", {...component, taskList: tasks, newsList: news}];
+      return ["homePage", {...component, taskList: tasks, newsList: {isNewsListLoaded: true, items:news} as INewsListModel}];
     },
   });
 

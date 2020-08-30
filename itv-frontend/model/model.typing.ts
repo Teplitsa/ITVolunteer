@@ -1203,7 +1203,7 @@ export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomeP
 export interface IHomePageState extends IPageState {
   id: string;
   taskList: Array<ITaskState>;
-  newsList: Array<INewsItemState>;
+  newsList?: INewsListModel;
   stats: any;
 }
 
