@@ -14,7 +14,7 @@ const homePageState: IHomePageState = {
   title: "",
   slug: "",
   content: "",
-  newsList: [],
+  newsList: null,
   taskList: [],
   stats: null,
 };
