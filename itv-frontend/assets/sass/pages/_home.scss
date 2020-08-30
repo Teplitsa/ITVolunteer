@@ -169,9 +169,7 @@
   flex-wrap: wrap;
   padding-bottom: 0px;
 
-  .task-body {
-    border: none;
-    padding: 0px;
+  .task-body-wrapper {
     width: calc(50% - 20px);
 
     &.index-0 {
@@ -181,6 +179,11 @@
     &:not(:first-child) {
       margin-top: 0px;
     }
+  }
+
+  .task-body {
+    border: none;
+    padding: 0px;
 
     h3.task-title {
       @include news-item-title;
@@ -414,7 +417,7 @@
     flex-wrap: wrap;
     padding-bottom: 0px;
 
-    .task-body {
+    .task-body-wrapper {
       width: 100%;
 
       &.index-0 {
@@ -424,6 +427,9 @@
       &:not(:first-child) {
         margin-top: 40px;
       }
+    }
+
+    .task-body {
     }
 
     .task-author-meta {

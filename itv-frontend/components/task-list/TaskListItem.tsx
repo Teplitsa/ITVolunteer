@@ -46,12 +46,11 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
   );
 };
 
-export const TaskListItemHome: React.FunctionComponent<ITaskState, number> = ({
+export const TaskListItemHome: React.FunctionComponent<ITaskState> = ({
   task,
-  index
 }): ReactElement => {
   return (
-    <div className={`task-body index-${index % 2}`}>
+    <div className={`task-body`}>
       <div className="task-author-meta">
         {!task.author?.organizationName && 
           <UserSmallView user={task.author} />

@@ -65,10 +65,12 @@ const Home: React.FunctionComponent = (): ReactElement => {
             <div className="task-list">
               {homePage.taskList.map((task, index) => (
                 <Fragment key={`home-taskListItem-${task.id}-${index}`}>
-                  <TaskListItemHome                    
-                    index={index}
-                    task={task as ITaskState}
-                  />
+                  <div className={`task-body-wrapper index-${index % 2}`}>
+                    <TaskListItemHome                    
+                      index={index}
+                      task={task as ITaskState}
+                    />
+                  </div>
                   {!!(index % 2) &&
                     <div className="task-list-item-separator">
                       <div className="task-list-item-separator__line" />
