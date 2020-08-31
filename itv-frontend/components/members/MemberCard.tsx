@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MemberCardBage from "components/members/MemberCardBage";
-import MemberCardStats from "components/members/MemberCardStats";
+import MemberStats from "components/MemberStats";
 import MemberCardOrganization from "components/members/MemberCardOrganization";
 import MemberCardBottom from "components/members/MemberCardBottom";
 
@@ -13,9 +13,14 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     isLoaded: isSessionLoaded,
     user: { logoutUrl },
   } = useStoreState((state) => state.session);
-  const { username: memberName, organizationName, thankyouCount } = useStoreState(
-    (state) => state.components.memberAccount
-  );
+  const {
+    username: memberName,
+    organizationName,
+    thankyouCount,
+    rating,
+    reviewsCount,
+    xp,
+  } = useStoreState((state) => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
     (actions) => actions.components.memberAccount.giveThanksRequest
   );
@@ -24,7 +29,16 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     <>
       <div className="member-card">
         <MemberCardBage />
-        <MemberCardStats />
+        <MemberStats
+          {...{
+            useComponents: ["rating", "reviewsCount", "xp"],
+            rating,
+            reviewsCount,
+            xp,
+            withBottomdivider: true,
+            align: "center",
+          }}
+        />
         {organizationName && <MemberCardOrganization />}
         <MemberCardBottom />
         <hr className="member-card__divider" />

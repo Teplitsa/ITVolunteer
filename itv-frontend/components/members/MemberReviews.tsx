@@ -35,7 +35,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-reviews__list">
-        {reviews.list.map((review) => (
+        {reviews.list?.map((review) => (
           <ReviewCard key={`Review-${review.id}`} {...review} />
         ))}
       </div>

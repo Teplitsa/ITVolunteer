@@ -481,6 +481,11 @@ function itv_register_user_graphql_fields() {
                     return tst_get_member_field( 'user_website', $user->userId );
                 }
             ],
+            'solvedProblems' => [
+                'type' => 'Int',
+                'description' => __( 'User solved problems', 'tst' ),
+                'resolve' => fn($user) => (int) tst_calculate_member_activity($user->userId, "solved")["solved"]
+            ],
         ]
     );
 
@@ -714,3 +719,35 @@ function itv_register_member_tasks_graphql_query() {
         ]
     );
 }
+
+// Add total field in PageInfo qraphql query block
+// Source: https://github.com/builtbycactus/total-counts-for-wp-graphql
+
+add_filter( 'graphql_connection_query_args', function( $args ) {
+	$args['no_found_rows'] = false;
+	$args['count_total']   = true;
+
+	return $args;
+});
+
+add_filter( 'graphql_connection_page_info', function( $page_info, $connection ) {
+    $page_info['total'] = null;
+    
+	if ( $connection->get_query() instanceof \WP_Query ) {
+		if ( isset( $connection->get_query()->found_posts ) ) {
+			$page_info['total'] = (int) $connection->get_query()->found_posts;
+		}
+	} elseif ( $connection->get_query() instanceof \WP_User_Query ) {
+		if ( isset( $connection->get_query()->total_users ) ) {
+			$page_info['total'] = (int) $connection->get_query()->total_users;
+		}
+	}
+
+	return $page_info;
+}, 10, 2 );
+
+add_action( 'graphql_register_types', function() {
+	register_graphql_field( 'WPPageInfo', 'total', [
+		'type' => 'Int',
+	] );
+});

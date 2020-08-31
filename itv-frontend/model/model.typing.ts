@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from "react";
 import {
   Action,
   ActionOn,
@@ -265,22 +266,60 @@ export interface IComponentsState {
 
 export interface IMembersPageModel
   extends IMembersPageState,
-    IMembersPageActions {}
+    IMembersPageActions,
+    IMembersPageThunks {}
 
 export interface IMemberListItem {
   id: string;
-  name: string;
+  itvAvatar: string;
+  fullName: string;
+  username: string;
+  memberRole: string;
+  organizationName: string;
+  organizationDescription: string;
+  rating: number;
+  reviewsCount: number;
+  xp: number;
+  solvedProblems: number;
+  facebook: string;
+  instagram: string;
+  vk: string;
+  organizationSite: string;
+  registrationDate: number;
 }
 
 export interface IMembersPageState {
-  perPage: number;
-  paged: number;
-  list: Array<IMemberListItem>;
+  list: {
+    pageInfo: {
+      total: number;
+      hasNextPage: boolean;
+      endCursor: string;
+    };
+    edges: Array<{ node: IMemberListItem }>;
+  };
 }
 
 export interface IMembersPageActions {
   initializeState: Action<IMembersPageModel>;
   setState: Action<IMembersPageModel, IMembersPageState>;
+  setPageInfo: Action<
+    IMembersPageModel,
+    {
+      hasNextPage: boolean;
+      endCursor: string;
+    }
+  >;
+  addMoreVolunteers: Action<
+    IMembersPageModel,
+    Array<{ node: IMemberListItem }>
+  >;
+}
+
+export interface IMembersPageThunks {
+  moreVolunteersRequest: Thunk<
+    IMembersPageActions,
+    { setLoading: Dispatch<SetStateAction<boolean>> }
+  >;
 }
 
 /**
@@ -1155,8 +1194,11 @@ export interface IOtherNewsListModel
     INewsListActions,
     IOtherNewsListThunks {}
 
-export interface IOtherNewsListThunks {  
-  loadOtherNewsRequest: Thunk<INewsListActions, {excludeNewsItem: INewsItemState}>;
+export interface IOtherNewsListThunks {
+  loadOtherNewsRequest: Thunk<
+    INewsListActions,
+    { excludeNewsItem: INewsItemState }
+  >;
   onLoadOtherNewsRequestSuccess: ThunkOn<IOtherNewsListModel>;
 }
 
@@ -1164,7 +1206,10 @@ export interface IOtherNewsListThunks {
  * NewsItem
  */
 
-export interface INewsItemModel extends INewsItemState, INewsItemActions, INewsItemThunks {}
+export interface INewsItemModel
+  extends INewsItemState,
+    INewsItemActions,
+    INewsItemThunks {}
 
 export interface INewsItemState {
   id: string;
@@ -1176,14 +1221,14 @@ export interface INewsItemState {
   dateGmt?: string;
   seo?: IPageSEO;
   featuredImage?: {
-    mediaItemUrl,
+    mediaItemUrl;
     mediaDetails: {
       sizes: Array<{
         sourceUrl: string;
         name: string;
-      }>
-    }
-  }  
+      }>;
+    };
+  };
 }
 
 export interface INewsItemActions {
@@ -1191,8 +1236,7 @@ export interface INewsItemActions {
   setState: Action<INewsItemModel, INewsItemState>;
 }
 
-export interface INewsItemThunks {
-}
+export interface INewsItemThunks {}
 
 /**
  * HomePage
@@ -1217,4 +1261,3 @@ export interface IHomePageThunks {
   loadStatsRequest: Thunk<IHomePageActions>;
   onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
 }
-

@@ -1,0 +1,36 @@
+.member-socials {
+  display: flex;
+  margin: 0 0 5px;
+  @include screen-from(md) {
+    margin: 0 0 15px;
+  }
+  &__item {
+    margin: 0 10px 0 0;
+    width: 24px;
+    height: 24px;
+    text-indent: -9999px;
+    &:last-child {
+      @include screen-to(md) {
+        margin: 0;
+      }
+    }
+    &_facebook {
+      background: url(../../img/icon-facebook_24x24.svg) 50% 50% no-repeat;
+    }
+    &_twitter {
+      background: url(../../img/icon-twitter_24x24.svg) 50% 50% no-repeat;
+    }
+    &_instagram {
+      background: url(../../img/icon-instagram_24x24.svg) 50% 50% no-repeat;
+    }
+    &_vk {
+      background: url(../../img/icon-vk_24x24.svg) 50% 50% no-repeat;
+    }
+    &_skype {
+      background: url(../../img/icon-skype_24x24.svg) 50% 50% no-repeat;
+    }
+    &_telegram {
+      background: url(../../img/icon-telegram_24x24.svg) 50% 50% no-repeat;
+    }
+  }
+}

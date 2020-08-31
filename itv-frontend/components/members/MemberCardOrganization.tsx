@@ -1,9 +1,9 @@
 import { ReactElement, useState } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
 import OrganizationLogoDefault from "../../assets/img/pic-organization.svg";
+import MemberOrganizationDescription from "../MemberOrganizationDescription";
 
 const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
-  const [isFullDescription, setFullDescription] = useState<boolean>(false);
   const {
     organizationLogo,
     organizationName,
@@ -34,23 +34,7 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
           )}
         </div>
       </div>
-      {organizationDescription && (
-        <div className="member-card__organization-description">
-          {(isFullDescription && organizationDescription) ||
-            `${organizationDescription.trim().substr(0, 109)}…`}{" "}
-          {organizationDescription.trim().length > 109 && !isFullDescription && (
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                setFullDescription(true);
-              }}
-            >
-              Подробнее
-            </a>
-          )}
-        </div>
-      )}
+      <MemberOrganizationDescription {...{ organizationDescription }} />
     </div>
   );
 };

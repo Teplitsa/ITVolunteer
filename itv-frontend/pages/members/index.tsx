@@ -49,7 +49,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
       const { users } = await request(
         process.env.GraphQLServer,
         membersGraphqlQuery,
-        {}
+        {
+          previousUser: "",
+        }
       );
 
       return ["members", { ...membersPageState, ...{ list: users } }];

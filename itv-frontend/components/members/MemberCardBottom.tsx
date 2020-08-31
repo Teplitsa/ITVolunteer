@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
+import MemberSocials from "../MemberSocials";
 
 const MemberCardBottom: React.FunctionComponent = (): ReactElement => {
   const {
@@ -25,53 +26,16 @@ const MemberCardBottom: React.FunctionComponent = (): ReactElement => {
           </div>
         )}
       </div>
-      <div className="member-card__socials">
-        <a
-          className="member-card__socials-item member-card__socials-item_facebook"
-          href={facebook ? facebook : "#"}
-          title={facebook ? "Facebook" : "Аккаунт не указан"}
-          target={facebook ? "_blank" : "_self"}
-          onClick={(event) => !facebook && event.preventDefault()}
-        >
-          Facebook
-        </a>
-        <a
-          className="member-card__socials-item member-card__socials-item_twitter"
-          href={twitter ? twitter : "#"}
-          title={twitter ? "Twitter" : "Аккаунт не указан"}
-          target={twitter ? "_blank" : "_self"}
-          onClick={(event) => !twitter && event.preventDefault()}
-        >
-          Twitter
-        </a>
-        <a
-          className="member-card__socials-item member-card__socials-item_vk"
-          href={vk ? vk : "#"}
-          title={vk ? "VKontakte" : "Аккаунт не указан"}
-          target={vk ? "_blank" : "_self"}
-          onClick={(event) => !vk && event.preventDefault()}
-        >
-          VKontakte
-        </a>
-        <a
-          className="member-card__socials-item member-card__socials-item_skype"
-          href={skype ? skype : "#"}
-          title={skype ? "Skype" : "Аккаунт не указан"}
-          target={skype ? "_blank" : "_self"}
-          onClick={(event) => !skype && event.preventDefault()}
-        >
-          Skype
-        </a>
-        <a
-          className="member-card__socials-item member-card__socials-item_telegram"
-          href={telegram ? telegram : "#"}
-          title={telegram ? "Telegram" : "Аккаунт не указан"}
-          target={telegram ? "_blank" : "_self"}
-          onClick={(event) => !telegram && event.preventDefault()}
-        >
-          Telegram
-        </a>
-      </div>
+      <MemberSocials
+        {...{
+          useComponents: ["facebook", "twitter", "vk", "skype", "telegram"],
+          facebook,
+          twitter,
+          vk,
+          skype,
+          telegram,
+        }}
+      />
       <div className="member-card__registration-date">
         Участвует с{" "}
         {new Intl.DateTimeFormat("ru-RU", {

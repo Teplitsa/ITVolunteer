@@ -25,6 +25,13 @@
     border-radius: 12px;
     color: $color-white;
   }
+  &_secondary {
+    background-color: $color-white;
+    padding: 12px 40px;
+    border-radius: 12px;
+    box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08),
+      inset -1px -1px 1px rgba(129, 118, 111, 0.16);
+  }
   &_default {
     background-color: transparent;
     border-style: none;

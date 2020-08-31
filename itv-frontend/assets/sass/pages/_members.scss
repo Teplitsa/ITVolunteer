@@ -1,0 +1,44 @@
+.members {
+  margin: 0 auto;
+  max-width: 1118px;
+  &__top {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 30px 0;
+    text-align: center;
+    @include screen-from(md) {
+      justify-content: flex-end;
+      flex-flow: row nowrap;
+      text-align: left;
+    }
+  }
+  &__title {
+    margin: 0 0 10px;
+    font: 600 30px/40px "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-xl;
+    @include screen-from(md) {
+      flex-grow: 10;
+      margin: 0;
+    }
+  }
+  &__stats {
+    &-item {
+      padding: 4px 12px;
+      font: 600 11px/12px "IBM Plex Sans", sans-serif;
+      border-radius: 10px;
+      &:not(:last-child) {
+        margin: 0 0 10px 0;
+        @include screen-from(md) {
+          margin: 0 15px 0 0;
+        }
+      }
+
+      &_volunteers {
+        background-color: $color-gray-light-md;
+        color: $color-gray-dark-xl;
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@
 @import "pages/paseka";
 @import "pages/nagrady";
 @import "pages/member-account";
+@import "components/loader";
 @import "components/buttons";
 @import "components/form";
 @import "components/search-form";
@@ -42,5 +43,12 @@
 @import "pages/page";
 @import "pages/news";
 @import "pages/home";
+@import "pages/members";
+@import "components/members-list";
+@import "components/member-stats";
+@import "components/member-organization-description";
+@import "components/member-avatar";
+@import "components/volunteer";
+@import "components/member-socials";
 
 @import "vendors/react-datepicker";

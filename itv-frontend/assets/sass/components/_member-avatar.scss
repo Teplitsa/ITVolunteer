@@ -1,0 +1,25 @@
+.member-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $color-gray-light-md;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+  &_medium-size-image {
+    width: 70px;
+    height: 70px;
+  }
+  &_default-image {
+    background-color: $color-gray-light-xl;
+  }
+  &__image {
+    width: 100%;
+    height: auto;
+    &_default {
+      width: auto;
+      height: 70%;
+    }
+  }
+}
