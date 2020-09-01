@@ -103,6 +103,15 @@
     flex-direction: column;
     justify-content: center;
 
+    &:hover {
+      text-decoration: none;
+
+      .home-stats__item-value {
+        text-decoration: underline;
+      }    
+      
+    }
+
     &:not(:last-child) {
       margin-right: 40px;
     }

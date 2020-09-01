@@ -43,15 +43,17 @@ const Home: React.FunctionComponent = (): ReactElement => {
           <div className="home-stats__content">
             <div className="home-stats__list">
             {[
-              {value: homePage.stats?.publish, title: "Задачи ожидают волонтеров"},
-              {value: homePage.stats?.in_work, title: "Задачи сейчас в работе"},
-              {value: homePage.stats?.closed, title: "Решеных задач"},
+              {value: homePage.stats?.publish, title: "Задачи ожидают волонтеров", status: 'publish'},
+              {value: homePage.stats?.in_work, title: "Задачи сейчас в работе", status: 'in_work'},
+              {value: homePage.stats?.closed, title: "Решеных задач", status: 'closed'},
             ].map((statsItem, index) => {
               return (
-                <div className="home-stats__item" key={`home-stats-item-${index}`}>
-                  <div className="home-stats__item-value">{statsItem.value}</div>
-                  <div className="home-stats__item-title">{statsItem.title}</div>
-                </div>
+                <Link href={`/tasks/${statsItem.status}/`}>
+                  <a className="home-stats__item" key={`home-stats-item-${index}`}>
+                    <div className="home-stats__item-value">{statsItem.value}</div>
+                    <div className="home-stats__item-title">{statsItem.title}</div>
+                  </a>
+                </Link>
               )
             })}
             </div>

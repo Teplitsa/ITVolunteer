@@ -1305,6 +1305,7 @@ function itv_get_user_in_gql_format($user) {
         'lastName' => get_user_meta($user->ID, 'last_name', true),
         'memberRole' => tst_get_member_role_name( $user->ID ),
         'itvAvatar' => itv_avatar_url( $user->ID ),
+        'itvAvatarFile' => itv_get_user_file($user->ID, 'user_avatar'),
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
         'solvedTasksCount' => intval($activity[$solved_key]),
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
@@ -1313,6 +1314,9 @@ function itv_get_user_in_gql_format($user) {
         'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),
+        'organizationLogoFile' => itv_get_user_file($user->ID, 'user_company_logo'),
+        'cover' => itv_member_cover_url( $user->ID ),
+        'coverFile' => itv_get_user_file($user->ID, 'user_cover'),
         'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
         'thankyouCount' => ThankyouModel::instance()->get_user_thankyou_count($user->ID),
@@ -1327,6 +1331,19 @@ function itv_get_user_in_gql_format($user) {
     ];
     
     return $user_data;
+}
+
+function itv_get_user_file($user_id, $file_meta_key) {
+  $file_id = intval(get_user_meta($user_id, $file_meta_key, true));
+
+  if($file_id) {
+      return [
+        'mediaItemUrl' => wp_get_attachment_url($file_id),
+        'databaseId' => $file_id,
+      ];
+  }
+
+  return null;                    
 }
 
 function itv_append_user_private_data($user_data, $user) {
@@ -1512,7 +1529,12 @@ function ajax_update_profile_v2() {
             update_user_meta($member->ID, 'vk', filter_var($_POST['vk'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'instagram', filter_var($_POST['instagram'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'telegram', filter_var($_POST['telegram'], FILTER_SANITIZE_STRING));
-           
+
+            # files
+            update_user_meta($member->ID, 'user_company_logo', !empty($_POST['user_company_logo']) ? filter_var($_POST['user_company_logo'], FILTER_SANITIZE_STRING) : "");
+            update_user_meta($member->ID, 'user_cover', !empty($_POST['user_cover']) ? filter_var($_POST['user_cover'], FILTER_SANITIZE_STRING) : "");
+            update_user_meta($member->ID, 'user_avatar', !empty($_POST['user_avatar']) ? filter_var($_POST['user_avatar'], FILTER_SANITIZE_STRING) : "");
+
             do_action('update_member_stats', array($user_id));
 
             $itv_log = ItvLog::instance();

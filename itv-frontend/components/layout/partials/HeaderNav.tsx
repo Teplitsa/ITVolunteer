@@ -50,9 +50,11 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
   return (
     <nav>
       <div className="nav-mobile">
-        <a href="/" className="logo-col">
-          <img src={Logo} className="logo" alt="IT-волонтер" />
-        </a>
+        <Link href="/">
+          <a className="logo-col">
+            <img src={Logo} className="logo" alt="IT-волонтер" />
+          </a>
+        </Link>
         <a
           href="#"
           className="open-mobile-menu"
@@ -91,10 +93,14 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               </a>
               <ul className="submenu">
                 <li>
-                  <a href="/about">О проекте</a>
+                  <Link href="/about">
+                    <a>О проекте</a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/conditions">Правила участия</a>
+                  <Link href="/conditions">
+                    <a>Правила участия</a>
+                  </Link>
                 </li>
                 <li>
                   <Link href="/about-paseka">
@@ -123,13 +129,19 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
                   </Link>
                 </li>
                 <li>
-                  <a href="/news">Новости</a>
+                  <Link href="/news">
+                    <a>Новости</a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/sovety-dlya-nko-uspeshnye-zadachi">Советы НКО</a>
+                  <Link href="/sovety-dlya-nko-uspeshnye-zadachi">
+                    <a>Советы НКО</a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/contacts">Контакты</a>
+                  <Link href="/contacts">
+                    <a>Контакты</a>
+                  </Link>
                 </li>
               </ul>
             </li>

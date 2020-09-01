@@ -2,6 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
+import UploadFileInput from "../UploadFileInput";
 import * as _ from "lodash";
 
 const EditMemberProfile: React.FunctionComponent<{
@@ -11,6 +12,7 @@ const EditMemberProfile: React.FunctionComponent<{
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
   const formRef = useRef(null);
   const user = useStoreState((state) => state.session.user);
+  const login = useStoreActions((actions) => actions.session.login);
   const updateProfileRequest = useStoreActions(
     (actions) => actions.components.memberProfile.updateProfileRequest
   );
@@ -26,8 +28,10 @@ const EditMemberProfile: React.FunctionComponent<{
     profile.append("user_workplace", user.organizationName);
     profile.append("user_workplace_desc", user.organizationDescription);
     profile.append("user_website", user.organizationSite);
+    profile.append("phone", user.phone);
     profile.append("user_skype", user.skype);
     profile.append("twitter", user.twitter);
+    profile.append("telegram", user.telegram);
     profile.append("facebook", user.facebook);
     profile.append("vk", user.vk);
     profile.append("instagram", user.instagram);
@@ -35,12 +39,13 @@ const EditMemberProfile: React.FunctionComponent<{
     setStateFormData(profile);
   }, [user]);
 
-  function successCallback(message: string) {
+  async function successCallback(message: string) {
     // setRegistrationSuccessText(message);
     addSnackbar({
       context: "success",
       text: message,
     });
+    await login({username: "", password: ""});
     setIsLoading(false);
   }
 
@@ -145,6 +150,32 @@ const EditMemberProfile: React.FunctionComponent<{
                 />
               </div>
 
+              {user.id &&
+                <div className="auth-page-form__group">
+                  <label className="auth-page-form__label">
+                    Аватарка
+                  </label>
+                  <UploadFileInput 
+                    name="user_avatar" 
+                    isMultiple={false} 
+                    fileData={user.itvAvatarFile}
+                  />
+                </div>
+              }
+
+              {user.id &&
+                <div className="auth-page-form__group">
+                  <label className="auth-page-form__label">
+                    Обложка профиля
+                  </label>                
+                  <UploadFileInput 
+                    name="user_cover" 
+                    isMultiple={false} 
+                    fileData={user.coverFile}
+                  />
+                </div>
+              }
+
               <div className="auth-page-form__splitter">
                 <div />
               </div>
@@ -164,6 +195,19 @@ const EditMemberProfile: React.FunctionComponent<{
                   }
                 />
               </div>
+
+              {user.id &&
+                <div className="auth-page-form__group">
+                  <label className="auth-page-form__label">
+                    Логотип
+                  </label>
+                  <UploadFileInput 
+                    name="user_company_logo" 
+                    isMultiple={false} 
+                    fileData={user.organizationLogoFile}
+                  />
+                </div>
+              }
 
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">
@@ -193,6 +237,20 @@ const EditMemberProfile: React.FunctionComponent<{
                   placeholder=""
                   defaultValue={
                     stateFormData ? stateFormData.get("user_website") : ""
+                  }
+                />
+              </div>
+
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Телефон</label>
+                <input
+                  className="auth-page-form__control-input"
+                  type="tel"
+                  name="phone"
+                  maxLength={32}
+                  placeholder=""
+                  defaultValue={
+                    stateFormData ? stateFormData.get("phone") : ""
                   }
                 />
               </div>
@@ -227,6 +285,22 @@ const EditMemberProfile: React.FunctionComponent<{
                   placeholder=""
                   defaultValue={
                     stateFormData ? stateFormData.get("twitter") : ""
+                  }
+                />
+              </div>
+
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">
+                  Профиль Telegram (имя пользователя без @)
+                </label>
+                <input
+                  className="auth-page-form__control-input"
+                  type="text"
+                  name="telegram"
+                  maxLength={250}
+                  placeholder=""
+                  defaultValue={
+                    stateFormData ? stateFormData.get("telegram") : ""
                   }
                 />
               </div>

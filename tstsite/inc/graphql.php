@@ -288,12 +288,34 @@ function itv_register_user_graphql_fields() {
                     return itv_avatar_url( $user->userId );
                 }
             ],
+            'itvAvatarFile' => [
+                'type'        => 'MediaItem',
+                'description' => __( 'User organization avatar file', 'tst' ),
+                'resolve'     => function( $user, $args, $context ) {
+                    $file_id = intval(get_user_meta($user->userId, 'user_avatart', true));
+                    if($file_id) {
+                        return \WPGraphQL\Data\DataSource::resolve_post_object( intval($file_id), $context );
+                    }
+                    return null;                    
+                },
+            ],
             'cover' => [
                 'type' => 'String',
                 'description' => __( 'User cover URL', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_member_cover_url( $user->userId );
                 }
+            ],
+            'coverFile' => [
+                'type'        => 'MediaItem',
+                'description' => __( 'User organization cover file', 'tst' ),
+                'resolve'     => function( $user, $args, $context ) {
+                    $file_id = intval(get_user_meta($user->userId, 'user_cover', true));
+                    if($file_id) {
+                        return \WPGraphQL\Data\DataSource::resolve_post_object( intval($file_id), $context );
+                    }
+                    return null;                    
+                },
             ],
             'memberRole' => [
                 'type' => 'String',
@@ -341,10 +363,21 @@ function itv_register_user_graphql_fields() {
             ],
             'organizationLogo' => [
                 'type' => 'String',
-                'description' => __( 'User organization logo', 'tst' ),
+                'description' => __( 'User organization logo src', 'tst' ),
                 'resolve' => function ($user) {
                     return tst_get_member_user_company_logo_src( $user->userId );
                 }
+            ],
+            'organizationLogoFile' => [
+                'type'        => 'MediaItem',
+                'description' => __( 'User organization logo file', 'tst' ),
+                'resolve'     => function( $user, $args, $context ) {
+                    $file_id = intval(get_user_meta($user->userId, 'user_company_logo', true));
+                    if($file_id) {
+                        return \WPGraphQL\Data\DataSource::resolve_post_object( intval($file_id), $context );
+                    }
+                    return null;                    
+                },
             ],
             'isPasekaMember' => [
                 'type' => 'Boolean',

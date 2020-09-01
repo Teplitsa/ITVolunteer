@@ -58,7 +58,7 @@
       @include text-line-sm-light;
       display: block;
       height: 28px;
-      margin-bottom: 4px;
+      margin-bottom: 8px;
       color: $color-gray-dark-lg;
       display: flex;
       justify-content: space-between;
@@ -74,6 +74,7 @@
     input[type="url"], 
     input[type="password"], 
     input[type="search"],
+    input[type="tel"],
     textarea {
       @include text-light;
       padding: 12px;
@@ -169,6 +170,46 @@
     align-items: center;
   }
 
+}
+
+.auth-page-form .auth-page-form__group .wizard-upload {
+  position: relative;
+  min-height: unset;
+
+  & > input[type="file"] {
+  }
+
+  &__inner {
+    min-height: unset;
+  }
+
+  &__box {
+    padding: 18px 17px 20px 20px;
+
+    & > img {
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+    }
+  }
+
+  &__title {
+    margin-right: 4px;
+  }
+
+  &__file {
+    & > span {
+      display: inline-block;
+      max-width: 160px;
+      max-height: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;      
+    }
+  }  
+
+  &__btn {
+    @include wizard-button-upload;
+  }
 }
 
 // mobile
