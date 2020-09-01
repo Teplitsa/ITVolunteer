@@ -30,8 +30,8 @@ export const UploadFileInput = (props: any) => {
       return;
     }
 
-    setFiles(fileData ? [{
-      fileName: fileData.mediaItemUrl.replace(/^.*[\\\/]/, ''),
+    setFiles(fileData && fileData.mediaItemUrl ? [{
+      fileName: fileData.mediaItemUrl ? fileData.mediaItemUrl.replace(/^.*[\\\/]/, ''),
       value: fileData.databaseId,
     }] : []);
   }, [fileData])
