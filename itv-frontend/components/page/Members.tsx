@@ -3,9 +3,9 @@ import { useStoreState } from "../../model/helpers/hooks";
 import MembersList from "../members/MembersList";
 
 const Members: React.FunctionComponent = (): ReactElement => {
-  const {
-    pageInfo: { total: totalVolunteers },
-  } = useStoreState((state) => state.components.members.list);
+  const totalVolunteers = useStoreState(
+    (state) => state.components.members.userListStats.total
+  );
 
   return (
     <div className="members">

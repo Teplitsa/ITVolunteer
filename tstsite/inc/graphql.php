@@ -757,34 +757,141 @@ function itv_register_member_tasks_graphql_query() {
     );
 }
 
+// Volunteer rating
+
+add_action('graphql_register_types', 'itv_register_user_list_stats_type');
+
+function itv_register_user_list_stats_type()
+{
+    register_graphql_object_type(
+        'UserListStatsType',
+        [
+            'description' => __("User list statistics", 'tst'),
+            'fields' => [
+                'total' => [
+                    'type' => 'Integer',
+                    'description' => __('Total user count', 'tst'),
+                ],
+            ],
+        ]
+    );
+}
+
+add_action('graphql_register_types', 'itv_register_user_list_stats_field');
+
+function itv_register_user_list_stats_field()
+{
+
+    register_graphql_field(
+        'RootQuery',
+        'userListStats',
+        [
+            'description' => __('Get user list statistics', 'tst'),
+            'type' => 'UserListStatsType',
+            'resolve' => function () {
+
+                global $wpdb;
+
+                $total_user_count = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "
+                        SELECT COUNT(*)
+                        FROM {$wpdb->prefix}itv_user_xp
+                        WHERE user_id <> %s
+                    ",
+                        ACCOUNT_DELETED_ID
+                    )
+                );
+
+                return [
+                    'total' => $total_user_count,
+                ];
+            }
+        ]
+    );
+}
+
+add_action('graphql_register_types', 'itv_register_user_list_type');
+
+function itv_register_user_list_type()
+{
+    register_graphql_field(
+        'RootQuery',
+        'userList',
+        [
+            'description' => __('User list', 'tst'),
+            'type' => ['list_of' => 'User'],
+            'args'        => [
+                'userPerPage' => [
+                    'type' => 'Int',
+                ],
+                'paged' => [
+                    'type' => 'Int',
+                ],
+            ],
+            'resolve' => function ($source, array $args, AppContext $context) {
+
+                global $wpdb;
+
+                ["userPerPage" => $user_per_page, "paged" => $paged] = $args;
+
+                $limit_start = (int) $user_per_page * (int) $paged - (int) $user_per_page;
+                $limit_end = $user_per_page;
+
+                $deferred_users = [];
+
+                $users = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "
+                            SELECT user_id, xp
+                            FROM {$wpdb->prefix}itv_user_xp
+                            WHERE user_id <> %s
+                            ORDER BY xp
+                            DESC
+                            LIMIT {$limit_start}, {$limit_end}
+                        ",
+                        ACCOUNT_DELETED_ID
+                    )
+                );
+
+                foreach ($users as $user) {
+                    $deferred_users[] = \WPGraphQL\Data\DataSource::resolve_user((int) $user->user_id, $context);
+                }
+
+                return $deferred_users;
+            },
+        ]
+    );
+}
+
 // Add total field in PageInfo qraphql query block
 // Source: https://github.com/builtbycactus/total-counts-for-wp-graphql
 
-add_filter( 'graphql_connection_query_args', function( $args ) {
-	$args['no_found_rows'] = false;
-	$args['count_total']   = true;
+add_filter('graphql_connection_query_args', function ($args) {
+    $args['no_found_rows'] = false;
+    $args['count_total']   = true;
 
-	return $args;
+    return $args;
 });
 
-add_filter( 'graphql_connection_page_info', function( $page_info, $connection ) {
+add_filter('graphql_connection_page_info', function ($page_info, $connection) {
     $page_info['total'] = null;
-    
-	if ( $connection->get_query() instanceof \WP_Query ) {
-		if ( isset( $connection->get_query()->found_posts ) ) {
-			$page_info['total'] = (int) $connection->get_query()->found_posts;
-		}
-	} elseif ( $connection->get_query() instanceof \WP_User_Query ) {
-		if ( isset( $connection->get_query()->total_users ) ) {
-			$page_info['total'] = (int) $connection->get_query()->total_users;
-		}
-	}
 
-	return $page_info;
-}, 10, 2 );
+    if ($connection->get_query() instanceof \WP_Query) {
+        if (isset($connection->get_query()->found_posts)) {
+            $page_info['total'] = (int) $connection->get_query()->found_posts;
+        }
+    } elseif ($connection->get_query() instanceof \WP_User_Query) {
+        if (isset($connection->get_query()->total_users)) {
+            $page_info['total'] = (int) $connection->get_query()->total_users;
+        }
+    }
 
-add_action( 'graphql_register_types', function() {
-	register_graphql_field( 'WPPageInfo', 'total', [
-		'type' => 'Int',
-	] );
+    return $page_info;
+}, 10, 2);
+
+add_action('graphql_register_types', function () {
+    register_graphql_field('WPPageInfo', 'total', [
+        'type' => 'Int',
+    ]);
 });

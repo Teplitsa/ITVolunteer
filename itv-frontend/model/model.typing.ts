@@ -296,30 +296,24 @@ export interface IMemberListItem {
 }
 
 export interface IMembersPageState {
-  list: {
-    pageInfo: {
-      total: number;
-      hasNextPage: boolean;
-      endCursor: string;
-    };
-    edges: Array<{ node: IMemberListItem }>;
+  paged: number;
+  userListStats: {
+    total: number;
   };
+  userList: Array<IMemberListItem>;
 }
 
 export interface IMembersPageActions {
   initializeState: Action<IMembersPageModel>;
   setState: Action<IMembersPageModel, IMembersPageState>;
-  setPageInfo: Action<
+  setPaged: Action<IMembersPageModel, number>;
+  setUserListStats: Action<
     IMembersPageModel,
     {
-      hasNextPage: boolean;
-      endCursor: string;
+      total: number;
     }
   >;
-  addMoreVolunteers: Action<
-    IMembersPageModel,
-    Array<{ node: IMemberListItem }>
-  >;
+  addMoreVolunteers: Action<IMembersPageModel, Array<IMemberListItem>>;
 }
 
 export interface IMembersPageThunks {
@@ -1249,7 +1243,10 @@ export interface INewsItemThunks {}
  * HomePage
  */
 
-export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomePageThunks {}
+export interface IHomePageModel
+  extends IHomePageState,
+    IHomePageActions,
+    IHomePageThunks {}
 
 export interface IHomePageState extends IPageState {
   id: string;

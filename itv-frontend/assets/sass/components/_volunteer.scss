@@ -1,12 +1,15 @@
 .volunteer {
   position: relative;
   background: $color-white;
-  border: 3px solid $color-gold;
+  border: 2px solid $color-gray-light-md;
   padding: 20px 25px;
   border-radius: 8px;
   @include screen-from(md) {
     display: flex;
     flex-flow: column nowrap;
+  }
+  &_top {
+    border: 3px solid $color-gold;
   }
   &__header {
     display: flex;

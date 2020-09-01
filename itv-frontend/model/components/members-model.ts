@@ -9,7 +9,11 @@ import { action, thunk } from "easy-peasy";
 
 export const USER_PER_PAGE = 14;
 export const membersPageState: IMembersPageState = {
-  list: null,
+  paged: 1,
+  userListStats: {
+    total: 0,
+  },
+  userList: null,
 };
 
 const memberListItemQueriedFields = `
@@ -32,18 +36,12 @@ const memberListItemQueriedFields = `
 `;
 
 export const graphqlQuery = `
-  query gertUsers($previousUser: String!) {
-    users(first: ${USER_PER_PAGE}, after: $previousUser) {
-      pageInfo {
-        total
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          ${memberListItemQueriedFields}
-        }
-      }
+  query getUsers($paged: Int!) {
+    userListStats {
+      total
+    }
+    userList(userPerPage: ${USER_PER_PAGE}, paged: $paged) {
+      ${memberListItemQueriedFields}
     }
   }`;
 
@@ -54,47 +52,45 @@ const membersPageActions: IMembersPageActions = {
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
-  setPageInfo: action((prevState, newPageInfo) => {
-    Object.assign(prevState.list.pageInfo, newPageInfo);
+  setPaged: action((prevState, newPaged) => {
+    Object.assign(prevState, { paged: newPaged });
   }),
-  addMoreVolunteers: action((prevState, newEdges) => {
-    prevState.list.edges = [...prevState.list.edges, ...newEdges];
+  setUserListStats: action((prevState, newUserListStats) => {
+    Object.assign(prevState.userListStats, newUserListStats);
+  }),
+  addMoreVolunteers: action((prevState, newUserList) => {
+    prevState.userList = [...prevState.userList, ...newUserList];
   }),
 };
 
 const membersPageThunks: IMembersPageThunks = {
   moreVolunteersRequest: thunk(
     async (
-      { setPageInfo, addMoreVolunteers },
+      { setPaged, setUserListStats, addMoreVolunteers },
       { setLoading },
       { getStoreState }
     ) => {
       const {
         components: {
-          members: {
-            list: {
-              pageInfo: { hasNextPage, endCursor },
-            },
-          },
+          members: { paged },
         },
       } = getStoreState() as IStoreModel;
-
-      if (!hasNextPage) return;
 
       const { request } = await import("graphql-request");
 
       try {
-        const { users } = await request(
+        const { userListStats, userList } = await request(
           process.env.GraphQLServer,
           graphqlQuery,
           {
-            previousUser: endCursor,
+            paged: paged + 1,
           }
         );
 
-        setPageInfo(users.pageInfo);
+        setPaged(paged + 1);
+        setUserListStats(userListStats);
         setLoading(false);
-        addMoreVolunteers(users.edges);
+        addMoreVolunteers(userList);
       } catch (error) {
         console.error(error);
       }
