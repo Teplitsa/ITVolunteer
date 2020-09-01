@@ -484,7 +484,11 @@ function itv_register_user_graphql_fields() {
             'solvedProblems' => [
                 'type' => 'Int',
                 'description' => __( 'User solved problems', 'tst' ),
-                'resolve' => fn($user) => (int) tst_calculate_member_activity($user->userId, "solved")["solved"]
+                'resolve' => function ($user) {
+                    $activity = tst_calculate_member_activity($user->userId, "solved");
+
+                    return (int) $activity["solved"];
+                }
             ],
         ]
     );
