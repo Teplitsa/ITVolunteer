@@ -7,7 +7,7 @@ const MemberOrganizationDescription: React.FunctionComponent<{
   const excerptRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (excerptRef.current.innerHTML.length > 109) {
+    if (excerptRef.current && excerptRef.current.innerHTML.length > 109) {
       excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
         0,
         109
@@ -18,7 +18,7 @@ const MemberOrganizationDescription: React.FunctionComponent<{
   }, []);
 
   useEffect(() => {
-    if (isFullDescription) {
+    if (excerptRef.current && isFullDescription) {
       excerptRef.current.innerHTML = organizationDescription.trim();
     }
   }, [isFullDescription]);
