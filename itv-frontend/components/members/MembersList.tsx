@@ -15,11 +15,7 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
     (actions) => actions.components.members.moreVolunteersRequest
   );
   
-  if(!volunteer) {
-    return null;
-  }
-
-  return (
+  return !!volunteer ? (
     <>
       <div className="members-list">
         {volunteers?.map((volunteer, index) => {
@@ -49,7 +45,7 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
         </div>
       )}
     </>
-  );
+  ) : null;
 };
 
 export default MembersList;
