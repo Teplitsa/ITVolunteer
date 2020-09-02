@@ -18,12 +18,12 @@ const ReviewerCardSmall: React.FunctionComponent<{
         }}
       />
       <span className="name">
-        <span>{fullName}</span>
+        <span dangerouslySetInnerHTML={{ __html: fullName }} />
         {task && (
           <>
             {" / "}
             <Link href={`${task.slug}`}>
-              <a>{task.title}</a>
+              <a dangerouslySetInnerHTML={{ __html: task.title }} />
             </Link>
           </>
         )}

@@ -16,7 +16,7 @@ const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
       />
 
       <span className="name">
-        <span>{fullName}</span>
+        <span dangerouslySetInnerHTML={{ __html: fullName }} />
         {memberRole && ` / ${memberRole}`}
       </span>
     </div>

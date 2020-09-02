@@ -20,13 +20,10 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
       <div className="members-list">
         {volunteers?.map((volunteer, index) => {
           return (
-            <>
-              {index === 10 && <div className="members-list-divider" />}
-              <MembersListItem
-                key={`Volunteer-${volunteer.id}`}
-                {...{ isOdd: index % 2 === 0, index: index + 1, volunteer }}
-              />
-            </>
+            <MembersListItem
+              key={`Volunteer-${volunteer.id}`}
+              {...{ isOdd: index % 2 === 0, index: index + 1, volunteer }}
+            />
           );
         })}
       </div>

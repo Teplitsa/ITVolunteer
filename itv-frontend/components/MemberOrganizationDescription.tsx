@@ -1,23 +1,34 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect, useRef } from "react";
 
 const MemberOrganizationDescription: React.FunctionComponent<{
   organizationDescription: string;
 }> = ({ organizationDescription }): ReactElement => {
   const [isFullDescription, setFullDescription] = useState<boolean>(false);
+  const excerptRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (excerptRef.current.innerHTML.length > 109) {
+      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
+        0,
+        109
+      )}…`;
+    } else {
+      setFullDescription(true);
+    }
+  }, []);
 
   return (
     organizationDescription && (
       <div className="member-organization-description">
         <span
+          ref={excerptRef}
           dangerouslySetInnerHTML={{
-            __html:
-              (isFullDescription && organizationDescription) ||
-              `${organizationDescription.trim().substr(0, 109)}`,
+            __html: organizationDescription.trim(),
           }}
         />
-        {organizationDescription.trim().length > 109 && !isFullDescription && (
+        {!isFullDescription && (
           <>
-            {"… "}
+            {" "}
             <a
               href="#"
               onClick={(event) => {

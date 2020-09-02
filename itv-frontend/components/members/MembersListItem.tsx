@@ -5,6 +5,7 @@ import MemberStats from "../../components/MemberStats";
 import MemberOrganizationDescription from "../MemberOrganizationDescription";
 import MemberAvatar from "../MemberAvatar";
 import MemberSocials from "../MemberSocials";
+import { isLinkValid } from "../../utilities/utilities";
 
 const MembersListItem: React.FunctionComponent<{
   isOdd: boolean;
@@ -22,89 +23,96 @@ const MembersListItem: React.FunctionComponent<{
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className={`members-list__item ${isOdd ? "members-list__item_odd" : "members-list__item_even"} ${
-        isShown ? "members-list__item_shown" : ""
-      } volunteer ${index <= 10 ? "volunteer_top" : ""}`}
-    >
-      <div className="volunteer__header">
-        <div className="volunteer__avatar">
-          <MemberAvatar
+    <>
+      {index === 11 && <div className="members-list-divider" />}
+      <div
+        ref={ref}
+        className={`members-list__item ${
+          isOdd ? "members-list__item_odd" : "members-list__item_even"
+        } ${isShown ? "members-list__item_shown" : ""} volunteer ${
+          index <= 10 ? "volunteer_top" : ""
+        }`}
+      >
+        <div className="volunteer__header">
+          <div className="volunteer__avatar">
+            <MemberAvatar
+              {...{
+                memberAvatar: volunteer.itvAvatar,
+                memberFullName: volunteer.fullName,
+                size: "medium",
+              }}
+            />
+          </div>
+          <div className="volunteer__bage">
+            <div className="volunteer__full-name">
+              <Link href={`/members/${volunteer.username}`}>
+                <a
+                  className="volunteer__account-link"
+                  target="_blank"
+                  dangerouslySetInnerHTML={{ __html: volunteer.fullName }}
+                />
+              </Link>
+            </div>
+            <div className="volunteer__role">
+              <div className="volunteer__role-bage">{volunteer.memberRole}</div>
+            </div>
+            <div
+              className="volunteer__organization-name"
+              dangerouslySetInnerHTML={{ __html: volunteer.organizationName }}
+            />
+          </div>
+        </div>
+        <div className="volunteer__stats">
+          <MemberStats
             {...{
-              memberAvatar: volunteer.itvAvatar,
-              memberFullName: volunteer.fullName,
-              size: "medium",
+              rating: volunteer.rating,
+              reviewsCount: volunteer.reviewsCount,
+              xp: volunteer.xp,
+              solvedProblems: volunteer.solvedProblems,
+              withTopdivider: true,
+              align: "left",
             }}
           />
         </div>
-        <div className="volunteer__bage">
-          <div className="volunteer__full-name">
-            <Link href={`/members/${volunteer.username}`}>
-              <a
-                className="volunteer__account-link"
-                target="_blank"
-                dangerouslySetInnerHTML={{ __html: volunteer.fullName }}
-              />
-            </Link>
-          </div>
-          <div className="volunteer__role">
-            <div className="volunteer__role-bage">{volunteer.memberRole}</div>
-          </div>
-          <div
-            className="volunteer__organization-name"
-            dangerouslySetInnerHTML={{ __html: volunteer.organizationName }}
-          />
-        </div>
-      </div>
-      <div className="volunteer__stats">
-        <MemberStats
-          {...{
-            rating: volunteer.rating,
-            reviewsCount: volunteer.reviewsCount,
-            xp: volunteer.xp,
-            solvedProblems: volunteer.solvedProblems,
-            withTopdivider: true,
-            align: "left",
-          }}
-        />
-      </div>
-      {volunteer.organizationDescription && (
-        <div className="volunteer__organization-description">
-          <MemberOrganizationDescription
-            {...{ organizationDescription: volunteer.organizationDescription }}
-          />
-        </div>
-      )}
-      <div className="volunteer__footer">
-        <div className="volunteer__socials">
-          <MemberSocials
-            {...{
-              useComponents: ["facebook", "instagram", "vk"],
-              facebook: volunteer.facebook,
-              instagram: volunteer.instagram,
-              vk: volunteer.vk,
-            }}
-          />
-        </div>
-        {volunteer.organizationSite && (
-          <div className="volunteer__organization-site">
-            <a href={volunteer.organizationSite} target="_blank">
-              {new URL(volunteer.organizationSite).hostname}
-            </a>
+        {volunteer.organizationDescription && (
+          <div className="volunteer__organization-description">
+            <MemberOrganizationDescription
+              {...{
+                organizationDescription: volunteer.organizationDescription,
+              }}
+            />
           </div>
         )}
-        <div className="volunteer__registration-date">
-          Регистрация{" "}
-          {new Intl.DateTimeFormat("ru-RU", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }).format(new Date(volunteer.registrationDate * 1000))}
+        <div className="volunteer__footer">
+          <div className="volunteer__socials">
+            <MemberSocials
+              {...{
+                useComponents: ["facebook", "instagram", "vk"],
+                facebook: volunteer.facebook,
+                instagram: volunteer.instagram,
+                vk: volunteer.vk,
+              }}
+            />
+          </div>
+          {isLinkValid(volunteer.organizationSite) && (
+            <div className="volunteer__organization-site">
+              <a href={volunteer.organizationSite} target="_blank">
+                {new URL(volunteer.organizationSite).hostname}
+              </a>
+            </div>
+          )}
+          <div className="volunteer__registration-date">
+            Регистрация{" "}
+            {new Intl.DateTimeFormat("ru-RU", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }).format(new Date(volunteer.registrationDate * 1000))}
+          </div>
         </div>
+        {index <= 10 && <div className="volunteer__index">{index}</div>}
       </div>
-      {index <= 10 && <div className="volunteer__index">{index}</div>}
-    </div>
+    </>
   );
 };
 

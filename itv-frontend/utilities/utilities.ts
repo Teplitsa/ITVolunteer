@@ -2,6 +2,18 @@ import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
 
+export const isLinkValid = (link: string): boolean => {
+  let isValid = false;
+
+  try {
+    if (new URL(link)) {
+      isValid = true;
+    }
+  } catch {}
+
+  return isValid;
+};
+
 export const generateUniqueKey = ({
   base,
   prefix = "",
@@ -59,9 +71,9 @@ export const formatDate = ({
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-  if(wpDateTime && !wpDateTime.match(/.*[Z]{1}$/)) {
-    if(wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
-      wpDateTime += "Z"
+  if (wpDateTime && !wpDateTime.match(/.*[Z]{1}$/)) {
+    if (wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
+      wpDateTime += "Z";
     }
   }
 
@@ -145,38 +157,41 @@ export function getSiteUrl(path = "") {
   return rootUrl + path;
 }
 
-
 export function formDataToJSON(formData) {
   var object = {};
   formData.forEach((value, key) => {
-      // Reflect.has in favor of: object.hasOwnProperty(key)
-      if(!Reflect.has(object, key)){
-          object[key] = value;
-          return;
-      }
-      if(!Array.isArray(object[key])){
-          object[key] = [object[key]];    
-      }
-      object[key].push(value);
+    // Reflect.has in favor of: object.hasOwnProperty(key)
+    if (!Reflect.has(object, key)) {
+      object[key] = value;
+      return;
+    }
+    if (!Array.isArray(object[key])) {
+      object[key] = [object[key]];
+    }
+    object[key].push(value);
   });
   return JSON.stringify(object);
 }
 
-
 export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
-  if(!postFeaturedImage) {
-    return ""
+  if (!postFeaturedImage) {
+    return "";
   }
 
   var fallbackImageUrl = "";
-  if(postFeaturedImage.mediaItemUrl) {
+  if (postFeaturedImage.mediaItemUrl) {
     fallbackImageUrl = postFeaturedImage.mediaItemUrl;
   }
 
-  if(!postFeaturedImage.mediaDetails || !postFeaturedImage.mediaDetails.sizes) {
+  if (
+    !postFeaturedImage.mediaDetails ||
+    !postFeaturedImage.mediaDetails.sizes
+  ) {
     return fallbackImageUrl;
   }
 
-  let foundSize = postFeaturedImage.mediaDetails.sizes.find(imgSize => imgSize.name == size);
+  let foundSize = postFeaturedImage.mediaDetails.sizes.find(
+    (imgSize) => imgSize.name == size
+  );
   return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
 }

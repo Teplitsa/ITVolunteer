@@ -22,9 +22,10 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
           />
         </div>
         <div className="member-card__organization-top">
-          <div className="member-card__organization-name">
-            {organizationName}
-          </div>
+          <div
+            className="member-card__organization-name"
+            dangerouslySetInnerHTML={{ __html: organizationName }}
+          />
           {organizationSite && (
             <div className="member-card__organization-site">
               <a href={organizationSite} target="_blank">

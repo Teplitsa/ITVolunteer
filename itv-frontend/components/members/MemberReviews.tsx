@@ -30,7 +30,15 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
                 ? "отзыва"
                 : "отзывов"}
             </li>
-            <li>Оценка {rating} из 5</li>
+            <li>
+              Оценка{" "}
+              {rating
+                ? rating.toFixed(1).toString().search(/\.0/) === -1
+                  ? rating.toFixed(1)
+                  : Math.round(rating)
+                : 0}{" "}
+              из 5
+            </li>
           </ul>
         </div>
       </div>

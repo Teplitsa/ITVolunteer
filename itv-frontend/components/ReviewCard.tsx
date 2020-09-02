@@ -1,13 +1,14 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect, useRef } from "react";
 import { IMemberReview } from "../model/model.typing";
 import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
-import { getTheIntervalToNow, stripTags } from "../utilities/utilities";
+import { getTheIntervalToNow } from "../utilities/utilities";
 
 const ReviewCard: React.FunctionComponent<IMemberReview> = (
   review
 ): ReactElement => {
   const [isFullDescription, setFullDescription] = useState<boolean>(false);
+  const excerptRef = useRef<HTMLSpanElement>(null);
   const reviewer = review.type === "as_author" ? review.author : review.doer;
   const reviewerCardSmallProps = {
     avatar: reviewer.itvAvatar,
@@ -19,6 +20,17 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
         }
       : null,
   };
+
+  useEffect(() => {
+    if (excerptRef.current.innerHTML.length > 109) {
+      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
+        0,
+        109
+      )}…`;
+    } else {
+      setFullDescription(true);
+    }
+  }, []);
 
   return (
     <div className="review-card">
@@ -37,18 +49,23 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
         </div>
       </div>
       <div className="review-card__excerpt">
-        {(isFullDescription && stripTags(review.message).trim()) ||
-          `${stripTags(review.message).trim().substr(0, 109)}…`}{" "}
-        {stripTags(review.message).trim().length > 109 && !isFullDescription && (
-          <a
-            href="#"
-            onClick={(event) => {
-              event.preventDefault();
-              setFullDescription(true);
-            }}
-          >
-            Подробнее
-          </a>
+        <span
+          ref={excerptRef}
+          dangerouslySetInnerHTML={{ __html: review.message.trim() }}
+        />
+        {!isFullDescription && (
+          <>
+            {" "}
+            <a
+              href="#"
+              onClick={(event) => {
+                event.preventDefault();
+                setFullDescription(true);
+              }}
+            >
+              Подробнее
+            </a>
+          </>
         )}
       </div>
       <div className="review-card__footer">

@@ -61,7 +61,7 @@
       margin: 0 0 20px;
       @include screen-from(md) {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
       }
     }
     &-logo {
