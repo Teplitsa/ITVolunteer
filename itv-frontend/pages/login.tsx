@@ -54,28 +54,34 @@ const LoginPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/paseka";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
+
+  const entrypointModel = {
+    slug: "login",
+    title: 'Вход в систему - it-волонтер',
+    seo: {
+      canonical: "https://itv.te-st.ru/login",
+      title: "Вход в систему - it-волонтер",
+      metaRobotsNoindex: "noindex",
+      metaRobotsNofollow: "nofollow",
+      opengraphTitle: "Вход в систему - it-волонтер",
+      opengraphUrl: "https://itv.te-st.ru/login",
+      opengraphSiteName: "it-волонтер",
+    },
+  };
+
   const model = await withAppAndEntrypointModel({
-    entrypointQueryVars: { uri: "paseka" },
+    entrypointQueryVars: { uri: "about" },
     entrypointType: "page",
     componentModel: async (request) => {
-      const pasekaPageModel = await import("../model/components/paseka-model");
-      const pasekaPageQuery = pasekaPageModel.graphqlQuery;
-      const { pageBy: component } = await request(
-        process.env.GraphQLServer,
-        pasekaPageQuery,
-        { uri: url }
-      );
-
-      return ["paseka", component];
+      return ["page", {}];
     },
   });
 
   return {
-    props: { ...model },
+    props: { ...model, ...{entrypoint: {...model.entrypoint, ...{page: entrypointModel}}} },
   };
 };
 

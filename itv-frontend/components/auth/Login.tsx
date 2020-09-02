@@ -7,7 +7,7 @@ import * as _ from "lodash";
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
 
-const Registration: React.FunctionComponent<{
+const Login: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
@@ -121,4 +121,4 @@ const Registration: React.FunctionComponent<{
   );
 };
 
-export default Registration;
+export default Login;

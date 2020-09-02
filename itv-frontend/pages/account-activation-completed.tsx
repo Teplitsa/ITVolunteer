@@ -1,16 +1,16 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
-import Page from "../components/page/Page";
+import AccountActivated from "../components/auth/AccountActivated";
 
-const AboutPage: React.FunctionComponent = (): ReactElement => {
+const AccountActivationCompletedPage: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
       <Main>
         <main id="site-main" className="site-main" role="main">
-          <Page />
+          <AccountActivated />
         </main>
       </Main>
     </>
@@ -18,12 +18,12 @@ const AboutPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/about";
+  const url: string = "/account-activation";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
-    entrypointQueryVars: { uri: "about" },
+    entrypointQueryVars: { uri: "account-activation" },
     entrypointType: "page",
     componentModel: async (request) => {
       const pageModel = await import("../model/page-model");
@@ -43,4 +43,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default AboutPage;
+export default AccountActivationCompletedPage;

@@ -172,6 +172,7 @@
 
 }
 
+// upload file
 .auth-page-form .auth-page-form__group .wizard-upload {
   position: relative;
   min-height: unset;
@@ -209,6 +210,25 @@
 
   &__btn {
     @include wizard-button-upload;
+  }
+}
+
+// account activated page
+.auth-page__account-activated {
+  min-height: 471px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  .auth-page__subtitle {
+    max-width: 557px;
+    margin-top: 8px;
+  }
+
+  .auth-page-form__control-submit {
+    max-width: 374px;
+    margin-top: 40px;
   }
 }
 

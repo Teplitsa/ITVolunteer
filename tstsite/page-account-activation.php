@@ -6,64 +6,31 @@
 
 if(get_current_user_id() || empty($_GET['uid'])) {
     wp_redirect(home_url());
-    exit;
+    exit();
 }
 
 $user = get_user_by('id', (int)$_GET['uid']);
 
+if( !$user ) {
 
+    wp_redirect("/account-activation-completed?status=error&message=" . urlencode(__('User account not found.', 'tst')));
 
-get_header();?>
-<?php while ( have_posts() ) : the_post(); ?>
+} elseif(empty($_GET['code']) || get_user_meta($user->ID, 'activation_code', true) != $_GET['code']) {
 
-<header class="page-heading">
+    wp_redirect("/account-activation-completed?status=error&message=" . urlencode(__('Wrong data given.', 'tst')));
 
-	<div class="row">
-		<div class="col-md-12">
-			<nav class="page-breadcrumbs"><?php echo frl_breadcrumbs();?></nav>
-			<h1 class="page-title"><?php echo frl_page_title();?></h1>
-		</div>
-		
-	</div>
+} else {
+    update_user_meta($user->ID, 'activation_code', '');
 
-</header>
+    ob_start();
+    ItvAtvetka::instance()->mail('account_activated_notice', [
+        'mailto' => $user->user_email,
+        'login' => $user->user_login,
+        'activation_url' => home_url('/login/'),
+    ]);
+    ob_end_clean();
 
-<div class="page-body">
-<div class="row in-single">   
-        
-    <div class="col-md-8">    
+    wp_redirect("/account-activation-completed?status=ok");
+}        
 
-        <div class="activation-message">
-            <?php if( !$user ) {?>
-
-                <div class="alert alert-danger"><?php _e('User account not found.', 'tst');?></div>
-
-            <?php } elseif(empty($_GET['code']) || get_user_meta($user->ID, 'activation_code', true) != $_GET['code']) {?>
-
-                <div class="alert alert-danger"><?php _e('Wrong data given.', 'tst');?></div>
-
-            <?php } else {
-                update_user_meta($user->ID, 'activation_code', '');
-
-                ItvAtvetka::instance()->mail('account_activated_notice', [
-                    'mailto' => $user->user_email,
-                    'login' => $user->user_login,
-                    'activation_url' => home_url('/login/'),
-                ]);
-        
-                $link = '<a href="'.tst_get_login_url().'" class="alert-link">'.__('Enter on site', 'tst').'</a>';?>
-
-                <div class="alert alert-success"><?php printf(__('Your account is active now! Please %s.', 'tst'), $link);?></div>
-
-            <?php }?>
-        </div>
-        
-    </div> <!-- .col-md-8 -->
-    
-    <div class="col-md-4">&nbsp;</div>
-    
-</div><!-- .row -->
-</div>
-
-<?php endwhile; ?>
-<?php get_footer(); ?>
+exit();
