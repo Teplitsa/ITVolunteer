@@ -11,10 +11,7 @@ const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
       <span
         className="avatar-wrapper"
         style={{
-          backgroundImage:
-            avatarImage && avatarImage.search(/temp-avatar\.png/) === -1
-              ? `url(${avatarImage})`
-              : "none",
+          backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
         }}
       />
 
