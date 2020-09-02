@@ -7,9 +7,10 @@ import MemberAvatar from "../MemberAvatar";
 import MemberSocials from "../MemberSocials";
 
 const MembersListItem: React.FunctionComponent<{
+  isOdd: boolean;
   index: number;
   volunteer: IMemberListItem;
-}> = ({ index, volunteer }): ReactElement => {
+}> = ({ isOdd, index, volunteer }): ReactElement => {
   const [isShown, show] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -23,9 +24,9 @@ const MembersListItem: React.FunctionComponent<{
   return (
     <div
       ref={ref}
-      className={`members-list__item ${
+      className={`members-list__item ${isOdd ? "members-list__item_odd" : "members-list__item_even"} ${
         isShown ? "members-list__item_shown" : ""
-      } volunteer`}
+      } volunteer ${index <= 10 ? "volunteer_top" : ""}`}
     >
       <div className="volunteer__header">
         <div className="volunteer__avatar">
@@ -102,7 +103,7 @@ const MembersListItem: React.FunctionComponent<{
           }).format(new Date(volunteer.registrationDate * 1000))}
         </div>
       </div>
-      <div className="volunteer__index">{index}</div>
+      {index <= 10 && <div className="volunteer__index">{index}</div>}
     </div>
   );
 };

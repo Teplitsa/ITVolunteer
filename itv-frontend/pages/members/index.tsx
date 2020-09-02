@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import Members from "../../components/page/Members";
+import { IMembersPageState } from "../../model/model.typing";
 
 const MembersPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -46,15 +47,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
         graphqlQuery: membersGraphqlQuery,
       } = await import("../../model/components/members-model");
 
-      const { users } = await request(
+      const response: IMembersPageState = await request(
         process.env.GraphQLServer,
         membersGraphqlQuery,
         {
-          previousUser: "",
+          paged: membersPageState.paged,
         }
       );
 
-      return ["members", { ...membersPageState, ...{ list: users } }];
+      return ["members", { ...membersPageState, ...response }];
     },
   });
 
