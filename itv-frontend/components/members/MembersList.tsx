@@ -15,10 +15,10 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
     (actions) => actions.components.members.moreVolunteersRequest
   );
   
-  return !!volunteer ? (
+  return !!volunteers ? (
     <>
       <div className="members-list">
-        {volunteers?.map((volunteer, index) => {
+        {volunteers?.filter((volunteer) => !!volunteer).map((volunteer, index) => {
           return (
             <MembersListItem
               key={`Volunteer-${volunteer.id}`}
