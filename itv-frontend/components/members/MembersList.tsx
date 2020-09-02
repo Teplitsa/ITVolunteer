@@ -14,6 +14,10 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
   const moreVolunteersRequest = useStoreActions(
     (actions) => actions.components.members.moreVolunteersRequest
   );
+  
+  if(!volunteer) {
+    return null;
+  }
 
   return (
     <>
