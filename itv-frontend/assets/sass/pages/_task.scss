@@ -244,14 +244,15 @@
 
     .avatar-wrapper {
       display: inline-block;
-      border-radius: 12px;
+      border-radius: 50%;
       overflow: hidden;
       margin-right: $base * 2;
+      background-color: $color-gray-light-xl;
+      border: 1px solid $color-gray-light-md;
       background-size: cover;
       background-position: center;
       width: 80px;
       height: 80px;
-      flex-basis: 80px;
       min-width: 80px;
       position: relative;
       overflow: visible;
@@ -261,7 +262,7 @@
         height: 20px;
         position: absolute;
         bottom: 0px;
-        right: -10px;
+        right: 4px;
       }
     }
 
