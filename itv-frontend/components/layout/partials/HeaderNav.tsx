@@ -68,9 +68,11 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       </div>
 
       <div className={`nav ${mobileOpen ? "mobile-open" : ""}`}>
-        <a href="/" className="logo-col">
-          <img src={Logo} className="logo" alt="IT-волонтер" />
-        </a>
+        <Link href="/">
+          <a className="logo-col">
+            <img src={Logo} className="logo" alt="IT-волонтер" />
+          </a>
+        </Link>
         {!isHeaderSearchOpen && (
           <ul className="main-menu-col">
             <li>
@@ -85,10 +87,35 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li>
-              <a href="/members">Волонтеры</a>
+              <Link href="/members">
+                <a
+                  className={
+                    router.pathname === "/members"
+                      ? "main-menu__link_active"
+                      : ""
+                  }
+                >
+                  Волонтеры
+                </a>
+              </Link>
             </li>
             <li className="drop-menu">
-              <a className="drop-menu" onClick={() => false}>
+              <a
+                className={
+                  [
+                    "/about",
+                    "/conditions",
+                    "/about-paseka",
+                    "/nagrady",
+                    "/news",
+                    "/sovety-dlya-nko-uspeshnye-zadachi",
+                    "/contacts",
+                  ].includes(router.pathname)
+                    ? "drop-menu main-menu__link_active"
+                    : "drop-menu"
+                }
+                onClick={() => false}
+              >
                 О проекте
               </a>
               <ul className="submenu">
@@ -104,28 +131,12 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
                 </li>
                 <li>
                   <Link href="/about-paseka">
-                    <a
-                      className={
-                        router.pathname === "/about-paseka"
-                          ? "main-menu__link_active"
-                          : ""
-                      }
-                    >
-                      Пасека
-                    </a>
+                    <a>Пасека</a>
                   </Link>
                 </li>
                 <li>
                   <Link href="/nagrady">
-                    <a
-                      className={
-                        router.pathname === "/nagrady"
-                          ? "main-menu__link_active"
-                          : ""
-                      }
-                    >
-                      Награды
-                    </a>
+                    <a>Награды</a>
                   </Link>
                 </li>
                 <li>

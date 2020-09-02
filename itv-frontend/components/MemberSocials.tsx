@@ -22,13 +22,13 @@ const MemberSocials: React.FunctionComponent<{
 }): ReactElement => {
   const isFacebook =
     useComponents.includes("facebook") && isLinkValid(facebook);
-  const isTwitter = useComponents.includes("facebook") && isLinkValid(twitter);
+  const isTwitter = useComponents.includes("twitter") && twitter.search(/\S+/) !== -1;
   const isInstagram =
-    useComponents.includes("facebook") && isLinkValid(instagram);
-  const isVk = useComponents.includes("facebook") && isLinkValid(vk);
+    useComponents.includes("instagram") && instagram.search(/\S+/) !== -1;
+  const isVk = useComponents.includes("vk") && isLinkValid(vk);
   const isSkype = useComponents.includes("skype") && skype.search(/\S+/) !== -1;
   const isTelegram =
-    useComponents.includes("telegram") && telegram.search(/@\S+/) !== -1;
+    useComponents.includes("telegram") && telegram.search(/\S+/) !== -1;
 
   return (
     (isFacebook ||
@@ -41,10 +41,9 @@ const MemberSocials: React.FunctionComponent<{
         {isFacebook && (
           <a
             className="member-socials__item member-socials__item_facebook"
-            href={facebook ? facebook : "#"}
-            title={facebook ? "Facebook" : "Аккаунт не указан"}
-            target={facebook ? "_blank" : "_self"}
-            onClick={(event) => !facebook && event.preventDefault()}
+            href={facebook}
+            title="Facebook"
+            target="_blank"
           >
             Facebook
           </a>
@@ -52,10 +51,9 @@ const MemberSocials: React.FunctionComponent<{
         {isTwitter && (
           <a
             className="member-socials__item member-socials__item_twitter"
-            href={twitter ? twitter : "#"}
-            title={twitter ? "Twitter" : "Аккаунт не указан"}
-            target={twitter ? "_blank" : "_self"}
-            onClick={(event) => !twitter && event.preventDefault()}
+            href={`https://twitter.com/${twitter}`}
+            title="Twitter"
+            target="_blank"
           >
             Twitter
           </a>
@@ -63,10 +61,9 @@ const MemberSocials: React.FunctionComponent<{
         {isInstagram && (
           <a
             className="member-socials__item member-socials__item_instagram"
-            href={instagram ? instagram : "#"}
-            title={instagram ? "Instagram" : "Аккаунт не указан"}
-            target={instagram ? "_blank" : "_self"}
-            onClick={(event) => !instagram && event.preventDefault()}
+            href={`https://www.instagram.com/${instagram}`}
+            title="Instagram"
+            target="_blank"
           >
             Instagram
           </a>
@@ -74,10 +71,9 @@ const MemberSocials: React.FunctionComponent<{
         {isVk && (
           <a
             className="member-socials__item member-socials__item_vk"
-            href={vk ? vk : "#"}
-            title={vk ? "VKontakte" : "Аккаунт не указан"}
-            target={vk ? "_blank" : "_self"}
-            onClick={(event) => !vk && event.preventDefault()}
+            href={vk}
+            title="VKontakte"
+            target="_blank"
           >
             VKontakte
           </a>
@@ -85,7 +81,7 @@ const MemberSocials: React.FunctionComponent<{
         {isSkype && (
           <a
             className="member-socials__item member-socials__item_skype"
-            href={`href="skype:${skype}?userinfo"`}
+            href={`skype:${skype}?userinfo"`}
             title="Skype"
             target="_blank"
           >
