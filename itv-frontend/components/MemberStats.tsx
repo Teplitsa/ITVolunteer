@@ -1,7 +1,9 @@
 import { ReactElement } from "react";
+import Link from "next/link";
 
 const MemberStats: React.FunctionComponent<{
   useComponents?: Array<"rating" | "reviewsCount" | "xp" | "solvedProblems">;
+  memberSlug?: string;
   rating?: number;
   reviewsCount?: number;
   xp?: number;
@@ -11,7 +13,8 @@ const MemberStats: React.FunctionComponent<{
   align?: "left" | "center";
 }> = ({
   rating,
-  reviewsCount,
+  memberSlug = "",
+  reviewsCount = 0,
   xp,
   solvedProblems,
   useComponents = ["rating", "reviewsCount", "xp", "solvedProblems"],
@@ -27,6 +30,14 @@ const MemberStats: React.FunctionComponent<{
     solvedProblems < 10
       ? solvedProblems
       : Number([...Array.from(String(reviewsCount))].pop());
+  const reviewsCountTitle = `${reviewsCount}${" "}
+  ${
+    reviewsCountModulo === 1
+      ? "отзыв"
+      : [2, 3, 4].includes(reviewsCountModulo)
+      ? "отзыва"
+      : "отзывов"
+  }`;
 
   return (
     <div
@@ -54,12 +65,12 @@ const MemberStats: React.FunctionComponent<{
       {useComponents.includes("reviewsCount") && (
         <div className="member-stats__item member-stats__item_review-count">
           <div className="member-stats__review-count">
-            {reviewsCount ?? 0}{" "}
-            {reviewsCountModulo === 1
-              ? "отзыв"
-              : [2, 3, 4].includes(reviewsCountModulo)
-              ? "отзыва"
-              : "отзывов"}
+            {(memberSlug && (
+              <Link href={`/members/${memberSlug}#reviews`}>
+                <a>{reviewsCountTitle}</a>
+              </Link>
+            )) ||
+              reviewsCountTitle}
           </div>
         </div>
       )}

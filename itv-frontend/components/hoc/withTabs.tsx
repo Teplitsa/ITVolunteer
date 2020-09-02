@@ -8,11 +8,13 @@ import {
 
 const withTabs = ({
   tabs,
+  defaultActiveIndex = 0,
 }: {
   tabs: Array<{
     title: string;
     content: React.FunctionComponent;
   }>;
+  defaultActiveIndex?: number;
 }): React.FunctionComponent => {
   const addActiveClass = (
     tabsRef: MutableRefObject<HTMLDivElement>,
@@ -36,7 +38,7 @@ const withTabs = ({
 
   return () => {
     const tabsRef = useRef<HTMLDivElement>(null);
-    const [activeIndex, setActiveIndex] = useState<number>(0);
+    const [activeIndex, setActiveIndex] = useState<number>(defaultActiveIndex);
 
     useEffect(() => addActiveClass(tabsRef, activeIndex), [activeIndex]);
 

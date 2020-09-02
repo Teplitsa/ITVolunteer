@@ -3,8 +3,9 @@
   align-items: center;
   .avatar-wrapper {
     display: inline-block;
-    border-radius: 4px;
-    border: 1px solid #e5e6e0;
+    border-radius: 50%;
+    background-color: $color-gray-light-xl;
+    border: 1px solid $color-gray-light-md;
     overflow: hidden;
     width: 20px;
     height: 20px;

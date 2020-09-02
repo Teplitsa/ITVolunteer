@@ -14,7 +14,10 @@ const ReviewerCardSmall: React.FunctionComponent<{
       <span
         className="avatar-wrapper"
         style={{
-          backgroundImage: avatar ? `url(${avatar})` : "none",
+          backgroundImage:
+            avatar && avatar.search(/temp-avatar\.png/) === -1
+              ? `url(${avatar})`
+              : "none",
         }}
       />
       <span className="name">

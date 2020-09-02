@@ -8,7 +8,10 @@ export function UserSmallView({ user }) {
       <span
         className="avatar-wrapper"
         style={{
-          backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+          backgroundImage:
+            user.itvAvatar && user.itvAvatar.search(/temp-avatar\.png/) === -1
+              ? `url(${user.itvAvatar})`
+              : "none",
         }}
       />
 
@@ -30,7 +33,10 @@ export function UserSmallPicView({ user }) {
       <span
         className="avatar-wrapper"
         style={{
-          backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+          backgroundImage:
+            user.itvAvatar && user.itvAvatar.search(/temp-avatar\.png/) === -1
+              ? `url(${user.itvAvatar})`
+              : "none",
         }}
       />
     </div>

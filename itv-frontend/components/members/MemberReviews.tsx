@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
-
+import { ReactElement, useRef, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import ReviewCard from "../../components/ReviewCard";
 
@@ -10,14 +10,22 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
   const getMemberReviewsRequest = useStoreActions(
     (actions) => actions.components.memberAccount.getMemberReviewsRequest
   );
+  const reviewsRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const reviewsCountModulo =
     reviewsCount < 10
       ? reviewsCount
       : Number([...Array.from(String(reviewsCount))].pop());
 
+  useEffect(() => {
+    if (router.asPath.search("#reviews") !== -1) {
+      reviewsRef.current.scrollIntoView();
+    }
+  }, []);
+
   return (
-    <div className="member-reviews">
+    <div id="reviews" className="member-reviews" ref={reviewsRef}>
       <div className="member-reviews__header">
         <div className="member-reviews__title">Отзывы</div>
         <div className="member-reviews__stats">

@@ -1,7 +1,7 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
-import OrganizationLogoDefault from "../../assets/img/pic-organization.svg";
 import MemberOrganizationDescription from "../MemberOrganizationDescription";
+import { isLinkValid } from "../../utilities/utilities";
 
 const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
   const {
@@ -11,22 +11,39 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
     organizationSite,
   } = useStoreState((state) => state.components.memberAccount);
 
+  const [isOrganizationLogoValid, setOrganizationLogoValid] = useState<boolean>(
+    false
+  );
+
+  useEffect(() => {
+    try {
+      organizationLogo &&
+        fetch(organizationLogo, { mode: "no-cors" }).then((response) =>
+          setOrganizationLogoValid(response.ok)
+        );
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   return (
     <div className="member-card__organization">
       <div className="member-card__organization-header">
         <div className="member-card__organization-logo">
-          <img
-            className="member-card__organization-logo-image"
-            src={organizationLogo ? organizationLogo : OrganizationLogoDefault}
-            alt={organizationName}
-          />
+          {isOrganizationLogoValid && (
+            <img
+              className="member-card__organization-logo-image"
+              src={organizationLogo}
+              alt={organizationName}
+            />
+          )}
         </div>
         <div className="member-card__organization-top">
           <div
             className="member-card__organization-name"
             dangerouslySetInnerHTML={{ __html: organizationName }}
           />
-          {organizationSite && (
+          {isLinkValid(organizationSite) && (
             <div className="member-card__organization-site">
               <a href={organizationSite} target="_blank">
                 {new URL(organizationSite).hostname}

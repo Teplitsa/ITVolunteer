@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
 import MemberTasks from "../../components/members/MemberTasks";
@@ -12,8 +13,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const coverImage = useStoreState(
     (state) => state.components.memberAccount.cover
   );
+  const router = useRouter();
+  const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
   const Tabs = withTabs({
+    defaultActiveIndex: activeTabIndex,
     tabs: [
       { title: "Задачи", content: () => <MemberTasks /> },
       { title: "Отзывы", content: () => <MemberReviews /> },

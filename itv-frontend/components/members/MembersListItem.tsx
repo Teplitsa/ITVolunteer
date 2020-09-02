@@ -66,6 +66,7 @@ const MembersListItem: React.FunctionComponent<{
           <MemberStats
             {...{
               rating: volunteer.rating,
+              memberSlug: volunteer.username,
               reviewsCount: volunteer.reviewsCount,
               xp: volunteer.xp,
               solvedProblems: volunteer.solvedProblems,
