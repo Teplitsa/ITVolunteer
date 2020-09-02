@@ -32,6 +32,12 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
     }
   }, []);
 
+  useEffect(() => {
+    if (isFullDescription) {
+      excerptRef.current.innerHTML = review.message.trim();
+    }
+  }, [isFullDescription]);
+
   return (
     <div className="review-card">
       <div className="review-card__header">

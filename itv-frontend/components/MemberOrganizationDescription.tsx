@@ -17,6 +17,12 @@ const MemberOrganizationDescription: React.FunctionComponent<{
     }
   }, []);
 
+  useEffect(() => {
+    if (isFullDescription) {
+      excerptRef.current.innerHTML = organizationDescription.trim();
+    }
+  }, [isFullDescription]);
+
   return (
     organizationDescription && (
       <div className="member-organization-description">
