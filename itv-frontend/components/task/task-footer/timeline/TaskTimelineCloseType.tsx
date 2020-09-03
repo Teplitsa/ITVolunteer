@@ -12,14 +12,16 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   const { databaseId: userId, fullName: userName } = useStoreState(
     (state) => state.session.user
   );
-  const isTaskAuthorLoggedIn = useStoreState(
-    (state) => state.session.isTaskAuthorLoggedIn
+  const { isTaskAuthorLoggedIn, user } = useStoreState(
+    (state) => state.session
   );
   const {
     databaseId,
     title,
     approvedDoer: { databaseId: partnerId, fullName: partnerName },
+    author,
   } = useStoreState((state) => state.components.task);
+  const isApprovedDoerLoggedIn = user.databaseId === partnerId;
   const setCompleteTaskWizardState = useStoreActions(
     (actions) => actions.components.completeTaskWizard.setInitState
   );
@@ -35,7 +37,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   >(false);
   const [isOpenCloseSuggest, setOpenCloseSuggest] = useState<boolean>(false);
 
-  const completeTask = () => {
+  const completeTaskByAuthor = () => {
     suggestCloseTaskRequest({});
     setCompleteTaskWizardState({
       user: {
@@ -44,6 +46,23 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         isAuthor: isTaskAuthorLoggedIn,
       },
       partner: { databaseId: partnerId, name: partnerName },
+      task: { databaseId, title },
+    });
+
+    Router.push({
+      pathname: "/task-complete",
+    });
+  };
+
+  const completeTaskByDoer = () => {
+    suggestCloseTaskRequest({});
+    setCompleteTaskWizardState({
+      user: {
+        databaseId: user.databaseId,
+        name: user.fullName,
+        isAuthor: false,
+      },
+      partner: { databaseId: author.databaseId, name: author.fullName },
       task: { databaseId, title },
     });
 
@@ -82,31 +101,25 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
           className="action close-task"
           onClick={(event) => {
             event.preventDefault();
-            completeTask();
+            completeTaskByAuthor();
           }}
         >
           Закрыть задачу
         </a>
       )}
 
-      {/* <a
-        href="#"
-        className={`action close-task ${
-          (isOpenCloseSuggest && "active") || ""
-        }`}
-        onClick={(event) => {
-          event.preventDefault();
-          if (isOpenCloseSuggest) {
-            setOpenCloseSuggest(false);
-          } else {
-            setOpenDateSuggest(false);
-            setOpenDateSuggestComment(false);
-            setOpenCloseSuggest(true);
-          }
-        }}
-      >
-        Закрыть задачу
-      </a> */}
+      {isApprovedDoerLoggedIn && (
+        <a
+          href="#"
+          className="action close-task"
+          onClick={(event) => {
+            event.preventDefault();
+            completeTaskByDoer();
+          }}
+        >
+          Закрыть задачу
+        </a>
+      )}
 
       {isOpenDateSuggest && (
         <TaskTimelineDateSuggest
