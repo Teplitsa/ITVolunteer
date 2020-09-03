@@ -61,7 +61,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         <i className="point-circle"></i>
         <h4>
           {title}
-          {type === "date_suggest" &&
+          {type === "date_suggest" && !!timeline_date &&
             " " +
               new Intl.DateTimeFormat("ru-RU", {
                 day: "2-digit",
