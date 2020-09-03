@@ -12,6 +12,8 @@ import TaskTimelineDateSuggestType from "./TaskTimelineDateSuggestType";
 import TaskTimelineCloseSuggestType from "./TaskTimelineCloseSuggestType";
 import TaskTimelineCloseType from "./TaskTimelineCloseType";
 
+import * as utils from "../../../../utilities/utilities";
+
 const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   id,
   status,
@@ -65,7 +67,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
                 day: "2-digit",
                 month: "2-digit",
                 year: "numeric",
-              }).format(Date.parse(timeline_date))}
+              }).format(utils.itvWpDateTimeToDate(timeline_date))}
         </h4>
 
         {status === "future" && type === "close" && <div className="details">Ожидаемый срок</div>}

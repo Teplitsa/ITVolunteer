@@ -48,8 +48,8 @@ const Home: React.FunctionComponent = (): ReactElement => {
               {value: homePage.stats?.closed, title: "Решеных задач", status: 'closed'},
             ].map((statsItem, index) => {
               return (
-                <Link href={`/tasks/${statsItem.status}/`}>
-                  <a className="home-stats__item" key={`home-stats-item-${index}`}>
+                <Link href={`/tasks/${statsItem.status}/`} key={`home-stats-item-${index}`}>
+                  <a className="home-stats__item">
                     <div className="home-stats__item-value">{statsItem.value}</div>
                     <div className="home-stats__item-title">{statsItem.title}</div>
                   </a>

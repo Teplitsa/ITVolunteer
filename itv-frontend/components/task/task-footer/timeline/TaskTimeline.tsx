@@ -18,7 +18,7 @@ const TaskTimeline: React.FunctionComponent = (): ReactElement => {
   }, [isLoggedIn]);
 
   return (
-    Array.isArray(timeline) && (
+    Array.isArray(timeline) && timeline.length > 0 && (
       <div className="timeline">
         <h3>Календарь задачи</h3>
         <div className="timeline-list">

@@ -32,12 +32,14 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
           <a>{task.title}</a>
         </Link>
       </div>
+      {task.content && 
       <div className="task-card__excerpt">
         {stripTags(task.content).trim().substr(0, 109)}…{" "}
         <Link href={`/tasks/${task.slug}`}>
           <a>Подробнее</a>
         </Link>
       </div>
+      }
       <div className="task-card__footer">
         <TaskTags
           {...{

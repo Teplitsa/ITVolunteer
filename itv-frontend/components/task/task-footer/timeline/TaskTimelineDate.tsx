@@ -1,4 +1,5 @@
 import { ReactElement, createElement } from "react";
+import * as utils from "../../../../utilities/utilities";
 
 const TaskTimelineDate: React.FunctionComponent<{
   date: string,
@@ -16,7 +17,7 @@ const TaskTimelineDate: React.FunctionComponent<{
             day: "numeric",
             month: "long",
           })
-            .format(Date.parse(date))
+            .format(utils.itvWpDateTimeToDate(date))
             .split(" "),
         }
       )}
