@@ -4,9 +4,9 @@ import * as utils from "../../../../utilities/utilities";
 const TaskTimelineDate: React.FunctionComponent<{
   date: string,
 }> = ({ date }): ReactElement => {
-  return !!date ? (
+  return (
     <div className="date">
-      {createElement(
+      {!!date && createElement(
         ({ dateFormatted: [day, month] }) => (
           <>
             <span className="date-num">{day}</span> {month}
@@ -22,7 +22,7 @@ const TaskTimelineDate: React.FunctionComponent<{
         }
       )}
     </div>
-  ) : null;
+  );
 };
 
 export default TaskTimelineDate;
