@@ -1,6 +1,7 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
 import MemberOrganizationDescription from "../MemberOrganizationDescription";
+import OrganizationLogoDefault from "../../assets/img/icon-briefcase.svg";
 import { isLinkValid } from "../../utilities/utilities";
 
 const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
@@ -30,13 +31,19 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
     <div className="member-card__organization">
       <div className="member-card__organization-header">
         <div className="member-card__organization-logo">
-          {isOrganizationLogoValid && (
-            <img
-              className="member-card__organization-logo-image"
-              src={organizationLogo}
-              alt={organizationName}
-            />
-          )}
+          <img
+            className={`member-card__organization-logo-image ${
+              isOrganizationLogoValid
+                ? ""
+                : "member-card__organization-logo-image_default"
+            }`}
+            src={
+              isOrganizationLogoValid
+                ? organizationLogo
+                : OrganizationLogoDefault
+            }
+            alt={organizationName}
+          />
         </div>
         <div className="member-card__organization-top">
           <div

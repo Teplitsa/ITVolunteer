@@ -79,6 +79,12 @@
       @include screen-from(md) {
         margin: 0;
       }
+      &-image {
+        &_default {
+          height: 60%;
+          width: auto;
+        }
+      }
     }
     &-top {
       margin: 0 0 0 15px;
