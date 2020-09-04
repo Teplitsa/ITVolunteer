@@ -13,9 +13,18 @@ try {
 	$posts_data = [];
 	$terms = [];
 	$tax = 'atv_notif_events';
+
+  $update_list = ['new_tasks_subscription', 'your_task_declined'];
 	
 	foreach(\ItvEmailTemplates::instance()->get_all_email_templates() as $email_name => $email_template) {
-        $message_title = $email_template['title'];
+
+      if(count($update_list) && !in_array($email_name, $update_list)) {
+          continue;
+      }
+
+      echo "update: {$email_name}\n";
+
+      $message_title = $email_template['title'];
         
 	    $message_content = !empty(\ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]) ? \ItvEmailTemplates::instance()->email_templates_atvetka_style[$email_name]['text'] : $email_template['text'];
 	    $message_content = preg_replace('/\{\{([a-z_]+)\}\}/', '{\1}', $message_content);
@@ -33,7 +42,7 @@ try {
 	    $posts_data[] = [
             'post_title' => $message_title,
             'post_content' => $message_content,
-	        'post_content_raw' => $message_content,
+	          'post_content_raw' => $message_content,
             'post_name' => $email_name,
             'tax_terms' => array(
                 $tax => array($email_name),
@@ -45,9 +54,11 @@ try {
         );
 	}
 	
-    Itv_Setup_Utils::setup_terms_data($terms, $tax);
+  Itv_Setup_Utils::setup_terms_data($terms, $tax);
 	Itv_Setup_Utils::setup_posts_data($posts_data, ATV_Email_Notification::POST_TYPE);
-	
+
+  echo chr(10);
+  
 	echo 'DONE'.chr(10);
 
 	//Final

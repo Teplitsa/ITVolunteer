@@ -210,6 +210,10 @@ class ItvEmailTemplates {
                 'title' => __('ITVolunteer - your task has been declined by admin', 'tst'),
                 'text' => __('Greetings, {username}!\n\nYour task <a href="{task_url}">{task_title}</a> on ITVolonteer has been declined by admin', 'tst'),
             ],
+            'new_tasks_subscription' => [
+                'title' => __('ITVolunteer - new tasks according to your interests', 'tst'),
+                'text' => __('Greetings, {username}!\n\nWe have made for you a selection of new tasks from non-commercial projects. They need professional help. See what tasks you are interested in responding to:\n{task_list}\n\nYou get this collection earlier than other specialists. Look and be the first to respond.', 'tst'),
+            ],
         );
         
     }
@@ -230,7 +234,7 @@ class ItvEmailTemplates {
     }
     
     public function get_all_email_templates() {
-        return $this->_email_templates;
+        return array_merge($this->_email_templates, $this->email_templates_atvetka_style);
     }
     
     private function get_some($template_name, $what) {
