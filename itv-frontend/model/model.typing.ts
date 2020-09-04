@@ -1259,6 +1259,8 @@ export interface IHomePageActions {
   initializeState: Action<IHomePageModel>;
   setState: Action<IHomePageModel, IHomePageState>;
   setStats: Action<IHomePageModel, any>;
+  setTaskList: Action<IHomePageModel, any>;
+  setNewsList: Action<IHomePageModel, any>;
 }
 
 export interface IHomePageThunks {

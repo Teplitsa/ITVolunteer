@@ -17,7 +17,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
         {task.author?.organizationName && (
           <UserSmallView
             user={{
-              itvAvatar: task.author.organizationLogo,
+              itvAvatar: task.author.organizationLogo || "/wp-content/themes/tstsite/assets/img/icon-briefcase.svg",
               fullName: task.author.organizationName,
               memberRole: "Организация",
             }}
@@ -58,7 +58,7 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (
         {task.author?.organizationName && (
           <UserSmallView
             user={{
-              itvAvatar: task.author.organizationLogo,
+              itvAvatar: task.author.organizationLogo || "/wp-content/themes/tstsite/assets/img/icon-briefcase.svg",
               fullName: task.author.organizationName,
               memberRole: "Организация",
             }}

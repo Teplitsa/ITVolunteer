@@ -1,8 +1,10 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import FormData from 'form-data';
+import { request } from 'graphql-request';
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
-import { INewsListModel } from "../model/model.typing";
+import { INewsListModel, IHomePageState } from "../model/model.typing";
+import * as archiveModel from "../model/archive-model"
 
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
@@ -10,11 +12,31 @@ import Home from "../components/page/Home";
 import * as utils from "../utilities/utilities";
 
 const HomePage: React.FunctionComponent = (): ReactElement => {
-  const loadStatsRequest = useStoreActions((actions) => actions.components.homePage.loadStatsRequest)
+  const loadStatsRequest = useStoreActions((actions) => actions.components.homePage.loadStatsRequest);
+  const setNewsList = useStoreActions((actions) => actions.components.homePage.setNewsList);
+  const setTaskList = useStoreActions((actions) => actions.components.homePage.setTaskList);
 
   useEffect(() => {
+    loadTaskList();
+    loadNews();
     loadStatsRequest();
-  });
+  }, []);
+
+  async function loadTaskList() {
+    const tasks = await fetchTasksList();
+    setTaskList(tasks);
+  }
+
+  async function loadNews() {
+    const newsQuery = archiveModel.graphqlQuery.getPosts;
+    const { posts: archive } = await request(
+      process.env.GraphQLServer,
+      newsQuery,
+      {first: 2, after: null,}
+    );
+    const news = archive.edges.map(item => item.node);
+    setNewsList(news);
+  }
 
   return (
     <>
@@ -65,18 +87,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
         { uri: url }
       );
 
-      const archiveModel = await import("../model/archive-model");
-      const newsQuery = archiveModel.graphqlQuery.getPosts;
-      const { posts: archive } = await request(
-        process.env.GraphQLServer,
-        newsQuery,
-        {first: 2, after: null,}
-      );
-      const news = archive.edges.map(item => item.node);
-
-      const tasks = await fetchTasksList();
-
-      return ["homePage", {...component, taskList: tasks, newsList: {isNewsListLoaded: true, items:news} as INewsListModel}];
+      return ["homePage", {...component, taskList: [], newsList: {isNewsListLoaded: false, items: []} as INewsListModel}];
     },
   });
 

@@ -29,6 +29,12 @@ const homePageActions: IHomePageActions = {
   setStats: action((state, payload) => {
     state.stats = payload
   }),
+  setTaskList: action((state, payload) => {
+    state.taskList = payload;
+  }),
+  setNewsList: action((state, payload) => {
+    state.newsList = {isNewsListLoaded: true, items: payload};
+  }),
 };
 
 const homePageThunks: IHomePageThunks = {
