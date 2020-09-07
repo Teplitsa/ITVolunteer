@@ -13,10 +13,14 @@ function get_tasks($filter) {
         'paged' => 1,
         'posts_per_page' => 5,
         'date_query' => array(
-            'after' => date('Y-m-d', strtotime('-7 days')) 
+            'after' => date('Y-m-d', strtotime('-1 days')) 
         )        
     );
 
+    if(isset($filter['status'])) {
+        unset($filter['status']);
+    }
+    
     if(!empty($filter)) {
         $tlf = new TaskListFilter();
         $filter_options = $tlf->get_task_list_filter_options();
