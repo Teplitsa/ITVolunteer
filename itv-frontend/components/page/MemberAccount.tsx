@@ -31,7 +31,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
           className="member-account__top"
           style={coverImage ? { backgroundImage: `url(${coverImage})` } : {}}
         >
-          {isAccountOwner && <MemberUploadCover />}
+          {isAccountOwner && (
+            <div className="member-account__top-inner">
+              <MemberUploadCover />
+            </div>
+          )}
         </div>
         <div className="member-account__columns">
           <div className="member-account__left-column">
