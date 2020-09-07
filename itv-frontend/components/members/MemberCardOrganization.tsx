@@ -17,14 +17,19 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
   );
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     try {
       organizationLogo &&
-        fetch(organizationLogo, { mode: "no-cors" }).then((response) =>
-          setOrganizationLogoValid(response.ok)
-        );
+        fetch(organizationLogo, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setOrganizationLogoValid(response.ok));
     } catch (error) {
       console.error(error);
     }
+
+    return () => abortController.abort();
   }, []);
 
   return (

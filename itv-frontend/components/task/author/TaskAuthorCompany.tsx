@@ -1,14 +1,32 @@
-import { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
 import IconApproved from "../../../assets/img/icon-all-done.svg";
+import IconBriefcase from "../../../assets/img/icon-briefcase.svg";
 
 const TaskAuthor: React.FunctionComponent = (): ReactElement => {
+  const [isCompanyLogoValid, setCompanyLogoValid] = useState<boolean>(false);
   const {
     organizationName: companyName,
     organizationLogo: companyLogo,
     organizationDescription: companySummary,
     isPartner,
   } = useStoreState((state) => state.components.task.author);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      companyLogo &&
+        fetch(companyLogo, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setCompanyLogoValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
 
   return (
     companyName && (
@@ -17,9 +35,13 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
         <div className="user-card">
           <div className="user-card-inner">
             <div
-              className="avatar-wrapper"
+              className={`avatar-wrapper ${
+                isCompanyLogoValid ? "" : "avatar-wrapper_default-image"
+              }`}
               style={{
-                backgroundImage: companyLogo ? `url(${companyLogo})` : "none",
+                backgroundImage: isCompanyLogoValid
+                  ? `url(${companyLogo})`
+                  : `url(${IconBriefcase})`,
               }}
             >
               {isPartner && <img src={IconApproved} className="itv-approved" />}
