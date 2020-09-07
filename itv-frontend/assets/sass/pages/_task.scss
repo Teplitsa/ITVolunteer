@@ -257,6 +257,11 @@
       position: relative;
       overflow: visible;
 
+      &_default-image {
+        background-size: 60%, 58.75%;
+        background-repeat: no-repeat;
+      }
+
       .itv-approved {
         width: 20px;
         height: 20px;

@@ -17,7 +17,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
         {task.author?.organizationName && (
           <UserSmallView
             user={{
-              itvAvatar: task.author.organizationLogo || "/wp-content/themes/tstsite/assets/img/icon-briefcase.svg",
+              itvAvatar: task.author.organizationLogo,
               fullName: task.author.organizationName,
               memberRole: "Организация",
             }}

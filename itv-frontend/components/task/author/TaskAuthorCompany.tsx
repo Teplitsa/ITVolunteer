@@ -1,6 +1,8 @@
 import { ReactElement } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
 import IconApproved from "../../../assets/img/icon-all-done.svg";
+import IconBriefcase from "../../../assets/img/icon-briefcase.svg";
+import { isLinkValid } from "../../../utilities/utilities";
 
 const TaskAuthor: React.FunctionComponent = (): ReactElement => {
   const {
@@ -17,9 +19,13 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
         <div className="user-card">
           <div className="user-card-inner">
             <div
-              className="avatar-wrapper"
+              className={`avatar-wrapper ${
+                isLinkValid(companyLogo) ? "" : "avatar-wrapper_default-image"
+              }`}
               style={{
-                backgroundImage: companyLogo ? `url(${companyLogo})` : "none",
+                backgroundImage: isLinkValid(companyLogo)
+                  ? `url(${companyLogo})`
+                  : `url(${IconBriefcase})`,
               }}
             >
               {isPartner && <img src={IconApproved} className="itv-approved" />}
