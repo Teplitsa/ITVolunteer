@@ -1,5 +1,4 @@
-import { ReactElement } from "react";
-import { isLinkValid } from "../utilities/utilities";
+import { ReactElement, useState, useEffect } from "react";
 import IconBriefcase from "../assets/img/icon-briefcase.svg";
 
 export const UserSmallView: React.FunctionComponent<{
@@ -9,18 +8,36 @@ export const UserSmallView: React.FunctionComponent<{
     memberRole: string;
   };
 }> = ({ user }): ReactElement => {
-  const avatarUrl = isLinkValid(user?.itvAvatar)
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
+
+  const avatarUrl = isAvatarImageValid
     ? user?.itvAvatar
     : user?.memberRole === "Организация"
     ? IconBriefcase
     : "none";
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      user?.itvAvatar &&
+        fetch(user?.itvAvatar, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
 
   return (
     user && (
       <div className="itv-user-small-view">
         <span
           className={`avatar-wrapper ${
-            !isLinkValid(user?.itvAvatar) && user?.memberRole === "Организация"
+            !isAvatarImageValid && user.memberRole === "Организация"
               ? "avatar-wrapper_default-image"
               : ""
           }`}
