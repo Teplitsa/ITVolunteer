@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import IconBriefcase from "../assets/img/icon-briefcase.svg";
+import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 export const UserSmallView: React.FunctionComponent<{
   user: {
@@ -10,18 +11,13 @@ export const UserSmallView: React.FunctionComponent<{
 }> = ({ user }): ReactElement => {
   const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
 
-  const avatarUrl = isAvatarImageValid
-    ? user?.itvAvatar
-    : user?.memberRole === "Организация"
-    ? IconBriefcase
-    : "none";
-
   useEffect(() => {
     const abortController = new AbortController();
 
     try {
       user?.itvAvatar &&
-        fetch(user?.itvAvatar, {
+        user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then((response) => setAvatarImageValid(response.ok));
@@ -37,12 +33,16 @@ export const UserSmallView: React.FunctionComponent<{
       <div className="itv-user-small-view">
         <span
           className={`avatar-wrapper ${
-            !isAvatarImageValid && user.memberRole === "Организация"
-              ? "avatar-wrapper_default-image"
-              : ""
+            isAvatarImageValid ? "" : "avatar-wrapper_default-image"
           }`}
           style={{
-            backgroundImage: `url(${avatarUrl})`,
+            backgroundImage: isAvatarImageValid
+              ? `url(${user.itvAvatar})`
+              : `url(${
+                  user.memberRole === "Организация"
+                    ? IconBriefcase
+                    : MemberAvatarDefault
+                })`,
           }}
         />
         <span className="name">
@@ -59,13 +59,36 @@ export const UserSmallPicView: React.FunctionComponent<{
     itvAvatar?: string;
   };
 }> = ({ user }) => {
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      user?.itvAvatar &&
+        user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        fetch(user.itvAvatar, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
+
   return (
     user && (
       <div className="itv-user-small-view">
         <span
-          className="avatar-wrapper"
+          className={`avatar-wrapper ${
+            isAvatarImageValid ? "" : "avatar-wrapper_medium-image"
+          }`}
           style={{
-            backgroundImage: user.itvAvatar ? `url(${user.itvAvatar})` : "none",
+            backgroundImage: isAvatarImageValid
+              ? `url(${user.itvAvatar})`
+              : `url(${MemberAvatarDefault})`,
           }}
         />
       </div>

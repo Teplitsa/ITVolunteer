@@ -3,7 +3,7 @@ import { useStoreState } from "../../../model/helpers/hooks";
 import IconApproved from "../../../assets/img/icon-all-done.svg";
 import IconBriefcase from "../../../assets/img/icon-briefcase.svg";
 
-const TaskAuthor: React.FunctionComponent = (): ReactElement => {
+const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
   const [isCompanyLogoValid, setCompanyLogoValid] = useState<boolean>(false);
   const {
     organizationName: companyName,
@@ -67,4 +67,4 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export default TaskAuthor;
+export default TaskAuthorCompany;

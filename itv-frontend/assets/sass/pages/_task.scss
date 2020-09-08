@@ -51,7 +51,6 @@
         border-color: $color-gray-light-md;
         width: 100%;
       }
-
     }
   }
 }
@@ -75,7 +74,7 @@
       }
     }
 
-    h1, 
+    h1,
     .task-title {
       @include htext-xl;
       color: $color-gray-dark-xl;
@@ -119,16 +118,16 @@
           justify-content: space-between;
           align-items: center;
           top: 30px;
-          left: -50px;          
+          left: -50px;
           padding: 0px 8px;
           border-radius: 24px;
 
           &:before {
             content: "";
-            display:block;
-            width:0;
-            height:0;
-            position:absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            position: absolute;
             border-left: 13px solid transparent;
             border-right: 13px solid transparent;
             border-bottom: 13px solid $color-white;
@@ -144,7 +143,6 @@
           button:active {
             outline: none;
           }
-
         }
       }
 
@@ -261,6 +259,10 @@
         background-size: 60%, 58.75%;
         background-repeat: no-repeat;
       }
+      &_medium-image {
+        background-size: 68%, 66.75%;
+        background-repeat: no-repeat;
+      }
 
       .itv-approved {
         width: 20px;
@@ -327,7 +329,7 @@
           margin-bottom: 0px;
         }
 
-                .author-actions-on-doer:not(.i-am-doer) {
+        .author-actions-on-doer:not(.i-am-doer) {
           display: none;
         }
       }
@@ -428,7 +430,7 @@
   margin-top: 62px;
 
   .contact-admin {
-    @include contact-admin-button
+    @include contact-admin-button;
   }
 }
 
@@ -601,7 +603,8 @@
         }
       }
 
-      &.past, &.completed {
+      &.past,
+      &.completed {
         opacity: 0.5;
 
         .info {
@@ -1226,13 +1229,12 @@
   }
 }
 
-
 // mobile
 @include media-breakpoint-down(md) {
   .site-main.page-task {
     flex-direction: column;
     align-items: center;
-    
+
     & > section.content {
       width: 85%;
       margin-right: 0px;
@@ -1285,6 +1287,5 @@
       width: 85%;
       min-width: unset;
     }
-
   }
 }

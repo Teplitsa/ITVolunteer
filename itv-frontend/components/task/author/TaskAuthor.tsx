@@ -1,12 +1,11 @@
-import { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
 import TaskAuthorCompany from "./TaskAuthorCompany";
+import MemberAvatarDefault from "../../../assets/img/member-default.svg";
 
 const TaskAuthor: React.FunctionComponent = (): ReactElement => {
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
   const author = useStoreState((state) => state.components.task.author);
-
-  if (!author) return null;
-
   const {
     itvAvatar: avatarImage,
     fullName,
@@ -14,29 +13,54 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
     authorReviewsCount: reviewsCount,
   } = author;
 
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      avatarImage &&
+        avatarImage.search(/temp-avatar\.png/) === -1 &&
+        fetch(avatarImage, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
+
   return (
-    <>
-      <h2>Помощь нужна</h2>
-      <div className="sidebar-users-block">
-        <div className="user-card">
-          <div className="user-card-inner">
-            <div
-              className="avatar-wrapper"
-              style={{
-                backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
-              }}
-            />
-            <div className="details">
-              <span className="status">Заказчик</span>
-              <a className="name" href={toProfile}>{fullName}</a>
-              <span className="reviews">{`${reviewsCount} отзывов`}</span>
+    author && (
+      <>
+        <h2>Помощь нужна</h2>
+        <div className="sidebar-users-block">
+          <div className="user-card">
+            <div className="user-card-inner">
+              <div
+                className={`avatar-wrapper ${
+                  isAvatarImageValid ? "" : "avatar-wrapper_medium-image"
+                }`}
+                style={{
+                  backgroundImage: isAvatarImageValid
+                    ? `url(${avatarImage})`
+                    : `url(${MemberAvatarDefault})`,
+                }}
+              />
+              <div className="details">
+                <span className="status">Заказчик</span>
+                <a className="name" href={toProfile}>
+                  {fullName}
+                </a>
+                <span className="reviews">{`${reviewsCount} отзывов`}</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        <TaskAuthorCompany />
-      </div>
-    </>
+          <TaskAuthorCompany />
+        </div>
+      </>
+    )
   );
 };
 
