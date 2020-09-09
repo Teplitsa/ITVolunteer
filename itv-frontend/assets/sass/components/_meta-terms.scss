@@ -22,5 +22,9 @@
       margin-right: 4px;
       white-space: nowrap;
     }
+    span,
+    a {
+      color: $color-gray-dark-md-001;
+    }
   }
 }
