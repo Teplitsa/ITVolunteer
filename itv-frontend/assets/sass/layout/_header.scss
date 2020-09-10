@@ -125,10 +125,10 @@
       }
 
       .go-old {
-        border: 2px solid $color-gray-light-md;
         background-color: $color-gray-light-xl;
+        border: 2px solid $color-gray-light-lg;
         margin-right: 20px;
-        padding: 10px 20px;
+        padding: 11px 20px;
         line-height: 20px;
         font-style: normal;
         font-size: 13px;
@@ -138,6 +138,10 @@
         color: $color-gray-dark-md;
         border-radius: 10px;
         cursor: pointer;
+        transition: all 0.15s linear;
+        &:hover {
+          border: 2px solid $color-gray-light-md;
+        }
       }
 
       .open-notif {
@@ -145,15 +149,17 @@
         align-items: stretch;
         justify-content: stretch;
         background-color: $color-white;
+        border: 2px solid $color-gray-light-lg;
         border-radius: 10px;
-        width: 44px;
-        height: 44px;
+        width: 42px;
+        height: 42px;
         margin-right: 20px;
         margin-left: 20px;
-        box-shadow: 1px 1px 4px rgba(129, 118, 111, 0.08),
-          inset -1px -1px 1px rgba(129, 118, 111, 0.16);
         cursor: pointer;
-
+        transition: all 0.15s linear;
+        &:hover {
+          border: 2px solid $color-gray-light-md;
+        }
         &__action {
           position: relative;
           display: flex;
@@ -181,7 +187,11 @@
           position: absolute;
           top: 80%;
           left: auto;
-          right: 88px;
+          right: 0;
+          @include screen-to(md) {
+            top: calc(100% + 10px);
+            width: calc(100vw - 30px);
+          }
           @include screen-from(xl) {
             left: 20px;
             right: auto;
@@ -192,23 +202,33 @@
       .open-account-menu {
         cursor: pointer;
 
-        a {
+        &__avatar-card {
           display: flex;
+          border: 2px solid $color-gray-light-lg;
+          border-radius: 10px;
+          transition: all 0.15s linear;
+          &:hover {
+            border: 2px solid $color-gray-light-md;
+            text-decoration: none;
+          }
+        }
+        &__xp {
+          background: url("../../img/icon-award_20x20.svg") 0 50% no-repeat;
+          margin: 0 0 0 60px;
+          padding: 0 15px 0 25px;
+          font: 600 13px/20px "IBM Plex Sans", sans-serif;
+          color: $color-gray-dark-md-001;
         }
 
         span.avatar-wrapper {
-          display: inline-block;
-          border-radius: 12px;
-          box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24);
-          overflow: hidden;
-          width: 44px;
-          height: 44px;
-          margin-right: $base;
-          background-size: cover;
-          background-position: center;
-        }
-
-        .arrow-down {
+          display: flex;
+          align-items: center;
+          background-size: 42px 42px;
+          background-position: 0 50%;
+          background-repeat: no-repeat;
+          width: auto;
+          height: 42px;
+          border-radius: 8px 0 0 8px;
         }
 
         &:hover {
@@ -232,12 +252,13 @@
 }
 
 .header-search {
-  margin: 0 20px 20px 0;
-  width: auto !important;
+  margin: 0 0 20px;
+  width: 100%;
   @include screen-from(md) {
     flex-grow: 0;
     flex-shrink: 10;
     margin: 0 20px 0 0;
+    width: auto !important;
     transition: all 0.3s step-end 0s;
   }
   &_expanded {
@@ -266,10 +287,15 @@
       padding: 12px !important;
       font: 400 16px/20px "IBM Plex Sans", sans-serif;
       border-radius: 10px;
-
+      &:focus {
+        @include screen-from(md) {
+          border: 2px solid $color-gray-light-md;
+          border-right-style: none;
+        }
+      }
       @include screen-from(md) {
         position: relative;
-        border: 1px solid $color-gray-light-md;
+        border: 2px solid $color-gray-light-lg;
         border-right-style: none;
         padding: 11px 0 !important;
         text-indent: 12px;
@@ -299,7 +325,7 @@
         display: block;
         background: url("../../img/icon-search.svg") 50% 50% no-repeat
           $color-white;
-        border: 1px solid $color-gray-light-md;
+        border: 2px solid $color-gray-light-lg;
         padding: 21px;
         width: 44px;
         height: 44px;
@@ -312,9 +338,12 @@
         @include screen-from(md) {
           background: url("../../img/icon-header-search-close.svg") 50% 50%
             no-repeat $color-white;
-          border-left-style: none;
+          border-left-style: none !important;
           border-radius: 0 10px 10px 0;
           transition: all 0.3s step-start 0s;
+        }
+        :focus + & {
+          border: 2px solid $color-gray-light-md;
         }
       }
     }
@@ -322,7 +351,7 @@
 }
 
 // mobile header
-.site-header {  
+.site-header {
   .nav-mobile {
     display: none;
   }
@@ -358,9 +387,8 @@
 
       &.mobile-open {
         display: block;
-        padding-left: 24px;
+        padding: 0 15px 30px;
         height: auto;
-        padding-bottom: 32px;
 
         & > * {
           width: 100%;
@@ -420,13 +448,13 @@
           align-items: flex-start;
 
           &.logged-in {
-            flex-direction: row-reverse;
+            flex-direction: row;
             margin-top: 10px;
           }
 
           .go-old {
-            margin-left: 0px;
-            margin-right: 0px;
+            margin-left: 0;
+            margin-right: auto;
           }
 
           .account-enter-links {
@@ -441,7 +469,7 @@
               margin-left: 0px;
               padding: 5px 0px;
               font-size: 13px;
-              
+
               &:hover {
                 text-decoration: none;
                 color: $color-gray-dark-xl;
@@ -450,15 +478,15 @@
           }
 
           .account-symbols {
-            &:before {
-              border-left: none;
+            &::before {
+              display: none;
             }
 
             flex-direction: row-reverse;
 
             .open-notif {
-              margin-right: 20px;
-              margin-left: 20px;
+              margin-right: 0;
+              margin-left: 10px;
             }
 
             .open-account-menu {
@@ -479,10 +507,6 @@
             flex-basis: 100%;
             padding-left: 0px;
             margin-top: 8px;
-
-            a {
-              // color: $color-gray-dark-xl;
-            }
           }
         }
       }

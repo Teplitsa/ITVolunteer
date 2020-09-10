@@ -122,6 +122,7 @@ export interface ISessionUser {
   organizationLogoFile: any;
   organizationDescription: string;
   organizationSite: string;
+  xp: number;
   phone?: string;
   skype: string;
   twitter: string;

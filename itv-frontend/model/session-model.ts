@@ -36,6 +36,7 @@ const sessionUserState: ISessionUser = {
   organizationLogoFile: null,
   organizationDescription: "",
   organizationSite: "",
+  xp: 0,
   phone: "",
   skype: "",
   twitter: "",

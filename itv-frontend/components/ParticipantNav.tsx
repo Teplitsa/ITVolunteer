@@ -13,6 +13,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     fullName,
     profileURL: toProfile,
     itvAvatar: avatarImage,
+    xp,
   } = useStoreState((store) => store.session.user);
 
   // notif
@@ -69,7 +70,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </div>
 
         <div className="open-account-menu">
-          <a href={toProfile}>
+          <a className="open-account-menu__avatar-card" href={toProfile}>
             <span
               className="avatar-wrapper"
               style={{
@@ -78,8 +79,10 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
                   : "none",
               }}
               title={user && `Привет, ${user.fullName}!`}
-            />
-            <img src={ArrowDown} className="arrow-down" alt={ArrowDown} />
+            >
+              <span className="open-account-menu__xp">{xp}</span>
+            </span>
+            {/* <img src={ArrowDown} className="arrow-down" alt={ArrowDown} /> */}
           </a>
 
           <ul className="submenu">
