@@ -18,14 +18,15 @@
       text-align: left;
     }
     &-index {
-     display: flex;
-     align-items: center;
+      display: flex;
+      align-items: center;
       @include text-lg;
       margin-right: 8px;
       &::after {
         content: "";
         display: inline-block;
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHCAYAAAABIM1CAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+2aktpcbCDiEOG6mRBVMRRq1CECqFWaNXB5NI/aNKQpLg4Cq4FB38Wqw4uzro6uAqC4A+Ik6OToouU+F1SaBHjHcc9vPe9L3ffAf5mlalmzzigapaRSSWFXH5VCL4ihDCiNPskZupzopiG5/i6h4/vdwme5V3354gqBZMBPoF4lumGRbxBPL1p6Zz3iWOsLCnE58RjBl2Q+JHrsstvnEsO+3lmzMhm5oljxEKpi+UuZmVDJZ4ijiuqRvn+nMsK5y3OarXO2vfkL4wUtJVlrtMaRgqLWIIIATLqqKAKCwnaNVJMZOg86eEfcvwiuWRyVcDIsYAaVEiOH/wPfvfWLE5OuEmRJND7YtsfI0BwF2g1bPv72LZbJ0DgGbjSOv5aE5j5JL3R0eJHQP82cHHd0eQ94HIHGHzSJUNypAAtf7EIvJ/RN+WBgVsgvOb2rX2O0wcgS71K3wAHh8BoibLXPd4d6u7bvzXt/v0A50Ryb0vycTAAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkCAoNDiy6T4qvAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAH5JREFUGNNj/P3jy38GCgAT0SpfnmDYte8eww+yDRBXZxB/uoph2earDB9+I4QZf//48p/h7yOGgwvWM9z8it+Mv7/eM3z49IeBRd6DITHZhkEEbgBR4DvD3fXTGLZ+0mPwDnBlUOaHiLIQHwYnGc7+sWeIijJhEGFF9wIFAAB8qzJcJdGecgAAAABJRU5ErkJggg==') 50% 50% no-repeat;
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHCAYAAAABIM1CAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+2aktpcbCDiEOG6mRBVMRRq1CECqFWaNXB5NI/aNKQpLg4Cq4FB38Wqw4uzro6uAqC4A+Ik6OToouU+F1SaBHjHcc9vPe9L3ffAf5mlalmzzigapaRSSWFXH5VCL4ihDCiNPskZupzopiG5/i6h4/vdwme5V3354gqBZMBPoF4lumGRbxBPL1p6Zz3iWOsLCnE58RjBl2Q+JHrsstvnEsO+3lmzMhm5oljxEKpi+UuZmVDJZ4ijiuqRvn+nMsK5y3OarXO2vfkL4wUtJVlrtMaRgqLWIIIATLqqKAKCwnaNVJMZOg86eEfcvwiuWRyVcDIsYAaVEiOH/wPfvfWLE5OuEmRJND7YtsfI0BwF2g1bPv72LZbJ0DgGbjSOv5aE5j5JL3R0eJHQP82cHHd0eQ94HIHGHzSJUNypAAtf7EIvJ/RN+WBgVsgvOb2rX2O0wcgS71K3wAHh8BoibLXPd4d6u7bvzXt/v0A50Ryb0vycTAAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkCAoNDiy6T4qvAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAH5JREFUGNNj/P3jy38GCgAT0SpfnmDYte8eww+yDRBXZxB/uoph2earDB9+I4QZf//48p/h7yOGgwvWM9z8it+Mv7/eM3z49IeBRd6DITHZhkEEbgBR4DvD3fXTGLZ+0mPwDnBlUOaHiLIQHwYnGc7+sWeIijJhEGFF9wIFAAB8qzJcJdGecgAAAABJRU5ErkJggg==")
+          50% 50% no-repeat;
         margin: 0 0 0 4px;
         width: 16px;
         height: 7px;
@@ -278,19 +279,23 @@
 }
 
 .wizard-help-modal {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
   position: fixed;
-  width: 100%;
-  max-width: 453px;
-  height: calc(100vh - 106px);
   top: 16px;
   right: 2px;
+  left: 2px;
+  bottom: 16px;
   background-color: $color-white;
+  padding: 40px 32px 34px 32px;
+  max-width: 517px;
   box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
   border-radius: 8px 0px 0px 8px;
-  padding: 40px 32px 34px 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  box-sizing: border-box;
+  @include screen-from(md) {
+    left: auto;
+  }
 
   & > header {
     @include text-xs-bold-line-lg;
@@ -398,27 +403,36 @@
 
 .wizard-help-modal-article {
   overflow: hidden;
-  -webkit-overflow-scrolling: touch;
   position: relative;
+  display: flex;
+  flex-flow: column;
+  margin: 0 0 20px;
 
   &__content {
     overflow-y: scroll;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
     width: 100%;
-    padding-right: 17px;
-    box-sizing: content-box;     
-    // height: 100%;
-    height: 80vh;
+    box-sizing: content-box;
+
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
   }
 
   &__content-overlay {
-    width: 100%;
-    height: 122px;
+    width: calc(100% - 8px);
+    height: 96px;
     background: linear-gradient(
       180deg,
       rgba(255, 245, 245, 0) 0%,
-      #ffffff 76.56%
+      $color-white 76.56%
     );
     position: absolute;
     left: 0px;
@@ -666,7 +680,7 @@
     }
   }
 
- .wizard-bottom-bar {
+  .wizard-bottom-bar {
     position: relative;
 
     &__container {
@@ -687,5 +701,4 @@
       width: 80%;
     }
   }
-
 }

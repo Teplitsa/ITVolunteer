@@ -6,15 +6,10 @@ import * as utils from "../utilities/utilities";
 import * as _ from "lodash";
 
 import Bell from "../assets/img/icon-bell.svg";
-import ArrowDown from "../assets/img/icon-arrow-down.svg";
+import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 const ParticipantNav: React.FunctionComponent = (): ReactElement => {
-  const {
-    fullName,
-    profileURL: toProfile,
-    itvAvatar: avatarImage,
-    xp,
-  } = useStoreState((store) => store.session.user);
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
 
   // notif
   const [isShowNotif, setIsShowNotif] = useState(false);
@@ -50,6 +45,23 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     };
   });
 
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      user.itvAvatar &&
+        user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        fetch(user.itvAvatar, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
+
   return (
     <>
       <div className="account-symbols">
@@ -70,19 +82,20 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </div>
 
         <div className="open-account-menu">
-          <a className="open-account-menu__avatar-card" href={toProfile}>
+          <a className="open-account-menu__avatar-card" href={user.profileURL}>
             <span
-              className="avatar-wrapper"
+              className={`avatar-wrapper ${
+                isAvatarImageValid ? "" : "avatar-wrapper_default-image"
+              }`}
               style={{
-                backgroundImage: user.itvAvatar
+                backgroundImage: isAvatarImageValid
                   ? `url(${user.itvAvatar})`
-                  : "none",
+                  : `url(${MemberAvatarDefault}), linear-gradient(#fff, #fff)`,
               }}
               title={user && `Привет, ${user.fullName}!`}
             >
-              <span className="open-account-menu__xp">{xp}</span>
+              <span className="open-account-menu__xp">{user.xp}</span>
             </span>
-            {/* <img src={ArrowDown} className="arrow-down" alt={ArrowDown} /> */}
           </a>
 
           <ul className="submenu">
