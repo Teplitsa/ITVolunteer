@@ -1476,3 +1476,34 @@ function ajax_get_task_taxonomy_data() {
 }
 add_action('wp_ajax_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
 add_action('wp_ajax_nopriv_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
+
+
+function itv_get_members_tasks_portion($posts, $page, $posts_per_page) {
+    $ret_posts = [];
+
+    usort($posts, function($a, $b) {
+        if($a->post_date === $b->post_date) {
+            return 0;
+        }
+
+        return $a->post_date > $b->post_date ? -1 : 1;
+    });
+
+    $deferred_posts = [];
+    $post_offset = $page * $posts_per_page;
+    foreach($posts as $k => $post) {
+        // error_log("index: " . $k);
+
+        if($post_offset > $k) {
+          continue;
+        }
+
+        if($post_offset + $posts_per_page <= $k) {
+          break;
+        }
+
+        $ret_posts[] = $post;
+    }
+
+    return $ret_posts;
+}

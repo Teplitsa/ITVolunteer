@@ -729,7 +729,9 @@ add_filter('authenticate', function($user, $username, $password){
 /** User logging in: */
 function ajax_login() {
     $inputJSON = file_get_contents('php://input');
-    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+    if(empty($_POST)) {
+        $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+    }
 
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
@@ -771,9 +773,11 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
   $inputJSON = file_get_contents('php://input');
-  $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+  if(empty($_POST)) {
+    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+  }
 
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+  $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	// disable nonce temporarily
   if( false && !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {

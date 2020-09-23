@@ -1,23 +1,20 @@
-import { ReactElement, MouseEvent } from "react";
+import { ReactElement, MouseEvent, useEffect } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCard from "../../components/TaskCard";
 
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const { tasks } = useStoreState((state) => state.components.memberAccount);
+  const { tasks, username, memberTaskStats } = useStoreState((state) => state.components.memberAccount);
+  
   const filters: {
     open: number;
     closed: number;
     draft: number;
     in_work: number;
-  } = tasks.list.reduce(
-    (previousValue, task) => {
-      previousValue[task.status]++;
-      return previousValue;
-    },
-    { open: 0, closed: 0, draft: 0, in_work: 0 }
-  );
-  const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
+    publish: number;
+  } = {...memberTaskStats, open: 0};
+
+  const { setTaskListFilter, getMemberTasksRequest, getMemberTaskStatsRequest } = useStoreActions(
     (actions) => actions.components.memberAccount
   );
 
@@ -34,6 +31,14 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     }
   };
 
+  useEffect(() => {
+    if(!username) {
+      return;
+    }
+
+    getMemberTaskStatsRequest();
+  }, [username]);
+
   return (
     <div className="member-tasks">
       <div className="member-tasks__header">
@@ -48,10 +53,10 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
                     : ""
                 }`}
                 href="#"
-                data-filter={["open", "in_work"]}
+                data-filter={["open", "in_work", "publish"]}
                 onClick={filter}
               >
-                Открытые ({filters.open + filters.in_work})
+                Открытые ({filters.open + filters.in_work + filters.publish})
               </a>
             </li>
             {isAccountOwner && (
@@ -90,7 +95,11 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
       <div className="member-tasks__list">
         {tasks.list
           .filter((card) => {
-            const cardStatus = card.status === "in_work" ? "open" : card.status;
+            const cardStatus = (card.status === "in_work" || card.status === "publish") ? "open" : card.status;
+
+            // console.log("card:", card)
+            // console.log("cardStatus:", cardStatus)
+            // console.log("tasks.filter:", tasks.filter)
 
             return cardStatus === tasks.filter;
           })

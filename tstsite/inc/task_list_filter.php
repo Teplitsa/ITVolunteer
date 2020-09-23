@@ -15,6 +15,7 @@ class TaskListFilter {
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'slug' => $term->slug,
                     'task_count' => $this->count_tasks_in_filter_option([
                         'tax_query' => array(
                             array(
@@ -35,6 +36,7 @@ class TaskListFilter {
                 return [
                     'id' => $term->term_id,
                     'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'slug' => $term->slug,
                     'task_count' => $this->count_tasks_in_filter_option([
                         'tax_query' => array(
                             array(

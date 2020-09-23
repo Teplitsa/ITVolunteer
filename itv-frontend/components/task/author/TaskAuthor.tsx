@@ -10,7 +10,8 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
     itvAvatar: avatarImage,
     fullName,
     profileURL: toProfile,
-    authorReviewsCount: reviewsCount,
+    authorReviewsCount: authorReviewsCount,
+    doerReviewsCount: doerReviewsCount,
   } = author;
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 <a className="name" href={toProfile}>
                   {fullName}
                 </a>
-                <span className="reviews">{`${reviewsCount} отзывов`}</span>
+                <span className="reviews">{`${doerReviewsCount + authorReviewsCount} отзывов`}</span>
               </div>
             </div>
           </div>

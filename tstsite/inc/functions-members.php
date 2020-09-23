@@ -1160,14 +1160,14 @@ function ajax_thankyou() {
     ) {
         wp_die(json_encode(array(
             'status' => 'fail',
-            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+            'message' => strip_tags(__('<strong>Error:</strong> wrong data given.', 'tst')),
         )));
     }
     
     if(!is_user_logged_in()) {
         wp_die(json_encode(array(
             'status' => 'fail',
-            'message' => __('<strong>Error:</strong> Access denied!', 'tst'),
+            'message' => strip_tags(__('<strong>Error:</strong> Access denied!', 'tst')),
         )));
     }
 
@@ -1195,7 +1195,7 @@ function ajax_thankyou() {
         }
         catch(\ITV\models\ItvThankyouRecentlySaidException $ex) {
             error_log($ex);
-            $error_message = __('<strong>Error:</strong> Recently said thank you!', 'tst');
+            $error_message = strip_tags(__('<strong>Error:</strong> Recently said thank you!', 'tst'));
         }
         catch(\Exception $ex) {
             error_log($ex);
@@ -1309,6 +1309,7 @@ function itv_get_user_in_gql_format($user) {
         'authorReviewsCount' => ItvReviewsAuthor::instance()->count_author_reviews( $user->ID ),
         'solvedTasksCount' => intval($activity[$solved_key]),
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
+        'totalReviewsCount' => intval(ItvReviewsAuthor::instance()->count_author_reviews( $user->ID )) + intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
         'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
         'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
@@ -1634,3 +1635,58 @@ function ajax_get_member_reviews() {
 }
 add_action('wp_ajax_get-member-reviews', 'ajax_get_member_reviews');
 add_action('wp_ajax_nopriv_get-member-reviews', 'ajax_get_member_reviews');
+
+function ajax_get_member_task_stats() {
+    $user = get_user_by( 'login', @$_POST['username'] );
+
+    if(!$user) {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'data' => [],
+            'message' => strip_tags(__('<strong>Error:</strong> wrong data given.', 'tst')),
+        )));      
+    }
+
+    $params = array(
+        'post_type' => 'tasks',
+        'connected_type' => 'task-doers',
+        'connected_items' => $user->ID,
+        'suppress_filters' => true,
+        'nopaging' => true,
+        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+    );
+    $posts_where_doer = get_posts($params);
+
+    $params = array(
+        'post_type' => 'tasks',
+        'author'        =>  $user->ID,
+        'suppress_filters' => true,
+        'nopaging' => true,
+        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+    );
+    $posts_where_author = get_posts($params);
+
+    $posts = array_merge($posts_where_doer, $posts_where_author);
+
+    $stats = [
+        'publish' => 0,
+        'in_work' => 0,
+        'closed' => 0,
+        'draft' => 0,
+    ];
+    $used_tasks = [];
+    foreach($posts as $key => $task) {
+        if(isset($used_tasks[$task->ID])) {
+            continue;
+        }
+        $stats[$task->post_status] += 1;
+        $used_tasks[$task->ID] = true;
+    }    
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'data' => $stats,
+    )));    
+}
+add_action('wp_ajax_get-member-task-stats', 'ajax_get_member_task_stats');
+add_action('wp_ajax_nopriv_get-member-task-stats', 'ajax_get_member_task_stats');

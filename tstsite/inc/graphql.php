@@ -347,6 +347,13 @@ function itv_register_user_graphql_fields() {
                     return ItvReviews::instance()->count_doer_reviews( $user->userId );
                 }
             ],
+            'totalReviewsCount' => [
+                'type' => 'Int',
+                'description' => __( 'Total user reviews count', 'tst' ),
+                'resolve' => function ($user) {
+                    return ItvReviews::instance()->count_doer_reviews( $user->userId ) + ItvReviewsAuthor::instance()->count_author_reviews( $user->userId );
+                }
+            ],
             'organizationName' => [
                 'type' => 'String',
                 'description' => __( 'User organization', 'tst' ),
@@ -701,6 +708,7 @@ function itv_register_member_tasks_graphql_query() {
             'resolve' => function($source, array $args, AppContext $context) {
                 $user = get_user_by( 'login', $args['username'] );
                 $page = !empty($args['page']) ? intval( $args['page'] ) : 0;
+                $posts_per_page = 3;
 
                 if(!$user) {
                     error_log("invalid username: " . print_r($args, true));
@@ -713,7 +721,7 @@ function itv_register_member_tasks_graphql_query() {
                     'connected_items' => $user->ID,
                     'suppress_filters' => true,
                     'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                    'post_status' => ['publish', 'in_work', 'closed'],
                 );
                 $posts_where_doer = get_posts($params);
 
@@ -722,32 +730,23 @@ function itv_register_member_tasks_graphql_query() {
                     'author'        =>  $user->ID,
                     'suppress_filters' => true,
                     'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                    'post_status' => ['publish', 'in_work', 'closed'],
                 );
                 $posts_where_author = get_posts($params);
 
-                $posts = $posts_where_author + $posts_where_doer;
-                usort($posts, function($a, $b) {
-                    if($a->post_date === $b->post_date) {
-                        return 0;
-                    }
+                // error_log("count: " . (count($posts_where_doer) + count($posts_where_author)) );
 
-                    return $a->post_date > $b->post_date ? -1 : 1;
-                });
+                $posts = array_merge($posts_where_author, $posts_where_doer);
+                // error_log("count posts: " . count($posts) );
 
-                $deferred_posts = [];
-                $posts_per_page = 3;
-                $post_offset = $page * $posts_per_page;
-                foreach($posts as $k => $post) {
+                $open_posts = itv_get_members_tasks_portion(array_filter($posts, function($post) {
+                    return in_array($post->post_status, ['publish', 'in_work']);
+                }), $page, $posts_per_page);
+                $closed_posts = itv_get_members_tasks_portion(array_filter($posts, function($post) {
+                    return in_array($post->post_status, ['closed']);
+                }), $page, $posts_per_page);
 
-                    if($post_offset > $k) {
-                      continue;
-                    }
-
-                    if($post_offset + $posts_per_page <= $k) {
-                      break;
-                    }
-
+                foreach(array_merge($open_posts, $closed_posts) as $k => $post) {
                     $deferred_posts[] = \WPGraphQL\Data\DataSource::resolve_post_object( $post->ID, $context );
                 }
 

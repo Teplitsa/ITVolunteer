@@ -336,7 +336,7 @@ export interface IMemberAccountPageModel
 export interface IMemberTaskCard {
   id: string;
   slug: string;
-  status: "open" | "closed" | "draft" | "in_work";
+  status: "open" | "closed" | "draft" | "in_work" | "publish";
   title: string;
   content: string;
   author: ITaskCommentAuthor;
@@ -392,6 +392,7 @@ export interface IMemberAccountPageState {
   telegram?: string;
   registrationDate: number;
   thankyouCount: number;
+  memberTaskStats: any;
   tasks?: {
     filter: "open" | "closed" | "draft";
     page: number;
@@ -417,6 +418,7 @@ export interface IMemberAccountPageActions {
   showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviewsPage: Action<IMemberAccountPageModel, number>;
   showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
+  setMemberTaskStats: Action<IMemberAccountPageModel, any>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -435,6 +437,7 @@ export interface IMemberAccountPageThunks {
   >;
   getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
   getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
+  getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
   giveThanksRequest: Thunk<IMemberAccountPageActions>;
 }
 
@@ -649,6 +652,7 @@ export interface ITaskAuthor {
   itvAvatar: string;
   profileURL: string;
   authorReviewsCount: number;
+  doerReviewsCount: number;
   organizationName: string;
   organizationDescription: string;
   organizationLogo: string;
