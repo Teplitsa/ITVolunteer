@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import Link from "next/link";
 import { ITaskTag } from "../../../model/model.typing";
 import IconTags from "../../../assets/img/icon-color-picker.svg";
 import IconNgoTags from "../../../assets/img/icon-people.svg";
@@ -28,6 +29,7 @@ const TaskTags: React.FunctionComponent<{
   return (
     <div className="meta-terms">
       {tagGroups.map(([groupId, icon, tagGroup]) => {
+        // console.log("groupId:", groupId);
         return (
           <TaskTagGroup key={groupId}>
             <img src={icon} />
@@ -38,7 +40,15 @@ const TaskTags: React.FunctionComponent<{
                     toCamelCase(slug)
                   )}`}
                 >
-                  {name}
+                  {groupId === 'tags' &&
+                  <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}><a>{name}</a></Link>
+                  }
+                  {groupId === 'ngoTags' &&
+                  <Link href="/tasks/nko-tag/[slug]" as={`/tasks/nko-tag/${slug}`}><a>{name}</a></Link>
+                  }
+                  {groupId !== 'ngoTags' && groupId !== 'tags' &&
+                    <>{name}</>
+                  }
                 </span>
               );
             })}

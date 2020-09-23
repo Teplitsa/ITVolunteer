@@ -23,7 +23,6 @@ const TaskListStats: React.FunctionComponent = (): ReactElement => {
   const setStatusStats = useStoreActions((actions) => actions.components.taskListFilter.setStatusStats);
 
   const router = useRouter()
-  // const { slug } = router.query
 
   useEffect(() => {
       if(optionCheck === null) {
