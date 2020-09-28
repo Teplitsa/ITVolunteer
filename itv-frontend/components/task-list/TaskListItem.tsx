@@ -1,7 +1,11 @@
 import { ReactElement } from "react";
 import { ITaskState } from "../../model/model.typing";
 import Link from "next/link";
+import {useRouter} from 'next/router'
+
 import * as utils from "../../utilities/utilities";
+import { regEvent } from "../../utilities/ga-events"
+
 import { UserSmallView } from "../UserView";
 import TaskMeta from "../task/task-header/TaskMeta";
 import TaskMetaItem from "../task/task-header/TaskMetaItem";
@@ -10,6 +14,8 @@ import TaskTags from "../task/task-header/TaskTags";
 const TaskListItem: React.FunctionComponent<ITaskState> = (
   task
 ): ReactElement => {
+  const router = useRouter()
+
   return (
     <div className="task-body">
       <div className="task-author-meta">
@@ -26,7 +32,12 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
       </div>
       <h1>
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
-          <a dangerouslySetInnerHTML={{ __html: task.title }} />
+          <a 
+            dangerouslySetInnerHTML={{ __html: task.title }} 
+            onClick={(e) => {
+              regEvent('tc_title', router);
+            }}
+          />
         </Link>
       </h1>
       <TaskMeta {...task} />
@@ -49,6 +60,8 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (
 export const TaskListItemHome: React.FunctionComponent<ITaskState> = (
   task
 ): ReactElement => {
+  const router = useRouter()
+
   return (
     <div className={`task-body`}>
       <div className="task-author-meta">
@@ -73,7 +86,12 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (
       </div>
       <h3 className="task-title">
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
-          <a dangerouslySetInnerHTML={{ __html: task.title }} />
+          <a
+            dangerouslySetInnerHTML={{ __html: task.title }} 
+            onClick={(e) => {
+              regEvent('tc_title', router);
+            }}
+          />
         </Link>
       </h3>
       <TaskTags {...task} />

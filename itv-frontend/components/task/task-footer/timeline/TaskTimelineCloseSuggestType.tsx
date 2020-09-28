@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import Router from "next/router";
 import {
   useStoreState,
   useStoreActions,
@@ -10,6 +11,15 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
   status: string;
   message: string;
 }> = ({ id, status, message }): ReactElement => {
+  const { databaseId: userId, fullName: userName } = useStoreState(
+    (state) => state.session.user
+  );
+  const {
+    databaseId: taskId,
+    title,
+    approvedDoer: { databaseId: partnerId, fullName: partnerName },
+    author,
+  } = useStoreState((state) => state.components.task);
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
   );
@@ -20,6 +30,9 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
     acceptSuggestedCloseRequest,
     rejectSuggestedCloseRequest,
   } = useStoreActions((state) => state.components.task);
+  const setCompleteTaskWizardState = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setInitState
+  );
   const acceptSuggestedClose = acceptSuggestedCloseRequest.bind(null, {
     timelineItemId: id,
   });
@@ -40,6 +53,21 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
             onClick={(event) => {
               event.preventDefault();
               acceptSuggestedClose();
+
+              // open wizard
+              setCompleteTaskWizardState({
+                user: {
+                  databaseId: userId,
+                  name: userName,
+                  isAuthor: isTaskAuthorLoggedIn,
+                },
+                partner: { databaseId: partnerId, name: partnerName },
+                task: { databaseId: taskId, title },
+              });
+
+              Router.push({
+                pathname: "/task-complete",
+              });              
             }}
           >
             Принять

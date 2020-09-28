@@ -4,6 +4,8 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
 
+import { regEvent } from "../../utilities/ga-events"
+
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
 
@@ -64,6 +66,8 @@ const Login: React.FunctionComponent<{
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    regEvent('reg_login', router);
 
     if(!formRef) {
       return

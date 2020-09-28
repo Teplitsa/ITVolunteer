@@ -126,7 +126,7 @@
 	<?php if(!empty($_COOKIE["itvOldDesign"])):?>
 	<div class="itv-switch-to-new-design-bar">
 		<div class="container">
-			<div class="text" onclick="return itvSwitchToV2();">
+			<div class="text ga-event-trigger" onclick="return itvSwitchToV2();" <?php tst_ga_event_data('ge_switch_desing_to_new');?>>
 				<span>Переходите на новый дизайн</span>
 				<div class="text-arrow"> </div>
 			</div>

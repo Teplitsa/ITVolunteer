@@ -55,20 +55,28 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   };
 
   const completeTaskByDoer = () => {
-    suggestCloseTaskRequest({});
-    setCompleteTaskWizardState({
-      user: {
-        databaseId: user.databaseId,
-        name: user.fullName,
-        isAuthor: false,
-      },
-      partner: { databaseId: author.databaseId, name: author.fullName },
-      task: { databaseId, title },
-    });
+    if (isOpenCloseSuggest) {
+      setOpenCloseSuggest(false);
+    } else {
+      setOpenDateSuggest(false);
+      setOpenDateSuggestComment(false);
+      setOpenCloseSuggest(true);
+    }
+              
+    // suggestCloseTaskRequest({});
+    // setCompleteTaskWizardState({
+    //   user: {
+    //     databaseId: user.databaseId,
+    //     name: user.fullName,
+    //     isAuthor: false,
+    //   },
+    //   partner: { databaseId: author.databaseId, name: author.fullName },
+    //   task: { databaseId, title },
+    // });
 
-    Router.push({
-      pathname: "/task-complete",
-    });
+    // Router.push({
+    //   pathname: "/task-complete",
+    // });
   };
 
   return (

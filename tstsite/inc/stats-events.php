@@ -59,6 +59,12 @@ function itv_get_ga_events() {
 	
     $events_data = array();
     
+    $events_data['ge_switch_desing_to_new'] = array(
+      'ga_category' => 'Смена дизайна',
+      'ga_action' => 'Смена дизайна на новый',
+      'ga_label' => tst_detect_page_type()
+    );
+
     /* Task card */
     $events_data['tc_title'] = array(
     	'ga_category' => 'Просмотр задачи',

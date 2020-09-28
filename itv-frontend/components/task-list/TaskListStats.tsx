@@ -6,6 +6,7 @@ import {
 } from "../../model/model.typing";
 import * as _ from "lodash"
 import * as utils from "../../utilities/utilities"
+import { regEvent } from "../../utilities/ga-events"
 
 const statusFilterTitle = {
     publish: "Ожидают волонтеров",
@@ -68,7 +69,25 @@ const TaskListStats: React.FunctionComponent = (): ReactElement => {
   }, [])
 
   function statusFilterClickHandler(e, status) {
-      e.preventDefault()
+      e.preventDefault();
+
+      switch (status) {
+        case "publish":
+          regEvent('tl_tf_open', router);
+          break;
+
+        case "in_work":
+          regEvent('tl_tf_work', router);
+          break;
+
+        case "closed":
+          regEvent('tl_tf_close', router);
+          break;
+        
+        default:
+          break;
+      }
+
       setOptionCheck({...optionCheck, status: status})
       saveOptionCheck()
   }

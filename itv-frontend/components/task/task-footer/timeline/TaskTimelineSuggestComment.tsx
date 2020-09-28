@@ -17,7 +17,7 @@ const TaskTimelineSuggestComment: React.FunctionComponent<{
   const typeIn = (
     event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>
   ) => {
-    setSuggestComment(event.target.value.trim());
+    setSuggestComment(event.target.value);
   };
   const callbackFn = (): void => {
     setOpenDateSuggestComment(false);
@@ -52,7 +52,7 @@ const TaskTimelineSuggestComment: React.FunctionComponent<{
             onClick={(event) => {
               event.preventDefault();
               suggestCloseDate({
-                suggestComment,
+                suggestComment: suggestComment.trim(),
                 suggestedCloseDate,
                 callbackFn,
               });

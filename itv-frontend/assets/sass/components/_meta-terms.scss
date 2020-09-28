@@ -12,8 +12,10 @@
       vertical-align: middle;
     }
 
-    span {
+    a, span {
+      @include a-no-hover-underline;
       @include text-xs;
+      color: $color-gray-dark-md-001;
       margin-top: $base;
       display: inline-block;
       padding: 4px 12px;
@@ -21,10 +23,22 @@
       border-radius: 10px;
       margin-right: 4px;
       white-space: nowrap;
-    }
-    span,
-    a {
-      color: $color-gray-dark-md-001;
+
+      &.link:hover {
+        font-weight: 600;
+        color: $color-gray-dark-lg;
+        border-color: $color-gray;
+      }
+
+      &.link::after {
+        display: block;
+        content: attr(title);
+        font-weight: bold;
+        height: 1px;
+        color: transparent;
+        overflow: hidden;
+        visibility: hidden;
+      }
     }
   }
 }

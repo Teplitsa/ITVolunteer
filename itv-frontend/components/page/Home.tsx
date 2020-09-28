@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect, useRef, Fragment } from "react";
 import Link from "next/link";
+import {useRouter} from 'next/router'
 import { useStoreState } from "../../model/helpers/hooks";
 
 import NewsList from "../news/NewsList";
@@ -7,10 +8,12 @@ import { TaskListItemHome } from "../task-list/TaskListItem";
 import {
   ITaskState
 } from "../../model/model.typing";
+import { regEvent } from "../../utilities/ga-events"
 
 import headerImage from "../../assets/img/home-head-pic.svg";
 
 const Home: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
   const homePage = useStoreState((state) => state.components.homePage);
   const { title, content } = useStoreState((state) => state.components.homePage);
   const { isLoggedIn } = useStoreState((state) => state.session);
@@ -24,7 +27,9 @@ const Home: React.FunctionComponent = (): ReactElement => {
             <div className="home-header__cta-text" dangerouslySetInnerHTML={{ __html: content }} />
             <div className="home-header__actions">
               <Link href={isLoggedIn ? "/task-actions" : "/login"}>
-                <a className="home-header__action-primary">Создать задачу</a>            
+                <a className="home-header__action-primary" onClick={(e) => {
+                    regEvent('hp_new_task', router);
+                  }}>Создать задачу</a>            
               </Link>
               <Link href={"/about"}>
                 <a className="home-header__action-secondary">Как это работает</a>
@@ -83,7 +88,9 @@ const Home: React.FunctionComponent = (): ReactElement => {
           </div>
           <div className="home-list-section__footer">
             <Link href={"/tasks"}>
-              <a className="home-list-section__footer-link">Все задачи</a>
+              <a className="home-list-section__footer-link" onClick={(e) => {
+                regEvent('hp_more_nav', router);
+              }}>Все задачи</a>
             </Link>
           </div>
         </div>
@@ -109,12 +116,16 @@ const Home: React.FunctionComponent = (): ReactElement => {
             <div className="home-footer__cta-action">
               {isLoggedIn &&
                 <Link href="/task-actions">
-                  <a className="home-footer__action-primary">Создать задачу</a>            
+                  <a className="home-footer__action-primary" onClick={(e) => {
+                    regEvent('hp_ntask_bottom', router);
+                  }}>Создать задачу</a>            
                 </Link>
               }
               {!isLoggedIn &&
                 <Link href="/registration">
-                  <a className="home-footer__action-primary">Зарегистрироваться</a>            
+                  <a className="home-footer__action-primary" onClick={(e) => {
+                    regEvent('hp_reg_bottom', router);
+                  }}>Зарегистрироваться</a>            
                 </Link>
               }
             </div>
