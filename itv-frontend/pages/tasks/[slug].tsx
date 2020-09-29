@@ -16,17 +16,22 @@ import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import Sidebar from "../../components/layout/partials/Sidebar";
 import { ITaskState } from "../../model/model.typing";
 import { graphqlQuery as graphqlTaskQuery } from "../../model/task-model/task-model";
+import { regEvent } from "../../utilities/ga-events";
 
 const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const { isLoggedIn, token } = useStoreState((state) => state.session);
   const {...taskState} = useStoreState((state) => state.components.task);
   const setTaskState = useStoreActions((actions) => actions.components.task.setState);
-  const router = useRouter()
+  const router = useRouter();
   const { slug } = router.query
 
   useEffect(() => {
     setTaskState(task);
   }, [task])
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     // console.log("input:", task.databaseId, slug, isLoggedIn)

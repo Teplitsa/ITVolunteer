@@ -1,17 +1,24 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
+import {useRouter} from 'next/router';
 import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
 import TaskAdminSupportForm from "../task/TaskAdminSupportForm";
+import { regEvent } from "../../utilities/ga-events";
 
 const { ModalContext, SnackbarContext } = GlobalScripts;
 
 const PageContacts: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
   const { title, content } = useStoreState((state) => state.components.page);
   const [isShowForm, setIsShowForm] = useState(true);
 
   function handleSuccess() {
     setIsShowForm(false);
   }
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   return (
     <article className="article article-page">

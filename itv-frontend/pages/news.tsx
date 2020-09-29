@@ -1,16 +1,23 @@
-import { ReactElement, memo, useState } from "react";
+import { ReactElement, memo, useState, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import {useRouter} from 'next/router';
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import NewsList from "../components/news/NewsList";
 import { INewsListModel } from "../model/model.typing";
 import * as utils from "../utilities/utilities";
+import { regEvent } from "../utilities/ga-events";
 
 const NewsListPage: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
   const newsList = useStoreState((state) => state.components.newsList);
   const [isLoading, setIsLoading] = useState(false)
   const loadMoreNewsRequest = useStoreActions((actions) => actions.components.newsList.loadMoreNewsRequest)
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);  
 
   async function handleLoadMoreNews(e) {
     e.preventDefault();

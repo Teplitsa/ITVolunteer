@@ -18,6 +18,10 @@ const Home: React.FunctionComponent = (): ReactElement => {
   const { title, content } = useStoreState((state) => state.components.homePage);
   const { isLoggedIn } = useStoreState((state) => state.session);
 
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
+
   return (
     <>
       <section className="home-header">

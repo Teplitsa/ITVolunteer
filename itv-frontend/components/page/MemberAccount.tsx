@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
@@ -7,6 +7,7 @@ import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
+import { regEvent } from "../../utilities/ga-events";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
@@ -23,6 +24,10 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
       { title: "Отзывы", content: () => <MemberReviews /> },
     ],
   });
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   return (
     <div className="member-account">

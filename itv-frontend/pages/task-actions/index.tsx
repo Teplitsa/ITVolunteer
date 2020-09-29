@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
-import Router from 'next/router'
+import Router, { useRouter } from 'next/router';
 import * as _ from "lodash"
 
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
@@ -16,7 +16,8 @@ import {
   IFetchResult,
 } from "../../model/model.typing";
 import Wizard from "../../components/Wizard";
-import * as utils from "../../utilities/utilities"
+import * as utils from "../../utilities/utilities";
+import { regEvent } from "../../utilities/ga-events";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn, token, user, isLoaded: isSessionLoaded } = useStoreState((state) => state.session);
@@ -34,6 +35,11 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   const [isPreventReset, setIsPreventReset] = useState(false)
   const isNeedReset = useStoreState((state) => state.components.createTaskWizard.isNeedReset)
   const setNeedReset = useStoreActions((actions) => actions.components.createTaskWizard.setNeedReset)
+  const router = useRouter();
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     setWizardName("createTaskWizard");

@@ -1,5 +1,6 @@
-import { ReactElement, memo } from "react";
+import { ReactElement, useEffect, memo } from "react";
 import { GetServerSideProps } from "next";
+import {useRouter} from 'next/router';
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import TaskListStats from "../../components/task-list/TaskListStats";
@@ -7,10 +8,17 @@ import TaskList from "../../components/task-list/TaskList";
 import TaskListFilter from "../../components/task-list/TaskListFilter";
 import { ITaskListModel } from "../../model/model.typing";
 import * as utils from "../../utilities/utilities";
+import { regEvent } from "../../utilities/ga-events";
 
 const TaskListPage: React.FunctionComponent<ITaskListModel> = (
   taskList
 ): ReactElement => {
+  const router = useRouter();
+  
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
+
   return (
     <>
       <DocumentHead />

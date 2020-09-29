@@ -1,8 +1,13 @@
 const gaEventsData = {};
 
 /* General events */
+gaEventsData['ge_show_new_desing'] = {
+  'ga_category': 'Дизайн',
+  'ga_action': 'Показ сайта в новом дизайне',
+};
+    
 gaEventsData['ge_switch_desing_to_old'] = {
-    'ga_category': 'Смена дизайна',
+    'ga_category': 'Дизайн',
     'ga_action': 'Смена дизайна на старый',
 };
 
@@ -238,9 +243,9 @@ export function regEvent(triggerId, router) {
     let pageType = detectPageType(router);
 
     //debug
-    // console.log("ga_category:", gaEventsData[triggerId].ga_category);
-    // console.log("ga_action:", gaEventsData[triggerId].ga_action);
-    // console.log("pageType:", pageType);
+    console.log("ga_category:", gaEventsData[triggerId].ga_category);
+    console.log("ga_action:", gaEventsData[triggerId].ga_action);
+    console.log("pageType:", pageType);
 
     itvGa('send', 'event', gaEventsData[triggerId].ga_category, gaEventsData[triggerId].ga_action, pageType, 1);  
   }

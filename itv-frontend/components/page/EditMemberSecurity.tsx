@@ -1,9 +1,10 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {useRouter} from 'next/router'
+import {useRouter} from 'next/router';
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
+import { regEvent } from "../../utilities/ga-events";
 
 const EditMemberSecurity: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
@@ -20,6 +21,10 @@ const EditMemberSecurity: React.FunctionComponent<{
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [regFormData, setRegFormData] = useState(null);
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     const security = new FormData();

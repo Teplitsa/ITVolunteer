@@ -1,8 +1,10 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import {useRouter} from 'next/router';
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import UploadFileInput from "../UploadFileInput";
+import { regEvent } from "../../utilities/ga-events";
 import * as _ from "lodash";
 
 const EditMemberProfile: React.FunctionComponent<{
@@ -10,6 +12,7 @@ const EditMemberProfile: React.FunctionComponent<{
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
+  const router = useRouter();
   const formRef = useRef(null);
   const user = useStoreState((state) => state.session.user);
   const login = useStoreActions((actions) => actions.session.login);
@@ -19,6 +22,10 @@ const EditMemberProfile: React.FunctionComponent<{
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [stateFormData, setStateFormData] = useState(null);
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     const profile = new FormData();

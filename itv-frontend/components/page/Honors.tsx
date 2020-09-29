@@ -1,11 +1,18 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
+import {useRouter} from 'next/router';
 import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
 import HonorsListItemIndex from "./HonorsListItemIndex";
+import { regEvent } from "../../utilities/ga-events";
 
 const Honors: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
   const { title, blocks } = useStoreState((state) => state.components.honors);
   let mediaTextBlockIndex: number = -1;
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   return (
     <article className="article article_honors">

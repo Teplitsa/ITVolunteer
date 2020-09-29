@@ -116,5 +116,22 @@ function tst_brand_banner() {
 
 <?php wp_footer(); ?>
 
+<script>
+jQuery(function($){
+	if(typeof ga == 'function') {		
+        let triggerId = 'ge_show_old_desing';
+			
+        //debug
+        if (ga_events[triggerId]) {
+            console.log(ga_events[triggerId].ga_category);
+            console.log(ga_events[triggerId].ga_action);
+            console.log(ga_events[triggerId].ga_label);
+        
+            ga('send', 'event', ga_events[triggerId].ga_category, ga_events[triggerId].ga_action, ga_events[triggerId].ga_label, 1);	
+        }
+	}	
+});
+</script>
+
 </body>
 </html>

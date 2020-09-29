@@ -1,11 +1,19 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
+import {useRouter} from 'next/router';
 import { useStoreState } from "../../model/helpers/hooks";
+import { regEvent } from "../../utilities/ga-events";
+
 import PasechnikImage from "../../assets/img/pasechnik.svg";
 
 const Paseka: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
   const [isPasechnikImageShown, showPasechnikImage] = useState<boolean>(false);
   const pasechnikImageRef = useRef<HTMLImageElement>(null);
   const { title, content } = useStoreState((state) => state.components.paseka);
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     new IntersectionObserver(
