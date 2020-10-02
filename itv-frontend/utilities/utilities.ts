@@ -34,9 +34,7 @@ export const generateUniqueKey = ({
 export const getLocaleDateTimeISOString = (locale = "ru-RU"): string => {
   switch (locale) {
     case "ru-RU":
-      return new Date()
-        .toLocaleString()
-        .replace(/(\d{2})\.(\d{2})\.(\d{4}),\s([\d|:]+)/g, "$3-$2-$1 $4");
+      return new Date().toISOString().replace(/^(.{10})T(.{8}).*/, "$1 $2");
   }
 };
 

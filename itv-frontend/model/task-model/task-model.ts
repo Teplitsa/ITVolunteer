@@ -353,9 +353,7 @@ const taskThunks: ITaskThunks = {
       formData.append("message", suggestComment);
       formData.append(
         "due_date",
-        suggestedCloseDate
-          .toLocaleString()
-          .replace(/(\d{2})\.(\d{2})\.(\d{4}),\s([\d|:]+)/g, "$3-$2-$1 $4")
+        suggestedCloseDate.toISOString().replace(/^(.{10})T(.{8}).*/, "$1 $2"),
       );
       formData.append("task-id", String(taskId));
       formData.append("auth_token", String(token));

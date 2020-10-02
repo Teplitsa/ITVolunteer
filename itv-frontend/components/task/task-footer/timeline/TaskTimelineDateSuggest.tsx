@@ -1,8 +1,8 @@
 import { ReactElement, useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import ru from "date-fns/locale/ru";
 
-//registerLocale("ru-RU", ru);
+registerLocale("ru-RU", ru);
 
 const TaskTimelineDateSuggest: React.FunctionComponent<{
   setOpenDateSuggest: (isOpenDateSuggest: boolean) => void;
