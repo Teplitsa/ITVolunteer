@@ -946,8 +946,8 @@ function ajax_accept_close_date() {
     }
     
     //
-    UserNotifModel::instance()->push_notif($author_id, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKAUTHOR, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
-    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
+    UserNotifModel::instance()->push_notif($author_id, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKAUTHOR, ['task_id' => $task->ID, 'from_user_id' => $author_id]);
+    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $author_id]);
     
     wp_die(json_encode(array(
         'status' => 'ok',
