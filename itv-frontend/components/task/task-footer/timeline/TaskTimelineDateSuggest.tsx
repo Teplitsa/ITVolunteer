@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import ru from "date-fns/locale/ru";
 
 //registerLocale("ru-RU", ru);

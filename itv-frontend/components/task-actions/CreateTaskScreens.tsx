@@ -2,7 +2,7 @@ import { ReactElement, useState, useEffect } from "react";
 import Router from 'next/router'
 import * as _ from "lodash";
 import moment from "moment";
-import DatePicker, { registerLocale } from "react-datepicker";
+import DatePicker from "react-datepicker";
 import { request } from "graphql-request";
 import ru from "date-fns/locale/ru";
 
