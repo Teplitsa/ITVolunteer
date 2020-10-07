@@ -54,7 +54,7 @@ class TimelineModel extends ITVSingletonModel {
             TimelineModel::$TYPE_DATE_SUGGEST => "Предложена новая дата закрытия задачи:",
             TimelineModel::$TYPE_DATE_DECISION => [TimelineModel::$DECISION_ACCEPT => "Одобрена новая дата закрытия задачи", TimelineModel::$DECISION_REJECT => "Отклонена новая дата закрытия задачи"],
             TimelineModel::$TYPE_CLOSE_SUGGEST => "Предложено закрыть задачу",
-            TimelineModel::$TYPE_CLOSE_DECISION => [TimelineModel::$DECISION_ACCEPT => "Одобрена новая дата закрытия задачи", TimelineModel::$DECISION_REJECT => "Отклонена новая дата закрытия задачи"],
+            TimelineModel::$TYPE_CLOSE_DECISION => [TimelineModel::$DECISION_ACCEPT => "Одобрено предложение закрыть задачу", TimelineModel::$DECISION_REJECT => "Отклонено предложение закрыть задачу"],
             TimelineModel::$TYPE_CLOSE => "Завершение задачи",
             TimelineModel::$TYPE_REVIEW => "Отзывы о работе над задачей",
         ];

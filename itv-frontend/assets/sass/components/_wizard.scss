@@ -72,8 +72,8 @@
 
   &__container {
     max-width: $content-width-wizard;
-    margin-left: auto;
-    margin-right: auto;
+    // margin-left: auto;
+    // margin-right: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,7 +81,6 @@
     padding: 64px 0 0;
     @include screen-from(md) {
       flex-flow: row nowrap;
-      padding: 64px 64px 0;
     }
   }
 

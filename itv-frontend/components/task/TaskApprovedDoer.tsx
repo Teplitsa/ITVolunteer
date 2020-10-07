@@ -1,5 +1,7 @@
 import { ReactElement } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
+import * as utils from "../../utilities/utilities";
+
 import IconPaseka from "../../assets/img/icon-paseka.svg";
 
 const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
@@ -37,7 +39,7 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
                 <a className="name" href={toProfile}>
                   {fullName}
                 </a>
-                <span className="reviews">{`${doerReviewsCount} отзывов`}</span>
+                <span className="reviews">{`${doerReviewsCount} ${utils.getReviewsCountString(doerReviewsCount)}`}</span>
                 <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
               </div>
             </div>

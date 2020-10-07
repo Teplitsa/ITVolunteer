@@ -50,6 +50,22 @@
       margin-bottom: 20px;
     }
   }
+
+  .news-article-cta {
+    background-color: $color-gray-light-xl;
+    padding-top: 40px;
+    padding-bottom: 40px;   
+    margin-top: 40px; 
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+
+    &__primary-button {
+      @include wizard-button-primary;
+      @include htext-lg-bold;
+      max-width: 304px;
+    }
+  }
 }
 
 .news-list-page {

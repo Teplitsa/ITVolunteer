@@ -55,6 +55,13 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
     isAllowPrevButton: true,
     isIgnoreStepNumber: false,
 
+    steps: Children.map(children, (child, index) => {
+      return {
+        shortTitle: child.props.shortTitle,
+        step: index,
+      }
+    }), 
+
     goNextStep: () => {
       if (step >= stepsCount - 1) {
         return;

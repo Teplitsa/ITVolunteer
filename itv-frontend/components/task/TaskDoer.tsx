@@ -1,7 +1,9 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskDoer } from "../../model/model.typing";
+import * as utils from "../../utilities/utilities";
 import TaskAuthorActionsOnDoer from "./TaskAuthorActionsOnDoer";
+
 import IconPaseka from "../../assets/img/icon-paseka.svg";
 import MemberAvatarDefault from "../../assets/img/member-default.svg";
 
@@ -79,7 +81,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
           <a className="name" href={toProfile}>
             {fullName}
           </a>
-          <span className="reviews">{`${doerReviewsCount} отзывов`}</span>
+          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(doerReviewsCount)}`}`}</span>
           <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
         </div>
       </div>

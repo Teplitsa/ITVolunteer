@@ -847,6 +847,7 @@ export interface ITaskThunks {
     ITaskActions,
     {
       messageText: string;
+      email?: string;
       addSnackbar: (message: ISnackbarMessage) => void;
       callbackFn?: () => void;
     }
@@ -994,6 +995,7 @@ export interface IWizardScreenProps {
   step?: number;
   setStep?: any;
   stepsCount?: any;
+  steps?: Array<any>;
   onPrevClick?: any;
   onNextClick?: any;
   formHelpComponent?: any;
@@ -1023,6 +1025,9 @@ export interface IWizardScreenProps {
   formFieldNameList?: Array<string>;
   description?: string;
   acceptFileFormat?: string;
+  screenForm?: any;
+  screenBottomBar?: any;
+  shortTitle?: string;
 }
 
 export interface IWizardInputProps {

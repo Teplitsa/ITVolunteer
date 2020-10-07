@@ -1,28 +1,68 @@
-import { ReactElement } from "react";
-import GetInitialProps from "next";
-import ErrorPage from "next/error";
-import { ITaskListModel } from "../model/model.typing";
+import { useStoreState } from "../model/helpers/hooks";
 
-function Error({ statusCode }) {
+import DocumentHead from "../components/DocumentHead";
+import Main from "../components/layout/Main";
+import Error404 from "../components/page/Error404";
+import Error50X from "../components/page/Error50X";
+
+function Error({statusCode}) {
 
   return (
-    <p>
-      {statusCode
-        ? `An error ${statusCode} occurred on server`
-        : 'An error occurred on client'}
-    </p>
+    <>
+      <DocumentHead />
+      <Main>
+          {statusCode === 404
+            ? <Error404 />
+            : <Error50X statusCode={statusCode} />
+          }
+      </Main>
+    </>    
   )
 }
 
 Error.getInitialProps = ({ res, err }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404
-  return { statusCode, ...{
+
+  var entrypointModel;
+  
+  if(statusCode === 404) {
+    entrypointModel = {
+      title: 'Сраница не найдена - it-волонтер',
+      seo: {
+        // canonical: "https://itv.te-st.ru/",
+        title: "Сраница не найдена - it-волонтер",
+        metaRobotsNoindex: "noindex",
+        metaRobotsNofollow: "nofollow",
+        opengraphTitle: "Сраница не найдена - it-волонтер",
+        // opengraphUrl: "https://itv.te-st.ru/",
+        opengraphSiteName: "it-волонтер",
+      },
+    };
+  }
+  else {
+    entrypointModel = {
+      title: 'Что-то пошло не так - it-волонтер',
+      seo: {
+        // canonical: "https://itv.te-st.ru/",
+        title: "Что-то пошло не так - it-волонтер",
+        metaRobotsNoindex: "noindex",
+        metaRobotsNofollow: "nofollow",
+        opengraphTitle: "Что-то пошло не так - it-волонтер",
+        // opengraphUrl: "https://itv.te-st.ru/",
+        opengraphSiteName: "it-волонтер",
+      },
+    };
+  }
+
+  return { 
+    statusCode, 
     app: {
       componentsLoaded: [],
+      entrypointTemplate: "page",
     },
-    entrypointType: null,
-    entrypoint: { archive: null, page: null },
-  } }
+    entrypoint: { archive: null, page: entrypointModel },
+  }
+
 }
 
 export default Error

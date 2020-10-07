@@ -5,26 +5,25 @@ import {
   useStoreActions,
 } from "../../../../model/helpers/hooks";
 import UserCardSmall from "../../../UserCardSmall";
+import { ITaskTimelineItemDoer } from "../../../../model/model.typing";
 
 const TaskTimelineCloseSuggestType: React.FunctionComponent<{
   id: number;
   status: string;
   message: string;
-}> = ({ id, status, message }): ReactElement => {
+  doer: ITaskTimelineItemDoer;
+  doerId: number;
+}> = ({ id, status, message, doer, doerId }): ReactElement => {
   const { databaseId: userId, fullName: userName } = useStoreState(
     (state) => state.session.user
   );
   const {
     databaseId: taskId,
     title,
-    approvedDoer: { databaseId: partnerId, fullName: partnerName },
     author,
   } = useStoreState((state) => state.components.task);
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
-  );
-  const approvedDoer = useStoreState(
-    (state) => state.components.task?.approvedDoer
   );
   const {
     acceptSuggestedCloseRequest,
@@ -42,7 +41,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
 
   return (
     <div className="details">
-      <UserCardSmall {...approvedDoer} />
+      <UserCardSmall {...doer} />
       <div className="comment">{message}</div>
 
       {isTaskAuthorLoggedIn && status !== "past" && (
@@ -61,7 +60,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
                   name: userName,
                   isAuthor: isTaskAuthorLoggedIn,
                 },
-                partner: { databaseId: partnerId, name: partnerName },
+                partner: { databaseId: doerId, name: doer.fullName },
                 task: { databaseId: taskId, title },
               });
 

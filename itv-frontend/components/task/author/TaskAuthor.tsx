@@ -1,5 +1,7 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
+import * as utils from "../../../utilities/utilities";
+
 import TaskAuthorCompany from "./TaskAuthorCompany";
 import MemberAvatarDefault from "../../../assets/img/member-default.svg";
 
@@ -53,7 +55,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 <a className="name" href={toProfile}>
                   {fullName}
                 </a>
-                <span className="reviews">{`${doerReviewsCount + authorReviewsCount} отзывов`}</span>
+                <span className="reviews">{`${doerReviewsCount + authorReviewsCount} ${utils.getReviewsCountString(doerReviewsCount + authorReviewsCount)}`}</span>
               </div>
             </div>
           </div>

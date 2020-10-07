@@ -193,3 +193,23 @@ export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
   );
   return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
 }
+
+export function getReviewsCountString(reviewsCount) {
+  const reviewsCountModulo =
+    reviewsCount < 10
+      ? reviewsCount
+      : Number([...Array.from(String(reviewsCount))].pop());
+
+  const reviewsCountModulo100 =
+    reviewsCount < 10
+      ? reviewsCount
+      : Number([...Array.from(String(reviewsCount))].slice(-2).join(""));
+
+  return reviewsCountModulo100 > 10 && reviewsCountModulo100 < 20
+    ? "отзывов"
+    : reviewsCountModulo === 1
+      ? "отзыв"
+      : [2, 3, 4].includes(reviewsCountModulo)
+        ? "отзыва"
+        : "отзывов";
+}

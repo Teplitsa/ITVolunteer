@@ -14,17 +14,26 @@ const HeaderSearch: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   isOpen: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ addSnackbar, isOpen, setOpen }): ReactElement => {
+  isCleanOnCrossClick?: boolean;
+  submitButton?: any;
+}> = ({ addSnackbar, isOpen, setOpen, isCleanOnCrossClick, submitButton }): ReactElement => {
   let timerId: NodeJS.Timeout = null;
   const [isOpenLocally, setOpenLocally] = useState<boolean>(isOpen);
-  const toggle = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const doToggle = () => {
     if (isOpen) {
       timerId = setTimeout(() => setOpen(false), 300);
     } else {
       setOpen(true);
     }
     setOpenLocally(!isOpen);
+  }
+  const toggle = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    doToggle();
+  };
+  const clean = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setSearchPhrase("");
   };
   const {
     query: { s },
@@ -34,6 +43,9 @@ const HeaderSearch: React.FunctionComponent<{
     setSearchPhrase(event.target.value);
   };
   const submit = () => {
+    if(!isCleanOnCrossClick) {
+      doToggle();
+    }
     if (searchPhrase) {
       Router.push({
         pathname: "/search",
@@ -59,7 +71,10 @@ const HeaderSearch: React.FunctionComponent<{
     >
       <form
         className="header-search-form"
-        onSubmit={(event) => event.preventDefault()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit();
+        }}
       >
         <div className="header-search-form__group">
           <input
@@ -79,10 +94,11 @@ const HeaderSearch: React.FunctionComponent<{
             className={`header-search-form__toggle ${
               isOpenLocally ? "header-search-form__toggle_close-icon" : ""
             }`}
-            type="submit"
-            onClick={toggle}
+            type="button"
+            onClick={isCleanOnCrossClick ? clean : toggle}
           ></button>
         </div>
+        {submitButton}
       </form>
     </div>
   );

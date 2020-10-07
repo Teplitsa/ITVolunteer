@@ -23,6 +23,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   message,
   isOverdue,
   timeline_date,
+  doer_id,
   doer,
   taskHasCloseSuggestion,
 }): ReactElement => {
@@ -79,20 +80,20 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         {type === "close" && taskStatus === "closed" && !!message && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
         )}
-        {type === "close_suggest" && approvedDoer && (
-          <TaskTimelineCloseSuggestType {...{ id, status, message }} />
+        {type === "close_suggest" && (
+          <TaskTimelineCloseSuggestType {...{ id, status, message, doer, doerId: Number(doer_id) }} />
         )}
-        {type === "close_decision" && approvedDoer && (
+        {type === "close_decision" && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
         )}
-        {type === "date_suggest" && approvedDoer && (
-          <TaskTimelineDateSuggestType {...{ id, status, message }} />
+        {type === "date_suggest" && (
+          <TaskTimelineDateSuggestType {...{ id, status, message, doer }} />
         )}
-        {type === "date_decision" && approvedDoer && (
+        {type === "date_decision" && (
           <TaskTimelineDateDecisionType />
         )}
-        {type === "work" && approvedDoer && doer && (
-          <TaskTimelineWorkType {...doer} />
+        {type === "work" && doer && (
+          <TaskTimelineWorkType {...{ status, doer }} />
         )}
         {type === "publication" && <TaskTimelinePublicationType />}
         {type === "search_doer" && <TaskTimelineSearchDoerType />}

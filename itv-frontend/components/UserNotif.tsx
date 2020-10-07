@@ -25,6 +25,8 @@ const ITV_USER_NOTIF_TEXT = {
   deadline_update_taskdoer: "изменил(а) дедлайн задачи",
   suggest_new_deadline_to_taskauthor: "предложил(а) новый дедлайн задачи",
   suggest_new_deadline_to_taskdoer: "Вы предложили новый дедлайн задачи",
+  suggest_task_close_to_taskauthor: "предложил(а) закрыть задачу",
+  reject_task_close_to_taskdoer: "отклонил(а) предложение закрыть задачу",
   task_closing_taskauthor: "Вы закрыли задачу",
   task_closing_taskdoer: "закрыл(а) задачу",
   post_feedback_taskauthor_to_taskdoer: "оставил(а) вам отзыв по задаче",

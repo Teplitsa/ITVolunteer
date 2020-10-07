@@ -121,6 +121,22 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
   );
 };
 
+export const WizardSteps = ({ ...props }) => {
+  if(!props.steps || !props.steps.length) {
+    return null
+  }
+
+  return (
+    <div className="wizard-steps">
+      {props.steps.map((step, index) => {
+        return (
+        <div className={`step-list-item ${step.step === props.step ? "active" : step.step < props.step ? "past" : "future"}`}>{step.shortTitle}</div>
+        )
+      })}
+    </div>
+  );
+};
+
 export const WizardForm = ({ children, ...props }) => {
   const [formFieldNameList, setFormFieldNameList] = useState(null);
 

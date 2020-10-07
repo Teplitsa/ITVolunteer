@@ -223,21 +223,21 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         onWizardComplete={handleCompleteWizard}
         onWizardCancel={handleCancelWizard}
       >
-        <SetTaskTitleScreen />
-        <SetTaskDescriptionScreen />
-        <SetTaskResultScreen />
-        <SetTaskImpactScreen />
-        <SetTaskReferencesScreen />
-        <SetTaskRemoteResourcesScreen />
-        <UploadTaskFilesScreen />
-        <SelectTaskTagsScreen />
-        <SelectTaskNgoTagsScreen />
+        <SetTaskTitleScreen shortTitle="Название" />
+        <SetTaskDescriptionScreen shortTitle="Суть задачи" />
+        <SetTaskResultScreen shortTitle="Результат" />
+        <SetTaskImpactScreen shortTitle="Эффект" />
+        <SetTaskReferencesScreen shortTitle="Примеры" />
+        <SetTaskRemoteResourcesScreen shortTitle="Ссылки" />
+        <UploadTaskFilesScreen shortTitle="Файлы" />
+        <SelectTaskTagsScreen shortTitle="Категория" />
+        <SelectTaskNgoTagsScreen shortTitle="Направления помощи" />
         {/*
         <SelectTaskPreferredDoerScreen />
         */}
-        <SelectTaskRewardScreen />
-        <SelectTaskPreferredDurationScreen />
-        <SelectTaskCoverScreen />
+        <SelectTaskRewardScreen shortTitle="Вознаграждение" />
+        <SelectTaskPreferredDurationScreen shortTitle="Сроки" />
+        <SelectTaskCoverScreen shortTitle="Обложка" />
       </Wizard>
     </>
   );

@@ -200,7 +200,7 @@ const taskThunks: ITaskThunks = {
   adminSupportRequest: thunk(
     async (
       actions,
-      { messageText, addSnackbar, callbackFn },
+      { messageText, email, addSnackbar, callbackFn },
       { getStoreState }
     ) => {
       if (!messageText) return;
@@ -215,7 +215,7 @@ const taskThunks: ITaskThunks = {
       const formData = new FormData();
 
       formData.append("name", "");
-      formData.append("email", "");
+      formData.append("email", email);
       formData.append("message", messageText);
       formData.append("page_url", `/tasks/${taskSlug}`);
       formData.append("nonce", nonce);

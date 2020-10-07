@@ -89,6 +89,12 @@
         border-radius: 10px;
       }
 
+      &-error {
+        @include text-xs-bold;
+        color: $color-sec-dark;
+        margin-top: 4px;
+      }
+
       &-checkbox {
         display: flex;
         justify-content: flex-start;
