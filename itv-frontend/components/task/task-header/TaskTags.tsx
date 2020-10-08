@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, Fragment } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ITaskTag } from "../../../model/model.typing";
@@ -38,7 +38,7 @@ const TaskTags: React.FunctionComponent<{
             <img src={icon} />
             {tagGroup.map(({ slug, name }) => {
               return (
-                <>
+                <Fragment key={`TakKey${slug}`}>
                   {groupId === 'tags' &&
                   <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}>
                     <a
@@ -74,7 +74,7 @@ const TaskTags: React.FunctionComponent<{
                   {groupId !== 'ngoTags' && groupId !== 'tags' &&
                     <span>{name}</span>
                   }
-                </>
+                </Fragment>
               );
             })}
           </TaskTagGroup>

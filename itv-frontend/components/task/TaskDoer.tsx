@@ -81,7 +81,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
           <a className="name" href={toProfile}>
             {fullName}
           </a>
-          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(doerReviewsCount)}`}`}</span>
+          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(doerReviewsCount)}`}</span>
           <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
         </div>
       </div>
