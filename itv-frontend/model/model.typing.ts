@@ -160,6 +160,23 @@ export interface ISessionThunks {
       errorCallbackFn: (message: string) => void;
     }
   >;
+  resetPassword: Thunk<
+    ISessionActions,
+    {
+      userLogin: string;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
+  changePassword: Thunk<
+    ISessionActions,
+    {
+      newPassword: string;
+      key: string;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
 }
 
 /**

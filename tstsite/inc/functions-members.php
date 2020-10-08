@@ -1690,3 +1690,98 @@ function ajax_get_member_task_stats() {
 }
 add_action('wp_ajax_get-member-task-stats', 'ajax_get_member_task_stats');
 add_action('wp_ajax_nopriv_get-member-task-stats', 'ajax_get_member_task_stats');
+
+function itv_retrieve_password() {
+    $errors    = new WP_Error();
+    $user_data = false;
+ 
+    if ( empty( $_POST['user_login'] ) || ! is_string( $_POST['user_login'] ) ) {
+        $errors->add( 'empty_username', __( '<strong>Error</strong>: Please enter a username or email address.' ) );
+    } elseif ( strpos( $_POST['user_login'], '@' ) ) {
+        $user_data = get_user_by( 'email', trim( wp_unslash( $_POST['user_login'] ) ) );
+        if ( empty( $user_data ) ) {
+            $errors->add( 'invalid_email', __( '<strong>Error</strong>: There is no account with that username or email address.' ) );
+        }
+    } else {
+        $login     = trim( wp_unslash( $_POST['user_login'] ) );
+        $user_data = get_user_by( 'login', $login );
+    }
+ 
+    do_action( 'lostpassword_post', $errors, $user_data );
+    $errors = apply_filters( 'lostpassword_errors', $errors, $user_data );
+ 
+    if ( $errors->has_errors() ) {
+        return $errors;
+    }
+ 
+    if ( ! $user_data ) {
+        $errors->add( 'invalidcombo', __( '<strong>Error</strong>: There is no account with that username or email address.' ) );
+        return $errors;
+    }
+ 
+    // Redefining user_login ensures we return the right case in the email.
+    $user_login = $user_data->user_login;
+    $user_email = $user_data->user_email;
+    $key        = get_password_reset_key( $user_data );
+ 
+    if ( is_wp_error( $key ) ) {
+        return $key;
+    }
+ 
+    if ( is_multisite() ) {
+        $site_name = get_network()->site_name;
+    } else {
+        $site_name = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+    }
+ 
+    $message = __( 'Someone has requested a password reset for the following account:' ) . "\r\n\r\n";
+    $message .= sprintf( __( 'Site Name: %s' ), $site_name ) . "\r\n\r\n";
+    $message .= sprintf( __( 'Username: %s' ), $user_login ) . "\r\n\r\n";
+    $message .= __( 'If this was a mistake, just ignore this email and nothing will happen.' ) . "\r\n\r\n";
+    $message .= __( 'To reset your password, visit the following address:' ) . "\r\n\r\n";
+    $message .= network_site_url( "reset-password-set?key=$key&login=" . rawurlencode( $user_login ), 'login' ) . "\r\n";
+ 
+    $title = sprintf( __( '[%s] Password Reset' ), $site_name );
+    $title = apply_filters( 'retrieve_password_title', $title, $user_login, $user_data );
+ 
+    $message = apply_filters( 'retrieve_password_message', $message, $key, $user_login, $user_data );
+ 
+    if ( $message && ! wp_mail( $user_email, wp_specialchars_decode( $title ), $message ) ) {
+        $errors->add(
+            'retrieve_password_email_failure',
+            sprintf(
+                /* translators: %s: Documentation URL. */
+                __( '<strong>Error</strong>: The email could not be sent. Your site may not be correctly configured to send emails. <a href="%s">Get support for resetting your password</a>.' ),
+                esc_url( __( 'https://wordpress.org/support/article/resetting-your-password/' ) )
+            )
+        );
+        return $errors;
+    }
+ 
+    return true;
+}
+
+function ajax_reset_password() {
+
+    if( is_user_logged_in() ) {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+
+    $ret = itv_retrieve_password();
+
+    if(is_wp_error($ret)) {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'message' => $ret->get_error_message(),
+        )));    
+    }
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+    )));    
+}
+add_action('wp_ajax_reset-password', 'ajax_reset_password');
+add_action('wp_ajax_nopriv_reset-password', 'ajax_reset_password');

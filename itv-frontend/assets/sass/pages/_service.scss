@@ -113,12 +113,20 @@
 
   .auth-page__subtitle {
     margin-top: 8px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .reset-password {
     &__form-container {
       margin-top: 32px;    
     }
+  }
+
+  .auth-page-form__control-error {
+    display: block;
+    height: 12px;
   }
 }
 

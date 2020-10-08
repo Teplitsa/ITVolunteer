@@ -293,6 +293,58 @@ const sessionThunks: ISessionThunks = {
       }
     }
   ),
+  resetPassword: thunk(
+    async (actions, { userLogin, successCallbackFn, errorCallbackFn }) => {
+      try {
+        const formData = new FormData();
+        formData.append("user_login", String(userLogin));
+
+        const result = await fetch(getAjaxUrl("reset-password"), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, message: responseMessage } = await (<
+          Promise<IFetchResult>
+        >result.json());
+
+        if (responseStatus === "error") {
+          errorCallbackFn(stripTags(responseMessage));
+        } else {
+          successCallbackFn();
+        }
+      } catch (error) {
+        console.error(error);
+        errorCallbackFn("Не удалось отправить пароль.");
+      }
+    }
+  ),
+  changePassword: thunk(
+    async (actions, { newPassword, key, successCallbackFn, errorCallbackFn }) => {
+      try {
+        const formData = new FormData();
+        formData.append("pass1", String(newPassword));
+        formData.append("pass2", String(newPassword));
+        formData.append("rp_key", String(key));
+
+        const result = await fetch("/wp-login.php?action=resetpass", {
+          method: "post",
+          body: formData,
+        });
+
+        const text = result.ok ? await result.text() : "";
+
+        if(text.match(/Ваш новый пароль вступил в силу/)) {
+          successCallbackFn();
+        } else {
+          errorCallbackFn("Не удалось задать пароль.");
+        }
+      } catch (error) {
+        console.error(error);
+        errorCallbackFn("Не удалось задать пароль.");
+      }
+    }
+  ),
 };
 
 const sessionModel: ISessionModel = {
