@@ -214,13 +214,17 @@ class TimelineModel extends ITVSingletonModel {
         return TimelineItem::where($filter)->orderBy('sort_order', 'DESC')->orderBy('id', 'DESC')->first();
     }
     
-    public function make_future_item_current($task_id, $type) {
+    public function make_future_item_current($task_id, $type, $args=array()) {
         $item = TimelineItem::where(['task_id' => $task_id, 'type' => $type, 'status' => TimelineModel::$STATUS_FUTURE])->orderBy('sort_order', 'DESC')->orderBy('id', 'ASC')->first();
         
         if($item) {
             $this->complete_current_items($task_id);
             $item->status = TimelineModel::$STATUS_CURRENT;
-            
+
+            foreach($args as $k => $v) {
+                $item->$k = $v;
+            }
+
             if($item->type !== TimelineModel::$TYPE_CLOSE) {
                 $item->due_date = date( 'Y-m-d H:i:s' );
             }

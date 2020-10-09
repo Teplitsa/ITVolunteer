@@ -48,8 +48,8 @@ const ResetPassword: React.FunctionComponent = (): ReactElement => {
     <>
       <h1 className="auth-page__title">Забыли пароль?</h1>
       <p className="auth-page__subtitle">
-        Введите адрес e-maila на который вы зарегистрировались.
-        Мы сбросим пароль и пришлем вам  инструкцию, <br />как получить новый
+        Введите email или имя пользователя.<br />
+        Мы сбросим пароль и пришлем вам инструкцию, <br />как получить новый
       </p>
 
       <div className="reset-password__form-container">

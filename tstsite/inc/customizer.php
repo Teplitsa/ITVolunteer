@@ -364,7 +364,7 @@ function ajax_approve_candidate() {
     //
     $timeline = ITV\models\TimelineModel::instance();
     if($timeline->get_first_item($task_id, TimelineModel::$TYPE_WORK, TimelineModel::$STATUS_FUTURE)) {
-        $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_WORK);
+        $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $doer->ID]);
     }
     else {
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $doer_id]);
