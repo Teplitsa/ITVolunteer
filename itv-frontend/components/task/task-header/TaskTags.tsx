@@ -1,4 +1,4 @@
-import { ReactElement, Fragment } from "react";
+import { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ITaskTag } from "../../../model/model.typing";
@@ -7,7 +7,7 @@ import IconNgoTags from "../../../assets/img/icon-people.svg";
 import IconRewardTags from "../../../assets/img/icon-gift-box.svg";
 import TaskTagGroup from "./TaskTagGroup";
 import { capitalize, toCamelCase } from "../../../utilities/utilities";
-import { regEvent } from "../../../utilities/ga-events"
+import { regEvent } from "../../../utilities/ga-events";
 
 const TaskTags: React.FunctionComponent<{
   tags?: {
@@ -32,49 +32,59 @@ const TaskTags: React.FunctionComponent<{
   return (
     <div className="meta-terms">
       {tagGroups.map(([groupId, icon, tagGroup]) => {
-        // console.log("groupId:", groupId);
         return (
           <TaskTagGroup key={groupId}>
             <img src={icon} />
             {tagGroup.map(({ slug, name }) => {
               return (
-                <Fragment key={`TakKey${slug}`}>
-                  {groupId === 'tags' &&
-                  <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}>
-                    <a
-                      key={`Tag${capitalize(groupId)}${capitalize(
-                        toCamelCase(slug)
-                      )}`}
-                      className={groupId === 'tags' || groupId === 'ngoTags' ? "link" : ""}
-                      title={name}
-                      onClick={(e) => {
-                        regEvent('tl_tf_tags', router);
-                      }}                  
+                <div className="meta-term" key={slug}>
+                  {groupId === "tags" && (
+                    <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}>
+                      <a
+                        key={`Tag${capitalize(groupId)}${capitalize(
+                          toCamelCase(slug)
+                        )}`}
+                        className={
+                          groupId === "tags" || groupId === "ngoTags"
+                            ? "link"
+                            : ""
+                        }
+                        title={name}
+                        onClick={(e) => {
+                          regEvent("tl_tf_tags", router);
+                        }}
+                      >
+                        {name}
+                      </a>
+                    </Link>
+                  )}
+                  {groupId === "ngoTags" && (
+                    <Link
+                      href="/tasks/nko-tag/[slug]"
+                      as={`/tasks/nko-tag/${slug}`}
                     >
-                      {name}
-                    </a>
-                  </Link>
-                  }
-                  {groupId === 'ngoTags' &&
-                  <Link href="/tasks/nko-tag/[slug]" as={`/tasks/nko-tag/${slug}`}>
-                    <a
-                      key={`Tag${capitalize(groupId)}${capitalize(
-                        toCamelCase(slug)
-                      )}`}
-                      className={groupId === 'tags' || groupId === 'ngoTags' ? "link" : ""}
-                      title={name}
-                      onClick={(e) => {
-                        regEvent('tl_tf_nko_tags', router);
-                      }}                  
-                    >
-                      {name}
-                    </a>
-                  </Link>
-                  }
-                  {groupId !== 'ngoTags' && groupId !== 'tags' &&
+                      <a
+                        key={`Tag${capitalize(groupId)}${capitalize(
+                          toCamelCase(slug)
+                        )}`}
+                        className={
+                          groupId === "tags" || groupId === "ngoTags"
+                            ? "link"
+                            : ""
+                        }
+                        title={name}
+                        onClick={(e) => {
+                          regEvent("tl_tf_nko_tags", router);
+                        }}
+                      >
+                        {name}
+                      </a>
+                    </Link>
+                  )}
+                  {groupId !== "ngoTags" && groupId !== "tags" && (
                     <span>{name}</span>
-                  }
-                </Fragment>
+                  )}
+                </div>
               );
             })}
           </TaskTagGroup>

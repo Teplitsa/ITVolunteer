@@ -149,6 +149,10 @@
   &__action {
     .btn:first-child {
       margin: 0 0 10px;
+      color: $color-gray-dark-lg;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
   &__thank-count {

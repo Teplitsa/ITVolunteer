@@ -1001,7 +1001,7 @@ export interface IAnyState {
 
 export interface IWizardState {
   wizardName: string;
-  formData: object;
+  formData: any;
   step: number;
   showScreenHelpModalState: object;
   now: any;

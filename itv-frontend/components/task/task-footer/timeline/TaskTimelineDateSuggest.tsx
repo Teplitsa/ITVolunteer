@@ -18,13 +18,15 @@ const TaskTimelineDateSuggest: React.FunctionComponent<{
   return (
     <div className="timeline-form-wrapper">
       <div className="timeline-form timeline-form-date-suggest">
-        <DatePicker
-          selected={selectedDate}
-          dateFormat="dd.MM.yyyy"
-          locale="ru-RU"
-          inline
-          onChange={(date) => setSelectedDate(date)}
-        />
+        <div className="timeline-datepicker-container">
+          <DatePicker
+            selected={selectedDate}
+            dateFormat="dd.MM.yyyy"
+            locale="ru-RU"
+            inline
+            onChange={(date) => setSelectedDate(date)}
+          />
+        </div>
         <div className="comment-action">
           <a
             href="#"

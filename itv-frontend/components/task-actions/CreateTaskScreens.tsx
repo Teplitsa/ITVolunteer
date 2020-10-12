@@ -25,6 +25,8 @@ import inputCheckOn from "../../assets/img/icon-wizard-check-on.svg";
 import inputCheckOff from "../../assets/img/icon-wizard-check-off.svg";
 import calendarIcon from "../../assets/img/icon-wizard-calendar.svg";
 
+registerLocale("ru-RU", ru);
+
 export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   const props = {
     ...screenProps,
@@ -167,7 +169,7 @@ export const CreateTaskHelp = (props: IWizardScreenProps) => {
         {!!howtoTitle &&
         <>
           <img src={howToIcon} className="wizard-field__icon" />
-          <span>{howtoTitle}</span>
+          <span className="btn btn_hint">{howtoTitle}</span>
         </>
         }
 

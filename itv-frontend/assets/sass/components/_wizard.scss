@@ -10,7 +10,8 @@
 
   &__title {
     display: flex;
-    color: $color-gray-dark-md;
+    align-items: flex-start;
+    color: $color-gray-dark-md-001;
     @include htext-bold;
     margin-bottom: 16px;
     text-align: center;
@@ -22,6 +23,7 @@
       align-items: center;
       @include text-lg;
       margin-right: 8px;
+      color: $color-gray-dark-md;
       &::after {
         content: "";
         display: inline-block;
@@ -52,8 +54,12 @@
 
   &__primary-button {
     margin: 0 0 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    width: 380px;
     max-width: 100%;
-    @include wizard-button-primary;
+    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    text-align: center;
     @include screen-from(md) {
       margin: 0 32px 0 0;
     }
@@ -157,14 +163,6 @@
   &__help {
     display: flex;
     align-items: center;
-    @include text-sm-bold;
-    color: $color-main;
-
-    & > span {
-      display: inline-block;
-      cursor: pointer;
-      @include dashed-underline($color-main);
-    }
   }
 }
 
@@ -480,10 +478,16 @@
   position: relative;
 
   &__box {
-    @include wizard-field-input;
+    &:not([class*="_multiple"]) {
+      @include wizard-field-input;
+    }
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &_multiple {
+      margin-bottom: 16px;
+    }
 
     &__title {
       padding: 13px 12px;
@@ -500,7 +504,10 @@
     }
 
     &__selected-set {
-      padding: 12px 12px 6px 12px;
+      &:not([class*="_multiple"]) {
+        padding: 12px 12px 6px 12px;
+      }
+
       min-height: 32px;
       display: flex;
       flex-wrap: wrap;
@@ -532,7 +539,7 @@
 
   &__list {
     position: absolute;
-    top: 53px;
+    top: 54px;
     left: 0;
     background-color: $color-white;
     border: 1px solid $color-gray-light-lg;
@@ -548,7 +555,20 @@
     width: 100%;
     z-index: 3;
     max-height: 50vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
 
     li {
       height: 24px;
@@ -700,4 +720,8 @@
       width: 80%;
     }
   }
+}
+
+.wizard-smart-search {
+  position: relative;
 }

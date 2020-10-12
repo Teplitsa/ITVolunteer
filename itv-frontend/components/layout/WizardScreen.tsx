@@ -232,8 +232,8 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
         <a
           href="#"
           onClick={handleNextClick}
-          className={`wizard-form-action-bar__primary-button ${
-            isFieldValid() ? "" : " disabled"
+          className={`wizard-form-action-bar__primary-button btn btn_primary ${
+            isFieldValid() ? "" : " btn_disabled"
           }`}
         >
           Продолжить
@@ -245,7 +245,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
           onClick={
             props.visibleStep > 1 ? handlePrevClick : props.onWizardCancel
           }
-          className="wizard-form-action-bar__secondary-button"
+          className="btn btn_link"
         >
           {props.visibleStep > 1 ? "Вернуться" : "Отмена"}
         </a>
@@ -599,98 +599,141 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
   const setFormData = useStoreActions(
     (actions) => actions.components.createTaskWizard.setFormData
   );
+  const [filterPhrase, setFilterPhrase] = useState<string>("");
+  const [tagCount, setTagCount] = useState<number>(
+    (Array.isArray(formData[props.name]?.value) &&
+      formData[props.name].value.length) ||
+      0
+  );
 
-  function handleOptionClick(e, index) {
-    let fd = { ...formData };
+  function handleOptionClick(optionValue: number) {
+    let selectedValueList =
+      (Array.isArray(formData[props.name]?.value) &&
+        formData[props.name].value) ||
+      [];
 
-    let selectedValueList = _.get(fd, props.name + ".value", []);
-    if (!Array.isArray(selectedValueList)) {
-      selectedValueList = [];
+    selectedValueList = Array.from(
+      new Set([...selectedValueList, optionValue])
+    );
+
+    if (selectedValueList.length >= 3) {
+      setFilterPhrase("");
     }
-    let selectedOption = _.get(props.selectOptions[index], "value", "");
-    selectedValueList = _.uniq([
-      ...selectedValueList,
-      ...[String(selectedOption)],
-    ]);
 
-    _.set(fd, props.name + ".value", selectedValueList);
-    setFormData({ ...fd });
+    setTagCount(selectedValueList.length);
+
     setIsOpen(false);
+
+    setFormData({
+      ...formData,
+      ...{ [props.name]: { value: selectedValueList } },
+    });
   }
 
-  function handleRemoveItemClick(e) {
-    e.stopPropagation();
-    // console.log("formData:", formData)
-    let value = e.target.dataset.value;
-    // console.log("value:", value)
+  function handleRemoveItemClick(event: React.MouseEvent<HTMLImageElement>) {
+    event.stopPropagation();
 
-    let fd = { ...formData };
+    const value = Number(event.currentTarget.dataset.value);
 
-    let selectedValueList = _.get(fd, props.name + ".value", []);
-    if (!Array.isArray(selectedValueList)) {
-      selectedValueList = [];
-    }
-    selectedValueList = selectedValueList.filter((item) => item !== value);
-    // console.log("selectedValueList:", selectedValueList)
+    let selectedValueList =
+      (Array.isArray(formData[props.name]?.value) &&
+        formData[props.name].value) ||
+      [];
 
-    _.set(fd, props.name + ".value", selectedValueList);
-    setFormData({ ...fd });
+    selectedValueList = selectedValueList.filter(
+      (item: number) => item !== value
+    );
+
+    setFormData({
+      ...formData,
+      ...{ [props.name]: { value: selectedValueList } },
+    });
+
+    setTagCount(selectedValueList.length);
   }
 
-  function handleBoxClick(e) {
-    setIsOpen(!isOpen);
+  function handleBoxClick() {
+    setIsOpen(true);
   }
 
   function getSelectedOptions() {
-    let selectedValueList = _.get(formData, props.name + ".value", []);
-    if (!Array.isArray(selectedValueList)) {
-      selectedValueList = [];
-    }
+    let selectedValueList =
+      (Array.isArray(formData[props.name]?.value) &&
+        formData[props.name].value) ||
+      [];
+
     return props.selectOptions.filter(
-      (item, i) =>
-        selectedValueList.findIndex((value) => String(item.value) === value) >
+      (item) =>
+        selectedValueList.findIndex((value: number) => item.value === value) >
         -1
     );
   }
 
+  function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setFilterPhrase(event.currentTarget.value);
+    handleBoxClick();
+  }
+
   return (
-    <div className="wizard-select">
-      <div className="wizard-select__box" onClick={handleBoxClick}>
-        <div className="wizard-select__box__selected-set">
-          {getSelectedOptions().map((option, index) => {
-            return (
-              <div key={index} className="wizard-select__box__selected-item">
-                <span>{option.title}</span>
-                <img
-                  src={selectItemRemove}
-                  onClick={handleRemoveItemClick}
-                  data-value={option.value}
-                />
-              </div>
-            );
-          })}
+    <div className="wizard-select wizard-select_multiple">
+      {getSelectedOptions().length > 0 && (
+        <div className="wizard-select__box wizard-select__box_multiple">
+          <div className="wizard-select__box__selected-set wizard-select__box__selected-set_multiple">
+            {getSelectedOptions().map((option) => {
+              return (
+                <div
+                  key={`Tag-${option.value}`}
+                  className="wizard-select__box__selected-item"
+                >
+                  <span>{option.title}</span>
+                  <img
+                    src={selectItemRemove}
+                    onClick={handleRemoveItemClick}
+                    data-value={option.value}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="wizard-select__box__galka">
-          <img src={selectGalka} />
-        </div>
-      </div>
-      {isOpen && (
-        <ul className="wizard-select__list">
-          {props.selectOptions.map((option, index) => {
-            return (
-              <li
-                key={index}
-                className="wizard-select__list__item"
-                onClick={(e) => {
-                  handleOptionClick(e, index);
-                }}
-              >
-                {option.title}
-              </li>
-            );
-          })}
-        </ul>
       )}
+      <div className="wizard-smart-search">
+        <input
+          className="form__control form__control_input form__control_full-width"
+          type="search"
+          value={filterPhrase}
+          onChange={onInputChange}
+          disabled={tagCount >= 3}
+        />
+        {filterPhrase && isOpen && (
+          <ul className="wizard-select__list">
+            {props.selectOptions
+              .filter((option) => {
+                if (filterPhrase) {
+                  if (
+                    option.title.search(new RegExp(`^${filterPhrase}`, "i")) ===
+                    -1
+                  ) {
+                    return false;
+                  }
+                }
+
+                return true;
+              })
+              .map((option) => {
+                return (
+                  <li
+                    key={`Tag-${option.value}`}
+                    className="wizard-select__list__item"
+                    onClick={() => handleOptionClick(option.value)}
+                  >
+                    {option.title}
+                  </li>
+                );
+              })}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

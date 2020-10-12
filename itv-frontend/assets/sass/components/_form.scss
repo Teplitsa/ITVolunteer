@@ -1,22 +1,39 @@
-.from {
-    &__group {
-      display: flex;
-      flex-flow: column nowrap;
-      margin: 0 0 32px;
-    }
-    &__control {
-      &_input {
+.form {
+  &__group {
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0 0 32px;
+  }
+  &__control {
+    &_input {
+      &[class*="_input"] {
         background-color: $color-white;
-        border: 1px solid #e3eaed;
+        border: 1px solid $color-gray-light-lg;
         margin: 0 15px 0 0;
-        padding: 10px !important;
+        padding: 16px 12px;
         box-sizing: border-box;
-        box-shadow: 6px 6px 20px rgba(55, 84, 170, 0.06),
-          inset 2px 2px 4px rgba(117, 152, 163, 0.15);
+        box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
         border-radius: 10px;
+        font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-xl;
+        transition: all 0.15s linear;
+
+        &:hover {
+          border: 1px solid $color-gray;
+        }
+
+        &:disabled {
+          background-color: $color-gray-light-lg;
+          border: 1px solid $color-gray-light-lg;
+        }
       }
-      &_submit {
-        @extend .btn_primary;
-      }
+    }
+    &_submit {
+      @extend .btn_primary;
+    }
+    &_full-width {
+      display: block;
+      width: 100%;
     }
   }
+}

@@ -19,13 +19,15 @@
   }
 
   .content {
-    margin-right: $base * 4;
+    margin-left: $base * 4;
     flex-grow: 1;
+    order: 2;
   }
 
   .sidebar {
     min-width: 350px;
     max-width: 350px;
+    order: 1;
 
     & > h2,
     & > .h2 {
@@ -108,41 +110,13 @@
 
       .meta-info-share {
         position: relative;
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
 
-        .task-share-buttons {
-          display: flex;
-          position: absolute;
-          background-color: $color-white;
-          width: 180px;
-          height: 48px;
-          justify-content: space-between;
-          align-items: center;
-          top: 30px;
-          left: -50px;
-          padding: 0px 8px;
-          border-radius: 24px;
-
-          &:before {
-            content: "";
-            display: block;
-            width: 0;
-            height: 0;
-            position: absolute;
-            border-left: 13px solid transparent;
-            border-right: 13px solid transparent;
-            border-bottom: 13px solid $color-white;
-            left: calc(50% - 12px);
-            top: -13px;
-          }
-
-          button {
-            height: 32px;
-          }
-
-          button,
-          button:active {
-            outline: none;
-          }
+        img {
+          width: 16px;
+          height: 16px;
         }
       }
 
@@ -154,6 +128,11 @@
 
         span {
           color: $color-main;
+        }
+
+        &:hover,
+        &:focus {
+          text-decoration: none;
         }
       }
     }
@@ -453,7 +432,7 @@
     border-radius: 6px;
 
     .stage {
-      @include text-line-sm;
+      // @include text-line-sm;
       padding-top: 10px;
       padding-bottom: 10px;
       background-color: $color-gray-light-md;
@@ -462,6 +441,8 @@
       background-repeat: no-repeat;
       background-position: right center;
       background-image: url("../../img/pic-stage-next.svg");
+      font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
 
       &:after {
         float: none;
@@ -492,6 +473,7 @@
       &.done {
         background-color: $color-gray-light-xl;
         background-image: url("../../img/pic-stage-done.svg");
+        color: $color-gray;
 
         i {
           background-color: $color-gray-light-md;
@@ -504,6 +486,7 @@
       &.active {
         background-color: $color-gray-light-xl;
         background-image: url("../../img/pic-stage-active.svg");
+        color: $color-gray-dark-xl;
 
         i {
           background-color: $color-gray-light-md;
@@ -1096,12 +1079,12 @@
     }
   }
 
-  &.timeline-form-date-comment {
-    width: 253px;
-  }
+  // &.timeline-form-date-comment {
+  //   width: 253px;
+  // }
 
   &.timeline-form-date-suggest {
-    width: 253px;
+    // width: 253px;
 
     .datepicker {
       border: none;

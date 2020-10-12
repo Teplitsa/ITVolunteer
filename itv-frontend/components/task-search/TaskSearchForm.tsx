@@ -29,10 +29,10 @@ const TaskSearchForm: React.FunctionComponent<{
   useEffect(() => setSearchPhrase(s as string), [s]);
 
   return (
-    <div className="search-from">
-      <div className="search-from__group">
+    <div className="search-form">
+      <div className="search-form__group">
         <input
-          className="search-from__control search-from__control_input"
+          className="search-form__control search-form__control_input"
           type="search"
           value={searchPhrase}
           onChange={typeIn}
@@ -42,7 +42,7 @@ const TaskSearchForm: React.FunctionComponent<{
           }}
         />
         <button
-          className="search-from__control search-from__control_submit"
+          className="search-form__control search-form__control_submit"
           type="button"
           onClick={(event) => {
             event.preventDefault();
