@@ -17,11 +17,13 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
     <div className="task-card">
       <div className="task-card__header">
         <UserCardSmall {...task.author} />
+        {!!task.dateGmt &&
         <div className="task-card__date">
           {`Открыто ${getTheIntervalToNow({
               fromDateString: task.dateGmt,
           })}`}
         </div>
+        }
         <div className="task-card__сandidate-сount">
           {doerCandidatesCountModulo}{" "}
           {doerCandidatesCountModulo === 1

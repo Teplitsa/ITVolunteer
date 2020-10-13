@@ -170,6 +170,9 @@ const taskActions: ITaskActions = {
   updateApprovedDoer: action((taskState, approvedDoer) => {
     Object.assign(taskState, { approvedDoer });
   }),
+  declineApprovedDoer: action((taskState) => {
+    Object.assign(taskState, { approvedDoer: null });
+  }),
   updateDoers: action((taskState, doers) => {
     Object.assign(taskState, { doers });
   }),

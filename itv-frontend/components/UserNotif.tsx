@@ -34,6 +34,7 @@ const ITV_USER_NOTIF_TEXT = {
   post_feedback_taskauthor_to_taskauthor: "Вы оставили отзыв волонтёру по задаче",
   post_feedback_taskdoer_to_taskauthor: "оставил(а) вам отзыв по задаче",
   reaction_to_task_back: "отозвал свой отклик на задачу",
+  decline_doer_to_taskdoer: "отклонил(а) вас в качестве исполнителя задачи",
 };
 
 export function NotifList(props) {

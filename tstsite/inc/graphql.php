@@ -251,12 +251,12 @@ function itv_graphql_task_visibility_filter($visibility, $model_name, $data, $ow
         return $visibility;
     }
     
-    if(in_array($data->post_status, ['in_work', 'closed', 'archived'])) {
+    if(in_array($data->post_status, ['in_work', 'closed', 'archived', 'draft'])) {
         return 'public';
     }
-    elseif(in_array($data->post_status, ['draft'])) {
-        return 'restricted';
-    }
+    // elseif(in_array($data->post_status, ['draft'])) {
+    //     return 'restricted';
+    // }
 
     return $visibility;
 }
@@ -721,7 +721,7 @@ function itv_register_member_tasks_graphql_query() {
                     'connected_items' => $user->ID,
                     'suppress_filters' => true,
                     'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed'],
+                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
                 );
                 $posts_where_doer = get_posts($params);
 
@@ -730,7 +730,7 @@ function itv_register_member_tasks_graphql_query() {
                     'author'        =>  $user->ID,
                     'suppress_filters' => true,
                     'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed'],
+                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
                 );
                 $posts_where_author = get_posts($params);
 
@@ -745,8 +745,11 @@ function itv_register_member_tasks_graphql_query() {
                 $closed_posts = itv_get_members_tasks_portion(array_filter($posts, function($post) {
                     return in_array($post->post_status, ['closed']);
                 }), $page, $posts_per_page);
+                $draft_posts = itv_get_members_tasks_portion(array_filter($posts, function($post) {
+                    return in_array($post->post_status, ['draft']);
+                }), $page, $posts_per_page);
 
-                foreach(array_merge($open_posts, $closed_posts) as $k => $post) {
+                foreach(array_merge($open_posts, $draft_posts, $closed_posts) as $k => $post) {
                     $deferred_posts[] = \WPGraphQL\Data\DataSource::resolve_post_object( $post->ID, $context );
                 }
 

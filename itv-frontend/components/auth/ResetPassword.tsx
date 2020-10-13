@@ -72,7 +72,7 @@ const ResetPassword: React.FunctionComponent = (): ReactElement => {
                 </span>
             </div>
             <div className="auth-page-form__group">
-              <button type="submit" className={`auth-page-form__control-submit`} tabIndex={3}>Получиь новый пароль</button>
+              <button type="submit" className={`auth-page-form__control-submit`} tabIndex={3}>Получить новый пароль</button>
             </div>        
           </form>
           : <Loader />

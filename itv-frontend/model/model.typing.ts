@@ -755,6 +755,7 @@ export interface ITaskActions {
   updateStatus: Action<ITaskModel, { status: TaskStatus }>;
   updateModerationStatus: Action<ITaskModel, { isApproved: boolean }>;
   updateApprovedDoer: Action<ITaskModel, ITaskApprovedDoer>;
+  declineApprovedDoer: Action<ITaskModel>;
   updateDoers: Action<ITaskModel, Array<ITaskDoer>>;
   updateComments: Action<ITaskModel, Array<ITaskComment>>;
   updateTimeline: Action<ITaskModel, Array<ITaskTimelineItem>>;

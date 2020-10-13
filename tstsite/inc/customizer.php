@@ -704,6 +704,8 @@ function ajax_decline_candidate() {
 
         // Task is automatically switched "publish":
         wp_update_post(array('ID' => $task->ID, 'post_status' => 'publish'));
+
+        UserNotifModel::instance()->push_notif($doer->ID, UserNotifModel::$TYPE_DECLINE_DOER_TO_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $task_author->ID]);
     }
     
     wp_die(json_encode(array(
