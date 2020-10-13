@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IMemberTaskCard } from "../model/model.typing";
 import UserCardSmall from "./UserCardSmall";
 import TaskTags from "../components/task/task-header/TaskTags";
-import { stripTags } from "../utilities/utilities";
+import { stripTags, getTheIntervalToNow } from "../utilities/utilities";
 
 const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
   task
@@ -17,7 +17,13 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
     <div className="task-card">
       <div className="task-card__header">
         <UserCardSmall {...task.author} />
-        <div className="task-card__date">Открыто 4 дня назад</div>
+        {!!task.dateGmt &&
+        <div className="task-card__date">
+          {`Открыто ${getTheIntervalToNow({
+              fromDateString: task.dateGmt,
+          })}`}
+        </div>
+        }
         <div className="task-card__сandidate-сount">
           {doerCandidatesCountModulo}{" "}
           {doerCandidatesCountModulo === 1

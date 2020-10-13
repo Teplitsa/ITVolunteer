@@ -48,7 +48,7 @@ function wp_ajax_login_by_auth_token()
             case "reject-close":
             case "suggest-close-date":
             case "suggest-close-task":
-            case "add-message":
+            // case "add-message":
                 $_POST["auth_token"] = $_POST["auth_token"] ?? null;
                 try {
                     $token = WPGraphQL\JWT_Authentication\Auth::validate_token($_POST["auth_token"]);

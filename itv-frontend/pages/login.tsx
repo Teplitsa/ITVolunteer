@@ -8,12 +8,17 @@ import Main from "../components/layout/Main";
 import Login from "../components/auth/Login";
 import GlobalScripts, { ISnackbarMessage } from "../context/global-scripts";
 import SnackbarList from "../components/global-scripts/SnackbarList";
+import { regEvent } from "../utilities/ga-events";
 
 const { SnackbarContext } = GlobalScripts;
 
 const LoginPage: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn, isLoaded } = useStoreState((state) => state.session);
   const router = useRouter()
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
 
   useEffect(() => {
     if(!isLoaded) {

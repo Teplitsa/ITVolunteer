@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
@@ -7,6 +7,7 @@ import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
+import { regEvent } from "../../utilities/ga-events";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
@@ -24,6 +25,10 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     ],
   });
 
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);
+
   return (
     <div className="member-account">
       <div className="member-account__content">
@@ -31,7 +36,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
           className="member-account__top"
           style={coverImage ? { backgroundImage: `url(${coverImage})` } : {}}
         >
-          {isAccountOwner && <MemberUploadCover />}
+          {isAccountOwner && (
+            <div className="member-account__top-inner">
+              <MemberUploadCover />
+            </div>
+          )}
         </div>
         <div className="member-account__columns">
           <div className="member-account__left-column">

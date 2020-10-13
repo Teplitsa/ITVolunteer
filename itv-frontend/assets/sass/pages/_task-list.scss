@@ -329,7 +329,7 @@
 
     .task-content {
       @include text-sm;
-      color: $color-gray-dark-xl;
+      color: $color-gray-dark-md-001;
       margin-top: 20px;
       padding-bottom: 16px;
       border-bottom: 1px solid $color-gray-light-md;
@@ -396,7 +396,7 @@
   }
 }
 
-.search-from {
+.search-form {
   width: 85%;
   @include screen-from(md) {
     width: 100%;

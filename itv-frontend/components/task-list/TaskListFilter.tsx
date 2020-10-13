@@ -1,4 +1,5 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import {
   IFetchResult,
@@ -35,7 +36,8 @@ const filterTips = {
 }
 
 const TaskListFilter: React.FunctionComponent = (): ReactElement => {
-  const user = useStoreState(store => store.session.user)
+  const isSessionLoaded = useStoreState(store => store.session.isLoaded)
+
   const tipClose = useStoreState(store => store.components.taskListFilter.tipClose)
   const setTipClose = useStoreActions(actions => actions.components.taskListFilter.setTipClose)
   const saveTipClose = useStoreActions(actions => actions.components.taskListFilter.saveTipClose)
@@ -63,6 +65,8 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
   const setSubscribeTaskList = useStoreActions(actions => actions.session.setSubscribeTaskList)
   const loadSubscribeTaskList = useStoreActions(actions => actions.session.loadSubscribeTaskList)
 
+  const router = useRouter()
+
   useEffect(() => {
     loadFilterData()
     loadTipClose()
@@ -70,12 +74,86 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
   }, [])
 
   useEffect(() => {
-      if(!user.id) {
+    if(!isFilterDataLoaded) {
+      return
+    }
+
+    let match = router.asPath.match(/\/tasks\/tag\/([-_a-z0-9]+)\/?/)
+    // console.log("match:", match);
+
+    if(match) {
+      var foundCheckId = "";
+      filterData.find((sectionData) => {
+        // console.log("sectionData:", sectionData);
+
+        if(sectionData.id === 'tags') {
+          var foundItem = sectionData.items.find((itemData) => {
+            return itemData.slug === match[1];
+          });
+
+          // console.log("foundItem:", foundItem);
+
+          if(foundItem) {
+            foundCheckId = "tags." + foundItem.id;
+            return true;
+          }
+        }
+
+        return false;
+      })
+
+      // console.log("foundCheckId:", foundCheckId);
+
+      setOptionCheck({[foundCheckId]: true})
+      saveOptionCheck()
+    }
+
+  }, [filterData, isFilterDataLoaded])
+
+  useEffect(() => {
+    if(!isFilterDataLoaded) {
+      return
+    }
+
+    let match = router.asPath.match(/\/tasks\/nko-tag\/([-_a-z0-9]+)\/?/)
+    // console.log("match:", match);
+
+    if(match) {
+      var foundCheckId = "";
+      filterData.find((sectionData) => {
+        // console.log("sectionData:", sectionData);
+
+        if(sectionData.id === 'ngo_tags') {
+          var foundItem = sectionData.items.find((itemData) => {
+            return itemData.slug === match[1];
+          });
+
+          // console.log("foundItem:", foundItem);
+
+          if(foundItem) {
+            foundCheckId = "ngo_tags." + foundItem.id;
+            return true;
+          }
+        }
+
+        return false;
+      })
+
+      // console.log("foundCheckId:", foundCheckId);
+
+      setOptionCheck({[foundCheckId]: true})
+      saveOptionCheck()
+    }
+
+  }, [filterData, isFilterDataLoaded])
+
+  useEffect(() => {
+      if(!isSessionLoaded) {
           return
       }
 
       loadSubscribeTaskList()
-  }, [user])
+  }, [isSessionLoaded])
 
   function handleCloseTip(e, tipId) {
       e.preventDefault()
@@ -179,6 +257,8 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
           </section>
       )   
   }
+
+  console.log("render filer");
 
   return (
       <section className="task-list-filter">
@@ -305,6 +385,8 @@ function FilterSection(props) {
                     <div className="filter-section-option-list-items">
                         {sectionItems.map((item, index) => {
                             const optionId = sectionId + "." + item.id
+                            // console.log("optionId:", optionId)
+                            // console.log("slug:", item.slug)
                             return (
                                 <div className={`filter-section-option-list-item ${_.get(optionCheck, optionId, false) ? "active" : ""}`} key={`filterSectionItem${sectionId}-${index}`}>
                                     <span className="check-title" onClick={(e) => {optionClickHandler(e, optionId)}}>

@@ -2,6 +2,7 @@ import { ReactElement, useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import ReviewCard from "../../components/ReviewCard";
+import * as utils from "../../utilities/utilities";
 
 const MemberReviews: React.FunctionComponent = (): ReactElement => {
   const { rating, reviewsCount, reviews } = useStoreState(
@@ -12,11 +13,6 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
   );
   const reviewsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
-
-  const reviewsCountModulo =
-    reviewsCount < 10
-      ? reviewsCount
-      : Number([...Array.from(String(reviewsCount))].pop());
 
   useEffect(() => {
     if (router.asPath.search("#reviews") !== -1) {
@@ -32,11 +28,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
           <ul>
             <li>
               {reviewsCount}{" "}
-              {reviewsCountModulo === 1
-                ? "отзыв"
-                : [2, 3, 4].includes(reviewsCountModulo)
-                ? "отзыва"
-                : "отзывов"}
+              {utils.getReviewsCountString(reviewsCount)}
             </li>
             <li>
               Оценка{" "}

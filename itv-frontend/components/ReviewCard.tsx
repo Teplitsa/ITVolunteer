@@ -47,12 +47,14 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
             rating={review.rating}
           />
         </div>
-        <div className="review-card__header-item">
-          <ReviewRatingSmall
-            caption={`Комфортное общение`}
-            rating={review.communication_rating}
-          />
-        </div>
+        {review.communication_rating > 0 && (
+          <div className="review-card__header-item">
+            <ReviewRatingSmall
+              caption={`Комфортное общение`}
+              rating={review.communication_rating}
+            />
+          </div>
+        )}
       </div>
       <div className="review-card__excerpt">
         <span

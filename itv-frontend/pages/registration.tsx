@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import {useRouter} from 'next/router'
+import {useRouter} from 'next/router';
 
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
@@ -8,12 +8,17 @@ import Main from "../components/layout/Main";
 import Registration from "../components/auth/Registration";
 import GlobalScripts, { ISnackbarMessage } from "../context/global-scripts";
 import SnackbarList from "../components/global-scripts/SnackbarList";
+import { regEvent } from "../utilities/ga-events";
 
 const { SnackbarContext } = GlobalScripts;
 
 const RegistrationPage: React.FunctionComponent = (): ReactElement => {
   const { isLoggedIn, isLoaded } = useStoreState((state) => state.session);
-  const router = useRouter()
+  const router = useRouter();
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);  
 
   useEffect(() => {
     if(!isLoaded) {

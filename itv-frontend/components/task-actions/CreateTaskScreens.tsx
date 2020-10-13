@@ -13,7 +13,7 @@ import * as createTaskAgreementModel from "../../model/components/create-task-ag
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { WizardScreen, WizardScreenBottomBar,  WizardForm, 
   WizardStringField, WizardTextField, WizardRadioSetField, WizardSelectField,
-  WizardMultiSelectField, WizardUploadImageField,
+  WizardMultiSelectField, WizardUploadImageField, WizardSteps
 } from "../layout/WizardScreen";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
@@ -24,6 +24,8 @@ import howToIcon from "../../assets/img/icon-question-green.svg";
 import inputCheckOn from "../../assets/img/icon-wizard-check-on.svg";
 import inputCheckOff from "../../assets/img/icon-wizard-check-off.svg";
 import calendarIcon from "../../assets/img/icon-wizard-calendar.svg";
+
+registerLocale("ru-RU", ru);
 
 export const AgreementScreen = (screenProps: IWizardScreenProps) => {
   const props = {
@@ -167,7 +169,7 @@ export const CreateTaskHelp = (props: IWizardScreenProps) => {
         {!!howtoTitle &&
         <>
           <img src={howToIcon} className="wizard-field__icon" />
-          <span>{howtoTitle}</span>
+          <span className="btn btn_hint">{howtoTitle}</span>
         </>
         }
 
@@ -175,6 +177,29 @@ export const CreateTaskHelp = (props: IWizardScreenProps) => {
   )
 }
 
+export const TaskCreateWizardScreen = (screenProps: IWizardScreenProps) => {
+  const props = {
+    ...screenProps,
+  }
+
+  return (
+    <WizardScreen {...props}>
+      <div className="wizard-screen">
+        <div className="wizard-screen__container">
+          <div className="wizard-screen-sidebar-left">
+            <WizardSteps {...props} />
+          </div>
+          <div className="wizard-screen-content">
+            {props.screenForm}
+          </div>
+          <div className="wizard-screen-sidebar-right" />
+        </div>
+        {props.screenBottomBar}
+      </div>
+    </WizardScreen>
+  );
+
+};
 
 export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
   const props = {
@@ -183,8 +208,9 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Название задачи"
           isRequired={true}
@@ -199,9 +225,11 @@ export const SetTaskTitleScreen = (screenProps: IWizardScreenProps) => {
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -214,8 +242,9 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Опишите, что нужно сделать"
           isRequired={true}
@@ -230,9 +259,11 @@ export const SetTaskDescriptionScreen = (screenProps: IWizardScreenProps) => {
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -245,8 +276,9 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Что должно получится в результате"
           isRequired={false}
@@ -261,9 +293,11 @@ export const SetTaskResultScreen = (screenProps: IWizardScreenProps) => {
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -276,8 +310,9 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Эффект от работы. Чем будет гордиться IT-волонтер?"
           isRequired={false}
@@ -292,9 +327,11 @@ export const SetTaskImpactScreen = (screenProps: IWizardScreenProps) => {
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -307,8 +344,9 @@ export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Есть ли какие-то примеры, которые вам нравятся"
           isRequired={false}
@@ -323,9 +361,11 @@ export const SetTaskReferencesScreen = (screenProps: IWizardScreenProps) => {
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -338,8 +378,9 @@ export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) =>
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Добавьте ссылки на внешние файлы"
           isRequired={false}
@@ -354,9 +395,11 @@ export const SetTaskRemoteResourcesScreen = (screenProps: IWizardScreenProps) =>
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -369,8 +412,9 @@ export const UploadTaskFilesScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Добавьте файлы к задаче"
           isRequired={false}
@@ -381,9 +425,11 @@ export const UploadTaskFilesScreen = (screenProps: IWizardScreenProps) => {
             name="files"
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -398,8 +444,9 @@ export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
   const taskTagList = useStoreState((state) => state.components.createTaskWizard.taskTagList)
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Категория задачи"
           isRequired={true}
@@ -413,9 +460,11 @@ export const SelectTaskTagsScreen = (screenProps: IWizardScreenProps) => {
             }})}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -430,8 +479,9 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
   const ngoTagList = useStoreState((state) => state.components.createTaskWizard.ngoTagList)
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Направление помощи"
           isRequired={true}
@@ -445,9 +495,11 @@ export const SelectTaskNgoTagsScreen = (screenProps: IWizardScreenProps) => {
             }})}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -460,8 +512,9 @@ export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) =
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Кто может откликнуться на задачу?"
           isRequired={false}
@@ -475,9 +528,11 @@ export const SelectTaskPreferredDoerScreen = (screenProps: IWizardScreenProps) =
             formHelpComponent={CreateTaskHelp}
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -491,8 +546,9 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
   const rewardList = useStoreState((state) => state.components.createTaskWizard.rewardList)
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Какое будет вознаграждение"
           isRequired={true}
@@ -506,9 +562,11 @@ export const SelectTaskRewardScreen = (screenProps: IWizardScreenProps) => {
             name="reward"
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -582,8 +640,9 @@ export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProp
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Желаемый срок завершения задачи"
           isRequired={false}
@@ -599,9 +658,11 @@ export const SelectTaskPreferredDurationScreen = (screenProps: IWizardScreenProp
             name="preferredDuration"
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };
@@ -614,8 +675,9 @@ export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
   }
 
   return (
-    <WizardScreen {...props}>
-      <div className="wizard-screen">
+    <TaskCreateWizardScreen
+      {...props}
+      screenForm={
         <WizardForm
           title="Добавьте обложку к задаче, это увеличит ее привлекательность"
           isRequired={false}
@@ -627,9 +689,11 @@ export const SelectTaskCoverScreen = (screenProps: IWizardScreenProps) => {
             acceptFileFormat=".jpg,.png"
           />
         </WizardForm>
+      }
+      screenBottomBar={
         <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
-      </div>
-    </WizardScreen>
+      }
+    />
   );
 
 };

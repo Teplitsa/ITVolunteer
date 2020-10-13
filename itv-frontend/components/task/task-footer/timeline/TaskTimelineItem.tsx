@@ -23,12 +23,13 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   message,
   isOverdue,
   timeline_date,
+  doer_id,
   doer,
   taskHasCloseSuggestion,
 }): ReactElement => {
   const user = useStoreState((state) => state.session.user);
   const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
-  const { approvedDoer, status: taskStatus } = useStoreState((state) => state.components.task);  
+  const { approvedDoer, status: taskStatus, preferredDuration } = useStoreState((state) => state.components.task);  
 
   const reviewForDoer = useStoreState(
     (state) => state.components.task?.reviews?.reviewForDoer
@@ -37,6 +38,9 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   const reviewForAuthor = useStoreState(
     (state) => state.components.task?.reviews?.reviewForAuthor
   );
+
+  // console.log("type:", type);
+  // console.log("doer:", doer);
 
   return (type==="close" && taskHasCloseSuggestion) ? null : (
     <div
@@ -49,8 +53,13 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         <TaskTimelineDate date={timeline_date} />
       }
 
-      {type === "close" &&
-        <TaskTimelineDate date={timeline_date} />
+      {type === "close" && 
+        <>
+        {!!preferredDuration 
+          ? <TaskTimelineDate date={timeline_date} />
+          : <div className="date"></div>
+        }
+        </>        
       }
 
       {type !== "close" && status !== "current" && status !== "past" &&
@@ -70,7 +79,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
               }).format(utils.itvWpDateTimeToDate(timeline_date))}
         </h4>
 
-        {status === "future" && type === "close" && <div className="details">Ожидаемый срок</div>}
+        {status === "future" && type === "close" && !!preferredDuration && <div className="details">Ожидаемый срок</div>}
 
         {type === "review" && taskStatus === "closed" && <TaskTimelineReviewType />}
         {type === "close" && taskStatus === "in_work" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && !taskHasCloseSuggestion && (
@@ -79,20 +88,20 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         {type === "close" && taskStatus === "closed" && !!message && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
         )}
-        {type === "close_suggest" && approvedDoer && (
-          <TaskTimelineCloseSuggestType {...{ id, status, message }} />
+        {type === "close_suggest" && (
+          <TaskTimelineCloseSuggestType {...{ id, status, message, doer, doerId: Number(doer_id) }} />
         )}
-        {type === "close_decision" && approvedDoer && (
+        {type === "close_decision" && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
         )}
-        {type === "date_suggest" && approvedDoer && (
-          <TaskTimelineDateSuggestType {...{ id, status, message }} />
+        {type === "date_suggest" && (
+          <TaskTimelineDateSuggestType {...{ id, status, message, doer }} />
         )}
-        {type === "date_decision" && approvedDoer && (
+        {type === "date_decision" && (
           <TaskTimelineDateDecisionType />
         )}
-        {type === "work" && approvedDoer && doer && (
-          <TaskTimelineWorkType {...doer} />
+        {type === "work" && (doer || approvedDoer) && (
+          <TaskTimelineWorkType {...{ status, doer: doer || approvedDoer }} />
         )}
         {type === "publication" && <TaskTimelinePublicationType />}
         {type === "search_doer" && <TaskTimelineSearchDoerType />}

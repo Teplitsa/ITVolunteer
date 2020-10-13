@@ -1,25 +1,37 @@
 import { ReactElement } from "react";
+import Router from "next/router";
 import {
   useStoreState,
   useStoreActions,
 } from "../../../../model/helpers/hooks";
 import UserCardSmall from "../../../UserCardSmall";
+import { ITaskTimelineItemDoer } from "../../../../model/model.typing";
 
 const TaskTimelineCloseSuggestType: React.FunctionComponent<{
   id: number;
   status: string;
   message: string;
-}> = ({ id, status, message }): ReactElement => {
+  doer: ITaskTimelineItemDoer;
+  doerId: number;
+}> = ({ id, status, message, doer, doerId }): ReactElement => {
+  const { databaseId: userId, fullName: userName } = useStoreState(
+    (state) => state.session.user
+  );
+  const {
+    databaseId: taskId,
+    title,
+    author,
+  } = useStoreState((state) => state.components.task);
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
-  );
-  const approvedDoer = useStoreState(
-    (state) => state.components.task?.approvedDoer
   );
   const {
     acceptSuggestedCloseRequest,
     rejectSuggestedCloseRequest,
   } = useStoreActions((state) => state.components.task);
+  const setCompleteTaskWizardState = useStoreActions(
+    (actions) => actions.components.completeTaskWizard.setInitState
+  );
   const acceptSuggestedClose = acceptSuggestedCloseRequest.bind(null, {
     timelineItemId: id,
   });
@@ -29,7 +41,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
 
   return (
     <div className="details">
-      <UserCardSmall {...approvedDoer} />
+      <UserCardSmall {...doer} />
       <div className="comment">{message}</div>
 
       {isTaskAuthorLoggedIn && status !== "past" && (
@@ -40,6 +52,21 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
             onClick={(event) => {
               event.preventDefault();
               acceptSuggestedClose();
+
+              // open wizard
+              setCompleteTaskWizardState({
+                user: {
+                  databaseId: userId,
+                  name: userName,
+                  isAuthor: isTaskAuthorLoggedIn,
+                },
+                partner: { databaseId: doerId, name: doer.fullName },
+                task: { databaseId: taskId, title },
+              });
+
+              Router.push({
+                pathname: "/task-complete",
+              });              
             }}
           >
             Принять

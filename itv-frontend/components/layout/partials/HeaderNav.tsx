@@ -12,6 +12,7 @@ import Logo from "../../../assets/img/pic-logo-itv.svg";
 import iconMobileMenu from "../../../assets/img/icon-mobile-menu.png";
 import Cookies from "js-cookie";
 import * as C from "const";
+import { regEvent } from "../../../utilities/ga-events"
 
 const { SnackbarContext } = GlobalScripts;
 
@@ -40,6 +41,8 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
     if (!process.browser) {
       return;
     }
+
+    regEvent('ge_switch_desing_to_old', router);
 
     Cookies.set(C.ITV_COOKIE.OLD_DESIGN.name, C.ITV_COOKIE.OLD_DESIGN.value, {
       expires: C.ITV_COOKIE.OLD_DESIGN.period,
@@ -81,6 +84,9 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
                   className={
                     router.pathname === "/tasks" ? "main-menu__link_active" : ""
                   }
+                  onClick={(e) => {
+                    regEvent('m_tf_list', router);
+                  }}                  
                 >
                   Задачи
                 </a>
@@ -94,6 +100,9 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
                       ? "main-menu__link_active"
                       : ""
                   }
+                  onClick={(e) => {
+                    regEvent('m_mb_list', router);
+                  }}                  
                 >
                   Волонтеры
                 </a>
@@ -121,7 +130,11 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               <ul className="submenu">
                 <li>
                   <Link href="/about">
-                    <a>О проекте</a>
+                    <a
+                      onClick={(e) => {
+                        regEvent('m_about', router);
+                      }}                  
+                    >О проекте</a>
                   </Link>
                 </li>
                 <li>

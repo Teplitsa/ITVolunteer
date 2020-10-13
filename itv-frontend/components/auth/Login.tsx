@@ -4,6 +4,8 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
 
+import { regEvent } from "../../utilities/ga-events"
+
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
 
@@ -13,7 +15,6 @@ const Login: React.FunctionComponent<{
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
 
-  // const { title, content } = useStoreState((state) => state.components.paseka);
   const router = useRouter()
   const formRef = useRef(null)
   const userLogin = useStoreActions((actions) => actions.session.userLogin);
@@ -65,6 +66,8 @@ const Login: React.FunctionComponent<{
   function handleSubmit(e) {
     e.preventDefault();
 
+    regEvent('reg_login', router);
+
     if(!formRef) {
       return
     }
@@ -89,7 +92,12 @@ const Login: React.FunctionComponent<{
     <div className="auth-page__illustration-container">
       <div className="auth-page__content auth-page__registration">
         <h1 className="auth-page__title">Вход</h1>
-        <p className="auth-page__subtitle">IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и хорошо смотрятся в портфолио! Вы можете помочь?</p>
+        <p className="auth-page__subtitle">
+        {!!_.get(router, "query.passwordChanged", "")
+          ? <>Новый пароль вступил в силу.</>
+          : <>IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и хорошо смотрятся в портфолио! Вы можете помочь?</>
+        }
+        </p>
         <div className="auth-page__ornament-container">
           {!!isLoading &&
             <div className="auth-page__loading"><div className="spinner-border" role="status"></div></div>
@@ -101,7 +109,7 @@ const Login: React.FunctionComponent<{
               <input className="auth-page-form__control-input" type="text" name="login" maxLength={50} placeholder="" tabIndex={1} defaultValue={formData ? formData.get("login") : ""} />
             </div>        
             <div className="auth-page-form__group">
-              <label className="auth-page-form__label"><span>Пароль</span><a href="/wp-login.php?action=lostpassword">Забыли пароль?</a></label>
+              <label className="auth-page-form__label"><span>Пароль</span><a href="/reset-password">Забыли пароль?</a></label>
               <input className="auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" tabIndex={2} autoComplete="new-password" defaultValue={formData ? formData.get("pass") : ""} />
             </div>        
             <div className="auth-page-form__group">

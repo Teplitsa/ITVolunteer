@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { regEvent } from "../../../utilities/ga-events"
 import Logo from "../../../assets/img/pic-logo-itv.svg";
 
 const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
@@ -16,12 +17,20 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
       <ul className="links-col">
         <li>
           <Link href="/tasks">
-            <a>Задачи</a>
+            <a
+              onClick={(e) => {
+                regEvent('m_tf_list', router);
+              }}                  
+            >Задачи</a>
           </Link>
         </li>
         <li>
           <Link href="/members">
-            <a>Волонтеры</a>
+            <a
+              onClick={(e) => {
+                regEvent('m_mb_list', router);
+              }}                  
+            >Волонтеры</a>
           </Link>
         </li>
         <li className="drop-menu">
@@ -31,7 +40,11 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
           <ul className="submenu">
             <li>
               <Link href="/about">
-                <a>О проекте</a>
+                <a
+                  onClick={(e) => {
+                    regEvent('m_about', router);
+                  }}                  
+                >О проекте</a>
               </Link>
             </li>
             <li>

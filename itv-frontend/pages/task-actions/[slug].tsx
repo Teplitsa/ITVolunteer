@@ -20,11 +20,12 @@ import {
   IFetchResult,
 } from "../../model/model.typing";
 import Wizard from "../../components/Wizard";
-import * as utils from "../../utilities/utilities"
+import * as utils from "../../utilities/utilities";
+import { regEvent } from "../../utilities/ga-events";
 
 const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const { isLoggedIn, token, user, isLoaded: isSessionLoaded } = useStoreState((state) => state.session);
-  const router = useRouter()
+  const router = useRouter();
   const formData = useStoreState((state) => state.components.createTaskWizard.formData)
   const setFormData = useStoreActions((actions) => actions.components.createTaskWizard.setFormData)
   const resetWizard = useStoreActions((actions) => actions.components.createTaskWizard.resetWizard)
@@ -36,6 +37,10 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const setTaskState = useStoreActions((actions) => actions.components.task.setState)
   const taskState = useStoreState((state) => state.components.task)
   const setWizardName = useStoreActions((actions) => actions.components.createTaskWizard.setWizardName)
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);  
 
   useEffect(() => {
     setWizardName("editTaskWizard");
@@ -218,21 +223,21 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         onWizardComplete={handleCompleteWizard}
         onWizardCancel={handleCancelWizard}
       >
-        <SetTaskTitleScreen />
-        <SetTaskDescriptionScreen />
-        <SetTaskResultScreen />
-        <SetTaskImpactScreen />
-        <SetTaskReferencesScreen />
-        <SetTaskRemoteResourcesScreen />
-        <UploadTaskFilesScreen />
-        <SelectTaskTagsScreen />
-        <SelectTaskNgoTagsScreen />
+        <SetTaskTitleScreen shortTitle="Название" />
+        <SetTaskDescriptionScreen shortTitle="Суть задачи" />
+        <SetTaskResultScreen shortTitle="Результат" />
+        <SetTaskImpactScreen shortTitle="Эффект" />
+        <SetTaskReferencesScreen shortTitle="Примеры" />
+        <SetTaskRemoteResourcesScreen shortTitle="Ссылки" />
+        <UploadTaskFilesScreen shortTitle="Файлы" />
+        <SelectTaskTagsScreen shortTitle="Категория" />
+        <SelectTaskNgoTagsScreen shortTitle="Направления помощи" />
         {/*
         <SelectTaskPreferredDoerScreen />
         */}
-        <SelectTaskRewardScreen />
-        <SelectTaskPreferredDurationScreen />
-        <SelectTaskCoverScreen />
+        <SelectTaskRewardScreen shortTitle="Вознаграждение" />
+        <SelectTaskPreferredDurationScreen shortTitle="Сроки" />
+        <SelectTaskCoverScreen shortTitle="Обложка" />
       </Wizard>
     </>
   );

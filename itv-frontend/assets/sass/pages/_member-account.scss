@@ -2,7 +2,7 @@
   &__top {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     background-image: linear-gradient(180deg, #e6dfd1 0%, #e0d6c3 100%),
       linear-gradient(180deg, #f8f2ea 0%, #ddcdb7 100%);
     background-position: 50% 50%;
@@ -10,6 +10,18 @@
     background-size: cover;
     margin: 0 -15px;
     height: 200px;
+    &-inner {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      flex-grow: 10;
+      margin: 0 auto;
+      padding: 0 15px;
+      max-width: 1128px;
+      .btn_upload-cover {
+        margin: 0 0 20px;
+      }
+    }
   }
   &__columns {
     @include screen-from(md) {

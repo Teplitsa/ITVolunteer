@@ -10,7 +10,8 @@
 
   &__title {
     display: flex;
-    color: $color-gray-dark-md;
+    align-items: flex-start;
+    color: $color-gray-dark-md-001;
     @include htext-bold;
     margin-bottom: 16px;
     text-align: center;
@@ -18,14 +19,16 @@
       text-align: left;
     }
     &-index {
-     display: flex;
-     align-items: center;
+      display: flex;
+      align-items: center;
       @include text-lg;
       margin-right: 8px;
+      color: $color-gray-dark-md;
       &::after {
         content: "";
         display: inline-block;
-        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHCAYAAAABIM1CAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+2aktpcbCDiEOG6mRBVMRRq1CECqFWaNXB5NI/aNKQpLg4Cq4FB38Wqw4uzro6uAqC4A+Ik6OToouU+F1SaBHjHcc9vPe9L3ffAf5mlalmzzigapaRSSWFXH5VCL4ihDCiNPskZupzopiG5/i6h4/vdwme5V3354gqBZMBPoF4lumGRbxBPL1p6Zz3iWOsLCnE58RjBl2Q+JHrsstvnEsO+3lmzMhm5oljxEKpi+UuZmVDJZ4ijiuqRvn+nMsK5y3OarXO2vfkL4wUtJVlrtMaRgqLWIIIATLqqKAKCwnaNVJMZOg86eEfcvwiuWRyVcDIsYAaVEiOH/wPfvfWLE5OuEmRJND7YtsfI0BwF2g1bPv72LZbJ0DgGbjSOv5aE5j5JL3R0eJHQP82cHHd0eQ94HIHGHzSJUNypAAtf7EIvJ/RN+WBgVsgvOb2rX2O0wcgS71K3wAHh8BoibLXPd4d6u7bvzXt/v0A50Ryb0vycTAAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkCAoNDiy6T4qvAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAH5JREFUGNNj/P3jy38GCgAT0SpfnmDYte8eww+yDRBXZxB/uoph2earDB9+I4QZf//48p/h7yOGgwvWM9z8it+Mv7/eM3z49IeBRd6DITHZhkEEbgBR4DvD3fXTGLZ+0mPwDnBlUOaHiLIQHwYnGc7+sWeIijJhEGFF9wIFAAB8qzJcJdGecgAAAABJRU5ErkJggg==') 50% 50% no-repeat;
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHCAYAAAABIM1CAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AYht+2aktpcbCDiEOG6mRBVMRRq1CECqFWaNXB5NI/aNKQpLg4Cq4FB38Wqw4uzro6uAqC4A+Ik6OToouU+F1SaBHjHcc9vPe9L3ffAf5mlalmzzigapaRSSWFXH5VCL4ihDCiNPskZupzopiG5/i6h4/vdwme5V3354gqBZMBPoF4lumGRbxBPL1p6Zz3iWOsLCnE58RjBl2Q+JHrsstvnEsO+3lmzMhm5oljxEKpi+UuZmVDJZ4ijiuqRvn+nMsK5y3OarXO2vfkL4wUtJVlrtMaRgqLWIIIATLqqKAKCwnaNVJMZOg86eEfcvwiuWRyVcDIsYAaVEiOH/wPfvfWLE5OuEmRJND7YtsfI0BwF2g1bPv72LZbJ0DgGbjSOv5aE5j5JL3R0eJHQP82cHHd0eQ94HIHGHzSJUNypAAtf7EIvJ/RN+WBgVsgvOb2rX2O0wcgS71K3wAHh8BoibLXPd4d6u7bvzXt/v0A50Ryb0vycTAAAAAGYktHRAD/AP8A/6C9p5MAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfkCAoNDiy6T4qvAAAAGXRFWHRDb21tZW50AENyZWF0ZWQgd2l0aCBHSU1QV4EOFwAAAH5JREFUGNNj/P3jy38GCgAT0SpfnmDYte8eww+yDRBXZxB/uoph2earDB9+I4QZf//48p/h7yOGgwvWM9z8it+Mv7/eM3z49IeBRd6DITHZhkEEbgBR4DvD3fXTGLZ+0mPwDnBlUOaHiLIQHwYnGc7+sWeIijJhEGFF9wIFAAB8qzJcJdGecgAAAABJRU5ErkJggg==")
+          50% 50% no-repeat;
         margin: 0 0 0 4px;
         width: 16px;
         height: 7px;
@@ -51,8 +54,12 @@
 
   &__primary-button {
     margin: 0 0 15px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    width: 380px;
     max-width: 100%;
-    @include wizard-button-primary;
+    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    text-align: center;
     @include screen-from(md) {
       margin: 0 32px 0 0;
     }
@@ -71,8 +78,8 @@
 
   &__container {
     max-width: $content-width-wizard;
-    margin-left: auto;
-    margin-right: auto;
+    // margin-left: auto;
+    // margin-right: auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,7 +87,6 @@
     padding: 64px 0 0;
     @include screen-from(md) {
       flex-flow: row nowrap;
-      padding: 64px 64px 0;
     }
   }
 
@@ -157,14 +163,6 @@
   &__help {
     display: flex;
     align-items: center;
-    @include text-sm-bold;
-    color: $color-main;
-
-    & > span {
-      display: inline-block;
-      cursor: pointer;
-      @include dashed-underline($color-main);
-    }
   }
 }
 
@@ -232,6 +230,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    background-color: $color-gray-light-xl;
     padding-top: 32px;
     padding-bottom: 32px;
     border-top: 1px solid $color-gray-light-md;
@@ -277,19 +276,23 @@
 }
 
 .wizard-help-modal {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
   position: fixed;
-  width: 100%;
-  max-width: 453px;
-  height: calc(100vh - 106px);
   top: 16px;
   right: 2px;
+  left: 2px;
+  bottom: 16px;
   background-color: $color-white;
+  padding: 40px 32px 34px 32px;
+  max-width: 517px;
   box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.08);
   border-radius: 8px 0px 0px 8px;
-  padding: 40px 32px 34px 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  box-sizing: border-box;
+  @include screen-from(md) {
+    left: auto;
+  }
 
   & > header {
     @include text-xs-bold-line-lg;
@@ -397,27 +400,36 @@
 
 .wizard-help-modal-article {
   overflow: hidden;
-  -webkit-overflow-scrolling: touch;
   position: relative;
+  display: flex;
+  flex-flow: column;
+  margin: 0 0 20px;
 
   &__content {
     overflow-y: scroll;
-    overflow: scroll;
-    -webkit-overflow-scrolling: touch;
     width: 100%;
-    padding-right: 17px;
-    box-sizing: content-box;     
-    // height: 100%;
-    height: 80vh;
+    box-sizing: content-box;
+
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
   }
 
   &__content-overlay {
-    width: 100%;
-    height: 122px;
+    width: calc(100% - 8px);
+    height: 96px;
     background: linear-gradient(
       180deg,
       rgba(255, 245, 245, 0) 0%,
-      #ffffff 76.56%
+      $color-white 76.56%
     );
     position: absolute;
     left: 0px;
@@ -466,10 +478,16 @@
   position: relative;
 
   &__box {
-    @include wizard-field-input;
+    &:not([class*="_multiple"]) {
+      @include wizard-field-input;
+    }
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &_multiple {
+      margin-bottom: 16px;
+    }
 
     &__title {
       padding: 13px 12px;
@@ -486,7 +504,10 @@
     }
 
     &__selected-set {
-      padding: 12px 12px 6px 12px;
+      &:not([class*="_multiple"]) {
+        padding: 12px 12px 6px 12px;
+      }
+
       min-height: 32px;
       display: flex;
       flex-wrap: wrap;
@@ -518,7 +539,7 @@
 
   &__list {
     position: absolute;
-    top: 53px;
+    top: 54px;
     left: 0;
     background-color: $color-white;
     border: 1px solid $color-gray-light-lg;
@@ -534,7 +555,20 @@
     width: 100%;
     z-index: 3;
     max-height: 50vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
 
     li {
       height: 24px;
@@ -665,7 +699,7 @@
     }
   }
 
- .wizard-bottom-bar {
+  .wizard-bottom-bar {
     position: relative;
 
     &__container {
@@ -686,5 +720,8 @@
       width: 80%;
     }
   }
+}
 
+.wizard-smart-search {
+  position: relative;
 }

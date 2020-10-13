@@ -16,7 +16,7 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
   const reviewForAuthor = useStoreState(
     (state) => state.components.task?.reviews?.reviewForAuthor
   );
-  const { databaseId, title } = useStoreState((state) => state.components.task);
+  const { databaseId, title, author } = useStoreState((state) => state.components.task);
   const { user, isTaskAuthorLoggedIn } = useStoreState(
     (state) => state.session
   );
@@ -37,7 +37,7 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
       partner: {
         databaseId: isTaskAuthorLoggedIn
           ? approvedDoer.databaseId
-          : user.databaseId,
+          : author.databaseId,
         name: isTaskAuthorLoggedIn ? approvedDoer.fullName : user.fullName,
       },
       task: { databaseId, title },

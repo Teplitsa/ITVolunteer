@@ -99,6 +99,7 @@
   @include screen-from(md) {
     width: auto;
   }
+
   &__main-title {
     margin: 0 0 15px;
     font: 600 30px/40px "IBM Plex Sans", sans-serif;
@@ -163,6 +164,58 @@
   }
 }
 
+.wizard-screen {
+  &__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 10;
+    width: 100%;
+  }
+
+  .wizard-screen-content {
+    .wizard-form {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  .wizard-screen-sidebar-left {
+  }
+
+  .wizard-screen-sidebar-right {
+  }
+}
+
+
+.wizard-screen .wizard-steps {
+  .step-list-item {
+    @include text-xs-bold-line-lg;
+    color: $color-gray-dark-md-001;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+
+    &.active {
+      color: $color-main;
+      background-image: url(../../img/create-task-wizard-step-arrow-right.svg);
+    }
+
+    &.past {
+      color: $color-gray;
+      background-image: url(../../img/create-task-wizard-step-check.svg);
+    }
+
+    &.future {
+      background-image: url(../../img/create-task-wizard-step-dot.svg);
+    }
+  }
+}
+
 .wizard-rating {
   display: flex;
   flex-flow: row nowrap;
@@ -217,5 +270,9 @@
 @include media-breakpoint-down(md) {
   .wizard-screen {
     height: auto;
+  }
+
+  .wizard-screen .wizard-steps {
+    display: none;
   }
 }

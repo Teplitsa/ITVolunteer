@@ -1,6 +1,14 @@
 .react-datepicker {
-  display: flex !important;
-  flex-flow: column;
+  &[class*="react-datepicker"] {
+    display: flex;
+    flex-flow: column;
+    border-style: none;
+    border-radius: 8px;
+    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+  }
+  .timeline-datepicker-container & {
+    box-shadow: none;
+  }
   &__day--selected,
   &__day--in-selecting-range,
   &__day--in-range,
@@ -17,19 +25,109 @@
     }
     &:active,
     &:focus {
-      outline-color: #bab5ab !important;
+      outline: none !important;
     }
   }
   &__day,
   &__month-text,
   &__quarter-text {
     &:focus {
-      outline-color: #bab5ab !important;
+      outline: none !important;
     }
   }
   &__navigation {
-    &:focus {
-      outline: none !important;
+    &[class*="__navigation"] {
+      top: 30px;
+      &:focus {
+        outline: none !important;
+      }
+    }
+    &--previous {
+      &[class*="__navigation--previous"] {
+        background: url(../../img/icon-chevron-left.svg) 50% 50% no-repeat;
+        border-style: none;
+        left: 27px;
+      }
+    }
+    &--next {
+      &[class*="__navigation--next"] {
+        background: url(../../img/icon-chevron-right.svg) 50% 50% no-repeat;
+        border-style: none;
+        right: 27px;
+      }
+    }
+  }
+  &__current-month {
+    &[class*="__current-month"] {
+      margin: 0 0 12px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      text-transform: capitalize;
+      color: $color-gray-dark-xl;
+    }
+  }
+  &__header {
+    &[class*="__header"] {
+      background-color: transparent;
+      border-bottom-style: none;
+      padding-top: 24px;
+    }
+  }
+  &__day {
+    &[class*="__day"] {
+      margin: 0;
+      border: 1px solid transparent;
+      padding: 4px;
+      width: 36px;
+      height: 36px;
+      font: 600 13px/27px "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl !important;
+      border-radius: 18px !important;
+      box-sizing: border-box;
+      transition: all 0.05s linear;
+      &:not([class*="__day--disabled"]):hover {
+        background-color: $color-gray-dark-md-001;
+        border: 1px solid $color-gray-dark-md-001;
+        color: $color-white !important;
+      }
+    }
+    &--disabled {
+      &[class*="__day"] {
+        color: scale-color($color-gray-dark-xl, $lightness: 50%) !important;
+      }
+    }
+    &--today {
+      &[class*="__day"] {
+        border: 1px solid scale-color($color-gray-dark-xl, $lightness: 50%);
+        &:hover {
+          border: 1px solid transparent; // $color-sec-dark
+        }
+      }
+    }
+    &--selected {
+      &[class*="__day"] {
+        background-color: $color-sec-dark !important;
+        border: 1px solid $color-sec-dark !important;
+        color: $color-white !important;
+        outline: none;
+      }
+    }
+    &-name {
+      &[class*="__day-name"] {
+        margin: 0;
+        font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
+        text-align: center;
+        color: #575552;
+      }
+    }
+    &-names {
+      display: flex;
+      justify-content: space-around;
+      margin: 0 17px;
+    }
+  }
+  &__month {
+    &[class*="__month"] {
+      margin: 0 17px 17px;
     }
   }
 }

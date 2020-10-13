@@ -62,7 +62,8 @@ function itv_get_new_tasks_for_email($filter) {
         'paged' => 1,
         'posts_per_page' => 5,
         'date_query' => array(
-            'after' => date('Y-m-d', strtotime('-1 days')) 
+            'after' => date('Y-m-d', strtotime('-2 days')),
+            'before' => date('Y-m-d') 
         )        
     );
 

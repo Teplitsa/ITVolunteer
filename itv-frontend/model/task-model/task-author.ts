@@ -7,6 +7,7 @@ const taskAuthor: ITaskAuthor = {
   itvAvatar: "",
   profileURL: "",
   authorReviewsCount: 0,
+  doerReviewsCount: 0,
   organizationName: "",
   organizationDescription: "",
   organizationLogo: "",

@@ -91,8 +91,7 @@ class ITV_Query {
 			$query->set('author__not_in', array(ACCOUNT_DELETED_ID)); //don't include content of deleted users
 		
 		if(isset($query->query_vars['pagename']) && $query->query_vars['pagename'] == 'login') {
-			// $redirect = home_url('registration'); //redirect old login page
-      $redirect = home_url('login'); //redirect old login page
+			$redirect = itv_is_v1_version() ? home_url('registration') : home_url('login'); //redirect login page
 			wp_redirect($redirect);
 			exit;
 			

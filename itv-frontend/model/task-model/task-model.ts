@@ -170,6 +170,9 @@ const taskActions: ITaskActions = {
   updateApprovedDoer: action((taskState, approvedDoer) => {
     Object.assign(taskState, { approvedDoer });
   }),
+  declineApprovedDoer: action((taskState) => {
+    Object.assign(taskState, { approvedDoer: null });
+  }),
   updateDoers: action((taskState, doers) => {
     Object.assign(taskState, { doers });
   }),
@@ -200,7 +203,7 @@ const taskThunks: ITaskThunks = {
   adminSupportRequest: thunk(
     async (
       actions,
-      { messageText, addSnackbar, callbackFn },
+      { messageText, email, addSnackbar, callbackFn },
       { getStoreState }
     ) => {
       if (!messageText) return;
@@ -215,7 +218,7 @@ const taskThunks: ITaskThunks = {
       const formData = new FormData();
 
       formData.append("name", "");
-      formData.append("email", "");
+      formData.append("email", email);
       formData.append("message", messageText);
       formData.append("page_url", `/tasks/${taskSlug}`);
       formData.append("nonce", nonce);
@@ -279,6 +282,8 @@ const taskThunks: ITaskThunks = {
   }),
   suggestCloseTaskRequest: thunk(
     async (actions, { suggestComment, callbackFn }, { getStoreState }) => {
+      if (!suggestComment) return;
+
       const {
         session: { validToken: token },
         components: {
@@ -351,9 +356,7 @@ const taskThunks: ITaskThunks = {
       formData.append("message", suggestComment);
       formData.append(
         "due_date",
-        suggestedCloseDate
-          .toLocaleString()
-          .replace(/(\d{2})\.(\d{2})\.(\d{4}),\s([\d|:]+)/g, "$3-$2-$1 $4")
+        suggestedCloseDate.toISOString().replace(/^(.{10})T(.{8}).*/, "$1 $2"),
       );
       formData.append("task-id", String(taskId));
       formData.append("auth_token", String(token));

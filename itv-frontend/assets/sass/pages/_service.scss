@@ -1,0 +1,166 @@
+// errors
+.error-page-404 {
+  margin-bottom: -40px;
+
+  .auth-page__ornament-container {
+    padding-top: 27px;
+    padding-bottom: 27px;
+    min-width: 802px;
+    min-height: unset;
+  }
+
+  .error-page-search-form-container {
+    max-width: 720px;
+
+    .header-search-form {
+      display: flex;
+      justify-content: flex-start;
+
+      &__group {
+        margin-right: 20px;
+        flex-grow: 1;
+      }
+    }
+
+    .header-search-form__input {
+      border: 1px solid $color-gray-light-md;
+      border-right-style: none;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+
+    .header-search-form__toggle {
+      border: 1px solid $color-gray-light-md;
+      border-left-style: none;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
+
+  .error-page-search-form {
+    display: flex;
+    justify-content: center;
+
+    .header-search_expanded {
+      max-width: 482px;
+    }
+
+    .btn_primary {
+      @include htext-bold;
+      padding: 6px 40px;
+    }
+  }
+
+  img.man-404 {
+    margin-top: 47px;
+  }
+}
+
+.error-page-500 {
+  .auth-page__ornament-container {
+    padding-top: 135px;
+    padding-bottom: 27px;
+    min-width: 802px;
+  }
+
+}
+
+// errors - mobile
+@include media-breakpoint-down(sm) {
+  .error-page {
+    .auth-page__ornament-container {
+      background-size: cover;
+      min-width: unset;
+      min-height: unset;
+    }
+  }
+
+  .error-page.error-page-404 {  
+    .header-search-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &__group {
+        margin-right: 0px;
+        margin-bottom: 20px;
+        
+        input {
+          width: 100%;
+        }
+      }
+    }
+
+  }
+}
+
+// reset password
+.reset-password-page {
+  margin-bottom: -40px;
+
+  .auth-page__content {
+    max-width: unset;
+  }
+
+  .auth-page__ornament-container {
+    margin-top: 135px;
+    background-position: calc(50% + 40px) 30px;
+  }
+
+  .reset-password__form-container {
+    padding-bottom: 128px;
+  }
+
+  .auth-page__subtitle {
+    margin-top: 8px;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .reset-password {
+    &__form-container {
+      margin-top: 32px;    
+    }
+  }
+
+  .auth-page-form__control-error {
+    display: block;
+    height: 12px;
+  }
+}
+
+.reset-password-success-page {
+  margin-bottom: -40px;
+
+  .auth-page__content {
+    max-width: unset;
+  }
+
+  .auth-page__ornament-container {
+    margin-top: 135px;
+    min-height: 482px;
+    background-position: calc(50% + 40px) 30px;
+  }
+
+  .auth-page__title {
+    margin-top: 50px;
+    max-width: 730px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .auth-page__subtitle {
+    margin-top: 8px;
+    max-width: 557px;
+    margin-left: auto;
+    margin-right: auto;
+  }    
+}
+
+// reset password - mobile
+@include media-breakpoint-down(sm) {
+  .reset-password-page {
+  
+  }
+}

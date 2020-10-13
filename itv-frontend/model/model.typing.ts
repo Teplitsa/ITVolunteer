@@ -122,6 +122,7 @@ export interface ISessionUser {
   organizationLogoFile: any;
   organizationDescription: string;
   organizationSite: string;
+  xp: number;
   phone?: string;
   skype: string;
   twitter: string;
@@ -155,6 +156,23 @@ export interface ISessionThunks {
     ISessionActions,
     {
       formData: object;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
+  resetPassword: Thunk<
+    ISessionActions,
+    {
+      userLogin: string;
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    }
+  >;
+  changePassword: Thunk<
+    ISessionActions,
+    {
+      newPassword: string;
+      key: string;
       successCallbackFn: () => void;
       errorCallbackFn: (message: string) => void;
     }
@@ -335,7 +353,7 @@ export interface IMemberAccountPageModel
 export interface IMemberTaskCard {
   id: string;
   slug: string;
-  status: "open" | "closed" | "draft" | "in_work";
+  status: "open" | "closed" | "draft" | "in_work" | "publish";
   title: string;
   content: string;
   author: ITaskCommentAuthor;
@@ -391,6 +409,7 @@ export interface IMemberAccountPageState {
   telegram?: string;
   registrationDate: number;
   thankyouCount: number;
+  memberTaskStats: any;
   tasks?: {
     filter: "open" | "closed" | "draft";
     page: number;
@@ -416,6 +435,7 @@ export interface IMemberAccountPageActions {
   showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviewsPage: Action<IMemberAccountPageModel, number>;
   showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
+  setMemberTaskStats: Action<IMemberAccountPageModel, any>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -434,6 +454,7 @@ export interface IMemberAccountPageThunks {
   >;
   getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
   getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
+  getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
   giveThanksRequest: Thunk<IMemberAccountPageActions>;
 }
 
@@ -648,6 +669,7 @@ export interface ITaskAuthor {
   itvAvatar: string;
   profileURL: string;
   authorReviewsCount: number;
+  doerReviewsCount: number;
   organizationName: string;
   organizationDescription: string;
   organizationLogo: string;
@@ -733,6 +755,7 @@ export interface ITaskActions {
   updateStatus: Action<ITaskModel, { status: TaskStatus }>;
   updateModerationStatus: Action<ITaskModel, { isApproved: boolean }>;
   updateApprovedDoer: Action<ITaskModel, ITaskApprovedDoer>;
+  declineApprovedDoer: Action<ITaskModel>;
   updateDoers: Action<ITaskModel, Array<ITaskDoer>>;
   updateComments: Action<ITaskModel, Array<ITaskComment>>;
   updateTimeline: Action<ITaskModel, Array<ITaskTimelineItem>>;
@@ -842,6 +865,7 @@ export interface ITaskThunks {
     ITaskActions,
     {
       messageText: string;
+      email?: string;
       addSnackbar: (message: ISnackbarMessage) => void;
       callbackFn?: () => void;
     }
@@ -978,7 +1002,7 @@ export interface IAnyState {
 
 export interface IWizardState {
   wizardName: string;
-  formData: object;
+  formData: any;
   step: number;
   showScreenHelpModalState: object;
   now: any;
@@ -989,6 +1013,7 @@ export interface IWizardScreenProps {
   step?: number;
   setStep?: any;
   stepsCount?: any;
+  steps?: Array<any>;
   onPrevClick?: any;
   onNextClick?: any;
   formHelpComponent?: any;
@@ -1018,6 +1043,9 @@ export interface IWizardScreenProps {
   formFieldNameList?: Array<string>;
   description?: string;
   acceptFileFormat?: string;
+  screenForm?: any;
+  screenBottomBar?: any;
+  shortTitle?: string;
 }
 
 export interface IWizardInputProps {

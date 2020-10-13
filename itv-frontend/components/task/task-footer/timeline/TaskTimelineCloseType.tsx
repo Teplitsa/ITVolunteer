@@ -18,10 +18,11 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   const {
     databaseId,
     title,
-    approvedDoer: { databaseId: partnerId, fullName: partnerName },
+    approvedDoer,
     author,
   } = useStoreState((state) => state.components.task);
-  const isApprovedDoerLoggedIn = user.databaseId === partnerId;
+
+  const isApprovedDoerLoggedIn = approvedDoer && user.databaseId === approvedDoer.databaseId;
   const setCompleteTaskWizardState = useStoreActions(
     (actions) => actions.components.completeTaskWizard.setInitState
   );
@@ -38,6 +39,10 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   const [isOpenCloseSuggest, setOpenCloseSuggest] = useState<boolean>(false);
 
   const completeTaskByAuthor = () => {
+    if(!approvedDoer) {
+      return
+    }
+    
     suggestCloseTaskRequest({});
     setCompleteTaskWizardState({
       user: {
@@ -45,7 +50,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         name: userName,
         isAuthor: isTaskAuthorLoggedIn,
       },
-      partner: { databaseId: partnerId, name: partnerName },
+      partner: { databaseId: approvedDoer.databaseId, name: approvedDoer.fullName },
       task: { databaseId, title },
     });
 
@@ -55,21 +60,33 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
   };
 
   const completeTaskByDoer = () => {
-    suggestCloseTaskRequest({});
-    setCompleteTaskWizardState({
-      user: {
-        databaseId: user.databaseId,
-        name: user.fullName,
-        isAuthor: false,
-      },
-      partner: { databaseId: author.databaseId, name: author.fullName },
-      task: { databaseId, title },
-    });
+    if (isOpenCloseSuggest) {
+      setOpenCloseSuggest(false);
+    } else {
+      setOpenDateSuggest(false);
+      setOpenDateSuggestComment(false);
+      setOpenCloseSuggest(true);
+    }
+              
+    // suggestCloseTaskRequest({});
+    // setCompleteTaskWizardState({
+    //   user: {
+    //     databaseId: user.databaseId,
+    //     name: user.fullName,
+    //     isAuthor: false,
+    //   },
+    //   partner: { databaseId: author.databaseId, name: author.fullName },
+    //   task: { databaseId, title },
+    // });
 
-    Router.push({
-      pathname: "/task-complete",
-    });
+    // Router.push({
+    //   pathname: "/task-complete",
+    // });
   };
+
+  if(!approvedDoer) {
+    return null;
+  }
 
   return (
     <div className="details actions">

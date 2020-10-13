@@ -35,9 +35,9 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div>
-      {isTaskAuthorLoggedIn && ["draft", "publish"].includes(status) && (
+      {(isTaskAuthorLoggedIn || isAdmin) && ["draft", "publish"].includes(status) && (
         <div className="task-publication-actions">
-          {status === "draft" && (
+          {isTaskAuthorLoggedIn && status === "draft" && (
             <a
               href="#"
               className="accept-task"
@@ -86,8 +86,9 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
           >
             Отклонить задачу
           </a>
-        </div>
+          </div>
       )}
+
     </div>
   );
 };

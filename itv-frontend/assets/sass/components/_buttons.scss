@@ -1,29 +1,54 @@
+@mixin btn-transition {
+  transition: all 0.15s linear;
+}
+
 .btn {
   display: inline-block;
   padding: 10px 20px;
   font: 600 13px/20px "IBM Plex Sans", sans-serif;
   outline: none;
   box-sizing: border-box;
+  cursor: pointer;
   &:hover,
   &:focus {
     text-decoration: none;
   }
-  &_link {
-    background-color: transparent;
-    border-style: none;
-    border-radius: 12px;
-    color: $color-gray-dark-lg;
+  &_hint {
+    padding: 0;
+    border-bottom: 1px dashed $color-main;
+    font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
+    text-decoration: none;
+    color: $color-main;
     &:hover,
     &:focus {
-      text-decoration: underline;
+      border-bottom-color: $color-main-dark;
+      color: $color-main-dark;
+    }
+  }
+  &_link {
+    background-color: transparent;
+    border-bottom: 1px solid $color-gray-dark-md-001;
+    padding: 0;
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    text-decoration: none;
+    color: $color-gray-dark-md-001;
+    &:hover,
+    &:focus {
+      border-bottom-color: $color-gray-dark-lg;
+      color: $color-gray-dark-lg;
     }
   }
   &_primary {
-    background-color: $color-main;
+    background: $color-main;
     border-style: none;
     box-shadow: inset -1px -1px 1px rgba(0, 89, 56, 0.53);
     border-radius: 12px;
     color: $color-white;
+    @include btn-transition;
+    &:hover,
+    &:focus {
+      background: linear-gradient(0deg, #08915f, #08915f), #0ea36c;
+    }
   }
   &_secondary {
     background-color: $color-white;
@@ -42,6 +67,9 @@
   &_full-width {
     width: 100%;
     text-align: center;
+  }
+  &_disabled {
+    opacity: 0.5;
   }
   &_upload-cover {
     background: url(../../img/icon-camera.svg) calc(100% - 20px) 50% no-repeat

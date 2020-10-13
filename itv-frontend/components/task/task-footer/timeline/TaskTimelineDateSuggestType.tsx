@@ -4,22 +4,22 @@ import {
   useStoreActions,
 } from "../../../../model/helpers/hooks";
 import UserCardSmall from "../../../UserCardSmall";
+import { ITaskTimelineItemDoer } from "../../../../model/model.typing";
 
 const TaskTimelineCloseDecisionType: React.FunctionComponent<{
   id: number;
   status: string;
   message: string;
-}> = ({ id, status, message }): ReactElement => {
+  doer: ITaskTimelineItemDoer;
+}> = ({ id, status, message, doer }): ReactElement => {
   const isTaskAuthorLoggedIn = useStoreState(
     (state) => state.session.isTaskAuthorLoggedIn
-  );
-  const approvedDoer = useStoreState(
-    (state) => state.components.task?.approvedDoer
   );
   const {
     acceptSuggestedDateRequest,
     rejectSuggestedDateRequest,
   } = useStoreActions((state) => state.components.task);
+  const author = useStoreState((state) => state.components.task.author);
   const acceptSuggestedDate = acceptSuggestedDateRequest.bind(null, {
     timelineItemId: id,
   });
@@ -29,7 +29,7 @@ const TaskTimelineCloseDecisionType: React.FunctionComponent<{
 
   return (
     <div className="details">
-      <UserCardSmall {...approvedDoer} />
+      <UserCardSmall {...doer} />
       <div className="comment">{message}</div>
 
       {isTaskAuthorLoggedIn && status === "current" && (

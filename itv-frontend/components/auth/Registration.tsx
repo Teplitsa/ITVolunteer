@@ -1,7 +1,10 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
+import {useRouter} from 'next/router'
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import * as _ from "lodash";
+
+import { regEvent } from "../../utilities/ga-events"
 
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
@@ -13,6 +16,7 @@ const Registration: React.FunctionComponent<{
 }> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
 
   // const { title, content } = useStoreState((state) => state.components.paseka);
+  const router = useRouter()
   const formRef = useRef(null)
   const register = useStoreActions((actions) => actions.session.register);
   const [isAgree, setIsAgree] = useState({"pd": false, "mailing": false})
@@ -111,6 +115,8 @@ const Registration: React.FunctionComponent<{
     if(!isSubmitAllowed) {
       return
     }
+
+    regEvent('reg_reg', router);
 
     var formData = new FormData(formRef.current);
     setRegFormData(formData);

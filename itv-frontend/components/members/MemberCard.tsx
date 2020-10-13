@@ -52,7 +52,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                   </a>
                 </Link> */}
                 <Link href={`/members/${memberName}/profile`}>
-                  <a className="btn btn_link btn_full-width">
+                  <a className="btn btn_full-width">
                     Редактировать профиль
                   </a>
                 </Link>

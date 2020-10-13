@@ -1,19 +1,18 @@
 import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import NotifList from "../components/UserNotif";
 import * as utils from "../utilities/utilities";
 import * as _ from "lodash";
+import { regEvent } from "../utilities/ga-events"
 
 import Bell from "../assets/img/icon-bell.svg";
-import ArrowDown from "../assets/img/icon-arrow-down.svg";
+import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 const ParticipantNav: React.FunctionComponent = (): ReactElement => {
-  const {
-    fullName,
-    profileURL: toProfile,
-    itvAvatar: avatarImage,
-  } = useStoreState((store) => store.session.user);
+  const router = useRouter();
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
 
   // notif
   const [isShowNotif, setIsShowNotif] = useState(false);
@@ -49,6 +48,23 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     };
   });
 
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      user.itvAvatar &&
+        user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        fetch(user.itvAvatar, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
+
   return (
     <>
       <div className="account-symbols">
@@ -69,17 +85,20 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </div>
 
         <div className="open-account-menu">
-          <a href={toProfile}>
+          <a className="open-account-menu__avatar-card" href={user.profileURL}>
             <span
-              className="avatar-wrapper"
+              className={`avatar-wrapper ${
+                isAvatarImageValid ? "" : "avatar-wrapper_default-image"
+              }`}
               style={{
-                backgroundImage: user.itvAvatar
+                backgroundImage: isAvatarImageValid
                   ? `url(${user.itvAvatar})`
-                  : "none",
+                  : `url(${MemberAvatarDefault}), linear-gradient(#fff, #fff)`,
               }}
               title={user && `Привет, ${user.fullName}!`}
-            />
-            <img src={ArrowDown} className="arrow-down" alt={ArrowDown} />
+            >
+              <span className="open-account-menu__xp">{user.xp}</span>
+            </span>
           </a>
 
           <ul className="submenu">
@@ -90,7 +109,11 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
             </li>
             <li>
               <Link href={`/members/${user.username}`}>
-                <a>Личный кабинет</a>
+                <a
+                  onClick={(e) => {
+                    regEvent('m_profile', router);
+                  }}                  
+                >Личный кабинет</a>
               </Link>
             </li>
             <li>
@@ -105,10 +128,18 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           <a href="/member-actions/member-tasks/">Мои задачи</a>
         </li>
         <li>
-          <a href="/task-actions/">Новая задача</a>
+          <a href="/task-actions/"
+            onClick={(e) => {
+              regEvent('m_ntask', router);
+            }}                  
+          >Новая задача</a>
         </li>
         <li>
-          <a href={`/members/${user.username}`}>Мой профиль</a>
+          <a href={`/members/${user.username}`}
+            onClick={(e) => {
+              regEvent('m_profile', router);
+            }}                  
+          >Мой профиль</a>
         </li>
         <li>
           <a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a>

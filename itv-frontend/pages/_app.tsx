@@ -14,6 +14,7 @@ export const store: Store = createStore(storeModel, {
 const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
   const { dispatch } = store;
   const {
+    statusCode,
     app,
     entrypointType,
     entrypoint: { archive = null, page = null },
@@ -78,7 +79,7 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
 
   return (
     <Provider store={store}>
-      <Component {...component[componentName]} />
+      <Component {...component[componentName]} statusCode={statusCode} />
     </Provider>
   );
 };

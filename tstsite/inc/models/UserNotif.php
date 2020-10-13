@@ -23,6 +23,8 @@ class UserNotifModel extends ITVSingletonModel {
     public static $TYPE_DEADLINE_UPDATE_TASKDOER = 'deadline_update_taskdoer';
     public static $TYPE_SUGGEST_NEW_DEADLINE_TO_TASKAUTHOR = 'suggest_new_deadline_to_taskauthor';
     public static $TYPE_SUGGEST_NEW_DEADLINE_TO_TASKDOER = 'suggest_new_deadline_to_taskdoer';
+    public static $TYPE_SUGGEST_TASK_CLOSE_TO_TASKAUTHOR = 'suggest_task_close_to_taskauthor';
+    public static $TYPE_REJECT_TASK_CLOSE_TO_TASKDOER = 'reject_task_close_to_taskdoer';
     public static $TYPE_TASK_CLOSING_TASKAUTHOR = 'task_closing_taskauthor';
     public static $TYPE_TASK_CLOSING_TASKDOER = 'task_closing_taskdoer';
     public static $TYPE_POST_FEEDBACK_TASKAUTHOR_TO_TASKAUTHOR = 'post_feedback_taskauthor_to_taskauthor';
@@ -30,6 +32,7 @@ class UserNotifModel extends ITVSingletonModel {
     public static $TYPE_POST_FEEDBACK_TASKDOER_TO_TASKAUTHOR = 'post_feedback_taskdoer_to_taskauthor';
     public static $TYPE_POST_FEEDBACK_TASKDOER_TO_TASKDOER = 'post_feedback_taskdoer_to_taskdoer';
     public static $TYPE_REACTION_TO_TASK_BACK = 'reaction_to_task_back';
+    public static $TYPE_DECLINE_DOER_TO_TASKDOER = 'decline_doer_to_taskdoer';
     
     public static $SHORT_LIST_LIMIT = 20;
     

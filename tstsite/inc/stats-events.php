@@ -59,6 +59,19 @@ function itv_get_ga_events() {
 	
     $events_data = array();
     
+    /* General events */
+    $events_data['ge_show_old_desing'] = array(
+      'ga_category' => 'Дизайн',
+      'ga_action' => 'Показ сайта в старом дизайне',
+      'ga_label' => tst_detect_page_type()
+    );
+    
+    $events_data['ge_switch_desing_to_new'] = array(
+      'ga_category' => 'Дизайн',
+      'ga_action' => 'Смена дизайна на новый',
+      'ga_label' => tst_detect_page_type()
+    );
+
     /* Task card */
     $events_data['tc_title'] = array(
     	'ga_category' => 'Просмотр задачи',

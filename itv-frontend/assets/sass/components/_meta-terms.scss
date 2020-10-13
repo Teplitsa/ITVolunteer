@@ -5,22 +5,47 @@
   flex-wrap: wrap;
 
   .terms {
+    display: flex;
+    align-items: center;
     margin-right: $base * 3;
 
     img {
+      margin-top: $base;
       margin-right: $base;
       vertical-align: middle;
     }
 
+    a,
     span {
+      @include a-no-hover-underline;
       @include text-xs;
-      margin-top: $base;
+      color: $color-gray-dark-md-001;
       display: inline-block;
       padding: 4px 12px;
       border: 1px solid $color-gray-light-md;
       border-radius: 10px;
       margin-right: 4px;
       white-space: nowrap;
+
+      &.link:hover {
+        font-weight: 600;
+        color: $color-gray-dark-lg;
+        border-color: $color-gray;
+      }
+
+      &.link::after {
+        display: block;
+        content: attr(title);
+        font-weight: bold;
+        height: 1px;
+        color: transparent;
+        overflow: hidden;
+        visibility: hidden;
+      }
     }
   }
+}
+
+.meta-term {
+  margin-top: $base;
 }

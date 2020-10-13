@@ -35,6 +35,12 @@ export const memberAccountPageState: IMemberAccountPageState = {
   telegram: "",
   registrationDate: Date.now() / 1000,
   thankyouCount: 0,
+  memberTaskStats: {
+    publish: 0,
+    in_work: 0,
+    draft: 0,
+    closed: 0,
+  },
   tasks: {
     filter: "open",
     page: 0,
@@ -53,7 +59,7 @@ export const graphqlQuery: {
   member: `query getMember($username: ID!) {
     user(id: $username, idType: USERNAME) {
       ${Object.keys(memberAccountPageState).filter(
-        (key) => !["tasks", "reviews"].includes(key)
+        (key) => !["tasks", "reviews", "memberTaskStats"].includes(key)
       )}
     }
   }`,
@@ -126,6 +132,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   showMoreReviews: action((prevState, newReviews) => {
     prevState.reviews.list = [].concat(prevState.reviews.list, newReviews);
+  }),
+  setMemberTaskStats: action((prevState, stats) => {
+    prevState.memberTaskStats = stats;
   }),
 };
 
@@ -232,6 +241,45 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       } catch (error) {
         console.error(error);
       }
+    }
+  ),
+  getMemberTaskStatsRequest: thunk(
+    async ({ setMemberTaskStats }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: {
+            name,
+            username,
+            tasks: { page },
+          },
+        },
+      } = getStoreState() as IStoreModel;
+
+      try {
+        const formData = new FormData();
+        formData.append("username", String(username));
+
+        const action = "get-member-task-stats";
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const { status: responseStatus, data: stats } = await (<
+          Promise<{
+            status: string;
+            data?: any;
+          }>
+        >result.json());
+
+        if (responseStatus === "ok") {
+          setMemberTaskStats(stats);
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+
     }
   ),
   getMemberReviewsRequest: thunk(

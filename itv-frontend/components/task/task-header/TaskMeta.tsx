@@ -6,7 +6,6 @@ import {
   VKShareButton,
   WhatsappShareButton,
 } from "react-share";
-import { FacebookIcon, TelegramIcon, VKIcon, WhatsappIcon } from "react-share";
 import TaskMetaItem from "./TaskMetaItem";
 import iconApproved from "../../../assets/img/icon-all-done.svg";
 import metaIconCalendar from "../../../assets/img/icon-calc.svg";
@@ -41,6 +40,16 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
     setShareUrl(utils.getSiteUrl(pemalinkPath));
   }, []);
 
+  useEffect(() => {
+    let timerID = null;
+
+    if (isShowShareButtons) {
+      timerID = setTimeout(() => setIsShowShareButtons(false), 5000);
+    }
+
+    return () => clearTimeout(timerID);
+  }, [isShowShareButtons]);
+
   return (
     <div className="meta-info">
       {isApproved && <img src={iconApproved} className="itv-approved" />}
@@ -63,22 +72,24 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
           <a href="#" className="share-task" onClick={toggleShareButtons}>
             <span>Поделиться</span>
           </a>
-          {isShowShareButtons && (
-            <span className="task-share-buttons">
-              <FacebookShareButton url={shareUrl}>
-                <FacebookIcon size={32} round={true} />
-              </FacebookShareButton>
-              <TelegramShareButton url={shareUrl}>
-                <TelegramIcon size={32} round={true} />
-              </TelegramShareButton>
-              <VKShareButton url={shareUrl}>
-                <VKIcon size={32} round={true} />
-              </VKShareButton>
-              <WhatsappShareButton url={shareUrl}>
-                <WhatsappIcon size={32} round={true} />
-              </WhatsappShareButton>
-            </span>
-          )}
+          <span
+            className={`react-share ${
+              isShowShareButtons ? "react-share_shown" : ""
+            }`}
+          >
+            <FacebookShareButton url={shareUrl}>
+              <span className="react-share__icon react-share__icon_facebook" />
+            </FacebookShareButton>
+            <TelegramShareButton url={shareUrl}>
+              <span className="react-share__icon react-share__icon_telegram" />
+            </TelegramShareButton>
+            <VKShareButton url={shareUrl}>
+              <span className="react-share__icon react-share__icon_vk" />
+            </VKShareButton>
+            <WhatsappShareButton url={shareUrl}>
+              <span className="react-share__icon react-share__icon_whatsapp" />
+            </WhatsappShareButton>
+          </span>
         </span>
       </TaskMetaItem>
     </div>

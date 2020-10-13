@@ -1,4 +1,4 @@
-.search-from {
+.search-form {
   &__group {
     display: flex;
     flex-flow: row nowrap;
@@ -6,10 +6,10 @@
   }
   &__control {
     &_input {
-      @extend .from__control_input;
+      @extend .form__control_input;
     }
     &_submit {
-      @extend .from__control_submit;
+      @extend .form__control_submit;
     }
   }
 }

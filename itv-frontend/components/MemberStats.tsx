@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
+import * as utils from "../utilities/utilities";
 
 const MemberStats: React.FunctionComponent<{
   useComponents?: Array<"rating" | "reviewsCount" | "xp" | "solvedProblems">;
@@ -22,22 +23,15 @@ const MemberStats: React.FunctionComponent<{
   withBottomdivider = false,
   align = "center",
 }): ReactElement => {
-  const reviewsCountModulo =
-    reviewsCount < 10
-      ? reviewsCount
-      : Number([...Array.from(String(reviewsCount))].pop());
   const solvedProblemsModulo =
     solvedProblems < 10
       ? solvedProblems
-      : Number([...Array.from(String(reviewsCount))].pop());
-  const reviewsCountTitle = `${reviewsCount}${" "}
-  ${
-    reviewsCountModulo === 1
-      ? "отзыв"
-      : [2, 3, 4].includes(reviewsCountModulo)
-      ? "отзыва"
-      : "отзывов"
-  }`;
+      : Number([...Array.from(String(solvedProblems))].pop());
+  const solvedProblemsModulo100 =
+    solvedProblems < 10
+      ? solvedProblems
+      : Number([...Array.from(String(solvedProblems))].slice(-2).join(""));
+  const reviewsCountTitle = `${reviewsCount}${" "}${utils.getReviewsCountString(reviewsCount)}`;
 
   return (
     <div
@@ -85,11 +79,13 @@ const MemberStats: React.FunctionComponent<{
           <div className="member-stats__item member-stats__item_solved-problems">
             <div className="member-stats__solved-problems">
               {solvedProblems ?? 0}{" "}
-              {solvedProblemsModulo === 1
-                ? "решенная задача"
-                : [2, 3, 4].includes(solvedProblemsModulo)
-                ? "решенные задачи"
-                : "решенных задач"}
+              {solvedProblemsModulo100 > 10 && solvedProblemsModulo100 < 20 
+                ? "решенных задач"
+                : solvedProblemsModulo === 1
+                  ? "решенная задача"
+                  : [2, 3, 4].includes(solvedProblemsModulo)
+                    ? "решенные задачи"
+                    : "решенных задач"}
             </div>
           </div>
         </>

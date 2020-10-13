@@ -1,10 +1,18 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import {useRouter} from 'next/router';
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import AccountActivated from "../components/auth/AccountActivated";
+import { regEvent } from "../utilities/ga-events";
 
 const AccountActivationCompletedPage: React.FunctionComponent = (): ReactElement => {
+  const router = useRouter();
+
+  useEffect(() => {
+    regEvent('ge_show_new_desing', router);
+  }, [router.pathname]);  
+    
   return (
     <>
       <DocumentHead />

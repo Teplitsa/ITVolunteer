@@ -582,6 +582,7 @@ function ajax_suggest_close_task() {
     }
     else {
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message]);
+        UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_SUGGEST_TASK_CLOSE_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $doer_id]);
     }
 
     wp_die(json_encode(array(
@@ -946,8 +947,8 @@ function ajax_accept_close_date() {
     }
     
     //
-    UserNotifModel::instance()->push_notif($author_id, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKAUTHOR, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
-    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $task_doer->ID]);
+    UserNotifModel::instance()->push_notif($author_id, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKAUTHOR, ['task_id' => $task->ID, 'from_user_id' => $author_id]);
+    UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_DEADLINE_UPDATE_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $author_id]);
     
     wp_die(json_encode(array(
         'status' => 'ok',
@@ -1190,6 +1191,9 @@ function ajax_reject_close() {
         $suggest_timeline_item->save();
         
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_CLOSE_DECISION, ['doer_id' => $task_doer->ID, 'decision' => TimelineModel::$DECISION_REJECT]);
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $task_doer->ID]);
+
+        UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_REJECT_TASK_CLOSE_TO_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task->post_author]);
     }
 
     wp_die(json_encode(array(
@@ -1476,3 +1480,34 @@ function ajax_get_task_taxonomy_data() {
 }
 add_action('wp_ajax_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
 add_action('wp_ajax_nopriv_get-task-taxonomy-data', 'ajax_get_task_taxonomy_data');
+
+
+function itv_get_members_tasks_portion($posts, $page, $posts_per_page) {
+    $ret_posts = [];
+
+    usort($posts, function($a, $b) {
+        if($a->post_date === $b->post_date) {
+            return 0;
+        }
+
+        return $a->post_date > $b->post_date ? -1 : 1;
+    });
+
+    $deferred_posts = [];
+    $post_offset = $page * $posts_per_page;
+    foreach($posts as $k => $post) {
+        // error_log("index: " . $k);
+
+        if($post_offset > $k) {
+          continue;
+        }
+
+        if($post_offset + $posts_per_page <= $k) {
+          break;
+        }
+
+        $ret_posts[] = $post;
+    }
+
+    return $ret_posts;
+}

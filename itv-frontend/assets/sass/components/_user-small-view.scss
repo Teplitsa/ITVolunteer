@@ -14,13 +14,18 @@
     background-position: center;
     margin-right: 8px;
     vertical-align: middle;
+    &_default-image {
+      background-size: 80%, 78.75%;
+      background-repeat: no-repeat;
+    }
+    &_medium-image {
+      background-size: 68%, 66.75%;
+      background-repeat: no-repeat;
+    }
   }
   .name {
     flex-shrink: 10;
     font: 600 11px/16px "IBM Plex Sans", sans-serif;
-    color: $color-gray-dark-md;
-    span {
-      color: $color-gray-dark-xl;
-    }
+    color: $color-gray-dark-md-001;
   }
 }

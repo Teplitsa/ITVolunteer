@@ -134,8 +134,8 @@ function ajax_unpublish_task() {
         )));
     }
     
-    $task_id = (int)$_POST['task-id'];
-    $task = get_post($task_id);
+  $task_id = (int)$_POST['task-id'];
+  $task = get_post($task_id);
 	$user_id = get_current_user_id();
     
 	if(!$task) {
@@ -152,7 +152,7 @@ function ajax_unpublish_task() {
         )));
 	}
 
-	if($task->post_author != $user_id) {
+	if($task->post_author != $user_id && !current_user_can('manage_options')) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
@@ -364,7 +364,7 @@ function ajax_approve_candidate() {
     //
     $timeline = ITV\models\TimelineModel::instance();
     if($timeline->get_first_item($task_id, TimelineModel::$TYPE_WORK, TimelineModel::$STATUS_FUTURE)) {
-        $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_WORK);
+        $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $doer->ID]);
     }
     else {
         $timeline->add_current_item($task_id, TimelineModel::$TYPE_WORK, ['doer_id' => $doer_id]);
@@ -388,7 +388,8 @@ add_action('wp_ajax_approve-candidate', 'ajax_approve_candidate');
 add_action('wp_ajax_nopriv_approve-candidate', 'ajax_approve_candidate');
 
 
-/** Refuse candidate as task doer */
+/** Refuse candidate as task doer; This will disapprove task doer */
+// this method not used in ITV2.0
 function ajax_refuse_candidate() {
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
@@ -526,7 +527,7 @@ add_action('wp_ajax_add-candidate', 'ajax_add_candidate');
 add_action('wp_ajax_nopriv_add-candidate', 'ajax_add_candidate');
 
 
-/** Remove a candidate */
+/** Remove a candidate; Remove doer candidate by himself */
 function ajax_remove_candidate() {
 //     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
@@ -622,7 +623,7 @@ add_action('wp_ajax_remove-candidate', 'ajax_remove_candidate');
 add_action('wp_ajax_nopriv_remove-candidate', 'ajax_remove_candidate');
 
 
-/** Decline a candidate by task author **/
+/** Decline a candidate by task author; This will remove candidate from candidates list **/
 function ajax_decline_candidate() {
     if(
         (empty($_POST['doer_gql_id']) && empty($_POST['doer-id']))
@@ -697,8 +698,14 @@ function ajax_decline_candidate() {
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REFUSE_CANDIDATE_AUTHOR, $doer->ID, $email_templates->get_title('refuse_candidate_doer_notice'), $task ? $task->ID : 0);
 
     if($task && $task->post_status == 'in_work' && $is_doer_remove) {
+
+        $timeline = ITV\models\TimelineModel::instance();
+        $timeline->add_current_item($task_id, TimelineModel::$TYPE_SEARCH_DOER);
+
         // Task is automatically switched "publish":
-        wp_update_post(array('ID' => (int)$_POST['task-id'], 'post_status' => 'publish'));
+        wp_update_post(array('ID' => $task->ID, 'post_status' => 'publish'));
+
+        UserNotifModel::instance()->push_notif($doer->ID, UserNotifModel::$TYPE_DECLINE_DOER_TO_TASKDOER, ['task_id' => $task->ID, 'from_user_id' => $task_author->ID]);
     }
     
     wp_die(json_encode(array(
@@ -729,7 +736,9 @@ add_filter('authenticate', function($user, $username, $password){
 /** User logging in: */
 function ajax_login() {
     $inputJSON = file_get_contents('php://input');
-    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+    if(empty($_POST)) {
+        $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+    }
 
     $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
@@ -771,9 +780,11 @@ add_action('wp_ajax_nopriv_login', 'ajax_login');
 /** Register a new user */
 function ajax_user_register() {
   $inputJSON = file_get_contents('php://input');
-  $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+  if(empty($_POST)) {
+    $_POST = array_merge($_POST, json_decode($inputJSON, TRUE));
+  }
 
-	$_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
+  $_POST['nonce'] = empty($_POST['nonce']) ? '' : trim($_POST['nonce']);
 
 	// disable nonce temporarily
   if( false && !wp_verify_nonce($_POST['nonce'], 'user-reg') ) {

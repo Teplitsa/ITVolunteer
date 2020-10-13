@@ -1,10 +1,14 @@
-import { ReactElement } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskDoer } from "../../model/model.typing";
+import * as utils from "../../utilities/utilities";
 import TaskAuthorActionsOnDoer from "./TaskAuthorActionsOnDoer";
+
 import IconPaseka from "../../assets/img/icon-paseka.svg";
+import MemberAvatarDefault from "../../assets/img/member-default.svg";
 
 const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
+  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
   const { id: taskId, doers } = useStoreState((state) => state.components.task);
   const {
     manageDoerRequest: manageDoer,
@@ -25,11 +29,11 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     action: "approve-candidate",
     taskId,
     doer,
-    callbackFn: function() {
+    callbackFn: function () {
       updateApprovedDoer(doer);
       taskRequest();
       timelineRequest();
-    }
+    },
   });
   const declineFn = manageDoer.bind(null, {
     action: "decline-candidate",
@@ -41,13 +45,34 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     ),
   });
 
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    try {
+      avatarImage &&
+        avatarImage.search(/temp-avatar\.png/) === -1 &&
+        fetch(avatarImage, {
+          signal: abortController.signal,
+          mode: "no-cors",
+        }).then((response) => setAvatarImageValid(response.ok));
+    } catch (error) {
+      console.error(error);
+    }
+
+    return () => abortController.abort();
+  }, []);
+
   return (
     <div className="user-card">
       <div className="user-card-inner">
         <div
-          className="avatar-wrapper"
+          className={`avatar-wrapper ${
+            isAvatarImageValid ? "" : "avatar-wrapper_medium-image"
+          }`}
           style={{
-            backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
+            backgroundImage: isAvatarImageValid
+              ? `url(${avatarImage})`
+              : `url(${MemberAvatarDefault})`,
           }}
         >
           {isPasekaMember && <img src={IconPaseka} className="itv-approved" />}
@@ -56,7 +81,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
           <a className="name" href={toProfile}>
             {fullName}
           </a>
-          <span className="reviews">{`${doerReviewsCount} отзывов`}</span>
+          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(doerReviewsCount)}`}</span>
           <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
         </div>
       </div>

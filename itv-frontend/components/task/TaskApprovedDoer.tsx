@@ -1,9 +1,21 @@
 import { ReactElement } from "react";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import * as utils from "../../utilities/utilities";
+
 import IconPaseka from "../../assets/img/icon-paseka.svg";
 
 const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
-  const { approvedDoer, status: taskStatus } = useStoreState((state) => state.components.task);  
+  const { isTaskAuthorLoggedIn } = useStoreState((state) => state.session);
+  const { approvedDoer, status: taskStatus, id: taskId, doers } = useStoreState((state) => state.components.task);  
+
+  const {
+    manageDoerRequest: manageDoer,
+    updateApprovedDoer,
+    declineApprovedDoer,
+    updateDoers,
+    taskRequest,
+    timelineRequest,
+  } = useStoreActions((actions) => actions.components.task);  
 
   if (!approvedDoer) return null;
 
@@ -15,6 +27,18 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
     doerReviewsCount,
     isPasekaMember,
   } = approvedDoer;
+
+  const declineFn = manageDoer.bind(null, {
+    action: "decline-candidate",
+    taskId,
+    doer: approvedDoer,
+    callbackFn: () => {
+      updateDoers(doers.filter(({ id }) => id !== approvedDoer.id));
+      declineApprovedDoer();
+      taskRequest();
+      timelineRequest();
+    },
+  });
 
   return (
     <>
@@ -37,10 +61,37 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
                 <a className="name" href={toProfile}>
                   {fullName}
                 </a>
-                <span className="reviews">{`${doerReviewsCount} отзывов`}</span>
+                <span className="reviews">{`${doerReviewsCount} ${utils.getReviewsCountString(doerReviewsCount)}`}</span>
                 <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
               </div>
             </div>
+            
+            {isTaskAuthorLoggedIn && taskStatus === "in_work" && (
+            <div className="author-actions-on-doer i-am-author">
+              <a
+                href="#"
+                className="reject-doer"
+                onClick={(event) => {
+                  event.preventDefault();
+                  declineFn();
+                }}
+              >
+                Открепить от задачи
+              </a>
+
+              <div className="tooltip">
+                <div className="tooltip-buble">
+                  <h4>Что такое "Открепить от задачи"?</h4>
+                  <p>
+                    Волонтёр открепляется (получает уведомление), задача переводится в статус Опубликовано, <br />в календаре появляется новый этап – Поиск волонтёра.
+                  </p>
+                </div>
+                <div className="tooltip-actor">?</div>
+              </div>
+
+            </div>
+            )}
+          
           </div>
         </div>
       </div>
