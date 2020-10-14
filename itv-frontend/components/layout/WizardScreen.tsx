@@ -122,16 +122,26 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
 };
 
 export const WizardSteps = ({ ...props }) => {
-  if(!props.steps || !props.steps.length) {
-    return null
+  if (!props.steps || !props.steps.length) {
+    return null;
   }
 
   return (
     <div className="wizard-steps">
       {props.steps.map((step, index) => {
         return (
-        <div className={`step-list-item ${step.step === props.step ? "active" : step.step < props.step ? "past" : "future"}`}>{step.shortTitle}</div>
-        )
+          <div
+            className={`step-list-item ${
+              step.step === props.step
+                ? "active"
+                : step.step < props.step
+                ? "past"
+                : "future"
+            }`}
+          >
+            {step.shortTitle}
+          </div>
+        );
       })}
     </div>
   );
@@ -674,6 +684,22 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
     handleBoxClick();
   }
 
+  function blurSmartSearch(event: Event) {
+    const target = event.target as HTMLElement;
+    if (
+      !target.classList.contains("wizard-select__box-close") &&
+      !target.classList.contains("form__control_input") &&
+      !target.classList.contains("wizard-select__list__item")
+    ) {
+      setIsOpen(false);
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("click", blurSmartSearch);
+    return () => document.removeEventListener("click", blurSmartSearch);
+  }, []);
+
   return (
     <div className="wizard-select wizard-select_multiple">
       {getSelectedOptions().length > 0 && (
@@ -687,6 +713,7 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
                 >
                   <span>{option.title}</span>
                   <img
+                    className="wizard-select__box-close"
                     src={selectItemRemove}
                     onClick={handleRemoveItemClick}
                     data-value={option.value}
@@ -703,15 +730,16 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
           type="search"
           value={filterPhrase}
           onChange={onInputChange}
+          onFocus={() => setIsOpen(true)}
           disabled={tagCount >= 3}
         />
-        {filterPhrase && isOpen && (
-          <ul className="wizard-select__list">
+        {isOpen && (
+          <ul className="wizard-select__list wizard-select__list_multiple">
             {props.selectOptions
               .filter((option) => {
                 if (filterPhrase) {
                   if (
-                    option.title.search(new RegExp(`^${filterPhrase}`, "i")) ===
+                    option.title.search(new RegExp(`${filterPhrase}`, "i")) ===
                     -1
                   ) {
                     return false;
