@@ -6,6 +6,7 @@
 
   .terms {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     margin-right: $base * 3;
 
