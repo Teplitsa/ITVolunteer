@@ -8,6 +8,7 @@ import {
   ITaskComment,
   ITaskTimelineItem,
   ITaskReviewer,
+  ITaskCommentLiker
 } from "../model.typing";
 import { queriedFields as approvedDoerQueriedFields } from "./task-approved-doer";
 import { queriedFields as authorQueriedFields } from "./task-author";
@@ -185,7 +186,7 @@ const taskActions: ITaskActions = {
   updateReviews: action((taskState, reviews) => {
     Object.assign(taskState, { reviews });
   }),
-  likeComment: action((taskState, { commentId, likesCount }) => {
+  likeComment: action((taskState, { commentId, likesCount, likers }) => {
     const comments = taskState.comments;
 
     if (!Array.isArray(comments)) return taskState;
@@ -195,7 +196,21 @@ const taskActions: ITaskActions = {
     if (typeof comment === "undefined") return taskState;
 
     comment.likesCount = likesCount;
+    comment.likers = likers;
     comment.likeGiven = true;
+  }),
+  unlikeComment: action((taskState, { commentId, likesCount, likers }) => {
+    const comments = taskState.comments;
+
+    if (!Array.isArray(comments)) return taskState;
+
+    const comment: ITaskComment = findCommentById(commentId, comments);
+
+    if (typeof comment === "undefined") return taskState;
+
+    comment.likesCount = likesCount;
+    comment.likers = likers;
+    comment.likeGiven = false;
   }),
 };
 
@@ -902,15 +917,61 @@ const taskThunks: ITaskThunks = {
 
         const {
           status: responseStatus,
-          likesCount,
           message: responseMessage,
+          likesCount,
+          likers,
         } = await (<
-          Promise<{ status: string; likesCount: number; message?: string }>
+          Promise<{ 
+            status: string;
+            message?: string;
+            likesCount?: number;
+            likers?: Array<ITaskCommentLiker>;
+          }>
         >result.json());
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
         } else {
-          likeComment({ commentId, likesCount });
+          likeComment({ commentId, likesCount, likers });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  commentUnlikeRequest: thunk(
+    async ({ unlikeComment }, commentId, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+      } = getStoreState() as IStoreModel;
+      const action = "unlike-comment";
+      const formData = new FormData();
+
+      formData.append("comment_gql_id", commentId);
+      formData.append("auth_token", String(token));
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+          body: formData,
+        });
+
+        const {
+          status: responseStatus,
+          message: responseMessage,
+          likesCount,
+          likers,
+        } = await (<
+          Promise<{ 
+            status: string;
+            message?: string;
+            likesCount?: number;
+            likers?: Array<ITaskCommentLiker>;
+          }>
+        >result.json());
+        if (responseStatus === "fail") {
+          console.error(stripTags(responseMessage));
+        } else {
+          unlikeComment({ commentId, likesCount, likers });
         }
       } catch (error) {
         console.error(error);

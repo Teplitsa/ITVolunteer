@@ -695,8 +695,17 @@ export interface ITaskComment {
   dateGmt?: string;
   likesCount: number;
   likeGiven: boolean;
+  likers: Array<{
+    userId: string;
+    userName: string;
+  }>;
   author: ITaskCommentAuthor;
   replies?: { nodes: Array<ITaskComment> };
+}
+
+export interface ITaskCommentLiker {
+  userId: string;
+  userName: string;
 }
 
 export interface ITaskCommentAuthor {
@@ -766,7 +775,16 @@ export interface ITaskActions {
       reviewForDoer?: ITaskReviewer;
     }
   >;
-  likeComment: Action<ITaskModel, { commentId: string; likesCount: number }>;
+  likeComment: Action<ITaskModel, { 
+    commentId: string;
+    likesCount: number;
+    likers: Array<ITaskCommentLiker>
+  }>;
+  unlikeComment: Action<ITaskModel, { 
+    commentId: string;
+    likesCount: number;
+    likers: Array<ITaskCommentLiker>
+  }>;
 }
 
 export interface ITaskThunks {
@@ -795,6 +813,7 @@ export interface ITaskThunks {
   addDoerRequest: Thunk<ITaskActions>;
   commentsRequest: Thunk<ITaskActions>;
   commentLikeRequest: Thunk<ITaskActions, string>;
+  commentUnlikeRequest: Thunk<ITaskActions, string>;
   newCommentRequest: Thunk<
     ITaskActions,
     {

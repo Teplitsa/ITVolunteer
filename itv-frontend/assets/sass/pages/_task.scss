@@ -878,17 +878,67 @@
           justify-content: space-between;
 
           .like {
-            @include text-xs;
-            color: $color-main;
-            display: inline-block;
-            min-width: 16px;
-            height: 16px;
-            background-image: url("../../img/icon-heart.svg");
-            background-position: left center;
-            background-repeat: no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: url("../../img/icon-heart_empty-gray.svg") 0 50%
+              no-repeat;
+            margin-top: 6px;
             padding-left: 20px;
-            padding-top: 6px;
+            height: 16px;
+            min-width: 16px;
+            font: 600 11px/1.09 "IBM Plex Sans", sans-serif;
+            text-align: center;
+            color: $color-gray-dark-xl;
             cursor: pointer;
+
+            @include screen-from(sm) {
+              text-align: left;
+              white-space: nowrap;
+            }
+
+            &_somebody-liked {
+              background-image: url("../../img/icon-heart_empty-green.svg");
+              color: $color-main;
+            }
+            &_authorized-user-liked {
+              background-image: url("../../img/icon-heart.svg");
+              color: $color-main;
+            }
+
+            &-hint {
+              position: absolute;
+              top: calc(16px + 9px);
+              left: -16px;
+              padding: 8px 13px;
+              background-color: $color-white;
+              box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+              border-radius: 6px;
+              color: $color-gray-dark-xl;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.15s linear;
+
+              &::before {
+                content: "";
+                display: block;
+                position: absolute;
+                left: 15px;
+                top: -9px;
+                border-left: 9px solid transparent;
+                border-right: 9px solid transparent;
+                border-bottom: 9px solid $color-white;
+                width: 0;
+                height: 0;
+              }
+            }
+
+            &:hover {
+              .like-hint {
+                opacity: 1;
+                visibility: visible;
+              }
+            }
           }
 
           .actions {
@@ -1003,7 +1053,8 @@
     max-width: max-content;
     text-align: left;
 
-    box-shadow: 0px 0px 1px rgba(129, 118, 111, 0.7), 2px 2px 8px rgba(129, 118, 111, 0.12);    
+    box-shadow: 0px 0px 1px rgba(129, 118, 111, 0.7),
+      2px 2px 8px rgba(129, 118, 111, 0.12);
 
     &:before {
       content: "";

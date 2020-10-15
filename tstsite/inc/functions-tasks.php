@@ -1203,55 +1203,147 @@ function ajax_reject_close() {
 add_action('wp_ajax_reject-close', 'ajax_reject_close');
 add_action('wp_ajax_nopriv_reject-close', 'ajax_reject_close');
 
+function get_likers(int $comment_id): array
+{
+    global $wpdb;
 
-function ajax_like_comment() {
-	if(
-	    empty($_POST['comment_gql_id'])
-	) {
+    $likers = $wpdb->get_results(
+        $wpdb->prepare(
+            <<<SQL
+            SELECT
+                users.ID AS userId, users.display_name AS userName
+            FROM
+                {$wpdb->users} AS users
+            JOIN 
+                {$wpdb->prefix}itv_comment_like AS likes
+            ON
+                users.ID = likes.user_id
+            WHERE
+                likes.comment_id = %d
+            ORDER BY
+                likes.created_at
+            ASC
+            SQL,
+            $comment_id
+        ),
+        OBJECT
+    );
+
+    if (!empty($likers)) {
+        $likers = array_map(function ($liker) {
+            $liker->userId = \GraphQLRelay\Relay::toGlobalId('user', $liker->userId);
+            return $liker;
+        }, $likers);
+    }
+
+    return $likers;
+}
+
+function ajax_like_comment()
+{
+    if (
+        empty($_POST['comment_gql_id'])
+    ) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
-	}
+    }
 
-    $comment_identity = \GraphQLRelay\Relay::fromGlobalId( $_POST['comment_gql_id'] );
-    $comment_id = !empty($comment_identity['id']) ? (int)$comment_identity['id'] : 0;
+    $comment_identity = \GraphQLRelay\Relay::fromGlobalId($_POST['comment_gql_id']);
+    $comment_id = (int) empty($comment_identity['id']) ? 0 : $comment_identity['id'];
     $user_id = get_current_user_id();
 
-	if(!$comment_id) {
+    if (!$comment_id) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
         )));
-	}
-    
-	if(!is_user_logged_in()) {
+    }
+
+    if (!is_user_logged_in()) {
         wp_die(json_encode(array(
             'status' => 'fail',
             'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
         )));
-	}
-	
+    }
+
     $likesCount = get_comment_meta($comment_id, 'itv_likes_count', true);
-    if(!$likesCount) {
+    if (!$likesCount) {
         $likesCount = 0;
     }
-    
-	$comments_like = ITV\models\CommentsLikeModel::instance();
-	if(!$comments_like->is_user_comment_like($user_id, $comment_id)) {
-	    $likesCount += 1;
+
+    $comments_like = ITV\models\CommentsLikeModel::instance();
+
+    if (!$comments_like->is_user_comment_like($user_id, $comment_id)) {
+        $likesCount += 1;
         $comments_like->add_user_comment_like($user_id, $comment_id);
-	    update_comment_meta($comment_id, 'itv_likes_count', $likesCount);
-	}
+        update_comment_meta($comment_id, 'itv_likes_count', $likesCount);
+    }
+
+    $likers = get_likers($comment_id);
 
     wp_die(json_encode(array(
-        'status' => 'ok',
+        'status'     => 'ok',
         'likesCount' => $likesCount,
-    )));    
+        'likers'     => $likers,
+    )));
 }
-add_action('wp_ajax_like-comment', 'ajax_like_comment');
-add_action('wp_ajax_nopriv_like-comment', 'ajax_like_comment');
 
+add_action('wp_ajax_like-comment', 'ajax_like_comment');
+
+function ajax_unlike_comment()
+{
+    if (
+        empty($_POST['comment_gql_id'])
+    ) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+
+    $comment_identity = \GraphQLRelay\Relay::fromGlobalId($_POST['comment_gql_id']);
+    $comment_id = (int) empty($comment_identity['id']) ? 0 : $comment_identity['id'];
+    $user_id = get_current_user_id();
+
+    if (!$comment_id) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> wrong data given.', 'tst'),
+        )));
+    }
+
+    if (!is_user_logged_in()) {
+        wp_die(json_encode(array(
+            'status' => 'fail',
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));
+    }
+
+    $likesCount = get_comment_meta($comment_id, 'itv_likes_count', true);
+    if (!$likesCount) {
+        $likesCount = 0;
+    }
+
+    $comments_like = ITV\models\CommentsLikeModel::instance();
+
+    if ($comments_like->is_user_comment_like($user_id, $comment_id)) {
+        $likesCount -= 1;
+        $comments_like->remove_user_comment_like($user_id, $comment_id);
+        update_comment_meta($comment_id, 'itv_likes_count', $likesCount);
+    }
+
+    $likers = get_likers($comment_id);
+
+    wp_die(json_encode(array(
+        'status'     => 'ok',
+        'likesCount' => $likesCount,
+        'likers'     => $likers,
+    )));
+}
+
+add_action('wp_ajax_unlike-comment', 'ajax_unlike_comment');
 
 function ajax_get_task_list_filter() {
     

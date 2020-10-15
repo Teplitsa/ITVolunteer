@@ -631,18 +631,40 @@ function itv_register_comment_author_graphql_fields() {
 }
 
 // comments
-add_action( 'graphql_register_types', 'itv_register_comment_graphql_fields' );
-function itv_register_comment_graphql_fields() {
+
+add_action('graphql_register_types', 'register_liker_type');
+
+function register_liker_type()
+{
+    register_graphql_object_type('Liker', [
+        'description' => __('Comment liker', 'tst'),
+        'fields' => [
+            'userId' => [
+                'type' => 'String',
+                'description' => __('The id of the liker', 'tst'),
+            ],
+            'userName' => [
+                'type' => 'String',
+                'description' => __('The name of the liker', 'tst'),
+            ],
+        ],
+    ]);
+}
+
+add_action('graphql_register_types', 'itv_register_comment_graphql_fields');
+
+function itv_register_comment_graphql_fields()
+{
     register_graphql_fields(
         'Comment',
         [
             'likesCount' => [
                 'type'        => 'Int',
-                'description' => __( 'Comment likes count', 'tst' ),
-                'resolve'     => function( $comment ) {
+                'description' => __('Comment likes count', 'tst'),
+                'resolve'     => function ($comment) {
                     $like = get_comment_meta($comment->commentId, 'itv_likes_count', true);
-                    
-                    if(!$like) {
+
+                    if (!$like) {
                         $like = 0;
                     }
                     return $like;
@@ -650,16 +672,20 @@ function itv_register_comment_graphql_fields() {
             ],
             'likeGiven' => [
                 'type' => 'Boolean',
-                'description' => __( 'Comment likes count', 'tst' ),
-                'resolve'     => function( $comment ) {
-	               if(is_user_logged_in()) {
+                'description' => __('Comment likes count', 'tst'),
+                'resolve'     => function ($comment) {
+                    if (is_user_logged_in()) {
                         $comments_like = ITV\models\CommentsLikeModel::instance();
                         return !!$comments_like->is_user_comment_like(get_current_user_id(), $comment->commentId);
-	               }
-	               else {
-	                   return false;
-	               }
+                    } else {
+                        return false;
+                    }
                 },
+            ],
+            'likers' => [
+                'type' => ['list_of' => 'Liker'],
+                'description' => __('Comment likers', 'tst'),
+                'resolve'     => fn ($comment) => get_likers($comment->commentId),
             ],
         ]
     );

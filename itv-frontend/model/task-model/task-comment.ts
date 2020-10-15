@@ -26,6 +26,7 @@ const taskComment: ITaskComment = {
   dateGmt: "",
   likesCount: 0,
   likeGiven: false,
+  likers: null,
   author: {
     id: "",
     fullName: "",
@@ -35,7 +36,7 @@ const taskComment: ITaskComment = {
 };
 
 export const queriedFields = Object.keys(taskComment).filter(
-  (field) => !["author", "replies"].includes(field)
+  (field) => !["likers", "author", "replies"].includes(field)
 ) as Array<keyof ITaskComment>;
 
 export const authorQueriedFields = Object.keys(taskComment.author) as Array<
@@ -46,6 +47,10 @@ export const graphqlQuery = {
   commentsRequest: `
     fragment TaskCommentFields on Comment {
         ${queriedFields.join("\n")}
+        likers {
+          userId
+          userName
+        }
         author {
             ... on CommentAuthor {
                 ${authorQueriedFields.join("\n")}

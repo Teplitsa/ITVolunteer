@@ -12,18 +12,22 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
   dateGmt,
   content,
   likesCount,
+  likers,
   likeGiven: isForbiddenTolike,
   replies,
 }): ReactElement => {
   const [isCommentToReply, toggleReplyForm] = useState<boolean>(false);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const canUserReplyToComment = useStoreState(
-    (state) => state.session.canUserReplyToComment
+  const {
+    canUserReplyToComment,
+    user: { id: currentUserId },
+  } = useStoreState((state) => state.session);
+  const { commentLikeRequest, commentUnlikeRequest } = useStoreActions(
+    (actions) => actions.components.task
   );
-  const commentLikeRequest = useStoreActions(
-    (actions) => actions.components.task?.commentLikeRequest
-  );
+
   const like = commentLikeRequest.bind(null, id);
+  const unlike = commentUnlikeRequest.bind(null, id);
 
   useEffect(() => {
     if (isCommentToReply) {
@@ -56,13 +60,31 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
           {canUserReplyToComment && (
             <div className="meta-bar">
               <div
-                className="like"
+                className={`like ${
+                  likesCount > 0
+                    ? likers.some(({ userId }) => userId === currentUserId)
+                      ? "like_authorized-user-liked"
+                      : "like_somebody-liked"
+                    : ""
+                }`}
                 onClick={(event) => {
                   event.preventDefault();
-                  !isForbiddenTolike && like();
+                  (isForbiddenTolike && unlike()) || like();
                 }}
               >
                 {likesCount}
+                {likesCount > 0 && (
+                  <div className="like-hint">
+                    {likers
+                      .reduce(
+                        (likerNames, { userName }, i) =>
+                          (i < 3 && [...likerNames, userName]) || likerNames,
+                        []
+                      )
+                      .join(", ")}
+                    {likers.length > 3 && ` и ещё ${likers.length - 3} человек`}
+                  </div>
+                )}
               </div>
               <div className="actions">
                 {/* <a href="#" className="report d-none">
