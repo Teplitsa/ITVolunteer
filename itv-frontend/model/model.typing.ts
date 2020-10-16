@@ -695,10 +695,7 @@ export interface ITaskComment {
   dateGmt?: string;
   likesCount: number;
   likeGiven: boolean;
-  likers: Array<{
-    userId: string;
-    userName: string;
-  }>;
+  likers: Array<ITaskCommentLiker>;
   author: ITaskCommentAuthor;
   replies?: { nodes: Array<ITaskComment> };
 }
