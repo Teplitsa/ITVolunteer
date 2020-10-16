@@ -50,6 +50,7 @@ export const graphqlQuery = {
         likers {
           userId
           userName
+          userFullName
         }
         author {
             ... on CommentAuthor {

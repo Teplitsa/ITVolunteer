@@ -706,6 +706,7 @@ export interface ITaskComment {
 export interface ITaskCommentLiker {
   userId: string;
   userName: string;
+  userFullName: string;
 }
 
 export interface ITaskCommentAuthor {

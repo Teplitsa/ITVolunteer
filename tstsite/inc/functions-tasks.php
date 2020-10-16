@@ -1211,18 +1211,37 @@ function get_likers(int $comment_id): array
         $wpdb->prepare(
             <<<SQL
             SELECT
-                users.ID AS userId, users.display_name AS userName
+                userId, userName, userFullName
             FROM
-                {$wpdb->users} AS users
-            JOIN 
-                {$wpdb->prefix}itv_comment_like AS likes
-            ON
-                users.ID = likes.user_id
+                (SELECT
+                    users.ID AS userId,
+                    users.display_name AS userName,
+                    usermeta.userFullName,
+                    likes.comment_id AS commentId
+                FROM
+                    {$wpdb->users} AS users
+                LEFT JOIN 
+                    {$wpdb->prefix}itv_comment_like AS likes
+                ON
+                    users.ID = likes.user_id
+                LEFT JOIN
+                    (SELECT
+                        user_id,
+                        TRIM(GROUP_CONCAT(meta_value SEPARATOR ' ')) AS userFullName
+                    FROM
+                        {$wpdb->prefix}usermeta
+                    WHERE
+                        meta_key IN ('first_name', 'last_name')
+                    GROUP BY
+                        user_id
+                    ) AS usermeta
+                ON
+                    users.ID = usermeta.user_id
+                ORDER BY
+                    likes.created_at
+                ASC) AS likers
             WHERE
-                likes.comment_id = %d
-            ORDER BY
-                likes.created_at
-            ASC
+                likers.commentId = %d
             SQL,
             $comment_id
         ),

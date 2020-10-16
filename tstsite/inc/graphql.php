@@ -647,6 +647,10 @@ function register_liker_type()
                 'type' => 'String',
                 'description' => __('The name of the liker', 'tst'),
             ],
+            'userFullName' => [
+                'type' => 'String',
+                'description' => __('The full name of the liker', 'tst'),
+            ],
         ],
     ]);
 }

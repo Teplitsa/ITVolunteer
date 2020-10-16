@@ -77,8 +77,12 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
                   <div className="like-hint">
                     {likers
                       .reduce(
-                        (likerNames, { userName }, i) =>
-                          (i < 3 && [...likerNames, userName]) || likerNames,
+                        (likerNames, { userName, userFullName }, i) =>
+                          (i < 3 && [
+                            ...likerNames,
+                            userFullName || userName,
+                          ]) ||
+                          likerNames,
                         []
                       )
                       .join(", ")}
