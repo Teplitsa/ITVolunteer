@@ -136,7 +136,7 @@ export const AgreementScreen = (screenProps: IWizardScreenProps) => {
         </div>
         <div className="screen-agreement__list-overlay"></div>
         <div className="screen-agreement__bottom-bar">
-          <a href="#" onClick={handleContinueClick} className={`screen-agreement__primary-button ${isValid ? "" : "disabled"}`}>Соглашаюсь с правилами</a>
+          <a href="#" onClick={handleContinueClick} className={`btn btn_primary-lg screen-agreement__primary-button ${isValid ? "" : "disabled"}`}>Соглашаюсь с правилами</a>
         </div>
       </div>
     </WizardScreen>

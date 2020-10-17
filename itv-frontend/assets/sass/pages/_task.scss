@@ -41,18 +41,6 @@
     .action-block {
       margin-top: 41px;
       width: 100%;
-
-      .action-button {
-        @include button-primary-md;
-        width: 100%;
-      }
-
-      .cancel-doer {
-        @include button-secondary-sm;
-        border-radius: 10px;
-        border-color: $color-gray-light-md;
-        width: 100%;
-      }
     }
   }
 }
@@ -367,20 +355,20 @@
           margin-right: $base * 2;
         }
 
-        .accept-doer {
-          @include button-primary;
-          font-weight: 600;
-          padding-left: 16px;
-          padding-right: 16px;
-          box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24),
-            inset -1px -1px 2px rgba(0, 89, 56, 0.53);
-        }
+        // .accept-doer {
+        //   @include button-primary;
+        //   font-weight: 600;
+        //   padding-left: 16px;
+        //   padding-right: 16px;
+        //   box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24),
+        //     inset -1px -1px 2px rgba(0, 89, 56, 0.53);
+        // }
 
-        .reject-doer {
-          @include button-secondary-sm;
-          border-radius: 10px;
-          border-color: $color-gray-light-md;
-        }
+        // .reject-doer {
+        //   @include button-secondary-sm;
+        //   border-radius: 10px;
+        //   border-color: $color-gray-light-md;
+        // }
 
         .tooltip-actor {
           @include text-sm;
@@ -411,10 +399,6 @@
 
 .something-wrong-with-task {
   margin-top: 62px;
-
-  .contact-admin {
-    @include contact-admin-button;
-  }
 }
 
 // stages
@@ -780,15 +764,7 @@
   margin-top: 20px;
 
   .accept-task {
-    @include button-primary;
-    font-weight: 600;
     margin-right: $base * 3;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .reject-task {
-    @include button-secondary-sm;
   }
 }
 

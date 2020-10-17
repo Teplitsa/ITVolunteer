@@ -40,7 +40,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
           {isTaskAuthorLoggedIn && status === "draft" && (
             <a
               href="#"
-              className="accept-task"
+              className="btn btn_primary accept-task"
               onClick={(event) => {
                 event.preventDefault();
                 taskStatusChange({ status: "publish", callbackFn: () => {timelineRequest()} });
@@ -53,7 +53,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
           {status === "publish" && (
             <a
               href="#"
-              className="reject-task danger"
+              className="btn btn_secondary reject-task"
               onClick={(event) => {
                 event.preventDefault();
                 taskStatusChange({ status: "draft", callbackFn: () => {timelineRequest()} });                
@@ -68,7 +68,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
         <div className="task-publication-actions">
           <a
             href="#"
-            className="accept-task"
+            className="btn btn_primary accept-task"
             onClick={(event) => {
               event.preventDefault();
               approveTask();
@@ -78,7 +78,7 @@ const TaskActionButtons: React.FunctionComponent = (): ReactElement => {
           </a>
           <a
             href="#"
-            className="reject-task danger"
+            className="btn btn_secondary reject-task"
             onClick={(event) => {
               event.preventDefault();
               declineTask();

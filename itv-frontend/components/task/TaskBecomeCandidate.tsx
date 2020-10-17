@@ -38,7 +38,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
         {!approvedDoer && !isUserTaskCandidate &&
         <a
           href="#"
-          className="action-button"
+          className="btn btn_primary-lg btn_full-width"
           onClick={(event) => {
             event.preventDefault();
             addDoer();
@@ -52,7 +52,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
           <div className="task-give-response">
             <a
               href="#"
-              className="cancel-doer danger"
+              className="btn btn_secondary btn_full-width"
               onClick={(event) => {
                 event.preventDefault();
                 calcelFn();

@@ -231,20 +231,9 @@
   .filter-actions {
     margin-top: 24px;
 
-    .filter-subscribe {
-      @include button-primary-sm;
-      width: 100%;
-      box-shadow: none;
-    }
-
     .filter-reset,
     .filter-unsubscribe {
-      @include button-secondary-sm;
-      width: 100%;
-      box-shadow: none;
       margin-top: 16px;
-      background-color: $color-gray-light-xl;
-      border: 2px solid $color-gray;
     }
 
     .already-subscribed {

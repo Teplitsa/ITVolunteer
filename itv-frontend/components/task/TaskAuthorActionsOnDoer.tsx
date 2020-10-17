@@ -12,7 +12,7 @@ const TaskAuthorActionsOnDoer: React.FunctionComponent<{
       <div className="author-actions-on-doer">
         <a
           href="#"
-          className="accept-doer"
+          className="btn btn_primary"
           onClick={(event) => {
             event.preventDefault();
             approve();
@@ -22,7 +22,7 @@ const TaskAuthorActionsOnDoer: React.FunctionComponent<{
         </a>
         <a
           href="#"
-          className="reject-doer"
+          className="btn btn_default"
           onClick={(event) => {
             event.preventDefault();
             decline();

@@ -28,7 +28,7 @@ const TaskAdminSupport: React.FunctionComponent<{
         {({ dispatch }) => (
           <a
             href="#"
-            className="contact-admin"
+            className="btn btn_alternate btn_full-width"
             onClick={(event) => {
               event.preventDefault();
               dispatch({

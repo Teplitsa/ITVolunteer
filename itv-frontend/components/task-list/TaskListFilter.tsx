@@ -347,9 +347,9 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
           <div className="filter-actions">
               {subscribeTaskList === null && 
-              <a href="#" className="filter-subscribe" onClick={(e) => {handleSubscribe(e)}}>Подписаться на уведомления</a>
+              <a href="#" className="filter-subscribe btn btn_primary btn_full-width" onClick={(e) => {handleSubscribe(e)}}>Подписаться на уведомления</a>
               }
-              <a href="#" className="filter-reset" onClick={(e) => {handleResetFilter(e)}}>Сбросить фильтры</a>
+              <a href="#" className="filter-reset btn btn_default btn_full-width" onClick={(e) => {handleResetFilter(e)}}>Сбросить фильтры</a>
               {subscribeTaskList !== null && 
               <div className="already-subscribed">
                   <a href="#" className="filter-unsubscribe" onClick={(e) => {handleUnsubscribe(e)}}>Отменить подписку</a>
