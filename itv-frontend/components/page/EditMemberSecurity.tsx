@@ -76,11 +76,11 @@ const EditMemberSecurity: React.FunctionComponent<{
       });
     }
 
-    if (!formData.get("email") || !formData.get("email").trim()) {
+    if (!formRef.current.elements["email"]?.checkValidity()) {
       isValid = false;
       addSnackbar({
         context: "error",
-        text: "Введите email",
+        text: "Введите корректный email",
       });
     }
 

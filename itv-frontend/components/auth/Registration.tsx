@@ -75,11 +75,11 @@ const Registration: React.FunctionComponent<{
       });
     }
 
-    if(!formData.get("email") || !formData.get("email").trim()) {
+    if (!formData.get("email") || !formRef.current.elements["email"]?.checkValidity()) {
       isValid = false;
       addSnackbar({
         context: "error",
-        text: "Введите email",
+        text: "Введите корректный email",
       });
     }
 
