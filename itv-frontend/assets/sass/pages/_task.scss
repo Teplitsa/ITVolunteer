@@ -795,8 +795,6 @@
 // comments
 .task-comments {
   margin-top: 24px;
-  padding-bottom: 49px;
-  border-bottom: 1px solid $color-gray-light-md;
 
   & > h3 {
     @include task-subtitle;
@@ -977,10 +975,12 @@
 
 //
 .task-get-next {
-  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  border-top: 1px solid $color-gray-light-md;
+  margin-top: 49px;
+  padding-top: 20px;
 
   p {
     @include text-sm;
