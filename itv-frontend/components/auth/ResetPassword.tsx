@@ -62,7 +62,7 @@ const ResetPassword: React.FunctionComponent = (): ReactElement => {
           >
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Имя пользователя или e-mail</label>
-              <input className="auth-page-form__control-input" type="text" name="user_login" maxLength={50} placeholder="" tabIndex={1}
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="user_login" maxLength={50} placeholder="" tabIndex={1}
                 onChange={typeInUserLogin}
               />
               <span className="auth-page-form__control-error">

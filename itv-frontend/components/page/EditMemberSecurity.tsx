@@ -141,7 +141,7 @@ const EditMemberSecurity: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Логин</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="login"
                   maxLength={50}
@@ -154,7 +154,7 @@ const EditMemberSecurity: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">E-mail</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="email"
                   name="email"
                   maxLength={50}
@@ -169,7 +169,7 @@ const EditMemberSecurity: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Новый пароль</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="password"
                   name="pass"
                   maxLength={50}
@@ -187,7 +187,7 @@ const EditMemberSecurity: React.FunctionComponent<{
                   Повторить пароль
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="password"
                   name="passRepeat"
                   maxLength={50}

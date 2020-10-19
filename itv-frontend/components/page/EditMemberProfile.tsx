@@ -133,7 +133,7 @@ const EditMemberProfile: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Ваше имя</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="first_name"
                   maxLength={50}
@@ -146,7 +146,7 @@ const EditMemberProfile: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Фамилия</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="last_name"
                   maxLength={50}
@@ -192,7 +192,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Название организации
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="user_workplace"
                   maxLength={250}
@@ -237,7 +237,7 @@ const EditMemberProfile: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Веб-сайт</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="user_website"
                   maxLength={500}
@@ -251,7 +251,7 @@ const EditMemberProfile: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Телефон</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="tel"
                   name="phone"
                   maxLength={32}
@@ -269,7 +269,7 @@ const EditMemberProfile: React.FunctionComponent<{
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Skype</label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="user_skype"
                   maxLength={250}
@@ -285,7 +285,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Twitter (имя пользователя без @)
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="twitter"
                   maxLength={250}
@@ -301,7 +301,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Профиль Telegram (имя пользователя без @)
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="telegram"
                   maxLength={250}
@@ -317,7 +317,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Профиль Facebook (ссылка)
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="facebook"
                   maxLength={250}
@@ -333,7 +333,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Профиль ВКонтакте (ссылка)
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="vk"
                   maxLength={250}
@@ -347,7 +347,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   Профиль Instagram (имя пользователя без @)
                 </label>
                 <input
-                  className="auth-page-form__control-input"
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="instagram"
                   maxLength={250}

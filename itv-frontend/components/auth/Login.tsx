@@ -106,11 +106,11 @@ const Login: React.FunctionComponent<{
           <form action="" method="post" className="auth-page-form" onSubmit={handleSubmit} ref={formRef}>
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Логин или e-mail</label>
-              <input className="auth-page-form__control-input" type="text" name="login" maxLength={50} placeholder="" tabIndex={1} defaultValue={formData ? formData.get("login") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="login" maxLength={50} placeholder="" tabIndex={1} defaultValue={formData ? formData.get("login") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <label className="auth-page-form__label"><span>Пароль</span><a href="/reset-password">Забыли пароль?</a></label>
-              <input className="auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" tabIndex={2} autoComplete="new-password" defaultValue={formData ? formData.get("pass") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" tabIndex={2} autoComplete="new-password" defaultValue={formData ? formData.get("pass") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <div className="auth-page-form__control-checkbox" onClick={toggleIsRememberMe}>

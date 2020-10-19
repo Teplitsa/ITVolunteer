@@ -149,24 +149,24 @@ const Registration: React.FunctionComponent<{
           <form action="" method="post" className="auth-page-form" onSubmit={handleSubmit} ref={formRef}>
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Ваше имя</label>
-              <input className="auth-page-form__control-input" type="text" name="first_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("first_name") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="first_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("first_name") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Фамилия</label>
-              <input className="auth-page-form__control-input" type="text" name="last_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("last_name") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="last_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("last_name") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">E-mail</label>
-              <input className="auth-page-form__control-input" type="email" name="email" maxLength={50} placeholder="" autoComplete="email" defaultValue={regFormData ? regFormData.get("email") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="email" name="email" maxLength={50} placeholder="" autoComplete="email" defaultValue={regFormData ? regFormData.get("email") : ""} />
             </div>        
             <div className="auth-page-form__splitter"><div/></div>
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Пароль</label>
-              <input className="auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("pass") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("pass") : ""} />
             </div>        
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Повторить пароль</label>
-              <input className="auth-page-form__control-input" type="password" name="passRepeat" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("passRepeat") : ""} />
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="passRepeat" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("passRepeat") : ""} />
             </div>        
             <div className="auth-page-form__splitter"><div/></div>
             <div className="auth-page-form__group">

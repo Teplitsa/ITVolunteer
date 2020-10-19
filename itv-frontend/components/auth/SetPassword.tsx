@@ -87,13 +87,13 @@ const SetPassword: React.FunctionComponent = (): ReactElement => {
           >
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Новый пароль</label>
-              <input className="auth-page-form__control-input" type="password" name="new_password" maxLength={50} placeholder="" tabIndex={1}
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="new_password" maxLength={50} placeholder="" tabIndex={1}
                 onChange={typeIn}
               />
             </div>
             <div className="auth-page-form__group">
               <label className="auth-page-form__label">Повторите пароль</label>
-              <input className="auth-page-form__control-input" type="password" name="new_password_repeat" maxLength={50} placeholder="" tabIndex={1}
+              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="new_password_repeat" maxLength={50} placeholder="" tabIndex={1}
                 onChange={typeInRepeat}
               />
               <span className="auth-page-form__control-error">
