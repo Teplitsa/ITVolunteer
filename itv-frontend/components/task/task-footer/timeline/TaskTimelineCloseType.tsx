@@ -42,7 +42,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
     if(!approvedDoer) {
       return
     }
-    
+
     suggestCloseTaskRequest({});
     setCompleteTaskWizardState({
       user: {

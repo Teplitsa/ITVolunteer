@@ -297,8 +297,6 @@ const taskThunks: ITaskThunks = {
   }),
   suggestCloseTaskRequest: thunk(
     async (actions, { suggestComment, callbackFn }, { getStoreState }) => {
-      if (!suggestComment) return;
-
       const {
         session: { validToken: token },
         components: {
