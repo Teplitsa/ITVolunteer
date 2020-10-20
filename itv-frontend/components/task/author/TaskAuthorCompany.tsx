@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../../model/helpers/hooks";
+import MemberOrganizationDescription from "../../MemberOrganizationDescription";
 import IconApproved from "../../../assets/img/icon-all-done.svg";
 import IconBriefcase from "../../../assets/img/icon-briefcase.svg";
 
@@ -57,10 +58,11 @@ const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
           </div>
         </div>
         {companySummary && (
-          <p
-            className="org-description"
-            dangerouslySetInnerHTML={{ __html: companySummary }}
-          />
+          <div className="org-description">
+            <MemberOrganizationDescription
+              {...{ organizationDescription: companySummary }}
+            />
+          </div>
         )}
       </>
     )
