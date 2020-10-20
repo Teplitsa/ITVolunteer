@@ -49,6 +49,8 @@ const TaskTimelineOpenCloseSuggest: React.FunctionComponent<{
             className="submit-comment"
             onClick={(event) => {
               event.preventDefault();
+              if (!suggestComment.trim()) return;
+              
               suggestCloseTask({ 
                 suggestComment: suggestComment.trim(), 
                 callbackFn 
