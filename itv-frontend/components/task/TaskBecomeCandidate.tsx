@@ -8,7 +8,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
     isUserTaskCandidate,
     user,
   } = useStoreState((state) => state.session);
-  const { id: taskId, approvedDoer, doers } = useStoreState((state) => state.components.task);
+  const { id: taskId, approvedDoer, doers, status } = useStoreState((state) => state.components.task);
   const addDoer = useStoreActions(
     (actions) => actions.components.task?.addDoerRequest
   );
@@ -48,7 +48,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
         </a>
         }
 
-        {isUserTaskCandidate && (
+        {status !== "closed" && isUserTaskCandidate && (
           <div className="task-give-response">
             <a
               href="#"
