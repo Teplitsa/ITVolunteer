@@ -51,6 +51,13 @@ export const memberAccountPageState: IMemberAccountPageState = {
     page: 0,
     list: null,
   },
+  profileFillStatus: {
+    createdTasksCount: 0,
+    approvedAsDoerTasksCount: 0,
+    isCoverExist: false,
+    isAvatarExist: false,
+    isProfileInfoEnough: false,
+  },
 };
 
 export const graphqlQuery: {
