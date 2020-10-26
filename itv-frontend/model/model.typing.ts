@@ -685,6 +685,10 @@ export interface ITaskAuthor {
   organizationLogo: string;
   isPartner: boolean;
   memberRole: string;
+  facebook: string;
+  instagram: string;
+  vk: string;
+  registrationDate: number;
 }
 
 export interface ITaskDoer {
@@ -783,16 +787,22 @@ export interface ITaskActions {
       reviewForDoer?: ITaskReviewer;
     }
   >;
-  likeComment: Action<ITaskModel, { 
-    commentId: string;
-    likesCount: number;
-    likers: Array<ITaskCommentLiker>
-  }>;
-  unlikeComment: Action<ITaskModel, { 
-    commentId: string;
-    likesCount: number;
-    likers: Array<ITaskCommentLiker>
-  }>;
+  likeComment: Action<
+    ITaskModel,
+    {
+      commentId: string;
+      likesCount: number;
+      likers: Array<ITaskCommentLiker>;
+    }
+  >;
+  unlikeComment: Action<
+    ITaskModel,
+    {
+      commentId: string;
+      likesCount: number;
+      likers: Array<ITaskCommentLiker>;
+    }
+  >;
 }
 
 export interface ITaskThunks {

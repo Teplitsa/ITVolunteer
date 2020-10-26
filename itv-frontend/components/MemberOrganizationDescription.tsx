@@ -7,10 +7,10 @@ const MemberOrganizationDescription: React.FunctionComponent<{
   const excerptRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (excerptRef.current && excerptRef.current.innerHTML.length > 109) {
+    if (excerptRef.current && excerptRef.current.innerHTML.length > 260) {
       excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
         0,
-        109
+        260
       )}…`;
     } else {
       setFullDescription(true);

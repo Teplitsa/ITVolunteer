@@ -265,6 +265,31 @@
         color: $color-main;
       }
     }
+
+    &-footer {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      margin: 20px 0 0;
+
+      @include screen-from(sm) {
+        flex-flow: row nowrap;
+        justify-content: space-between;
+      }
+
+      &__socials {
+        & > :only-child {
+          @include screen-from(sm) {
+            margin: 0;
+          }
+        }
+      }
+
+      &__registration-date {
+        font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+        color: $color-gray;
+      }
+    }
   }
 
   .user-org-separator {
@@ -275,8 +300,6 @@
   }
 
   .org-description {
-    @include text-sm;
-    color: $color-gray-dark-lg;
     margin-top: 12px;
 
     &:empty {
