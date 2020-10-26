@@ -420,7 +420,7 @@ export interface IMemberAccountPageState {
     page: number;
     list: Array<IMemberReview>;
   };
-  profileFillStatus: {
+  profileFillStatus?: {
     createdTasksCount: number;
     approvedAsDoerTasksCount: number;
     isCoverExist: boolean;

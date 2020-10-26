@@ -67,7 +67,7 @@ export const graphqlQuery: {
   member: `query getMember($username: ID!) {
     user(id: $username, idType: USERNAME) {
       ${Object.keys(memberAccountPageState).filter(
-        (key) => !["tasks", "reviews", "memberTaskStats"].includes(key)
+        (key) => !["tasks", "reviews", "memberTaskStats", "profileFillStatus"].includes(key)
       )}
     }
   }`,
