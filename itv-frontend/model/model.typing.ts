@@ -592,7 +592,7 @@ export interface ICreateTaskAgreementPageActions {
  * Task
  */
 
-export type TaskStatus = "draft" | "publish" | "in_work" | "closed";
+export type TaskStatus = "draft" | "publish" | "in_work" | "closed" | "archived";
 
 export interface ITaskModel extends ITaskState, ITaskActions, ITaskThunks {}
 
