@@ -762,6 +762,12 @@
         background-color: $color-gray;
       }
     }
+
+    &.archived {
+      &:before {
+        background-color: $color-gray;
+      }
+    }
   }
 
   .edit {

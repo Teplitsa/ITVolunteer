@@ -14,6 +14,7 @@ export const status: Map<TaskStatusType, string> = new Map([
   ["publish", "Опубликовано"],
   ["in_work", "В работе"],
   ["closed", "Закрыто"],
+  ["archived", "В архиве"]
 ]);
 
 const Task: React.FunctionComponent = (): ReactElement => {
