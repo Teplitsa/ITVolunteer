@@ -259,16 +259,14 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       const {
         components: {
           memberAccount: {
-            name,
-            username,
-            tasks: { page },
+            username: name,
           },
         },
       } = getStoreState() as IStoreModel;
 
       try {
         const formData = new FormData();
-        formData.append("username", String(username));
+        formData.append("username", String(name));
 
         const action = "get-member-task-stats";
         const result = await fetch(getAjaxUrl(action), {

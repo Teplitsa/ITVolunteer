@@ -14,11 +14,11 @@ import { regEvent } from "../../utilities/ga-events";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const {cover: coverImage, isEmptyProfile, profileFillStatus, itvAvatar} = useStoreState(
+  const {cover: coverImage, isEmptyProfile, itvAvatar, username} = useStoreState(
     (state) => state.components.memberAccount
   );
-  const profileFillStatusRequest = useStoreActions(
-    (actions) => actions.components.memberAccount.profileFillStatusRequest
+  const { profileFillStatusRequest, getMemberTaskStatsRequest } = useStoreActions(
+    (actions) => actions.components.memberAccount
   );  
   const router = useRouter();
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
@@ -44,8 +44,12 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [isAccountOwner, coverImage, itvAvatar])
 
   useEffect(() => {
-    console.log("profileFillStatus:", profileFillStatus)
-  }, [profileFillStatus])
+    if(!username) {
+      return;
+    }
+
+    getMemberTaskStatsRequest();
+  }, [username]);
 
   return (
     <div className="member-account">
@@ -79,14 +83,14 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             {!isEmptyProfile &&
               <Tabs />
             }
-            {isEmptyProfile && isAccountOwner &&
+            {!!isEmptyProfile && isAccountOwner &&
               <>
               <MemberAccountNeedAttention />
               {/* <MemberAccountEmptyServiceShow /> */}
               <MemberAccountEmptyTaskList />
               </>
             }
-            {isEmptyProfile && !isAccountOwner &&
+            {!!isEmptyProfile && !isAccountOwner &&
               <div className="member-account-null__empty-section guest-view">
                 <div className="empty-section__content">
                   <p>К сожалению, пользователь пока не совершил действий на платформе.</p>

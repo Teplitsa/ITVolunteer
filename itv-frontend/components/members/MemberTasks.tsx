@@ -4,7 +4,7 @@ import TaskCard from "../../components/TaskCard";
 
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const { tasks, username, memberTaskStats } = useStoreState((state) => state.components.memberAccount);
+  const { tasks, memberTaskStats } = useStoreState((state) => state.components.memberAccount);
   
   const filters: {
     open: number;
@@ -14,7 +14,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     publish: number;
   } = {...memberTaskStats, open: 0};
 
-  const { setTaskListFilter, getMemberTasksRequest, getMemberTaskStatsRequest } = useStoreActions(
+  const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
     (actions) => actions.components.memberAccount
   );
 
@@ -30,14 +30,6 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
       setTaskListFilter("draft");
     }
   };
-
-  useEffect(() => {
-    if(!username) {
-      return;
-    }
-
-    getMemberTaskStatsRequest();
-  }, [username]);
 
   return (
     <div className="member-tasks">
