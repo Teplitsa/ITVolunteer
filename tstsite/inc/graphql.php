@@ -531,7 +531,7 @@ function itv_register_user_graphql_fields() {
                 }
             ],
             'isEmptyProfile' => [
-                'type' => 'Int',
+                'type' => 'Bool',
                 'description' => __( 'User solved problems', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_is_empty_user_profile($user->userId);
