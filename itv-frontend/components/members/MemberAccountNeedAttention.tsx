@@ -1,13 +1,23 @@
-import { ReactElement, SyntheticEvent, useRef } from "react";
+import { ReactElement, SyntheticEvent, useRef, useState, useEffect } from "react";
 import Link from "next/link";
+import storeJsLocalStorage from "store";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => {
-  const {username, profileFillStatus} = useStoreState(
+  const {username, profileFillStatus, isNeedAttentionPanelClosed} = useStoreState(
     (state) => state.components.memberAccount
   );
+  const { setIsNeedAttentionPanelClosed, storeIsNeedAttentionPanelClosed, loadIsNeedAttentionPanelClosed } = useStoreActions((actions) => actions.components.memberAccount);
+  
+  useEffect(() => {
+    loadIsNeedAttentionPanelClosed();
+  }, [])
 
   if(!profileFillStatus) {
+    return null;
+  }
+
+  if(isNeedAttentionPanelClosed) {
     return null;
   }
 
@@ -19,7 +29,12 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
     <div className="member-account-null__need-attention">
       <h3>
         Это ваш личный кабинет и он нуждается в вашем внимании!
-        <a className="close" href="#" />
+        <a className="close" href="#" onClick={(e) => {
+          e.preventDefault();
+          setIsNeedAttentionPanelClosed(true);
+          storeIsNeedAttentionPanelClosed();
+
+        }}/>
       </h3>
       <ul>
         {!profileFillStatus.isAvatarExist &&

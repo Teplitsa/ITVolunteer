@@ -426,7 +426,8 @@ export interface IMemberAccountPageState {
     isCoverExist: boolean;
     isAvatarExist: boolean;
     isProfileInfoEnough: boolean;
-  }
+  },
+  isNeedAttentionPanelClosed?: boolean;
 }
 
 export interface IMemberAccountPageActions {
@@ -445,6 +446,7 @@ export interface IMemberAccountPageActions {
   showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
   setMemberTaskStats: Action<IMemberAccountPageModel, any>;
   setMemeberProfileFillStatus: Action<IMemberAccountPageModel, any>;
+  setIsNeedAttentionPanelClosed: Action<IMemberAccountPageModel, boolean>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -466,6 +468,8 @@ export interface IMemberAccountPageThunks {
   getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
   giveThanksRequest: Thunk<IMemberAccountPageActions>;
   profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
+  loadIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
+  storeIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
 }
 
 /**

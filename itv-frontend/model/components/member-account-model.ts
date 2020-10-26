@@ -9,6 +9,7 @@ import {
   IMemberTaskCard,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
+import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl } from "../../utilities/utilities";
 
 export const memberAccountPageState: IMemberAccountPageState = {
@@ -146,6 +147,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   setMemeberProfileFillStatus: action((prevState, profileFillStatusData) => {
     prevState.profileFillStatus = profileFillStatusData;
+  }),
+  setIsNeedAttentionPanelClosed: action((prevState, isClosed) => {
+    prevState.isNeedAttentionPanelClosed = isClosed;
   }),
 };
 
@@ -395,6 +399,36 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }
     }
   ),
+  storeIsNeedAttentionPanelClosed: thunk(
+    async ({}, params, { getStoreState }) => {
+
+      const {
+        components: {
+          memberAccount: { isNeedAttentionPanelClosed, username },
+        },
+      } = getStoreState() as IStoreModel;
+
+      await storeJsLocalStorage.set(
+        `account.${username}.isNeedAttentionPanelClosed`,
+        isNeedAttentionPanelClosed
+      );
+
+    }
+  ),      
+  loadIsNeedAttentionPanelClosed: thunk(
+    async ({ setIsNeedAttentionPanelClosed }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: { username },
+        },
+      } = getStoreState() as IStoreModel;
+
+      const isClosed = await storeJsLocalStorage.get(
+        `account.${username}.isNeedAttentionPanelClosed`,
+      );
+      setIsNeedAttentionPanelClosed(!!isClosed);
+    }
+  ),      
 };
 
 const memberAccountPageModel: IMemberAccountPageModel = {
