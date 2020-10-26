@@ -407,6 +407,7 @@ export interface IMemberAccountPageState {
   vk?: string;
   skype?: string;
   telegram?: string;
+  isEmptyProfile?: boolean;
   registrationDate: number;
   thankyouCount: number;
   memberTaskStats: any;
@@ -419,6 +420,13 @@ export interface IMemberAccountPageState {
     page: number;
     list: Array<IMemberReview>;
   };
+  profileFillStatus: {
+    createdTasksCount: number;
+    approvedAsDoerTasksCount: number;
+    isCoverExist: boolean;
+    isAvatarExist: boolean;
+    isProfileInfoEnough: boolean;
+  }
 }
 
 export interface IMemberAccountPageActions {
@@ -436,6 +444,7 @@ export interface IMemberAccountPageActions {
   setReviewsPage: Action<IMemberAccountPageModel, number>;
   showMoreReviews: Action<IMemberAccountPageModel, Array<IMemberReview>>;
   setMemberTaskStats: Action<IMemberAccountPageModel, any>;
+  setMemeberProfileFillStatus: Action<IMemberAccountPageModel, any>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -456,6 +465,7 @@ export interface IMemberAccountPageThunks {
   getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
   getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
   giveThanksRequest: Thunk<IMemberAccountPageActions>;
+  profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
 }
 
 /**

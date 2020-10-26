@@ -20,6 +20,8 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     rating,
     reviewsCount,
     xp,
+    isEmptyProfile,
+    profileFillStatus,
   } = useStoreState((state) => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
     (actions) => actions.components.memberAccount.giveThanksRequest
@@ -29,19 +31,31 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     <>
       <div className="member-card">
         <MemberCardBage />
-        <MemberStats
-          {...{
-            useComponents: ["rating", "reviewsCount", "xp"],
-            rating,
-            reviewsCount,
-            xp,
-            withBottomdivider: true,
-            align: "center",
-          }}
-        />
+        {!isEmptyProfile &&
+          <MemberStats
+            {...{
+              useComponents: ["rating", "reviewsCount", "xp"],
+              rating,
+              reviewsCount,
+              xp,
+              withBottomdivider: true,
+              align: "center",
+            }}
+          />
+        }
         {organizationName && <MemberCardOrganization />}
+        {isAccountOwner && (profileFillStatus && !profileFillStatus.isProfileInfoEnough) && 
+          <div className="member-card__null-add-information">
+            <Link href={`/members/${memberName}/profile`}><a>Добавьте информацию о себе</a></Link>
+          </div>
+        }
+        {isEmptyProfile &&
+          <hr className="member-card__divider" />
+        }
         <MemberCardBottom />
+        {(!isEmptyProfile || isAccountOwner) &&
         <hr className="member-card__divider" />
+        }
         {isSessionLoaded && (
           <div className="member-card__action">
             {(isAccountOwner && (
@@ -51,13 +65,21 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                     Хочу помогать другим
                   </a>
                 </Link> */}
+                {isEmptyProfile &&
+                <Link href="/task-actions">
+                  <a className="btn btn_primary btn_full-width cta">
+                    Создать задачу
+                  </a>
+                </Link>
+                }
                 <Link href={`/members/${memberName}/profile`}>
-                  <a className="btn btn_full-width">
+                  <a className="btn btn_full-width edit-profile">
                     Редактировать профиль
                   </a>
                 </Link>
               </>
             )) || (
+              !isEmptyProfile &&
               <>
                 {isLoggedIn && (
                   <button
@@ -76,7 +98,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           </div>
         )}
       </div>
-      {isAccountOwner && (
+      {isAccountOwner && !isEmptyProfile && (
         <>
           <Link href={`/members/${memberName}/security`}>
             <a className="btn btn_default btn_full-width">

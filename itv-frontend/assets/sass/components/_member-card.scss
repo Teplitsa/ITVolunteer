@@ -147,12 +147,16 @@
     }
   }
   &__action {
-    .btn:first-child {
+    .btn.edit-profile {
       margin: 0 0 10px;
       color: $color-gray-dark-lg;
       &:hover {
         text-decoration: underline;
       }
+    }
+
+    .btn.cta {
+      margin-bottom: 10px;      
     }
   }
   &__thank-count {
@@ -161,5 +165,16 @@
     margin: 20 0 0;
     font: 600 13px/20px "IBM Plex Sans", sans-serfif;
     color: $color-gray-dark-lg;
+  }
+
+  &__null-add-information {
+    @include text-sm;
+    text-align: center;
+    margin-bottom: 22px;
+    width: 100%;
+
+    & > a {
+      @include solid-underline($color-main);
+    }
   }
 }

@@ -23,6 +23,7 @@ const MemberUploadCover: React.FunctionComponent = (): ReactElement => {
       </button>
       <input
         className="member-card__avatar-upload-input"
+        id="member-cover-upload-input"
         type="file"
         name="avatar"
         accept="image/jpeg,image/png,image/gif"

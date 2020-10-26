@@ -33,6 +33,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   vk: "",
   skype: "",
   telegram: "",
+  isEmptyProfile: true,
   registrationDate: Date.now() / 1000,
   thankyouCount: 0,
   memberTaskStats: {
@@ -135,6 +136,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   setMemberTaskStats: action((prevState, stats) => {
     prevState.memberTaskStats = stats;
+  }),
+  setMemeberProfileFillStatus: action((prevState, profileFillStatusData) => {
+    prevState.profileFillStatus = profileFillStatusData;
   }),
 };
 
@@ -351,6 +355,35 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           console.error(stripTags(responseMessage));
         } else {
           setThankyouCount(thankyouCount + 1);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+  profileFillStatusRequest: thunk(
+    async ({ setMemeberProfileFillStatus }, params, { getStoreState }) => {
+      const {
+        session: { validToken: token },
+        components: {
+          memberAccount: { databaseId: toUid, thankyouCount },
+        },
+      } = getStoreState() as IStoreModel;
+
+      const action = "get-member-profile-fill-status";
+
+      try {
+        const result = await fetch(getAjaxUrl(action), {
+          method: "post",
+        });
+
+        const { status: responseStatus, message: responseMessage, data: profileFillStatus } = await (<
+          Promise<IFetchResult>
+        >result.json());
+        if (responseStatus === "error") {
+          console.error(stripTags(responseMessage));
+        } else {
+          setMemeberProfileFillStatus(profileFillStatus);
         }
       } catch (error) {
         console.error(error);

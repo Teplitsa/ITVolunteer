@@ -1647,24 +1647,9 @@ function ajax_get_member_task_stats() {
         )));      
     }
 
-    $params = array(
-        'post_type' => 'tasks',
-        'connected_type' => 'task-doers',
-        'connected_items' => $user->ID,
-        'suppress_filters' => true,
-        'nopaging' => true,
-        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
-    );
-    $posts_where_doer = get_posts($params);
+    $posts_where_doer = itv_get_user_approved_as_doer_tasks($user->ID);
 
-    $params = array(
-        'post_type' => 'tasks',
-        'author'        =>  $user->ID,
-        'suppress_filters' => true,
-        'nopaging' => true,
-        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
-    );
-    $posts_where_author = get_posts($params);
+    $posts_where_author = itv_get_user_created_tasks($user->ID);
 
     $posts = array_merge($posts_where_doer, $posts_where_author);
 
@@ -1785,3 +1770,82 @@ function ajax_reset_password() {
 }
 add_action('wp_ajax_reset-password', 'ajax_reset_password');
 add_action('wp_ajax_nopriv_reset-password', 'ajax_reset_password');
+
+function itv_get_user_created_tasks($user_id) {
+    $params = array(
+        'post_type' => 'tasks',
+        'author'        =>  $user_id,
+        'suppress_filters' => true,
+        'nopaging' => true,
+        'post_status' => ['publish', 'in_work', 'closed', 'draft', 'archived'],
+    );
+
+    return get_posts($params);
+}
+
+function itv_get_user_approved_as_doer_tasks($user_id) {    
+    $params = array(
+        'post_type' => 'tasks',
+        'connected_type' => 'task-doers',
+        'connected_items' => $user_id,
+        'connected_meta'  => array(
+             array(
+                 'key'     =>'is_approved',
+                 'value'   => 1,
+                 'compare' => '='
+             )
+        ),
+        'suppress_filters' => true,
+        'nopaging' => true,
+        'post_status' => ['publish', 'in_work', 'closed', 'draft', 'archived'],
+    );
+
+    return get_posts($params);
+}
+
+function itv_is_empty_user_profile($user_id) {
+    return count(itv_get_user_created_tasks($user_id)) + count(itv_get_user_approved_as_doer_tasks($user_id)) === 0;
+}
+
+function itv_is_profile_info_enough($user_id) {
+    return (
+        boolval(trim(tst_get_member_field( 'user_skype', $user_id )))
+        || boolval(trim(get_user_meta($user_id, 'twitter', true)))
+        || boolval(trim(get_user_meta($user_id, 'facebook', true)))
+        || boolval(trim(get_user_meta($user_id, 'vk', true)))
+        || boolval(trim(get_user_meta($user_id, 'instagram', true)))
+        || boolval(trim(get_user_meta($user_id, 'telegram', true)))
+        || boolval(trim(get_user_meta($user_id, 'user_contacts', true)))
+    ) && (
+        !trim(tst_get_member_field( 'user_workplace', $user_id )) || tst_get_member_field( 'user_workplace_desc', $user_id )
+    );
+}
+
+function ajax_get_member_profile_fill_status() {
+    $user_id = get_current_user_id();
+
+    if(!$user_id) {
+        wp_die(json_encode(array(
+            'status' => 'error',
+            'data' => [],
+            'message' => __('<strong>Error:</strong> operation not permitted.', 'tst'),
+        )));      
+    }
+
+    $avatar_url = itv_avatar_url($user_id);
+
+    $profile_fill_status_data = [
+        'createdTasksCount' => count(itv_get_user_created_tasks($user_id)),
+        'approvedAsDoerTasksCount' => count(itv_get_user_approved_as_doer_tasks($user_id)),
+        'isCoverExist' => boolval(itv_member_cover_url($user_id)),
+        'isAvatarExist' => ( boolval($avatar_url) && !preg_match("/.*\/temp-avatar\.png$/", $avatar_url) ),
+        'isProfileInfoEnough' => itv_is_profile_info_enough($user_id),
+    ];
+
+    wp_die(json_encode(array(
+        'status' => 'ok',
+        'data' => $profile_fill_status_data,
+    )));    
+}
+add_action('wp_ajax_get-member-profile-fill-status', 'ajax_get_member_profile_fill_status');
+add_action('wp_ajax_nopriv_get-member-profile-fill-status', 'ajax_get_member_profile_fill_status');

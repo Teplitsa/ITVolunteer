@@ -77,7 +77,7 @@
     }
   }
   &__title {
-    font: 600 24px/32px "IBM Plex Sans", sans-serif;
+    @include htext-lg-bold;
   }
   &__filter {
     ul {
@@ -128,7 +128,7 @@
     }
   }
   &__title {
-    font: 600 24px/32px "IBM Plex Sans", sans-serif;
+    @include htext-lg-bold;
   }
   &__stats {
     margin: 5px 0 0;
@@ -159,6 +159,107 @@
     &:focus {
       border-bottom: 1px dashed transparent;
       text-decoration: none;
+    }
+  }
+}
+
+.member-account-null {
+  &__need-attention {
+    background-color: $color-gray-light-lg;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 29px;
+
+    h3 {
+      @include text-bold-line-sm;
+      color: $color-gray-dark-xl;
+      float: none;
+      clear: both;
+
+      a.close {
+        @include a-no-hover-underline;
+        background: url(../../img/icon-modal-close.svg);
+        width: 24px;
+        height: 24px;
+        margin-top: -2px;
+        display: block;
+        float: right;
+      }
+  
+    }
+
+    ul {
+      li {
+        margin-top: 20px;
+        counter-increment: number;
+
+        &::before {
+          @include text-sm-bold;
+          content: counter(number);
+          display: flex;
+          float: left;
+          justify-content: center;
+          align-items: center;
+          background-color: $color-main;          
+          color: $color-white;
+          margin-right: 10px;
+          width: 24px;
+          height: 24px;
+          border-radius: 100px;
+          text-align: center;
+        }
+
+        a {
+          @include solid-underline($color-main);
+          @include text-sm-bold;
+          vertical-align: text-bottom;
+          float: none;
+          clear: both;
+        }
+
+        p {
+          @include text-sm;
+          color: $color-gray-dark-xl;
+          margin-top: 6px;
+        }
+      }
+    }
+  }
+
+  &__empty-section {
+    margin-top: 30px;
+
+    &.guest-view {
+      margin-top: 79px;      
+    }
+
+    h3 {
+      @include htext-lg-bold;        
+      margin: 40px 0 15px;
+      padding: 0 0 10px;
+      border-bottom: 1px solid $color-gray-light-md;
+    }
+
+    .empty-section {   
+      &__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+        
+        a {
+          @include a-no-hover-underline;
+          @include button-secondary-sm-dark;
+          display: block;
+          margin-top: 10px;
+        }
+
+        p {
+          @include text-sm;
+          text-align: center;
+          color: $color-gray-dark-xl;
+        }
+      }
     }
   }
 }

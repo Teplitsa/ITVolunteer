@@ -112,11 +112,13 @@
     opacity: 0.5;
   }
   &_upload-cover {
-    background: url(../../img/icon-camera.svg) calc(100% - 20px) 50% no-repeat
+    background: url(../../img/upload-account-cover.svg) calc(100% - 16px) 50% no-repeat
       $color-white;
-    border: 2px solid $color-white;
+    background-color: transparent;
+    border: 2px dashed $color-gray-dark-md-001;
+    padding: 12px;
     padding-right: 40px;
     border-radius: 8px;
-    color: $color-gray-dark-md;
+    color: $color-gray-dark-md-001;
   }
 }

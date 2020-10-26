@@ -1,19 +1,25 @@
 import { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
 import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
+import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
+import MemberAccountEmptyServiceShow from "../members/MemberAccountEmptyServiceShow";
+import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList"
 import { regEvent } from "../../utilities/ga-events";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const coverImage = useStoreState(
-    (state) => state.components.memberAccount.cover
+  const {cover: coverImage, isEmptyProfile, profileFillStatus, itvAvatar} = useStoreState(
+    (state) => state.components.memberAccount
   );
+  const profileFillStatusRequest = useStoreActions(
+    (actions) => actions.components.memberAccount.profileFillStatusRequest
+  );  
   const router = useRouter();
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
@@ -28,6 +34,18 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   useEffect(() => {
     regEvent('ge_show_new_desing', router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    if(!isAccountOwner) {
+      return
+    }
+
+    profileFillStatusRequest();
+  }, [isAccountOwner, coverImage, itvAvatar])
+
+  useEffect(() => {
+    console.log("profileFillStatus:", profileFillStatus)
+  }, [profileFillStatus])
 
   return (
     <div className="member-account">
@@ -47,7 +65,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             <MemberCard />
           </div>
           <div className="member-account__right-column">
-            {isAccountOwner && (
+            {isAccountOwner && !isEmptyProfile && (
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
                   <Link href="/task-actions">
@@ -58,8 +76,25 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
                 </div>
               </div>
             )}
-            <Tabs />
-          </div>
+            {!isEmptyProfile &&
+              <Tabs />
+            }
+            {isEmptyProfile && isAccountOwner &&
+              <>
+              <MemberAccountNeedAttention />
+              {/* <MemberAccountEmptyServiceShow /> */}
+              <MemberAccountEmptyTaskList />
+              </>
+            }
+            {isEmptyProfile && !isAccountOwner &&
+              <div className="member-account-null__empty-section guest-view">
+                <div className="empty-section__content">
+                  <p>К сожалению, пользователь пока не совершил действий на платформе.</p>
+                  <p>Мы очень надеемся, что скоро это изменится</p>
+                </div>
+              </div>
+            }
+            </div>
         </div>
       </div>
     </div>
