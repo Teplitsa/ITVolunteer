@@ -132,6 +132,15 @@ class Itv_Setup_Utils
                     update_term_meta($term_id, $k, $v);
                 }
             }
+
+            if (!empty($category['old_terms'])) {
+                foreach ($category['old_terms'] as $old_term_slug) {
+                    $old_term = get_term_by('slug', $old_term_slug, $tax);                    
+                    if ($term !== false) {
+                        
+                    }
+                }
+            }
         }
     }
 
