@@ -215,7 +215,7 @@ class ItvNotificator {
         $task_permalink = get_permalink ( $task );
         
         /* notice to candidate: */
-        ItvAtvetka::instance()->mail('account_activated_notice', [
+        ItvAtvetka::instance()->mail('task_status_changed', [
             'mailto' => $user->user_email,
             'username' => $user->user_nicename,
             'task_title' => $task->post_title,
