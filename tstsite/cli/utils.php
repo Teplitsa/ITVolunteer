@@ -125,6 +125,7 @@ class Itv_Setup_Utils
                 $term_id = wp_insert_term($category['name'], $tax, $category);
             } else {
                 $term_id = $term->term_id;
+                // TODO: add some update option
             }
 
             if (!empty($category['meta'])) {
@@ -132,14 +133,63 @@ class Itv_Setup_Utils
                     update_term_meta($term_id, $k, $v);
                 }
             }
+        }
+    }
+
+    public static function link_posts_from_old_to_new_terms($terms_data, $tax, $post_type) {
+        foreach ($terms_data as $category) {
+            $term = get_term_by('slug', $category['slug'], $tax);
+            if($term === false) {
+                throw new Exception("term not found:" . $category['slug']);
+            }
 
             if (!empty($category['old_terms'])) {
                 foreach ($category['old_terms'] as $old_term_slug) {
                     $old_term = get_term_by('slug', $old_term_slug, $tax);                    
-                    if ($term !== false) {
-                        
+                    if ($old_term === false) {
+                        echo "term not found:" . $category['slug'] . "\n";
+                        continue;                        
+                    }
+                    else {
+
+                        $params = [
+                            'post_type' => $post_type,
+                            'post_status' => array_keys(tst_get_task_status_list()),
+                            'nopaging' => true,
+                            'suppress_filters' => true,
+                        ];
+                        $query = new WP_Query( $params );
+                        $posts = $query->get_posts();
+
+                        foreach($posts as $post) {
+                            wp_set_object_terms($post->ID, $term->ID, $tax, true);
+                        }
                     }
                 }
+            }
+        }
+    }
+
+    public static function delete_terms_beoynd_parents($tax, $terms_data) {
+        $parent_id_list = [];
+        foreach ($terms_data as $category) {
+            $term = get_term_by('slug', $category['slug'], $tax);
+            if($term === false) {
+                throw new Exception("term not found:" . $category['slug']);
+            }
+            $parent_id_list[] = $term->term_id;
+        }
+
+        $terms = get_terms([
+            'taxonomy' => $tax,
+            'hide_empty' => false,
+            'exclude' => $parent_id_list,
+        ]);
+
+        foreach($terms as $term) {
+            if(!in_array($term->term_id, $parent_id_list)) {
+                echo "delete term: " . $term->slug . "\n";
+                // wp_delete_term($term->term_id);
             }
         }
     }
