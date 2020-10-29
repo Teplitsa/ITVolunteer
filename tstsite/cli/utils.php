@@ -117,7 +117,7 @@ class Itv_Setup_Utils
         return $post_id;
     }
 
-    public static function setup_terms_data($terms_data, $tax)
+    public static function setup_terms_data($terms_data, $tax, $force_update=false)
     {
         foreach ($terms_data as $category) {
             $term = get_term_by('slug', $category['slug'], $tax);
@@ -125,7 +125,10 @@ class Itv_Setup_Utils
                 $term_id = wp_insert_term($category['name'], $tax, $category);
             } else {
                 $term_id = $term->term_id;
-                // TODO: add some update option
+
+                if($force_update) {
+                    wp_update_term($term->term_id, $tax, $category);
+                }
             }
 
             if (!empty($category['meta'])) {
@@ -145,25 +148,24 @@ class Itv_Setup_Utils
 
             if (!empty($category['old_terms'])) {
                 foreach ($category['old_terms'] as $old_term_slug) {
-                    $old_term = get_term_by('slug', $old_term_slug, $tax);                    
-                    if ($old_term === false) {
-                        echo "term not found:" . $category['slug'] . "\n";
-                        continue;                        
-                    }
-                    else {
+                    $params = [
+                        'post_type' => $post_type,
+                        'post_status' => array_keys(tst_get_task_status_list()),
+                        'nopaging' => true,
+                        'suppress_filters' => true,
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => $tax,
+                                'field'    => 'slug',
+                                'terms'    => $old_term_slug,
+                            ),
+                        ),                            
+                    ];
+                    $query = new WP_Query( $params );
+                    $posts = $query->get_posts();
 
-                        $params = [
-                            'post_type' => $post_type,
-                            'post_status' => array_keys(tst_get_task_status_list()),
-                            'nopaging' => true,
-                            'suppress_filters' => true,
-                        ];
-                        $query = new WP_Query( $params );
-                        $posts = $query->get_posts();
-
-                        foreach($posts as $post) {
-                            wp_set_object_terms($post->ID, $term->ID, $tax, true);
-                        }
+                    foreach($posts as $post) {
+                        wp_set_object_terms($post->ID, $term->term_id, $tax, true);
                     }
                 }
             }
