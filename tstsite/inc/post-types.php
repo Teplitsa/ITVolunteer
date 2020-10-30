@@ -21,9 +21,47 @@ function deregister_taxonomy_for_object_type( $taxonomy, $object_type) {
 add_action('init', 'itv_custom_content', 20);
 if(!function_exists('itv_custom_content')) {
 function itv_custom_content(){
+    global $wp_rewrite;
 	
 	deregister_taxonomy_for_object_type('post_tag', 'post');
 	add_post_type_support('page', 'excerpt');
+
+    $labels = array(
+        'name'                       => __( 'Tags'),
+        'singular_name'              => __( 'Tag' ),
+        'menu_name'                  => __( 'Tags' ),
+        'all_items'                  => __( 'All Tags' ),
+        'parent_item'                => __( 'Parent' ),
+        'parent_item_colon'          => __( 'Parent:' ),
+        'new_item_name'              => __( 'New Tag Name' ),
+        'add_new_item'               => __( 'Add New Tag' ),
+        'edit_item'                  => __( 'Edit Tag' ),
+        'update_item'                => __( 'Update Tag' ),
+        'view_item'                  => __( 'View Tag' ),
+        'separate_items_with_commas' => __( 'Separate tags with commas' ),
+        'add_or_remove_items'        => __( 'Add or remove tags' ),
+        'choose_from_most_used'      => __( 'Choose from the most used' ),
+        'popular_items'              => __( 'Tags' ),
+        'search_items'               => __( 'Search Tags' ),
+        'not_found'                  => __( 'Not Found' ),
+    );
+
+    register_taxonomy( 'post_tag', 'post', array(
+        'hierarchical'              => true,
+        'query_var'                 => 'tag',
+        'labels'                    => $labels,
+        'rewrite'                   => array(
+                                            'hierarchical' => false,
+                                            'slug'         => get_option( 'tag_base' ) ? get_option( 'tag_base' ) : 'tag',
+                                            'with_front'   => ! get_option( 'tag_base' ) || $wp_rewrite->using_index_permalinks(),
+                                            'ep_mask'      => EP_TAGS,
+                                        ),
+        'public'                    => true,
+        'show_ui'                   => true,
+        'show_admin_column'         => true,
+        '_builtin'                  => true,
+    ) );
+
 	
 	register_taxonomy('reward', array('tasks'), array(
         'labels' => array(

@@ -146,6 +146,8 @@ class Itv_Setup_Utils
                 throw new Exception("term not found:" . $category['slug']);
             }
 
+            echo "process term: " . $category['slug'] . "\n";
+
             if (!empty($category['old_terms'])) {
                 foreach ($category['old_terms'] as $old_term_slug) {
                     $params = [
@@ -163,9 +165,11 @@ class Itv_Setup_Utils
                     ];
                     $query = new WP_Query( $params );
                     $posts = $query->get_posts();
+                    $posts_count = count($posts);
 
-                    foreach($posts as $post) {
+                    foreach($posts as $index => $post) {
                         wp_set_object_terms($post->ID, $term->term_id, $tax, true);
+                        echo "processed " . ($index + 1) . " posts of " . $posts_count . "\n";
                     }
                 }
             }
@@ -189,9 +193,9 @@ class Itv_Setup_Utils
         ]);
 
         foreach($terms as $term) {
-            if(!in_array($term->term_id, $parent_id_list)) {
+            if(!$term->parent) {
                 echo "delete term: " . $term->slug . "\n";
-                // wp_delete_term($term->term_id);
+                wp_delete_term($term->term_id, $tax);
             }
         }
     }

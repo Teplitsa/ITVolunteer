@@ -22,8 +22,6 @@ try {
         array('slug' => "analytics", 'name' => "Аналитика",),
         array('slug' => "legal-services", 'name' => "Юридические услуги", 'old_terms' => ['yuridicheskie-uslugi']),
     ];
-    Itv_Setup_Utils::setup_terms_data($top_level_terms, $tax, true);
-    Itv_Setup_Utils::link_posts_from_old_to_new_terms($top_level_terms, $tax, $post_type);
 
     $sub_level_terms = [
         'web-and-dev' => [
@@ -34,9 +32,9 @@ try {
             ['slug' => "mobile-dev", 'name' => "Мобильная разработка", 'old_terms' => ['prilozhenie-dlya-mobilnyh', 'android', 'ios']],
             ['slug' => "site-migration", 'name' => "Перенос и настройка сайта",],
             ['slug' => "site-and-landing", 'name' => "Сайты и лендинги под ключ", 'old_terms' => ['sajt-pod-klyuch-2']],
-            ['slug' => "techsupport", 'name' => "Техподдержка и хостинг",],
-            ['slug' => "kandinsky", 'name' => "Установка «Кандинского»",],
-            ['slug' => "digital-security", 'name' => "Цифровая безопасность",
+            ['slug' => "techsupport", 'name' => "Техподдержка и хостинг"],
+            ['slug' => "kandinsky", 'name' => "Установка «Кандинского»"],
+            ['slug' => "digital-security", 'name' => "Цифровая безопасность"],
             ['slug' => "wordpress", 'name' => "WordPress", 'old_terms' => ['wordpress', 'obuchenie-konsultatsii-2', 'testirovanie-2']],
         ],
         'design' => [
@@ -75,23 +73,70 @@ try {
         ],
     ];
 
-    foreach($sub_level_terms as $top_term_slug => $sub_terms) {
-        $top_term = get_term_by('slug', $top_term_slug, $tax);
-        if($top_term === false) {
-            throw new Exception("term not found:" . $top_term_slug);
-        }
-
-        foreach($sub_terms as $i => $sub_term) {
-            $sub_terms[$i]['parent'] = $top_term->term_id;
-        }
-
-        Itv_Setup_Utils::setup_terms_data($sub_terms, $tax, true);
-        Itv_Setup_Utils::link_posts_from_old_to_new_terms($sub_terms, $tax, $post_type);
-    }
-    // Itv_Setup_Utils::delete_terms_beoynd_parents($tax, $top_level_terms);
-
+    itv_setup_tax_terms($tax, $top_level_terms, $sub_level_terms, $post_type);
 
     // nko tags
+    $tax = 'nko_task_tag';
+    $top_level_terms = [
+        array('slug' => "help-people", 'name' => "Помогать людям в беде", 'old_terms' => ['blagotvoritelnost', 'deti-i-podrostki', 'lyudi-s-invalidnostyu', 'pall']),
+        array('slug' => "improve-urban", 'name' => "Улучшить городскую среду"),
+        array('slug' => "save-nature", 'name' => "Спасти природу и животных", 'old_terms' => ['zhivotnye', 'ekologiya']),
+        array('slug' => "make-world-fair", 'name' => "Сделать мир справедливее", 'old_terms' => ['meropriyatiya', 'prava-cheloveka']),
+        array('slug' => "system-solutions", 'name' => "Заниматься системными решениями", 'old_terms' => ['sotsialnoe-predprinimatelstvo', '']),
+    ];
+
+    $sub_level_terms = [
+        'help-people' => [
+            ['slug' => "homeless-people", 'name' => "Помогать бездомным"],
+            ['slug' => "children-crisis-families", 'name' => "Помогать детям из кризисных семей"],
+            ['slug' => "help-orphans", 'name' => "Помогать детям-сиротам"],
+            ['slug' => "people-disabilities", 'name' => "Помогать людям с инвалидностью"],
+            ['slug' => "help-ill-people", 'name' => "Помогать людям с тяжелыми заболеваниями"],
+            ['slug' => "help-migrants", 'name' => "Помогать мигрантам и беженцам"],
+            ['slug' => "help-drug-users", 'name' => "Помогать наркопотребителям"],
+            ['slug' => "help-prisoners", 'name' => "Помогать заключенным и осужденным, вышедшим на свободу"],
+            ['slug' => "help-old-people", 'name' => "Помогать пожилым и ветеранам"],
+            ['slug' => "survivors-violence", 'name' => "Помогать пострадавшим от насилия"],
+            ['slug' => "help-hospices", 'name' => "Помогать хосписам"],
+        ],
+        'improve-urban' => [
+            ['slug' => "landscaping", 'name' => "Благоустройство"],
+            ['slug' => "bike", 'name' => "Велодвижение"],
+            ['slug' => "urban-projects", 'name' => "Городские проекты"],
+            ['slug' => "city-protection", 'name' => "Градозащита"],
+            ['slug' => "accessible-environment", 'name' => "Доступная среда"],
+            ['slug' => "local-community", 'name' => "Местное сообщество"],
+            ['slug' => "rural-projects", 'name' => "Сельские проекты"],
+            ['slug' => "cultural-heritage", 'name' => "Сохранение культурного наследия"],
+        ],
+        'save-nature' => [
+            ['slug' => "homeless-animals", 'name' => "Бездомные животные"],
+            ['slug' => "biodiversity", 'name' => "Биоразнообразие"],
+            ['slug' => "wildlife-protection", 'name' => "Защита диких животных"],
+            ['slug' => "separate-collection", 'name' => "Раздельный сбор"],
+            ['slug' => "responsible-consumption", 'name' => "Ответственное потребление"],
+            ['slug' => "ecologic-education", 'name' => "Экопросвещение"],
+            ['slug' => "ecologic-disasters", 'name' => "Экологические бедствия"],
+        ],
+        'make-world-fair' => [
+            ['slug' => "gender-equality", 'name' => "Гендерное равенство"],
+            ['slug' => "access-education", 'name' => "Доступ к образованию"],
+            ['slug' => "inclusive-projects", 'name' => "Инклюзивные проекты"],
+            ['slug' => "lgbt-community", 'name' => "ЛГБТ-сообщество"],
+            ['slug' => "independent-media", 'name' => "Независимые СМИ"],
+            ['slug' => "open-science", 'name' => "Открытая наука"],
+            ['slug' => "human-rights", 'name' => "Права человека"],
+        ],
+        'system-solutions' => [
+            ['slug' => "fighting-poverty", 'name' => "Борьба с бедностью"],
+            ['slug' => "infrastructure-projects", 'name' => "Инфраструктурные проекты"],
+            ['slug' => "ngo-resource-centers", 'name' => "Ресурсные центры НКО"],
+            ['slug' => "charity-development", 'name' => "Развитие благотворительности"],
+            ['slug' => "volunteering-development", 'name' => "Развитие волонтерства"],
+        ],
+   ];
+
+   itv_setup_tax_terms($tax, $top_level_terms, $sub_level_terms, $post_type);
 
     chr(10) . chr(10);
     echo 'DONE'.chr(10);
@@ -109,4 +154,25 @@ catch (ItvCLIHostNotSetException $ex) {
 }
 catch (Exception $ex) {
 	echo $ex;
+}
+
+function itv_setup_tax_terms($tax, $top_level_terms, $sub_level_terms, $post_type) {
+    Itv_Setup_Utils::setup_terms_data($top_level_terms, $tax, true);
+    Itv_Setup_Utils::link_posts_from_old_to_new_terms($top_level_terms, $tax, $post_type);
+
+    foreach($sub_level_terms as $top_term_slug => $sub_terms) {
+        $top_term = get_term_by('slug', $top_term_slug, $tax);
+        if($top_term === false) {
+            throw new Exception("term not found:" . $top_term_slug);
+        }
+
+        foreach($sub_terms as $i => $sub_term) {
+            echo "set parent term: " . $top_term->slug . " for term: " . $sub_term['slug'] . "\n";
+            $sub_terms[$i]['parent'] = $top_term->term_id;
+        }
+
+        Itv_Setup_Utils::setup_terms_data($sub_terms, $tax, true);
+        Itv_Setup_Utils::link_posts_from_old_to_new_terms($sub_terms, $tax, $post_type);
+    }
+    Itv_Setup_Utils::delete_terms_beoynd_parents($tax, $top_level_terms);
 }

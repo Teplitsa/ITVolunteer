@@ -393,6 +393,9 @@ function FilterSection(props) {
                                         <img src={_.get(optionCheck, optionId, false) ? imgFilterCheckOn : imgFilterCheckOff}/>
                                         <span>{item.title}</span>
                                     </span>
+                                    {!!item.subterms && item.subterms.length > 0 &&
+                                    <span>!</span>
+                                    }
                                     <span className="stats">{item.task_count}</span>
                                 </div>
                             )
