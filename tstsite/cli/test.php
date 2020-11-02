@@ -45,13 +45,18 @@ try {
     $term = get_term_by('id', $parent_id, $tax);
     print_r($term);
 
+    // $terms = get_terms([
+    //     'taxonomy' => $tax,
+    //     'hide_empty' => false,
+    //     'hierarchical' => true,
+    //     'parent' => $parent_id, 
+    // ]);
     $terms = get_terms([
-        'taxonomy' => $tax,
+        'taxonomy' => 'post_tag',
         'hide_empty' => false,
-        'hierarchical' => true,
-        'parent' => $parent_id, 
     ]);
     print_r($terms);
+    print_r(count($terms));
 
 	echo chr(10) . chr(10);
     echo 'DONE'.chr(10);

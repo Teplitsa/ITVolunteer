@@ -12,6 +12,7 @@ var storeJsLocalStorage = require('store')
 
 const taskListFilterState: ITaskListFilterState = {
   optionCheck: null,
+  optionOpen: null,
   statusStats: null,
   tipClose: {},
   sectionClose: {},
@@ -61,6 +62,16 @@ const taskListFilterActions: ITaskListFilterActions = {
   }),    
   saveOptionCheck: action((state) => {
       storeJsLocalStorage.set('taskFilter.optionCheck', state.optionCheck)
+  }),
+  setOptionOpen: action((state, payload) => {
+    state.optionOpen = payload
+  }),
+  loadOptionOpen: thunk((actions, payload) => {
+    let optionOpen = storeJsLocalStorage.get('taskFilter.optionOpen')
+    actions.setOptionOpen(_.isEmpty(optionOpen) ? {} : optionOpen)
+  }),    
+  saveOptionOpen: action((state) => {
+    storeJsLocalStorage.set('taskFilter.optionOpen', state.optionOpen)
   }),
   setStatusStats: action((state, payload) => {
       state.statusStats = payload

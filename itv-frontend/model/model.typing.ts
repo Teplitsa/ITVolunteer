@@ -975,6 +975,7 @@ export interface ITaskListFilterModel
     ITaskListFilterActions {}
 export interface ITaskListFilterState {
   optionCheck;
+  optionOpen;
   statusStats;
   tipClose: Object;
   sectionClose;
@@ -994,6 +995,9 @@ export interface ITaskListFilterActions {
   setOptionCheck: Action<ITaskListFilterState, any>;
   saveOptionCheck: Action<ITaskListFilterState>;
   loadOptionCheck: Thunk<ITaskListFilterActions, any>;
+  setOptionOpen: Action<ITaskListFilterState, any>;
+  saveOptionOpen: Action<ITaskListFilterState>;
+  loadOptionOpen: Thunk<ITaskListFilterActions, any>;
   loadFilterData: Thunk<ITaskListFilterActions, any>;
   setStatusStats: Action<ITaskListFilterState, any>;
   setFilterData: Action<ITaskListFilterState, any>;

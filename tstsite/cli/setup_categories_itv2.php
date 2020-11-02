@@ -87,17 +87,17 @@ try {
 
     $sub_level_terms = [
         'help-people' => [
-            ['slug' => "homeless-people", 'name' => "Помогать бездомным"],
-            ['slug' => "children-crisis-families", 'name' => "Помогать детям из кризисных семей"],
-            ['slug' => "help-orphans", 'name' => "Помогать детям-сиротам"],
-            ['slug' => "people-disabilities", 'name' => "Помогать людям с инвалидностью"],
-            ['slug' => "help-ill-people", 'name' => "Помогать людям с тяжелыми заболеваниями"],
-            ['slug' => "help-migrants", 'name' => "Помогать мигрантам и беженцам"],
-            ['slug' => "help-drug-users", 'name' => "Помогать наркопотребителям"],
-            ['slug' => "help-prisoners", 'name' => "Помогать заключенным и осужденным, вышедшим на свободу"],
-            ['slug' => "help-old-people", 'name' => "Помогать пожилым и ветеранам"],
-            ['slug' => "survivors-violence", 'name' => "Помогать пострадавшим от насилия"],
-            ['slug' => "help-hospices", 'name' => "Помогать хосписам"],
+            ['slug' => "homeless-people", 'name' => "Бездомным"],
+            ['slug' => "children-crisis-families", 'name' => "Детям из кризисных семей"],
+            ['slug' => "help-orphans", 'name' => "Детям-сиротам"],
+            ['slug' => "people-disabilities", 'name' => "Людям с инвалидностью"],
+            ['slug' => "help-ill-people", 'name' => "Людям с тяжелыми заболеваниями"],
+            ['slug' => "help-migrants", 'name' => "Мигрантам и беженцам"],
+            ['slug' => "help-drug-users", 'name' => "Наркопотребителям"],
+            ['slug' => "help-prisoners", 'name' => "Заключенным и осужденным, вышедшим на свободу"],
+            ['slug' => "help-old-people", 'name' => "Пожилым и ветеранам"],
+            ['slug' => "survivors-violence", 'name' => "Пострадавшим от насилия"],
+            ['slug' => "help-hospices", 'name' => "Хосписам"],
         ],
         'improve-urban' => [
             ['slug' => "landscaping", 'name' => "Благоустройство"],

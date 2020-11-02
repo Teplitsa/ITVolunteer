@@ -9,7 +9,7 @@ class TaskListFilter {
         return array_map(function($term) use ($tax, $with_sub_terms) {
             return [
                 'id' => $term->term_id,
-                'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                'title' => $term->name,
                 'slug' => $term->slug,
                 'task_count' => $this->count_tasks_in_filter_option([
                     'tax_query' => array(
@@ -149,10 +149,11 @@ class TaskListFilter {
             'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'title' => $term->name,
                 ];
             }, array_values(get_terms([
                 'taxonomy' => 'post_tag',
+                'hide_empty' => false,
             ]))),
         ];
     
@@ -162,9 +163,12 @@ class TaskListFilter {
             'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'title' => $term->name,
                 ];
-            }, array_values(get_terms('nko_task_tag'))),
+            }, array_values(get_terms([
+                'taxonomy' => 'nko_task_tag',
+                'hide_empty' => false,
+            ]))),
         ];
         
         $sections[] = [
@@ -233,6 +237,8 @@ class TaskListFilter {
         if(!empty($filter)) {
             $tlf = new TaskListFilter();
             $filter_options = $tlf->get_task_list_filter_options();
+            // error_log("filter:" . print_r($filter, true));
+
             foreach($filter_options as $key => $section) {
                 foreach($section['items'] as $ik => $item) {
                     foreach($filter as $fk => $fv) {
@@ -243,6 +249,8 @@ class TaskListFilter {
                 }
             }
         }
+
+        // error_log("args:" . print_r($args, true));
         
         $stats = [];
         $status_list = ["publish", "in_work", "closed"];
