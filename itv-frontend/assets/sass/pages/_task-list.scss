@@ -41,14 +41,13 @@
   }
 
   .page-sections {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     margin-top: 26px;
     width: 100%;
 
-    @include media-breakpoint-down(md) {
-      flex-direction: column;
+    @include screen-from(md) {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
     }
 
     &_search {
@@ -58,13 +57,13 @@
 }
 
 .site-main.page-task-list section.task-list-filter {
+  flex-basis: 31.4285%;
   background-color: $color-gray-light-lg;
   color: $color-gray-dark-xl;
   border-radius: 16px;
   padding: 32px 24px;
   margin-right: $base * 4;
-  max-width: 352px;
-  min-width: 352px;
+  box-sizing: border-box;
 
   .filter-explain {
     @include text-line-sm-light;
@@ -256,8 +255,16 @@
 // tasks
 .site-main.page-task-list .page-sections .task-list,
 .site-main .home-list-section__list .task-list {
+  flex-basis: 65.7142%;
   padding-bottom: 56px;
-  flex-grow: 1;
+  opacity: 1;
+  visibility: visible;
+  transition: all .15s ease-in;
+
+  &.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
 
   .load-more-tasks {
     margin-top: 20px;
@@ -408,17 +415,16 @@
     }
 
     .page-sections {
-      align-items: center;
-
       .task-list-filter {
-        margin-right: 0px;
-        max-width: unset;
-        min-width: unset;
-        width: calc(85% - 48px);
+        margin-left: auto;
+        margin-right: auto;
+        width: 85%;
       }
 
       .task-list {
         margin-top: 32px;
+        margin-left: auto;
+        margin-right: auto;
         width: 85%;
       }
     }

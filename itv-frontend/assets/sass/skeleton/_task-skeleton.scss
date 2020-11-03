@@ -1,0 +1,46 @@
+.task-skeleton {
+  padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
+  &__inner {
+    margin: 0 auto;
+    max-width: 1144px;
+
+    @include screen-from(md) {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 0 0;
+    }
+  }
+  &__sidebar {
+    @include screen-from(md) {
+      flex-basis: 30.7692%;
+    }
+  }
+  &__content {
+    @include screen-from(md) {
+      flex-basis: 64.3356%;
+    }
+  }
+  &__column {
+    &-title {
+      margin: 20px 0;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      text-align: center;
+      color: $color-gray-dark-xl;
+
+      @include screen-from(md) {
+        text-align: left;
+      }
+    }
+    &-mock {
+      background: $color-gray-light-lg;
+      max-width: 100%;
+      min-height: 453px;
+      border-radius: 8px;
+      box-sizing: border-box;
+
+      @extend .item-mock;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@keyframes item-mock {
+  from {
+    background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.35) 50%,
+          rgba(255, 255, 255, 0) 100%
+        ) -100% 50% no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50% 50%
+        no-repeat;
+    background-size: 50% 100%, 100% 100%;
+  }
+  to {
+    background: linear-gradient(
+          to right,
+          rgba(255, 255, 255, 0),
+          rgba(255, 255, 255, 0.35) 50%,
+          rgba(255, 255, 255, 0) 100%
+        )
+        200% 50% no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50% 50%
+        no-repeat;
+    background-size: 50% 100%, 100% 100%;
+  }
+}
+
+.item-mock {
+  animation: 1.5s linear 0s infinite item-mock;
+}
