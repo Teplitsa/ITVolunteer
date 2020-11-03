@@ -86,21 +86,21 @@ export const graphqlQuery: {
       }
       dateGmt
       doerCandidatesCount
-      tags {
+      tags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
         nodes {
           id
           name
           slug
         }
       }
-      rewardTags {
+      rewardTags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
         nodes {
           id
           name
           slug
         }
       }
-      ngoTaskTags {
+      ngoTaskTags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
         nodes {
           id
           name

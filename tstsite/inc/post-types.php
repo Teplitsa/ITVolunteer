@@ -60,6 +60,10 @@ function itv_custom_content(){
         'show_ui'                   => true,
         'show_admin_column'         => true,
         '_builtin'                  => true,
+        
+        'show_in_graphql' => true,
+        'graphql_single_name' => 'tag',
+        'graphql_plural_name' => 'tags'
     ) );
 
 	
