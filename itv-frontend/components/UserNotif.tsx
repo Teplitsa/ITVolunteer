@@ -159,7 +159,14 @@ function NotifItem({ notif, user }) {
               </a>
             )}
 
-            <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
+            {notif.type ==="general_notif" 
+              ? <span
+                  dangerouslySetInnerHTML={{
+                    __html: notif.content || "",
+                  }}
+                />
+              : <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
+            }
           </div>
 
           {!!notif.task && (
