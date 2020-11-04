@@ -1367,7 +1367,7 @@ add_action('wp_ajax_unlike-comment', 'ajax_unlike_comment');
 function ajax_get_task_list_filter() {
     
     $filter_data = get_transient( DataCache::$DATA_TASK_LIST_FILTER );
-    if(true || $filter_data === false) {
+    if($filter_data === false) {
         $tlf = new TaskListFilter();
         $filter_data = $tlf->create_filter_with_stats();
         set_transient( DataCache::$DATA_TASK_LIST_FILTER, $filter_data, HOUR_IN_SECONDS );
