@@ -152,6 +152,10 @@
           margin-top: 12px;
         }
 
+        &.sub-terms-list {
+          margin-left: 16px;
+        }
+
         .filter-section-option-list-header {
           @include text-sm;
           color: $color-gray-dark-lg;
@@ -190,7 +194,11 @@
           .filter-section-option-list-item {
             @include text-sm;
             color: $color-gray-dark-lg;
-            display: flex;
+            display: block;
+
+            .filter-section-option-list-item-title {
+              display: flex;
+            }
 
             .check-title {
               cursor: pointer;
@@ -209,6 +217,14 @@
               }
             }
 
+            &.has-subterms {
+              & > .filter-section-option-list-item-title > .check-title {
+                & > span {
+                  @include dashed-underline($color-gray-dark-lg);
+                }                
+              }
+            }
+
             .stats {
               flex-grow: 1;
               text-align: right;
@@ -220,7 +236,7 @@
             }
 
             &:not(:first-child) {
-              margin-top: 8px;
+              margin-top: 12px;
             }
           }
         }

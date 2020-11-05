@@ -651,7 +651,7 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
       [];
 
     selectedValueList = selectedValueList.filter(
-      (item: number) => item !== value
+      (item: number) => Number(item) !== value
     );
 
     setFormData({
@@ -674,7 +674,7 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
 
     return props.selectOptions.filter(
       (item) =>
-        selectedValueList.findIndex((value: number) => item.value === value) >
+        selectedValueList.findIndex((value: number) => Number(item.value) === Number(value)) >
         -1
     );
   }

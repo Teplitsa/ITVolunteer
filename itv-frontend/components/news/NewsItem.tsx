@@ -49,15 +49,6 @@ const NewsItemContent: React.FunctionComponent = (): ReactElement => {
         }}
       />
 
-      <div className="news-article-cta">
-        <Link href="/members">
-          <a
-            className="news-article-cta__primary-button"
-          >
-            Выбрать волонтера
-          </a>
-        </Link>
-      </div>
     </div>
   )
 }

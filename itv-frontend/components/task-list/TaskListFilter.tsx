@@ -13,12 +13,13 @@ import imgFilterMoodRock from '../../assets/img/icon-filter-mood-rock.svg'
 import imgFilterAward from '../../assets/img/icon-filter-award.svg'
 import imgFilterTags from '../../assets/img/icon-color-picker.svg'
 import imgFilterPeople from '../../assets/img/icon-people.svg'
-import tagIconTags from '../../assets/img/icon-color-picker.svg'
-import tagIconThemes from '../../assets/img/icon-people.svg'
+import tagIconTags from '../../assets/img/icon-filter-tiles.svg'
+import tagIconThemes from '../../assets/img/icon-filter-fire.svg'
 import tagIconTaskType from '../../assets/img/icon-filter-task-list.svg'
-import tagIconAuthorType from '../../assets/img/icon-people.svg'
+import tagIconAuthorType from '../../assets/img/icon-filter-fire.svg'
 import imgFilterCheckOn from '../../assets/img/icon-filter-check-on.svg'
 import imgFilterCheckOff from '../../assets/img/icon-filter-check-off.svg'
+import imgFilterCheckSemi from '../../assets/img/icon-filter-check-semi.svg'
 import imgFilterTaskList from '../../assets/img/icon-filter-task-list.svg'
 import imgFilterGalkaDown from '../../assets/img/icon-filter-galka-down.svg'
 import imgFilterGalkaUp from '../../assets/img/icon-filter-galka-up.svg'
@@ -55,6 +56,12 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
   const saveOptionCheck = useStoreActions(actions => actions.components.taskListFilter.saveOptionCheck)
   const loadOptionCheck = useStoreActions(actions => actions.components.taskListFilter.loadOptionCheck)    
 
+  // option check state
+  const optionOpen = useStoreState(store => store.components.taskListFilter.optionOpen)
+  const setOptionOpen = useStoreActions(actions => actions.components.taskListFilter.setOptionOpen)
+  const saveOptionOpen = useStoreActions(actions => actions.components.taskListFilter.saveOptionOpen)
+  const loadOptionOpen = useStoreActions(actions => actions.components.taskListFilter.loadOptionOpen)    
+  
   // filter data
   const filterData = useStoreState(store => store.components.taskListFilter.filterData)
   const isFilterDataLoaded = useStoreState(store => store.components.taskListFilter.isFilterDataLoaded)
@@ -71,6 +78,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     loadFilterData()
     loadTipClose()
     loadOptionCheck()
+    loadOptionOpen()
   }, [])
 
   useEffect(() => {
@@ -161,21 +169,63 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
       saveTipClose()
   }
 
-  function handleFilterOptionClick(e, optionId) {
+  function handleFilterOptionCheck(e, optionId, subterms) {
       e.preventDefault()
 
-      let newCheckValue = !_.get(optionCheck, optionId, false)
+      const isChecked = _.get(optionCheck, optionId, false);
+      const hasSubterms = !!subterms && subterms.length > 0;
+      const isSemiChecked = (!isChecked && hasSubterms) && (subterms.findIndex((subItem) => {
+        const subItemOptionId = optionId.replace(/\.\d+$/, "." + subItem.id);
+        return _.get(optionCheck, subItemOptionId, false) === true;
+      }) > -1);
+      const newCheckValue = (!isChecked && isSemiChecked) ? false : !isChecked;
+
 
       if(newCheckValue) {
-          setOptionCheck({...optionCheck, [optionId]: true})            
+        let optionCheckNew = {...optionCheck};
+        optionCheckNew[optionId] = true;
+
+        for(let si in subterms) {
+          let subItem = subterms[si];
+          const subItemOptionId = optionId.replace(/\.\d+$/, "." + subItem.id);
+          optionCheckNew[subItemOptionId] = true;
+        }
+
+        setOptionCheck(optionCheckNew)
       }
       else {
           let optionCheckNew = {...optionCheck}
           delete optionCheckNew[optionId]
+
+          if(!isChecked && hasSubterms) {
+            for(let si in subterms) {
+              let subItem = subterms[si];
+              const subItemOptionId = optionId.replace(/\.\d+$/, "." + subItem.id);
+              delete optionCheckNew[subItemOptionId];
+            }
+          }
+
           setOptionCheck({...optionCheckNew})
       }
       
       saveOptionCheck()
+  }
+
+  function handleFilterOptionOpen(e, optionId) {
+    e.preventDefault()
+
+    let newOpenValue = !_.get(optionOpen, optionId, false)
+
+    if(newOpenValue) {
+        setOptionOpen({...optionOpen, [optionId]: true})            
+    }
+    else {
+        let optionOpenNew = {...optionOpen}
+        delete optionOpenNew[optionId]
+        setOptionOpen({...optionOpenNew})
+    }
+    
+    saveOptionOpen()
   }
 
   function handleSubscribe(e) {
@@ -258,7 +308,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
       )   
   }
 
-  console.log("render filer");
+  console.log("render filter...");
 
   return (
       <section className="task-list-filter">
@@ -282,54 +332,11 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
                   return <FilterSection key={`filterSection${index}`} 
                       sectionData={item} 
                       optionCheck={optionCheck} 
-                      optionClickHandler={handleFilterOptionClick}
+                      optionOpen={optionOpen} 
+                      optionCheckHandler={handleFilterOptionCheck}
+                      optionOpenHandler={handleFilterOptionOpen}
                   />
               })}
-
-              <div className="filter-section d-none">
-                  <div className="filter-section-title">
-                      <img src={imgFilterTags}/>
-                      <span>Категории</span>
-                  </div>
-
-                  <div className="filter-section-option-groups">
-                      <div className="filter-section-option-list expand active">
-                          <div className="filter-section-option-list-header">
-                              <img src={imgFilterGalkaUp}/>
-                              <span>Веб-сайты и разработка</span>
-                          </div>
-                          <div className="filter-section-option-list-items">
-                              <div className="filter-section-option-list-item">
-                                  <span className="check-title">
-                                      <img src={_.get(optionCheck, "tags.banners", false) ? imgFilterCheckOn : imgFilterCheckOff}/>
-                                      <span>Баннеры</span>
-                                  </span>
-                                  <span className="stats">28</span>
-                              </div>
-                              <div className="filter-section-option-list-item active">
-                                  <span className="check-title">
-                                      <img src={imgFilterCheckOn}/>
-                                      <span>Веб-дизайн</span>
-                                  </span>
-                                  <span className="stats">28</span>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div className="filter-section-option-list expand">
-                          <div className="filter-section-option-list-header">
-                              <span className="check-title">
-                                  <img src={imgFilterGalkaDown}/>
-                                  <span>Веб-сайты и разработка</span>
-                              </span>
-                              <span className="stats">33</span>
-                          </div>
-                          <div className="filter-section-option-list-items">
-                          </div>
-                      </div>
-
-                  </div>
-              </div>
           </div>
 
           {!tipClose[filterTips.subscribeAndEarnPoints] && 
@@ -366,8 +373,6 @@ function FilterSection(props) {
     const sectionTitle = _.get(props, "sectionData.title", "")
     const sectionIcon = _.get(filterSectionIcons, sectionId, "")
     const sectionItems = _.get(props, "sectionData.items", [])
-    const optionClickHandler = props.optionClickHandler
-    const optionCheck = props.optionCheck
 
     if(!sectionId || !sectionItems) {
         return null
@@ -381,27 +386,66 @@ function FilterSection(props) {
             </div>
 
             <div className="filter-section-option-groups">
-                <div className="filter-section-option-list">
-                    <div className="filter-section-option-list-items">
-                        {sectionItems.map((item, index) => {
-                            const optionId = sectionId + "." + item.id
-                            // console.log("optionId:", optionId)
-                            // console.log("slug:", item.slug)
-                            return (
-                                <div className={`filter-section-option-list-item ${_.get(optionCheck, optionId, false) ? "active" : ""}`} key={`filterSectionItem${sectionId}-${index}`}>
-                                    <span className="check-title" onClick={(e) => {optionClickHandler(e, optionId)}}>
-                                        <img src={_.get(optionCheck, optionId, false) ? imgFilterCheckOn : imgFilterCheckOff}/>
-                                        <span>{item.title}</span>
-                                    </span>
-                                    <span className="stats">{item.task_count}</span>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
+                <FilterSectionItems {...props} />
             </div>
         </div>
     )
+}
+
+function FilterSectionItems(props) {
+    const sectionId = _.get(props, "sectionData.id", "")
+    const sectionTitle = _.get(props, "sectionData.title", "")
+    const sectionItems = _.get(props, "sectionData.items", [])
+    const optionCheckHandler = props.optionCheckHandler;
+    const optionOpenHandler = props.optionOpenHandler;
+    const optionCheck = props.optionCheck;
+    const optionOpen = props.optionOpen;
+    const isSubTermsList = _.get(props, "isSubTermsList", false);
+
+    return (
+        <div className={`filter-section-option-list ${isSubTermsList && "sub-terms-list"}`}>
+            <div className="filter-section-option-list-items">
+                {sectionItems.map((item, index) => {
+                    const optionId = sectionId + "." + item.id;
+                    const hasSubterms = !!item.subterms && item.subterms.length > 0;
+                    const subtermsSectionData = _.cloneDeep(_.get(props, "sectionData"));
+                    subtermsSectionData.items = hasSubterms ? _.cloneDeep(item.subterms) : [];
+                    // console.log("optionId:", optionId)
+                    // console.log("slug:", item.slug);
+                    // console.log("subterms:", item.subterms);
+                    // console.log("optionCheck:", optionCheck);
+                    // console.log("items:", sectionData.items)
+
+                    const isChecked = _.get(optionCheck, optionId, false);
+                    const isSemiChecked = (!isChecked && hasSubterms) && (item.subterms.findIndex((subItem) => {
+                        const subItemOptionId = sectionId + "." + subItem.id;
+                        return _.get(optionCheck, subItemOptionId, false) === true;
+                    }) > -1);
+                    // console.log("hasSubterms:", hasSubterms);
+                    // console.log("isChecked:", isChecked);
+                    // console.log("isSemiChecked:", isSemiChecked);
+
+                    return (
+                        <div className={`filter-section-option-list-item ${(isChecked || isSemiChecked) && "active" } ${hasSubterms && "has-subterms"}`} key={`filterSectionItem${sectionId}-${index}`}>
+                            <div className={`filter-section-option-list-item-title`}>
+                                <span className="check-title">
+                                    <img 
+                                        onClick={(e) => {optionCheckHandler(e, optionId, item.subterms)}} 
+                                        src={isChecked ? imgFilterCheckOn : (isSemiChecked ? imgFilterCheckSemi : imgFilterCheckOff)}
+                                    />
+                                    <span onClick={(e) => {optionOpenHandler(e, optionId)}}>{item.title}</span>
+                                </span>
+                                <span className="stats">{item.task_count}</span>
+                            </div>
+                            {hasSubterms && _.get(optionOpen, optionId, false) && 
+                                <FilterSectionItems {...props} sectionData={subtermsSectionData} isSubTermsList={true} />
+                            }
+                        </div>
+                    )
+                })}
+            </div>
+        </div>
+    )    
 }
 
 export default TaskListFilter;

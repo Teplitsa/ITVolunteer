@@ -13,6 +13,8 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
       ? task.doerCandidatesCount
       : Number([...Array.from(String(task.doerCandidatesCount))].pop());
 
+  console.log("task.tags:", task.tags);
+  
   return (
     <div className="task-card">
       <div className="task-card__header">

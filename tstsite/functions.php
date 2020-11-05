@@ -244,3 +244,4 @@ require_once(get_template_directory() . '/inc/models/UserNotif.php');
 
 // task list filter
 require_once( get_template_directory().'/inc/task_list_filter.php' );
+require_once( get_template_directory().'/inc/shortcodes.php' );

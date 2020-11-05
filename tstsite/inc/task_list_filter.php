@@ -4,6 +4,31 @@ class TaskListFilter {
 	
 	public function __construct() {
 	}
+
+    public function get_terms_with_subterms($tax, $parent_id=0, $with_sub_terms=true) {
+        return array_map(function($term) use ($tax, $with_sub_terms) {
+            return [
+                'id' => $term->term_id,
+                'title' => $term->name,
+                'slug' => $term->slug,
+                'task_count' => $this->count_tasks_in_filter_option([
+                    'tax_query' => array(
+                        array(
+                            'taxonomy' => $tax,
+                            'field'    => 'term_id',
+                            'terms'    => $term->term_id,
+                        ),
+                    ),                                
+                ]),
+                'subterms' => $with_sub_terms ? $this->get_terms_with_subterms($tax, $term->term_id, false) : [],
+            ];
+        }, array_values(get_terms([
+            'taxonomy' => $tax,
+            'hide_empty' => false,
+            'hierarchical' => true,
+            'parent' => $parent_id, 
+        ])));        
+    }
 	
 	public function create_filter_with_stats() {
         $sections = [];
@@ -11,43 +36,13 @@ class TaskListFilter {
         $sections[] = [
             'id' => 'tags',
             'title' => 'Категории',
-            'items' => array_map(function($term){
-                return [
-                    'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
-                    'slug' => $term->slug,
-                    'task_count' => $this->count_tasks_in_filter_option([
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'post_tag',
-                                'field'    => 'term_id',
-                                'terms'    => $term->term_id,
-                            ),
-                        ),                                
-                    ]),
-                ];
-            }, array_values(get_terms('post_tag'))),
+            'items' => $this->get_terms_with_subterms('post_tag'),
         ];
     
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => array_map(function($term){
-                return [
-                    'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
-                    'slug' => $term->slug,
-                    'task_count' => $this->count_tasks_in_filter_option([
-                        'tax_query' => array(
-                            array(
-                                'taxonomy' => 'nko_task_tag',
-                                'field'    => 'term_id',
-                                'terms'    => $term->term_id,
-                            ),
-                        ),                                
-                    ]),
-                ];
-            }, array_values(get_terms('nko_task_tag'))),
+            'items' => $this->get_terms_with_subterms('nko_task_tag'),
         ];
         
         $sections[] = [
@@ -154,9 +149,12 @@ class TaskListFilter {
             'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'title' => $term->name,
                 ];
-            }, array_values(get_terms('post_tag'))),
+            }, array_values(get_terms([
+                'taxonomy' => 'post_tag',
+                'hide_empty' => false,
+            ]))),
         ];
     
         $sections[] = [
@@ -165,9 +163,12 @@ class TaskListFilter {
             'items' => array_map(function($term){
                 return [
                     'id' => $term->term_id,
-                    'title' => mb_convert_case($term->name, MB_CASE_TITLE),
+                    'title' => $term->name,
                 ];
-            }, array_values(get_terms('nko_task_tag'))),
+            }, array_values(get_terms([
+                'taxonomy' => 'nko_task_tag',
+                'hide_empty' => false,
+            ]))),
         ];
         
         $sections[] = [
@@ -236,6 +237,8 @@ class TaskListFilter {
         if(!empty($filter)) {
             $tlf = new TaskListFilter();
             $filter_options = $tlf->get_task_list_filter_options();
+            // error_log("filter:" . print_r($filter, true));
+
             foreach($filter_options as $key => $section) {
                 foreach($section['items'] as $ik => $item) {
                     foreach($filter as $fk => $fv) {
@@ -246,6 +249,8 @@ class TaskListFilter {
                 }
             }
         }
+
+        // error_log("args:" . print_r($args, true));
         
         $stats = [];
         $status_list = ["publish", "in_work", "closed"];

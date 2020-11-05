@@ -1572,13 +1572,28 @@ add_action('wp_ajax_nopriv_get_general_stats', 'ajax_get_general_stats');
 
 
 function ajax_get_task_taxonomy_data() {
+    $ngoTagsList = get_terms('nko_task_tag', array(
+        'hide_empty' => false,
+    ));
+    foreach($ngoTagsList as $k => $v) {
+        $parent = null;
+        foreach($ngoTagsList as $k1 => $v1) {
+            if($v1->term_id === $v->parent) {
+                $parent = $v1;
+                break;
+            }
+        }
+
+        if($parent && $parent->slug === "help-people") {
+            $ngoTagsList[$k]->name = "Помогать " . mb_strtolower($ngoTagsList[$k]->name);
+        }
+    }
+
     $tax_data = [
         'taskTagList' => get_terms('post_tag', array(
             'hide_empty' => false,
         )),
-        'ngoTagList' => get_terms('nko_task_tag', array(
-            'hide_empty' => false,
-        )),
+        'ngoTagList' => $ngoTagsList,
         'rewardList' => get_terms('reward', array(
             'hide_empty' => false,
         )),

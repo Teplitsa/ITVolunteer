@@ -117,7 +117,7 @@ class Itv_Setup_Utils
         return $post_id;
     }
 
-    public static function setup_terms_data($terms_data, $tax)
+    public static function setup_terms_data($terms_data, $tax, $force_update=false)
     {
         foreach ($terms_data as $category) {
             $term = get_term_by('slug', $category['slug'], $tax);
@@ -125,6 +125,10 @@ class Itv_Setup_Utils
                 $term_id = wp_insert_term($category['name'], $tax, $category);
             } else {
                 $term_id = $term->term_id;
+
+                if($force_update) {
+                    wp_update_term($term->term_id, $tax, $category);
+                }
             }
 
             if (!empty($category['meta'])) {
@@ -132,14 +136,66 @@ class Itv_Setup_Utils
                     update_term_meta($term_id, $k, $v);
                 }
             }
+        }
+    }
+
+    public static function link_posts_from_old_to_new_terms($terms_data, $tax, $post_type) {
+        foreach ($terms_data as $category) {
+            $term = get_term_by('slug', $category['slug'], $tax);
+            if($term === false) {
+                throw new Exception("term not found:" . $category['slug']);
+            }
+
+            echo "process term: " . $category['slug'] . "\n";
 
             if (!empty($category['old_terms'])) {
                 foreach ($category['old_terms'] as $old_term_slug) {
-                    $old_term = get_term_by('slug', $old_term_slug, $tax);                    
-                    if ($term !== false) {
-                        
+                    $params = [
+                        'post_type' => $post_type,
+                        'post_status' => array_keys(tst_get_task_status_list()),
+                        'nopaging' => true,
+                        'suppress_filters' => true,
+                        'tax_query' => array(
+                            array(
+                                'taxonomy' => $tax,
+                                'field'    => 'slug',
+                                'terms'    => $old_term_slug,
+                            ),
+                        ),                            
+                    ];
+                    $query = new WP_Query( $params );
+                    $posts = $query->get_posts();
+                    $posts_count = count($posts);
+
+                    foreach($posts as $index => $post) {
+                        wp_set_object_terms($post->ID, $term->term_id, $tax, true);
+                        echo "processed " . ($index + 1) . " posts of " . $posts_count . "\n";
                     }
                 }
+            }
+        }
+    }
+
+    public static function delete_terms_beoynd_parents($tax, $terms_data) {
+        $parent_id_list = [];
+        foreach ($terms_data as $category) {
+            $term = get_term_by('slug', $category['slug'], $tax);
+            if($term === false) {
+                throw new Exception("term not found:" . $category['slug']);
+            }
+            $parent_id_list[] = $term->term_id;
+        }
+
+        $terms = get_terms([
+            'taxonomy' => $tax,
+            'hide_empty' => false,
+            'exclude' => $parent_id_list,
+        ]);
+
+        foreach($terms as $term) {
+            if(!$term->parent) {
+                echo "delete term: " . $term->slug . "\n";
+                wp_delete_term($term->term_id, $tax);
             }
         }
     }

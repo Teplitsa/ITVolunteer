@@ -86,7 +86,7 @@ export const graphqlFeaturedImage  = `
 `;
 
 export const graphqlTags  = `
-  tags {
+  tags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
     nodes {
       id
       databaseId
@@ -95,7 +95,7 @@ export const graphqlTags  = `
     }
   }
 
-  rewardTags {
+  rewardTags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
     nodes {
       id
       databaseId
@@ -104,7 +104,7 @@ export const graphqlTags  = `
     }
   }
 
-  ngoTaskTags {
+  ngoTaskTags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
     nodes {
       id
       databaseId
