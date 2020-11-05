@@ -1,7 +1,7 @@
 import { ReactElement, useState, useEffect } from "react";
 import { IFetchResult, ITaskState } from "../../model/model.typing";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
-import Loader from "../Loader";
+import TaskListLoader from "../skeletons/partials/TaskList";
 import TaskListItem from "./TaskListItem";
 import TaskListNothingFound from "./TaskListNothingFound";
 import * as utils from "../../utilities/utilities";
@@ -22,6 +22,8 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
   const statusStats = useStoreState(
     (store) => store.components.taskListFilter.statusStats
   );
+
+  const [isHidden, setIsHidden] = useState<boolean>(true);
 
   // load more
   const [page, setPage] = useState(1);
@@ -108,6 +110,10 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
     setIsLoadMoreTaskCount(totalTasksCount > items.length);
   }, [statusStats, optionCheck, items]);
 
+  useEffect(() => {
+    setIsHidden(false);
+  }, []);
+
   function handleLoadMoreTasks(e) {
     e.preventDefault();
     setPage(page + 1);
@@ -115,7 +121,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
 
   return (
     (isTaskListLoaded && (
-      <section className="task-list">
+      <section className={`task-list ${isHidden ? "hidden" : ""}`}>
         {items?.map((task) => (
           <TaskListItem
             key={`taskListItem-${task.id}`}
@@ -136,9 +142,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
         {!items?.length && <TaskListNothingFound />}
       </section>
     )) || (
-      <section className="task-list">
-        <Loader />
-      </section>
+      <TaskListLoader />
     )
   );
 };

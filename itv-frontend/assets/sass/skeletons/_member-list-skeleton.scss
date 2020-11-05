@@ -1,0 +1,47 @@
+.member-list-skeleton {
+  padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
+  &__inner {
+    margin: 0 auto;
+    max-width: 1144px;
+  }
+  &__top {
+    margin: 28px 0;
+  }
+  &__title {
+    font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
+    letter-spacing: -0.01em;
+    text-align: center;
+    color: $color-gray-dark-xl;
+
+    @include screen-from(md) {
+      text-align: left;
+    }
+  }
+  &__items {
+    display: flex;
+    flex-flow: row wrap;
+  }
+  &__item-mock {
+    flex-basis: 100%;
+    background: $color-gray-light-lg;
+    border: 3px solid $color-gray-light-lg;
+    margin: 0 0 30px;
+
+    max-width: 100%;
+    min-height: 249px;
+    border-radius: 8px;
+    box-sizing: border-box;
+
+    @extend .item-mock;
+
+    @include screen-from(md) {
+      flex-basis: calc(50% - 15px);
+
+      &:nth-child(odd) {
+        margin: 0 30px 30px 0;
+      }
+    }
+  }
+}

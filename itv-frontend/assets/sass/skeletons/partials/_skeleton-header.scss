@@ -1,0 +1,60 @@
+.skeleton-header {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  border-bottom: 1px solid $color-gray-light-md;
+  padding: 0 16px 0 24px;
+  width: 100%;
+  height: 69px;
+  box-sizing: border-box;
+
+  @include screen-from(md) {
+    padding: 0;
+    height: 101px;
+  }
+
+  &__inner {
+    //@include screen-from(md) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1144px;
+    //}
+  }
+  &__nav,
+  &__user-nav {
+    display: none;
+    @include screen-from(md) {
+      display: flex;
+    }
+  }
+  &__item-mock {
+    background: $color-gray-light-lg;
+    width: 102px;
+    height: 20px;
+    border-radius: 6px;
+
+    @extend .item-mock;
+
+    &:not(:last-child) {
+      margin: 0 8px 0 0;
+    }
+  }
+  &__toggle-btn {
+    background: linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50%
+        5px no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50% 50%
+        no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50%
+        calc(100% - 4px) no-repeat;
+    background-size: 100% 3px, 100% 3px;
+    width: 24px;
+    height: 24px;
+
+    @include screen-from(md) {
+      display: none;
+    }
+  }
+}

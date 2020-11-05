@@ -7,7 +7,7 @@ import {
 import * as utils from "../../utilities/utilities"
 import * as _ from "lodash"
 
-import Loader from "../Loader"
+import TaskListFilterLoader from "../skeletons/partials/TaskListFilter";
 
 import imgFilterMoodRock from '../../assets/img/icon-filter-mood-rock.svg'
 import imgFilterAward from '../../assets/img/icon-filter-award.svg'
@@ -301,11 +301,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
   }
 
   if(!isFilterDataLoaded) {
-      return (
-          <section className="task-list-filter">
-          <Loader />
-          </section>
-      )   
+    return <TaskListFilterLoader />;   
   }
 
   console.log("render filter...");

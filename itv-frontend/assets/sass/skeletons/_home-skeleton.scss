@@ -1,0 +1,199 @@
+.home-skeleton {
+  padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__inner {
+    margin: 0 auto;
+    max-width: 1144px;
+  }
+  &__banner {
+    background-color: $color-gray-light-lg;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: 30px;
+    min-height: 384px;
+
+    @extend .item-mock;
+
+    @include screen-from(md) {
+      margin-bottom: 67px;
+    }
+  }
+  &__stats {
+    @include screen-from(md) {
+      background: url("../../img/home-skeleton-stats-ornament.svg") 50% 15px
+        no-repeat;
+    }
+
+    &-inner {
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 54px;
+      max-width: 941px;
+
+      @include screen-from(md) {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    &-item {
+      background-color: $color-gray-light-lg;
+      width: 100%;
+      height: 134px;
+      max-width: 100%;
+      border-radius: 8px;
+
+      @extend .item-mock;
+
+      @include screen-from(md) {
+        width: 287px;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 020px;
+
+        @include screen-from(md) {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+  &__task-list {
+    margin: 0 auto;
+    max-width: 1119px;
+
+    @include screen-from(md) {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    &-title {
+      background-color: $color-gray-light-lg;
+      margin: 0 auto 55px;
+      width: 231px;
+      height: 49px;
+      border-radius: 8px;
+
+      @extend .item-mock;
+    }
+
+    &-item {
+      background-color: $color-gray-light-lg;
+      margin-bottom: 30px;
+      height: 134px;
+      border-radius: 8px;
+
+      @extend .item-mock;
+
+      @include screen-from(md) {
+        flex-basis: 48.168%;
+        margin-bottom: 38px;
+      }
+    }
+
+    &-more {
+      background-color: $color-gray-light-lg;
+      margin: 5px auto 55px;
+      width: 107px;
+      height: 19px;
+      border-radius: 8px;
+
+      @extend .item-mock;
+    }
+  }
+  &__news-list {
+    margin: 0 auto 44px;
+    max-width: 1121px;
+
+    @include screen-from(md) {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    &-title {
+      background-color: $color-gray-light-lg;
+      margin: 0 auto 55px;
+      width: 231px;
+      height: 49px;
+      border-radius: 8px;
+
+      @extend .item-mock;
+    }
+
+    &-item {
+      @include screen-from(md) {
+        flex-basis: 48.4388%;
+      }
+
+      &:not(:last-child) {
+        margin-bottom: 30px;
+
+        @include screen-from(md) {
+          margin-bottom: 0;
+        }
+      }
+
+      &-image {
+        background-color: $color-gray-light-lg;
+        margin-bottom: 15px;
+        height: 305px;
+        border-radius: 8px;
+
+        @extend .item-mock;
+
+        @include screen-from(md) {
+          margin-bottom: 18px;
+        }
+      }
+
+      &-title {
+        background-color: $color-gray-light-lg;
+        margin-bottom: 10px;
+        height: 49px;
+        border-radius: 8px;
+
+        @extend .item-mock;
+
+        @include screen-from(md) {
+          margin-bottom: 13px;
+        }
+      }
+
+      &-date {
+        background-color: $color-gray-light-lg;
+        margin-bottom: 10px;
+        width: 77px;
+        height: 19px;
+        border-radius: 8px;
+
+        @extend .item-mock;
+
+        @include screen-from(md) {
+          margin-bottom: 13px;
+        }
+      }
+
+      &-content {
+        background-color: $color-gray-light-lg;
+        height: 91px;
+        border-radius: 8px;
+
+        @extend .item-mock;
+      }
+    }
+
+    &-more {
+      background-color: $color-gray-light-lg;
+      margin: 0 auto;
+      width: 107px;
+      height: 19px;
+      border-radius: 8px;
+
+      @extend .item-mock;
+    }
+  }
+}

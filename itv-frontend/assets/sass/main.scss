@@ -51,6 +51,14 @@
 @import "components/member-avatar";
 @import "components/volunteer";
 @import "components/member-socials";
+@import "skeletons/skeleton";
+@import "skeletons/partials/skeleton-header";
+@import "skeletons/partials/skeleton-footer";
+@import "skeletons/home-skeleton";
+@import "skeletons/member-list-skeleton";
+@import "skeletons/task-list-skeleton";
+@import "skeletons/task-skeleton";
+@import "skeletons/member-account-skeleton";
 
 @import "vendors/react-datepicker";
 @import "vendors/react-share";

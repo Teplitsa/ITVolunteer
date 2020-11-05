@@ -1,0 +1,30 @@
+@keyframes item-mock {
+  from {
+    background: linear-gradient(
+          270deg,
+          $color-gray-light-lg,
+          #ede6d8 50%,
+          $color-gray-light-lg 100%
+        ) -100% 50% no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50% 50%
+        no-repeat;
+    background-size: 50% 100%, 100% 100%;
+  }
+  to {
+    background: linear-gradient(
+          270deg,
+          $color-gray-light-lg,
+          #ede6d8 50%,
+          $color-gray-light-lg 100%
+        )
+        200% 50% no-repeat,
+      linear-gradient($color-gray-light-lg, $color-gray-light-lg) 50% 50%
+        no-repeat;
+    background-size: 50% 100%, 100% 100%;
+  }
+}
+
+.item-mock {
+  animation: 1s ease-out 0s infinite item-mock;
+  will-change: background-position;
+}

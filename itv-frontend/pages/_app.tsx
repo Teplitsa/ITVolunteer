@@ -1,10 +1,12 @@
 import "../assets/sass/main.scss";
 import "react-datepicker/dist/react-datepicker.css";
 import { AppProps } from "next/app";
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { Store, createStore, StoreProvider as Provider } from "easy-peasy";
 import storeModel from "../model/store-model";
-import { componentList } from "../model/components-model";
+import withSkeleton from "../components/hoc/withSkeleton";
+// import { componentList } from "../model/components-model";
 
 export const store: Store = createStore(storeModel, {
   name: "ITVAppStore",
@@ -25,6 +27,11 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
   const pageEntrypoint: string | boolean =
     page && `${entrypointType}/${page.slug}`;
   const [componentName] = Object.keys(component);
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pathname, setPathname] = useState<string>("");
+  const Skeleton = withSkeleton({ pathname });
 
   dispatch({
     type: "@action.app.setState",
@@ -63,23 +70,42 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
     payload: component[componentName],
   });
 
-  useEffect(() => {
-    // componentList
-    //   .filter((excludeComponentName) => excludeComponentName !== componentName)
-    //   .forEach((excludeComponentName) => {
-    //     dispatch({
-    //       type: `@action.components.${excludeComponentName}.initializeState`,
-    //     });
-    //   });
-  }, [componentName]);
+  // useEffect(() => {
+  //   componentList
+  //     .filter((excludeComponentName) => excludeComponentName !== componentName)
+  //     .forEach((excludeComponentName) => {
+  //       dispatch({
+  //         type: `@action.components.${excludeComponentName}.initializeState`,
+  //       });
+  //     });
+  // }, [componentName]);
+
+  // useEffect(() => {
+  //   console.log("Check for client-side storage and update store.");
+  // }, []);
 
   useEffect(() => {
-    console.log("Check for client-side storage and update store.");
+    const handleRouteChange = (url: string) => {
+      setIsLoading(true);
+      setPathname(url);
+    };
+
+    const handleRouteChanged = () => setIsLoading(false);
+
+    router.events.on("routeChangeStart", handleRouteChange);
+    router.events.on("routeChangeComplete", handleRouteChanged);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteChanged);
+    };
   }, []);
 
   return (
     <Provider store={store}>
-      <Component {...component[componentName]} statusCode={statusCode} />
+      {(isLoading && !Object.is(Skeleton, null) && <Skeleton />) || (
+        <Component {...component[componentName]} statusCode={statusCode} />
+      )}
     </Provider>
   );
 };

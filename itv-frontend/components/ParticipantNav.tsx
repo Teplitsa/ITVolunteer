@@ -5,7 +5,7 @@ import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import NotifList from "../components/UserNotif";
 import * as utils from "../utilities/utilities";
 import * as _ from "lodash";
-import { regEvent } from "../utilities/ga-events"
+import { regEvent } from "../utilities/ga-events";
 
 import Bell from "../assets/img/icon-bell.svg";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
@@ -108,12 +108,10 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li>
-              <Link href={`/members/${user.username}`}>
-                <a
-                  onClick={(e) => {
-                    regEvent('m_profile', router);
-                  }}                  
-                >Личный кабинет</a>
+              <Link href="/members/[username]" as={`/members/${user.username}`}>
+                <a onClick={() => regEvent("m_profile", router)}>
+                  Личный кабинет
+                </a>
               </Link>
             </li>
             <li>
@@ -125,21 +123,19 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
       <ul className="submenu account-submenu-mobile">
         <li>
-          <a href="/member-actions/member-tasks/">Мои задачи</a>
+          <Link href="/member-actions/member-tasks/">
+            <a>Мои задачи</a>
+          </Link>
         </li>
         <li>
-          <a href="/task-actions/"
-            onClick={(e) => {
-              regEvent('m_ntask', router);
-            }}                  
-          >Новая задача</a>
+          <Link href="/task-actions/">
+            <a onClick={() => regEvent("m_ntask", router)}>Новая задача</a>
+          </Link>
         </li>
         <li>
-          <a href={`/members/${user.username}`}
-            onClick={(e) => {
-              regEvent('m_profile', router);
-            }}                  
-          >Мой профиль</a>
+          <Link href="/members/[username]" as={`/members/${user.username}`}>
+            <a onClick={() => regEvent("m_profile", router)}>Мой профиль</a>
+          </Link>
         </li>
         <li>
           <a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a>
