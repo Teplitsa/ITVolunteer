@@ -24,10 +24,8 @@ const TaskTags: React.FunctionComponent<{
   const tagGroups = [];
 
   tags?.nodes?.length && tagGroups.push(["tags", IconTags, tags.nodes]);
-  ngoTags?.nodes?.length &&
-    tagGroups.push(["ngoTags", IconNgoTags, ngoTags.nodes]);
-  rewardTags?.nodes?.length &&
-    tagGroups.push(["rewardTags", IconRewardTags, rewardTags.nodes]);
+  ngoTags?.nodes?.length && tagGroups.push(["ngoTags", IconNgoTags, ngoTags.nodes]);
+  rewardTags?.nodes?.length && tagGroups.push(["rewardTags", IconRewardTags, rewardTags.nodes]);
 
   return (
     <div className="meta-terms">
@@ -41,16 +39,10 @@ const TaskTags: React.FunctionComponent<{
                   {groupId === "tags" && (
                     <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}>
                       <a
-                        key={`Tag${capitalize(groupId)}${capitalize(
-                          toCamelCase(slug)
-                        )}`}
-                        className={
-                          groupId === "tags" || groupId === "ngoTags"
-                            ? "link"
-                            : ""
-                        }
+                        key={`Tag${capitalize(groupId)}${capitalize(toCamelCase(slug))}`}
+                        className={groupId === "tags" || groupId === "ngoTags" ? "link" : ""}
                         title={name}
-                        onClick={(e) => {
+                        onClick={() => {
                           regEvent("tl_tf_tags", router);
                         }}
                       >
@@ -59,21 +51,12 @@ const TaskTags: React.FunctionComponent<{
                     </Link>
                   )}
                   {groupId === "ngoTags" && (
-                    <Link
-                      href="/tasks/nko-tag/[slug]"
-                      as={`/tasks/nko-tag/${slug}`}
-                    >
+                    <Link href="/tasks/nko-tag/[slug]" as={`/tasks/nko-tag/${slug}`}>
                       <a
-                        key={`Tag${capitalize(groupId)}${capitalize(
-                          toCamelCase(slug)
-                        )}`}
-                        className={
-                          groupId === "tags" || groupId === "ngoTags"
-                            ? "link"
-                            : ""
-                        }
+                        key={`Tag${capitalize(groupId)}${capitalize(toCamelCase(slug))}`}
+                        className={groupId === "tags" || groupId === "ngoTags" ? "link" : ""}
                         title={name}
-                        onClick={(e) => {
+                        onClick={() => {
                           regEvent("tl_tf_nko_tags", router);
                         }}
                       >
@@ -81,9 +64,7 @@ const TaskTags: React.FunctionComponent<{
                       </a>
                     </Link>
                   )}
-                  {groupId !== "ngoTags" && groupId !== "tags" && (
-                    <span>{name}</span>
-                  )}
+                  {groupId !== "ngoTags" && groupId !== "tags" && <span>{name}</span>}
                 </div>
               );
             })}

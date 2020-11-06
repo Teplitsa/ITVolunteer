@@ -10,22 +10,24 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
     paged,
     userListStats: { total: totalVolunteers },
     userList: volunteers = null,
-  } = useStoreState((state) => state.components.members);
+  } = useStoreState(state => state.components.members);
   const moreVolunteersRequest = useStoreActions(
-    (actions) => actions.components.members.moreVolunteersRequest
+    actions => actions.components.members.moreVolunteersRequest
   );
-  
-  return !!volunteers ? (
+
+  return volunteers ? (
     <>
       <div className="members-list">
-        {volunteers?.filter((volunteer) => !!volunteer).map((volunteer, index) => {
-          return (
-            <MembersListItem
-              key={`Volunteer-${volunteer.id}`}
-              {...{ isOdd: index % 2 === 0, index: index + 1, volunteer }}
-            />
-          );
-        })}
+        {volunteers
+          ?.filter(volunteer => !!volunteer)
+          .map((volunteer, index) => {
+            return (
+              <MembersListItem
+                key={`Volunteer-${volunteer.id}`}
+                {...{ isOdd: index % 2 === 0, index: index + 1, volunteer }}
+              />
+            );
+          })}
       </div>
       {USER_PER_PAGE * paged < totalVolunteers && (
         <div className="members-list-more">
@@ -33,7 +35,7 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
             <a
               className="btn btn_secondary"
               href="#"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 setLoading(true);
                 moreVolunteersRequest({ setLoading });

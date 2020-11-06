@@ -1,15 +1,15 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
+import { ReactElement, useState, useEffect } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
 import TaskAdminSupportForm from "../task/TaskAdminSupportForm";
 import { regEvent } from "../../utilities/ga-events";
 
-const { ModalContext, SnackbarContext } = GlobalScripts;
+const { SnackbarContext } = GlobalScripts;
 
 const PageContacts: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const { title, content } = useStoreState((state) => state.components.page);
+  const { title, content } = useStoreState(state => state.components.page);
   const [isShowForm, setIsShowForm] = useState(true);
 
   function handleSuccess() {
@@ -17,7 +17,7 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
   }
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   return (
@@ -41,17 +41,19 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-const ContactFormContent: React.FunctionComponent<{handleSuccess:() => void}> = ({handleSuccess}) => {
+const ContactFormContent: React.FunctionComponent<{ handleSuccess: () => void }> = ({
+  handleSuccess,
+}) => {
   return (
     <SnackbarContext.Consumer>
       {({ dispatch }) => {
         const addSnackbar = (message: ISnackbarMessage) => {
           dispatch({ type: "add", payload: { messages: [message] } });
-          if(message.context == "success") {
+          if (message.context == "success") {
             handleSuccess();
           }
         };
-        return <TaskAdminSupportForm {...{ closeModal: () => {}, addSnackbar }} />;
+        return <TaskAdminSupportForm {...{ closeModal: () => false, addSnackbar }} />;
       }}
     </SnackbarContext.Consumer>
   );

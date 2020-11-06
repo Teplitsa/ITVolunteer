@@ -1,33 +1,26 @@
-import { useStoreState } from "../model/helpers/hooks";
-
+import { NextPage, NextPageContext } from "next";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import Error404 from "../components/page/Error404";
 import Error50X from "../components/page/Error50X";
 
-function Error({statusCode}) {
-
+const Error: NextPage<{ statusCode: number }> = ({ statusCode }) => {
   return (
     <>
       <DocumentHead />
-      <Main>
-          {statusCode === 404
-            ? <Error404 />
-            : <Error50X statusCode={statusCode} />
-          }
-      </Main>
-    </>    
-  )
-}
+      <Main>{statusCode === 404 ? <Error404 /> : <Error50X statusCode={statusCode} />}</Main>
+    </>
+  );
+};
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404
+Error.getInitialProps = ({ res, err }: NextPageContext) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
 
-  var entrypointModel;
-  
-  if(statusCode === 404) {
+  let entrypointModel;
+
+  if (statusCode === 404) {
     entrypointModel = {
-      title: 'Сраница не найдена - it-волонтер',
+      title: "Сраница не найдена - it-волонтер",
       seo: {
         // canonical: "https://itv.te-st.ru/",
         title: "Сраница не найдена - it-волонтер",
@@ -38,10 +31,9 @@ Error.getInitialProps = ({ res, err }) => {
         opengraphSiteName: "it-волонтер",
       },
     };
-  }
-  else {
+  } else {
     entrypointModel = {
-      title: 'Что-то пошло не так - it-волонтер',
+      title: "Что-то пошло не так - it-волонтер",
       seo: {
         // canonical: "https://itv.te-st.ru/",
         title: "Что-то пошло не так - it-волонтер",
@@ -54,15 +46,14 @@ Error.getInitialProps = ({ res, err }) => {
     };
   }
 
-  return { 
-    statusCode, 
+  return {
+    statusCode,
     app: {
       componentsLoaded: [],
       entrypointTemplate: "page",
     },
     entrypoint: { archive: null, page: entrypointModel },
-  }
+  };
+};
 
-}
-
-export default Error
+export default Error;

@@ -16,9 +16,7 @@ const taskAuthor: ITaskAuthor = {
   facebook: "",
   instagram: "",
   vk: "",
-  registrationDate: 0
+  registrationDate: 0,
 };
 
-export const queriedFields = Object.keys(taskAuthor) as Array<
-  keyof ITaskAuthor
->;
+export const queriedFields = Object.keys(taskAuthor) as Array<keyof ITaskAuthor>;

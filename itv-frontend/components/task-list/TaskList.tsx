@@ -7,51 +7,41 @@ import TaskListNothingFound from "./TaskListNothingFound";
 import * as utils from "../../utilities/utilities";
 
 const TaskList: React.FunctionComponent = (): ReactElement => {
-  const items = useStoreState((state) => state.components.taskList.items);
-  const isTaskListLoaded = useStoreState(
-    (state) => state.components.taskList.isTaskListLoaded
-  );
+  const items = useStoreState(state => state.components.taskList.items);
+  const isTaskListLoaded = useStoreState(state => state.components.taskList.isTaskListLoaded);
 
   const resetTaskListLoaded = useStoreActions(
-    (actions) => actions.components.taskList.resetTaskListLoaded
+    actions => actions.components.taskList.resetTaskListLoaded
   );
 
-  const optionCheck = useStoreState(
-    (store) => store.components.taskListFilter.optionCheck
-  );
-  const statusStats = useStoreState(
-    (store) => store.components.taskListFilter.statusStats
-  );
+  const optionCheck = useStoreState(store => store.components.taskListFilter.optionCheck);
+  const statusStats = useStoreState(store => store.components.taskListFilter.statusStats);
 
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
   // load more
   const [page, setPage] = useState(1);
   const [isLoadMoreTaskCount, setIsLoadMoreTaskCount] = useState(true);
-  const appendTaskList = useStoreActions(
-    (actions) => actions.components.taskList.appendTaskList
-  );
-  const setTaskList = useStoreActions(
-    (actions) => actions.components.taskList.setTaskList
-  );
+  const appendTaskList = useStoreActions(actions => actions.components.taskList.appendTaskList);
+  const setTaskList = useStoreActions(actions => actions.components.taskList.setTaskList);
 
   async function loadFilteredTaskList(optionCheck, page) {
-    let isLoadMore = page > 1;
+    const isLoadMore = page > 1;
 
     if (!isLoadMore) {
       resetTaskListLoaded();
     }
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("page", page);
     formData.append("filter", JSON.stringify(optionCheck));
 
-    let action = "get-task-list";
+    const action = "get-task-list";
     fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })
-      .then((res) => {
+      .then(res => {
         try {
           return res.json();
         } catch (ex) {
@@ -73,7 +63,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
             setTaskList(result.taskList);
           }
         },
-        (error) => {
+        error => {
           utils.showAjaxError({ action, error });
         }
       );
@@ -105,8 +95,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    let totalTasksCount =
-      statusStats[optionCheck ? optionCheck.status : "publish"];
+    const totalTasksCount = statusStats[optionCheck ? optionCheck.status : "publish"];
     setIsLoadMoreTaskCount(totalTasksCount > items.length);
   }, [statusStats, optionCheck, items]);
 
@@ -122,28 +111,19 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
   return (
     (isTaskListLoaded && (
       <section className={`task-list ${isHidden ? "hidden" : ""}`}>
-        {items?.map((task) => (
-          <TaskListItem
-            key={`taskListItem-${task.id}`}
-            {...(task as ITaskState)}
-          />
+        {items?.map(task => (
+          <TaskListItem key={`taskListItem-${task.id}`} {...(task as ITaskState)} />
         ))}
         {isLoadMoreTaskCount && (
           <div className="load-more-tasks">
-            <a
-              href="#"
-              className="btn btn-load-more"
-              onClick={handleLoadMoreTasks}
-            >
+            <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>
               Загрузить ещё
             </a>
           </div>
         )}
         {!items?.length && <TaskListNothingFound />}
       </section>
-    )) || (
-      <TaskListLoader />
-    )
+    )) || <TaskListLoader />
   );
 };
 

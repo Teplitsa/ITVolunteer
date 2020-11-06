@@ -7,10 +7,9 @@ const HonorsListItemIndex: React.FunctionComponent<{ itemIndex: number }> = ({
   const itemIndexRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    new IntersectionObserver(
-      ([spanRef]) => spanRef.isIntersecting && showItemIndex(true),
-      { threshold: 0 }
-    ).observe(itemIndexRef.current);
+    new IntersectionObserver(([spanRef]) => spanRef.isIntersecting && showItemIndex(true), {
+      threshold: 0,
+    }).observe(itemIndexRef.current);
   }, []);
 
   return (

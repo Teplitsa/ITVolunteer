@@ -8,9 +8,7 @@ import {
 } from "../../layout/WizardScreen";
 
 const CompleteTaskReview = (screenProps): ReactElement => {
-  const isAuthor = useStoreState(
-    (state) => state.components.completeTaskWizard.user.isAuthor
-  );
+  const isAuthor = useStoreState(state => state.components.completeTaskWizard.user.isAuthor);
   const props = {
     ...screenProps,
     screenName: "Review",
@@ -24,11 +22,7 @@ const CompleteTaskReview = (screenProps): ReactElement => {
     <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
-          title={
-            isAuthor
-              ? "Оставьте ваш отзыв о волонтере"
-              : "Оставьте ваш отзыв о заказчике"
-          }
+          title={isAuthor ? "Оставьте ваш отзыв о волонтере" : "Оставьте ваш отзыв о заказчике"}
           isRequired={true}
           {...props}
         >

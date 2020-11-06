@@ -9,23 +9,17 @@ export const isLinkValid = (link: string): boolean => {
     if (new URL(link)) {
       isValid = true;
     }
+    // eslint-disable-next-line no-empty
   } catch {}
 
   return isValid;
 };
 
-export const generateUniqueKey = ({
-  base,
-  prefix = "",
-}: {
-  base: string;
-  prefix?: string;
-}) => {
+export const generateUniqueKey = ({ base, prefix = "" }: { base: string; prefix?: string }) => {
   return (
     (prefix ? `${prefix}-` : "") +
     Array.from(base).reduce(
-      (result, char) =>
-        (/[a-zа-я]/i.test(char) && result + char.charCodeAt(0)) || result,
+      (result, char) => (/[a-zа-я]/i.test(char) && result + char.charCodeAt(0)) || result,
       0
     )
   );
@@ -40,8 +34,7 @@ export const getLocaleDateTimeISOString = (locale = "ru-RU"): string => {
 
 export const stripTags = (str = "") => str.replace(/<\/?[^>]+>/gi, "");
 
-export const capitalize = (str = "") =>
-  str.charAt(0).toUpperCase() + str.slice(1);
+export const capitalize = (str = "") => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const toCamelCase = (str = ""): string =>
   str.replace(/\W+(.)/g, (match, char) => char.toUpperCase());
@@ -59,10 +52,7 @@ export const getTheDate = ({
   }
 };
 
-export const formatDate = ({
-  date = new Date(),
-  stringFormat = "do MMMM Y",
-}): string => {
+export const formatDate = ({ date = new Date(), stringFormat = "do MMMM Y" }): string => {
   return format(date, stringFormat, {
     locale: ru,
   });
@@ -89,9 +79,7 @@ export const getTheIntervalToNow = ({
       addSuffix: true,
     });
   } catch (e) {
-    throw new TypeError(
-      `Instead of valid date string given: ${fromDateString}`
-    );
+    throw new TypeError(`Instead of valid date string given: ${fromDateString}`);
   }
 };
 
@@ -110,7 +98,7 @@ export const getAjaxUrl = (action: string): string => {
 
 export function showAjaxError(errorData) {
   if (errorData.message) {
-    let el = document.createElement("div");
+    const el = document.createElement("div");
     el.innerHTML = errorData.message;
     console.error(el.textContent);
   } else {
@@ -132,7 +120,7 @@ export function decodeHtmlEntities(textWithEntities) {
   }
 
   try {
-    let el = document.createElement("div");
+    const el = document.createElement("div");
     el.innerHTML = textWithEntities;
     return el.innerText;
   } catch (ex) {
@@ -147,7 +135,7 @@ export function getSiteUrl(path = "") {
     return path;
   }
 
-  let rootUrl =
+  const rootUrl =
     window.location.protocol +
     "//" +
     window.location.hostname +
@@ -156,7 +144,7 @@ export function getSiteUrl(path = "") {
 }
 
 export function formDataToJSON(formData) {
-  var object = {};
+  const object = {};
   formData.forEach((value, key) => {
     // Reflect.has in favor of: object.hasOwnProperty(key)
     if (!Reflect.has(object, key)) {
@@ -176,29 +164,22 @@ export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
     return "";
   }
 
-  var fallbackImageUrl = "";
+  let fallbackImageUrl = "";
   if (postFeaturedImage.mediaItemUrl) {
     fallbackImageUrl = postFeaturedImage.mediaItemUrl;
   }
 
-  if (
-    !postFeaturedImage.mediaDetails ||
-    !postFeaturedImage.mediaDetails.sizes
-  ) {
+  if (!postFeaturedImage.mediaDetails || !postFeaturedImage.mediaDetails.sizes) {
     return fallbackImageUrl;
   }
 
-  let foundSize = postFeaturedImage.mediaDetails.sizes.find(
-    (imgSize) => imgSize.name == size
-  );
+  const foundSize = postFeaturedImage.mediaDetails.sizes.find(imgSize => imgSize.name == size);
   return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
 }
 
 export function getReviewsCountString(reviewsCount) {
   const reviewsCountModulo =
-    reviewsCount < 10
-      ? reviewsCount
-      : Number([...Array.from(String(reviewsCount))].pop());
+    reviewsCount < 10 ? reviewsCount : Number([...Array.from(String(reviewsCount))].pop());
 
   const reviewsCountModulo100 =
     reviewsCount < 10
@@ -208,8 +189,8 @@ export function getReviewsCountString(reviewsCount) {
   return reviewsCountModulo100 > 10 && reviewsCountModulo100 < 20
     ? "отзывов"
     : reviewsCountModulo === 1
-      ? "отзыв"
-      : [2, 3, 4].includes(reviewsCountModulo)
-        ? "отзыва"
-        : "отзывов";
+    ? "отзыв"
+    : [2, 3, 4].includes(reviewsCountModulo)
+    ? "отзыва"
+    : "отзывов";
 }

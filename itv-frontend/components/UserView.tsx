@@ -20,7 +20,7 @@ export const UserSmallView: React.FunctionComponent<{
         fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -32,17 +32,11 @@ export const UserSmallView: React.FunctionComponent<{
     user && (
       <div className="itv-user-small-view">
         <span
-          className={`avatar-wrapper ${
-            isAvatarImageValid ? "" : "avatar-wrapper_default-image"
-          }`}
+          className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_default-image"}`}
           style={{
             backgroundImage: isAvatarImageValid
               ? `url(${user.itvAvatar})`
-              : `url(${
-                  user.memberRole === "Организация"
-                    ? IconBriefcase
-                    : MemberAvatarDefault
-                })`,
+              : `url(${user.memberRole === "Организация" ? IconBriefcase : MemberAvatarDefault})`,
           }}
         />
         <span className="name">
@@ -70,7 +64,7 @@ export const UserSmallPicView: React.FunctionComponent<{
         fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -82,9 +76,7 @@ export const UserSmallPicView: React.FunctionComponent<{
     user && (
       <div className="itv-user-small-view">
         <span
-          className={`avatar-wrapper ${
-            isAvatarImageValid ? "" : "avatar-wrapper_medium-image"
-          }`}
+          className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_medium-image"}`}
           style={{
             backgroundImage: isAvatarImageValid
               ? `url(${user.itvAvatar})`

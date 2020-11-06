@@ -25,19 +25,13 @@ const Modal: React.FunctionComponent<IModal> = ({
       <div
         ref={containerRef}
         className={`${styles.modal} ${isActive ? styles.modal_active : ""}`}
-        onClick={(event) =>
-          containerRef.current === event.target && closeModal()
-        }
+        onClick={event => containerRef.current === event.target && closeModal()}
       >
         <div className={styles.modal__dialog}>
           <div className={styles.modal__content}>
             <div className={styles.modal__header}>
               <h5 className={styles.modal__title}>{title}</h5>
-              <button
-                type="button"
-                className={styles.modal__close}
-                onClick={closeModal}
-              />
+              <button type="button" className={styles.modal__close} onClick={closeModal} />
             </div>
             <div className={styles.modal__body}>
               <ModalContent {...{ closeModal }} />

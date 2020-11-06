@@ -3,6 +3,5 @@ export const ITV_COOKIE = {
     name: "itvOldDesign",
     period: 30,
     value: "true",
-  }
-}
-
+  },
+};

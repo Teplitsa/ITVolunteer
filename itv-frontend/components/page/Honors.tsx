@@ -1,17 +1,17 @@
 import { ReactElement, useEffect } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
 import HonorsListItemIndex from "./HonorsListItemIndex";
 import { regEvent } from "../../utilities/ga-events";
 
 const Honors: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const { title, blocks } = useStoreState((state) => state.components.honors);
-  let mediaTextBlockIndex: number = -1;
+  const { title, blocks } = useStoreState(state => state.components.honors);
+  let mediaTextBlockIndex = -1;
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   return (
@@ -49,11 +49,7 @@ const Honors: React.FunctionComponent = (): ReactElement => {
                   },
                   slideInFrom: mediaTextBlockIndex % 2 === 0 ? "left" : "right",
                   include: {
-                    before: (
-                      <HonorsListItemIndex
-                        {...{ itemIndex: mediaTextBlockIndex }}
-                      />
-                    ),
+                    before: <HonorsListItemIndex {...{ itemIndex: mediaTextBlockIndex }} />,
                   },
                   ...props,
                 },

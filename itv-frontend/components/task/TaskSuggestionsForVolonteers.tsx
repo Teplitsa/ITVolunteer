@@ -3,17 +3,11 @@ import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 const TaskSuggestionsForVolonteers: React.FunctionComponent = (): ReactElement => {
-  const {
-    isLoggedIn,
-    isTaskAuthorLoggedIn,
-    isUserTaskCandidate,
-  } = useStoreState((state) => state.session);
-  const { nextTaskSlug, approvedDoer } = useStoreState(
-    (state) => state.components.task
+  const { isLoggedIn, isTaskAuthorLoggedIn, isUserTaskCandidate } = useStoreState(
+    state => state.session
   );
-  const addDoer = useStoreActions(
-    (actions) => actions.components.task?.addDoerRequest
-  );
+  const { nextTaskSlug, approvedDoer } = useStoreState(state => state.components.task);
+  const addDoer = useStoreActions(actions => actions.components.task?.addDoerRequest);
 
   return (
     isLoggedIn &&
@@ -22,13 +16,13 @@ const TaskSuggestionsForVolonteers: React.FunctionComponent = (): ReactElement =
         {!approvedDoer && !isUserTaskCandidate && (
           <div className="task-give-response">
             <p>
-              Кликнув на кнопку, вы попадете в список волонтёров откликнувшихся
-              на задачу. Заказчик задачи выберет подходящего из списка.
+              Кликнув на кнопку, вы попадете в список волонтёров откликнувшихся на задачу. Заказчик
+              задачи выберет подходящего из списка.
             </p>
             <a
               href="#"
               className="button-give-response"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 addDoer();
               }}

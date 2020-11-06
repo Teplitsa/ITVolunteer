@@ -5,18 +5,12 @@ const TaskTimelineSuggestComment: React.FunctionComponent<{
   suggestedCloseDate: Date | null;
   setOpenDateSuggestComment: (openDateSuggestComment: boolean) => void;
   setOpenDateSuggest: (openDateSuggest: boolean) => void;
-}> = ({
-  suggestedCloseDate,
-  setOpenDateSuggestComment,
-  setOpenDateSuggest,
-}): ReactElement => {
+}> = ({ suggestedCloseDate, setOpenDateSuggestComment, setOpenDateSuggest }): ReactElement => {
   const [suggestComment, setSuggestComment] = useState<string>("");
   const suggestCloseDate = useStoreActions(
-    (actions) => actions.components.task?.suggestCloseDateRequest
+    actions => actions.components.task?.suggestCloseDateRequest
   );
-  const typeIn = (
-    event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>
-  ) => {
+  const typeIn = (event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>) => {
     setSuggestComment(event.target.value);
   };
   const callbackFn = (): void => {
@@ -38,7 +32,7 @@ const TaskTimelineSuggestComment: React.FunctionComponent<{
           <a
             href="#"
             className="cancel-comment"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               setOpenDateSuggestComment(false);
               setOpenDateSuggest(true);
@@ -49,7 +43,7 @@ const TaskTimelineSuggestComment: React.FunctionComponent<{
           <a
             href="#"
             className="submit-comment"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               suggestCloseDate({
                 suggestComment: suggestComment.trim(),

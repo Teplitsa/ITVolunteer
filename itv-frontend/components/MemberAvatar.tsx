@@ -6,14 +6,13 @@ const MemberAvatar: React.FunctionComponent<{
   memberFullName?: string;
   size?: "large" | "medium" | "small";
 }> = ({ memberAvatar, memberFullName = "", size = "" }): ReactElement => {
-  const isDefaultAvatar =
-    !memberAvatar || memberAvatar.search(/temp-avatar\.png/) !== -1;
+  const isDefaultAvatar = !memberAvatar || memberAvatar.search(/temp-avatar\.png/) !== -1;
 
   return (
     <figure
-      className={`member-avatar ${
-        isDefaultAvatar ? "member-avatar_default-image" : ""
-      } ${size === "medium" ? "member-avatar_medium-size-image" : ""}`}
+      className={`member-avatar ${isDefaultAvatar ? "member-avatar_default-image" : ""} ${
+        size === "medium" ? "member-avatar_medium-size-image" : ""
+      }`}
     >
       <img
         className={`member-avatar__image ${isDefaultAvatar ? "member-avatar__image_default" : ""}`}

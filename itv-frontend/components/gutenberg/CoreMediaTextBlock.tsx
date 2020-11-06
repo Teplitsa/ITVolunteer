@@ -19,9 +19,7 @@ const CoreMediaTextBlock: React.FunctionComponent<ICoreMediaTextBlock> = ({
   include,
 }): ReactElement => {
   const ImageWithAttributes: React.FunctionComponent = (): ReactElement => (
-    <Image
-      {...{ mediaUrl, mediaAlt, className: classList?.image?.join(" ") }}
-    />
+    <Image {...{ mediaUrl, mediaAlt, className: classList?.image?.join(" ") }} />
   );
 
   return (

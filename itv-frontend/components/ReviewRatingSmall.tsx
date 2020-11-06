@@ -14,9 +14,7 @@ const ReviewRatingSmall: React.FunctionComponent<{
             return (
               <span
                 key={`RatingStar-${i}`}
-                className={`review-rating__star ${
-                  rating > i ? "review-rating__star_active" : ""
-                }`}
+                className={`review-rating__star ${rating > i ? "review-rating__star_active" : ""}`}
               />
             );
           })}

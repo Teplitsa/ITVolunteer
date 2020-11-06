@@ -12,10 +12,7 @@ const SnackbarListItem: React.FunctionComponent<{
   const [isActive, setActivity] = useState<boolean>(false);
 
   const closeSnackbar = () => {
-    setTimeout(
-      () => dispatch({ type: "delete", payload: { messages: [message] } }),
-      300
-    );
+    setTimeout(() => dispatch({ type: "delete", payload: { messages: [message] } }), 300);
     setActivity(false);
   };
 

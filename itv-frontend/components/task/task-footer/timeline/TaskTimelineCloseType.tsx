@@ -1,46 +1,30 @@
 import { ReactElement, useState } from "react";
 import Router from "next/router";
-import {
-  useStoreState,
-  useStoreActions,
-} from "../../../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks";
 import TaskTimelineDateSuggest from "./TaskTimelineDateSuggest";
 import TaskTimelineSuggestComment from "./TaskTimelineSuggestComment";
 import TaskTimelineOpenCloseSuggest from "./TaskTimelineOpenCloseSuggest";
 
 const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
-  const { databaseId: userId, fullName: userName } = useStoreState(
-    (state) => state.session.user
-  );
-  const { isTaskAuthorLoggedIn, user } = useStoreState(
-    (state) => state.session
-  );
-  const {
-    databaseId,
-    title,
-    approvedDoer,
-    author,
-  } = useStoreState((state) => state.components.task);
+  const { databaseId: userId, fullName: userName } = useStoreState(state => state.session.user);
+  const { isTaskAuthorLoggedIn, user } = useStoreState(state => state.session);
+  const { databaseId, title, approvedDoer } = useStoreState(state => state.components.task);
 
   const isApprovedDoerLoggedIn = approvedDoer && user.databaseId === approvedDoer.databaseId;
   const setCompleteTaskWizardState = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setInitState
+    actions => actions.components.completeTaskWizard.setInitState
   );
   const suggestCloseTaskRequest = useStoreActions(
-    (actions) => actions.components.task.suggestCloseTaskRequest
+    actions => actions.components.task.suggestCloseTaskRequest
   );
   const [isOpenDateSuggest, setOpenDateSuggest] = useState<boolean>(false);
-  const [suggestedCloseDate, setSuggestedCloseDate] = useState<Date | null>(
-    null
-  );
-  const [isOpenDateSuggestComment, setOpenDateSuggestComment] = useState<
-    boolean
-  >(false);
+  const [suggestedCloseDate, setSuggestedCloseDate] = useState<Date | null>(null);
+  const [isOpenDateSuggestComment, setOpenDateSuggestComment] = useState<boolean>(false);
   const [isOpenCloseSuggest, setOpenCloseSuggest] = useState<boolean>(false);
 
   const completeTaskByAuthor = () => {
-    if(!approvedDoer) {
-      return
+    if (!approvedDoer) {
+      return;
     }
 
     suggestCloseTaskRequest({});
@@ -67,7 +51,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
       setOpenDateSuggestComment(false);
       setOpenCloseSuggest(true);
     }
-              
+
     // suggestCloseTaskRequest({});
     // setCompleteTaskWizardState({
     //   user: {
@@ -84,7 +68,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
     // });
   };
 
-  if(!approvedDoer) {
+  if (!approvedDoer) {
     return null;
   }
 
@@ -96,7 +80,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
           className={`action suggest-date ${
             ((isOpenDateSuggest || isOpenDateSuggestComment) && "active") || ""
           }`}
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             if (isOpenDateSuggestComment) {
               setOpenDateSuggestComment(false);
@@ -116,7 +100,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         <a
           href="#"
           className="action close-task"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             completeTaskByAuthor();
           }}
@@ -129,7 +113,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         <a
           href="#"
           className="action close-task"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             completeTaskByDoer();
           }}
@@ -158,9 +142,7 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
         />
       )}
 
-      {isOpenCloseSuggest && (
-        <TaskTimelineOpenCloseSuggest {...{ setOpenCloseSuggest }} />
-      )}
+      {isOpenCloseSuggest && <TaskTimelineOpenCloseSuggest {...{ setOpenCloseSuggest }} />}
     </div>
   );
 };

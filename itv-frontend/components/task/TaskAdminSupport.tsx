@@ -4,9 +4,7 @@ import TaskAdminSupportForm from "./TaskAdminSupportForm";
 
 const { ModalContext, SnackbarContext } = GlobalScripts;
 
-const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({
-  closeModal,
-}) => {
+const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({ closeModal }) => {
   return (
     <SnackbarContext.Consumer>
       {({ dispatch }) => {
@@ -20,8 +18,8 @@ const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({
 };
 
 const TaskAdminSupport: React.FunctionComponent<{
-  buttonTitle?: string,
-}> = ({buttonTitle}): ReactElement => {
+  buttonTitle?: string;
+}> = ({ buttonTitle }): ReactElement => {
   return (
     <div className="something-wrong-with-task">
       <ModalContext.Consumer>
@@ -29,7 +27,7 @@ const TaskAdminSupport: React.FunctionComponent<{
           <a
             href="#"
             className="btn btn_alternate btn_full-width"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               dispatch({
                 type: "template",

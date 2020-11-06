@@ -1,10 +1,5 @@
-import {
-  MutableRefObject,
-  MouseEvent,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+/* eslint-disable react/display-name */
+import { MutableRefObject, MouseEvent, useState, useEffect, useRef } from "react";
 
 const withTabs = ({
   tabs,
@@ -16,21 +11,14 @@ const withTabs = ({
   }>;
   defaultActiveIndex?: number;
 }): React.FunctionComponent => {
-  const addActiveClass = (
-    tabsRef: MutableRefObject<HTMLDivElement>,
-    activeIndex: number
-  ) => {
+  const addActiveClass = (tabsRef: MutableRefObject<HTMLDivElement>, activeIndex: number) => {
     const tabsNavItems = tabsRef.current.querySelectorAll(`.tabs-nav__item`);
-    const tabsContentItems = tabsRef.current.querySelectorAll(
-      `.tabs-content__item`
-    );
+    const tabsContentItems = tabsRef.current.querySelectorAll(`.tabs-content__item`);
 
-    tabsNavItems.forEach((navItem) =>
-      navItem.classList.remove("tabs-nav__item_active")
-    );
+    tabsNavItems.forEach(navItem => navItem.classList.remove("tabs-nav__item_active"));
     tabsNavItems[activeIndex].classList.add("tabs-nav__item_active");
 
-    tabsContentItems.forEach((contentItem) =>
+    tabsContentItems.forEach(contentItem =>
       contentItem.classList.remove("tabs-content__item_active")
     );
     tabsContentItems[activeIndex].classList.add("tabs-content__item_active");

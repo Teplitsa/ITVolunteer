@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { useRouter } from "next/router";
 import { ITaskState } from "../../model/model.typing";
 import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
@@ -12,12 +12,10 @@ const TaskSearch: React.FunctionComponent = (): ReactElement => {
   const {
     query: { s },
   } = useRouter();
-  const items = useStoreState((state) => state.components.taskList.items);
-  const hasMoreTasks = useStoreState(
-    (state) => state.entrypoint.archive.hasNextPage
-  );
+  const items = useStoreState(state => state.components.taskList.items);
+  const hasMoreTasks = useStoreState(state => state.entrypoint.archive.hasNextPage);
   const loadMoreTasksRequest = useStoreActions(
-    (actions) => actions.components.taskList.loadMoreTasksRequest
+    actions => actions.components.taskList.loadMoreTasksRequest
   );
 
   return (
@@ -38,18 +36,15 @@ const TaskSearch: React.FunctionComponent = (): ReactElement => {
       </SnackbarContext.Consumer>
       {s && (
         <section className="task-list">
-          {items?.map((task) => (
-            <TaskListItem
-              key={`taskListItem-${task.id}`}
-              {...(task as ITaskState)}
-            />
+          {items?.map(task => (
+            <TaskListItem key={`taskListItem-${task.id}`} {...(task as ITaskState)} />
           ))}
           {hasMoreTasks && (
             <div className="load-more-tasks">
               <a
                 href="#"
                 className="btn btn-load-more"
-                onClick={(event) => {
+                onClick={event => {
                   event.preventDefault();
                   loadMoreTasksRequest({ searchPhrase: s as string });
                 }}
@@ -58,9 +53,7 @@ const TaskSearch: React.FunctionComponent = (): ReactElement => {
               </a>
             </div>
           )}
-          {!items?.length && (
-            <p>Не найдены задачи, соответствующие критериям поиска.</p>
-          )}
+          {!items?.length && <p>Не найдены задачи, соответствующие критериям поиска.</p>}
         </section>
       )}
     </>

@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { regEvent } from "../../../utilities/ga-events"
+import { regEvent } from "../../../utilities/ga-events";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
 
-const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
+const FooterNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
 
   return (
@@ -18,33 +18,39 @@ const FooterNav: React.FunctionComponent = ({ children }): ReactElement => {
         <li>
           <Link href="/tasks">
             <a
-              onClick={(e) => {
-                regEvent('m_tf_list', router);
-              }}                  
-            >Задачи</a>
+              onClick={() => {
+                regEvent("m_tf_list", router);
+              }}
+            >
+              Задачи
+            </a>
           </Link>
         </li>
         <li>
           <Link href="/members">
             <a
-              onClick={(e) => {
-                regEvent('m_mb_list', router);
-              }}                  
-            >Волонтеры</a>
+              onClick={() => {
+                regEvent("m_mb_list", router);
+              }}
+            >
+              Волонтеры
+            </a>
           </Link>
         </li>
         <li className="drop-menu">
-          <a href="#" onClick={(event) => event.preventDefault()}>
+          <a href="#" onClick={event => event.preventDefault()}>
             О проекте
           </a>
           <ul className="submenu">
             <li>
               <Link href="/about">
                 <a
-                  onClick={(e) => {
-                    regEvent('m_about', router);
-                  }}                  
-                >О проекте</a>
+                  onClick={() => {
+                    regEvent("m_about", router);
+                  }}
+                >
+                  О проекте
+                </a>
               </Link>
             </li>
             <li>

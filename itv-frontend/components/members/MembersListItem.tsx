@@ -16,10 +16,9 @@ const MembersListItem: React.FunctionComponent<{
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    new IntersectionObserver(
-      ([containerRef]) => containerRef.isIntersecting && show(true),
-      { threshold: 0 }
-    ).observe(ref.current);
+    new IntersectionObserver(([containerRef]) => containerRef.isIntersecting && show(true), {
+      threshold: 0,
+    }).observe(ref.current);
   }, []);
 
   return (
@@ -97,7 +96,7 @@ const MembersListItem: React.FunctionComponent<{
           </div>
           {isLinkValid(volunteer.organizationSite) && (
             <div className="volunteer__organization-site">
-              <a href={volunteer.organizationSite} target="_blank">
+              <a href={volunteer.organizationSite} target="_blank" rel="noreferrer">
                 {new URL(volunteer.organizationSite).hostname}
               </a>
             </div>

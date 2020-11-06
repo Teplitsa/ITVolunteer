@@ -4,24 +4,22 @@ import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks"
 const TaskTimelineOpenCloseSuggest: React.FunctionComponent<{
   setOpenCloseSuggest: (isOpenCloseSuggest: boolean) => void;
 }> = ({ setOpenCloseSuggest }): ReactElement => {
-  const updateTaskStatus = useStoreActions((actions) => actions.components.task.updateStatus);
-  const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
+  const updateTaskStatus = useStoreActions(actions => actions.components.task.updateStatus);
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
   const [suggestComment, setSuggestComment] = useState<string>("");
   const suggestCloseTask = useStoreActions(
-    (actions) => actions.components.task?.suggestCloseTaskRequest
+    actions => actions.components.task?.suggestCloseTaskRequest
   );
-  const typeIn = (
-    event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>
-  ) => {
+  const typeIn = (event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>) => {
     setSuggestComment(event.target.value);
   };
   const callbackFn = (): void => {
     // setOpenCloseSuggest.bind(null, false);
-    if(isTaskAuthorLoggedIn) {
-      updateTaskStatus({status: "closed"});
+    if (isTaskAuthorLoggedIn) {
+      updateTaskStatus({ status: "closed" });
     }
     setOpenCloseSuggest(false);
-  }
+  };
 
   return (
     <div className="timeline-form-wrapper">
@@ -37,7 +35,7 @@ const TaskTimelineOpenCloseSuggest: React.FunctionComponent<{
           <a
             href="#"
             className="cancel-comment"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               setOpenCloseSuggest(false);
             }}
@@ -47,13 +45,13 @@ const TaskTimelineOpenCloseSuggest: React.FunctionComponent<{
           <a
             href="#"
             className="submit-comment"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               if (!suggestComment.trim()) return;
-              
-              suggestCloseTask({ 
-                suggestComment: suggestComment.trim(), 
-                callbackFn 
+
+              suggestCloseTask({
+                suggestComment: suggestComment.trim(),
+                callbackFn,
               });
             }}
           >

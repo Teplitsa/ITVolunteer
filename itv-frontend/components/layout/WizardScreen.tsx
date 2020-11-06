@@ -1,11 +1,7 @@
 import { Children, ReactElement, useState, useEffect, useRef } from "react";
 import * as _ from "lodash";
 
-import {
-  IWizardScreenProps,
-  IWizardInputProps,
-  IFetchResult,
-} from "../../model/model.typing";
+import { IWizardScreenProps, IWizardInputProps, IFetchResult } from "../../model/model.typing";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import WithGlobalScripts from "../hoc/withGlobalScripts";
 import FooterScripts from "./partials/FooterScripts";
@@ -21,11 +17,13 @@ import selectItemRemove from "../../assets/img/icon-select-item-remove.svg";
 import cloudUpload from "../../assets/img/icon-wizard-cloud-upload.svg";
 import removeFile from "../../assets/img/icon-wizard-remove-file.svg";
 
-export const WizardScreen = ({ children, ...props }): ReactElement => {
-  const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
-  const login = useStoreActions((actions) => actions.session.login);
+export const WizardScreen: React.FunctionComponent<
+  { modifierClassNames?: Array<any> } & IWizardScreenProps
+> = ({ children, ...props }): ReactElement => {
+  const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const login = useStoreActions(actions => actions.session.login);
   const showScreenHelpModalState = useStoreState(
-    (state) => state.components.createTaskWizard.showScreenHelpModalState
+    state => state.components.createTaskWizard.showScreenHelpModalState
   );
 
   const defaultProps = {
@@ -76,16 +74,16 @@ export const WizardScreen = ({ children, ...props }): ReactElement => {
   );
 };
 
-export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
-  function handleNextClick(e) {
-    e.preventDefault();
-    props.goNextStep();
-  }
+export const WizardScreenBottomBar: React.FunctionComponent<IWizardScreenProps> = props => {
+  // function handleNextClick(e) {
+  //   e.preventDefault();
+  //   props.goNextStep();
+  // }
 
-  function handlePrevClick(e) {
-    e.preventDefault();
-    props.goPrevStep();
-  }
+  // function handlePrevClick(e) {
+  //   e.preventDefault();
+  //   props.goPrevStep();
+  // }
 
   return (
     <div className="wizard-bottom-bar">
@@ -109,9 +107,7 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
             <div
               className="wizard-progressbar__complete"
               style={{
-                width: `${
-                  (100 * props.visibleStep) / props.visibleStepsCount
-                }%`,
+                width: `${(100 * props.visibleStep) / props.visibleStepsCount}%`,
               }}
             ></div>
           </div>
@@ -121,22 +117,22 @@ export const WizardScreenBottomBar = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardSteps = ({ ...props }) => {
+export const WizardSteps: React.FunctionComponent<{
+  steps?: Array<{ step: number; shortTitle: string }>;
+  step?: number;
+}> = props => {
   if (!props.steps || !props.steps.length) {
     return null;
   }
 
   return (
     <div className="wizard-steps">
-      {props.steps.map((step, index) => {
+      {props.steps.map((step, i) => {
         return (
           <div
+            key={i}
             className={`step-list-item ${
-              step.step === props.step
-                ? "active"
-                : step.step < props.step
-                ? "past"
-                : "future"
+              step.step === props.step ? "active" : step.step < props.step ? "past" : "future"
             }`}
           >
             {step.shortTitle}
@@ -147,7 +143,7 @@ export const WizardSteps = ({ ...props }) => {
   );
 };
 
-export const WizardForm = ({ children, ...props }) => {
+export const WizardForm: React.FunctionComponent<IWizardScreenProps> = ({ children, ...props }) => {
   const [formFieldNameList, setFormFieldNameList] = useState(null);
 
   useEffect(() => {
@@ -155,9 +151,9 @@ export const WizardForm = ({ children, ...props }) => {
       return;
     }
 
-    let nameList = [];
+    const nameList = [];
     {
-      Children.map(children, (child, index) => {
+      Children.map(children, (child: any) => {
         nameList.push(child.props.name);
       });
     }
@@ -166,20 +162,20 @@ export const WizardForm = ({ children, ...props }) => {
 
   return (
     <div className="wizard-form">
-      <WizardFormTitle {...(props as IWizardScreenProps)} />
+      <WizardFormTitle {...props} />
       {children}
       <WizardFormActionBar
-        {...(props as IWizardScreenProps)}
+        {...props}
         formFieldNameList={formFieldNameList ? formFieldNameList : []}
       />
     </div>
   );
 };
 
-export const WizardFormActionBar = (props: IWizardScreenProps) => {
+export const WizardFormActionBar: React.FunctionComponent<IWizardScreenProps> = props => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleNextClick = (e) => {
+  const handleNextClick = e => {
     e.preventDefault();
 
     let isMayGoNextStep = isFieldValid();
@@ -197,10 +193,10 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
     }
   };
 
-  const handlePrevClick = (e) => {
+  const handlePrevClick = e => {
     e.preventDefault();
 
-    let isMayGoPrevStep = props.onPrevClick ? props.onPrevClick(props) : true;
+    const isMayGoPrevStep = props.onPrevClick ? props.onPrevClick(props) : true;
     if (isMayGoPrevStep) {
       props.goPrevStep();
     }
@@ -215,7 +211,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
 
     // console.log("props.formFieldNameList:", props.formFieldNameList)
 
-    let isValid = props.formFieldNameList.reduce((accum, fieldName) => {
+    const isValid = props.formFieldNameList.reduce((accum, fieldName) => {
       let fieldValue = _.get(props.formData, fieldName + ".value", "");
       if (!fieldValue) {
         fieldValue = _.get(props.formData, fieldName, "");
@@ -252,9 +248,7 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
       {!isLoading && !!props.isAllowPrevButton && (
         <a
           href="#"
-          onClick={
-            props.visibleStep > 1 ? handlePrevClick : props.onWizardCancel
-          }
+          onClick={props.visibleStep > 1 ? handlePrevClick : props.onWizardCancel}
           className="btn btn_link"
         >
           {props.visibleStep > 1 ? "Вернуться" : "Отмена"}
@@ -264,14 +258,12 @@ export const WizardFormActionBar = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardFormTitle = (props: IWizardScreenProps) => {
+export const WizardFormTitle: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <h1 className="wizard-form__title">
       <span className="wizard-form__title-index">{props.visibleStep}</span>
       {props.title}
-      {props.isRequired && (
-        <span className="wizard-form__required-star">*</span>
-      )}
+      {props.isRequired && <span className="wizard-form__required-star">*</span>}
     </h1>
   );
 };
@@ -279,18 +271,14 @@ export const WizardFormTitle = (props: IWizardScreenProps) => {
 /*
  *  Fields
  */
-export const WizardHelpModal = (props: IWizardScreenProps) => {
+export const WizardHelpModal: React.FunctionComponent<IWizardScreenProps> = props => {
   // console.log("props:", props)
   const setShowScreenHelpModalState = useStoreActions(
-    (actions) => actions.components.createTaskWizard.setShowScreenHelpModalState
+    actions => actions.components.createTaskWizard.setShowScreenHelpModalState
   );
-  const helpPageRequest = useStoreActions(
-    (actions) => actions.components.helpPage.helpPageRequest
-  );
-  const helpPageState = useStoreState((state) => state.components.helpPage);
-  const helpPageSlug = useStoreState(
-    (state) => state.components.createTaskWizard.helpPageSlug
-  );
+  const helpPageRequest = useStoreActions(actions => actions.components.helpPage.helpPageRequest);
+  const helpPageState = useStoreState(state => state.components.helpPage);
+  const helpPageSlug = useStoreState(state => state.components.createTaskWizard.helpPageSlug);
 
   useEffect(() => {
     // console.log("try load helpPage:", helpPageSlug)
@@ -334,23 +322,15 @@ export const WizardHelpModal = (props: IWizardScreenProps) => {
           </ul>
           <div className="wizard-help-modal__path-overlay"></div>
         </div>
-        <a
-          href="#"
-          className="wizard-help-modal__close"
-          onClick={handleCloseClick}
-        >
+        <a href="#" className="wizard-help-modal__close" onClick={handleCloseClick}>
           <img src={closeModalIcon} />
         </a>
       </header>
-      {!helpPageState.id && (
-        <div className="spinner-border" role="status"></div>
-      )}
+      {!helpPageState.id && <div className="spinner-border" role="status"></div>}
       {!!helpPageState.id && (
         <div className="wizard-help-modal-article">
           <div className="wizard-help-modal-article__content">
-            <article
-              dangerouslySetInnerHTML={{ __html: helpPageState.content }}
-            />
+            <article dangerouslySetInnerHTML={{ __html: helpPageState.content }} />
           </div>
           <div className="wizard-help-modal-article__content-overlay"></div>
         </div>
@@ -362,17 +342,20 @@ export const WizardHelpModal = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardLimitedTextFieldWithHelp = ({ field: Field, ...props }) => {
+export const WizardLimitedTextFieldWithHelp: React.FunctionComponent<
+  { field: React.FunctionComponent<any> } & {
+    name?: string;
+    setFormData?: (args: any) => void;
+  } & IWizardScreenProps
+> = ({ field: Field, ...props }) => {
   const inputUseRef = useRef(null);
   const fieldValue = _.get(props.formData, props.name, "");
-  const [inputTextLength, setInputTextLength] = useState(
-    fieldValue ? fieldValue.length : 0
-  );
+  const [inputTextLength, setInputTextLength] = useState(fieldValue ? fieldValue.length : 0);
 
   function handleInput(e) {
     setInputTextLength(e.target.value.length);
 
-    if (!!props.setFormData) {
+    if (props.setFormData) {
       props.setFormData({ [props.name]: e.target.value });
     }
   }
@@ -393,9 +376,9 @@ export const WizardLimitedTextFieldWithHelp = ({ field: Field, ...props }) => {
         isMultiple={props.isMultiple}
         maxLength={props.maxLength}
       />
-      {(!!props.formHelpComponent || props.maxLength > 0) && (
+      {(props.formHelpComponent || props.maxLength > 0) && (
         <div className="wizard-field__limit-help">
-          {!!props.formHelpComponent && <props.formHelpComponent {...props} />}
+          {props.formHelpComponent && <props.formHelpComponent {...props} />}
           {!props.formHelpComponent && <div />}
           {props.maxLength > 0 && (
             <div className="wizard-field__limit">{`${inputTextLength}/${props.maxLength}`}</div>
@@ -407,7 +390,7 @@ export const WizardLimitedTextFieldWithHelp = ({ field: Field, ...props }) => {
 };
 
 // input text
-export const WizardStringField = (props: IWizardScreenProps) => {
+export const WizardStringField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -416,7 +399,7 @@ export const WizardStringField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardStringFieldInput = (props: IWizardInputProps) => {
+export const WizardStringFieldInput: React.FunctionComponent<IWizardInputProps> = props => {
   return (
     <input
       type="text"
@@ -430,7 +413,7 @@ export const WizardStringFieldInput = (props: IWizardInputProps) => {
 };
 
 // textarea
-export const WizardTextField = (props: IWizardScreenProps) => {
+export const WizardTextField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -439,7 +422,7 @@ export const WizardTextField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardTextFieldInput = (props: IWizardInputProps) => {
+export const WizardTextFieldInput: React.FunctionComponent<IWizardInputProps> = props => {
   return (
     <textarea
       maxLength={props.maxLength}
@@ -452,7 +435,7 @@ export const WizardTextFieldInput = (props: IWizardInputProps) => {
 };
 
 // radio
-export const WizardRadioSetField = (props: IWizardScreenProps) => {
+export const WizardRadioSetField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -461,13 +444,9 @@ export const WizardRadioSetField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
-  const formData = useStoreState(
-    (state) => state.components.createTaskWizard.formData
-  );
-  const setFormData = useStoreActions(
-    (actions) => actions.components.createTaskWizard.setFormData
-  );
+export const WizardRadioSetFieldInput: React.FunctionComponent<IWizardInputProps> = props => {
+  const formData = useStoreState(state => state.components.createTaskWizard.formData);
+  const setFormData = useStoreActions(actions => actions.components.createTaskWizard.setFormData);
 
   function handleOptionClick(e, value) {
     _.set(formData, props.name, String(value));
@@ -483,7 +462,7 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
           <div
             className="wizard-radio-option"
             key={index}
-            onClick={(e) => {
+            onClick={e => {
               handleOptionClick(e, option.value);
             }}
           >
@@ -512,7 +491,7 @@ export const WizardRadioSetFieldInput = (props: IWizardInputProps) => {
   );
 };
 
-export const WizardSelectField = (props: IWizardScreenProps) => {
+export const WizardSelectField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -521,52 +500,44 @@ export const WizardSelectField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardSelectFieldInput = (props: IWizardInputProps) => {
+export const WizardSelectFieldInput: React.FunctionComponent<IWizardScreenProps> = props => {
   const [isOpen, setIsOpen] = useState(false);
-  const formData = useStoreState(
-    (state) => state.components.createTaskWizard.formData
-  );
-  const setFormData = useStoreActions(
-    (actions) => actions.components.createTaskWizard.setFormData
-  );
+  const formData = useStoreState(state => state.components.createTaskWizard.formData);
+  const setFormData = useStoreActions(actions => actions.components.createTaskWizard.setFormData);
 
   function handleOptionClick(e, index) {
-    let fd = { ...formData };
+    const fd = { ...formData };
     _.set(fd, props.name + ".index", index);
-    let selectedOption = props.selectOptions[index];
+    const selectedOption = props.selectOptions[index];
     _.set(fd, props.name + ".value", String(selectedOption.value));
     setFormData({ ...fd });
     setIsOpen(false);
   }
 
-  function handleBoxClick(e) {
+  function handleBoxClick() {
     setIsOpen(!isOpen);
   }
 
   function getSelectedOption() {
-    let value = _.get(formData, props.name + ".value", null);
-    let index = props.selectOptions.findIndex(
-      (item) => String(item.value) === String(value)
-    );
+    const value = _.get(formData, props.name + ".value", null);
+    const index = props.selectOptions.findIndex(item => String(item.value) === String(value));
     return index > -1 ? props.selectOptions[index] : null;
   }
 
-  function getSelectedOptionValue() {
-    let option = getSelectedOption();
-    return option ? _.get(option, "value", "") : "";
-  }
+  // function getSelectedOptionValue() {
+  //   const option = getSelectedOption();
+  //   return option ? _.get(option, "value", "") : "";
+  // }
 
   function getSelectedOptionTitle() {
-    let option = getSelectedOption();
+    const option = getSelectedOption();
     return option ? _.get(option, "title", "") : "";
   }
 
   return (
     <div className="wizard-select">
       <div className="wizard-select__box" onClick={handleBoxClick}>
-        <div className="wizard-select__box__title">
-          {getSelectedOptionTitle()}
-        </div>
+        <div className="wizard-select__box__title">{getSelectedOptionTitle()}</div>
         <div className="wizard-select__box__galka">
           <img src={selectGalka} />
         </div>
@@ -578,7 +549,7 @@ export const WizardSelectFieldInput = (props: IWizardInputProps) => {
               <li
                 key={index}
                 className="wizard-select__list__item"
-                onClick={(e) => {
+                onClick={e => {
                   handleOptionClick(e, index);
                 }}
               >
@@ -592,7 +563,7 @@ export const WizardSelectFieldInput = (props: IWizardInputProps) => {
   );
 };
 
-export const WizardMultiSelectField = (props: IWizardScreenProps) => {
+export const WizardMultiSelectField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -601,30 +572,20 @@ export const WizardMultiSelectField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
+export const WizardMultiSelectFieldInput: React.FunctionComponent<IWizardScreenProps> = props => {
   const [isOpen, setIsOpen] = useState(false);
-  const formData = useStoreState(
-    (state) => state.components.createTaskWizard.formData
-  );
-  const setFormData = useStoreActions(
-    (actions) => actions.components.createTaskWizard.setFormData
-  );
+  const formData = useStoreState(state => state.components.createTaskWizard.formData);
+  const setFormData = useStoreActions(actions => actions.components.createTaskWizard.setFormData);
   const [filterPhrase, setFilterPhrase] = useState<string>("");
   const [tagCount, setTagCount] = useState<number>(
-    (Array.isArray(formData[props.name]?.value) &&
-      formData[props.name].value.length) ||
-      0
+    (Array.isArray(formData[props.name]?.value) && formData[props.name].value.length) || 0
   );
 
   function handleOptionClick(optionValue: number) {
     let selectedValueList =
-      (Array.isArray(formData[props.name]?.value) &&
-        formData[props.name].value) ||
-      [];
+      (Array.isArray(formData[props.name]?.value) && formData[props.name].value) || [];
 
-    selectedValueList = Array.from(
-      new Set([...selectedValueList, optionValue])
-    );
+    selectedValueList = Array.from(new Set([...selectedValueList, optionValue]));
 
     if (selectedValueList.length >= 3) {
       setFilterPhrase("");
@@ -646,13 +607,9 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
     const value = Number(event.currentTarget.dataset.value);
 
     let selectedValueList =
-      (Array.isArray(formData[props.name]?.value) &&
-        formData[props.name].value) ||
-      [];
+      (Array.isArray(formData[props.name]?.value) && formData[props.name].value) || [];
 
-    selectedValueList = selectedValueList.filter(
-      (item: number) => Number(item) !== value
-    );
+    selectedValueList = selectedValueList.filter((item: number) => Number(item) !== value);
 
     setFormData({
       ...formData,
@@ -667,15 +624,12 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
   }
 
   function getSelectedOptions() {
-    let selectedValueList =
-      (Array.isArray(formData[props.name]?.value) &&
-        formData[props.name].value) ||
-      [];
+    const selectedValueList =
+      (Array.isArray(formData[props.name]?.value) && formData[props.name].value) || [];
 
     return props.selectOptions.filter(
-      (item) =>
-        selectedValueList.findIndex((value: number) => Number(item.value) === Number(value)) >
-        -1
+      item =>
+        selectedValueList.findIndex((value: number) => Number(item.value) === Number(value)) > -1
     );
   }
 
@@ -705,12 +659,9 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
       {getSelectedOptions().length > 0 && (
         <div className="wizard-select__box wizard-select__box_multiple">
           <div className="wizard-select__box__selected-set wizard-select__box__selected-set_multiple">
-            {getSelectedOptions().map((option) => {
+            {getSelectedOptions().map(option => {
               return (
-                <div
-                  key={`Tag-${option.value}`}
-                  className="wizard-select__box__selected-item"
-                >
+                <div key={`Tag-${option.value}`} className="wizard-select__box__selected-item">
                   <span>{option.title}</span>
                   <img
                     className="wizard-select__box-close"
@@ -736,19 +687,16 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
         {isOpen && (
           <ul className="wizard-select__list wizard-select__list_multiple">
             {props.selectOptions
-              .filter((option) => {
+              .filter(option => {
                 if (filterPhrase) {
-                  if (
-                    option.title.search(new RegExp(`${filterPhrase}`, "i")) ===
-                    -1
-                  ) {
+                  if (option.title.search(new RegExp(`${filterPhrase}`, "i")) === -1) {
                     return false;
                   }
                 }
 
                 return true;
               })
-              .map((option) => {
+              .map(option => {
                 return (
                   <li
                     key={`Tag-${option.value}`}
@@ -766,7 +714,7 @@ export const WizardMultiSelectFieldInput = (props: IWizardInputProps) => {
   );
 };
 
-export const WizardUploadImageField = (props: IWizardScreenProps) => {
+export const WizardUploadImageField: React.FunctionComponent<IWizardScreenProps> = props => {
   return (
     <WizardLimitedTextFieldWithHelp
       {...props}
@@ -775,15 +723,11 @@ export const WizardUploadImageField = (props: IWizardScreenProps) => {
   );
 };
 
-export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
+export const WizardUploadImageFieldInput: React.FunctionComponent<IWizardScreenProps> = props => {
   const [files, setFiles] = useState([]);
   const [isFileUploading, setIsFileUploading] = useState(false);
-  const formData = useStoreState(
-    (state) => state.components.createTaskWizard.formData
-  );
-  const setFormData = useStoreActions(
-    (actions) => actions.components.createTaskWizard.setFormData
-  );
+  const formData = useStoreState(state => state.components.createTaskWizard.formData);
+  const setFormData = useStoreActions(actions => actions.components.createTaskWizard.setFormData);
   const fieldDescription = _.get(
     props,
     "description",
@@ -792,7 +736,7 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
   const acceptFileFormat = _.get(props, "acceptFileFormat", "");
 
   useEffect(() => {
-    let val = _.get(formData, props.name, null);
+    const val = _.get(formData, props.name, null);
     if (!val) {
       return;
     }
@@ -801,8 +745,8 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
   }, [formData]);
 
   function handleFileChange(e) {
-    let fullPath = e.target.value;
-    let fileName = fullPath.replace(/^.*[\\\/]/, "");
+    // const fullPath = e.target.value;
+    // const fileName = fullPath.replace(/^.*\//, "");
 
     setIsFileUploading(true);
 
@@ -811,12 +755,12 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
       form.append("file_" + fi, e.target.files[fi], e.target.files[fi].name);
     }
 
-    let action = "upload-file";
+    const action = "upload-file";
     fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })
-      .then((res) => {
+      .then(res => {
         try {
           return res.json();
         } catch (ex) {
@@ -831,14 +775,14 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
             return utils.showAjaxError({ message: "Ошибка!" });
           }
 
-          let fd = { ...formData };
+          const fd = { ...formData };
 
-          let fileFormValue = props.isMultiple ? _.get(fd, props.name, []) : [];
+          const fileFormValue = props.isMultiple ? _.get(fd, props.name, []) : [];
 
-          for (let fi in result.files) {
+          for (const fi in result.files) {
             fileFormValue.push({
               value: result.files[fi].file_id,
-              fileName: result.files[fi].file_url.replace(/^.*[\\\/]/, ""),
+              fileName: result.files[fi].file_url.replace(/^.*\//, ""),
             });
           }
           _.set(fd, props.name, fileFormValue);
@@ -846,7 +790,7 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
 
           setIsFileUploading(false);
         },
-        (error) => {
+        error => {
           utils.showAjaxError({ action, error });
         }
       );
@@ -855,12 +799,12 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
   function handleRemoveFileClick(e) {
     e.stopPropagation();
 
-    let value = parseInt(e.target.dataset.value);
-    let fd = { ...formData };
+    const value = parseInt(e.target.dataset.value);
+    const fd = { ...formData };
     _.set(
       fd,
       props.name,
-      _.get(fd, props.name, []).filter((item) => item.value !== value)
+      _.get(fd, props.name, []).filter(item => item.value !== value)
     );
     setFormData({ ...fd });
   }
@@ -871,7 +815,7 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
         type="file"
         onChange={handleFileChange}
         title=""
-        multiple={!!props.isMultiple}
+        multiple={props.isMultiple}
         accept={acceptFileFormat}
       />
       <div className="wizard-upload__inner">
@@ -918,13 +862,9 @@ export const WizardUploadImageFieldInput = (props: IWizardInputProps) => {
 };
 
 export const WizardRating = (props: IWizardInputProps): ReactElement => {
-  const formData = useStoreState(
-    (state) => state.components.completeTaskWizard.formData
-  );
+  const formData = useStoreState(state => state.components.completeTaskWizard.formData);
   const [rating, setRating] = useState<number>(formData[props.name] ?? null);
-  const setFormData = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setFormData
-  );
+  const setFormData = useStoreActions(actions => actions.components.completeTaskWizard.setFormData);
 
   useEffect(() => {
     setFormData({ ...formData, ...{ [props.name]: rating } });
@@ -932,13 +872,11 @@ export const WizardRating = (props: IWizardInputProps): ReactElement => {
 
   return (
     <div className="wizard-rating">
-      {[1, 2, 3, 4, 5].map((i) => {
+      {[1, 2, 3, 4, 5].map(i => {
         return (
           <div
             key={`RatingStar-${i}`}
-            className={`wizard-rating__star ${
-              i <= rating ? "wizard-rating__star_active" : ""
-            }`}
+            className={`wizard-rating__star ${i <= rating ? "wizard-rating__star_active" : ""}`}
             onClick={() => setRating(i)}
           />
         );

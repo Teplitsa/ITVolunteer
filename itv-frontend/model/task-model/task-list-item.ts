@@ -16,6 +16,4 @@ const taskState: ITaskListItemState = {
   files: [],
 };
 
-export const queriedFields = Object.keys(taskState) as Array<
-  keyof ITaskListItemState
->;
+export const queriedFields = Object.keys(taskState) as Array<keyof ITaskListItemState>;

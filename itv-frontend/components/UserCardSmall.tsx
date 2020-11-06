@@ -18,7 +18,7 @@ const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
         fetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -29,9 +29,7 @@ const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
   return (
     <div className="itv-user-small-view">
       <span
-        className={`avatar-wrapper ${
-          isAvatarImageValid ? "" : "avatar-wrapper_default-image"
-        }`}
+        className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_default-image"}`}
         style={{
           backgroundImage: isAvatarImageValid
             ? `url(${avatarImage})`

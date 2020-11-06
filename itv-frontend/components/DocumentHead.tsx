@@ -37,59 +37,30 @@ const DocumentHead: React.FunctionComponent = (): ReactElement => {
       {focuskw && <meta name="keywords" content={focuskw} />}
       {metaDesc && <meta name="description" content={metaDesc} />}
       {(metaRobotsNoindex || metaRobotsNofollow) && (
-        <meta
-          name="robots"
-          content={[metaRobotsNoindex, metaRobotsNofollow].join(",")}
-        />
+        <meta name="robots" content={[metaRobotsNoindex, metaRobotsNofollow].join(",")} />
       )}
       {opengraphTitle && <meta property="og:type" content="article" />}
-      {opengraphAuthor && (
-        <meta property="article:author" content={opengraphAuthor} />
-      )}
+      {opengraphAuthor && <meta property="article:author" content={opengraphAuthor} />}
       {opengraphPublishedTime && (
-        <meta
-          property="article:published_time"
-          content={opengraphPublishedTime}
-        />
+        <meta property="article:published_time" content={opengraphPublishedTime} />
       )}
       {opengraphModifiedTime && (
-        <meta
-          property="article:published_time"
-          content={opengraphModifiedTime}
-        />
+        <meta property="article:published_time" content={opengraphModifiedTime} />
       )}
 
       {opengraphTitle && <meta property="og:title" content={opengraphTitle} />}
       {opengraphUrl && <meta property="og:url" content={opengraphUrl} />}
-      {opengraphSiteName && (
-        <meta property="og:site_name" content={opengraphSiteName} />
-      )}
-      {opengraphDescription && (
-        <meta property="og:description" content={opengraphDescription} />
-      )}
-      {opengraphImage?.sourceUrl && (
-        <meta property="og:image" content={opengraphImage.sourceUrl} />
-      )}
-      {opengraphImage?.altText && (
-        <meta property="og:image:alt" content={opengraphImage.altText} />
-      )}
-      {twitterTitle && (
-        <meta name="twitter:card" content="summary_large_image" />
-      )}
+      {opengraphSiteName && <meta property="og:site_name" content={opengraphSiteName} />}
+      {opengraphDescription && <meta property="og:description" content={opengraphDescription} />}
+      {opengraphImage?.sourceUrl && <meta property="og:image" content={opengraphImage.sourceUrl} />}
+      {opengraphImage?.altText && <meta property="og:image:alt" content={opengraphImage.altText} />}
+      {twitterTitle && <meta name="twitter:card" content="summary_large_image" />}
       {twitterTitle && <meta name="twitter:title" content={twitterTitle} />}
-      {twitterDescription && (
-        <meta name="twitter:description" content={twitterDescription} />
-      )}
-      {twitterImage?.sourceUrl && (
-        <meta name="twitter:image" content={twitterImage.sourceUrl} />
-      )}
-      {twitterImage?.altText && (
-        <meta name="twitter:image:alt" content={twitterImage.altText} />
-      )}
+      {twitterDescription && <meta name="twitter:description" content={twitterDescription} />}
+      {twitterImage?.sourceUrl && <meta name="twitter:image" content={twitterImage.sourceUrl} />}
+      {twitterImage?.altText && <meta name="twitter:image:alt" content={twitterImage.altText} />}
       {canonical && <link rel="canonical" href={canonical} />}
-      {Favicon && (
-        <link rel="icon" href={Favicon} sizes="any" type="image/svg+xml" />
-      )}
+      {Favicon && <link rel="icon" href={Favicon} sizes="any" type="image/svg+xml" />}
     </Head>
   );
 };

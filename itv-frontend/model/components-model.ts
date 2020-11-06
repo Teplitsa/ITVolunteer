@@ -1,7 +1,6 @@
 import { IComponentsModel, IComponentsState } from "./model.typing";
 import honorsPageModel from "./components/honors-model";
 import pasekaPageModel from "./components/paseka-model";
-import pageModel from "./page-model";
 import textPageModel from "./text-page-model";
 import taskModel from "./task-model/task-model";
 import taskListModel from "./task-model/task-list-model";
@@ -41,9 +40,7 @@ const componentsState: IComponentsState = {
   homePage: homePageModel,
 };
 
-export const componentList = Object.keys(componentsState) as Array<
-  keyof IComponentsState
->;
+export const componentList = Object.keys(componentsState) as Array<keyof IComponentsState>;
 
 const componentModel: IComponentsModel = {
   ...componentsState,

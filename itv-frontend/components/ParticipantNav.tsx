@@ -16,15 +16,11 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
   // notif
   const [isShowNotif, setIsShowNotif] = useState(false);
-  const user = useStoreState((store) => store.session.user);
-  const notifList = useStoreState(
-    (store) => store.components.userNotif.notifList
-  );
-  const loadNotifList = useStoreActions(
-    (actions) => actions.components.userNotif.loadNotifList
-  );
+  const user = useStoreState(store => store.session.user);
+  const notifList = useStoreState(store => store.components.userNotif.notifList);
+  const loadNotifList = useStoreActions(actions => actions.components.userNotif.loadNotifList);
   const loadFreshNotifList = useStoreActions(
-    (actions) => actions.components.userNotif.loadFreshNotifList
+    actions => actions.components.userNotif.loadFreshNotifList
   );
 
   useEffect(() => {
@@ -42,7 +38,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   }
 
   useEffect(() => {
-    let id = setInterval(loadFreshNotifList, 1000 * 20);
+    const id = setInterval(loadFreshNotifList, 1000 * 20);
     return () => {
       clearInterval(id);
     };
@@ -57,7 +53,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -109,9 +105,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
             </li>
             <li>
               <Link href="/members/[username]" as={`/members/${user.username}`}>
-                <a onClick={() => regEvent("m_profile", router)}>
-                  Личный кабинет
-                </a>
+                <a onClick={() => regEvent("m_profile", router)}>Личный кабинет</a>
               </Link>
             </li>
             <li>

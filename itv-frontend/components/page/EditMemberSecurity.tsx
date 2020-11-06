@@ -1,21 +1,20 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
-import * as _ from "lodash";
 import { regEvent } from "../../utilities/ga-events";
 
 const EditMemberSecurity: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
-}> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
+}> = ({ addSnackbar, clearSnackbar }): ReactElement => {
   const router = useRouter();
   const formRef = useRef(null);
-  const { username, email, logoutUrl } = useStoreState((state) => state.session.user);
+  const { username, email } = useStoreState(state => state.session.user);
   const updateUserLoginDataRequest = useStoreActions(
-    (actions) => actions.components.memberSecurity.updateUserLoginDataRequest
+    actions => actions.components.memberSecurity.updateUserLoginDataRequest
   );
 
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
@@ -23,7 +22,7 @@ const EditMemberSecurity: React.FunctionComponent<{
   const [regFormData, setRegFormData] = useState(null);
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   useEffect(() => {
@@ -38,11 +37,10 @@ const EditMemberSecurity: React.FunctionComponent<{
   }, [username, email]);
 
   function successCallback(message, isMustRelogin) {
-    if(isMustRelogin) {
-        document.location.href = "/login/";
-        setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
-    }
-    else {
+    if (isMustRelogin) {
+      document.location.href = "/login/";
+      setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
+    } else {
       addSnackbar({
         context: "success",
         text: message,
@@ -58,9 +56,9 @@ const EditMemberSecurity: React.FunctionComponent<{
     });
     setIsLoading(false);
 
-    if(isMustRelogin) {
-        document.location.href = "/login/";
-        setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
+    if (isMustRelogin) {
+      document.location.href = "/login/";
+      setRegistrationSuccessText("Данные для входа на сайт обновлены. Идет перенаправление...");
     }
   }
 
@@ -102,7 +100,7 @@ const EditMemberSecurity: React.FunctionComponent<{
       return;
     }
 
-    var formData = new FormData(formRef.current);
+    const formData = new FormData(formRef.current);
     setRegFormData(formData);
 
     if (validateFormData(formData)) {
@@ -126,9 +124,7 @@ const EditMemberSecurity: React.FunctionComponent<{
             </div>
           )}
           {!!registrationSuccessText && !isLoading && (
-            <div className="auth-page__success-text">
-              {registrationSuccessText}
-            </div>
+            <div className="auth-page__success-text">{registrationSuccessText}</div>
           )}
           {!registrationSuccessText && !isLoading && (
             <form
@@ -146,9 +142,7 @@ const EditMemberSecurity: React.FunctionComponent<{
                   name="login"
                   maxLength={50}
                   placeholder=""
-                  defaultValue={
-                    regFormData ? regFormData.get("login") : ""
-                  }
+                  defaultValue={regFormData ? regFormData.get("login") : ""}
                 />
               </div>
               <div className="auth-page-form__group">
@@ -178,14 +172,12 @@ const EditMemberSecurity: React.FunctionComponent<{
                   defaultValue={regFormData ? regFormData.get("pass") : ""}
                 />
                 <div className="auth-page-form__control-subtext">
-                  Если вы хотите изменить пароль, укажите здесь новое значение.
-                  В противном случае оставьте пустым.
+                  Если вы хотите изменить пароль, укажите здесь новое значение. В противном случае
+                  оставьте пустым.
                 </div>
               </div>
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Повторить пароль
-                </label>
+                <label className="auth-page-form__label">Повторить пароль</label>
                 <input
                   className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="password"
@@ -193,9 +185,7 @@ const EditMemberSecurity: React.FunctionComponent<{
                   maxLength={50}
                   placeholder=""
                   autoComplete="new-password"
-                  defaultValue={
-                    regFormData ? regFormData.get("passRepeat") : ""
-                  }
+                  defaultValue={regFormData ? regFormData.get("passRepeat") : ""}
                 />
               </div>
               <div className="auth-page-form__group">

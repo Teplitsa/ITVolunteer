@@ -1,8 +1,5 @@
 import { ReactElement } from "react";
-import {
-  useStoreState,
-  useStoreActions,
-} from "../../../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks";
 import UserCardSmall from "../../../UserCardSmall";
 import { ITaskTimelineItemDoer } from "../../../../model/model.typing";
 
@@ -12,14 +9,11 @@ const TaskTimelineCloseDecisionType: React.FunctionComponent<{
   message: string;
   doer: ITaskTimelineItemDoer;
 }> = ({ id, status, message, doer }): ReactElement => {
-  const isTaskAuthorLoggedIn = useStoreState(
-    (state) => state.session.isTaskAuthorLoggedIn
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
+  const { acceptSuggestedDateRequest, rejectSuggestedDateRequest } = useStoreActions(
+    state => state.components.task
   );
-  const {
-    acceptSuggestedDateRequest,
-    rejectSuggestedDateRequest,
-  } = useStoreActions((state) => state.components.task);
-  const author = useStoreState((state) => state.components.task.author);
+  // const author = useStoreState((state) => state.components.task.author);
   const acceptSuggestedDate = acceptSuggestedDateRequest.bind(null, {
     timelineItemId: id,
   });
@@ -37,7 +31,7 @@ const TaskTimelineCloseDecisionType: React.FunctionComponent<{
           <a
             href="#"
             className="accept"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               acceptSuggestedDate();
             }}
@@ -47,7 +41,7 @@ const TaskTimelineCloseDecisionType: React.FunctionComponent<{
           <a
             href="#"
             className="reject danger"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               rejectSuggestedDate();
             }}

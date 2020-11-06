@@ -10,11 +10,9 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
     organizationName,
     organizationDescription,
     organizationSite,
-  } = useStoreState((state) => state.components.memberAccount);
+  } = useStoreState(state => state.components.memberAccount);
 
-  const [isOrganizationLogoValid, setOrganizationLogoValid] = useState<boolean>(
-    false
-  );
+  const [isOrganizationLogoValid, setOrganizationLogoValid] = useState<boolean>(false);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -24,7 +22,7 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
         fetch(organizationLogo, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setOrganizationLogoValid(response.ok));
+        }).then(response => setOrganizationLogoValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -38,15 +36,9 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
         <div className="member-card__organization-logo">
           <img
             className={`member-card__organization-logo-image ${
-              isOrganizationLogoValid
-                ? ""
-                : "member-card__organization-logo-image_default"
+              isOrganizationLogoValid ? "" : "member-card__organization-logo-image_default"
             }`}
-            src={
-              isOrganizationLogoValid
-                ? organizationLogo
-                : OrganizationLogoDefault
-            }
+            src={isOrganizationLogoValid ? organizationLogo : OrganizationLogoDefault}
             alt={organizationName}
           />
         </div>
@@ -57,7 +49,7 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
           />
           {isLinkValid(organizationSite) && (
             <div className="member-card__organization-site">
-              <a href={organizationSite} target="_blank">
+              <a href={organizationSite} target="_blank" rel="noreferrer">
                 {new URL(organizationSite).hostname}
               </a>
             </div>

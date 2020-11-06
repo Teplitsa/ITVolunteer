@@ -2,9 +2,7 @@ import { ReactElement, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
-import GlobalScripts, {
-  ISnackbarMessage,
-} from "../../../context/global-scripts";
+import GlobalScripts, { ISnackbarMessage } from "../../../context/global-scripts";
 import HeaderSearch from "./HeaderSearch";
 import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
@@ -12,14 +10,14 @@ import Logo from "../../../assets/img/pic-logo-itv.svg";
 import iconMobileMenu from "../../../assets/img/icon-mobile-menu.png";
 import Cookies from "js-cookie";
 import * as C from "const";
-import { regEvent } from "../../../utilities/ga-events"
+import { regEvent } from "../../../utilities/ga-events";
 
 const { SnackbarContext } = GlobalScripts;
 
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const isLoggedIn = useStoreState((store) => store.session.isLoggedIn);
-  const login = useStoreActions((actions) => actions.session.login);
+  const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const login = useStoreActions(actions => actions.session.login);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
@@ -37,12 +35,12 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
     login({ username: "", password: "" });
   }, []);
 
-  function handleOldDesignClick(e) {
+  function handleOldDesignClick() {
     if (!process.browser) {
       return;
     }
 
-    regEvent('ge_switch_desing_to_old', router);
+    regEvent("ge_switch_desing_to_old", router);
 
     Cookies.set(C.ITV_COOKIE.OLD_DESIGN.name, C.ITV_COOKIE.OLD_DESIGN.value, {
       expires: C.ITV_COOKIE.OLD_DESIGN.period,
@@ -61,7 +59,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
         <a
           href="#"
           className="open-mobile-menu"
-          onClick={(e) => {
+          onClick={e => {
             e.preventDefault();
             setMobileOpen(!mobileOpen);
           }}
@@ -81,12 +79,10 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
             <li>
               <Link href="/tasks">
                 <a
-                  className={
-                    router.pathname === "/tasks" ? "main-menu__link_active" : ""
-                  }
-                  onClick={(e) => {
-                    regEvent('m_tf_list', router);
-                  }}                  
+                  className={router.pathname === "/tasks" ? "main-menu__link_active" : ""}
+                  onClick={() => {
+                    regEvent("m_tf_list", router);
+                  }}
                 >
                   Задачи
                 </a>
@@ -95,14 +91,10 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
             <li>
               <Link href="/members">
                 <a
-                  className={
-                    router.pathname === "/members"
-                      ? "main-menu__link_active"
-                      : ""
-                  }
-                  onClick={(e) => {
-                    regEvent('m_mb_list', router);
-                  }}                  
+                  className={router.pathname === "/members" ? "main-menu__link_active" : ""}
+                  onClick={() => {
+                    regEvent("m_mb_list", router);
+                  }}
                 >
                   Волонтеры
                 </a>
@@ -131,10 +123,12 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
                 <li>
                   <Link href="/about">
                     <a
-                      onClick={(e) => {
-                        regEvent('m_about', router);
-                      }}                  
-                    >О проекте</a>
+                      onClick={() => {
+                        regEvent("m_about", router);
+                      }}
+                    >
+                      О проекте
+                    </a>
                   </Link>
                 </li>
                 <li>

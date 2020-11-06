@@ -2,10 +2,10 @@ import { IAppModel, IAppState, IAppActions } from "./model.typing";
 import { action } from "easy-peasy";
 
 const appState: IAppState = {
-    componentsLoaded: {},
-    menus: {
-      social: []
-    }
+  componentsLoaded: {},
+  menus: {
+    social: []
+  }
 };
 
 export const graphqlQuery = {

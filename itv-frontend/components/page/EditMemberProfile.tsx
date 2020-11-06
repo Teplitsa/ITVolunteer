@@ -1,30 +1,29 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 import UploadFileInput from "../UploadFileInput";
 import { regEvent } from "../../utilities/ga-events";
-import * as _ from "lodash";
 
 const EditMemberProfile: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
-}> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
+}> = ({ addSnackbar, clearSnackbar }): ReactElement => {
   const router = useRouter();
   const formRef = useRef(null);
-  const user = useStoreState((state) => state.session.user);
-  const login = useStoreActions((actions) => actions.session.login);
+  const user = useStoreState(state => state.session.user);
+  const login = useStoreActions(actions => actions.session.login);
   const updateProfileRequest = useStoreActions(
-    (actions) => actions.components.memberProfile.updateProfileRequest
+    actions => actions.components.memberProfile.updateProfileRequest
   );
-  const [registrationSuccessText, setRegistrationSuccessText] = useState("");
+  const [registrationSuccessText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [stateFormData, setStateFormData] = useState(null);
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   useEffect(() => {
@@ -52,7 +51,7 @@ const EditMemberProfile: React.FunctionComponent<{
       context: "success",
       text: message,
     });
-    await login({username: "", password: ""});
+    await login({ username: "", password: "" });
     setIsLoading(false);
   }
 
@@ -94,7 +93,7 @@ const EditMemberProfile: React.FunctionComponent<{
       return;
     }
 
-    var formData = new FormData(formRef.current);
+    const formData = new FormData(formRef.current);
     setStateFormData(formData);
 
     if (validateFormData(formData)) {
@@ -118,9 +117,7 @@ const EditMemberProfile: React.FunctionComponent<{
             </div>
           )}
           {!!registrationSuccessText && !isLoading && (
-            <div className="auth-page__success-text">
-              {registrationSuccessText}
-            </div>
+            <div className="auth-page__success-text">{registrationSuccessText}</div>
           )}
           {!registrationSuccessText && !isLoading && (
             <form
@@ -138,9 +135,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="first_name"
                   maxLength={50}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("first_name") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("first_name") : ""}
                 />
               </div>
               <div className="auth-page-form__group">
@@ -151,86 +146,64 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="last_name"
                   maxLength={50}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("last_name") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("last_name") : ""}
                 />
               </div>
 
-              {user.id &&
+              {user.id && (
                 <div className="auth-page-form__group">
-                  <label className="auth-page-form__label">
-                    Аватарка
-                  </label>
-                  <UploadFileInput 
-                    name="user_avatar" 
-                    isMultiple={false} 
+                  <label className="auth-page-form__label">Аватарка</label>
+                  <UploadFileInput
+                    name="user_avatar"
+                    isMultiple={false}
                     fileData={user.itvAvatarFile}
                   />
                 </div>
-              }
+              )}
 
-              {user.id &&
+              {user.id && (
                 <div className="auth-page-form__group">
-                  <label className="auth-page-form__label">
-                    Обложка профиля
-                  </label>                
-                  <UploadFileInput 
-                    name="user_cover" 
-                    isMultiple={false} 
-                    fileData={user.coverFile}
-                  />
+                  <label className="auth-page-form__label">Обложка профиля</label>
+                  <UploadFileInput name="user_cover" isMultiple={false} fileData={user.coverFile} />
                 </div>
-              }
+              )}
 
               <div className="auth-page-form__splitter">
                 <div />
               </div>
 
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Название организации
-                </label>
+                <label className="auth-page-form__label">Название организации</label>
                 <input
                   className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="user_workplace"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("user_workplace") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("user_workplace") : ""}
                 />
               </div>
 
-              {user.id &&
+              {user.id && (
                 <div className="auth-page-form__group">
-                  <label className="auth-page-form__label">
-                    Логотип
-                  </label>
-                  <UploadFileInput 
-                    name="user_company_logo" 
-                    isMultiple={false} 
+                  <label className="auth-page-form__label">Логотип</label>
+                  <UploadFileInput
+                    name="user_company_logo"
+                    isMultiple={false}
                     fileData={user.organizationLogoFile}
                   />
                 </div>
-              }
+              )}
 
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Описание организации
-                </label>
+                <label className="auth-page-form__label">Описание организации</label>
                 <textarea
                   className="auth-page-form__control-input"
                   name="user_workplace_desc"
                   maxLength={500}
                   rows={6}
                   placeholder=""
-                  defaultValue={
-                    stateFormData
-                      ? stateFormData.get("user_workplace_desc")
-                      : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("user_workplace_desc") : ""}
                 ></textarea>
               </div>
 
@@ -242,9 +215,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="user_website"
                   maxLength={500}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("user_website") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("user_website") : ""}
                 />
               </div>
 
@@ -256,9 +227,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="phone"
                   maxLength={32}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("phone") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("phone") : ""}
                 />
               </div>
 
@@ -274,25 +243,19 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="user_skype"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("user_skype") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("user_skype") : ""}
                 />
               </div>
 
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Twitter (имя пользователя без @)
-                </label>
+                <label className="auth-page-form__label">Twitter (имя пользователя без @)</label>
                 <input
                   className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="twitter"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("twitter") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("twitter") : ""}
                 />
               </div>
 
@@ -306,32 +269,24 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="telegram"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("telegram") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("telegram") : ""}
                 />
               </div>
 
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Профиль Facebook (ссылка)
-                </label>
+                <label className="auth-page-form__label">Профиль Facebook (ссылка)</label>
                 <input
                   className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
                   name="facebook"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("facebook") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("facebook") : ""}
                 />
               </div>
 
               <div className="auth-page-form__group">
-                <label className="auth-page-form__label">
-                  Профиль ВКонтакте (ссылка)
-                </label>
+                <label className="auth-page-form__label">Профиль ВКонтакте (ссылка)</label>
                 <input
                   className="form__control_input form__control_full-width auth-page-form__control-input"
                   type="text"
@@ -352,9 +307,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   name="instagram"
                   maxLength={250}
                   placeholder=""
-                  defaultValue={
-                    stateFormData ? stateFormData.get("instagram") : ""
-                  }
+                  defaultValue={stateFormData ? stateFormData.get("instagram") : ""}
                 />
               </div>
 

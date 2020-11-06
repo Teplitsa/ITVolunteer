@@ -8,10 +8,7 @@ import GlobalScripts, {
 
 const { ModalContext, SnackbarContext } = GlobalScripts;
 
-const modalReducer = (
-  state: IModal,
-  action: { type: string; payload: IModal }
-): IModal => {
+const modalReducer = (state: IModal, action: { type: string; payload: IModal }): IModal => {
   switch (action.type) {
     case "open":
       return { ...state, ...{ isShown: true } };
@@ -37,9 +34,9 @@ const snackbarReducer = (
         ...state,
         ...{
           messages: state.messages.concat(
-            action.payload.messages.filter((message) => {
+            action.payload.messages.filter(message => {
               return !state.messages.find(
-                (storedMessage) =>
+                storedMessage =>
                   storedMessage.text.trim().toLocaleLowerCase() ===
                   message.text.trim().toLocaleLowerCase()
               );
@@ -51,9 +48,7 @@ const snackbarReducer = (
       return {
         ...state,
         ...{
-          messages: state.messages.filter(
-            (message) => !action.payload.messages.includes(message)
-          ),
+          messages: state.messages.filter(message => !action.payload.messages.includes(message)),
         },
       };
     case "clear":
@@ -64,23 +59,13 @@ const snackbarReducer = (
         },
       };
     default:
-      throw new Error(
-        `Неизвестное действие '${action.type}' модуля  Snackbar.`
-      );
+      throw new Error(`Неизвестное действие '${action.type}' модуля  Snackbar.`);
   }
 };
 
-const withGlobalScripts: React.FunctionComponent = ({
-  children,
-}): ReactElement => {
-  const [modalState, modalDispatch] = useReducer(
-    modalReducer,
-    modalInitialState
-  );
-  const [snackbarState, snackbarDispatch] = useReducer(
-    snackbarReducer,
-    snackbarInitialState
-  );
+const withGlobalScripts: React.FunctionComponent = ({ children }): ReactElement => {
+  const [modalState, modalDispatch] = useReducer(modalReducer, modalInitialState);
+  const [snackbarState, snackbarDispatch] = useReducer(snackbarReducer, snackbarInitialState);
 
   return (
     <>

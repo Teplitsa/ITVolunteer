@@ -5,27 +5,25 @@ import UserCardSmall from "./UserCardSmall";
 import TaskTags from "../components/task/task-header/TaskTags";
 import { stripTags, getTheIntervalToNow } from "../utilities/utilities";
 
-const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
-  task
-): ReactElement => {
+const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement => {
   const doerCandidatesCountModulo =
     task.doerCandidatesCount < 10
       ? task.doerCandidatesCount
       : Number([...Array.from(String(task.doerCandidatesCount))].pop());
 
   console.log("task.tags:", task.tags);
-  
+
   return (
     <div className="task-card">
       <div className="task-card__header">
         <UserCardSmall {...task.author} />
-        {!!task.dateGmt &&
-        <div className="task-card__date">
-          {`Открыто ${getTheIntervalToNow({
+        {!!task.dateGmt && (
+          <div className="task-card__date">
+            {`Открыто ${getTheIntervalToNow({
               fromDateString: task.dateGmt,
-          })}`}
-        </div>
-        }
+            })}`}
+          </div>
+        )}
         <div className="task-card__сandidate-сount">
           {doerCandidatesCountModulo}{" "}
           {doerCandidatesCountModulo === 1
@@ -40,14 +38,14 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (
           <a>{task.title}</a>
         </Link>
       </div>
-      {task.content && 
-      <div className="task-card__excerpt">
-        {stripTags(task.content).trim().substr(0, 109)}…{" "}
-        <Link href={`/tasks/${task.slug}`}>
-          <a>Подробнее</a>
-        </Link>
-      </div>
-      }
+      {task.content && (
+        <div className="task-card__excerpt">
+          {stripTags(task.content).trim().substr(0, 109)}…{" "}
+          <Link href={`/tasks/${task.slug}`}>
+            <a>Подробнее</a>
+          </Link>
+        </div>
+      )}
       <div className="task-card__footer">
         <TaskTags
           {...{

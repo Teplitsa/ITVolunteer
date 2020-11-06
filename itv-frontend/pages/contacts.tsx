@@ -18,21 +18,19 @@ const ContactsPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/contacts";
+  const url = "/contacts";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { uri: "contacts" },
     entrypointType: "page",
-    componentModel: async (request) => {
+    componentModel: async request => {
       const pageModel = await import("../model/page-model");
       const pageQuery = pageModel.graphqlQuery.getPageBySlug;
-      const { pageBy: component } = await request(
-        process.env.GraphQLServer,
-        pageQuery,
-        { uri: url }
-      );
+      const { pageBy: component } = await request(process.env.GraphQLServer, pageQuery, {
+        uri: url,
+      });
 
       return ["page", component];
     },

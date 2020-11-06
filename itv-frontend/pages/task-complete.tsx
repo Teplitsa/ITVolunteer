@@ -11,9 +11,9 @@ import CompleteTaskThanks from "../components/task-actions/complete-task/Complet
 import Wizard from "../components/Wizard";
 
 const CreateTask: React.FunctionComponent = (): ReactElement => {
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [, /* isLoading */ setLoading] = useState<boolean>(true);
   const { step, formData, user, partner, task, isNeedReset } = useStoreState(
-    (state) => state.components.completeTaskWizard
+    state => state.components.completeTaskWizard
   );
   const {
     setStep,
@@ -26,7 +26,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     newReviewRequest,
     resetWizard,
     setNeedReset,
-  } = useStoreActions((actions) => actions.components.completeTaskWizard);
+  } = useStoreActions(actions => actions.components.completeTaskWizard);
 
   useEffect(() => {
     loadWizardData();
@@ -102,14 +102,14 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/task-complete";
+  // const url = "/task-complete";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { uri: "task-complete" },
     entrypointType: "page",
-    componentModel: (request) => {
+    componentModel: () => {
       return ["task-complete", null];
     },
   });

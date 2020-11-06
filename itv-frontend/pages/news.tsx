@@ -1,23 +1,23 @@
 import { ReactElement, memo, useState, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import NewsList from "../components/news/NewsList";
-import { INewsListModel } from "../model/model.typing";
-import * as utils from "../utilities/utilities";
 import { regEvent } from "../utilities/ga-events";
 
 const NewsListPage: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const newsList = useStoreState((state) => state.components.newsList);
-  const [isLoading, setIsLoading] = useState(false)
-  const loadMoreNewsRequest = useStoreActions((actions) => actions.components.newsList.loadMoreNewsRequest)
+  const newsList = useStoreState(state => state.components.newsList);
+  const [isLoading, setIsLoading] = useState(false);
+  const loadMoreNewsRequest = useStoreActions(
+    actions => actions.components.newsList.loadMoreNewsRequest
+  );
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
-  }, [router.pathname]);  
+    regEvent("ge_show_new_desing", router);
+  }, [router.pathname]);
 
   async function handleLoadMoreNews(e) {
     e.preventDefault();
@@ -33,20 +33,20 @@ const NewsListPage: React.FunctionComponent = (): ReactElement => {
         <main id="site-main" className="site-main news-list-page" role="main">
           <article className="article-page">
             <div className="article-page__content">
-              <h1
-                className="article-page__title"
-              >Новости</h1>
+              <h1 className="article-page__title">Новости</h1>
               <NewsList {...newsList} />
               {isLoading && (
                 <div className="news-loading">
                   <div className="spinner-border" role="status"></div>
-                </div>)     
-              }
-              {!isLoading && newsList.hasNextPage && 
-              <div className="load-more-news">
-                <a href="#" onClick={handleLoadMoreNews}>Загрузить ещё</a>
-              </div>
-              }
+                </div>
+              )}
+              {!isLoading && newsList.hasNextPage && (
+                <div className="load-more-news">
+                  <a href="#" onClick={handleLoadMoreNews}>
+                    Загрузить ещё
+                  </a>
+                </div>
+              )}
             </div>
           </article>
         </main>
@@ -86,7 +86,15 @@ export const getServerSideProps: GetServerSideProps = async () => {
   });
 
   return {
-    props: { ...model, ...{entrypoint: {...model.entrypoint, ...{archive: {...model.entrypoint.archive, ...entrypointModel}}}} },
+    props: {
+      ...model,
+      ...{
+        entrypoint: {
+          ...model.entrypoint,
+          ...{ archive: { ...model.entrypoint.archive, ...entrypointModel } },
+        },
+      },
+    },
   };
 };
 

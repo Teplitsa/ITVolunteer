@@ -8,10 +8,7 @@ const MemberOrganizationDescription: React.FunctionComponent<{
 
   useEffect(() => {
     if (excerptRef.current && excerptRef.current.innerHTML.length > 260) {
-      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
-        0,
-        260
-      )}…`;
+      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(0, 260)}…`;
     } else {
       setFullDescription(true);
     }
@@ -37,7 +34,7 @@ const MemberOrganizationDescription: React.FunctionComponent<{
             {" "}
             <a
               href="#"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 setFullDescription(true);
               }}

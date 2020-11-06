@@ -53,7 +53,7 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
   return (
     <div className="meta-info">
       {isApproved && <img src={iconApproved} className="itv-approved" />}
-      {withMetaIconCalendar.map((title, i) => {
+      {withMetaIconCalendar.map(title => {
         return (
           <TaskMetaItem
             key={utils.generateUniqueKey({
@@ -72,11 +72,7 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
           <a href="#" className="share-task" onClick={toggleShareButtons}>
             <span>Поделиться</span>
           </a>
-          <span
-            className={`react-share ${
-              isShowShareButtons ? "react-share_shown" : ""
-            }`}
-          >
+          <span className={`react-share ${isShowShareButtons ? "react-share_shown" : ""}`}>
             <FacebookShareButton url={shareUrl}>
               <span className="react-share__icon react-share__icon_facebook" />
             </FacebookShareButton>

@@ -9,14 +9,14 @@ import MemberAvatarDefault from "../../assets/img/member-default.svg";
 
 const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
   const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
-  const { id: taskId, doers } = useStoreState((state) => state.components.task);
+  const { id: taskId, doers } = useStoreState(state => state.components.task);
   const {
     manageDoerRequest: manageDoer,
     updateApprovedDoer,
     updateDoers,
     taskRequest,
     timelineRequest,
-  } = useStoreActions((actions) => actions.components.task);
+  } = useStoreActions(actions => actions.components.task);
   const {
     fullName,
     profileURL: toProfile,
@@ -54,7 +54,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
         fetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -66,9 +66,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     <div className="user-card">
       <div className="user-card-inner">
         <div
-          className={`avatar-wrapper ${
-            isAvatarImageValid ? "" : "avatar-wrapper_medium-image"
-          }`}
+          className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_medium-image"}`}
           style={{
             backgroundImage: isAvatarImageValid
               ? `url(${avatarImage})`
@@ -81,7 +79,9 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
           <a className="name" href={toProfile}>
             {fullName}
           </a>
-          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(doerReviewsCount)}`}</span>
+          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(
+            doerReviewsCount
+          )}`}</span>
           <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
         </div>
       </div>

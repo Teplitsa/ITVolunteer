@@ -1,43 +1,28 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import Router from "next/router";
 // import TaskTimelineReviewForm from "./TaskTimelineReviewForm";
-import {
-  useStoreState,
-  useStoreActions,
-} from "../../../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks";
 
 const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
-  const approvedDoer = useStoreState(
-    (state) => state.components.task?.approvedDoer
-  );
-  const reviewForDoer = useStoreState(
-    (state) => state.components.task?.reviews?.reviewForDoer
-  );
-  const reviewForAuthor = useStoreState(
-    (state) => state.components.task?.reviews?.reviewForAuthor
-  );
-  const { databaseId, title, author } = useStoreState((state) => state.components.task);
-  const { user, isTaskAuthorLoggedIn } = useStoreState(
-    (state) => state.session
-  );
+  const approvedDoer = useStoreState(state => state.components.task?.approvedDoer);
+  const reviewForDoer = useStoreState(state => state.components.task?.reviews?.reviewForDoer);
+  const reviewForAuthor = useStoreState(state => state.components.task?.reviews?.reviewForAuthor);
+  const { databaseId, title, author } = useStoreState(state => state.components.task);
+  const { user, isTaskAuthorLoggedIn } = useStoreState(state => state.session);
   const setCompleteTaskWizardState = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setInitState
+    actions => actions.components.completeTaskWizard.setInitState
   );
   // const [isReviewFormShown, toggleReviewForm] = useState<boolean>(false);
 
   const writeReview = () => {
     setCompleteTaskWizardState({
       user: {
-        databaseId: isTaskAuthorLoggedIn
-          ? user.databaseId
-          : approvedDoer.databaseId,
+        databaseId: isTaskAuthorLoggedIn ? user.databaseId : approvedDoer.databaseId,
         name: isTaskAuthorLoggedIn ? user.fullName : approvedDoer.fullName,
         isAuthor: isTaskAuthorLoggedIn,
       },
       partner: {
-        databaseId: isTaskAuthorLoggedIn
-          ? approvedDoer.databaseId
-          : author.databaseId,
+        databaseId: isTaskAuthorLoggedIn ? approvedDoer.databaseId : author.databaseId,
         name: isTaskAuthorLoggedIn ? approvedDoer.fullName : user.fullName,
       },
       task: { databaseId, title },
@@ -63,7 +48,7 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
             className={`action add-review${
               (!reviewForDoer && !reviewForAuthor && " first-review") || ""
             }`}
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               writeReview();
               // toggleReviewForm(!isReviewFormShown);

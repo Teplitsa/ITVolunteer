@@ -22,9 +22,10 @@ const withGutenbergBlock = ({
   elementName: CoreBlockTypes;
   props: any;
 }): ReactElement => {
-  return createElement<
-    ICoreHeadingBlock | ICoreParagraphBlock | ICoreMediaTextBlock
-  >(blocks[elementName] || CoreParagraphBlock, props);
+  return createElement<ICoreHeadingBlock | ICoreParagraphBlock | ICoreMediaTextBlock>(
+    blocks[elementName] || CoreParagraphBlock,
+    props
+  );
 };
 
 export default withGutenbergBlock;

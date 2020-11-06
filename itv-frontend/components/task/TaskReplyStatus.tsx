@@ -1,17 +1,12 @@
 import { ReactElement } from "react";
-import Link from "next/link";
-import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import { useStoreState } from "../../model/helpers/hooks";
 
 const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
-  const { isLoggedIn, isTaskAuthorLoggedIn } = useStoreState(
-    (state) => state.session
-  );
-  const { approvedDoer, doers } = useStoreState(
-    (state) => state.components.task
-  );
-  const addDoer = useStoreActions(
-    (actions) => actions.components.task?.addDoerRequest
-  );
+  const { isLoggedIn, isTaskAuthorLoggedIn } = useStoreState(state => state.session);
+  const { approvedDoer, doers } = useStoreState(state => state.components.task);
+  // const addDoer = useStoreActions(
+  //   (actions) => actions.components.task?.addDoerRequest
+  // );
 
   return (
     !approvedDoer && (
@@ -28,7 +23,9 @@ const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
           <div className="sidebar-users-block no-responses">
             <p>
               Мало просмотров и откликов на задачу? Возможно,{" "}
-              <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">наши советы помогут вам</a>
+              <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">
+                наши советы помогут вам
+              </a>
             </p>
           </div>
         )}

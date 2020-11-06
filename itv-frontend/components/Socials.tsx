@@ -15,7 +15,7 @@ const Socials: React.FunctionComponent = (): ReactElement => {
         {links.map(
           ({ title, url }, i): ReactElement => {
             return (
-              <a key={i} href={url} target="_blank">
+              <a key={i} href={url} target="_blank" rel="noreferrer">
                 {title}
               </a>
             );

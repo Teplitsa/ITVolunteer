@@ -62,7 +62,7 @@ const createTaskWizardActions: ICreateTaskWizardActions = {
   setNgoTagList: action((state, payload) => {
     state.ngoTagList = payload;
   }),
-  resetWizard: action((state, payload) => {
+  resetWizard: action(state => {
     state.step = 0;
     state.formData = {};
   }),
@@ -84,10 +84,8 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
         createTaskWizard: { wizardName },
       },
     } = getStoreState() as IStoreModel;
-    const wizardData = await storeJsLocalStorage.get(
-      "wizard." + wizardName + ".data"
-    );
-    if (!!wizardData) {
+    const wizardData = await storeJsLocalStorage.get("wizard." + wizardName + ".data");
+    if (wizardData) {
       // console.log("wizardData:", wizardData)
       actions.setFormData(_.get(wizardData, "formData", {}));
       actions.setStep(_.get(wizardData, "step", 0));
@@ -104,13 +102,13 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
       isNeedReset: state.isNeedReset,
     });
   }),
-  loadTaxonomyData: thunk(async (actions, payload) => {
-    let action = "get-task-taxonomy-data";
+  loadTaxonomyData: thunk(async actions => {
+    const action = "get-task-taxonomy-data";
 
     fetch(utils.getAjaxUrl(action), {
       method: "post",
     })
-      .then((res) => {
+      .then(res => {
         try {
           return res.json();
         } catch (ex) {
@@ -128,7 +126,7 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
           actions.setNgoTagList(result.data.ngoTagList);
           actions.setRewardList(result.data.rewardList);
         },
-        (error) => {
+        error => {
           utils.showAjaxError({ action, error });
         }
       );
@@ -168,13 +166,13 @@ const completeTaskWizardActions: ICompleteTaskWizardActions = {
   setStep: action((state, payload) => {
     state.step = payload;
   }),
-  resetFormData: action((state) => {
+  resetFormData: action(state => {
     state.formData = {};
   }),
-  resetStep: action((state) => {
+  resetStep: action(state => {
     state.step = 0;
   }),
-  resetWizard: action((state) => {
+  resetWizard: action(state => {
     state.partner = {
       databaseId: 0,
       name: "",
@@ -219,15 +217,7 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
   saveWizardData: thunk(async (actions, payload, { getStoreState }) => {
     const {
       components: {
-        completeTaskWizard: {
-          wizardName,
-          formData,
-          step,
-          user,
-          partner,
-          task,
-          isNeedReset,
-        },
+        completeTaskWizard: { wizardName, formData, step, user, partner, task, isNeedReset },
       },
     } = getStoreState() as IStoreModel;
     storeJsLocalStorage.set(`wizard.${wizardName}.data`, {
@@ -248,10 +238,7 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
     storeJsLocalStorage.remove(`wizard.${wizardName}.data`);
   }),
   newReviewRequest: thunk(
-    async (
-      actions,
-      { user, partner, task, reviewRating, communicationRating, reviewText }
-    ) => {
+    async (actions, { user, partner, task, reviewRating, communicationRating, reviewText }) => {
       const formData = new FormData();
       formData.append("review-rating", String(reviewRating));
       formData.append("communication-rating", String(communicationRating));

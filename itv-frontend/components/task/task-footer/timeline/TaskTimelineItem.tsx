@@ -27,50 +27,50 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
   doer,
   taskHasCloseSuggestion,
 }): ReactElement => {
-  const user = useStoreState((state) => state.session.user);
-  const isTaskAuthorLoggedIn = useStoreState((state) => state.session.isTaskAuthorLoggedIn);
-  const { approvedDoer, status: taskStatus, preferredDuration } = useStoreState((state) => state.components.task);  
-
-  const reviewForDoer = useStoreState(
-    (state) => state.components.task?.reviews?.reviewForDoer
+  const user = useStoreState(state => state.session.user);
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
+  const { approvedDoer, status: taskStatus, preferredDuration } = useStoreState(
+    state => state.components.task
   );
 
-  const reviewForAuthor = useStoreState(
-    (state) => state.components.task?.reviews?.reviewForAuthor
-  );
+  const reviewForDoer = useStoreState(state => state.components.task?.reviews?.reviewForDoer);
+
+  const reviewForAuthor = useStoreState(state => state.components.task?.reviews?.reviewForAuthor);
 
   // console.log("type:", type);
   // console.log("doer:", doer);
 
-  return (type==="close" && taskHasCloseSuggestion) ? null : (
+  return type === "close" && taskHasCloseSuggestion ? null : (
     <div
       className={`checkpoint ${status} ${type} ${decision} 
         ${isOverdue ? "overdue-DISABLED" : ""}
         ${reviewForDoer && reviewForAuthor && taskStatus === "closed" ? "completed" : ""}
       `}
     >
-      {type !== "close" && (status === "current" || status === "past") &&
+      {type !== "close" && (status === "current" || status === "past") && (
         <TaskTimelineDate date={timeline_date} />
-      }
+      )}
 
-      {type === "close" && 
+      {type === "close" && (
         <>
-        {!!preferredDuration 
-          ? <TaskTimelineDate date={timeline_date} />
-          : <div className="date"></div>
-        }
-        </>        
-      }
+          {preferredDuration ? (
+            <TaskTimelineDate date={timeline_date} />
+          ) : (
+            <div className="date"></div>
+          )}
+        </>
+      )}
 
-      {type !== "close" && status !== "current" && status !== "past" &&
+      {type !== "close" && status !== "current" && status !== "past" && (
         <div className="date"></div>
-      }
+      )}
 
       <div className="info">
         <i className="point-circle"></i>
         <h4>
           {title}
-          {type === "date_suggest" && !!timeline_date &&
+          {type === "date_suggest" &&
+            !!timeline_date &&
             " " +
               new Intl.DateTimeFormat("ru-RU", {
                 day: "2-digit",
@@ -79,17 +79,22 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
               }).format(utils.itvWpDateTimeToDate(timeline_date))}
         </h4>
 
-        {status === "future" && type === "close" && !!preferredDuration && <div className="details">Ожидаемый срок</div>}
+        {status === "future" && type === "close" && !!preferredDuration && (
+          <div className="details">Ожидаемый срок</div>
+        )}
 
         {type === "review" && taskStatus === "closed" && <TaskTimelineReviewType />}
-        {type === "close" && taskStatus === "in_work" && ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) && !taskHasCloseSuggestion && (
-          <TaskTimelineCloseType />
-        )}
+        {type === "close" &&
+          taskStatus === "in_work" &&
+          ((approvedDoer && approvedDoer?.id === user.id) || isTaskAuthorLoggedIn) &&
+          !taskHasCloseSuggestion && <TaskTimelineCloseType />}
         {type === "close" && taskStatus === "closed" && !!message && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
         )}
         {type === "close_suggest" && (
-          <TaskTimelineCloseSuggestType {...{ id, status, message, doer, doerId: Number(doer_id) }} />
+          <TaskTimelineCloseSuggestType
+            {...{ id, status, message, doer, doerId: Number(doer_id) }}
+          />
         )}
         {type === "close_decision" && (
           <TaskTimelineCloseDecisionType {...{ id, status, message }} />
@@ -97,9 +102,7 @@ const TaskTimelineItem: React.FunctionComponent<ITaskTimelineItem> = ({
         {type === "date_suggest" && (
           <TaskTimelineDateSuggestType {...{ id, status, message, doer }} />
         )}
-        {type === "date_decision" && (
-          <TaskTimelineDateDecisionType />
-        )}
+        {type === "date_decision" && <TaskTimelineDateDecisionType />}
         {type === "work" && (doer || approvedDoer) && (
           <TaskTimelineWorkType {...{ status, doer: doer || approvedDoer }} />
         )}

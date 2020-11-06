@@ -9,7 +9,7 @@ import MemberAvatarDefault from "../../../assets/img/member-default.svg";
 
 const TaskAuthor: React.FunctionComponent = (): ReactElement => {
   const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
-  const author = useStoreState((state) => state.components.task.author);
+  const author = useStoreState(state => state.components.task.author);
   const {
     itvAvatar: avatarImage,
     fullName,
@@ -31,7 +31,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
         fetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setAvatarImageValid(response.ok));
+        }).then(response => setAvatarImageValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -63,9 +63,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 </Link>
                 <Link href={`${new URL(toProfile).pathname}#reviews`}>
                   <a className="reviews">
-                    {`${
-                      doerReviewsCount + authorReviewsCount
-                    } ${utils.getReviewsCountString(
+                    {`${doerReviewsCount + authorReviewsCount} ${utils.getReviewsCountString(
                       doerReviewsCount + authorReviewsCount
                     )}`}
                   </a>
@@ -98,9 +96,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 .replace(
                   /\s([а-я]+)\.\s/i,
                   (_, shortMonth) =>
-                    ` ${shortMonth.replace(/^[а-я]/i, (letter: string) =>
-                      letter.toUpperCase()
-                    )} `
+                    ` ${shortMonth.replace(/^[а-я]/i, (letter: string) => letter.toUpperCase())} `
                 )
                 .replace(/\sг\./, "")}
             </div>

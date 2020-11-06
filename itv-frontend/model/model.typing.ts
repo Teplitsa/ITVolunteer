@@ -1,11 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
 import {
   Action,
-  ActionOn,
   Thunk,
   ThunkOn,
   Computed,
-  ActionMapper,
 } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
@@ -147,7 +145,7 @@ export interface ISessionThunks {
   register: Thunk<
     ISessionActions,
     {
-      formData: object;
+      formData: any;
       successCallbackFn: (message: string) => void;
       errorCallbackFn: (message: string) => void;
     }
@@ -155,7 +153,7 @@ export interface ISessionThunks {
   userLogin: Thunk<
     ISessionActions,
     {
-      formData: object;
+      formData: any;
       successCallbackFn: () => void;
       errorCallbackFn: (message: string) => void;
     }
@@ -977,7 +975,7 @@ export interface ITaskListFilterState {
   optionCheck;
   optionOpen;
   statusStats;
-  tipClose: Object;
+  tipClose: any;
   sectionClose;
   filterData;
   isFilterDataLoaded;
@@ -1049,7 +1047,7 @@ export interface IWizardState {
   wizardName: string;
   formData: any;
   step: number;
-  showScreenHelpModalState: object;
+  showScreenHelpModalState: any;
   now: any;
   isNeedReset: boolean;
 }
@@ -1077,7 +1075,7 @@ export interface IWizardScreenProps {
   howtoTitle?: string;
   howtoUrl?: string;
   isShowHeader?: boolean;
-  formData?: object;
+  formData?: any;
   screenName?: string;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
@@ -1108,9 +1106,9 @@ export interface IWizardInputProps {
 export interface IWizardActions {
   setWizardName: Action<IWizardState, string>;
   setState: Action<IWizardState, IWizardState>;
-  setFormData: Action<IWizardState, object>;
+  setFormData: Action<IWizardState, any>;
   setStep: Action<IWizardState, number>;
-  setShowScreenHelpModalState?: Action<IWizardState, object>;
+  setShowScreenHelpModalState?: Action<IWizardState, any>;
   resetWizard?: Action<IWizardState>;
   setNeedReset?: Action<IWizardState, boolean>;
 }
@@ -1126,16 +1124,16 @@ export interface IWizardModel
     IWizardThunks {}
 
 export interface ICreateTaskWizardState extends IWizardState {
-  rewardList: Array<object>;
-  taskTagList: Array<object>;
-  ngoTagList: Array<object>;
+  rewardList: Array<any>;
+  taskTagList: Array<any>;
+  ngoTagList: Array<any>;
   helpPageSlug: string;
 }
 
 export interface ICreateTaskWizardActions extends IWizardActions {
-  setRewardList: Action<ICreateTaskWizardState, Array<object>>;
-  setTaskTagList: Action<ICreateTaskWizardState, Array<object>>;
-  setNgoTagList: Action<ICreateTaskWizardState, Array<object>>;
+  setRewardList: Action<ICreateTaskWizardState, Array<any>>;
+  setTaskTagList: Action<ICreateTaskWizardState, Array<any>>;
+  setNgoTagList: Action<ICreateTaskWizardState, Array<any>>;
   setHelpPageSlug: Action<ICreateTaskWizardState, string>;
 }
 

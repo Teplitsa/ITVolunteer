@@ -11,6 +11,4 @@ const taskApprovedDoer: ITaskApprovedDoer = {
   isPasekaMember: false,
 };
 
-export const queriedFields = Object.keys(taskApprovedDoer) as Array<
-  keyof ITaskApprovedDoer
->;
+export const queriedFields = Object.keys(taskApprovedDoer) as Array<keyof ITaskApprovedDoer>;

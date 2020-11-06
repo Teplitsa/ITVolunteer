@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
 import { regEvent } from "../../utilities/ga-events";
 
@@ -9,17 +9,16 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const [isPasechnikImageShown, showPasechnikImage] = useState<boolean>(false);
   const pasechnikImageRef = useRef<HTMLImageElement>(null);
-  const { title, content } = useStoreState((state) => state.components.paseka);
+  const { title, content } = useStoreState(state => state.components.paseka);
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   useEffect(() => {
-    new IntersectionObserver(
-      ([imageRef]) => imageRef.isIntersecting && showPasechnikImage(true),
-      { threshold: 0 }
-    ).observe(pasechnikImageRef.current);
+    new IntersectionObserver(([imageRef]) => imageRef.isIntersecting && showPasechnikImage(true), {
+      threshold: 0,
+    }).observe(pasechnikImageRef.current);
   }, []);
 
   return (
@@ -40,6 +39,7 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
             className="paseka-participation-btn"
             href="https://paseka.te-st.ru"
             target="_blank"
+            rel="noreferrer"
           >
             Присоединиться
           </a>
@@ -47,9 +47,7 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
         <div className="article__content-right">
           <img
             ref={pasechnikImageRef}
-            className={`pasechnik-image${
-              isPasechnikImageShown ? " pasechnik-image_active" : ""
-            }`}
+            className={`pasechnik-image${isPasechnikImageShown ? " pasechnik-image_active" : ""}`}
             src={PasechnikImage}
             alt="Пасечник"
           />

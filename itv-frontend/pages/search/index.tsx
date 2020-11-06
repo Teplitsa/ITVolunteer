@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import TaskSearch from "../../components/task-search/TaskSearch";
@@ -10,8 +10,8 @@ const SearchPage: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
-  }, [router.pathname]);  
+    regEvent("ge_show_new_desing", router);
+  }, [router.pathname]);
 
   return (
     <>

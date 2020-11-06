@@ -1,9 +1,6 @@
 import { ReactElement } from "react";
 import Router from "next/router";
-import {
-  useStoreState,
-  useStoreActions,
-} from "../../../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks";
 import UserCardSmall from "../../../UserCardSmall";
 import { ITaskTimelineItemDoer } from "../../../../model/model.typing";
 
@@ -14,23 +11,14 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
   doer: ITaskTimelineItemDoer;
   doerId: number;
 }> = ({ id, status, message, doer, doerId }): ReactElement => {
-  const { databaseId: userId, fullName: userName } = useStoreState(
-    (state) => state.session.user
+  const { databaseId: userId, fullName: userName } = useStoreState(state => state.session.user);
+  const { databaseId: taskId, title } = useStoreState(state => state.components.task);
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
+  const { acceptSuggestedCloseRequest, rejectSuggestedCloseRequest } = useStoreActions(
+    state => state.components.task
   );
-  const {
-    databaseId: taskId,
-    title,
-    author,
-  } = useStoreState((state) => state.components.task);
-  const isTaskAuthorLoggedIn = useStoreState(
-    (state) => state.session.isTaskAuthorLoggedIn
-  );
-  const {
-    acceptSuggestedCloseRequest,
-    rejectSuggestedCloseRequest,
-  } = useStoreActions((state) => state.components.task);
   const setCompleteTaskWizardState = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setInitState
+    actions => actions.components.completeTaskWizard.setInitState
   );
   const acceptSuggestedClose = acceptSuggestedCloseRequest.bind(null, {
     timelineItemId: id,
@@ -49,7 +37,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
           <a
             href="#"
             className="accept"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               acceptSuggestedClose();
 
@@ -66,7 +54,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
 
               Router.push({
                 pathname: "/task-complete",
-              });              
+              });
             }}
           >
             Принять
@@ -74,7 +62,7 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
           <a
             href="#"
             className="reject danger"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               rejectSuggestedClose();
             }}

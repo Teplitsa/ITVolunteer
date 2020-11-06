@@ -1,14 +1,14 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
-import {useRouter} from 'next/router';
+import { ReactElement, useEffect } from "react";
+import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
 import { regEvent } from "../../utilities/ga-events";
 
 const Page: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const { title, content } = useStoreState((state) => state.components.page);
+  const { title, content } = useStoreState(state => state.components.page);
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   return (

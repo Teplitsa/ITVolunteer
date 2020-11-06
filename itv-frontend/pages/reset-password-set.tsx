@@ -1,13 +1,11 @@
-import { ReactElement, useEffect, useState, ChangeEvent, } from "react";
+import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
-import {useRouter} from 'next/router'
 
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import SetPassword from "../components/auth/SetPassword";
 
 const SetPasswordPage: React.FunctionComponent = (): ReactElement => {
-
   return (
     <>
       <DocumentHead />
@@ -20,17 +18,17 @@ const SetPasswordPage: React.FunctionComponent = (): ReactElement => {
           </div>
         </main>
       </Main>
-    </>    
-  )
-}
+    </>
+  );
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
 
-  var entrypointModel = {
-    title: 'Сброс пароля - it-волонтер',
+  const entrypointModel = {
+    title: "Сброс пароля - it-волонтер",
     seo: {
       canonical: "https://itv.te-st.ru/reset-password",
       title: "Сброс пароля - it-волонтер",
@@ -45,14 +43,14 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { uri: "reset-password" },
     entrypointType: "page",
-    componentModel: async (request) => {
+    componentModel: async () => {
       return ["page", {}];
     },
   });
 
   return {
-    props: { ...model, ...{entrypoint: {...model.entrypoint, ...{page: entrypointModel}}} },
+    props: { ...model, ...{ entrypoint: { ...model.entrypoint, ...{ page: entrypointModel } } } },
   };
 };
 
-export default SetPasswordPage
+export default SetPasswordPage;

@@ -15,11 +15,7 @@ const CompleteTaskCommunicationsRating = (screenProps): ReactElement => {
   return (
     <WizardScreen {...props}>
       <div className="wizard-screen">
-        <WizardForm
-          title="Оцените комфортно ли было общение"
-          isRequired={true}
-          {...props}
-        >
+        <WizardForm title="Оцените комфортно ли было общение" isRequired={true} {...props}>
           <WizardRating {...props} name="communicationRating" />
         </WizardForm>
         <WizardScreenBottomBar {...props} />

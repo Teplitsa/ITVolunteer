@@ -1,21 +1,21 @@
-import { ReactElement, MouseEvent, useEffect } from "react";
+import { ReactElement, MouseEvent } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCard from "../../components/TaskCard";
 
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
-  const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const { tasks, memberTaskStats } = useStoreState((state) => state.components.memberAccount);
-  
+  const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
+  const { tasks, memberTaskStats } = useStoreState(state => state.components.memberAccount);
+
   const filters: {
     open: number;
     closed: number;
     draft: number;
     in_work: number;
     publish: number;
-  } = {...memberTaskStats, open: 0};
+  } = { ...memberTaskStats, open: 0 };
 
   const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
-    (actions) => actions.components.memberAccount
+    actions => actions.components.memberAccount
   );
 
   const filter = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -40,9 +40,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
             <li>
               <a
                 className={`member-tasks__filter-control ${
-                  tasks.filter === "open"
-                    ? "member-tasks__filter-control_active"
-                    : ""
+                  tasks.filter === "open" ? "member-tasks__filter-control_active" : ""
                 }`}
                 href="#"
                 data-filter={["open", "in_work", "publish"]}
@@ -55,9 +53,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
               <li>
                 <a
                   className={`member-tasks__filter-control ${
-                    tasks.filter === "draft"
-                      ? "member-tasks__filter-control_active"
-                      : ""
+                    tasks.filter === "draft" ? "member-tasks__filter-control_active" : ""
                   }`}
                   href="#"
                   data-filter={["draft"]}
@@ -70,9 +66,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
             <li>
               <a
                 className={`member-tasks__filter-control ${
-                  tasks.filter === "closed"
-                    ? "member-tasks__filter-control_active"
-                    : ""
+                  tasks.filter === "closed" ? "member-tasks__filter-control_active" : ""
                 }`}
                 href="#"
                 data-filter={["closed"]}
@@ -86,8 +80,9 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
       </div>
       <div className="member-tasks__list">
         {tasks.list
-          .filter((card) => {
-            const cardStatus = (card.status === "in_work" || card.status === "publish") ? "open" : card.status;
+          .filter(card => {
+            const cardStatus =
+              card.status === "in_work" || card.status === "publish" ? "open" : card.status;
 
             // console.log("card:", card)
             // console.log("cardStatus:", cardStatus)
@@ -95,7 +90,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
 
             return cardStatus === tasks.filter;
           })
-          .map((card) => (
+          .map(card => (
             <TaskCard key={card.id} {...card} />
           ))}
       </div>
@@ -103,7 +98,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
         <a
           href="#"
           className="member-tasks__more-link"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             getMemberTasksRequest();
           }}

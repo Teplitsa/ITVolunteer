@@ -5,11 +5,9 @@ import ReviewCard from "../../components/ReviewCard";
 import * as utils from "../../utilities/utilities";
 
 const MemberReviews: React.FunctionComponent = (): ReactElement => {
-  const { rating, reviewsCount, reviews } = useStoreState(
-    (store) => store.components.memberAccount
-  );
+  const { rating, reviewsCount, reviews } = useStoreState(store => store.components.memberAccount);
   const getMemberReviewsRequest = useStoreActions(
-    (actions) => actions.components.memberAccount.getMemberReviewsRequest
+    actions => actions.components.memberAccount.getMemberReviewsRequest
   );
   const reviewsRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -27,8 +25,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         <div className="member-reviews__stats">
           <ul>
             <li>
-              {reviewsCount}{" "}
-              {utils.getReviewsCountString(reviewsCount)}
+              {reviewsCount} {utils.getReviewsCountString(reviewsCount)}
             </li>
             <li>
               Оценка{" "}
@@ -43,7 +40,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-reviews__list">
-        {reviews.list?.map((review) => (
+        {reviews.list?.map(review => (
           <ReviewCard key={`Review-${review.id}`} {...review} />
         ))}
       </div>
@@ -51,7 +48,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
         <a
           href="#"
           className="member-reviews__more-link"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             getMemberReviewsRequest();
           }}

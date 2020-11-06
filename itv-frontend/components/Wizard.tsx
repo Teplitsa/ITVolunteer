@@ -1,14 +1,13 @@
-import {
-  Children,
-  cloneElement,
-  ReactElement,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
+import { Children, cloneElement, useState, useEffect, ReactElement } from "react";
 import { IWizardScreenProps } from "../model/model.typing";
 
-const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
+const Wizard: React.FunctionComponent<any> = ({
+  children,
+  saveWizardData,
+  step,
+  setStep,
+  ...props
+}): ReactElement => {
   const [ignoredStepNumbers, setIgnoredStepNumbers] = useState([]);
   const [visibleStep, setVisibleStep] = useState(1);
   const [visibleStepsCount, setVisibleStepsCount] = useState(1);
@@ -17,10 +16,7 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
   useEffect(() => {
     let vs = step + 1;
     for (let istep = 0; istep < step; istep++) {
-      if (
-        ignoredStepNumbers.findIndex((ignoredStep) => ignoredStep === istep) >
-        -1
-      ) {
+      if (ignoredStepNumbers.findIndex(ignoredStep => ignoredStep === istep) > -1) {
         vs -= 1;
       }
     }
@@ -40,9 +36,7 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
       }
     });
 
-    setIgnoredStepNumbers(
-      Array.from(new Set([...ignoredStepNumbers, ...localIgnoredStepNumbers]))
-    );
+    setIgnoredStepNumbers(Array.from(new Set([...ignoredStepNumbers, ...localIgnoredStepNumbers])));
   }, []);
 
   const screenProps: IWizardScreenProps = {
@@ -59,8 +53,8 @@ const Wizard = ({ children, saveWizardData, step, setStep, ...props }) => {
       return {
         shortTitle: child.props.shortTitle,
         step: index,
-      }
-    }), 
+      };
+    }),
 
     goNextStep: () => {
       if (step >= stepsCount - 1) {

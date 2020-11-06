@@ -8,12 +8,8 @@ const { ModalContext, SnackbarContext } = GlobalScripts;
 const FooterScripts: React.FunctionComponent = (): ReactElement => {
   return (
     <>
-      <ModalContext.Consumer>
-        {(props) => <Modal {...props} />}
-      </ModalContext.Consumer>
-      <SnackbarContext.Consumer>
-        {(props) => <SnackbarList {...props} />}
-      </SnackbarContext.Consumer>
+      <ModalContext.Consumer>{props => <Modal {...props} />}</ModalContext.Consumer>
+      <SnackbarContext.Consumer>{props => <SnackbarList {...props} />}</SnackbarContext.Consumer>
     </>
   );
 };

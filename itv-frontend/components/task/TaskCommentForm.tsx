@@ -1,9 +1,4 @@
-import {
-  ReactElement,
-  MutableRefObject,
-  useState,
-  BaseSyntheticEvent,
-} from "react";
+import { ReactElement, MutableRefObject, useState, BaseSyntheticEvent } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { getTheDate } from "../../utilities/utilities";
 
@@ -12,15 +7,9 @@ const TaskCommentForm: React.FunctionComponent<{
   parentCommentId?: string;
 }> = ({ textAreaRef = null, parentCommentId = "" }): ReactElement => {
   const [commentText, setCommentText] = useState<string>("");
-  const canUserReplyToComment = useStoreState(
-    (state) => state.session.canUserReplyToComment
-  );
-  const newCommentRequest = useStoreActions(
-    (state) => state.components.task.newCommentRequest
-  );
-  const typeIn = (
-    event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>
-  ) => {
+  const canUserReplyToComment = useStoreState(state => state.session.canUserReplyToComment);
+  const newCommentRequest = useStoreActions(state => state.components.task.newCommentRequest);
+  const typeIn = (event: BaseSyntheticEvent<Event, any, HTMLTextAreaElement>) => {
     setCommentText(event.target.value);
   };
   const publishComment = newCommentRequest.bind(null, {
@@ -40,16 +29,12 @@ const TaskCommentForm: React.FunctionComponent<{
                 stringFormat: "dd.MM.yyyy в HH:mm",
               })}
             </time>
-            <textarea
-              ref={textAreaRef}
-              value={commentText}
-              onChange={typeIn}
-            ></textarea>
+            <textarea ref={textAreaRef} value={commentText} onChange={typeIn}></textarea>
           </div>
           <a
             href="#"
             className="send-button"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               publishComment();
             }}

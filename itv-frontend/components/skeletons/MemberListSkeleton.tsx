@@ -11,10 +11,7 @@ const MemberListSkeleton: React.FunctionComponent = (): ReactElement => {
           {Array(6)
             .fill(null)
             .map((_, i) => (
-              <div
-                key={`Item-${i}`}
-                className="member-list-skeleton__item-mock"
-              />
+              <div key={`Item-${i}`} className="member-list-skeleton__item-mock" />
             ))}
         </div>
       </div>

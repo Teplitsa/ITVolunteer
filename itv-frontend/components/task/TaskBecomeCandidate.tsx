@@ -2,28 +2,15 @@ import { ReactElement } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
-  const {
-    isLoggedIn,
-    isTaskAuthorLoggedIn,
-    isUserTaskCandidate,
-    user,
-  } = useStoreState((state) => state.session);
-  const { id: taskId, approvedDoer, doers, status } = useStoreState(
-    (state) => state.components.task
+  const { isLoggedIn, isTaskAuthorLoggedIn, isUserTaskCandidate, user } = useStoreState(
+    state => state.session
   );
-  const addDoer = useStoreActions(
-    (actions) => actions.components.task?.addDoerRequest
-  );
+  const { id: taskId, approvedDoer, doers, status } = useStoreState(state => state.components.task);
+  const addDoer = useStoreActions(actions => actions.components.task?.addDoerRequest);
 
-  const updateDoers = useStoreActions(
-    (actions) => actions.components.task?.updateDoers
-  );
-  const manageDoer = useStoreActions(
-    (actions) => actions.components.task?.manageDoerRequest
-  );
-  const { taskRequest, timelineRequest } = useStoreActions(
-    (actions) => actions.components.task
-  );
+  const updateDoers = useStoreActions(actions => actions.components.task?.updateDoers);
+  const manageDoer = useStoreActions(actions => actions.components.task?.manageDoerRequest);
+  const { taskRequest, timelineRequest } = useStoreActions(actions => actions.components.task);
 
   const cancelFn = manageDoer.bind(null, {
     action: "remove-candidate",
@@ -45,7 +32,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
           <a
             href="#"
             className="btn btn_primary-lg btn_full-width"
-            onClick={(event) => {
+            onClick={event => {
               event.preventDefault();
               addDoer();
             }}
@@ -59,7 +46,7 @@ const TaskBecomeCandidate: React.FunctionComponent = (): ReactElement => {
             <a
               href="#"
               className="btn btn_secondary btn_full-width"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 cancelFn();
               }}

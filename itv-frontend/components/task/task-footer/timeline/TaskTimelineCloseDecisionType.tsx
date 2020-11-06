@@ -6,7 +6,7 @@ const TaskTimelineCloseDecisionType: React.FunctionComponent<{
   id: number;
   status: string;
   message: string;
-}> = ({ id, status, message }): ReactElement => {
+}> = ({ message }): ReactElement => {
   const author = useStoreState((state) => state.components.task.author);
 
   return (

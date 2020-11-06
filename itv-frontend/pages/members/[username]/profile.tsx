@@ -6,14 +6,12 @@ import { useStoreState } from "../../../model/helpers/hooks";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import EditMemberProfile from "../../../components/page/EditMemberProfile";
-import GlobalScripts, {
-  ISnackbarMessage,
-} from "../../../context/global-scripts";
+import GlobalScripts, { ISnackbarMessage } from "../../../context/global-scripts";
 
 const { SnackbarContext } = GlobalScripts;
 
 const ProfilePage: React.FunctionComponent = (): ReactElement => {
-  const { isLoggedIn, isLoaded } = useStoreState((state) => state.session);
+  const { isLoggedIn, isLoaded } = useStoreState(state => state.session);
   const router = useRouter();
 
   useEffect(() => {
@@ -42,11 +40,7 @@ const ProfilePage: React.FunctionComponent = (): ReactElement => {
               const deleteSnackbar = (message: ISnackbarMessage) => {
                 dispatch({ type: "delete", payload: { messages: [message] } });
               };
-              return (
-                <EditMemberProfile
-                  {...{ addSnackbar, clearSnackbar, deleteSnackbar }}
-                />
-              );
+              return <EditMemberProfile {...{ addSnackbar, clearSnackbar, deleteSnackbar }} />;
             }}
           </SnackbarContext.Consumer>
         </main>

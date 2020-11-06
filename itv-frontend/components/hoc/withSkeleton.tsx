@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import DocumentHead from "../DocumentHead";
 import MainSkeleton from "../skeletons/MainSkeleton";
 import HomeSkeleton from "../skeletons/HomeSkeleton";
@@ -6,11 +7,7 @@ import MemberAccountSkeleton from "../skeletons/MemberAccountSkeleton";
 import TaskListSkeleton from "../skeletons/TaskListSkeleton";
 import TaskSkeleton from "../skeletons/TaskSkeleton";
 
-const withSkeleton = ({
-  pathname,
-}: {
-  pathname: string;
-}): React.FunctionComponent => {
+const withSkeleton = ({ pathname }: { pathname: string }): React.FunctionComponent => {
   let MainSkeletonContent: React.FunctionComponent | null = null;
 
   if (pathname.search(/^\/$/i) !== -1) {

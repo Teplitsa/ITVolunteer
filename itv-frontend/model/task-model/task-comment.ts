@@ -4,11 +4,11 @@ export const findCommentById = (
   commentId: string,
   comments: Array<ITaskComment>
 ): ITaskComment | undefined => {
-  for (let comment of comments) {
+  for (const comment of comments) {
     if (comment.id === commentId) {
       return comment;
     } else if (Array.isArray(comment.replies?.nodes)) {
-      let commentFound: ITaskComment | undefined = findCommentById(
+      const commentFound: ITaskComment | undefined = findCommentById(
         commentId,
         comment.replies.nodes
       );
@@ -36,7 +36,7 @@ const taskComment: ITaskComment = {
 };
 
 export const queriedFields = Object.keys(taskComment).filter(
-  (field) => !["likers", "author", "replies"].includes(field)
+  field => !["likers", "author", "replies"].includes(field)
 ) as Array<keyof ITaskComment>;
 
 export const authorQueriedFields = Object.keys(taskComment.author) as Array<

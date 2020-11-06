@@ -3,16 +3,12 @@ import { useStoreState } from "../../../model/helpers/hooks";
 import { WizardScreen } from "../../layout/WizardScreen";
 
 const CompleteTaskCongratulations = (screenProps): ReactElement => {
-  const isAuthor = useStoreState(
-    (state) => state.components.completeTaskWizard.user.isAuthor
-  );
-  const partnerName = useStoreState(
-    (state) => state.components.completeTaskWizard.partner.name
-  );
+  const isAuthor = useStoreState(state => state.components.completeTaskWizard.user.isAuthor);
+  const partnerName = useStoreState(state => state.components.completeTaskWizard.partner.name);
   const props = {
     ...screenProps,
     screenName: "Congratulations",
-    onNextClick: (event) => {
+    onNextClick: event => {
       event.preventDefault();
       props.goNextStep();
     },
@@ -21,9 +17,7 @@ const CompleteTaskCongratulations = (screenProps): ReactElement => {
   return (
     <WizardScreen {...props} modifierClassNames={["wizard_complete-intro"]}>
       <div className="wizard-screen">
-        <h1 className="wizard-screen__main-title">
-          Поздравляем с закрытием задачи!
-        </h1>
+        <h1 className="wizard-screen__main-title">Поздравляем с закрытием задачи!</h1>
         <div className="wizard-screen__subtitle">
           {partnerName}{" "}
           {isAuthor

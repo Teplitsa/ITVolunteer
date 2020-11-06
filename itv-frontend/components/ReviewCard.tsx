@@ -4,31 +4,21 @@ import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
 import { getTheIntervalToNow } from "../utilities/utilities";
 
-const maxExcerptLength: number = 300;
+const maxExcerptLength = 300;
 
-const ReviewCard: React.FunctionComponent<IMemberReview> = (
-  review
-): ReactElement => {
+const ReviewCard: React.FunctionComponent<IMemberReview> = (review): ReactElement => {
   const [isFullDescription, setFullDescription] = useState<boolean>(false);
   const excerptRef = useRef<HTMLSpanElement>(null);
   const reviewer = review.type === "as_author" ? review.author : review.doer;
   const reviewerCardSmallProps = {
     avatar: reviewer.itvAvatar,
     fullName: reviewer.organizationName || reviewer.fullName,
-    task: review.task
-      ? {
-          slug: `/tasks/${review.task.slug}`,
-          title: review.task.title,
-        }
-      : null,
+    task: review.task ? { slug: `/tasks/${review.task.slug}`, title: review.task.title } : null,
   };
 
   useEffect(() => {
     if (excerptRef.current.innerHTML.length > maxExcerptLength) {
-      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
-        0,
-        maxExcerptLength
-      )}…`;
+      excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(0, maxExcerptLength)}…`;
     } else {
       setFullDescription(true);
     }
@@ -44,10 +34,7 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
     <div className="review-card">
       <div className="review-card__header">
         <div className="review-card__header-item">
-          <ReviewRatingSmall
-            caption={`Точно составлено ТЗ`}
-            rating={review.rating}
-          />
+          <ReviewRatingSmall caption={`Точно составлено ТЗ`} rating={review.rating} />
         </div>
         {review.communication_rating > 0 && (
           <div className="review-card__header-item">
@@ -59,16 +46,13 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
         )}
       </div>
       <div className="review-card__excerpt">
-        <span
-          ref={excerptRef}
-          dangerouslySetInnerHTML={{ __html: review.message.trim() }}
-        />
+        <span ref={excerptRef} dangerouslySetInnerHTML={{ __html: review.message.trim() }} />
         {!isFullDescription && (
           <>
             {" "}
             <a
               href="#"
-              onClick={(event) => {
+              onClick={event => {
                 event.preventDefault();
                 setFullDescription(true);
               }}

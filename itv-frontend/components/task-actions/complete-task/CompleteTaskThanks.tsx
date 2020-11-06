@@ -9,9 +9,9 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
     screenName: "Thanks",
   };
   const { resetStep, removeWizardData, setNeedReset } = useStoreActions(
-    (actions) => actions.components.completeTaskWizard
+    actions => actions.components.completeTaskWizard
   );
-  const exitWizard = (event) => {
+  const exitWizard = event => {
     event.preventDefault();
     setNeedReset(true);
     resetStep();
@@ -35,8 +35,7 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
       <div className="wizard-screen">
         <h1 className="wizard-screen__main-title">Спасибо за ваш отзыв!</h1>
         <div className="wizard-screen__subtitle">
-          Вам начислено{" "}
-          <span className="wizard-screen__subtitle-mark">10 баллов</span>!
+          Вам начислено <span className="wizard-screen__subtitle-mark">10 баллов</span>!
         </div>
         <a
           href="#"

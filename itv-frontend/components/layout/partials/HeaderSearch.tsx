@@ -26,7 +26,7 @@ const HeaderSearch: React.FunctionComponent<{
       setOpen(true);
     }
     setOpenLocally(!isOpen);
-  }
+  };
   const toggle = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     doToggle();
@@ -43,7 +43,7 @@ const HeaderSearch: React.FunctionComponent<{
     setSearchPhrase(event.target.value);
   };
   const submit = () => {
-    if(!isCleanOnCrossClick) {
+    if (!isCleanOnCrossClick) {
       doToggle();
     }
     if (searchPhrase) {
@@ -64,14 +64,10 @@ const HeaderSearch: React.FunctionComponent<{
   useEffect(() => setSearchPhrase(s as string), [s]);
 
   return (
-    <div
-      className={`header-search ${
-        isOpenLocally ? "header-search_expanded" : ""
-      }`}
-    >
+    <div className={`header-search ${isOpenLocally ? "header-search_expanded" : ""}`}>
       <form
         className="header-search-form"
-        onSubmit={(event) => {
+        onSubmit={event => {
           event.preventDefault();
           submit();
         }}
@@ -84,7 +80,7 @@ const HeaderSearch: React.FunctionComponent<{
             type="search"
             value={searchPhrase}
             onChange={typeIn}
-            onKeyUp={(event) => {
+            onKeyUp={event => {
               event.preventDefault();
               event.key === "Enter" && submit();
             }}

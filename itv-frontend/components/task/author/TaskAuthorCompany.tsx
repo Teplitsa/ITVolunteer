@@ -11,7 +11,7 @@ const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
     organizationLogo: companyLogo,
     organizationDescription: companySummary,
     isPartner,
-  } = useStoreState((state) => state.components.task.author);
+  } = useStoreState(state => state.components.task.author);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -21,7 +21,7 @@ const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
         fetch(companyLogo, {
           signal: abortController.signal,
           mode: "no-cors",
-        }).then((response) => setCompanyLogoValid(response.ok));
+        }).then(response => setCompanyLogoValid(response.ok));
     } catch (error) {
       console.error(error);
     }
@@ -50,18 +50,13 @@ const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
 
             <div className="details">
               <span className="status">Представитель организации/проекта</span>
-              <span
-                className="name"
-                dangerouslySetInnerHTML={{ __html: companyName }}
-              />
+              <span className="name" dangerouslySetInnerHTML={{ __html: companyName }} />
             </div>
           </div>
         </div>
         {companySummary && (
           <div className="org-description">
-            <MemberOrganizationDescription
-              {...{ organizationDescription: companySummary }}
-            />
+            <MemberOrganizationDescription {...{ organizationDescription: companySummary }} />
           </div>
         )}
       </>

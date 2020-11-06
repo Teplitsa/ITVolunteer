@@ -1,6 +1,6 @@
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Router from "next/router";
-import { IFetchResult, IUserNotifItem } from "../model/model.typing";
+import { IFetchResult } from "../model/model.typing";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import { UserSmallPicView } from "../components/UserView";
@@ -38,12 +38,10 @@ const ITV_USER_NOTIF_TEXT = {
 };
 
 export function NotifList(props) {
-  const user = useStoreState((store) => store.session.user);
+  const user = useStoreState(store => store.session.user);
 
   const clickOutsideHandler = props.clickOutsideHandler;
-  const notifList = useStoreState(
-    (store) => store.components.userNotif.notifList
-  );
+  const notifList = useStoreState(store => store.components.userNotif.notifList);
   const [notifListRef, setNotifListRef] = useState(null);
 
   function handleClickOutside(e) {
@@ -69,13 +67,11 @@ export function NotifList(props) {
   });
 
   return (
-    <div className={`notif-list`} ref={(ref) => setNotifListRef(ref)}>
+    <div className={`notif-list`} ref={ref => setNotifListRef(ref)}>
       <div className={`notif-list__container`}>
         <div className="notif-list__title">Оповещения</div>
         {notifList.map((item, index) => {
-          return (
-            <NotifItem key={`NotifListItem${index}`} notif={item} user={user} />
-          );
+          return <NotifItem key={`NotifListItem${index}`} notif={item} user={user} />;
         })}
       </div>
       {/* <div className="notif-list__view-all">
@@ -87,24 +83,24 @@ export function NotifList(props) {
 
 function NotifItem({ notif, user }) {
   const removeNotifFromList = useStoreActions(
-    (actions) => actions.components.userNotif.removeNotifFromList
+    actions => actions.components.userNotif.removeNotifFromList
   );
   const setCompleteTaskWizardState = useStoreActions(
-    (actions) => actions.components.completeTaskWizard.setInitState
+    actions => actions.components.completeTaskWizard.setInitState
   );
 
-  function handleNotifItemClick(e) {
+  function handleNotifItemClick() {
     removeNotifFromList(notif);
 
-    let formData = new FormData();
+    const formData = new FormData();
     formData.append("notifIdList[]", notif.id);
 
-    let action = "set_user_notif_read";
+    const action = "set_user_notif_read";
     fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })
-      .then((res) => {
+      .then(res => {
         try {
           return res.json();
         } catch (ex) {
@@ -118,7 +114,7 @@ function NotifItem({ notif, user }) {
             return utils.showAjaxError({ message: result.message });
           }
         },
-        (error) => {
+        error => {
           utils.showAjaxError({ action, error });
         }
       );
@@ -137,16 +133,10 @@ function NotifItem({ notif, user }) {
   };
 
   return (
-    <div
-      className={`notif-list__item ${
-        notif.is_read ? "notif-list__item__read" : ""
-      }`}
-    >
+    <div className={`notif-list__item ${notif.is_read ? "notif-list__item__read" : ""}`}>
       <div className="notif-list__item-content">
         <div className="notif-list__item-icon">
-          {(!notif.from_user || notif.from_user.id === user.id) && (
-            <img src={logoNoText} alt="" />
-          )}
+          {(!notif.from_user || notif.from_user.id === user.id) && <img src={logoNoText} alt="" />}
           {!!notif.from_user && notif.from_user.id !== user.id && (
             <UserSmallPicView user={notif.from_user} />
           )}
@@ -159,14 +149,15 @@ function NotifItem({ notif, user }) {
               </a>
             )}
 
-            {notif.type ==="general_notif" 
-              ? <span
-                  dangerouslySetInnerHTML={{
-                    __html: notif.content || "",
-                  }}
-                />
-              : <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
-            }
+            {notif.type === "general_notif" ? (
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: notif.content || "",
+                }}
+              />
+            ) : (
+              <span>{_.get(ITV_USER_NOTIF_TEXT, notif.type, "")}</span>
+            )}
           </div>
 
           {!!notif.task && (
@@ -177,24 +168,27 @@ function NotifItem({ notif, user }) {
 
           {notif.type === "post_feedback_taskauthor_to_taskdoer" && (
             <div className="notif-list__leave-review">
-              <a href="#" className="btn btn_primary" onClick={
-                (event) => {
+              <a
+                href="#"
+                className="btn btn_primary"
+                onClick={event => {
                   event.preventDefault();
                   completeTask();
-              }}>Оставить отзыв</a>
+                }}
+              >
+                Оставить отзыв
+              </a>
             </div>
           )}
 
           <div className="notif-list__item-time">
             <img src={iconNotifRock} alt="" />
-            <span>{`${utils.formatIntervalToNow({fromDate: utils.itvWpDateTimeToDate(notif.dateGmt)})}`}</span>
+            <span>{`${utils.formatIntervalToNow({
+              fromDate: utils.itvWpDateTimeToDate(notif.dateGmt),
+            })}`}</span>
           </div>
         </div>
-        <a
-          href="#"
-          className="notif-list__item-set-read"
-          onClick={handleNotifItemClick}
-        ></a>
+        <a href="#" className="notif-list__item-set-read" onClick={handleNotifItemClick}></a>
       </div>
     </div>
   );

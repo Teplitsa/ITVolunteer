@@ -4,12 +4,8 @@ import { useStoreState } from "../../../model/helpers/hooks";
 import { status as statusMap } from "../Task";
 
 const TaskStatus: React.FunctionComponent = (): ReactElement => {
-  const isTaskAuthorLoggedIn = useStoreState(
-    (state) => state.session.isTaskAuthorLoggedIn
-  );
-  const { status, databaseId: taskDataBaseId, slug } = useStoreState(
-    (state) => state.components.task
-  );
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
+  const { status, slug } = useStoreState(state => state.components.task);
   const statusLabel: boolean | string = status && statusMap.get(status);
 
   return (

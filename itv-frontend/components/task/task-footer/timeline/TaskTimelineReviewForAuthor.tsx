@@ -5,12 +5,8 @@ import ratingStarMuted from "../../../../assets/img/icon-star-empty-gray.svg";
 import ratingStarActive from "../../../../assets/img/icon-star-filled.svg";
 
 const TaskTimelineReviewForAuthor: React.FunctionComponent = (): ReactElement => {
-  const approvedDoer = useStoreState(
-    (state) => state.components.task?.approvedDoer
-  );
-  const reviewer = useStoreState(
-    (state) => state.components.task?.reviews?.reviewForAuthor
-  );
+  const approvedDoer = useStoreState(state => state.components.task?.approvedDoer);
+  const reviewer = useStoreState(state => state.components.task?.reviews?.reviewForAuthor);
 
   if (!approvedDoer || !reviewer) return null;
 
@@ -26,9 +22,7 @@ const TaskTimelineReviewForAuthor: React.FunctionComponent = (): ReactElement =>
               return (
                 <img
                   src={
-                    (Number(reviewer.rating) >= ratingValue &&
-                      ratingStarActive) ||
-                    ratingStarMuted
+                    (Number(reviewer.rating) >= ratingValue && ratingStarActive) || ratingStarMuted
                   }
                   key={`${key}${ratingValue}`}
                 />

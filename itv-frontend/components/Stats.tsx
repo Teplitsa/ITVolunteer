@@ -1,8 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
-import {
-  IFetchResult,
-} from "../model/model.typing";
-import * as utils from "../utilities/utilities"
+import { IFetchResult } from "../model/model.typing";
+import * as utils from "../utilities/utilities";
 
 const basicStats: {
   activeMemebersCount: number;
@@ -16,38 +14,38 @@ const basicStats: {
   newTasksCount: null,
 };
 
-const Stats: React.FunctionComponent = ({ children }): ReactElement => {
+const Stats: React.FunctionComponent = (): ReactElement => {
   const [stats, setStats] = useState(basicStats);
 
   useEffect(() => {
-    let formData = new FormData()
+    const formData = new FormData();
 
-    let action = 'get_general_stats'
+    const action = "get_general_stats";
     fetch(utils.getAjaxUrl(action), {
-        method: 'post',
-        body: formData,
+      method: "post",
+      body: formData,
     })
-    .then(res => {
+      .then(res => {
         try {
-            return res.json()
-        } catch(ex) {
-            utils.showAjaxError({action, error: ex})
-            return {}
+          return res.json();
+        } catch (ex) {
+          utils.showAjaxError({ action, error: ex });
+          return {};
         }
-    })
-    .then(
+      })
+      .then(
         (result: IFetchResult) => {
-            if(result.status == 'fail') {
-                return utils.showAjaxError({message: result.message})
-            }
+          if (result.status == "fail") {
+            return utils.showAjaxError({ message: result.message });
+          }
 
-            setStats(result.stats);
+          setStats(result.stats);
         },
-        (error) => {
-            utils.showAjaxError({action, error})
+        error => {
+          utils.showAjaxError({ action, error });
         }
-    )
-  }, [])
+      );
+  }, []);
 
   return (
     <div className="col-stats">

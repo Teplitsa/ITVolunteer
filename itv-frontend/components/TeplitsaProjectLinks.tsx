@@ -6,14 +6,8 @@ const TeplitsaProjectLinks: React.FunctionComponent = (): ReactElement => {
       "https://teplo.social/",
       { title: "Теплосеть", description: "Платформа непрерывного образования" },
     ],
-    [
-      "https://leyka.te-st.ru",
-      { title: "Лейка", description: "Сбор пожертвований на сайте" },
-    ],
-    [
-      "https://knd.te-st.ru",
-      { title: "Кандинский", description: "Сайт-конструктор для НКО" },
-    ],
+    ["https://leyka.te-st.ru", { title: "Лейка", description: "Сбор пожертвований на сайте" }],
+    ["https://knd.te-st.ru", { title: "Кандинский", description: "Сайт-конструктор для НКО" }],
   ]);
 
   return (
@@ -24,7 +18,7 @@ const TeplitsaProjectLinks: React.FunctionComponent = (): ReactElement => {
           ([url, { title, description }], i): ReactElement => {
             return (
               <div className="project" key={i}>
-                <a href={url} target="_blank">
+                <a href={url} target="_blank" rel="noreferrer">
                   {title}
                 </a>
                 <p>{description}</p>

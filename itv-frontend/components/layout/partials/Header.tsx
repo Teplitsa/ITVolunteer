@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 
-
 const Header: React.FunctionComponent = ({ children }): ReactElement => {
   //const user = useStoreState((store) => store.user.data);
   const gaContent = `

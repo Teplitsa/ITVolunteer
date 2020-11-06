@@ -2,7 +2,6 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskComment } from "../../model/model.typing";
 import { getTheDate } from "../../utilities/utilities";
-import * as utils from "../../utilities/utilities";
 import UserCardSmall from "../UserCardSmall";
 import TaskCommentForm from "./TaskCommentForm";
 
@@ -21,9 +20,9 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
   const {
     canUserReplyToComment,
     user: { id: currentUserId },
-  } = useStoreState((state) => state.session);
+  } = useStoreState(state => state.session);
   const { commentLikeRequest, commentUnlikeRequest } = useStoreActions(
-    (actions) => actions.components.task
+    actions => actions.components.task
   );
 
   const like = commentLikeRequest.bind(null, id);
@@ -46,9 +45,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
   return (
     <div className="comment-wrapper">
       <div className="comment">
-        <div className="comment-author">
-          {author && <UserCardSmall {...author} />}
-        </div>
+        <div className="comment-author">{author && <UserCardSmall {...author} />}</div>
         <div className="comment-body">
           <time>
             {getTheDate({
@@ -67,7 +64,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
                       : "like_somebody-liked"
                     : ""
                 }`}
-                onClick={(event) => {
+                onClick={event => {
                   event.preventDefault();
                   (isForbiddenTolike && unlike()) || like();
                 }}
@@ -78,11 +75,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
                     {likers
                       .reduce(
                         (likerNames, { userName, userFullName }, i) =>
-                          (i < 3 && [
-                            ...likerNames,
-                            userFullName || userName,
-                          ]) ||
-                          likerNames,
+                          (i < 3 && [...likerNames, userFullName || userName]) || likerNames,
                         []
                       )
                       .join(", ")}
@@ -97,7 +90,7 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
                 <a
                   href="#"
                   className="reply-comment edit"
-                  onClick={(event) => {
+                  onClick={event => {
                     event.preventDefault();
                     toggleReplyForm(!isCommentToReply);
                   }}
@@ -110,12 +103,8 @@ const TaskCommentListItem: React.FunctionComponent<ITaskComment> = ({
         </div>
       </div>
       {Array.isArray(replies?.nodes) &&
-        replies.nodes.map((comment) => (
-          <TaskCommentListItem key={comment.id} {...comment} />
-        ))}
-      {isCommentToReply && (
-        <TaskCommentForm {...{ textAreaRef, parentCommentId: id }} />
-      )}
+        replies.nodes.map(comment => <TaskCommentListItem key={comment.id} {...comment} />)}
+      {isCommentToReply && <TaskCommentForm {...{ textAreaRef, parentCommentId: id }} />}
     </div>
   );
 };

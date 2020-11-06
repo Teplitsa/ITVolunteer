@@ -4,7 +4,7 @@ import { useStoreActions } from "../../model/helpers/hooks";
 const MemberUploadCover: React.FunctionComponent = (): ReactElement => {
   const coverUploadInput = useRef<HTMLInputElement>(null);
   const uploadUserCoverRequest = useStoreActions(
-    (actions) => actions.components.memberAccount.uploadUserCoverRequest
+    actions => actions.components.memberAccount.uploadUserCoverRequest
   );
 
   const uploadCover = (event: SyntheticEvent<HTMLInputElement>) => {

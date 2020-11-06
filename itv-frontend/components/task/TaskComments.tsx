@@ -6,16 +6,12 @@ import TaskCommentForm from "./TaskCommentForm";
 import Loader from "../Loader";
 
 const TaskComments: React.FunctionComponent = (): ReactElement => {
-  const canUserReplyToComment = useStoreState(
-    (state) => state.session.canUserReplyToComment
-  );
+  const canUserReplyToComment = useStoreState(state => state.session.canUserReplyToComment);
   const {
     author: { fullName: authorName },
     comments,
-  } = useStoreState((state) => state.components.task);
-  const commentsRequest = useStoreActions(
-    (actions) => actions.components.task.commentsRequest
-  );
+  } = useStoreState(state => state.components.task);
+  const commentsRequest = useStoreActions(actions => actions.components.task.commentsRequest);
 
   useEffect(() => {
     commentsRequest();

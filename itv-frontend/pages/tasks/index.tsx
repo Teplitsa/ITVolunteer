@@ -1,6 +1,6 @@
 import { ReactElement, useEffect, memo } from "react";
 import { GetServerSideProps } from "next";
-import {useRouter} from 'next/router';
+import { useRouter } from "next/router";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import TaskListStats from "../../components/task-list/TaskListStats";
@@ -10,13 +10,11 @@ import { ITaskListModel } from "../../model/model.typing";
 import * as utils from "../../utilities/utilities";
 import { regEvent } from "../../utilities/ga-events";
 
-const TaskListPage: React.FunctionComponent<ITaskListModel> = (
-  taskList
-): ReactElement => {
+const TaskListPage: React.FunctionComponent<ITaskListModel> = (): ReactElement => {
   const router = useRouter();
-  
+
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   return (
@@ -39,19 +37,19 @@ const TaskListPage: React.FunctionComponent<ITaskListModel> = (
 };
 
 const fetchTasksList = async () => {
-  let action = 'get-task-list'  
-  let res = await fetch(utils.getAjaxUrl(action), {
-    method: 'post',
-  })
+  const action = "get-task-list";
+  const res = await fetch(utils.getAjaxUrl(action), {
+    method: "post",
+  });
 
   try {
-    let result = await res.json()
-    return result.taskList      
-  } catch(ex) {
-    console.log("fetch task list failed")
-    return []
+    const result = await res.json();
+    return result.taskList;
+  } catch (ex) {
+    console.log("fetch task list failed");
+    return [];
   }
-}
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const { default: withAppAndEntrypointModel } = await import(
@@ -65,9 +63,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
       first: 10,
       after: null,
     },
-    componentModel: async (request, componentData) => {
-      const items = await fetchTasksList()
-      return ["taskList", {items: items}];
+    componentModel: async () => {
+      const items = await fetchTasksList();
+      return ["taskList", { items: items }];
     },
   });
 

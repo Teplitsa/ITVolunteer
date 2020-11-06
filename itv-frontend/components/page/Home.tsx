@@ -1,25 +1,21 @@
-import { ReactElement, useState, useEffect, useRef, Fragment } from "react";
+import { ReactElement, useEffect, Fragment } from "react";
 import Link from "next/link";
-import {useRouter} from 'next/router'
+import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
 
 import NewsList from "../news/NewsList";
 import { TaskListItemHome } from "../task-list/TaskListItem";
-import {
-  ITaskState
-} from "../../model/model.typing";
-import { regEvent } from "../../utilities/ga-events"
-
-import headerImage from "../../assets/img/home-head-pic.svg";
+import { ITaskState } from "../../model/model.typing";
+import { regEvent } from "../../utilities/ga-events";
 
 const Home: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const homePage = useStoreState((state) => state.components.homePage);
-  const { title, content } = useStoreState((state) => state.components.homePage);
-  const { isLoggedIn } = useStoreState((state) => state.session);
+  const homePage = useStoreState(state => state.components.homePage);
+  const { title, content } = useStoreState(state => state.components.homePage);
+  const { isLoggedIn } = useStoreState(state => state.session);
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   return (
@@ -31,9 +27,14 @@ const Home: React.FunctionComponent = (): ReactElement => {
             <div className="home-header__cta-text" dangerouslySetInnerHTML={{ __html: content }} />
             <div className="home-header__actions">
               <Link href={isLoggedIn ? "/task-actions" : "/login"}>
-                <a className="home-header__action-primary" onClick={(e) => {
-                    regEvent('hp_new_task', router);
-                  }}>Создать задачу</a>            
+                <a
+                  className="home-header__action-primary"
+                  onClick={() => {
+                    regEvent("hp_new_task", router);
+                  }}
+                >
+                  Создать задачу
+                </a>
               </Link>
               <Link href={"/about"}>
                 <a className="home-header__action-secondary">Как это работает</a>
@@ -51,20 +52,28 @@ const Home: React.FunctionComponent = (): ReactElement => {
         <div className="home-section-inner">
           <div className="home-stats__content">
             <div className="home-stats__list">
-            {[
-              {value: homePage.stats?.publish, title: "Задачи ожидают волонтеров", status: 'publish'},
-              {value: homePage.stats?.in_work, title: "Задачи сейчас в работе", status: 'in_work'},
-              {value: homePage.stats?.closed, title: "Решеных задач", status: 'closed'},
-            ].map((statsItem, index) => {
-              return (
-                <Link href={`/tasks/${statsItem.status}/`} key={`home-stats-item-${index}`}>
-                  <a className="home-stats__item">
-                    <div className="home-stats__item-value">{statsItem.value}</div>
-                    <div className="home-stats__item-title">{statsItem.title}</div>
-                  </a>
-                </Link>
-              )
-            })}
+              {[
+                {
+                  value: homePage.stats?.publish,
+                  title: "Задачи ожидают волонтеров",
+                  status: "publish",
+                },
+                {
+                  value: homePage.stats?.in_work,
+                  title: "Задачи сейчас в работе",
+                  status: "in_work",
+                },
+                { value: homePage.stats?.closed, title: "Решеных задач", status: "closed" },
+              ].map((statsItem, index) => {
+                return (
+                  <Link href={`/tasks/${statsItem.status}/`} key={`home-stats-item-${index}`}>
+                    <a className="home-stats__item">
+                      <div className="home-stats__item-value">{statsItem.value}</div>
+                      <div className="home-stats__item-title">{statsItem.title}</div>
+                    </a>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -77,24 +86,27 @@ const Home: React.FunctionComponent = (): ReactElement => {
               {homePage.taskList.map((task, index) => (
                 <Fragment key={`home-taskListItem-${task.id}-${index}`}>
                   <div className={`task-body-wrapper index-${index % 2}`}>
-                    <TaskListItemHome                    
-                      {...(task as ITaskState)}
-                    />
+                    <TaskListItemHome {...(task as ITaskState)} />
                   </div>
-                  {!!(index % 2) &&
+                  {!!(index % 2) && (
                     <div className="task-list-item-separator">
                       <div className="task-list-item-separator__line" />
                     </div>
-                  }
+                  )}
                 </Fragment>
               ))}
             </div>
           </div>
           <div className="home-list-section__footer">
             <Link href={"/tasks"}>
-              <a className="home-list-section__footer-link" onClick={(e) => {
-                regEvent('hp_more_nav', router);
-              }}>Все задачи</a>
+              <a
+                className="home-list-section__footer-link"
+                onClick={() => {
+                  regEvent("hp_more_nav", router);
+                }}
+              >
+                Все задачи
+              </a>
             </Link>
           </div>
         </div>
@@ -116,22 +128,35 @@ const Home: React.FunctionComponent = (): ReactElement => {
         <div className="home-section-inner">
           <div className="home-footer__pic" />
           <div className="home-footer__cta">
-            <h2>Нужна помощь с созданием сайта, продвижением сайта в социальных сетях или созданием дизайна?</h2>
+            <h2>
+              Нужна помощь с созданием сайта, продвижением сайта в социальных сетях или созданием
+              дизайна?
+            </h2>
             <div className="home-footer__cta-action">
-              {isLoggedIn &&
+              {isLoggedIn && (
                 <Link href="/task-actions">
-                  <a className="home-footer__action-primary" onClick={(e) => {
-                    regEvent('hp_ntask_bottom', router);
-                  }}>Создать задачу</a>            
+                  <a
+                    className="home-footer__action-primary"
+                    onClick={() => {
+                      regEvent("hp_ntask_bottom", router);
+                    }}
+                  >
+                    Создать задачу
+                  </a>
                 </Link>
-              }
-              {!isLoggedIn &&
+              )}
+              {!isLoggedIn && (
                 <Link href="/registration">
-                  <a className="home-footer__action-primary" onClick={(e) => {
-                    regEvent('hp_reg_bottom', router);
-                  }}>Зарегистрироваться</a>            
+                  <a
+                    className="home-footer__action-primary"
+                    onClick={() => {
+                      regEvent("hp_reg_bottom", router);
+                    }}
+                  >
+                    Зарегистрироваться
+                  </a>
                 </Link>
-              }
+              )}
             </div>
           </div>
         </div>

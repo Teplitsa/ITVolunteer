@@ -18,21 +18,19 @@ const PasekaPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const url: string = "/about-paseka";
+  const url = "/about-paseka";
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { uri: "about-paseka" },
     entrypointType: "page",
-    componentModel: async (request) => {
+    componentModel: async request => {
       const pasekaPageModel = await import("../model/components/paseka-model");
       const pasekaPageQuery = pasekaPageModel.graphqlQuery;
-      const { pageBy: component } = await request(
-        process.env.GraphQLServer,
-        pasekaPageQuery,
-        { uri: url }
-      );
+      const { pageBy: component } = await request(process.env.GraphQLServer, pasekaPageQuery, {
+        uri: url,
+      });
 
       return ["paseka", component];
     },

@@ -1,10 +1,9 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
-import {useRouter} from 'next/router'
-import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import { useRouter } from "next/router";
+import { useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
-import * as _ from "lodash";
 
-import { regEvent } from "../../utilities/ga-events"
+import { regEvent } from "../../utilities/ga-events";
 
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
@@ -13,37 +12,35 @@ const Registration: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
   deleteSnackbar: (message: ISnackbarMessage) => void;
-}> = ({ addSnackbar, clearSnackbar, deleteSnackbar }): ReactElement => {
-
+}> = ({ addSnackbar, clearSnackbar }): ReactElement => {
   // const { title, content } = useStoreState((state) => state.components.paseka);
-  const router = useRouter()
-  const formRef = useRef(null)
-  const register = useStoreActions((actions) => actions.session.register);
-  const [isAgree, setIsAgree] = useState({"pd": false, "mailing": false})
-  const [isSubmitAllowed, setIsSubmitAllowed] = useState(false)
-  const [registrationSuccessText, setRegistrationSuccessText] = useState("")
-  const [isRegistrationLoading, setIsRegistrationLoading ] = useState(false)
-  const [regFormData, setRegFormData] = useState(null)
+  const router = useRouter();
+  const formRef = useRef(null);
+  const register = useStoreActions(actions => actions.session.register);
+  const [isAgree, setIsAgree] = useState({ pd: false, mailing: false });
+  const [isSubmitAllowed, setIsSubmitAllowed] = useState(false);
+  const [registrationSuccessText, setRegistrationSuccessText] = useState("");
+  const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
+  const [regFormData, setRegFormData] = useState(null);
 
   useEffect(() => {
-    var allowed = true;
-    for(var k in isAgree) {
-
-      if(k === "mailing") {
+    let allowed = true;
+    for (const k in isAgree) {
+      if (k === "mailing") {
         continue;
       }
 
       allowed = allowed && !!isAgree[k];
     }
-    setIsSubmitAllowed(allowed)
+    setIsSubmitAllowed(allowed);
   }, [isAgree]);
 
-  function toggleAgree(e, agreeName) {
-    setIsAgree({...isAgree, ...{[agreeName]: !isAgree[agreeName]}});
+  function toggleAgree(agreeName) {
+    setIsAgree({ ...isAgree, ...{ [agreeName]: !isAgree[agreeName] } });
   }
 
   function registrationSuccessCallback(message) {
-    setRegistrationSuccessText(message)
+    setRegistrationSuccessText(message);
     setIsRegistrationLoading(false);
   }
 
@@ -59,7 +56,7 @@ const Registration: React.FunctionComponent<{
     let isValid = true;
     clearSnackbar();
 
-    if(!formData.get("first_name") || !formData.get("first_name").trim()) {
+    if (!formData.get("first_name") || !formData.get("first_name").trim()) {
       isValid = false;
       addSnackbar({
         context: "error",
@@ -67,7 +64,7 @@ const Registration: React.FunctionComponent<{
       });
     }
 
-    if(!formData.get("last_name") || !formData.get("last_name").trim()) {
+    if (!formData.get("last_name") || !formData.get("last_name").trim()) {
       isValid = false;
       addSnackbar({
         context: "error",
@@ -84,17 +81,16 @@ const Registration: React.FunctionComponent<{
     }
 
     console.log("form:", [...formData.entries()]);
-    console.log("pass:", formData.get("pass"))
+    console.log("pass:", formData.get("pass"));
 
-    if(!formData.get("pass") || !formData.get("pass").trim()) {
+    if (!formData.get("pass") || !formData.get("pass").trim()) {
       console.log("invalid password!!!");
       isValid = false;
       addSnackbar({
         context: "error",
         text: "Введите пароль",
       });
-    }
-    else if(formData.get("pass") != formData.get("passRepeat")) {
+    } else if (formData.get("pass") != formData.get("passRepeat")) {
       isValid = false;
       addSnackbar({
         context: "error",
@@ -108,25 +104,25 @@ const Registration: React.FunctionComponent<{
   function handleSubmit(e) {
     e.preventDefault();
 
-    if(!formRef) {
-      return
+    if (!formRef) {
+      return;
     }
 
-    if(!isSubmitAllowed) {
-      return
+    if (!isSubmitAllowed) {
+      return;
     }
 
-    regEvent('reg_reg', router);
+    regEvent("reg_reg", router);
 
-    var formData = new FormData(formRef.current);
+    const formData = new FormData(formRef.current);
     setRegFormData(formData);
 
-    if(validateFormData(formData)) {
+    if (validateFormData(formData)) {
       setIsRegistrationLoading(true);
       register({
-        formData, 
-        successCallbackFn: registrationSuccessCallback, 
-        errorCallbackFn: registrationErrorCallback
+        formData,
+        successCallbackFn: registrationSuccessCallback,
+        errorCallbackFn: registrationErrorCallback,
       });
     }
   }
@@ -135,57 +131,127 @@ const Registration: React.FunctionComponent<{
     <div className="auth-page__illustration-container">
       <div className="auth-page__content auth-page__registration">
         <h1 className="auth-page__title">Регистрация</h1>
-        {(!registrationSuccessText || isRegistrationLoading) &&
-        <p className="auth-page__subtitle">IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и хорошо смотрятся в портфолио! Вы можете помочь?</p>
-        }
+        {(!registrationSuccessText || isRegistrationLoading) && (
+          <p className="auth-page__subtitle">
+            IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и
+            хорошо смотрятся в портфолио! Вы можете помочь?
+          </p>
+        )}
         <div className="auth-page__ornament-container">
-          {!!isRegistrationLoading &&
-            <div className="auth-page__loading"><div className="spinner-border" role="status"></div></div>
-          }
-          {!!registrationSuccessText && !isRegistrationLoading &&
-            <div className="auth-page__success-text" dangerouslySetInnerHTML={{ __html: registrationSuccessText }} />
-          }
-          {!registrationSuccessText && !isRegistrationLoading &&
-          <form action="" method="post" className="auth-page-form" onSubmit={handleSubmit} ref={formRef}>
-            <div className="auth-page-form__group">
-              <label className="auth-page-form__label">Ваше имя</label>
-              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="first_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("first_name") : ""} />
-            </div>        
-            <div className="auth-page-form__group">
-              <label className="auth-page-form__label">Фамилия</label>
-              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="text" name="last_name" maxLength={50} placeholder="" defaultValue={regFormData ? regFormData.get("last_name") : ""} />
-            </div>        
-            <div className="auth-page-form__group">
-              <label className="auth-page-form__label">E-mail</label>
-              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="email" name="email" maxLength={50} placeholder="" autoComplete="email" defaultValue={regFormData ? regFormData.get("email") : ""} />
-            </div>        
-            <div className="auth-page-form__splitter"><div/></div>
-            <div className="auth-page-form__group">
-              <label className="auth-page-form__label">Пароль</label>
-              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="pass" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("pass") : ""} />
-            </div>        
-            <div className="auth-page-form__group">
-              <label className="auth-page-form__label">Повторить пароль</label>
-              <input className="form__control_input form__control_full-width auth-page-form__control-input" type="password" name="passRepeat" maxLength={50} placeholder="" autoComplete="new-password" defaultValue={regFormData ? regFormData.get("passRepeat") : ""} />
-            </div>        
-            <div className="auth-page-form__splitter"><div/></div>
-            <div className="auth-page-form__group">
-              <div className="auth-page-form__control-checkbox" onClick={(e) => toggleAgree(e, "mailing")}>
-                <img src={isAgree["mailing"] ? checkboxOn : checkboxOff} />
-                <label className="auth-page-form__label" htmlFor="agreeGetNews">Вы согласны получать новости сервиса раз в месяц</label>
+          {!!isRegistrationLoading && (
+            <div className="auth-page__loading">
+              <div className="spinner-border" role="status"></div>
+            </div>
+          )}
+          {!!registrationSuccessText && !isRegistrationLoading && (
+            <div
+              className="auth-page__success-text"
+              dangerouslySetInnerHTML={{ __html: registrationSuccessText }}
+            />
+          )}
+          {!registrationSuccessText && !isRegistrationLoading && (
+            <form
+              action=""
+              method="post"
+              className="auth-page-form"
+              onSubmit={handleSubmit}
+              ref={formRef}
+            >
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Ваше имя</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="text"
+                  name="first_name"
+                  maxLength={50}
+                  placeholder=""
+                  defaultValue={regFormData ? regFormData.get("first_name") : ""}
+                />
               </div>
-            </div>        
-            <div className="auth-page-form__group">
-              <div className="auth-page-form__control-checkbox" onClick={(e) => toggleAgree(e, "pd")}>
-                <img src={isAgree["pd"] ? checkboxOn : checkboxOff} />
-                <label className="auth-page-form__label" htmlFor="agreeGetNews">Я даю свое <a href="#">согласие</a> OOО "CПИРО" на обработку, в том числе автоматизированную, своих персональных данных в соответствии ...</label>
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Фамилия</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="text"
+                  name="last_name"
+                  maxLength={50}
+                  placeholder=""
+                  defaultValue={regFormData ? regFormData.get("last_name") : ""}
+                />
               </div>
-            </div>        
-            <div className="auth-page-form__group">
-              <button type="submit" className={`auth-page-form__control-submit ${isSubmitAllowed ? "" : "disabled"}`} onClick={handleSubmit}>Зарегистрироваться</button>
-            </div>        
-          </form>
-          }
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">E-mail</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="email"
+                  name="email"
+                  maxLength={50}
+                  placeholder=""
+                  autoComplete="email"
+                  defaultValue={regFormData ? regFormData.get("email") : ""}
+                />
+              </div>
+              <div className="auth-page-form__splitter">
+                <div />
+              </div>
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Пароль</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="password"
+                  name="pass"
+                  maxLength={50}
+                  placeholder=""
+                  autoComplete="new-password"
+                  defaultValue={regFormData ? regFormData.get("pass") : ""}
+                />
+              </div>
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Повторить пароль</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="password"
+                  name="passRepeat"
+                  maxLength={50}
+                  placeholder=""
+                  autoComplete="new-password"
+                  defaultValue={regFormData ? regFormData.get("passRepeat") : ""}
+                />
+              </div>
+              <div className="auth-page-form__splitter">
+                <div />
+              </div>
+              <div className="auth-page-form__group">
+                <div
+                  className="auth-page-form__control-checkbox"
+                  onClick={() => toggleAgree("mailing")}
+                >
+                  <img src={isAgree["mailing"] ? checkboxOn : checkboxOff} />
+                  <label className="auth-page-form__label" htmlFor="agreeGetNews">
+                    Вы согласны получать новости сервиса раз в месяц
+                  </label>
+                </div>
+              </div>
+              <div className="auth-page-form__group">
+                <div className="auth-page-form__control-checkbox" onClick={() => toggleAgree("pd")}>
+                  <img src={isAgree["pd"] ? checkboxOn : checkboxOff} />
+                  <label className="auth-page-form__label" htmlFor="agreeGetNews">
+                    Я даю свое <a href="#">согласие</a> OOО &quot;CПИРО&quot; на обработку, в том
+                    числе автоматизированную, своих персональных данных в соответствии ...
+                  </label>
+                </div>
+              </div>
+              <div className="auth-page-form__group">
+                <button
+                  type="submit"
+                  className={`auth-page-form__control-submit ${isSubmitAllowed ? "" : "disabled"}`}
+                  onClick={handleSubmit}
+                >
+                  Зарегистрироваться
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>

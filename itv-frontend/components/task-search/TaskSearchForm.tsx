@@ -36,7 +36,7 @@ const TaskSearchForm: React.FunctionComponent<{
           type="search"
           value={searchPhrase}
           onChange={typeIn}
-          onKeyUp={(event) => {
+          onKeyUp={event => {
             event.preventDefault();
             event.key === "Enter" && submit();
           }}
@@ -44,7 +44,7 @@ const TaskSearchForm: React.FunctionComponent<{
         <button
           className="search-form__control search-form__control_submit"
           type="button"
-          onClick={(event) => {
+          onClick={event => {
             event.preventDefault();
             submit();
           }}

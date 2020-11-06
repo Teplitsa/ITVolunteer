@@ -27,17 +27,13 @@ const textPageState: IPageState = {
   },
 };
 
-export const queriedFields = Object.keys(textPageState).map((key) => {
+export const queriedFields = Object.keys(textPageState).map(key => {
   if (key === "seo") {
     return `${key} {
       ${Object.keys(textPageState.seo)
-        .map((imageKey) => {
+        .map(imageKey => {
           if (/\w+Image/.test(imageKey)) {
-            const imageProps: Array<string> = [
-              "sourceUrl",
-              "srcSet",
-              "altText",
-            ];
+            const imageProps: Array<string> = ["sourceUrl", "srcSet", "altText"];
             return `${imageKey} {
             ${imageProps.join("\n")}
           }`;
@@ -53,7 +49,7 @@ export const queriedFields = Object.keys(textPageState).map((key) => {
 export const withPostType = ({
   postType,
   fields = queriedFields.join("\n"),
-  queryVar = "slug"
+  queryVar = "slug",
 }: {
   postType: PostType;
   fields?: string;
@@ -74,7 +70,7 @@ export const graphqlQuery = {
 };
 
 const textPageActions: IPageActions = {
-  initializeState: action((prevState) => {
+  initializeState: action(prevState => {
     Object.assign(prevState, textPageState);
   }),
   setState: action((prevState, newState) => {

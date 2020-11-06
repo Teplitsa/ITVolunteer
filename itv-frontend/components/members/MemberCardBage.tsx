@@ -4,20 +4,20 @@ import MemberAvatar from "../MemberAvatar";
 
 const MemberCardBage: React.FunctionComponent = (): ReactElement => {
   const avatarUploadInput = useRef<HTMLInputElement>(null);
-  const isAccountOwner = useStoreState((store) => store.session.isAccountOwner);
+  const isAccountOwner = useStoreState(store => store.session.isAccountOwner);
   const {
     itvAvatar: memberAvatar,
     name: memberName,
     fullName: memberFullName,
     organizationName,
-  } = useStoreState((store) => store.components.memberAccount);
+  } = useStoreState(store => store.components.memberAccount);
   const uploadUserAvatarRequest = useStoreActions(
-    (actions) => actions.components.memberAccount.uploadUserAvatarRequest
+    actions => actions.components.memberAccount.uploadUserAvatarRequest
   );
 
   const uploadAvatar = (event: SyntheticEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files[0]) return;
-    const [mimeType, imageExtension] = event.currentTarget.files[0].type.match(
+    const [, /* mimeType */ imageExtension] = event.currentTarget.files[0].type.match(
       /image\/(\w+)/
     );
 
@@ -53,9 +53,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
         )}
       </div>
       <div className="member-card__name">{memberFullName}</div>
-      {organizationName && (
-        <div className="member-card__role">Представитель организации</div>
-      )}
+      {organizationName && <div className="member-card__role">Представитель организации</div>}
     </div>
   );
 };

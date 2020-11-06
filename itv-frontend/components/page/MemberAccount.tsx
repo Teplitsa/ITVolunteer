@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,18 +9,17 @@ import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
 import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
-import MemberAccountEmptyServiceShow from "../members/MemberAccountEmptyServiceShow";
-import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList"
+import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList";
 import { regEvent } from "../../utilities/ga-events";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
-  const isAccountOwner = useStoreState((state) => state.session.isAccountOwner);
-  const {cover: coverImage, isEmptyProfile, itvAvatar, username} = useStoreState(
-    (state) => state.components.memberAccount
+  const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
+  const { cover: coverImage, isEmptyProfile, itvAvatar, username } = useStoreState(
+    state => state.components.memberAccount
   );
   const { profileFillStatusRequest, getMemberTaskStatsRequest } = useStoreActions(
-    (actions) => actions.components.memberAccount
-  );  
+    actions => actions.components.memberAccount
+  );
   const router = useRouter();
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
@@ -32,19 +32,19 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   });
 
   useEffect(() => {
-    regEvent('ge_show_new_desing', router);
+    regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
 
   useEffect(() => {
-    if(!isAccountOwner) {
-      return
+    if (!isAccountOwner) {
+      return;
     }
 
     profileFillStatusRequest();
-  }, [isAccountOwner, coverImage, itvAvatar])
+  }, [isAccountOwner, coverImage, itvAvatar]);
 
   useEffect(() => {
-    if(!username) {
+    if (!username) {
       return;
     }
 
@@ -80,25 +80,23 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
                 </div>
               </div>
             )}
-            {!isEmptyProfile &&
-              <Tabs />
-            }
-            {!!isEmptyProfile && isAccountOwner &&
+            {!isEmptyProfile && <Tabs />}
+            {!!isEmptyProfile && isAccountOwner && (
               <>
-              <MemberAccountNeedAttention />
-              {/* <MemberAccountEmptyServiceShow /> */}
-              <MemberAccountEmptyTaskList />
+                <MemberAccountNeedAttention />
+                {/* <MemberAccountEmptyServiceShow /> */}
+                <MemberAccountEmptyTaskList />
               </>
-            }
-            {!!isEmptyProfile && !isAccountOwner &&
+            )}
+            {!!isEmptyProfile && !isAccountOwner && (
               <div className="member-account-null__empty-section guest-view">
                 <div className="empty-section__content">
                   <p>К сожалению, пользователь пока не совершил действий на платформе.</p>
                   <p>Мы очень надеемся, что скоро это изменится</p>
                 </div>
               </div>
-            }
-            </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
