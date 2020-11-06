@@ -4,6 +4,8 @@ import ReviewerCardSmall from "./ReviewerCardSmall";
 import ReviewRatingSmall from "./ReviewRatingSmall";
 import { getTheIntervalToNow } from "../utilities/utilities";
 
+const maxExcerptLength: number = 300;
+
 const ReviewCard: React.FunctionComponent<IMemberReview> = (
   review
 ): ReactElement => {
@@ -22,10 +24,10 @@ const ReviewCard: React.FunctionComponent<IMemberReview> = (
   };
 
   useEffect(() => {
-    if (excerptRef.current.innerHTML.length > 109) {
+    if (excerptRef.current.innerHTML.length > maxExcerptLength) {
       excerptRef.current.innerHTML = `${excerptRef.current.innerHTML.substr(
         0,
-        109
+        maxExcerptLength
       )}…`;
     } else {
       setFullDescription(true);
