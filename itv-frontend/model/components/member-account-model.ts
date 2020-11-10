@@ -6,7 +6,6 @@ import {
   IMemberAccountPageThunks,
   IFetchResult,
   IMemberReview,
-  IMemberTaskCard,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import storeJsLocalStorage from "store";
@@ -68,8 +67,8 @@ export const graphqlQuery: {
   member: `query getMember($username: ID!) {
     user(id: $username, idType: USERNAME) {
       ${Object.keys(memberAccountPageState).filter(
-        (key) => !["tasks", "reviews", "memberTaskStats", "profileFillStatus"].includes(key)
-      )}
+    key => !["tasks", "reviews", "memberTaskStats", "profileFillStatus"].includes(key)
+  )}
     }
   }`,
   memberTasks: `query getMemberTasks($username: String!, $page: Int!) {
@@ -112,7 +111,7 @@ export const graphqlQuery: {
 };
 
 const memberAccountPageActions: IMemberAccountPageActions = {
-  initializeState: action((prevState) => {
+  initializeState: action(prevState => {
     Object.assign(prevState, memberAccountPageState);
   }),
   setState: action((prevState, newState) => {
@@ -173,11 +172,9 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           body: formData,
         });
 
-        const {
-          status: responseStatus,
-          message: responseMessage,
-          imageUrl,
-        } = await (<Promise<IFetchResult>>result.json());
+        const { status: responseStatus, message: responseMessage, imageUrl } = await (<
+          Promise<IFetchResult>
+        >result.json());
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
         } else {
@@ -188,46 +185,41 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }
     }
   ),
-  uploadUserCoverRequest: thunk(
-    async ({ setCover }, { userCover }, { getStoreState }) => {
-      if (!userCover) return;
+  uploadUserCoverRequest: thunk(async ({ setCover }, { userCover }, { getStoreState }) => {
+    if (!userCover) return;
 
-      const {
-        session: { validToken: token },
-      } = getStoreState() as IStoreModel;
-      const action = "upload-user-cover";
-      const formData = new FormData();
+    const {
+      session: { validToken: token },
+    } = getStoreState() as IStoreModel;
+    const action = "upload-user-cover";
+    const formData = new FormData();
 
-      formData.append("user_cover", userCover);
-      formData.append("auth_token", String(token));
+    formData.append("user_cover", userCover);
+    formData.append("auth_token", String(token));
 
-      try {
-        const result = await fetch(getAjaxUrl(action), {
-          method: "post",
-          body: formData,
-        });
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
 
-        const {
-          status: responseStatus,
-          message: responseMessage,
-          imageUrl,
-        } = await (<Promise<IFetchResult>>result.json());
-        if (responseStatus === "fail") {
-          console.error(stripTags(responseMessage));
-        } else {
-          setCover(imageUrl);
-        }
-      } catch (error) {
-        console.error(error);
+      const { status: responseStatus, message: responseMessage, imageUrl } = await (<
+        Promise<IFetchResult>
+      >result.json());
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+      } else {
+        setCover(imageUrl);
       }
+    } catch (error) {
+      console.error(error);
     }
-  ),
+  }),
   getMemberTasksRequest: thunk(
     async ({ setTasksPage, showMoreTasks }, params, { getStoreState }) => {
       const {
         components: {
           memberAccount: {
-            name,
             username,
             tasks: { page },
           },
@@ -235,9 +227,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       } = getStoreState() as IStoreModel;
       const nextPage = page + 1;
       const { request } = await import("graphql-request");
-      const { graphqlQuery } = await import(
-        "../../model/components/member-account-model"
-      );
+      const { graphqlQuery } = await import("../../model/components/member-account-model");
 
       try {
         const { memberTasks: taskList } = await request(
@@ -258,43 +248,37 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }
     }
   ),
-  getMemberTaskStatsRequest: thunk(
-    async ({ setMemberTaskStats }, params, { getStoreState }) => {
-      const {
-        components: {
-          memberAccount: {
-            username: name,
-          },
-        },
-      } = getStoreState() as IStoreModel;
+  getMemberTaskStatsRequest: thunk(async ({ setMemberTaskStats }, params, { getStoreState }) => {
+    const {
+      components: {
+        memberAccount: { username: name },
+      },
+    } = getStoreState() as IStoreModel;
 
-      try {
-        const formData = new FormData();
-        formData.append("username", String(name));
+    try {
+      const formData = new FormData();
+      formData.append("username", String(name));
 
-        const action = "get-member-task-stats";
-        const result = await fetch(getAjaxUrl(action), {
-          method: "post",
-          body: formData,
-        });
+      const action = "get-member-task-stats";
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
 
-        const { status: responseStatus, data: stats } = await (<
-          Promise<{
-            status: string;
-            data?: any;
-          }>
-        >result.json());
+      const { status: responseStatus, data: stats } = await (<
+        Promise<{
+          status: string;
+          data?: any;
+        }>
+      >result.json());
 
-        if (responseStatus === "ok") {
-          setMemberTaskStats(stats);
-        }
-
-      } catch (error) {
-        console.error(error);
+      if (responseStatus === "ok") {
+        setMemberTaskStats(stats);
       }
-
+    } catch (error) {
+      console.error(error);
     }
-  ),
+  }),
   getMemberReviewsRequest: thunk(
     async ({ setReviewsPage, showMoreReviews }, params, { getStoreState }) => {
       const {
@@ -309,16 +293,10 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
 
       try {
         const result = await fetch(
-          `${getAjaxUrl(
-            "get-member-reviews"
-          )}${`&username=${username}&page=${nextPage}`}`
+          `${getAjaxUrl("get-member-reviews")}${`&username=${username}&page=${nextPage}`}`
         );
 
-        const {
-          status: responseStatus,
-          message: responseMessage,
-          data: responseData,
-        } = await (<
+        const { status: responseStatus, message: responseMessage, data: responseData } = await (<
           Promise<{
             status: string;
             message?: string;
@@ -336,85 +314,70 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }
     }
   ),
-  giveThanksRequest: thunk(
-    async ({ setThankyouCount }, params, { getStoreState }) => {
-      const {
-        session: { validToken: token },
-        components: {
-          memberAccount: { databaseId: toUid, thankyouCount },
-        },
-      } = getStoreState() as IStoreModel;
+  giveThanksRequest: thunk(async ({ setThankyouCount }, params, { getStoreState }) => {
+    const {
+      session: { validToken: token },
+      components: {
+        memberAccount: { databaseId: toUid, thankyouCount },
+      },
+    } = getStoreState() as IStoreModel;
 
-      const action = "thankyou";
-      const formData = new FormData();
+    const action = "thankyou";
+    const formData = new FormData();
 
-      formData.append("to-uid", String(toUid));
-      formData.append("auth_token", String(token));
+    formData.append("to-uid", String(toUid));
+    formData.append("auth_token", String(token));
 
-      try {
-        const result = await fetch(getAjaxUrl(action), {
-          method: "post",
-          body: formData,
-        });
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      });
 
-        const { status: responseStatus, message: responseMessage } = await (<
-          Promise<IFetchResult>
-        >result.json());
-        if (responseStatus === "fail") {
-          console.error(stripTags(responseMessage));
-        } else {
-          setThankyouCount(thankyouCount + 1);
-        }
-      } catch (error) {
-        console.error(error);
+      const { status: responseStatus, message: responseMessage } = await (<Promise<IFetchResult>>(
+        result.json()
+      ));
+      if (responseStatus === "fail") {
+        console.error(stripTags(responseMessage));
+      } else {
+        setThankyouCount(thankyouCount + 1);
       }
+    } catch (error) {
+      console.error(error);
     }
-  ),
-  profileFillStatusRequest: thunk(
-    async ({ setMemeberProfileFillStatus }, params, { getStoreState }) => {
-      const {
-        session: { validToken: token },
-        components: {
-          memberAccount: { databaseId: toUid, thankyouCount },
-        },
-      } = getStoreState() as IStoreModel;
+  }),
+  profileFillStatusRequest: thunk(async ({ setMemeberProfileFillStatus }) => {
+    const action = "get-member-profile-fill-status";
 
-      const action = "get-member-profile-fill-status";
+    try {
+      const result = await fetch(getAjaxUrl(action), {
+        method: "post",
+      });
 
-      try {
-        const result = await fetch(getAjaxUrl(action), {
-          method: "post",
-        });
-
-        const { status: responseStatus, message: responseMessage, data: profileFillStatus } = await (<
-          Promise<IFetchResult>
-        >result.json());
-        if (responseStatus === "error") {
-          console.error(stripTags(responseMessage));
-        } else {
-          setMemeberProfileFillStatus(profileFillStatus);
-        }
-      } catch (error) {
-        console.error(error);
+      const { status: responseStatus, message: responseMessage, data: profileFillStatus } = await (<
+        Promise<IFetchResult>
+      >result.json());
+      if (responseStatus === "error") {
+        console.error(stripTags(responseMessage));
+      } else {
+        setMemeberProfileFillStatus(profileFillStatus);
       }
+    } catch (error) {
+      console.error(error);
     }
-  ),
-  storeIsNeedAttentionPanelClosed: thunk(
-    async ({}, params, { getStoreState }) => {
+  }),
+  storeIsNeedAttentionPanelClosed: thunk(async (_, params, { getStoreState }) => {
+    const {
+      components: {
+        memberAccount: { isNeedAttentionPanelClosed, username },
+      },
+    } = getStoreState() as IStoreModel;
 
-      const {
-        components: {
-          memberAccount: { isNeedAttentionPanelClosed, username },
-        },
-      } = getStoreState() as IStoreModel;
-
-      await storeJsLocalStorage.set(
-        `account.${username}.isNeedAttentionPanelClosed`,
-        isNeedAttentionPanelClosed
-      );
-
-    }
-  ),      
+    await storeJsLocalStorage.set(
+      `account.${username}.isNeedAttentionPanelClosed`,
+      isNeedAttentionPanelClosed
+    );
+  }),
   loadIsNeedAttentionPanelClosed: thunk(
     async ({ setIsNeedAttentionPanelClosed }, params, { getStoreState }) => {
       const {
@@ -424,11 +387,11 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       } = getStoreState() as IStoreModel;
 
       const isClosed = await storeJsLocalStorage.get(
-        `account.${username}.isNeedAttentionPanelClosed`,
+        `account.${username}.isNeedAttentionPanelClosed`
       );
       setIsNeedAttentionPanelClosed(!!isClosed);
     }
-  ),      
+  ),
 };
 
 const memberAccountPageModel: IMemberAccountPageModel = {
