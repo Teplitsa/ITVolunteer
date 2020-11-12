@@ -50,7 +50,7 @@ try {
         ],
         'marketing' => [
             ['slug' => "contextual-ads", 'name' => "Контекстная реклама", 'old_terms' => ['kontekstnaya-reklama-2', 'marketing-i-reklama-2']],
-            ['slug' => "creative-campaigns", 'name' => "Креативные кампании", 'old_terms' => ['reklamnye-kampanii-planirovanie-2', 'nejming-2   ']],
+            ['slug' => "creative-campaigns", 'name' => "Креативные кампании", 'old_terms' => ['reklamnye-kampanii-planirovanie-2', 'nejming-2']],
             ['slug' => "crowdfunding", 'name' => "Краудфандинг",],
             ['slug' => "copywriting", 'name' => "Копирайтинг", 'old_terms' => ['kopirajting-2', 'teksty-2']],
             ['slug' => "targeting", 'name' => "Таргетинг", 'old_terms' => ['pr-2']],
@@ -82,7 +82,7 @@ try {
         array('slug' => "improve-urban", 'name' => "Улучшить городскую среду"),
         array('slug' => "save-nature", 'name' => "Спасти природу и животных", 'old_terms' => ['zhivotnye', 'ekologiya']),
         array('slug' => "make-world-fair", 'name' => "Сделать мир справедливее", 'old_terms' => ['meropriyatiya', 'prava-cheloveka']),
-        array('slug' => "system-solutions", 'name' => "Заниматься системными решениями", 'old_terms' => ['sotsialnoe-predprinimatelstvo', '']),
+        array('slug' => "system-solutions", 'name' => "Заниматься системными решениями", 'old_terms' => ['sotsialnoe-predprinimatelstvo']),
     ];
 
     $sub_level_terms = [

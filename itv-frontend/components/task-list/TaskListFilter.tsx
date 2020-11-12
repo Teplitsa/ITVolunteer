@@ -78,6 +78,27 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
   const router = useRouter();
 
+  function findCheckedItem(items, checkedSlug) {
+    let foundItem = null;
+    for(const i in items) {
+      const itemData = items[i];
+      // console.log("itemData.slug:", itemData.slug);
+
+      if(itemData.slug === checkedSlug) {
+        foundItem = itemData;
+      }
+      else {
+        foundItem = findCheckedItem(itemData.subterms, checkedSlug)
+      }
+
+      if(foundItem) {
+        break;
+      }
+    }
+
+    return foundItem;
+  }
+
   useEffect(() => {
     loadFilterData();
     loadTipClose();
@@ -99,10 +120,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
         // console.log("sectionData:", sectionData);
 
         if (sectionData.id === "tags") {
-          const foundItem = sectionData.items.find(itemData => {
-            return itemData.slug === match[1];
-          });
-
+          const foundItem = findCheckedItem(sectionData.items, match[1]);
           // console.log("foundItem:", foundItem);
 
           if (foundItem) {
@@ -135,10 +153,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
         // console.log("sectionData:", sectionData);
 
         if (sectionData.id === "ngo_tags") {
-          const foundItem = sectionData.items.find(itemData => {
-            return itemData.slug === match[1];
-          });
-
+          const foundItem = findCheckedItem(sectionData.items, match[1]);
           // console.log("foundItem:", foundItem);
 
           if (foundItem) {
