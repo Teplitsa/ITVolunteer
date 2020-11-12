@@ -1113,7 +1113,6 @@ export interface IWizardActions {
   setShowScreenHelpModalState?: Action<IWizardState, any>;
   resetWizard?: Action<IWizardState>;
   setNeedReset?: Action<IWizardState, boolean>;
-  setFormFieldPlaceholders?: Action<IWizardState, any>;
 }
 
 export interface IWizardThunks {
@@ -1140,6 +1139,7 @@ export interface ICreateTaskWizardActions extends IWizardActions {
   setTaskTagList: Action<ICreateTaskWizardState, Array<any>>;
   setNgoTagList: Action<ICreateTaskWizardState, Array<any>>;
   setHelpPageSlug: Action<ICreateTaskWizardState, string>;
+  setFormFieldPlaceholders?: Action<ICreateTaskWizardState, any>;
 }
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
