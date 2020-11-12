@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/tstsite\n"
-"POT-Creation-Date: 2020-09-04T06:31:57+00:00\n"
-"PO-Revision-Date: 2020-09-04 09:56+0200\n"
+"POT-Creation-Date: 2020-11-12T09:03:56+00:00\n"
+"PO-Revision-Date: 2020-11-12 11:07+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -177,7 +177,7 @@ msgid "Task status"
 msgstr "Статус задачи"
 
 # @ tst
-#: inc/admin.php:480 inc/post-types.php:31 inc/template-tasks.php:196
+#: inc/admin.php:480 inc/post-types.php:73 inc/template-tasks.php:196
 #: page-task-actions.php:174
 msgid "Reward"
 msgstr "Награда"
@@ -408,7 +408,7 @@ msgid "Enter numeric user xp inc value"
 msgstr "Введите положительное или отрицательное число!"
 
 # @ tst
-#: inc/customizer.php:17 inc/customizer.php:1008 inc/functions-general.php:203
+#: inc/customizer.php:17 inc/customizer.php:1019 inc/functions-general.php:203
 #: inc/itv_consult.php:431 inc/itv_consult.php:472 inc/itv_consult.php:532
 #: inc/itv_consult.php:589 inc/itv_log.php:621
 msgid "ITVounteer"
@@ -417,61 +417,64 @@ msgstr "it-волонтёр"
 # @ tst
 #: inc/customizer.php:68 inc/customizer.php:133 inc/customizer.php:189
 #: inc/customizer.php:224 inc/customizer.php:262 inc/customizer.php:287
-#: inc/customizer.php:298 inc/customizer.php:320 inc/customizer.php:404
-#: inc/customizer.php:460 inc/customizer.php:477 inc/customizer.php:540
-#: inc/customizer.php:560 inc/customizer.php:567 inc/customizer.php:633
-#: inc/customizer.php:668 inc/customizer.php:743 inc/customizer.php:782
-#: inc/customizer.php:787 inc/customizer.php:842 inc/customizer.php:904
+#: inc/customizer.php:298 inc/customizer.php:320 inc/customizer.php:405
+#: inc/customizer.php:461 inc/customizer.php:478 inc/customizer.php:541
+#: inc/customizer.php:561 inc/customizer.php:568 inc/customizer.php:634
+#: inc/customizer.php:669 inc/customizer.php:752 inc/customizer.php:793
+#: inc/customizer.php:798 inc/customizer.php:853 inc/customizer.php:915
 #: inc/functions-members.php:487 inc/functions-members.php:581
 #: inc/functions-members.php:668 inc/functions-members.php:1163
-#: inc/functions-members.php:1255 inc/functions-members.php:1424
-#: inc/functions-members.php:1502 inc/functions-members.php:1562
-#: inc/functions-tasks.php:520 inc/functions-tasks.php:600
-#: inc/functions-tasks.php:653 inc/functions-tasks.php:885
-#: inc/functions-tasks.php:967 inc/functions-tasks.php:1058
-#: inc/functions-tasks.php:1142 inc/functions-tasks.php:1209
-#: inc/functions-tasks.php:1220 inc/functions-tasks.php:1276
-#: inc/functions-tasks.php:1358 inc/functions-tasks.php:1399
+#: inc/functions-members.php:1255 inc/functions-members.php:1426
+#: inc/functions-members.php:1504 inc/functions-members.php:1564
+#: inc/functions-members.php:1646 inc/functions-members.php:1754
+#: inc/functions-tasks.php:520 inc/functions-tasks.php:601
+#: inc/functions-tasks.php:654 inc/functions-tasks.php:886
+#: inc/functions-tasks.php:968 inc/functions-tasks.php:1059
+#: inc/functions-tasks.php:1143 inc/functions-tasks.php:1268
+#: inc/functions-tasks.php:1279 inc/functions-tasks.php:1321
+#: inc/functions-tasks.php:1332 inc/functions-tasks.php:1391
+#: inc/functions-tasks.php:1473 inc/functions-tasks.php:1514
 msgid "<strong>Error:</strong> wrong data given."
 msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 #: inc/customizer.php:79 inc/customizer.php:144 inc/customizer.php:234
 #: inc/functions-members.php:499 inc/functions-members.php:593
 #: inc/functions-members.php:678 inc/functions-tasks.php:531
-#: inc/functions-tasks.php:611 inc/functions-tasks.php:918
-#: inc/functions-tasks.php:1000 inc/functions-tasks.php:1091
-#: inc/functions-tasks.php:1175 inc/functions-tasks.php:1376
-#: inc/functions-tasks.php:1417
+#: inc/functions-tasks.php:612 inc/functions-tasks.php:919
+#: inc/functions-tasks.php:1001 inc/functions-tasks.php:1092
+#: inc/functions-tasks.php:1176 inc/functions-tasks.php:1491
+#: inc/functions-tasks.php:1532
 msgid "<strong>Error:</strong> task not found."
 msgstr "<strong>Ошибка:</strong> задача не найден."
 
 #: inc/customizer.php:86 inc/customizer.php:93 inc/customizer.php:151
-#: inc/customizer.php:158 inc/customizer.php:574 inc/functions-members.php:506
+#: inc/customizer.php:158 inc/customizer.php:575 inc/functions-members.php:506
 #: inc/functions-members.php:600 inc/functions-members.php:618
-#: inc/functions-tasks.php:628 inc/functions-tasks.php:903
-#: inc/functions-tasks.php:925 inc/functions-tasks.php:985
-#: inc/functions-tasks.php:1007 inc/functions-tasks.php:1076
-#: inc/functions-tasks.php:1098 inc/functions-tasks.php:1160
-#: inc/functions-tasks.php:1182 inc/functions-tasks.php:1227
-#: inc/functions-tasks.php:1297 inc/functions-tasks.php:1317
-#: inc/functions-tasks.php:1337 inc/functions-tasks.php:1369
-#: inc/functions-tasks.php:1410 inc/user_notif.php:9 inc/user_notif.php:49
+#: inc/functions-members.php:1831 inc/functions-tasks.php:629
+#: inc/functions-tasks.php:904 inc/functions-tasks.php:926
+#: inc/functions-tasks.php:986 inc/functions-tasks.php:1008
+#: inc/functions-tasks.php:1077 inc/functions-tasks.php:1099
+#: inc/functions-tasks.php:1161 inc/functions-tasks.php:1183
+#: inc/functions-tasks.php:1286 inc/functions-tasks.php:1339
+#: inc/functions-tasks.php:1412 inc/functions-tasks.php:1432
+#: inc/functions-tasks.php:1452 inc/functions-tasks.php:1484
+#: inc/functions-tasks.php:1525 inc/user_notif.php:9 inc/user_notif.php:49
 msgid "<strong>Error:</strong> operation not permitted."
 msgstr "<strong>Ошибка:</strong> действие запрещено."
 
 # @ tst
-#: inc/customizer.php:717 inc/customizer.php:1125 inc/customizer.php:1149
+#: inc/customizer.php:724 inc/customizer.php:1136 inc/customizer.php:1160
 msgid "Your account is not active yet! Please check out your email."
 msgstr ""
 "Ваша учетная запись пока еще не активирована. Осталось совсем чуть-чуть! "
 "Пожалуйста, проверьте ваш email и следуйте инструкциям активационного письма."
 
-#: inc/customizer.php:721
+#: inc/customizer.php:728
 msgid "Your account is blocked till %s"
 msgstr "Ваша учетная запись заблокирована до %s"
 
 # @ tst
-#: inc/customizer.php:825
+#: inc/customizer.php:836
 msgid ""
 "Your registration is complete! Please check out the email you gave us for "
 "our activation message."
@@ -481,17 +484,17 @@ msgstr ""
 "следуя инструкциям в отправленном вам письме."
 
 # @ tst
-#: inc/customizer.php:847 inc/functions-members.php:360
+#: inc/customizer.php:858 inc/functions-members.php:360
 msgid "Email already exists!"
 msgstr "Данный email уже зарегистрирован."
 
 # @ tst
-#: inc/customizer.php:864 inc/functions-members.php:1518
+#: inc/customizer.php:875 inc/functions-members.php:1520
 msgid "We are very sorry :( Some error occured while updating your profile."
 msgstr "К сожалению, во время обновления вашего профиля произошла ошибка."
 
 # @ tst
-#: inc/customizer.php:889
+#: inc/customizer.php:900
 msgid ""
 "Your profile is successfully updated! <a href=\"%s\" class=\"alert-link"
 "\">View it</a>"
@@ -500,7 +503,7 @@ msgstr ""
 "\">Просмотреть</a>."
 
 # @ tst
-#: inc/customizer.php:926
+#: inc/customizer.php:937
 msgid ""
 "<strong>Error:</strong> something wrong happens when we deleted your "
 "account. We are already looking to it."
@@ -509,11 +512,11 @@ msgstr ""
 "эту проблему."
 
 # @ tst
-#: inc/customizer.php:955
+#: inc/customizer.php:966
 msgid "Your message has been sent! Thanks a lot :)"
 msgstr "Ваше сообщение отправлено! Спасибо вам :)"
 
-#: inc/customizer.php:994
+#: inc/customizer.php:1005
 msgid "itv_email_task_complete_message"
 msgstr ""
 "Еще одна задача выполнена: \n"
@@ -524,50 +527,50 @@ msgstr ""
 "\n"
 "Описание: {{task_content}}"
 
-#: inc/customizer.php:1004
+#: inc/customizer.php:1015
 msgid "itv_email_task_complete_subject"
 msgstr "Очередная задача выполнена"
 
 # @ tst
-#: inc/customizer.php:1090
+#: inc/customizer.php:1101
 msgid "Done"
 msgstr "Оказана"
 
 # @ tst
-#: inc/customizer.php:1093
+#: inc/customizer.php:1104
 msgid "Needed!"
 msgstr "Требуется!"
 
 # @ tst
-#: inc/customizer.php:1105
+#: inc/customizer.php:1116
 msgid "Te-st consulting"
 msgstr "Консультация"
 
-#: inc/customizer.php:1214
+#: inc/customizer.php:1225
 msgid "itv_week_day_0"
 msgstr "воскресенье"
 
-#: inc/customizer.php:1215
+#: inc/customizer.php:1226
 msgid "itv_week_day_1"
 msgstr "понедельник"
 
-#: inc/customizer.php:1216
+#: inc/customizer.php:1227
 msgid "itv_week_day_2"
 msgstr "вторник"
 
-#: inc/customizer.php:1217
+#: inc/customizer.php:1228
 msgid "itv_week_day_3"
 msgstr "среду"
 
-#: inc/customizer.php:1218
+#: inc/customizer.php:1229
 msgid "itv_week_day_4"
 msgstr "четверг"
 
-#: inc/customizer.php:1219
+#: inc/customizer.php:1230
 msgid "itv_week_day_5"
 msgstr "пятницу"
 
-#: inc/customizer.php:1220
+#: inc/customizer.php:1231
 msgid "itv_week_day_6"
 msgstr "субботу"
 
@@ -615,8 +618,8 @@ msgstr "Неизвестная роль"
 msgid "LogIn"
 msgstr "Войти"
 
-#: inc/functions-general.php:65 inc/functions-members.php:1401
-#: inc/functions-members.php:1408
+#: inc/functions-general.php:65 inc/functions-members.php:1403
+#: inc/functions-members.php:1410
 msgid "Unauthorized request."
 msgstr ""
 
@@ -654,14 +657,14 @@ msgstr ""
 "регистрацию позже."
 
 #: inc/functions-members.php:524 inc/functions-tasks.php:555
-#: inc/functions-tasks.php:635 inc/functions-tasks.php:910
-#: inc/functions-tasks.php:992 inc/functions-tasks.php:1083
-#: inc/functions-tasks.php:1167
+#: inc/functions-tasks.php:636 inc/functions-tasks.php:911
+#: inc/functions-tasks.php:993 inc/functions-tasks.php:1084
+#: inc/functions-tasks.php:1168
 msgid "<strong>Error:</strong> task doer not found."
 msgstr "<strong>Ошибка:</strong> исполнитель не найден."
 
 #: inc/functions-members.php:532 inc/functions-members.php:626
-#: inc/functions-tasks.php:643
+#: inc/functions-tasks.php:644
 msgid "<strong>Error:</strong> empty message."
 msgstr "<strong>Ошибка:</strong> введите текст отзыва."
 
@@ -903,156 +906,187 @@ msgstr "Все отзывы автора"
 msgid "User doer reviews count"
 msgstr "Все отзывы исполнителя"
 
+# @ tst
 #: inc/graphql.php:352
+#, fuzzy
+#| msgid "Total members count:"
+msgid "Total user reviews count"
+msgstr "Всего участников:"
+
+#: inc/graphql.php:359
 #, fuzzy
 #| msgid "Organization"
 msgid "User organization"
 msgstr "Организация"
 
-#: inc/graphql.php:359
+#: inc/graphql.php:366
 #, fuzzy
 #| msgid "Organization"
 msgid "User organization description"
 msgstr "Организация"
 
-#: inc/graphql.php:366
+#: inc/graphql.php:373
 #, fuzzy
 #| msgid "Organization"
 msgid "User organization logo src"
 msgstr "Организация"
 
-#: inc/graphql.php:373
+#: inc/graphql.php:380
 #, fuzzy
 #| msgid "Organization"
 msgid "User organization logo file"
 msgstr "Организация"
 
-#: inc/graphql.php:402
+#: inc/graphql.php:409
 #, fuzzy
 #| msgid "User Skype"
 msgid "User skype"
 msgstr "Skype"
 
 # @ tst
-#: inc/graphql.php:409
+#: inc/graphql.php:416
 #, fuzzy
 #| msgid "Twitter"
 msgid "User twitter"
 msgstr "Twitter"
 
 # @ tst
-#: inc/graphql.php:416
+#: inc/graphql.php:423
 #, fuzzy
 #| msgid "Facebook"
 msgid "User facebook"
 msgstr "Facebook"
 
-#: inc/graphql.php:423
+#: inc/graphql.php:430
 #, fuzzy
 #| msgid "User"
 msgid "User vk"
 msgstr "Пользователь"
 
 # @ tst
-#: inc/graphql.php:430
+#: inc/graphql.php:437
 #, fuzzy
 #| msgid "Username"
 msgid "User instagram"
 msgstr "Логин"
 
-#: inc/graphql.php:437
+#: inc/graphql.php:444
 msgid "User telegram"
 msgstr ""
 
-#: inc/graphql.php:444
+#: inc/graphql.php:451
 #, fuzzy
 #| msgid "User Skype"
 msgid "User phone"
 msgstr "Skype"
 
-#: inc/graphql.php:451
+#: inc/graphql.php:458
 #, fuzzy
 #| msgid "Organization"
 msgid "User rating"
 msgstr "Организация"
 
-#: inc/graphql.php:482
+#: inc/graphql.php:489
 #, fuzzy
 #| msgid "All doer reviews"
 msgid "User reviewsCount"
 msgstr "Все отзывы исполнителя"
 
-#: inc/graphql.php:491
+#: inc/graphql.php:498
 msgid "User thankyouCount"
 msgstr ""
 
-#: inc/graphql.php:498
+#: inc/graphql.php:505
 #, fuzzy
 #| msgid "User"
 msgid "User xp"
 msgstr "Пользователь"
 
-#: inc/graphql.php:505
+#: inc/graphql.php:512
 #, fuzzy
 #| msgid "Registration date"
 msgid "User registration date"
 msgstr "Регистрация"
 
-#: inc/graphql.php:512
+#: inc/graphql.php:519
 #, fuzzy
 #| msgid "Organization"
 msgid "User organization site"
 msgstr "Организация"
 
-#: inc/graphql.php:519
+#: inc/graphql.php:526 inc/graphql.php:535
 msgid "User solved problems"
 msgstr ""
 
 # @ tst
-#: inc/graphql.php:572 inc/post-types.php:221
+#: inc/graphql.php:586 inc/post-types.php:263
 msgid "Task doers"
 msgstr "Исполнители задачи"
 
-#: inc/graphql.php:609
+#: inc/graphql.php:623
 #, fuzzy
 #| msgid "Member avatar"
 msgid "ITV avatar"
 msgstr "Фотография"
 
-#: inc/graphql.php:617
+#: inc/graphql.php:631
 #, fuzzy
 #| msgid "Your name"
 msgid "Full name"
 msgstr "Ваше имя"
 
-#: inc/graphql.php:634 inc/graphql.php:646
+#: inc/graphql.php:647
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment liker"
+msgstr "Комментарии"
+
+#: inc/graphql.php:651
+msgid "The id of the liker"
+msgstr ""
+
+#: inc/graphql.php:655
+msgid "The name of the liker"
+msgstr ""
+
+#: inc/graphql.php:659
+msgid "The full name of the liker"
+msgstr ""
+
+#: inc/graphql.php:674 inc/graphql.php:686
 msgid "Comment likes count"
 msgstr ""
 
+#: inc/graphql.php:698
+#, fuzzy
+#| msgid "Comments"
+msgid "Comment likers"
+msgstr "Комментарии"
+
 # @ tst
 #. Template Name of the theme
-#: inc/graphql.php:689
+#: inc/graphql.php:733
 #, fuzzy
 #| msgid "Members"
 msgid "Member tasks"
 msgstr "Участники"
 
-#: inc/graphql.php:769
+#: inc/graphql.php:808
 msgid "User list statistics"
 msgstr ""
 
 # @ tst
-#: inc/graphql.php:773
+#: inc/graphql.php:812
 #, fuzzy
 #| msgid "Total members count:"
 msgid "Total user count"
 msgstr "Всего участников:"
 
-#: inc/graphql.php:789
+#: inc/graphql.php:828
 msgid "Get user list statistics"
 msgstr ""
 
-#: inc/graphql.php:822
+#: inc/graphql.php:861
 #, fuzzy
 #| msgid "User"
 msgid "User list"
@@ -1106,8 +1140,8 @@ msgstr "Поиск источников"
 msgid "Popular consult sources"
 msgstr "Популярные источники"
 
-#: inc/itv_consult.php:23 inc/itv_consult.php:56 inc/post-types.php:43
-#: inc/post-types.php:77 inc/post-types.php:149
+#: inc/itv_consult.php:23 inc/itv_consult.php:56 inc/post-types.php:85
+#: inc/post-types.php:119 inc/post-types.php:191
 msgid "Separate with commas"
 msgstr "Разделять запятыми"
 
@@ -1233,23 +1267,23 @@ msgid "No consults found in Trash"
 msgstr "Консультации не найдены."
 
 # @ tst
-#: inc/itv_consult.php:119 inc/itv_consult.php:122 inc/post-types.php:98
-#: inc/post-types.php:225
+#: inc/itv_consult.php:119 inc/itv_consult.php:122 inc/post-types.php:140
+#: inc/post-types.php:267
 msgid "Task"
 msgstr "Задача"
 
 # @ tst
-#: inc/itv_consult.php:123 inc/post-types.php:107 inc/post-types.php:226
+#: inc/itv_consult.php:123 inc/post-types.php:149 inc/post-types.php:268
 msgid "Search tasks"
 msgstr "Поиск задач"
 
-#: inc/itv_consult.php:124 inc/post-types.php:109
+#: inc/itv_consult.php:124 inc/post-types.php:151
 msgid "No tasks found"
 msgstr "Задачи не найдены"
 
 # @ tst
 #: inc/itv_consult.php:125 inc/itv_consult.php:131 inc/itv_consult.php:149
-#: inc/itv_consult.php:155 inc/post-types.php:228 inc/post-types.php:234
+#: inc/itv_consult.php:155 inc/post-types.php:270 inc/post-types.php:276
 msgid "Create connections"
 msgstr "Создать взаимосвязь"
 
@@ -1360,7 +1394,7 @@ msgid "Consult Date"
 msgstr "Время консультации"
 
 # @ tst
-#: inc/itv_consult.php:735 inc/post-types.php:104
+#: inc/itv_consult.php:735 inc/post-types.php:146
 msgid "Edit task"
 msgstr "Редактировать задачу"
 
@@ -2486,329 +2520,327 @@ msgstr "Ошибка: неверные данные!"
 msgid "user_xp_alert_%s_"
 msgstr "Спасибо за регистрацию! Вы заработали %s опыта."
 
-#: inc/post-types.php:30 inc/post-types.php:32
+#: inc/post-types.php:72 inc/post-types.php:74
 msgid "Rewards"
 msgstr "Награды"
 
-#: inc/post-types.php:33
+#: inc/post-types.php:75
 msgid "All Rewards"
 msgstr "Все награды"
 
-#: inc/post-types.php:34
+#: inc/post-types.php:76
 msgid "Edit reward"
 msgstr "Редактировать"
 
-#: inc/post-types.php:35
+#: inc/post-types.php:77
 msgid "View reward"
 msgstr "Просмотреть"
 
-#: inc/post-types.php:36
+#: inc/post-types.php:78
 msgid "Update reward"
 msgstr "Обновить"
 
-#: inc/post-types.php:37
+#: inc/post-types.php:79
 msgid "Add new reward"
 msgstr "Добавить новую награду"
 
-#: inc/post-types.php:38
+#: inc/post-types.php:80
 msgid "New reward name"
 msgstr "Наименование новой награды"
 
-#: inc/post-types.php:39
+#: inc/post-types.php:81
 msgid "Parent reward"
 msgstr "Родительская"
 
-#: inc/post-types.php:40
+#: inc/post-types.php:82
 msgid "Parent reward:"
 msgstr "Родительская:"
 
-#: inc/post-types.php:41
+#: inc/post-types.php:83
 msgid "Search rewards"
 msgstr "Поиск"
 
-#: inc/post-types.php:42
+#: inc/post-types.php:84
 msgid "Popular rewards"
 msgstr "Часто используемые"
 
-#: inc/post-types.php:44
+#: inc/post-types.php:86
 msgid "Add or remove reward"
 msgstr "Добавить или удалить награду"
 
-#: inc/post-types.php:45
+#: inc/post-types.php:87
 msgid "Choose from most used rewards"
 msgstr "Выбрать из часто используемых"
 
-#: inc/post-types.php:46
+#: inc/post-types.php:88
 msgid "Not found rewards"
 msgstr "Награды не найдены"
 
-#: inc/post-types.php:64 inc/post-types.php:66
+#: inc/post-types.php:106 inc/post-types.php:108
 #, fuzzy
 #| msgid "NPO Tag"
 msgid "NPO Tags"
 msgstr "Тема"
 
-#: inc/post-types.php:65
+#: inc/post-types.php:107
 msgid "NPO Tag"
 msgstr "Тема"
 
-#: inc/post-types.php:67
+#: inc/post-types.php:109
 msgid "All NPO Tags"
 msgstr "Все темы НКО"
 
-#: inc/post-types.php:68
+#: inc/post-types.php:110
 msgid "Edit NPO Tag"
 msgstr "Редактировать тему"
 
-#: inc/post-types.php:69
+#: inc/post-types.php:111
 msgid "View NPO Tag"
 msgstr "Смотреть"
 
-#: inc/post-types.php:70
+#: inc/post-types.php:112
 msgid "Update NPO Tag"
 msgstr "Обновить"
 
-#: inc/post-types.php:71
+#: inc/post-types.php:113
 msgid "Add new NPO Tag"
 msgstr "Добавить новую тему"
 
-#: inc/post-types.php:72
+#: inc/post-types.php:114
 msgid "New NPO Tag name"
 msgstr "Новая тема"
 
-#: inc/post-types.php:73
+#: inc/post-types.php:115
 msgid "Parent NPO Tag"
 msgstr "Родительская тема"
 
-#: inc/post-types.php:74
+#: inc/post-types.php:116
 msgid "Parent NPO Tag:"
 msgstr "Родительская тема:"
 
-#: inc/post-types.php:75
+#: inc/post-types.php:117
 msgid "Search NPO Tags"
 msgstr "Найти тему"
 
-#: inc/post-types.php:76
+#: inc/post-types.php:118
 msgid "Popular NPO Tags"
 msgstr "Популярные темы"
 
-#: inc/post-types.php:78
+#: inc/post-types.php:120
 msgid "Add or remove NPO Tag"
 msgstr "Добавить или удалить тему"
 
-#: inc/post-types.php:79
+#: inc/post-types.php:121
 msgid "Choose from most used NPO Tags"
 msgstr "Выберите из популярных тем"
 
-#: inc/post-types.php:80
+#: inc/post-types.php:122
 msgid "Not found NPO Tags"
 msgstr "Темы не найдены"
 
 # @ tst
-#: inc/post-types.php:97 inc/post-types.php:99 inc/post-types.php:222
+#: inc/post-types.php:139 inc/post-types.php:141 inc/post-types.php:264
 #: inc/template-members.php:758 partials/navbar.php:20
 msgid "Tasks"
 msgstr "Задачи"
 
-#: inc/post-types.php:100 inc/post-types.php:102
+#: inc/post-types.php:142 inc/post-types.php:144
 msgid "Add task"
 msgstr "Добавить задачу"
 
-#: inc/post-types.php:101
+#: inc/post-types.php:143
 msgid "Add new task"
 msgstr "Добавить новую"
 
 # @ tst
-#: inc/post-types.php:103 inc/template-general.php:41 partials/navbar.php:80
+#: inc/post-types.php:145 inc/template-general.php:41 partials/navbar.php:80
 msgid "New task"
 msgstr "Новая задача"
 
 # @ tst
-#: inc/post-types.php:105 page-member-tasks.php:89 page-member-tasks.php:115
+#: inc/post-types.php:147 page-member-tasks.php:89 page-member-tasks.php:115
 #: page-member-tasks.php:141
 msgid "View task"
 msgstr "Страница задачи"
 
 # @ tst
-#: inc/post-types.php:106 partials/content-member_single.php:284
+#: inc/post-types.php:148 partials/content-member_single.php:284
 #: partials/content-member_single.php:305
 msgid "All tasks"
 msgstr "Все задачи"
 
-#: inc/post-types.php:108
+#: inc/post-types.php:150
 msgid "Parent task"
 msgstr "Родительская"
 
-#: inc/post-types.php:110
+#: inc/post-types.php:152
 msgid "No tasks found in Trash"
 msgstr "В Корзине задачи не найдены"
 
-#: inc/post-types.php:136 inc/post-types.php:138
+#: inc/post-types.php:178 inc/post-types.php:180
 msgid "Help Categories"
 msgstr ""
 
-#: inc/post-types.php:137
+#: inc/post-types.php:179
 msgid "Help Category"
 msgstr ""
 
-#: inc/post-types.php:139
+#: inc/post-types.php:181
 msgid "All Help Categories"
 msgstr ""
 
-#: inc/post-types.php:140
+#: inc/post-types.php:182
 msgid "Edit Help Category"
 msgstr ""
 
-#: inc/post-types.php:141
+#: inc/post-types.php:183
 msgid "View Help Category"
 msgstr ""
 
-#: inc/post-types.php:142
+#: inc/post-types.php:184
 #, fuzzy
 #| msgid "Update reward"
 msgid "Update Help Category"
 msgstr "Обновить"
 
-#: inc/post-types.php:143
+#: inc/post-types.php:185
 #, fuzzy
 #| msgid "Add new reward"
 msgid "Add new Help Category"
 msgstr "Добавить новую награду"
 
-#: inc/post-types.php:144
+#: inc/post-types.php:186
 #, fuzzy
 #| msgid "New reward name"
 msgid "New Help Category name"
 msgstr "Наименование новой награды"
 
-#: inc/post-types.php:145
+#: inc/post-types.php:187
 #, fuzzy
 #| msgid "Parent reward"
 msgid "Parent Help Category"
 msgstr "Родительская"
 
-#: inc/post-types.php:146
+#: inc/post-types.php:188
 #, fuzzy
 #| msgid "Parent reward:"
 msgid "Parent Help Category:"
 msgstr "Родительская:"
 
-#: inc/post-types.php:147
+#: inc/post-types.php:189
 #, fuzzy
 #| msgid "Search rewards"
 msgid "Search Help Categories"
 msgstr "Поиск"
 
-#: inc/post-types.php:148
+#: inc/post-types.php:190
 #, fuzzy
 #| msgid "Popular rewards"
 msgid "Popular Help Categories"
 msgstr "Часто используемые"
 
-#: inc/post-types.php:150
+#: inc/post-types.php:192
 #, fuzzy
 #| msgid "Add or remove reward"
 msgid "Add or remove Help Category"
 msgstr "Добавить или удалить награду"
 
-#: inc/post-types.php:151
+#: inc/post-types.php:193
 #, fuzzy
 #| msgid "Choose from most used rewards"
 msgid "Choose from most used Help Categories"
 msgstr "Выбрать из часто используемых"
 
-#: inc/post-types.php:152
+#: inc/post-types.php:194
 #, fuzzy
 #| msgid "Not found rewards"
 msgid "Not found Help Categories"
 msgstr "Награды не найдены"
 
-#: inc/post-types.php:169 inc/post-types.php:170 inc/post-types.php:171
+#: inc/post-types.php:211 inc/post-types.php:212 inc/post-types.php:213
 msgid "Help"
 msgstr ""
 
-#: inc/post-types.php:172 inc/post-types.php:174
+#: inc/post-types.php:214 inc/post-types.php:216
 #, fuzzy
 #| msgid "Need help"
 msgid "Add help"
 msgstr "Помощь нужна"
 
-#: inc/post-types.php:173
-#, fuzzy
-#| msgid "Add new task"
+#: inc/post-types.php:215
 msgid "Add new"
 msgstr "Добавить новую"
 
-#: inc/post-types.php:175
+#: inc/post-types.php:217
 #, fuzzy
 #| msgid "Need help"
 msgid "New help"
 msgstr "Помощь нужна"
 
-#: inc/post-types.php:176
+#: inc/post-types.php:218
 #, fuzzy
 #| msgid "Need help"
 msgid "Edit help"
 msgstr "Помощь нужна"
 
-#: inc/post-types.php:177
+#: inc/post-types.php:219
 #, fuzzy
 #| msgid "Need help"
 msgid "View help"
 msgstr "Помощь нужна"
 
-#: inc/post-types.php:178
+#: inc/post-types.php:220
 msgid "All help"
 msgstr ""
 
 # @ tst
-#: inc/post-types.php:179
+#: inc/post-types.php:221
 #, fuzzy
 #| msgid "Search results"
 msgid "Search help"
 msgstr "Результаты поиска"
 
-#: inc/post-types.php:180
+#: inc/post-types.php:222
 #, fuzzy
 #| msgid "Parent reward"
 msgid "Parent help"
 msgstr "Родительская"
 
 # @ tst
-#: inc/post-types.php:181
+#: inc/post-types.php:223
 #, fuzzy
 #| msgid "No doers found."
 msgid "No help found"
 msgstr "Исполнители не найдены."
 
-#: inc/post-types.php:182
+#: inc/post-types.php:224
 #, fuzzy
 #| msgid "No tasks found in Trash"
 msgid "No help found in Trash"
 msgstr "В Корзине задачи не найдены"
 
 # @ tst
-#: inc/post-types.php:215
+#: inc/post-types.php:257
 msgid "Doer approved"
 msgstr "Исполнитель утвержден"
 
 # @ tst
-#: inc/post-types.php:227
+#: inc/post-types.php:269
 msgid "No tasks found."
 msgstr "Задачи не найдены."
 
 # @ tst
-#: inc/post-types.php:231
+#: inc/post-types.php:273
 msgid "Doer"
 msgstr "Исполнитель"
 
 # @ tst
-#: inc/post-types.php:232
+#: inc/post-types.php:274
 msgid "Search doers"
 msgstr "Поиск исполнителей"
 
 # @ tst
-#: inc/post-types.php:233
+#: inc/post-types.php:275
 msgid "No doers found."
 msgstr "Исполнители не найдены."
 
@@ -4328,6 +4360,178 @@ msgid ""
 "help."
 msgstr ""
 "Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
+
+# @ tst
+#: post-types/task_placeholder.php:9 post-types/task_placeholder.php:33
+msgid "Task placeholders"
+msgstr "Подсказки-плейсхолдеры"
+
+#: post-types/task_placeholder.php:10
+msgid "Task placeholder"
+msgstr "Подсказки-плейсхолдеры"
+
+# @ tst
+#: post-types/task_placeholder.php:11
+msgid "All Task placeholders"
+msgstr "Все подсказки-плейсхолдеры"
+
+#: post-types/task_placeholder.php:12
+#, fuzzy
+#| msgid "Task status become archived"
+msgid "Task placeholder Archives"
+msgstr "перемещена в архив"
+
+#: post-types/task_placeholder.php:13
+msgid "Task placeholder Attributes"
+msgstr ""
+
+#: post-types/task_placeholder.php:14
+msgid "Insert into task placeholder"
+msgstr ""
+
+#: post-types/task_placeholder.php:15
+msgid "Uploaded to this task placeholder"
+msgstr ""
+
+#: post-types/task_placeholder.php:16
+msgctxt "task_placeholder"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/task_placeholder.php:17
+msgctxt "task_placeholder"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/task_placeholder.php:18
+msgctxt "task_placeholder"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/task_placeholder.php:19
+msgctxt "task_placeholder"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/task_placeholder.php:20
+msgid "Filter task placeholders list"
+msgstr ""
+
+#: post-types/task_placeholder.php:21
+msgid "Task placeholders list navigation"
+msgstr ""
+
+#: post-types/task_placeholder.php:22
+msgid "Task placeholders list"
+msgstr ""
+
+#: post-types/task_placeholder.php:23
+msgid "New Task placeholder"
+msgstr ""
+
+#: post-types/task_placeholder.php:24
+msgid "Add New"
+msgstr "Добавить новую"
+
+#: post-types/task_placeholder.php:25
+msgid "Add New Task placeholder"
+msgstr ""
+
+#: post-types/task_placeholder.php:26
+msgid "Edit Task placeholder"
+msgstr ""
+
+# @ tst
+#: post-types/task_placeholder.php:27
+#, fuzzy
+#| msgid "View Task"
+msgid "View Task placeholder"
+msgstr "Просмотреть задачу"
+
+#: post-types/task_placeholder.php:28
+msgid "View Task placeholders"
+msgstr ""
+
+# @ tst
+#: post-types/task_placeholder.php:29
+#, fuzzy
+#| msgid "Search tasks"
+msgid "Search task placeholders"
+msgstr "Поиск задач"
+
+#: post-types/task_placeholder.php:30
+#, fuzzy
+#| msgid "No tasks found"
+msgid "No task placeholders found"
+msgstr "Задачи не найдены"
+
+#: post-types/task_placeholder.php:31
+#, fuzzy
+#| msgid "No tasks found in Trash"
+msgid "No task placeholders found in trash"
+msgstr "В Корзине задачи не найдены"
+
+#: post-types/task_placeholder.php:32
+msgid "Parent Task placeholder:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/task_placeholder.php:67
+msgid ""
+"Task placeholder updated. <a target=\"_blank\" href=\"%s\">View task "
+"placeholder</a>"
+msgstr ""
+
+#: post-types/task_placeholder.php:68
+msgid "Custom field updated."
+msgstr ""
+
+#: post-types/task_placeholder.php:69
+msgid "Custom field deleted."
+msgstr ""
+
+#: post-types/task_placeholder.php:70
+msgid "Task placeholder updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/task_placeholder.php:72
+msgid "Task placeholder restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/task_placeholder.php:74
+msgid "Task placeholder published. <a href=\"%s\">View task placeholder</a>"
+msgstr ""
+
+#: post-types/task_placeholder.php:75
+msgid "Task placeholder saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/task_placeholder.php:77
+msgid ""
+"Task placeholder submitted. <a target=\"_blank\" href=\"%s\">Preview task "
+"placeholder</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/task_placeholder.php:79
+msgid ""
+"Task placeholder scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" "
+"href=\"%2$s\">Preview task placeholder</a>"
+msgstr ""
+
+#: post-types/task_placeholder.php:80
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/task_placeholder.php:82
+msgid ""
+"Task placeholder draft updated. <a target=\"_blank\" href=\"%s\">Preview "
+"task placeholder</a>"
+msgstr ""
 
 # @ tst
 #: searchform.php:16

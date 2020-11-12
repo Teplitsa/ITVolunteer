@@ -1,4 +1,4 @@
-import { action, thunk } from "easy-peasy";
+import { action, thunk, computed } from "easy-peasy";
 import * as _ from "lodash";
 import moment from "moment";
 
@@ -35,6 +35,8 @@ const createTaskWizardState: ICreateTaskWizardState = {
   taskTagList: [],
   ngoTagList: [],
   helpPageSlug: "",
+  formFieldPlaceholders: {},
+  getRandomPlaceholder: computed([state => state.formFieldPlaceholders], userId => Boolean(userId)),
 };
 
 const createTaskWizardActions: ICreateTaskWizardActions = {
@@ -74,6 +76,9 @@ const createTaskWizardActions: ICreateTaskWizardActions = {
   }),
   setHelpPageSlug: action((state, payload) => {
     state.helpPageSlug = payload;
+  }),
+  setFormFieldPlaceholders: action((state, payload) => {
+    state.formFieldPlaceholders = payload;
   }),
 };
 
@@ -125,6 +130,30 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
           actions.setTaskTagList(result.data.taskTagList);
           actions.setNgoTagList(result.data.ngoTagList);
           actions.setRewardList(result.data.rewardList);
+        },
+        error => {
+          utils.showAjaxError({ action, error });
+        }
+      );
+  }),
+  formFieldPlaceholdersRequest: thunk(async actions => {
+    const route = "/itv/v1/task/form-placeholders";
+    console.log("formFieldPlaceholdersRequest:", utils.getRestApiUrl(route));
+
+    fetch(utils.getRestApiUrl(route), {
+      method: "get",
+    })
+      .then(res => {
+        try {
+          return res.json();
+        } catch (ex) {
+          utils.showAjaxError({ action, error: ex });
+          return {};
+        }
+      })
+      .then(
+        (result: any) => {
+          actions.setFormFieldPlaceholders(result);
         },
         error => {
           utils.showAjaxError({ action, error });

@@ -214,6 +214,7 @@ require get_template_directory().'/inc/customizer.php';
 //require get_template_directory().'/inc/extras.php';
 require get_template_directory().'/inc/user_profile.php';
 require get_template_directory().'/inc/post-types.php';
+require get_template_directory().'/post-types/task_placeholder.php';
 
 require_once get_template_directory().'/inc/itv_log.php';
 require_once get_template_directory().'/inc/itv_site_stats.php';
@@ -235,6 +236,7 @@ require_once get_template_directory() . '/inc/models/ThankyouModel.php';
 require_once get_template_directory() . '/inc/models/MailSendLogModel.php';
 require_once get_template_directory() . '/inc/models/ResultScreenshots.php';
 require_once get_template_directory() . '/inc/models/UserBlockModel.php';
+require_once get_template_directory() . '/inc/models/TaskFormPlaceholders.php';
 
 // grapql
 require get_template_directory().'/inc/graphql.php';
@@ -245,3 +247,11 @@ require_once(get_template_directory() . '/inc/models/UserNotif.php');
 // task list filter
 require_once( get_template_directory().'/inc/task_list_filter.php' );
 require_once( get_template_directory().'/inc/shortcodes.php' );
+
+// rest-api
+require_once( get_template_directory().'/rest-api/task/form-placeholders.php' );
+
+// wp-cli
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+    require_once( get_template_directory() . '/wp-cli/setup_task_form_placeholders.php' );
+}

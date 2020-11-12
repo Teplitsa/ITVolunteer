@@ -86,11 +86,11 @@ const Wizard: React.FunctionComponent<any> = ({
       {Children.map(children, (child, index) => {
         return step === index
           ? cloneElement(child, {
-              ...screenProps,
-              ...props,
-              visibleStep,
-              visibleStepsCount,
-            })
+            ...screenProps,
+            ...props,
+            visibleStep,
+            visibleStepsCount,
+          })
           : null;
       })}
     </>

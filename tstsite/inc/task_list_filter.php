@@ -24,7 +24,7 @@ class TaskListFilter {
             ];
         }, array_values(get_terms([
             'taxonomy' => $tax,
-            'hide_empty' => false,
+            'hide_empty' => boolval($parent_id) ? true : false,
             'hierarchical' => true,
             'parent' => $parent_id, 
         ])));        

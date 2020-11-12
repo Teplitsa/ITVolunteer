@@ -45,6 +45,9 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   const setWizardName = useStoreActions(
     actions => actions.components.createTaskWizard.setWizardName
   );
+  const formFieldPlaceholdersRequest = useStoreActions(
+    actions => actions.components.createTaskWizard.formFieldPlaceholdersRequest
+  );
 
   const [isPreventReset, setIsPreventReset] = useState(false);
   const isNeedReset = useStoreState(state => state.components.createTaskWizard.isNeedReset);
@@ -59,6 +62,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     setWizardName("createTaskWizard");
     loadTaxonomyData();
     loadWizardData();
+    formFieldPlaceholdersRequest();
   }, []);
 
   useEffect(() => {
@@ -157,6 +161,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
         setStep={setStep}
         setFormData={setFormData}
         saveWizardData={saveWizardData}
+        bottomBarTitle="Создание задачи"
         onWizardComplete={handleCompleteWizard}
         onWizardCancel={handleCancelWizard}
       >

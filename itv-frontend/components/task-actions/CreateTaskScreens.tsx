@@ -240,7 +240,7 @@ export const SetTaskTitleScreen: React.FunctionComponent<IWizardScreenProps> = s
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -269,7 +269,7 @@ export const SetTaskDescriptionScreen: React.FunctionComponent<IWizardScreenProp
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -298,7 +298,7 @@ export const SetTaskResultScreen: React.FunctionComponent<IWizardScreenProps> = 
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -331,7 +331,7 @@ export const SetTaskImpactScreen: React.FunctionComponent<IWizardScreenProps> = 
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -364,7 +364,7 @@ export const SetTaskReferencesScreen: React.FunctionComponent<IWizardScreenProps
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -393,7 +393,7 @@ export const SetTaskRemoteResourcesScreen: React.FunctionComponent<IWizardScreen
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -414,7 +414,7 @@ export const UploadTaskFilesScreen: React.FunctionComponent<IWizardScreenProps> 
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -446,7 +446,7 @@ export const SelectTaskTagsScreen: React.FunctionComponent<IWizardScreenProps> =
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -478,7 +478,7 @@ export const SelectTaskNgoTagsScreen: React.FunctionComponent<IWizardScreenProps
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -509,7 +509,7 @@ export const SelectTaskPreferredDoerScreen: React.FunctionComponent<IWizardScree
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -540,7 +540,7 @@ export const SelectTaskRewardScreen: React.FunctionComponent<IWizardScreenProps>
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -629,7 +629,7 @@ export const SelectTaskPreferredDurationScreen: React.FunctionComponent<IWizardS
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );
@@ -659,7 +659,7 @@ export const SelectTaskCoverScreen: React.FunctionComponent<IWizardScreenProps> 
         </WizardForm>
       }
       screenBottomBar={
-        <WizardScreenBottomBar {...props} icon={bottomIcon} title="Создание задачи" />
+        <WizardScreenBottomBar {...props} icon={bottomIcon} title={props.bottomBarTitle} />
       }
     />
   );

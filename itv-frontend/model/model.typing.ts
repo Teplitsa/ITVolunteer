@@ -1089,6 +1089,8 @@ export interface IWizardScreenProps {
   screenForm?: any;
   screenBottomBar?: any;
   shortTitle?: string;
+  formFieldPlaceholders?: any;
+  bottomBarTitle?: string;
 }
 
 export interface IWizardInputProps {
@@ -1111,6 +1113,7 @@ export interface IWizardActions {
   setShowScreenHelpModalState?: Action<IWizardState, any>;
   resetWizard?: Action<IWizardState>;
   setNeedReset?: Action<IWizardState, boolean>;
+  setFormFieldPlaceholders?: Action<IWizardState, any>;
 }
 
 export interface IWizardThunks {
@@ -1128,6 +1131,8 @@ export interface ICreateTaskWizardState extends IWizardState {
   taskTagList: Array<any>;
   ngoTagList: Array<any>;
   helpPageSlug: string;
+  formFieldPlaceholders?: any;
+  getRandomPlaceholder?: Computed<ICreateTaskWizardState, any>;
 }
 
 export interface ICreateTaskWizardActions extends IWizardActions {
@@ -1139,6 +1144,7 @@ export interface ICreateTaskWizardActions extends IWizardActions {
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
   loadTaxonomyData: Thunk<ICreateTaskWizardActions>;
+  formFieldPlaceholdersRequest: Thunk<IWizardActions>;
 }
 
 export interface ICreateTaskWizardModel

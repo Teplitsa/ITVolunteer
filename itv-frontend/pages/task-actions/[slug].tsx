@@ -49,6 +49,9 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const setWizardName = useStoreActions(
     actions => actions.components.createTaskWizard.setWizardName
   );
+  const formFieldPlaceholdersRequest = useStoreActions(
+    actions => actions.components.createTaskWizard.formFieldPlaceholdersRequest
+  );
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
@@ -56,6 +59,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 
   useEffect(() => {
     setWizardName("editTaskWizard");
+    formFieldPlaceholdersRequest();
   }, []);
 
   useEffect(() => {
@@ -118,12 +122,12 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
       description: taskState.content ? taskState.content.replace(/(<([^>]+)>)/gi, "") : null,
       cover: taskState.cover
         ? [
-            {
-              url: taskState.cover.mediaItemUrl,
-              value: taskState.cover.databaseId,
-              fileName: taskState.cover.mediaItemUrl.replace(/^.*\//, ""),
-            },
-          ]
+          {
+            url: taskState.cover.mediaItemUrl,
+            value: taskState.cover.databaseId,
+            fileName: taskState.cover.mediaItemUrl.replace(/^.*\//, ""),
+          },
+        ]
         : [],
       files: taskState.files.map(file => {
         return {
@@ -224,6 +228,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
         setStep={setStep}
         setFormData={setFormData}
         saveWizardData={saveWizardData}
+        bottomBarTitle="Редактирование задачи"
         onWizardComplete={handleCompleteWizard}
         onWizardCancel={handleCancelWizard}
       >

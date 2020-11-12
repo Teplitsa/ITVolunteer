@@ -348,9 +348,11 @@ export const WizardLimitedTextFieldWithHelp: React.FunctionComponent<
     setFormData?: (args: any) => void;
   } & IWizardScreenProps
 > = ({ field: Field, ...props }) => {
+  const formFieldPlaceholders = useStoreState(state => state.components.createTaskWizard.formFieldPlaceholders);
   const inputUseRef = useRef(null);
   const fieldValue = _.get(props.formData, props.name, "");
   const [inputTextLength, setInputTextLength] = useState(fieldValue ? fieldValue.length : 0);
+  const [inputPlaceholder, setInputPlaceholder] = useState("");
 
   function handleInput(e) {
     setInputTextLength(e.target.value.length);
@@ -360,6 +362,18 @@ export const WizardLimitedTextFieldWithHelp: React.FunctionComponent<
     }
   }
 
+  useEffect(() => {
+    if(_.isEmpty(formFieldPlaceholders)) {
+      return;
+    }
+    
+    const phList = _.get(formFieldPlaceholders, props.name, [props.placeholder]);
+    if(phList.length > 0) {
+      const randomIndex = Math.floor(Math.random() * phList.length);
+      setInputPlaceholder(phList[randomIndex]);
+    }
+  }, [formFieldPlaceholders]);
+
   // console.log("[WizardLimitedTextFieldWithHelp] props:", props)
 
   return (
@@ -367,7 +381,7 @@ export const WizardLimitedTextFieldWithHelp: React.FunctionComponent<
       <Field
         {...props}
         name={props.name}
-        placeholder={props.placeholder}
+        placeholder={inputPlaceholder}
         handleInput={handleInput}
         inputUseRef={inputUseRef}
         value={fieldValue}

@@ -96,6 +96,11 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
+export const getRestApiUrl = (route: string): string => {
+  const url = new URL(process.env.RestApiUrl + route);
+  return url.toString();
+};
+
 export function showAjaxError(errorData) {
   if (errorData.message) {
     const el = document.createElement("div");
