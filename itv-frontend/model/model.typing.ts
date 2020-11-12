@@ -1144,7 +1144,7 @@ export interface ICreateTaskWizardActions extends IWizardActions {
 
 export interface ICreateTaskWizardThunks extends IWizardThunks {
   loadTaxonomyData: Thunk<ICreateTaskWizardActions>;
-  formFieldPlaceholdersRequest: Thunk<IWizardActions>;
+  formFieldPlaceholdersRequest: Thunk<ICreateTaskWizardActions>;
 }
 
 export interface ICreateTaskWizardModel
