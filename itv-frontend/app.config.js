@@ -13,7 +13,7 @@ const appConfig = {
     process.env.NODE_ENV === "development"
       ? "http://localhost:9000"
       : "https://itv.te-st.ru"
-  }//wp-json`,
+  }/wp-json`,
   AuthTokenLifeTimeMs: 600,
 };
 
