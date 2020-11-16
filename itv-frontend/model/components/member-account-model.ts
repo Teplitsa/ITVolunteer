@@ -85,6 +85,7 @@ export const graphqlQuery: {
       }
       dateGmt
       doerCandidatesCount
+      viewsCount
       tags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
         nodes {
           id
