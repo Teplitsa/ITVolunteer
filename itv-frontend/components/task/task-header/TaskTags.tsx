@@ -21,56 +21,57 @@ const TaskTags: React.FunctionComponent<{
   };
 }> = ({ tags, rewardTags, ngoTaskTags: ngoTags }): ReactElement => {
   const router = useRouter();
-  const tagGroups = [];
+  const tagGroups: Array<[string, string, string, Array<ITaskTag>, string]> = [];
 
-  tags?.nodes?.length && tagGroups.push(["tags", IconTags, tags.nodes]);
-  ngoTags?.nodes?.length && tagGroups.push(["ngoTags", IconNgoTags, ngoTags.nodes]);
-  rewardTags?.nodes?.length && tagGroups.push(["rewardTags", IconRewardTags, rewardTags.nodes]);
+  tags?.nodes?.length && tagGroups.push(["tags", "tag", IconTags, tags.nodes, "tl_tf_tags"]);
+  ngoTags?.nodes?.length &&
+    tagGroups.push(["ngoTags", "nko-tag", IconNgoTags, ngoTags.nodes, "tl_tf_nko_tags"]);
+  rewardTags?.nodes?.length &&
+    tagGroups.push(["rewardTags", "", IconRewardTags, rewardTags.nodes, ""]);
 
   return (
     <div className="meta-terms">
-      {tagGroups.map(([groupId, icon, tagGroup]) => {
-        return (
-          <TaskTagGroup key={groupId}>
-            <img src={icon} />
-            {tagGroup.map(({ slug, name }) => {
-              return (
-                <div className="meta-term" key={slug}>
-                  {groupId === "tags" && (
-                    <Link href="/tasks/tag/[slug]" as={`/tasks/tag/${slug}`}>
+      <div className="meta-terms__left-column">
+        {tagGroups.map(
+          ([groupId, groupSlug, icon, tagGroup, regEventName]) =>
+            ["tags", "ngoTags"].includes(groupId) && (
+              <TaskTagGroup key={groupId}>
+                <img src={icon} />
+                {tagGroup.map(({ slug, name }) => (
+                  <div className="meta-term" key={slug}>
+                    <Link href={`/tasks/${groupSlug}/[slug]`} as={`/tasks/${groupSlug}/${slug}`}>
                       <a
                         key={`Tag${capitalize(groupId)}${capitalize(toCamelCase(slug))}`}
-                        className={groupId === "tags" || groupId === "ngoTags" ? "link" : ""}
+                        className="link"
                         title={name}
                         onClick={() => {
-                          regEvent("tl_tf_tags", router);
+                          regEvent(regEventName, router);
                         }}
                       >
                         {name}
                       </a>
                     </Link>
-                  )}
-                  {groupId === "ngoTags" && (
-                    <Link href="/tasks/nko-tag/[slug]" as={`/tasks/nko-tag/${slug}`}>
-                      <a
-                        key={`Tag${capitalize(groupId)}${capitalize(toCamelCase(slug))}`}
-                        className={groupId === "tags" || groupId === "ngoTags" ? "link" : ""}
-                        title={name}
-                        onClick={() => {
-                          regEvent("tl_tf_nko_tags", router);
-                        }}
-                      >
-                        {name}
-                      </a>
-                    </Link>
-                  )}
-                  {groupId !== "ngoTags" && groupId !== "tags" && <span>{name}</span>}
-                </div>
-              );
-            })}
-          </TaskTagGroup>
-        );
-      })}
+                  </div>
+                ))}
+              </TaskTagGroup>
+            )
+        )}
+      </div>
+      <div className="meta-terms__right-column">
+        {tagGroups.map(
+          ([groupId, , icon, tagGroup]) =>
+            groupId === "rewardTags" && (
+              <TaskTagGroup key={groupId}>
+                <img src={icon} />
+                {tagGroup.map(({ slug, name }) => (
+                  <div className="meta-term" key={slug}>
+                    <span>{name}</span>
+                  </div>
+                ))}
+              </TaskTagGroup>
+            )
+        )}
+      </div>
     </div>
   );
 };

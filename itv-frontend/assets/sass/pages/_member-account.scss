@@ -67,9 +67,8 @@
 
 .member-tasks {
   &__header {
-    margin: 40px 0 15px;
-    padding: 0 0 10px;
-    border-bottom: 1px solid $color-gray-light-md;
+    margin: 30px 0 15px;
+
     @include screen-from(md) {
       display: flex;
       justify-content: space-between;
@@ -77,7 +76,7 @@
     }
   }
   &__title {
-    @include htext-lg-bold;
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
   }
   &__filter {
     ul {
@@ -102,7 +101,12 @@
     }
   }
   &__footer {
+    border-left: 1px solid $color-gray-light-md;
+    border-right: 1px solid $color-gray-light-md;
+    border-bottom: 1px solid $color-gray-light-md;
+    padding: 20px;
     text-align: center;
+    border-radius: 0 0 8px 8px;
   }
   &__more-link {
     border-bottom: 1px dashed $color-gray-dark-md;
@@ -114,13 +118,80 @@
       text-decoration: none;
     }
   }
+
+  .meta-info {
+    margin: 15px 0;
+
+    & > *:not(:last-child) {
+      margin-right: 12px;
+    }
+
+    img.itv-approved {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .meta-info {
+      img {
+        margin-right: 4px;
+      }
+
+      &__item {
+        font: 600 11px/16px "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-md-001;
+        &_deadline {
+          color: $color-sec-dark;
+        }
+        &_share {
+          color: $color-main;
+        }
+        &-action {
+          font-size: 11px;
+          line-height: 16px;
+        }
+      }
+    }
+
+    .meta-info-share {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      vertical-align: middle;
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .share-task {
+      img {
+        width: 16px;
+        height: 16px;
+      }
+
+      span {
+        color: $color-main;
+      }
+
+      &:hover,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .meta-terms {
+    margin-top: 6px;
+  }
 }
 
 .member-reviews {
   &__header {
-    margin: 40px 0 15px;
-    padding: 0 0 10px;
-    border-bottom: 1px solid $color-gray-light-md;
+    margin: 30px 0 10px;
+
     @include screen-from(md) {
       display: flex;
       justify-content: space-between;
@@ -128,7 +199,7 @@
     }
   }
   &__title {
-    @include htext-lg-bold;
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
   }
   &__stats {
     margin: 5px 0 0;
@@ -149,7 +220,11 @@
     }
   }
   &__footer {
+    border: 1px solid $color-gray-light-md;
+    border-top: none;
+    padding: 20px;
     text-align: center;
+    border-radius: 0 0 8px 8px;
   }
   &__more-link {
     border-bottom: 1px dashed $color-gray-dark-md;
@@ -166,30 +241,30 @@
 .member-account-null {
   &__need-attention {
     background-color: $color-gray-light-lg;
-    border-radius: 8px;
+    margin: 30px 0;
     padding: 20px;
-    margin-top: 29px;
+    border-radius: 8px;
 
     h3 {
+      display: flex;
+      justify-content: space-between;
       @include text-bold-line-sm;
       color: $color-gray-dark-xl;
-      float: none;
-      clear: both;
 
       a.close {
-        @include a-no-hover-underline;
-        background: url(../../img/icon-modal-close.svg);
+        background: url(../../img/icon-modal-close.svg) 50% 50% no-repeat;
+        margin-top: -2px;
         width: 24px;
         height: 24px;
-        margin-top: -2px;
-        display: block;
-        float: right;
+        @include a-no-hover-underline;
       }
-  
     }
 
     ul {
       li {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
         margin-top: 20px;
         counter-increment: number;
 
@@ -200,7 +275,7 @@
           float: left;
           justify-content: center;
           align-items: center;
-          background-color: $color-main;          
+          background-color: $color-main;
           color: $color-white;
           margin-right: 10px;
           width: 24px;
@@ -210,17 +285,25 @@
         }
 
         a {
-          @include solid-underline($color-main);
+          margin-right: 4px;
           @include text-sm-bold;
-          vertical-align: text-bottom;
-          float: none;
-          clear: both;
+          text-decoration: underline;
+
+          &:hover {
+            text-decoration: none;
+          }
         }
 
         p {
+          flex-basis: 100%;
+          margin-top: 6px;
           @include text-sm;
           color: $color-gray-dark-xl;
-          margin-top: 6px;
+
+          @include screen-from(md) {
+            flex-basis: auto;
+            margin-top: 0;
+          }
         }
       }
     }
@@ -229,29 +312,37 @@
   &__empty-section {
     margin-top: 30px;
 
-    &.guest-view {
-      margin-top: 79px;      
-    }
-
     h3 {
-      @include htext-lg-bold;        
-      margin: 40px 0 15px;
-      padding: 0 0 10px;
-      border-bottom: 1px solid $color-gray-light-md;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      margin: 0 0 10px;
     }
 
-    .empty-section {   
+    .empty-section {
       &__content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 30px;
-        
+        border: 1px solid $color-gray-light-md;
+        padding: 20px;
+        border-radius: 8px;
+
+        &-image {
+          margin: 0 0 16px;
+        }
+
+        &-text {
+          font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+          text-align: center;
+
+          &:not(:last-child()) {
+            margin: 0 0 16px;
+          }
+        }
+
         a {
           @include a-no-hover-underline;
           @include button-secondary-sm-dark;
           display: block;
-          margin-top: 10px;
         }
 
         p {

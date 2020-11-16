@@ -326,8 +326,7 @@
       display: none;
       @include screen-from(md) {
         display: block;
-        background: url("../../img/icon-search.svg") 50% 50% no-repeat
-          $color-white;
+        background: url("../../img/icon-search.svg") 50% 50% no-repeat $color-white;
         border: 2px solid $color-gray-light-lg;
         padding: 21px;
         width: 44px;
@@ -339,8 +338,7 @@
       }
       &_close-icon {
         @include screen-from(md) {
-          background: url("../../img/icon-header-search-close.svg") 50% 50%
-            no-repeat $color-white;
+          background: url("../../img/icon-header-search-close.svg") 50% 50% no-repeat $color-white;
           border-left-style: none !important;
           border-radius: 0 10px 10px 0;
           transition: all 0.3s step-start 0s;
@@ -411,10 +409,6 @@
 
           li {
             padding: 5px 0px;
-
-            &:first-child {
-              display: none;
-            }
 
             a {
               text-decoration: none;

@@ -1,7 +1,14 @@
 .review-card {
-  margin: 0 0 15px;
-  padding: 0 0 15px;
+  padding: 20px;
+  border-left: 1px solid $color-gray-light-md;
+  border-right: 1px solid $color-gray-light-md;
   border-bottom: 1px solid $color-gray-light-md;
+
+  &:first-child {
+    border-top: 1px solid $color-gray-light-md;
+    border-radius: 8px 8px 0 0;
+  }
+
   &__header {
     margin: 0 0 10px;
     @include screen-from(md) {

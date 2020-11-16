@@ -28,7 +28,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement =
           />
         )}
       </div>
-      <h1>
+      <h1 className="task-body__title">
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
           <a
             dangerouslySetInnerHTML={{ __html: task.title }}

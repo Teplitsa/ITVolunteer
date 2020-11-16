@@ -1,14 +1,22 @@
 .meta-terms {
-  margin-top: 4px;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
+  @include screen-from(md) {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
 
   .terms {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-right: $base * 3;
+    margin-right: 10px;
+
+    &:last-child {
+      @include screen-from(md) {
+        margin-right: 0;
+      }
+    }
 
     img {
       margin-top: $base;
@@ -27,7 +35,6 @@
       padding: 4px 12px;
       border: 1px solid $color-gray-light-md;
       border-radius: 10px;
-      margin-right: 4px;
       white-space: nowrap;
 
       &.link:hover {
@@ -47,8 +54,31 @@
       }
     }
   }
+
+  &__left-column {
+    @include screen-from(md) {
+      display: flex;
+      flex-flow: row wrap;
+      flex-shrink: 10;
+    }
+  }
+
+  &__right-column {
+    .terms {
+      flex-wrap: nowrap;
+
+      .meta-term {
+        display: flex;
+      }
+    }
+  }
 }
 
 .meta-term {
   margin-top: $base;
+
+  &:not(:last-child) > a,
+  &:not(:last-child) > span {
+    margin-right: 4px;
+  }
 }

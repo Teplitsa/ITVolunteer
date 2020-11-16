@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import { ITaskState } from "../../../model/model.typing";
 import {
   FacebookShareButton,
   TelegramShareButton,
@@ -8,17 +7,16 @@ import {
 } from "react-share";
 import TaskMetaItem from "./TaskMetaItem";
 import iconApproved from "../../../assets/img/icon-all-done.svg";
-import metaIconCalendar from "../../../assets/img/icon-calc.svg";
 import metaIconShare from "../../../assets/img/icon-share.svg";
 import * as utils from "../../../utilities/utilities";
 
-const TaskMeta: React.FunctionComponent<ITaskState> = ({
-  dateGmt,
-  doerCandidatesCount,
-  viewsCount,
-  isApproved,
-  pemalinkPath,
-}): ReactElement => {
+const TaskMeta: React.FunctionComponent<{
+  dateGmt: string;
+  doerCandidatesCount: number;
+  viewsCount: number;
+  isApproved: boolean;
+  pemalinkPath: string;
+}> = ({ dateGmt, doerCandidatesCount, viewsCount, isApproved, pemalinkPath }): ReactElement => {
   const [isShowShareButtons, setIsShowShareButtons] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
@@ -53,7 +51,7 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
   return (
     <div className="meta-info">
       {isApproved && <img src={iconApproved} className="itv-approved" />}
-      {withMetaIconCalendar.map(title => {
+      {withMetaIconCalendar.map((title, i) => {
         return (
           <TaskMetaItem
             key={utils.generateUniqueKey({
@@ -61,16 +59,18 @@ const TaskMeta: React.FunctionComponent<ITaskState> = ({
               prefix: "TaskMetaItem",
             })}
           >
-            <img src={metaIconCalendar} />
-            <span>{title}</span>
+            <span className={`meta-info__item${(i === 0 && " meta-info__item_deadline") || ""}`}>
+              {i === 0 && "Дедлайн "}
+              {title}
+            </span>
           </TaskMetaItem>
         );
       })}
       <TaskMetaItem>
         <span className="meta-info-share">
-          <img src={metaIconShare} />
-          <a href="#" className="share-task" onClick={toggleShareButtons}>
-            <span>Поделиться</span>
+          <img src={metaIconShare} alt="" />
+          <a href="#" className="meta-info__item-action share-task" onClick={toggleShareButtons}>
+            <span className="meta-info__item meta-info__item_share">Поделиться</span>
           </a>
           <span className={`react-share ${isShowShareButtons ? "react-share_shown" : ""}`}>
             <FacebookShareButton url={shareUrl}>

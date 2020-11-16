@@ -90,9 +90,19 @@
           margin-right: 4px;
         }
 
-        span {
-          @include text-xs-line-lg;
+        &__item {
+          font: 600 11px/16px "IBM Plex Sans", sans-serif;
           color: $color-gray-dark-md-001;
+          &_deadline {
+            color: $color-sec-dark;
+          }
+          &_share {
+            color: $color-main;
+          }
+          &-action {
+            font-size: 11px;
+            line-height: 16px;
+          }
         }
       }
 
@@ -884,8 +894,7 @@
             position: relative;
             display: flex;
             align-items: center;
-            background: url("../../img/icon-heart_empty-gray.svg") 0 50%
-              no-repeat;
+            background: url("../../img/icon-heart_empty-gray.svg") 0 50% no-repeat;
             margin-top: 6px;
             padding-left: 20px;
             height: 16px;
@@ -1058,8 +1067,7 @@
     max-width: max-content;
     text-align: left;
 
-    box-shadow: 0px 0px 1px rgba(129, 118, 111, 0.7),
-      2px 2px 8px rgba(129, 118, 111, 0.12);
+    box-shadow: 0px 0px 1px rgba(129, 118, 111, 0.7), 2px 2px 8px rgba(129, 118, 111, 0.12);
 
     &:before {
       content: "";
