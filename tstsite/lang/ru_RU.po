@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/tstsite\n"
-"POT-Creation-Date: 2020-11-12T09:03:56+00:00\n"
-"PO-Revision-Date: 2020-11-12 11:07+0200\n"
+"POT-Creation-Date: 2020-11-18T08:44:52+00:00\n"
+"PO-Revision-Date: 2020-11-18 10:52+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -240,6 +240,82 @@ msgid "All NKO tags"
 msgstr "Все темы"
 
 # @ tst
+#: inc/admin.php:768 inc/admin.php:769
+msgid "Send push"
+msgstr "Отправить пуш"
+
+#: inc/admin.php:789
+msgid "Send push to all users"
+msgstr "Отправить пуш всем пользователям"
+
+# @ tst
+#: inc/admin.php:794
+msgid "Message"
+msgstr "Сообщение"
+
+# @ tst
+#: inc/admin.php:805 partials/sidebar-multibutton.php:101
+#: partials/sidebar-multibutton.php:135 partials/sidebar-multibutton.php:162
+#: single-tasks.php:139
+msgid "Send"
+msgstr "Отправить"
+
+#: inc/admin.php:813
+msgid "User email for test"
+msgstr "Email пользователя, которому отправить пуш"
+
+# @ tst
+#: inc/admin.php:821
+msgid "Send test"
+msgstr "Отправить тестовому пользователю"
+
+# @ tst
+#: inc/admin.php:834 inc/customizer.php:68 inc/customizer.php:133
+#: inc/customizer.php:189 inc/customizer.php:224 inc/customizer.php:262
+#: inc/customizer.php:287 inc/customizer.php:298 inc/customizer.php:320
+#: inc/customizer.php:405 inc/customizer.php:461 inc/customizer.php:478
+#: inc/customizer.php:541 inc/customizer.php:561 inc/customizer.php:568
+#: inc/customizer.php:634 inc/customizer.php:669 inc/customizer.php:752
+#: inc/customizer.php:793 inc/customizer.php:798 inc/customizer.php:853
+#: inc/customizer.php:915 inc/functions-members.php:487
+#: inc/functions-members.php:581 inc/functions-members.php:668
+#: inc/functions-members.php:1163 inc/functions-members.php:1255
+#: inc/functions-members.php:1426 inc/functions-members.php:1504
+#: inc/functions-members.php:1564 inc/functions-members.php:1646
+#: inc/functions-members.php:1754 inc/functions-tasks.php:520
+#: inc/functions-tasks.php:601 inc/functions-tasks.php:654
+#: inc/functions-tasks.php:886 inc/functions-tasks.php:968
+#: inc/functions-tasks.php:1059 inc/functions-tasks.php:1143
+#: inc/functions-tasks.php:1268 inc/functions-tasks.php:1279
+#: inc/functions-tasks.php:1321 inc/functions-tasks.php:1332
+#: inc/functions-tasks.php:1391 inc/functions-tasks.php:1473
+#: inc/functions-tasks.php:1514
+msgid "<strong>Error:</strong> wrong data given."
+msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
+
+# @ tst
+#: inc/admin.php:842
+msgid "Empty message"
+msgstr "Пустое сообщение"
+
+#: inc/admin.php:850
+msgid "Empty test user email"
+msgstr "Укажите email пользователя"
+
+# @ tst
+#: inc/admin.php:858
+msgid "User not found"
+msgstr "Пользователь не найден"
+
+#: inc/admin.php:866
+msgid "Message sent to test user"
+msgstr "Пуш отправлен пользователю"
+
+#: inc/admin.php:874
+msgid "Mass push scheduled"
+msgstr "Массовый пуш запланирован"
+
+# @ tst
 #: inc/class-itv-cssjs.php:107
 msgid "No such tags found..."
 msgstr "Нам очень жаль, но мы не нашли таких тегов :("
@@ -413,29 +489,6 @@ msgstr "Введите положительное или отрицательн�
 #: inc/itv_consult.php:589 inc/itv_log.php:621
 msgid "ITVounteer"
 msgstr "it-волонтёр"
-
-# @ tst
-#: inc/customizer.php:68 inc/customizer.php:133 inc/customizer.php:189
-#: inc/customizer.php:224 inc/customizer.php:262 inc/customizer.php:287
-#: inc/customizer.php:298 inc/customizer.php:320 inc/customizer.php:405
-#: inc/customizer.php:461 inc/customizer.php:478 inc/customizer.php:541
-#: inc/customizer.php:561 inc/customizer.php:568 inc/customizer.php:634
-#: inc/customizer.php:669 inc/customizer.php:752 inc/customizer.php:793
-#: inc/customizer.php:798 inc/customizer.php:853 inc/customizer.php:915
-#: inc/functions-members.php:487 inc/functions-members.php:581
-#: inc/functions-members.php:668 inc/functions-members.php:1163
-#: inc/functions-members.php:1255 inc/functions-members.php:1426
-#: inc/functions-members.php:1504 inc/functions-members.php:1564
-#: inc/functions-members.php:1646 inc/functions-members.php:1754
-#: inc/functions-tasks.php:520 inc/functions-tasks.php:601
-#: inc/functions-tasks.php:654 inc/functions-tasks.php:886
-#: inc/functions-tasks.php:968 inc/functions-tasks.php:1059
-#: inc/functions-tasks.php:1143 inc/functions-tasks.php:1268
-#: inc/functions-tasks.php:1279 inc/functions-tasks.php:1321
-#: inc/functions-tasks.php:1332 inc/functions-tasks.php:1391
-#: inc/functions-tasks.php:1473 inc/functions-tasks.php:1514
-msgid "<strong>Error:</strong> wrong data given."
-msgstr "<strong>Ошибка:</strong> переданы неправильные данные"
 
 #: inc/customizer.php:79 inc/customizer.php:144 inc/customizer.php:234
 #: inc/functions-members.php:499 inc/functions-members.php:593
@@ -4298,12 +4351,6 @@ msgstr "Пожалуйста, напишите свой отзыв."
 #: single-tasks.php:150
 msgid "Your mark:"
 msgstr "Ваша оценка:"
-
-# @ tst
-#: partials/sidebar-multibutton.php:101 partials/sidebar-multibutton.php:135
-#: partials/sidebar-multibutton.php:162 single-tasks.php:139
-msgid "Send"
-msgstr "Отправить"
 
 # @ tst
 #: partials/sidebar-multibutton.php:119

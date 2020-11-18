@@ -759,3 +759,160 @@ function tst_admin_tasks_filter(){
     </select>
     <?php
 }
+
+// mass push notif send
+use ITV\models\UserNotifModel;
+
+function itv_admin_menu() {
+    add_menu_page(
+        __( 'Send push', 'tst' ),
+        __( 'Send push', 'tst' ),
+        'manage_options',
+        'itv-push-mass-send-page',
+        'itv_push_mass_send_ui',
+        'dashicons-format-status',
+        81
+    );
+}
+add_action( 'admin_menu', 'itv_admin_menu' );
+
+
+function itv_push_mass_send_ui() {
+    $message = get_option('itv-mass-push-message');
+    if(!$message) {
+        $message = "";
+    }
+
+?>
+    <div class="wrap">
+     
+        <h1><?php esc_html_e( 'Send push to all users', 'tst' ); ?></h1>
+     
+        <form method="post" action="<?php echo admin_url( 'admin-post.php?action=push_mass_send' ); ?>">
+     
+            <div id="universal-message-container">
+                <h2><?php esc_html_e( 'Message', 'tst' ); ?></h2>
+
+                <div class="options">
+                    <p>
+                        <?php wp_editor($message, 'message', ['media_buttons' => false] );?>
+                    </p>
+                </div>
+            </div>
+     
+            <?php
+                wp_nonce_field( 'itv-push-mass-send', 'itv-push-mass-send' );
+                submit_button( __( 'Send', 'tst' ), 'primary', 'submit-mass-send', true, [
+                    'onClick' => "return confirm(\"Точно хотите разослать сообщение всем пользователям ИТВ?\");",
+                ]);
+            ?>
+
+            <div id="universal-message-container">
+                <div class="options">
+                    <p>
+                        <label><?php esc_html_e( 'User email for test', 'tst' ); ?></label>
+                        <br />
+                        <input type="text" name="test-user-email" autocomplete="on" />
+                    </p>
+                </div>
+            </div>
+
+            <?php
+                submit_button( __( 'Send test', 'tst' ), 'secondary', 'submit-test');
+            ?>
+     
+        </form>
+     
+    </div><!-- .wrap -->
+<?php
+}
+
+function itv_push_mass_send_notices() {
+    if( !empty($_GET['error-invalid-data']) ) {
+?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php _e('<strong>Error:</strong> wrong data given.', 'tst'); ?></p>
+    </div>        
+<?php
+    }
+
+    if( !empty($_GET['error-empty-message']) ) {
+?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php _e( 'Empty message', 'tst' ); ?></p>
+    </div>        
+<?php
+    }
+
+    if( !empty($_GET['error-empty-test-user-email']) ) {
+?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php _e( 'Empty test user email', 'tst' ); ?></p>
+    </div>        
+<?php
+    }
+
+    if( !empty($_GET['error-test-user-not-found']) ) {
+?>
+    <div class="notice notice-error is-dismissible">
+        <p><?php _e( 'User not found', 'tst' ); ?></p>
+    </div>        
+<?php
+    }
+
+    if( !empty($_GET['success-push-sent-to-test-user']) ) {
+?>
+    <div class="notice notice-success is-dismissible">
+        <p><?php _e( 'Message sent to test user', 'tst' ); ?></p>
+    </div>        
+<?php
+    }
+
+    if( !empty($_GET['success-mass-push-scheduled']) ) {
+?>
+    <div class="notice notice-success is-dismissible">
+        <p><?php _e( 'Mass push scheduled', 'tst' ); ?></p>
+    </div>        
+<?php
+    }
+}
+add_action( 'admin_notices', 'itv_push_mass_send_notices' );
+
+function itv_push_mass_send_action() {
+    $page_url = admin_url('admin.php?page=itv-push-mass-send-page');
+
+    if(!wp_verify_nonce( $_POST['itv-push-mass-send'], 'itv-push-mass-send') ) {
+        return wp_redirect( add_query_arg( 'error-invalid-data', 1, $page_url ) );
+    }
+
+    if(empty( $_POST['message'] )) {
+        return wp_redirect( add_query_arg( 'error-empty-message', 1, $page_url ) );
+    }
+
+    $message = stripslashes( trim( $_POST['message'] ) );
+    if(!$message) {
+        return wp_redirect( add_query_arg( 'error-empty-message', 1, $page_url ) );
+    }
+
+    update_option( 'itv-mass-push-message', $message);
+
+    if(!empty($_POST['submit-mass-send'])) {
+        update_option( 'itv-do-mass-push', 'do-mass-push');
+        return wp_redirect( add_query_arg( 'success-mass-push-scheduled', 1, $page_url ) );        
+    }
+    elseif(!empty($_POST['submit-test'])) {
+
+        if(empty( $_POST['test-user-email'] )) {
+            return wp_redirect( add_query_arg( 'error-empty-test-user-email', 1, $page_url ) );
+        }
+
+        $test_user = get_user_by('email', trim( $_POST['test-user-email'] )) ;
+        if(!$test_user) {
+            return wp_redirect( add_query_arg( 'error-test-user-not-found', 1, $page_url ) );
+        }
+
+        UserNotifModel::instance()->push_notif($test_user->ID, UserNotifModel::$TYPE_GENERAL_NOTIF, ['content' => $message]);
+        return wp_redirect( add_query_arg( 'success-push-sent-to-test-user', 1, $page_url ) );        
+    }
+}
+add_action('admin_post_push_mass_send', 'itv_push_mass_send_action');

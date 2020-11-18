@@ -13,14 +13,22 @@ try {
 	include('cli_common.php');
 	echo 'Memory before anything: '.memory_get_usage(true).chr(10).chr(10);
 
-    $message = "<a href=\"https://itv.te-st.ru/blog/ngolike-thinking\">Онлайн-курс для волонтёров</a>: что стоит за задачей НКО, и как её решить.<br />Дата – 10-13 ноября 2020";
+    $message = get_option( 'itv-mass-push-message' );
+    $need_do_mass_push = boolval(get_option( 'itv-do-mass-push' ));
 
-    User::chunk(100, function($users) use($message) {
-        foreach ($users as $user) {
-            UserNotifModel::instance()->push_notif($user->ID, UserNotifModel::$TYPE_GENERAL_NOTIF, ['content' => $message]);            
-        }
-    });
-    
+    if($need_do_mass_push) {
+        echo "DO MASS PUSH\n";
+        echo "MESSAGE:\n" . $message . "\n\n";
+
+        User::chunk(100, function($users) use($message) {
+            foreach ($users as $user) {
+                UserNotifModel::instance()->push_notif($user->ID, UserNotifModel::$TYPE_GENERAL_NOTIF, ['content' => $message]);            
+            }
+        });
+
+        update_option( 'itv-do-mass-push', '');
+    }
+
 	echo 'DONE'.chr(10);
 
 	//Final
