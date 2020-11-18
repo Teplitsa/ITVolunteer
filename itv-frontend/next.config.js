@@ -33,5 +33,13 @@ module.exports = phase => {
     env: { ...appConfig },
     compress: false,
     ...imagesConfig,
+    async rewrites() {
+      return [
+        {
+          source: "/tasks/(publish|in_work|closed|archived|all)",
+          destination: "/tasks",
+        },
+      ];
+    },
   };
 };
