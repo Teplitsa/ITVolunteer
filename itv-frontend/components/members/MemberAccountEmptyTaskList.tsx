@@ -5,10 +5,9 @@ const MemberAccountEmptyTaskList: React.FunctionComponent = (): ReactElement => 
   return (
     <MemberAccountEmptySection
       title="Задачи"
-      text="Здесь будут собраны все созданные вами задачи или все задачи, которые вы решаете.
-Возможно, стоит создать свою первую задачу?"
+      text="Здесь будут собраны все созданные вами задачи.<br />Возможно, стоит создать свою первую задачу?"
       linkUrl="/task-actions"
-      linkCaption="Создать задачу"
+      linkCaption="Создать новую задачу"
     />
   );
 };

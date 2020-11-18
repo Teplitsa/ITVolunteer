@@ -214,7 +214,7 @@
               & > .filter-section-option-list-item-title > .check-title {
                 & > span {
                   @include dashed-underline($color-gray-dark-lg);
-                }                
+                }
               }
             }
 
@@ -269,7 +269,7 @@
   padding-bottom: 56px;
   opacity: 1;
   visibility: visible;
-  transition: all .15s ease-in;
+  transition: all 0.15s ease-in;
 
   &.hidden {
     opacity: 0;
@@ -300,11 +300,14 @@
       margin-top: 32px;
     }
 
-    h1 {
-      @include htext-lg-bold;
-      color: $color-main;
+    &__title {
       margin-top: 12px;
       word-break: break-word;
+      &,
+      & a {
+        font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-xl;
+      }
     }
 
     .meta-info {

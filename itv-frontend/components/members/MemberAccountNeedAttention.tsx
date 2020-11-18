@@ -80,9 +80,7 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
             <Link href={`/members/${username}/profile`}>
               <a>Отредактируйте профиль</a>
             </Link>
-            <p>
-              Добавьте максимальное количество информации. Это позволит лучше с вами познакомиться
-            </p>
+            <p>Добавьте больше информации. Это позволит лучше с вами познакомиться.</p>
           </li>
         )}
       </ul>

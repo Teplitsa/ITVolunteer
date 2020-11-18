@@ -1,7 +1,13 @@
 .task-card {
-  margin: 0 0 15px;
-  padding: 0 0 15px;
+  padding: 20px;
+  border-left: 1px solid $color-gray-light-md;
+  border-right: 1px solid $color-gray-light-md;
   border-bottom: 1px solid $color-gray-light-md;
+
+  &:first-child {
+    border-top: 1px solid $color-gray-light-md;
+    border-radius: 8px 8px 0 0;
+  }
   &__header {
     margin: 0 0 5px;
     @include screen-from(md) {
@@ -27,10 +33,14 @@
   }
   &__title {
     margin: 10px 0;
-    font: 600 18px/28px "IBM Plex Sans", sans-serif;
-    color: $color-main;
+    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    &,
+    & a {
+      color: $color-gray-dark-xl;
+    }
+
     @include screen-from(md) {
-      margin: 0 0 10px;
+      margin: 0 0 15px;
     }
   }
   &__excerpt {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { IMemberTaskCard } from "../model/model.typing";
 import UserCardSmall from "./UserCardSmall";
 import TaskTags from "../components/task/task-header/TaskTags";
+import TaskMeta from "../components/task/task-header/TaskMeta";
 import { stripTags, getTheIntervalToNow } from "../utilities/utilities";
 
 const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement => {
@@ -11,7 +12,7 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
       ? task.doerCandidatesCount
       : Number([...Array.from(String(task.doerCandidatesCount))].pop());
 
-  console.log("task.tags:", task.tags);
+  console.log("task.tags:", task);
 
   return (
     <div className="task-card">
@@ -29,8 +30,8 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
           {doerCandidatesCountModulo === 1
             ? "отклик"
             : [2, 3, 4].includes(doerCandidatesCountModulo)
-            ? "отклика"
-            : "откликов"}
+              ? "отклика"
+              : "откликов"}
         </div>
       </div>
       <div className="task-card__title">
@@ -38,6 +39,15 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
           <a>{task.title}</a>
         </Link>
       </div>
+      <TaskMeta
+        {...{
+          dateGmt: task.dateGmt,
+          doerCandidatesCount: task.doerCandidatesCount,
+          viewsCount: task.viewsCount,
+          isApproved: task.isApproved,
+          pemalinkPath: task.pemalinkPath,
+        }}
+      />
       {task.content && (
         <div className="task-card__excerpt">
           {stripTags(task.content).trim().substr(0, 109)}…{" "}

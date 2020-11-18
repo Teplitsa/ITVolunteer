@@ -11,6 +11,7 @@ import MemberUploadCover from "../../components/members/MemberUploadCover";
 import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
 import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList";
 import { regEvent } from "../../utilities/ga-events";
+import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
@@ -73,7 +74,11 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
                   <Link href="/task-actions">
-                    <a className="btn btn_primary" target="_blank">
+                    <a
+                      className="btn btn_primary"
+                      target="_blank"
+                      onClick={() => regEvent("m_ntask", router)}
+                    >
                       Создать новую задачу
                     </a>
                   </Link>
@@ -81,21 +86,14 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
               </div>
             )}
             {!isEmptyProfile && <Tabs />}
-            {!!isEmptyProfile && isAccountOwner && (
+            {isEmptyProfile && isAccountOwner && (
               <>
                 <MemberAccountNeedAttention />
                 {/* <MemberAccountEmptyServiceShow /> */}
                 <MemberAccountEmptyTaskList />
               </>
             )}
-            {!!isEmptyProfile && !isAccountOwner && (
-              <div className="member-account-null__empty-section guest-view">
-                <div className="empty-section__content">
-                  <p>К сожалению, пользователь пока не совершил действий на платформе.</p>
-                  <p>Мы очень надеемся, что скоро это изменится</p>
-                </div>
-              </div>
-            )}
+            {isEmptyProfile && !isAccountOwner && <MemberAccountEmptySectionForGuest />}
           </div>
         </div>
       </div>

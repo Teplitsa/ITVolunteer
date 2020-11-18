@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
+import WomanImage from "../../assets/img/illustration-empty-section-woman.svg";
 
 const MemberAccountEmptySection: React.FunctionComponent<{
   title: string;
@@ -11,9 +12,8 @@ const MemberAccountEmptySection: React.FunctionComponent<{
     <div className="member-account-null__empty-section">
       <h3>{title}</h3>
       <div className="empty-section__content">
-        {text.split("\n").map((line, index) => (
-          <p key={index}>{line}</p>
-        ))}
+        <img className="empty-section__content-image" src={WomanImage} alt="" />
+        <div className="empty-section__content-text" dangerouslySetInnerHTML={{ __html: text }} />
         <Link href={linkUrl}>
           <a>{linkCaption}</a>
         </Link>

@@ -1,10 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  Action,
-  Thunk,
-  ThunkOn,
-  Computed,
-} from "easy-peasy";
+import { Action, Thunk, ThunkOn, Computed } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
   ICoreHeadingBlock,
@@ -72,10 +67,7 @@ export interface IAppActions {
  * Session
  */
 
-export interface ISessionModel
-  extends ISessionState,
-    ISessionActions,
-    ISessionThunks {}
+export interface ISessionModel extends ISessionState, ISessionActions, ISessionThunks {}
 
 export interface ISessionState {
   isLoaded: boolean;
@@ -259,7 +251,7 @@ export interface IPageActions {
  * Components
  */
 
-export interface IComponentsModel extends IComponentsState {}
+export type IComponentsModel = IComponentsState
 
 export interface IComponentsState {
   members?: IMembersPageModel;
@@ -357,6 +349,9 @@ export interface IMemberTaskCard {
   author: ITaskCommentAuthor;
   dateGmt: string;
   doerCandidatesCount: number;
+  viewsCount: number;
+  isApproved: boolean;
+  pemalinkPath: string;
   tags?: {
     nodes: Array<ITaskTag>;
   };
@@ -424,7 +419,7 @@ export interface IMemberAccountPageState {
     isCoverExist: boolean;
     isAvatarExist: boolean;
     isProfileInfoEnough: boolean;
-  },
+  };
   isNeedAttentionPanelClosed?: boolean;
 }
 
@@ -434,10 +429,7 @@ export interface IMemberAccountPageActions {
   setAvatar: Action<IMemberAccountPageModel, string>;
   setCover: Action<IMemberAccountPageModel, string>;
   setThankyouCount: Action<IMemberAccountPageModel, number>;
-  setTaskListFilter: Action<
-    IMemberAccountPageModel,
-    "open" | "closed" | "draft"
-  >;
+  setTaskListFilter: Action<IMemberAccountPageModel, "open" | "closed" | "draft">;
   setTasksPage: Action<IMemberAccountPageModel, number>;
   showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviewsPage: Action<IMemberAccountPageModel, number>;
@@ -528,9 +520,7 @@ export interface IMemberSecurityPageThunks {
  * Paseka
  */
 
-export interface IPasekaPageModel
-  extends IPasekaPageState,
-    IPasekaPageActions {}
+export interface IPasekaPageModel extends IPasekaPageState, IPasekaPageActions {}
 
 export interface IPasekaPageState {
   id: string;
@@ -549,9 +539,7 @@ export interface IPasekaPageActions {
  * Honors
  */
 
-export interface IHonorsPageModel
-  extends IHonorsPageState,
-    IHonorsPageActions {}
+export interface IHonorsPageModel extends IHonorsPageState, IHonorsPageActions {}
 
 export interface IHonorsPageState {
   id: string;
@@ -584,10 +572,7 @@ export interface ICreateTaskAgreementPageState {
 
 export interface ICreateTaskAgreementPageActions {
   initializeState: Action<ICreateTaskAgreementPageModel>;
-  setState: Action<
-    ICreateTaskAgreementPageModel,
-    ICreateTaskAgreementPageState
-  >;
+  setState: Action<ICreateTaskAgreementPageModel, ICreateTaskAgreementPageState>;
 }
 
 /**
@@ -817,10 +802,7 @@ export interface ITaskThunks {
       callbackFn?: () => void;
     }
   >;
-  statusChangeRequest: Thunk<
-    ITaskActions,
-    { status: TaskStatus; callbackFn?: () => void }
-  >;
+  statusChangeRequest: Thunk<ITaskActions, { status: TaskStatus; callbackFn?: () => void }>;
   moderateRequest: Thunk<
     ITaskActions,
     {
@@ -915,10 +897,7 @@ export interface ITaskThunks {
  * TaskList
  */
 
-export interface ITaskListModel
-  extends ITaskListState,
-    ITaskListActions,
-    ITaskListThunks {}
+export interface ITaskListModel extends ITaskListState, ITaskListActions, ITaskListThunks {}
 
 export interface ITaskListState {
   items: Array<ITaskListItemState>;
@@ -942,7 +921,7 @@ export interface ITaskListThunks {
  * TaskListItem
  */
 
-export interface ITaskListItemModel extends ITaskListItemState {}
+export type ITaskListItemModel = ITaskListItemState
 
 export interface ITaskListItemState {
   id: string;
@@ -968,9 +947,7 @@ export interface ITaskListItemState {
  * TaskListFilter
  */
 
-export interface ITaskListFilterModel
-  extends ITaskListFilterState,
-    ITaskListFilterActions {}
+export interface ITaskListFilterModel extends ITaskListFilterState, ITaskListFilterActions {}
 export interface ITaskListFilterState {
   optionCheck;
   optionOpen;
@@ -1120,10 +1097,7 @@ export interface IWizardThunks {
   saveWizardData: Thunk<IWizardActions>;
 }
 
-export interface IWizardModel
-  extends IWizardState,
-    IWizardActions,
-    IWizardThunks {}
+export interface IWizardModel extends IWizardState, IWizardActions, IWizardThunks {}
 
 export interface ICreateTaskWizardState extends IWizardState {
   rewardList: Array<any>;
@@ -1232,19 +1206,13 @@ export interface IHelpPageThunks {
   helpPageRequest: Thunk<IHelpPageActions, string>;
 }
 
-export interface IHelpPageModel
-  extends IHelpPageState,
-    IHelpPageActions,
-    IHelpPageThunks {}
+export interface IHelpPageModel extends IHelpPageState, IHelpPageActions, IHelpPageThunks {}
 
 /**
  * News
  */
 
-export interface INewsListModel
-  extends INewsListState,
-    INewsListActions,
-    INewsListThunks {}
+export interface INewsListModel extends INewsListState, INewsListActions, INewsListThunks {}
 
 export interface INewsListState {
   items: Array<INewsItemState>;
@@ -1273,10 +1241,7 @@ export interface IOtherNewsListModel
     IOtherNewsListThunks {}
 
 export interface IOtherNewsListThunks {
-  loadOtherNewsRequest: Thunk<
-    INewsListActions,
-    { excludeNewsItem: INewsItemState }
-  >;
+  loadOtherNewsRequest: Thunk<INewsListActions, { excludeNewsItem: INewsItemState }>;
   onLoadOtherNewsRequestSuccess: ThunkOn<IOtherNewsListModel>;
 }
 
@@ -1284,10 +1249,7 @@ export interface IOtherNewsListThunks {
  * NewsItem
  */
 
-export interface INewsItemModel
-  extends INewsItemState,
-    INewsItemActions,
-    INewsItemThunks {}
+export interface INewsItemModel extends INewsItemState, INewsItemActions, INewsItemThunks {}
 
 export interface INewsItemState {
   id: string;
@@ -1320,10 +1282,7 @@ export interface INewsItemThunks {}
  * HomePage
  */
 
-export interface IHomePageModel
-  extends IHomePageState,
-    IHomePageActions,
-    IHomePageThunks {}
+export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomePageThunks {}
 
 export interface IHomePageState extends IPageState {
   id: string;

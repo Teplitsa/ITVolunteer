@@ -37,7 +37,7 @@ const ReviewerCardSmall: React.FunctionComponent<{
           backgroundImage: isAvatarImageValid ? `url(${avatar})` : `url(${MemberAvatarDefault})`,
         }}
       />
-      <span className="name">
+      <span className="name name_reviews">
         <span dangerouslySetInnerHTML={{ __html: fullName }} />
         {task && (
           <>

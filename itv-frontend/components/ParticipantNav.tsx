@@ -98,17 +98,30 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           </a>
 
           <ul className="submenu">
-            <li>
-              <Link href="/task-actions/">
-                <a>Новая задача</a>
+            <li className="submenu__item submenu__item_bottom-divider">
+              <Link href="/members/[username]/profile" as={`/members/${user.username}/profile`}>
+                <a>
+                  {user.firstName}
+                  <span className="submenu__item-subtitle">Профиль</span>
+                </a>
               </Link>
             </li>
-            <li>
+            <li className="submenu__item">
               <Link href="/members/[username]" as={`/members/${user.username}`}>
                 <a onClick={() => regEvent("m_profile", router)}>Личный кабинет</a>
               </Link>
             </li>
-            <li>
+            <li className="submenu__item">
+              <Link href="/tasks">
+                <a>Поиск задач</a>
+              </Link>
+            </li>
+            <li className="submenu__item">
+              <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
+                <a>Управление аккаунтом</a>
+              </Link>
+            </li>
+            <li className="submenu__item submenu__item_top-divider">
               <a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a>
             </li>
           </ul>
@@ -117,18 +130,23 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
       <ul className="submenu account-submenu-mobile">
         <li>
-          <Link href="/member-actions/member-tasks/">
-            <a>Мои задачи</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/task-actions/">
-            <a onClick={() => regEvent("m_ntask", router)}>Новая задача</a>
+          <Link href="/members/[username]/profile" as={`/members/${user.username}/profile`}>
+            <a>Профиль</a>
           </Link>
         </li>
         <li>
           <Link href="/members/[username]" as={`/members/${user.username}`}>
-            <a onClick={() => regEvent("m_profile", router)}>Мой профиль</a>
+            <a onClick={() => regEvent("m_profile", router)}>Личный кабинет</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/tasks">
+            <a>Поиск задач</a>
+          </Link>
+        </li>
+        <li className="submenu__item">
+          <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
+            <a>Управление аккаунтом</a>
           </Link>
         </li>
         <li>
