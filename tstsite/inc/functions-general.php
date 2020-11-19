@@ -301,3 +301,13 @@ function itv_urls2links($text) {
 
   return $text;
 }
+
+function itv_insert_post_hook($post_id, $post, $is_update) {
+    global $wpdb;
+    
+    if(!current_user_can('manage_options') && $post->post_type === 'post') {
+        error_log("deny insert post for non admin: " . $post->ID);
+        $wpdb->query( $wpdb->prepare("UPDATE {$wpdb->posts} SET post_status = 'trash' WHERE ID = %s", $post_id) );
+    }
+}
+add_filter( "wp_insert_post", 'itv_insert_post_hook', 10, 3 );

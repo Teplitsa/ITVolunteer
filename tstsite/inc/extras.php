@@ -250,4 +250,3 @@ function tst_login_avatar(){ //u
 	<img src="<?php echo get_template_directory_uri();?>/assets/img/temp-avatar.png" alt="<?php _e('LogIn', 'tst');?>">
 <?php
 }
-
