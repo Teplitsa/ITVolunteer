@@ -19,8 +19,9 @@ try {
         'mixed' => 0,
         'inactive' => 0,
     ];
+    $mixed_profiles = [];
 
-    User::chunk(100, function($users) use (&$users_roles_stats) {
+    User::chunk(100, function($users) use (&$users_roles_stats, &$mixed_profiles) {
         foreach ($users as $user) {
             // if($user->ID != 75) {
             //     continue;
@@ -56,6 +57,7 @@ try {
             }
             elseif($user_stats['created_tasks'] > 0 && $user_stats['doer_tasks'] > 0) {
                 $users_roles_stats['mixed'] += 1;
+                $mixed_profiles[] = tst_get_member_url( $user->ID );
             }
             elseif($user_stats['created_tasks'] > 0) {
                 $users_roles_stats['author'] += 1;
@@ -63,13 +65,22 @@ try {
             elseif($user_stats['doer_tasks'] > 0) {
                 $users_roles_stats['doer'] += 1;
             }
-            
         }
     });
 
     echo "TOTAL STATS:\n";
     print_r($users_roles_stats);
     echo "\n\n";
+
+    $upload_dir = wp_upload_dir();
+    $mixed_profiles_fpath = $upload_dir['basedir'] . "/mixed-profiles.txt";
+    $mixed_profiles_furl = $upload_dir['baseurl'] . "/mixed-profiles.txt";    
+
+    echo "file: " . $mixed_profiles_fpath . "\n";
+    echo "url: " . $mixed_profiles_furl . "\n\n";
+    // print_r($mixed_profiles);
+
+    file_put_contents( $mixed_profiles_fpath, implode( "\n", $mixed_profiles ) . "\n" );
 
 	echo 'DONE'.chr(10);
 
