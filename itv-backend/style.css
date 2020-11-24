@@ -1,0 +1,17 @@
+/*
+Theme Name: ITV 2.0
+Theme URI: https://github.com/Teplitsa/ITVolunteer
+Author: Teplitsa
+Author URI: https://te-st.ru/
+Description: Child theme for ITV 1.0
+Template: tstsite
+Version: 0.1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: itv
+
+*/
+
+/** WP.org requirements */
+.sticky {}
+.bypostauthor {}
