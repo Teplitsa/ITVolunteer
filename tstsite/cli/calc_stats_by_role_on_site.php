@@ -46,6 +46,13 @@ try {
                 'post_status' => ['publish', 'in_work', 'closed', 'archived'],
                 'connected_type' => 'task-doers',
                 'connected_items' => $user->ID,
+                'connected_meta'  => array(
+                     array(
+                         'key'     =>'is_approved',
+                         'value'   => 1,
+                         'compare' => '='
+                     )
+                ),
             ];
             $query = new WP_Query($args);
             $user_stats['doer_tasks'] = $query->found_posts;
