@@ -1,18 +1,54 @@
 .tabs {
+  &_landing-nav {
+    position: relative;
+  }
   &-nav {
     display: flex;
     border-bottom: 1px solid $color-gray-light-md;
+
+    .tabs_landing-nav & {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: $color-gray-light-xl;
+      width: 100%;
+    }
+
+    &_fixed.tabs-nav {
+      position: fixed;
+      top: 0;
+      left: auto;
+      z-index: 10;
+    }
+
+    &-substitute {
+      width: 100%;
+      height: 48px;
+
+      @include screen-from(md) {
+        height: 85px;
+      }
+    }
     &__item {
-      margin: 0 8px 0 0;
       border-bottom: 3px solid transparent;
       box-sizing: border-box;
       transition: all 0.3s linear;
+
+      @include screen-from(md) {
+        margin: 0 8px 0 0;
+      }
+
       &-link {
         display: inline-block;
-        padding: 31px 12px 30px;
+        padding: 12px;
         font: 600 13px/20px "IBM Plex Sans", sans-serif;
         color: $color-gray-dark-md;
         transition: all 0.3s linear;
+
+        @include screen-from(md) {
+          padding: 31px 12px 30px;
+        }
+
         &:hover,
         &:focus {
           text-decoration: none;
@@ -28,15 +64,32 @@
   }
   &-content {
     &__item {
-      height: 0;
-      opacity: 0;
-      visibility: hidden;
-      overflow: hidden;
-      transition: all 0.3s linear;
-      &_active {
-        height: auto;
-        opacity: 1;
-        visibility: visible;
+      .tabs_default & {
+        height: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition: all 0.3s linear;
+        &_active {
+          height: auto;
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+      .tabs_landing-nav & {
+        position: relative;
+      }
+      &-substitute {
+        position: absolute;
+        top: calc(-48px - 30px);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+
+        @include screen-from(md) {
+          top: calc(-85px - 30px);
+        }
       }
     }
   }

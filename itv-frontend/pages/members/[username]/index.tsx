@@ -38,8 +38,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
         seo: {
           canonical: `https://itv.te-st.ru/members/${query.username}`,
           title: `${query.username} - аккаунт на сайте it-волонтер`,
-          metaRobotsNoindex: "noindex",
-          metaRobotsNofollow: "nofollow",
+          metaRobotsNoindex: "index",
+          metaRobotsNofollow: "follow",
           opengraphTitle: `${query.username} - аккаунт на сайте it-волонтер`,
           opengraphUrl: `https://itv.te-st.ru/members/${query.username}`,
           opengraphSiteName: "it-волонтер",

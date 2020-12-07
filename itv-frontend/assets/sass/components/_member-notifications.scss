@@ -1,0 +1,100 @@
+.member-notifications {
+  &__header {
+    margin: 30px 0 15px;
+
+    @include screen-from(md) {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+  &__title {
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-xl;
+  }
+  &__filter {
+    ul {
+      display: flex;
+    }
+    li {
+      &:not(:last-child) {
+        margin: 0 20px 0 0;
+      }
+    }
+    &-control {
+      border-bottom: 1px dashed $color-gray-dark-md;
+      font: 600 11px/16px "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md;
+      &:hover {
+        border-bottom: 1px dashed transparent;
+        text-decoration: none;
+      }
+      &_active {
+        color: $color-gray-dark-xl;
+      }
+    }
+  }
+  &__list {
+    border: 1px solid $color-gray-light-md;
+    border-radius: 8px 8px 0 0;
+
+    &-item {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      padding: 15px 10px;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+
+      &:first-child {
+        border-radius: 8px 8px 0 0;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid $color-gray-light-md;
+      }
+
+      &_warning-message {
+        background-color: rgba(250, 115, 85, 0.1);
+        color: $color-sec-dark;
+      }
+
+      &_new-message {
+        background-color: $color-main-light;
+      }
+
+      &-title {
+        margin-right: auto;
+      }
+      &-time {
+        margin-left: auto;
+        text-align: center;
+      }
+
+      a {
+        color: $color-main-dark;
+      }
+    }
+  }
+  &__keyword {
+    color: $color-gray-dark-xl;
+  }
+  &__footer {
+    border: 1px solid $color-gray-light-md;
+    border-top-style: none;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 8px 8px;
+  }
+  &__more-link {
+    border-bottom: 1px dashed $color-gray-dark-md;
+    font: 600 11px/16px "IBM Plex Sans", sans-serif;
+    text-decoration: none;
+    color: $color-gray-dark-md;
+
+    &:hover {
+      border-bottom-color: transparent;
+      text-decoration: none;
+    }
+  }
+}

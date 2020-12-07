@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
+import MemberPortfolio from "../../components/members/MemberPortfolio";
+import MemberPortfolioNoItems from "../../components/members/MemberPortfolioNoItems";
+import MemberNotifications from "../../components/members/MemberNotifications";
 import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
 import MemberCard from "../../components/members/MemberCard";
@@ -14,6 +17,7 @@ import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
+  const noPortfolioItems = true;
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
   const { cover: coverImage, isEmptyProfile, itvAvatar, username } = useStoreState(
     state => state.components.memberAccount
@@ -27,6 +31,15 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: [
+      {
+        title: "Оповещения",
+        content: () => <MemberNotifications />,
+      },
+      {
+        title: "Портфолио",
+        content:
+          (noPortfolioItems && (() => <MemberPortfolioNoItems />)) || (() => <MemberPortfolio />),
+      },
       { title: "Задачи", content: () => <MemberTasks /> },
       { title: "Отзывы", content: () => <MemberReviews /> },
     ],

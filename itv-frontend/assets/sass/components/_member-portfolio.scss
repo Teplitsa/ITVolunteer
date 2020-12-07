@@ -1,0 +1,84 @@
+.member-portfolio {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin: 30px 0 15px;
+  }
+  &__title {
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-xl;
+  }
+  &__list {
+    border: 1px solid $color-gray-light-md;
+    padding: 20px 20px 25px;
+    border-radius: 8px 8px 0 0;
+
+    @include screen-from(md) {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+    }
+    &-item {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+
+      @include screen-from(md) {
+        align-items: flex-start;
+        flex-basis: calc(33.3333% - (20px + 20px) / 3);
+      }
+
+      &:not(:last-child) {
+        margin: 0 0 20px;
+        @include screen-from(md) {
+          margin: 0;
+        }
+      }
+      &-title {
+        margin: 10px 0 0;
+        font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+
+        &,
+        & a {
+          color: $color-gray-dark-xl;
+        }
+      }
+    }
+  }
+  &__no-items {
+    border: 1px solid $color-gray-light-md;
+    border-bottom-style: none;
+    padding: 20px;
+    font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+    text-align: center;
+    color: $color-gray-dark-xl;
+    border-radius: 8px 8px 0 0;
+
+    img {
+      margin: 0 0 20px;
+    }
+  }
+  &__footer {
+    border: 1px solid $color-gray-light-md;
+    border-top-style: none;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 8px 8px;
+
+    &_no-items {
+      padding: 0 0 20px;
+    }
+  }
+  &__more-link {
+    border-bottom: 1px dashed $color-gray-dark-md;
+    font: 600 11px/16px "IBM Plex Sans", sans-serif;
+    text-decoration: none;
+    color: $color-gray-dark-md;
+
+    &:hover {
+      border-bottom-color: transparent;
+      text-decoration: none;
+    }
+  }
+}

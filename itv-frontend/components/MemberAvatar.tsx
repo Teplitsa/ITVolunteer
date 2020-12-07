@@ -4,7 +4,7 @@ import MemberAvatarDefault from "../assets/img/member-default.svg";
 const MemberAvatar: React.FunctionComponent<{
   memberAvatar: string;
   memberFullName?: string;
-  size?: "large" | "medium" | "small";
+  size?: "large" | "medium" | "medium-plus" | "small";
 }> = ({ memberAvatar, memberFullName = "", size = "" }): ReactElement => {
   const isDefaultAvatar = !memberAvatar || memberAvatar.search(/temp-avatar\.png/) !== -1;
 
@@ -12,6 +12,8 @@ const MemberAvatar: React.FunctionComponent<{
     <figure
       className={`member-avatar ${isDefaultAvatar ? "member-avatar_default-image" : ""} ${
         size === "medium" ? "member-avatar_medium-size-image" : ""
+      } ${
+        size === "medium-plus" ? "member-avatar_medium-plus-size-image" : ""
       }`}
     >
       <img

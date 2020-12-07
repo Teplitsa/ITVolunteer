@@ -1,0 +1,30 @@
+@import "../base/presets";
+@import "../components/buttons";
+
+.confirm {
+  &__content {
+    margin: 0 0 20px;
+    font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-lg;
+  }
+  &__action-panel {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    border-top: 1px solid $color-gray-light-md;
+    padding: 15px 0 0;
+
+  }
+  &__btn {
+    &_cancel {
+      @extend .btn;
+      @extend .btn_link-alt;
+    }
+    &_submit {
+      @extend .btn;
+      @extend .btn_danger;
+      margin-left: 20px;
+    }
+  }
+}

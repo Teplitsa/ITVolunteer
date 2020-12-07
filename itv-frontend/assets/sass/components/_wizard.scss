@@ -586,29 +586,23 @@
       }
     }
   }
-
-  &__list-option {
-  }
 }
 
 .wizard-upload {
   position: relative;
-  min-height: 112px;
 
   & > input[type="file"] {
     position: absolute;
     display: block;
-    left: 2px;
-    top: 2px;
+    left: 0;
+    top: 0;
     width: 100%;
-    min-height: 112px;
+    height: 100%;
     border-radius: 10px;
-    // z-index: 1;
     cursor: pointer;
     outline: none;
     padding-top: 0px;
     padding-left: 0px;
-    //visibility: hidden;
   }
 
   &__inner {
@@ -617,18 +611,17 @@
     position: relative;
     border-radius: 10px;
     width: 100%;
-    min-height: 112px;
-    // z-index: 2;
     pointer-events: none;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
   }
 
   &__box {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 28px 66px 28px 36px;
+    padding: 28px 29px 28px 36px;
     pointer-events: none;
     width: 100%;
 

@@ -24,6 +24,18 @@
       border-bottom-color: $color-main-dark;
       color: $color-main-dark;
     }
+
+    &-alt {
+      padding: 0;
+      font: 600 11px/1.45 "IBM Plex Sans", sans-serif;
+      text-decoration: none;
+      color: $color-main;
+
+      &:hover,
+      &:focus {
+        color: $color-main-dark;
+      }
+    }
   }
   &_link {
     background-color: transparent;
@@ -38,6 +50,25 @@
       border-bottom-color: $color-gray-dark-lg;
       color: $color-gray-dark-lg;
     }
+
+    &-alt {
+      @extend .btn_link;
+      border-bottom-color: transparent;
+      color: $color-gray-dark-lg;
+
+      &:hover,
+      &:focus {
+        border-bottom-color: $color-gray-dark-lg;
+      }
+    }
+  }
+  &_danger {
+    background-color: $color-sec-dark;
+    border-style: none;
+    font-size: 16px;
+    color: $color-white;
+    box-shadow: inset -1px -1px 1px rgba(89, 21, 0, 0.53);
+    border-radius: 8px;
   }
   &_primary {
     background: $color-main;
@@ -57,6 +88,12 @@
       font: 500 16px/20px "IBM Plex Sans", sans-serif;
       border-radius: 12px;
     }
+
+    &-extra {
+      @extend .btn_primary-lg;
+      line-height: 1.6;
+      font-size: 20px;
+    }
   }
   &_secondary {
     background-color: $color-white;
@@ -70,7 +107,7 @@
     }
     &:focus {
       border: 2px solid $color-gray-light-lg;
-    }  
+    }
   }
   &_default {
     background-color: transparent;
@@ -112,8 +149,7 @@
     opacity: 0.5;
   }
   &_upload-cover {
-    background: url(../../img/upload-account-cover.svg) calc(100% - 16px) 50% no-repeat
-      $color-white;
+    background: url(../../img/upload-account-cover.svg) calc(100% - 16px) 50% no-repeat $color-white;
     background-color: transparent;
     border: 2px dashed $color-gray-dark-md-001;
     padding: 12px;

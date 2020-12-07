@@ -1,0 +1,30 @@
+.manage-portfolio-item {
+  padding: 30px 0;
+
+  @include screen-from(md) {
+    padding: 40px 0 60px;
+  }
+  &__content {
+    margin: 0 auto;
+    max-width: 544px;
+  }
+  &__title {
+    margin: 0 0 30px;
+    font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: $color-gray-dark-xl;
+  }
+  &__footer {
+    text-align: center;
+  }
+  &__backward-link {
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    text-decoration: underline;
+    color: $color-gray-dark-md-001;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

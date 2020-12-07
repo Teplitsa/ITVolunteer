@@ -14,7 +14,7 @@ export const UploadFileInput = props => {
   const fieldDescription = _.get(
     props,
     "description",
-    "Перетащите файл в выделенную область или кликните на кнопку"
+    "Перетащите файл в выделенную область или кликните Загрузить"
   );
   const acceptFileFormat = _.get(props, "acceptFileFormat", "");
 
@@ -32,11 +32,11 @@ export const UploadFileInput = props => {
     setFiles(
       fileData && fileData.mediaItemUrl
         ? [
-            {
-              fileName: fileData.mediaItemUrl.replace(/^.*\//, ""),
-              value: fileData.databaseId,
-            },
-          ]
+          {
+            fileName: fileData.mediaItemUrl.replace(/^.*\//, ""),
+            value: fileData.databaseId,
+          },
+        ]
         : []
     );
   }, [fileData]);

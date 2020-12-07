@@ -5,32 +5,59 @@
     margin: 0 0 15px;
   }
   &__item {
-    margin: 0 10px 0 0;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     text-indent: -9999px;
-    &:last-child {
-      @include screen-to(md) {
-        margin: 0;
+
+    &:not(:last-child) {
+      margin: 0 10px 0 0;
+    }
+
+    &_24x24 {
+      width: 24px;
+      height: 24px;
+    }
+    &_40x40 {
+      width: 40px;
+      height: 40px;
+
+      &:not(:last-child) {
+        margin: 0 20px 0 0;
       }
     }
     &_facebook {
       background: url(../../img/icon-facebook_24x24.svg) 50% 50% no-repeat;
+
+      &-green-bg {
+        background: url(../../img/icon-facebook_green-bg_40x40.svg) 50% 50% no-repeat;
+      }
     }
     &_twitter {
       background: url(../../img/icon-twitter_24x24.svg) 50% 50% no-repeat;
+
+      &-green-bg {
+        background: url(../../img/icon-twitter_green-bg_40x40.svg) 50% 50% no-repeat;
+      }
     }
     &_instagram {
       background: url(../../img/icon-instagram_24x24.svg) 50% 50% no-repeat;
     }
     &_vk {
       background: url(../../img/icon-vk_24x24.svg) 50% 50% no-repeat;
+
+      &-green-bg {
+        background: url(../../img/icon-vk_green-bg_40x40.svg) 50% 50% no-repeat;
+      }
     }
     &_skype {
       background: url(../../img/icon-skype_24x24.svg) 50% 50% no-repeat;
     }
     &_telegram {
       background: url(../../img/icon-telegram_24x24.svg) 50% 50% no-repeat;
+
+      &-green-bg {
+        background: url(../../img/icon-telegram_green-bg_40x40.svg) 50% 50% no-repeat;
+      }
     }
   }
 }

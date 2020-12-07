@@ -3,6 +3,32 @@
     display: flex;
     flex-flow: column nowrap;
     margin: 0 0 32px;
+    &-header,
+    &-footer {
+      font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+    }
+    &-header {
+      margin: 0 0 15px;
+    }
+    &-footer {
+      display: flex;
+      flex-flow: row nowrap;
+      margin: 15px 0 0;
+
+      &-left {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+
+        img {
+          margin-right: 5px;
+        }
+      }
+      &-right {
+        margin-left: auto;
+      }
+    }
   }
   &__control {
     &_input {
@@ -11,11 +37,11 @@
         border: 1px solid $color-gray-light-lg;
         margin: 0 15px 0 0;
         padding: 16px 12px;
+        font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
+        color: $color-gray-dark-xl;
         box-sizing: border-box;
         box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
         border-radius: 10px;
-        font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
-        color: $color-gray-dark-xl;
         transition: all 0.15s linear;
 
         &:hover {
@@ -24,8 +50,7 @@
 
         &:focus {
           border: 1px solid $color-success;
-          box-shadow: 0px 0px 8px rgba(14, 163, 108, 0.2),
-            inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+          box-shadow: 0px 0px 8px rgba(14, 163, 108, 0.2), inset 1px 1px 2px rgba(89, 64, 0, 0.16);
           outline: none;
         }
 
@@ -40,6 +65,38 @@
         }
       }
     }
+    &_textarea {
+      background-color: $color-white;
+      border: 1px solid $color-gray-light-lg;
+      padding: 12px 16px;
+      min-height: calc(7.5em + 13px * 2);
+      font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+      box-sizing: border-box;
+      box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+      border-radius: 10px;
+
+      transition: all 0.15s linear;
+
+      &:hover {
+        border: 1px solid $color-gray;
+      }
+
+      &:focus {
+        border: 1px solid $color-success;
+        box-shadow: 0px 0px 8px rgba(14, 163, 108, 0.2), inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+        outline: none;
+      }
+
+      &:invalid {
+        border: 1px solid $color-sec-dark;
+        box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+      }
+
+      &:disabled {
+        background-color: $color-gray-light-lg;
+        border: 1px solid $color-gray-light-lg;
+      }
+    }
     &_submit {
       @extend .btn_primary;
     }
@@ -47,5 +104,13 @@
       display: block;
       width: 100%;
     }
+  }
+  &__label {
+    margin: 0 0 15px;
+    font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-lg;
+  }
+  &__required {
+    color: $color-sec-dark;
   }
 }
