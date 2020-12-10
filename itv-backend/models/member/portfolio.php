@@ -2,7 +2,7 @@
 namespace ITV\models;
 
 class PortfolioWork {
-    public $post_object;
+    public $post;
 
     public function __construct($post) {
 
@@ -32,4 +32,6 @@ class PortfolioWork {
 class PortfolioWorkManager {
     public static $post_type = 'portfolio_work';
     public static $meta_image_id = 'portfolio_image_id';   
+
+    public static $rest_context_portfolio_edit = 'portfolio_edit';
 }

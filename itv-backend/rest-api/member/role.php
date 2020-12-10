@@ -4,25 +4,21 @@ use \ITV\models\MemberManager;
 
 function member_role_api_init($server) {
 
-    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itv_role', [
+    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itvRole', [
         'methods'   => WP_REST_Server::READABLE,
         'callback'  => function($request) {
 
             $slug = $request->get_param('slug');
             $user = get_user_by('slug', $slug);
 
-            $role = $user ? get_user_meta($user->ID, MemberManager::$meta_role, true) : "";
-
-            if(!$role) {
-                $members = new MemberManager();
-                $role = $members->get_default_role();
-            }
+            $members = new MemberManager();
+            $role = $user ? $members->get_member_role($user->ID) : "";
 
             return ['role' => $role];
         },
     ] );
 
-    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itv_role', [
+    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itvRole', [
         'methods'   => WP_REST_Server::EDITABLE,
         'callback'  => function($request) {
 
