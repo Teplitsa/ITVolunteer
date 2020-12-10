@@ -12,6 +12,10 @@ use \ITV\models\ThankyouModel;
 use \ITV\dao\ReviewAuthor;
 use \ITV\dao\Review;
 
+// from itv-backend
+use \ITV\models\MemberManager;
+use \ITV\models\MemberTasks;
+
 add_filter('graphql_app_context_config', 'itv_graphql_app_context_config');
 function itv_graphql_app_context_config($config) {
     return $config;
@@ -535,6 +539,22 @@ function itv_register_user_graphql_fields() {
                 'description' => __( 'User solved problems', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_is_empty_user_profile($user->userId);
+                }
+            ],
+            'itvRole' => [
+                'type' => 'String',
+                'description' => __( 'User itvRole', 'tst' ),
+                'resolve' => function ($user) {
+                    $members = new MemberManager();
+                    return $members->get_member_role($user->userId);
+                }
+            ],
+            'isHybrid' => [
+                'type' => 'Bool',
+                'description' => __( 'User is doer and author', 'tst' ),
+                'resolve' => function ($user) {
+                    $member_tasks = new MemberTasks($user->userId);
+                    return $member_tasks->isMemberHasCreatedAndCompletedTasks();
                 }
             ],
         ]

@@ -1,0 +1,208 @@
+# Copyright (C) 2020 Teplitsa
+# This file is distributed under the GNU General Public License v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: ITV 2.0 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/itv-backend\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2020-12-09T22:36:51+00:00\n"
+"PO-Revision-Date: 2020-12-10 00:39+0200\n"
+"X-Generator: Poedit 2.0.5\n"
+"X-Domain: itv-backend\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: ru_RU\n"
+
+#. Theme Name of the theme
+msgid "ITV 2.0"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "https://github.com/Teplitsa/ITVolunteer"
+msgstr ""
+
+#. Description of the theme
+msgid "Child theme for ITV 1.0"
+msgstr ""
+
+#. Author of the theme
+msgid "Teplitsa"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://te-st.ru/"
+msgstr ""
+
+#: models/member/member.php:107
+msgid "member_role_"
+msgstr ""
+
+#: models/member/member.php:116
+msgid "member_role_doer"
+msgstr "Волонтер"
+
+#: models/member/member.php:117
+msgid "member_role_author"
+msgstr "Заказчик"
+
+#: post-types/portfolio_work.php:13 post-types/portfolio_work.php:37
+msgid "Portfolio works"
+msgstr ""
+
+#: post-types/portfolio_work.php:14
+msgid "Portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:15
+msgid "All Portfolio works"
+msgstr ""
+
+#: post-types/portfolio_work.php:16
+msgid "Portfolio work Archives"
+msgstr ""
+
+#: post-types/portfolio_work.php:17
+msgid "Portfolio work Attributes"
+msgstr ""
+
+#: post-types/portfolio_work.php:18
+msgid "Insert into portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:19
+msgid "Uploaded to this portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:20
+msgctxt "portfolio_work"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/portfolio_work.php:21
+msgctxt "portfolio_work"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/portfolio_work.php:22
+msgctxt "portfolio_work"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/portfolio_work.php:23
+msgctxt "portfolio_work"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/portfolio_work.php:24
+msgid "Filter portfolio works list"
+msgstr ""
+
+#: post-types/portfolio_work.php:25
+msgid "Portfolio works list navigation"
+msgstr ""
+
+#: post-types/portfolio_work.php:26
+msgid "Portfolio works list"
+msgstr ""
+
+#: post-types/portfolio_work.php:27
+msgid "New Portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:28
+msgid "Add New"
+msgstr ""
+
+#: post-types/portfolio_work.php:29
+msgid "Add New Portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:30
+msgid "Edit Portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:31
+msgid "View Portfolio work"
+msgstr ""
+
+#: post-types/portfolio_work.php:32
+msgid "View Portfolio works"
+msgstr ""
+
+#: post-types/portfolio_work.php:33
+msgid "Search portfolio works"
+msgstr ""
+
+#: post-types/portfolio_work.php:34
+msgid "No portfolio works found"
+msgstr ""
+
+#: post-types/portfolio_work.php:35
+msgid "No portfolio works found in trash"
+msgstr ""
+
+#: post-types/portfolio_work.php:36
+msgid "Parent Portfolio work:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/portfolio_work.php:71
+msgid ""
+"Portfolio work updated. <a target=\"_blank\" href=\"%s\">View portfolio "
+"work</a>"
+msgstr ""
+
+#: post-types/portfolio_work.php:72
+msgid "Custom field updated."
+msgstr ""
+
+#: post-types/portfolio_work.php:73
+msgid "Custom field deleted."
+msgstr ""
+
+#: post-types/portfolio_work.php:74
+msgid "Portfolio work updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/portfolio_work.php:76
+msgid "Portfolio work restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/portfolio_work.php:78
+msgid "Portfolio work published. <a href=\"%s\">View portfolio work</a>"
+msgstr ""
+
+#: post-types/portfolio_work.php:79
+msgid "Portfolio work saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/portfolio_work.php:81
+msgid ""
+"Portfolio work submitted. <a target=\"_blank\" href=\"%s\">Preview portfolio "
+"work</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/portfolio_work.php:83
+msgid ""
+"Portfolio work scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" "
+"href=\"%2$s\">Preview portfolio work</a>"
+msgstr ""
+
+#: post-types/portfolio_work.php:84
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/portfolio_work.php:86
+msgid ""
+"Portfolio work draft updated. <a target=\"_blank\" href=\"%s\">Preview "
+"portfolio work</a>"
+msgstr ""
