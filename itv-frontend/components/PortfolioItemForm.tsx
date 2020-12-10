@@ -1,29 +1,50 @@
-import { ReactElement, FormEvent, useState } from "react";
+import { ReactElement, FormEvent, useState, useEffect } from "react";
 import UploadFileInput from "./UploadFileInput";
 import IconAward from "../assets/img/icon-award.svg";
+import { IMediaData, getMediaData } from "../utilities/media";
 
 interface IPortfolioItemForm {
   title?: string;
   description?: string;
-  preview?: File;
-  fullImage?: File;
+  preview?: number;
+  fullImage?: number;
+  submitBtnTitle?: string;
   afterSubmitHandler: (portfolioItemData: FormData) => void;
 }
 
 const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
   title = "",
   description = "",
-  preview = null,
-  fullImage = null,
+  preview = 0,
+  fullImage = 0,
+  submitBtnTitle = "Добавить работу",
   afterSubmitHandler,
 }): ReactElement => {
-  const [titleLength, setTitleLength] = useState<number>(0);
-  const [descriptionLength, setDescriptionLength] = useState<number>(0);
+  const [titleLength, setTitleLength] = useState<number>(title.trim().length);
+  const [descriptionLength, setDescriptionLength] = useState<number>(description.trim().length);
+  const [previewObject, setPreviewObject] = useState<number | IMediaData>(preview);
+  const [fullImageObject, setFullImageObject] = useState<number | IMediaData>(fullImage);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     afterSubmitHandler(new FormData(event.currentTarget));
   };
+
+  useEffect(() => {
+    preview > 0 &&
+      (async () => {
+        const fileData = await getMediaData(preview);
+
+        setPreviewObject(fileData);
+      })();
+
+    fullImage > 0 &&
+      (async () => {
+        const fileData = await getMediaData(fullImage);
+
+        setFullImageObject(fileData);
+      })();
+  }, []);
 
   return (
     <form className="form" onSubmit={submitHandler}>
@@ -59,29 +80,35 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
           onInput={event => setDescriptionLength(event.currentTarget.value.length)}
         ></textarea>
         <div className="form__group-footer">
-          <div className="form__group-footer-left"><img src={IconAward} alt="" /> +10 баллов за заполненное поле</div>
+          <div className="form__group-footer-left">
+            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
+          </div>
           <div className="form__group-footer-right">{descriptionLength}/150</div>
         </div>
       </div>
       <div className="form__group">
-        <label className="form__label">Изображение превью</label>
+        <label className="forloadFileDatam__label">Изображение превью</label>
         <div className="form__group-header">Желаемый размер файла 430x250px</div>
-        <UploadFileInput name="preview" isMultiple={false} fileData={preview} />
+        <UploadFileInput name="preview" isMultiple={false} fileData={previewObject} />
         <div className="form__group-footer">
-          <div className="form__group-footer-left"><img src={IconAward} alt="" /> +10 баллов за заполненное поле</div>
+          <div className="form__group-footer-left">
+            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
+          </div>
         </div>
       </div>
       <div className="form__group">
         <label className="form__label">Изображение в портфолио</label>
         <div className="form__group-header">Желаемый размер файла 1200px по ширине</div>
-        <UploadFileInput name="full_image" isMultiple={false} fileData={fullImage} />
+        <UploadFileInput name="full_image" isMultiple={false} fileData={fullImageObject} />
         <div className="form__group-footer">
-          <div className="form__group-footer-left"><img src={IconAward} alt="" /> +10 баллов за заполненное поле</div>
+          <div className="form__group-footer-left">
+            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
+          </div>
         </div>
       </div>
       <div className="form__group">
         <button type="submit" className="btn btn_primary-extra">
-          Добавить работу
+          {submitBtnTitle}
         </button>
       </div>
     </form>

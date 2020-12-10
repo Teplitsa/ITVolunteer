@@ -16,8 +16,7 @@
 
     @include screen-from(md) {
       display: flex;
-      flex-flow: row nowrap;
-      justify-content: space-between;
+      flex-flow: row wrap;
     }
     &-item {
       display: flex;
@@ -31,8 +30,10 @@
 
       &:not(:last-child) {
         margin: 0 0 20px;
+      }
+      &:not(:nth-child(3n + 3)) {
         @include screen-from(md) {
-          margin: 0;
+          margin-right: 20px;
         }
       }
       &-title {

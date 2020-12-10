@@ -22,7 +22,7 @@ export const UploadFileInput = props => {
     if (props.fileData) {
       setFileData(props.fileData);
     }
-  }, []);
+  }, [props.fileData]);
 
   useEffect(() => {
     if (fileData && typeof fileData != "object") {

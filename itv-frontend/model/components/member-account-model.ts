@@ -4,12 +4,14 @@ import {
   IMemberAccountPageState,
   IMemberAccountPageActions,
   IMemberAccountPageThunks,
+  IPortfolioItemFormState,
   IFetchResult,
+  IRestApiResponse,
   IMemberReview,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import storeJsLocalStorage from "store";
-import { stripTags, getAjaxUrl } from "../../utilities/utilities";
+import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
@@ -51,6 +53,10 @@ export const memberAccountPageState: IMemberAccountPageState = {
     page: 0,
     list: null,
   },
+  portfolio: {
+    page: 0,
+    list: null,
+  },
   profileFillStatus: {
     createdTasksCount: 0,
     approvedAsDoerTasksCount: 0,
@@ -67,7 +73,8 @@ export const graphqlQuery: {
   member: `query getMember($username: ID!) {
     user(id: $username, idType: USERNAME) {
       ${Object.keys(memberAccountPageState).filter(
-    key => !["tasks", "reviews", "memberTaskStats", "profileFillStatus"].includes(key)
+    key =>
+      !["tasks", "reviews", "portfolio", "memberTaskStats", "profileFillStatus"].includes(key)
   )}
     }
   }`,
@@ -129,6 +136,12 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   setTaskListFilter: action((prevState, newFilter) => {
     prevState.tasks.filter = newFilter;
+  }),
+  setPortfolioPage: action((prevState, newPage) => {
+    prevState.portfolio.page = newPage;
+  }),
+  showMorePortfolio: action((prevState, newPortfolio) => {
+    prevState.portfolio.list = [].concat(prevState.portfolio.list, newPortfolio);
   }),
   setTasksPage: action((prevState, newPage) => {
     prevState.tasks.page = newPage;
@@ -216,6 +229,59 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       console.error(error);
     }
   }),
+  getMemberPortfolioRequest: thunk(
+    async ({ setPortfolioPage, showMorePortfolio }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: {
+            databaseId: userId,
+            portfolio: { page },
+          },
+        },
+      } = getStoreState() as IStoreModel;
+      const nextPage = page + 1;
+
+      const memberPortfolioRequestUrl = new URL(getRestApiUrl(`/wp/v2/portfolio_work`));
+
+      memberPortfolioRequestUrl.search = new URLSearchParams({
+        page: `${nextPage}`,
+        per_page: "3",
+        author: `${userId}`,
+      }).toString();
+
+      try {
+        const memberPortfolioResponse = await fetch(memberPortfolioRequestUrl.toString());
+        const response: IRestApiResponse = await memberPortfolioResponse.json();
+
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(response.message);
+        } else if (response instanceof Array && response.length > 0) {
+          const portfolioList: Array<IPortfolioItemFormState> = response.map(
+            ({
+              id,
+              slug,
+              title: { rendered: renderedTitle },
+              content: { rendered: renderedContent },
+              featured_media: preview,
+              meta: { portfolio_image_id: fullImage },
+            }) => ({
+              id,
+              slug,
+              title: stripTags(renderedTitle).trim(),
+              description: stripTags(renderedContent).trim(),
+              preview,
+              fullImage,
+            })
+          );
+
+          setPortfolioPage(nextPage);
+          showMorePortfolio(portfolioList);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
   getMemberTasksRequest: thunk(
     async ({ setTasksPage, showMoreTasks }, params, { getStoreState }) => {
       const {

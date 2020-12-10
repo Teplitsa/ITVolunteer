@@ -4,6 +4,7 @@ import Link from "next/link";
 import VolunteerPortfolioImage from "../../assets/img/illustration-volunteer-portfolio.svg";
 
 const MemberPortfolioNoItems: React.FunctionComponent = (): ReactElement => {
+  const { isAccountOwner } = useStoreState(store => store.session);
   const { username } = useStoreState(store => store.components.memberAccount);
 
   return (
@@ -20,14 +21,14 @@ const MemberPortfolioNoItems: React.FunctionComponent = (): ReactElement => {
         </p>
       </div>
       <div className="member-portfolio__footer member-portfolio__footer_no-items">
-        <Link
+        {isAccountOwner && <Link
           href="/members/[username]/add-portfolio-item"
           as={`/members/${username}/add-portfolio-item`}
         >
           <a className="btn btn_default" target="_blank">
             Добавить первую работу
           </a>
-        </Link>
+        </Link>}
       </div>
     </div>
   );

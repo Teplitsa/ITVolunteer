@@ -12,6 +12,8 @@ import helpPageModel from "./components/help-model";
 import newsItemModel from "./news-model/news-item-model";
 import newsListModel from "./news-model/news-list-model";
 import otherNewsListModel from "./news-model/other-news-list-model";
+import portfolioItemModel from "./components/portfolio-item-model";
+import portfolioItemFormModel from "./components/portfolio-model";
 import memberSecurityPageModel from "./components/member-security-model";
 import memberProfilePageModel from "./components/member-profile-model";
 import memberAccountPageModel from "./components/member-account-model";
@@ -23,6 +25,8 @@ const componentsState: IComponentsState = {
   memberAccount: memberAccountPageModel,
   memberProfile: memberProfilePageModel,
   memberSecurity: memberSecurityPageModel,
+  portfolioItem: portfolioItemModel,
+  portfolioItemForm: portfolioItemFormModel,
   honors: honorsPageModel,
   paseka: pasekaPageModel,
   task: taskModel,

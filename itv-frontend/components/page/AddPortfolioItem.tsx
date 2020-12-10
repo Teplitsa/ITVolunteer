@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import PortfolioItemForm from "../PortfolioItemForm";
 
 const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
@@ -8,25 +9,45 @@ const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
     user: { username },
     isAccountOwner,
   } = useStoreState(store => store.session);
+  const { title, description, preview, fullImage } = useStoreState(
+    store => store.components.portfolioItemForm
+  );
+  const { publishPortfolioItemRequest } = useStoreActions(
+    actions => actions.components.portfolioItemForm
+  );
+  const router = useRouter();
 
-  const savePortFolioItemData = (portFolioItemData: FormData) => {
-    console.log(Array.from(portFolioItemData));
+  const savePortfolioItemData = (portFolioItemData: FormData) => {
+    publishPortfolioItemRequest({
+      inputData: portFolioItemData,
+      successCallbackFn: () => router.push(`/members/${username}`),
+    });
   };
 
+  if (!isAccountOwner) {
+    return <p>Доступ запрещён.</p>;
+  }
+
   return (
-    (isAccountOwner && (
-      <div className="manage-portfolio-item">
-        <div className="manage-portfolio-item__content">
-          <h1 className="manage-portfolio-item__title">Добавление работы в портфолио</h1>
-          <PortfolioItemForm afterSubmitHandler={savePortFolioItemData} />
-          <div className="manage-portfolio-item__footer">
-            <Link href="/members/[username]" as={`/members/${username}`}>
-              <a className="manage-portfolio-item__backward-link">Вернуться в Личный кабинет</a>
-            </Link>
-          </div>
+    <div className="manage-portfolio-item">
+      <div className="manage-portfolio-item__content">
+        <h1 className="manage-portfolio-item__title">Добавление работы в портфолио</h1>
+        <PortfolioItemForm
+          {...{
+            title,
+            description,
+            preview,
+            fullImage,
+            afterSubmitHandler: savePortfolioItemData,
+          }}
+        />
+        <div className="manage-portfolio-item__footer">
+          <Link href="/members/[username]" as={`/members/${username}`}>
+            <a className="manage-portfolio-item__backward-link">Вернуться в Личный кабинет</a>
+          </Link>
         </div>
       </div>
-    )) || <p>Доступ запрещён.</p>
+    </div>
   );
 };
 

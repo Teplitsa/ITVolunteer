@@ -17,15 +17,19 @@ import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
-  const noPortfolioItems = true;
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  const { cover: coverImage, isEmptyProfile, itvAvatar, username } = useStoreState(
-    state => state.components.memberAccount
-  );
+  const {
+    cover: coverImage,
+    isEmptyProfile,
+    itvAvatar,
+    username,
+    portfolio: { list: portfolioList },
+  } = useStoreState(state => state.components.memberAccount);
   const { profileFillStatusRequest, getMemberTaskStatsRequest } = useStoreActions(
     actions => actions.components.memberAccount
   );
   const router = useRouter();
+  const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
   const Tabs = withTabs({

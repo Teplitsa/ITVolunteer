@@ -1,18 +1,14 @@
 import { ReactElement } from "react";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import Link from "next/link";
-import NoPreview from "../../assets/img/pic-portfolio-item-no-preview.svg";
-// import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import MemberPortfolioItem from "./MemberPortfolioItem";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
-  //   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  //   const { tasks, memberTaskStats } = useStoreState(state => state.components.memberAccount);
-
-  //   const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
-  //     actions => actions.components.memberAccount
-  //   );
-
-  const { username } = useStoreState(store => store.components.memberAccount);
+  const {
+    username,
+    portfolio: { list: portfolioList },
+  } = useStoreState(store => store.components.memberAccount);
+  const { getMemberPortfolioRequest } = useStoreActions(actions => actions.components.memberAccount);
 
   return (
     <div className="member-portfolio">
@@ -30,30 +26,9 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-portfolio__list">
-        <div className="member-portfolio__list-item">
-          <a href="#">
-            <img src={NoPreview} alt="" />
-          </a>
-          <div className="member-portfolio__list-item-title">
-            <a href="#">Настройка G-Suite под ваш домен</a>
-          </div>
-        </div>
-        <div className="member-portfolio__list-item">
-          <a href="#">
-            <img src={NoPreview} alt="" />
-          </a>
-          <div className="member-portfolio__list-item-title">
-            <a href="#">Сайты на Word Press под ключ</a>
-          </div>
-        </div>
-        <div className="member-portfolio__list-item">
-          <a href="#">
-            <img src={NoPreview} alt="" />
-          </a>
-          <div className="member-portfolio__list-item-title">
-            <a href="#">Контекстная реклама: Яндекс, Google</a>
-          </div>
-        </div>
+        {portfolioList.map(({ id, slug, title, preview }) => (
+          <MemberPortfolioItem key={id} {...{ username, slug, title, preview }} />
+        ))}
       </div>
       <div className="member-portfolio__footer">
         <a
@@ -61,6 +36,7 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
           className="member-portfolio__more-link"
           onClick={event => {
             event.preventDefault();
+            getMemberPortfolioRequest();
           }}
         >
           Показать ещё

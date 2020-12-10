@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import MemberAccount from "../../../components/page/MemberAccount";
-import { getAjaxUrl } from "../../../utilities/utilities";
+import { getAjaxUrl, getRestApiUrl, stripTags } from "../../../utilities/utilities";
 
 const AccountPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -19,7 +19,7 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ /* req, */ query }) => {
   // const parsedCookie = req.headers.cookie
   //   ? decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[a-z0-9]+=([^|]+)[^;]+/)
   //   : null;
@@ -52,20 +52,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
       );
       let member = null;
 
-      const memberDataResponse = await fetch(process.env.GraphQLServer, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          cookie: req.headers.cookie,
-        },
-        body: JSON.stringify({
-          query: graphqlQuery.member,
-          variables: { username: query.username },
-        }),
+      const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {
+        username: query.username,
       });
-      const {
-        data: { user },
-      } = await memberDataResponse.json();
+
       member = user;
 
       const { memberTasks: taskList } = await request(
@@ -100,6 +90,39 @@ export const getServerSideProps: GetServerSideProps = async ({ req, query }) => 
             list: memberReviews,
           },
         }));
+
+      const memberPortfolioRequestUrl = new URL(getRestApiUrl(`/wp/v2/portfolio_work`));
+
+      memberPortfolioRequestUrl.search = new URLSearchParams({
+        page: "1",
+        per_page: "3",
+        author: `${user.databaseId}`,
+      }).toString();
+
+      const memberPortfolioResponse = await fetch(memberPortfolioRequestUrl.toString());
+
+      member = Object.assign(member ?? {}, {
+        portfolio: {
+          page: 1,
+          list: (await memberPortfolioResponse.json()).map(
+            ({
+              id,
+              slug,
+              title: { rendered: renderedTitle },
+              content: { rendered: renderedContent },
+              featured_media: preview,
+              meta: { portfolio_image_id: fullImage },
+            }) => ({
+              id,
+              slug,
+              title: stripTags(renderedTitle).trim(),
+              description: stripTags(renderedContent).trim(),
+              preview,
+              fullImage,
+            })
+          ),
+        },
+      });
 
       return ["memberAccount", { ...memberAccountPageState, ...member }];
     },

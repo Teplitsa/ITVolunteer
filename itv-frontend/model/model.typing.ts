@@ -251,13 +251,15 @@ export interface IPageActions {
  * Components
  */
 
-export type IComponentsModel = IComponentsState
+export type IComponentsModel = IComponentsState;
 
 export interface IComponentsState {
   members?: IMembersPageModel;
   memberAccount?: IMemberAccountPageModel;
   memberProfile?: IMemberProfilePageModel;
   memberSecurity?: IMemberSecurityPageModel;
+  portfolioItem?: IPortfolioItemModel;
+  portfolioItemForm?: IPortfolioItemFormModel;
   honors?: IHonorsPageModel;
   paseka?: IPasekaPageModel;
   task?: ITaskModel;
@@ -413,6 +415,10 @@ export interface IMemberAccountPageState {
     page: number;
     list: Array<IMemberReview>;
   };
+  portfolio?: {
+    page: number;
+    list: Array<IPortfolioItemFormState>;
+  };
   profileFillStatus?: {
     createdTasksCount: number;
     approvedAsDoerTasksCount: number;
@@ -430,6 +436,8 @@ export interface IMemberAccountPageActions {
   setCover: Action<IMemberAccountPageModel, string>;
   setThankyouCount: Action<IMemberAccountPageModel, number>;
   setTaskListFilter: Action<IMemberAccountPageModel, "open" | "closed" | "draft">;
+  setPortfolioPage: Action<IMemberAccountPageModel, number>;
+  showMorePortfolio: Action<IMemberAccountPageModel, Array<IPortfolioItemFormState>>;
   setTasksPage: Action<IMemberAccountPageModel, number>;
   showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviewsPage: Action<IMemberAccountPageModel, number>;
@@ -453,6 +461,7 @@ export interface IMemberAccountPageThunks {
       userCover: File;
     }
   >;
+  getMemberPortfolioRequest: Thunk<IMemberAccountPageActions>;
   getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
   getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
   getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
@@ -512,6 +521,81 @@ export interface IMemberSecurityPageThunks {
       formData: FormData;
       successCallbackFn?: (message: string, isMustRelogin: boolean) => void;
       errorCallbackFn?: (message: string, isMustRelogin: boolean) => void;
+    }
+  >;
+}
+
+/**
+ * Portfolio item
+ */
+
+export interface IPortfolioItemModel
+  extends IPortfolioItemState,
+    IPortfolioItemActions,
+    IPortfolioItemThunks {}
+
+export interface IPortfolioItemState {
+  author: {
+    id: number;
+  };
+  item: IPortfolioItemFormState;
+}
+
+export interface IPortfolioItemActions {
+  initializeState: Action<IPortfolioItemModel>;
+  setState: Action<IPortfolioItemModel, IPortfolioItemState>;
+}
+
+export interface IPortfolioItemThunks {
+  deletePortfolioItemRequest: Thunk<
+    IPortfolioItemFormActions,
+    {
+      portfolioItemId: number;
+      successCallbackFn?: () => void;
+      errorCallbackFn?: () => void;
+    }
+  >;
+}
+
+/**
+ * Portfolio item form
+ */
+
+export interface IPortfolioItemFormModel
+  extends IPortfolioItemFormState,
+    IPortfolioItemFormActions,
+    IPortfolioItemFormThunks {}
+
+export interface IPortfolioItemFormState {
+  id: number;
+  slug: string;
+  title: string;
+  description: string;
+  preview: number;
+  fullImage: number;
+}
+
+export interface IPortfolioItemFormActions {
+  initializeState: Action<IPortfolioItemFormModel>;
+  setState: Action<IPortfolioItemFormModel, IPortfolioItemFormState>;
+}
+
+export interface IPortfolioItemFormThunks {
+  publishPortfolioItemRequest: Thunk<
+    IPortfolioItemFormActions,
+    {
+      inputData: FormData;
+      successCallbackFn?: () => void;
+      errorCallbackFn?: () => void;
+    }
+  >;
+  updatePortfolioItemRequest: Thunk<
+    IPortfolioItemFormActions,
+    {
+      slug: string;
+      inputData: FormData;
+      successCallbackFn?: () => void;
+      errorCallbackFn?: () => void;
     }
   >;
 }
@@ -921,7 +1005,7 @@ export interface ITaskListThunks {
  * TaskListItem
  */
 
-export type ITaskListItemModel = ITaskListItemState
+export type ITaskListItemModel = ITaskListItemState;
 
 export interface ITaskListItemState {
   id: string;
@@ -1006,14 +1090,21 @@ export interface IUserNotifActions {
  * Helpers
  */
 
-export interface IFetchResult {
-  status: string;
-  message: string;
+export interface IAnyState {
   [x: string]: any;
 }
 
-export interface IAnyState {
-  [x: string]: any;
+export interface IFetchResult extends IAnyState {
+  status: string;
+  message: string;
+}
+
+export interface IRestApiResponse {
+  code: string;
+  data: {
+    status: number;
+  };
+  message: string;
 }
 
 /**

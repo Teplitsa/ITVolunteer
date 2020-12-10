@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
     ],
     componentModel: async () => {
-      return ["addPortfolioItem", { username: query.username }];
+      return ["portfolioItemForm", {}];
     },
   });
 
