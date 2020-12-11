@@ -44,6 +44,3 @@ class MemberTasks {
     }
 
 }
-
-__('member_role_doer', 'itv-backend');
-__('member_role_author', 'itv-backend');

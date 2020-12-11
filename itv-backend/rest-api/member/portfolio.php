@@ -30,6 +30,23 @@ function portfolio_api_add_routes($server) {
 add_action( 'rest_api_init', 'portfolio_api_add_routes' );
 
 
+function portfolio_api_register_fields($server) {
+    $pw_manager = new PortfolioWorkManager();
+
+    register_rest_field( PortfolioWorkManager::$post_type, PortfolioWorkManager::$FIELD_NEXT_WORK_SLUG, [ 
+        'get_callback' => [ $pw_manager, 'get_property' ], 
+        'context' => [ 'view' ] 
+    ] );
+
+    register_rest_field( PortfolioWorkManager::$post_type, PortfolioWorkManager::$FIELD_PREV_WORK_SLUG, [ 
+        'get_callback' => [ $pw_manager, 'get_property' ], 
+        'context' => [ 'view' ] 
+    ] );
+
+}
+add_action( 'rest_api_init', 'portfolio_api_register_fields', 11 );
+
+
 function portfolio_api_fix_seo_integration($server) {
 
     global $wp_rest_additional_fields;
