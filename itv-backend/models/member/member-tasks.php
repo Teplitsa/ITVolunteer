@@ -11,7 +11,7 @@ class MemberTasks {
         $this->user_id = $user_id;
     }    
 
-    public function isMemberHasCreatedAndCompletedTasks() {
+    public function has_member_created_and_completed_tasks() {
         $task_manager = new TaskManager();
         $latest_created_task = $task_manager->get_latest_user_created_task($this->user_id);
         $latest_completed_task = $task_manager->get_latest_user_completed_task($this->user_id);
@@ -19,10 +19,16 @@ class MemberTasks {
         return $latest_created_task && $latest_completed_task;
     }
 
-    public function calcMemberRoleByTasks() {
+    public function calc_member_role_by_tasks() {
         $task_manager = new TaskManager();
-        $latest_created_task = $task_manager->get_latest_user_created_task($user_id);
-        $latest_completed_task = $task_manager->get_latest_user_completed_task($user_id);
+        $latest_created_task = $task_manager->get_latest_user_created_task($this->user_id);
+        $latest_completed_task = $task_manager->get_latest_user_completed_task($this->user_id);
+
+        // echo "latest_created_task:" . ($latest_created_task ? $latest_created_task->ID : "") . "\n";
+        // echo "latest_completed_task:" . ($latest_completed_task ? $latest_completed_task->ID : "") . "\n";
+
+        // echo "latest_created_task post_date_gmt:" . ($latest_created_task ? $latest_created_task->post_date_gmt : "") . "\n";
+        // echo "latest_completed_task post_date_gmt:" . ($latest_completed_task ? $latest_completed_task->post_date_gmt : ""). "\n";
 
         if($latest_created_task) {
             if(!$latest_completed_task) {
@@ -38,6 +44,3 @@ class MemberTasks {
     }
 
 }
-
-__('member_role_doer', 'itv-backend');
-__('member_role_author', 'itv-backend');

@@ -5,6 +5,9 @@ use ITV\models\UserBlockModel;
 use ITV\models\TimelineModel;
 use ITV\models\UserNotifModel;
 
+// itv-backend lib
+use \ITV\models\MemberManager;
+
 /**
  * Code for ITV functions
  */
@@ -823,6 +826,14 @@ function ajax_user_register() {
 			
 			itv_save_reg_ip($user_id);
 			ItvIPGeo::instance()->save_location_by_ip($user_id, itv_get_client_ip());
+
+            // store role
+            $members = new MemberManager();
+            $itv_role = $_POST['itv_role'] ?? "";
+            if(!$members->validate_itv_role($itv_role)) {
+                $itv_role = $members->get_default_itv_role();
+            }
+            $members->set_member_itv_role($user->ID, $itv_role);
 				
 			$itv_log = ItvLog::instance();
 			$itv_log->log_user_action(ItvLog::$ACTION_USER_REGISTER, $user_id);

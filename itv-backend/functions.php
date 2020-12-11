@@ -16,3 +16,6 @@ require_once( get_theme_file_path() . '/rest-api/auth.php' );
 require_once( get_theme_file_path() . '/rest-api/member/portfolio.php' );
 require_once( get_theme_file_path() . '/rest-api/member/role.php' );
 require_once( get_theme_file_path() . '/rest-api/member/member.php' );
+
+// wp-cli
+require_once( get_theme_file_path() . '/wp-cli/set_members_itv_role.php' );
