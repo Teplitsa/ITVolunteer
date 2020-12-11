@@ -536,9 +536,23 @@ function itv_register_user_graphql_fields() {
             ],
             'isEmptyProfile' => [
                 'type' => 'Bool',
-                'description' => __( 'User solved problems', 'tst' ),
+                'description' => __( 'User has no created or connected tasks', 'tst' ),
                 'resolve' => function ($user) {
                     return itv_is_empty_user_profile($user->userId);
+                }
+            ],
+            'isEmptyProfileAsAuthor' => [
+                'type' => 'Bool',
+                'description' => __( 'User has no created tasks', 'tst' ),
+                'resolve' => function ($user) {
+                    return itv_is_empty_user_profile_as_author($user->userId);
+                }
+            ],
+            'isEmptyProfileAsDoer' => [
+                'type' => 'Bool',
+                'description' => __( 'User has no connected tasks', 'tst' ),
+                'resolve' => function ($user) {
+                    return itv_is_empty_user_profile_as_doer($user->userId);
                 }
             ],
             'itvRole' => [
@@ -546,7 +560,7 @@ function itv_register_user_graphql_fields() {
                 'description' => __( 'User itvRole', 'tst' ),
                 'resolve' => function ($user) {
                     $members = new MemberManager();
-                    return $members->get_member_role($user->userId);
+                    return $members->get_member_itv_role($user->userId);
                 }
             ],
             'isHybrid' => [
@@ -554,7 +568,7 @@ function itv_register_user_graphql_fields() {
                 'description' => __( 'User is doer and author', 'tst' ),
                 'resolve' => function ($user) {
                     $member_tasks = new MemberTasks($user->userId);
-                    return $member_tasks->isMemberHasCreatedAndCompletedTasks();
+                    return $member_tasks->has_member_created_and_completed_tasks();
                 }
             ],
         ]

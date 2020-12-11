@@ -6,8 +6,8 @@ class TaskManager {
 
     public function get_latest_user_created_task($user_id) {
         $args = array(
-            'post_author'       => $user_id,
             'post_type'         => self::$post_type,
+            'author'            => $user_id,
             'suppress_filters'  => true,
             'post_status'       => ['publish', 'closed', 'in_work', 'archived'],
             'posts_per_page'    => 1,
@@ -21,10 +21,10 @@ class TaskManager {
     public function get_latest_user_completed_task($user_id) {
         $args = array(
             'post_type'         => self::$post_type,
-            'post_status'       => 'closed',
+            'post_status'       => ['publish', 'closed', 'in_work', 'archived'],
             'connected_type'    => 'task-doers',
             'connected_items'   => $user_id,
-            'suppress_filters'  => false,
+            'suppress_filters'  => true,
             'posts_per_page'    => 1,
             'connected_meta'    => array(
                 array(

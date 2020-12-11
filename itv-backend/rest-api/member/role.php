@@ -4,7 +4,7 @@ use \ITV\models\MemberManager;
 
 function member_role_api_init($server) {
 
-    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itvRole', [
+    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itv_role', [
         'methods'   => WP_REST_Server::READABLE,
         'callback'  => function($request) {
 
@@ -12,13 +12,13 @@ function member_role_api_init($server) {
             $user = get_user_by('slug', $slug);
 
             $members = new MemberManager();
-            $role = $user ? $members->get_member_role($user->ID) : "";
+            $role = $user ? $members->get_member_itv_role($user->ID) : "";
 
             return ['role' => $role];
         },
     ] );
 
-    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itvRole', [
+    register_rest_route( 'itv/v1', '/member/(?P<slug>[- _0-9a-zA-Z]+)/itv_role', [
         'methods'   => WP_REST_Server::EDITABLE,
         'callback'  => function($request) {
 
@@ -28,8 +28,8 @@ function member_role_api_init($server) {
             $role = $request['itv_role'];
             $members = new MemberManager();
             if($user) {
-                if($members->validate_role($role)) {
-                    update_user_meta($user->ID, MemberManager::$meta_role, $role);
+                if($members->validate_itv_role($role)) {
+                    $members->set_member_itv_role($user->ID, $role);
                 }
                 else {
                     $role = get_user_meta($user->ID, MemberManager::$meta_role, true);

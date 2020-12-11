@@ -49,22 +49,21 @@ class MemberManager {
     public static $FIELD_ITV_ROLE_TITLE = 'itvRoleTitle';
     public static $FIELD_IS_HYBRID = 'isHybrid';
 
-    public function get_member_role($user_id) {
+    public function get_member_itv_role($user_id) {
         $role = get_user_meta($user_id, self::$meta_role, true);
-
-        if(!$role) {
-            $role = $self->get_default_role();
-        }
-
         return $role;
     }
 
-    public function get_default_role() {
+    public function get_default_itv_role() {
         return self::$ROLE_DOER;
     }
 
-    public function validate_role($role) {
+    public function validate_itv_role($role) {
         return $role === self::$ROLE_DOER || $role === self::$ROLE_AUTHOR;
+    }
+
+    public function set_member_itv_role($user_id, $itvRole) {
+        update_user_meta($user_id, self::$meta_role, $itvRole);
     }
 
     public function get_property($response_data, $property_name, $request) {
@@ -127,17 +126,17 @@ class MemberManager {
                 break;
 
             case self::$FIELD_ITV_ROLE:
-                $value = $this->get_member_role($user_id);
+                $value = $this->get_member_itv_role($user_id);
                 break;
 
             case self::$FIELD_ITV_ROLE_TITLE:
-                $role = $this->get_member_role($user_id);
+                $role = $this->get_member_itv_role($user_id);
                 $value = $role ? __('member_role_' . $role, 'itv-backend') : "";
                 break;
 
             case self::$FIELD_IS_HYBRID:
                 $member_tasks = new MemberTasks($user_id);
-                $value = $member_tasks->isMemberHasCreatedAndCompletedTasks();
+                $value = $member_tasks->has_member_created_and_completed_tasks();
                 break;
 
         }

@@ -1807,6 +1807,14 @@ function itv_is_empty_user_profile($user_id) {
     return count(itv_get_user_created_tasks($user_id)) + count(itv_get_user_approved_as_doer_tasks($user_id)) === 0;
 }
 
+function itv_is_empty_user_profile_as_author($user_id) {
+    return count(itv_get_user_created_tasks($user_id)) === 0;
+}
+
+function itv_is_empty_user_profile_as_doer($user_id) {
+    return count(itv_get_user_approved_as_doer_tasks($user_id)) === 0;
+}
+
 function itv_is_profile_info_enough($user_id) {
     return (
         boolval(trim(tst_get_member_field( 'user_skype', $user_id )))
