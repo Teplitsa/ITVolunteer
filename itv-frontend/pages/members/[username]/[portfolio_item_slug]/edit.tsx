@@ -3,9 +3,23 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../../components/DocumentHead";
 import Main from "../../../../components/layout/Main";
 import EditPortfolioItem from "../../../../components/page/EditPortfolioItem";
+import Error403 from "../../../../components/page/Error403";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
 
-const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
+const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
+  statusCode,
+}): ReactElement => {
+  if (statusCode === 403) {
+    return (
+      <>
+        <DocumentHead />
+        <Main>
+          <Error403 />
+        </Main>
+      </>
+    );
+  }
+
   return (
     <>
       <DocumentHead />
@@ -19,7 +33,7 @@ const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -64,7 +78,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
           meta: { portfolio_image_id: number };
           data?: { status: number };
         };
-        
+
         if (data?.status && data.status !== 200) {
           console.error("При загрузке данных портфолио произошла ошибка.");
         } else {
@@ -83,6 +97,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       return ["portfolioItemForm", componentData];
     },
   });
+
+  const loggedIn = decodeURIComponent(req.headers.cookie).match(/_logged_in_[^=]+=([^|]+)/);
+
+  if (!loggedIn || query.username !== loggedIn[1]) {
+    res.statusCode = 403;
+    Object.assign(model, { statusCode: 403 });
+  }
 
   return {
     props: { ...model },

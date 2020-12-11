@@ -1,7 +1,8 @@
 const appConfig = {
-  GraphQLServer: "https://itv.te-st.ru/graphql",
-  AjaxUrl: "https://itv.te-st.ru/wp-admin/admin-ajax.php",
-  RestApiUrl: "https://itv.te-st.ru/wp-json",
+  BaseUrl: "https://itv.te-st.ru",
+  GraphQLServer: `${this.BaseUrl}/graphql`,
+  AjaxUrl: `${this.BaseUrl}/wp-admin/admin-ajax.php`,
+  RestApiUrl: `${this.BaseUrl}/wp-json`,
   AuthTokenLifeTimeMs: 600,
 };
 

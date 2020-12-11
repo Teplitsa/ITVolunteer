@@ -88,6 +88,11 @@ const withTabs = ({
       tabNavObserver.observe(tabNavSubstituteRef.current);
 
       tabContentItems.forEach(tabContent => tabContentObserver.observe(tabContent));
+
+      return ((tabNavSubstitute, tabContentItems) => () => {
+        tabNavObserver.unobserve(tabNavSubstitute);
+        tabContentItems.forEach(tabContent => tabContentObserver.unobserve(tabContent));
+      })(tabNavSubstituteRef.current, tabContentItems);
     }, []);
 
     useEffect(() => {

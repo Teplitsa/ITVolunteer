@@ -5,8 +5,23 @@ import Main from "../../../../components/layout/Main";
 import PortfolioItem from "../../../../components/page/PortfolioItem";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
 import { IRestApiResponse, IPortfolioItemAuthor } from "../../../../model/model.typing";
+import Error404 from "../../../../components/page/Error404";
+import { getMediaData } from "../../../../utilities/media";
 
-const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
+const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
+  statusCode,
+}): ReactElement => {
+  if (statusCode === 404) {
+    return (
+      <>
+        <DocumentHead />
+        <Main>
+          <Error404 />
+        </Main>
+      </>
+    );
+  }
+
   return (
     <>
       <DocumentHead />
@@ -20,7 +35,7 @@ const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -43,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       },
     ],
     componentModel: async () => {
-      const componentData = { slug: query.portfolio_item_slug };
+      const componentData = {};
 
       try {
         const portfolioItemAuthorRequestUrl = new URL(
@@ -88,28 +103,37 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         const portfolioItemResult = await fetch(
           getRestApiUrl(`/wp/v2/portfolio_work/slug:${query.portfolio_item_slug}`)
         );
-
-        const {
-          id,
-          slug,
-          title: { rendered: title },
-          content: { rendered: description },
-          featured_media: preview,
-          meta: { portfolio_image_id: fullImage },
-          data,
-        } = (await portfolioItemResult.json()) as {
+        const response: IRestApiResponse & {
           id: number;
           slug: string;
           title: { rendered: string };
           content: { rendered: string };
           featured_media: number;
           meta: { portfolio_image_id: number };
-          data?: { status: number };
-        };
+        } = await portfolioItemResult.json();
 
-        if (data?.status && data.status !== 200) {
-          console.error("При загрузке данных портфолио произошла ошибка.");
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(
+            `HTTP ${response.data.status} При загрузке данных портфолио произошла ошибка.`
+          );
         } else {
+          const {
+            id,
+            slug,
+            title: { rendered: title },
+            content: { rendered: description },
+            featured_media: preview,
+            meta: { portfolio_image_id },
+          } = response;
+
+          let fullImage: number | string = portfolio_image_id;
+
+          if (fullImage !== 0) {
+            const media = await getMediaData(fullImage);
+
+            (media && (fullImage = media.mediaItemUrl)) || (fullImage = null);
+          }
+
           Object.assign(componentData, {
             item: {
               id,
@@ -128,6 +152,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       return ["portfolioItem", componentData];
     },
   });
+
+  if (!model.portfolioItem.item?.id) {
+    res.statusCode = 404;
+    Object.assign(model, { statusCode: 404 });
+  }
 
   return {
     props: { ...model },

@@ -1,19 +1,10 @@
 const appConfig = {
-  GraphQLServer: `${
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:9000"
-      : "https://itv.te-st.ru"
-  }/graphql`,
-  AjaxUrl: `${
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:9000"
-      : "https://itv.te-st.ru"
-  }/wp-admin/admin-ajax.php`,
-  RestApiUrl: `${
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:9000"
-      : "https://itv.te-st.ru"
-  }/wp-json`,
+  BaseUrl: process.env.NODE_ENV === "development"
+    ? "http://localhost:9000"
+    : "https://itv.te-st.ru",
+  GraphQLServer: `${this.BaseUrl}/graphql`,
+  AjaxUrl: `${this.BaseUrl}/wp-admin/admin-ajax.php`,
+  RestApiUrl: `${this.BaseUrl}/wp-json`,
   AuthTokenLifeTimeMs: 600,
 };
 

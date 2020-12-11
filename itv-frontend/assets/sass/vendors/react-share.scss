@@ -36,7 +36,8 @@
     &:not(:last-child) {
       margin-right: 10px;
     }
-    &:active {
+    &:active,
+    &:focus {
       outline: none;
     }
   }
@@ -47,14 +48,38 @@
       no-repeat;
     width: 24px;
     height: 24px;
+
+    &_40x40 {
+      width: 40px;
+      height: 40px;
+    }
     &_facebook {
       background-image: url(../../img/icon-facebook_white-bg_24x24.svg);
+
+      &-green-bg {
+        background-image: url(../../img/icon-facebook_green-bg_40x40.svg);
+      }
+    }
+    &_twitter {
+      background-image: none;
+
+      &-green-bg {
+        background-image: url(../../img/icon-twitter_green-bg_40x40.svg);
+      }
     }
     &_telegram {
       background-image: url(../../img/icon-telegram_white-bg_24x24.svg);
+
+      &-green-bg {
+        background-image: url(../../img/icon-telegram_green-bg_40x40.svg);
+      }
     }
     &_vk {
       background-image: url(../../img/icon-vk_white-bg_24x24.svg);
+
+      &-green-bg {
+        background-image: url(../../img/icon-vk_green-bg_40x40.svg);
+      }
     }
     &_whatsapp {
       background-image: url(../../img/icon-whatsapp_white-bg_24x24.svg);

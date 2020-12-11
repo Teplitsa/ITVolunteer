@@ -1,3 +1,4 @@
+import { IRestApiResponse } from "../model/model.typing";
 import { getRestApiUrl } from "./utilities";
 
 export interface IMediaData {
@@ -18,25 +19,30 @@ export const getMediaData = async (
           signal: abortController.signal,
         });
 
-    const {
-      id: databaseId,
-      media_details: { file: mediaItemRelativePath },
-      source_url: mediaItemUrl,
-      data,
-    } = (await result.json()) as {
+    const response: IRestApiResponse & {
       id: number;
       media_details: {
         file: string;
       };
       source_url: string;
-      data?: { status: number };
-    };
-    if (data?.status && data.status !== 200) {
-      console.error("При получении медиа-объекта произошла ошибка.");
+    } = await result.json();
+
+    if (response.data?.status && response.data.status !== 200) {
+      console.error(
+        `HTTP ${response.data.status} При загрузке данных медиа-объекта произошла ошибка.`
+      );
     } else {
+      const {
+        id: databaseId,
+        media_details: { file: mediaItemRelativePath },
+        source_url: mediaItemUrl,
+      } = response;
+
       return { databaseId, mediaItemUrl, mediaItemRelativePath };
     }
   } catch (error) {
     console.error(error);
   }
+
+  return null;
 };
