@@ -13,6 +13,16 @@ import { getRestApiUrl } from "../../utilities/utilities";
 export const portfolioItemState: IPortfolioItemState = {
   author: {
     id: 0,
+    name: "",
+    fullName: "",
+    itvAvatar: "",
+    authorReviewsCount: 0,
+    doerReviewsCount: 0,
+    reviewsCount: 0,
+    rating: 0,
+    xp: 0,
+    itvRole: "doer",
+    itvRoleTitle: "Волонтер",
   },
   item: portfolioItemFormState,
 };

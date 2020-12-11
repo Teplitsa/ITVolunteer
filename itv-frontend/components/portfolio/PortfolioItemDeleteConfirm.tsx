@@ -1,16 +1,22 @@
 import { ReactElement } from "react";
-// import { useStoreActions, useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import styles from "../../assets/sass/modules/PortfolioItemDelete.module.scss";
+import { useRouter } from "next/router";
 
-const TaskAdminSupportForm: React.FunctionComponent<{
+const PortfolioItemDeleteConfirm: React.FunctionComponent<{
   closeModal: () => void;
 }> = ({ closeModal }): ReactElement => {
-  //   const { isLoggedIn, user } = useStoreState(state => state.session);
-  //   const adminSupportRequest = useStoreActions(
-  //     actions => actions.components.task.adminSupportRequest
-  //   );
+  const router = useRouter();
+  const { author } = useStoreState(
+    state => state.components.portfolioItem
+  );
+  const deletePortfolioItemRequest = useStoreActions(
+    actions => actions.components.portfolioItem.deletePortfolioItemRequest
+  );
 
-  const submit = () => null;
+  const deletePortfolioItemHandle = () => {
+    router.push(`/members/${author.name}`);
+  };
 
   return (
     <>
@@ -28,7 +34,11 @@ const TaskAdminSupportForm: React.FunctionComponent<{
         <button
           className={`${styles["confirm__btn"]} ${styles["confirm__btn_submit"]}`}
           type="button"
-          onClick={submit}
+          onClick={() =>
+            deletePortfolioItemRequest({
+              successCallbackFn: deletePortfolioItemHandle,
+            })
+          }
         >
           Да, удалить работу
         </button>
@@ -37,4 +47,4 @@ const TaskAdminSupportForm: React.FunctionComponent<{
   );
 };
 
-export default TaskAdminSupportForm;
+export default PortfolioItemDeleteConfirm;

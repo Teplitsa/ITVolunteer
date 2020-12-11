@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import Link from "next/link";
-// import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState } from "../../model/helpers/hooks";
 import MemberCardSmall from "../../components/members/MemberCardSmall";
 import MemberSocials from "../../components/MemberSocials";
 import GlobalScripts from "../../context/global-scripts";
@@ -12,13 +12,12 @@ const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({ clo
   <PortfolioItemDeleteConfirm {...{ closeModal }} />
 );
 
-const PortfolioItem: React.FunctionComponent<{
-  username: string;
-  portfolioItemSlug: string;
-}> = ({ username, portfolioItemSlug }): ReactElement => {
-  // const {
-  //   user: { username },
-  // } = useStoreState(store => store.session);
+const PortfolioItem: React.FunctionComponent = (): ReactElement => {
+  const { author, item: portfolioItem } = useStoreState(store => store.components.portfolioItem);
+
+  if (!portfolioItem.id) {
+    return <p>Работа не найдена.</p>;
+  }
 
   return (
     <div className="portfolio-item">
@@ -28,23 +27,8 @@ const PortfolioItem: React.FunctionComponent<{
             <MemberCardSmall />
           </div>
           <div className="portfolio-item__right-column">
-            <h1 className="portfolio-item__title">
-              Нужен сайт на Word Press для нашей организации
-            </h1>
-            <div className="portfolio-item__text">
-              <p>
-                Основная награда для любого волонтёра — реальный эффект от помощи и продуктивное
-                общение по задаче.
-              </p>
-              <p>
-                Заботьтесь о мотивации волонтёров. Небольшими наградами вы можете отблагодарить их
-                за помощь. Вот примеры — от символическим подарков до денежных вознаграждений.
-              </p>
-              <p>
-                Заботьтесь о мотивации волонтёров. Небольшими наградами вы можете отблагодарить их
-                за помощь. Вот примеры — от символическим подарков до денежных вознаграждений.
-              </p>
-            </div>
+            <h1 className="portfolio-item__title">{portfolioItem.title}</h1>
+            <div className="portfolio-item__text">{portfolioItem.description}</div>
           </div>
         </div>
         <div className="portfolio-item__footer">
@@ -66,7 +50,7 @@ const PortfolioItem: React.FunctionComponent<{
           <div className="portfolio-item__actions">
             <Link
               href="/members/[username]/[portfolio_item_slug]/edit"
-              as={`/members/${username}/${portfolioItemSlug}/edit`}
+              as={`/members/${author.name}/${portfolioItem.slug}/edit`}
             >
               <a className="portfolio-item__action-btn btn btn_default">Редактировать</a>
             </Link>

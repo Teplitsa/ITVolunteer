@@ -534,10 +534,22 @@ export interface IPortfolioItemModel
     IPortfolioItemActions,
     IPortfolioItemThunks {}
 
+export interface IPortfolioItemAuthor {
+  id: number;
+  name: string;
+  fullName: string;
+  itvAvatar: string;
+  authorReviewsCount: number;
+  doerReviewsCount: number;
+  reviewsCount: number;
+  rating: number;
+  xp: number;
+  itvRole: "author" | "doer";
+  itvRoleTitle: "Автор" | "Волонтер";
+}
+
 export interface IPortfolioItemState {
-  author: {
-    id: number;
-  };
+  author: IPortfolioItemAuthor;
   item: IPortfolioItemFormState;
 }
 
@@ -550,7 +562,6 @@ export interface IPortfolioItemThunks {
   deletePortfolioItemRequest: Thunk<
     IPortfolioItemFormActions,
     {
-      portfolioItemId: number;
       successCallbackFn?: () => void;
       errorCallbackFn?: () => void;
     }

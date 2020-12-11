@@ -4,18 +4,16 @@ import DocumentHead from "../../../../components/DocumentHead";
 import Main from "../../../../components/layout/Main";
 import PortfolioItem from "../../../../components/page/PortfolioItem";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
+import { IRestApiResponse, IPortfolioItemAuthor } from "../../../../model/model.typing";
 
-const PortfolioItemPage: React.FunctionComponent<any> = ({
-  username,
-  portfolioItemSlug,
-}): ReactElement => {
+const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
 
       <Main>
         <main id="site-main" className="site-main" role="main">
-          <PortfolioItem {...{ username, portfolioItemSlug }} />
+          <PortfolioItem />
         </main>
       </Main>
     </>
@@ -48,7 +46,46 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       const componentData = { slug: query.portfolio_item_slug };
 
       try {
-        const result = await fetch(
+        const portfolioItemAuthorRequestUrl = new URL(
+          getRestApiUrl(`/itv/v1/member/${query.username}`)
+        );
+
+        portfolioItemAuthorRequestUrl.search = (() => {
+          return [
+            "id",
+            "name",
+            "fullName",
+            "authorReviewsCount",
+            "doerReviewsCount",
+            "reviewsCount",
+            "rating",
+            "xp",
+            "itvRole",
+            "itvRoleTitle",
+            "itvAvatar",
+          ]
+            .map(paramValue => `_fields[]=${paramValue}`)
+            .join("&");
+        })();
+
+        const portfolioItemAuthorResult = await fetch(portfolioItemAuthorRequestUrl.toString());
+
+        const response: IRestApiResponse &
+          IPortfolioItemAuthor = await portfolioItemAuthorResult.json();
+
+        if (response.data?.status && response.data.status !== 200) {
+          console.error("При получении данных автора работы в портфолио произошла ошибка.");
+        } else {
+          Object.assign(componentData, {
+            author: response,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
+        const portfolioItemResult = await fetch(
           getRestApiUrl(`/wp/v2/portfolio_work/slug:${query.portfolio_item_slug}`)
         );
 
@@ -60,7 +97,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
           featured_media: preview,
           meta: { portfolio_image_id: fullImage },
           data,
-        } = (await result.json()) as {
+        } = (await portfolioItemResult.json()) as {
           id: number;
           slug: string;
           title: { rendered: string };
@@ -88,7 +125,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         console.error(error);
       }
 
-      return ["memberPortfolioItem", componentData];
+      return ["portfolioItem", componentData];
     },
   });
 

@@ -1,23 +1,12 @@
 import { ReactElement } from "react";
-// import Link from "next/link";
-// import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState } from "../../model/helpers/hooks";
 import MemberCardSmallBage from "components/members/MemberCardSmallBage";
 import MemberStats from "components/MemberStats";
 
 const MemberCardSmall: React.FunctionComponent = (): ReactElement => {
-  //   const {
-  //     isLoggedIn,
-  //     isAccountOwner,
-  //     isLoaded: isSessionLoaded,
-  //     user: { logoutUrl },
-  //   } = useStoreState((state) => state.session);
-  //   const {
-  //     username: memberName,
-  //     rating,
-  //     reviewsCount,
-  //     xp,
-  //     isEmptyProfile = false,
-  //   } = useStoreState((state) => state.components.memberAccount);
+  const { rating, reviewsCount, xp } = useStoreState(
+    state => state.components.portfolioItem.author
+  );
 
   return (
     <>
@@ -27,9 +16,9 @@ const MemberCardSmall: React.FunctionComponent = (): ReactElement => {
           <MemberStats
             {...{
               useComponents: ["rating", "reviewsCount", "xp"],
-              rating: 4.5,
-              reviewsCount: 212,
-              xp: 12000,
+              rating,
+              reviewsCount,
+              xp,
               withBottomdivider: false,
               align: "left",
             }}
