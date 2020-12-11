@@ -53,7 +53,7 @@ class MemberManager {
         $role = get_user_meta($user_id, self::$meta_role, true);
 
         if(!$role) {
-            $role = $self->get_default_role();
+            $role = $this->get_default_role();
         }
 
         return $role;
@@ -123,7 +123,7 @@ class MemberManager {
                 break;
 
             case self::$FIELD_XP:
-                $value = UserXPModel::instance()->get_user_xp($user_id);
+                $value = (int) UserXPModel::instance()->get_user_xp($user_id);
                 break;
 
             case self::$FIELD_ITV_ROLE:
@@ -147,5 +147,5 @@ class MemberManager {
 
 }
 
-__('member_role_doer', 'itv-backend');
-__('member_role_author', 'itv-backend');
+// __('member_role_doer', 'itv-backend');
+// __('member_role_author', 'itv-backend');
