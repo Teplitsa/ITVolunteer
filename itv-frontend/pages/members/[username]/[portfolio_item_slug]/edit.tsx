@@ -3,18 +3,18 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../../components/DocumentHead";
 import Main from "../../../../components/layout/Main";
 import EditPortfolioItem from "../../../../components/page/EditPortfolioItem";
-import Error403 from "../../../../components/page/Error403";
+import Error401 from "../../../../components/page/Error401";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
 
 const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
   statusCode,
 }): ReactElement => {
-  if (statusCode === 403) {
+  if (statusCode === 401) {
     return (
       <>
         <DocumentHead />
         <Main>
-          <Error403 />
+          <Error401 />
         </Main>
       </>
     );
@@ -101,8 +101,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
   const loggedIn = decodeURIComponent(req.headers.cookie).match(/_logged_in_[^=]+=([^|]+)/);
 
   if (!loggedIn || query.username !== loggedIn[1]) {
-    res.statusCode = 403;
-    Object.assign(model, { statusCode: 403 });
+    res.statusCode = 401;
+    Object.assign(model, { statusCode: 401 });
   }
 
   return {

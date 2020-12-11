@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
 import Image404Man from "../../assets/img/illustration-404-man.svg";
 
-const Error403: React.FunctionComponent = (): ReactElement => {
+const Error401: React.FunctionComponent = (): ReactElement => {
   return (
     <main id="site-main" className="site-main error-page error-page-404" role="main">
       <div className="auth-page__content">
-        <h1 className="auth-page__title">403 ошибка</h1>
+        <h1 className="auth-page__title">401 ошибка</h1>
         <p className="auth-page__subtitle">
           Доступ к странице ограничен :(
           <br />У вас недостаточно прав!
@@ -20,4 +20,4 @@ const Error403: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export default Error403;
+export default Error401;

@@ -584,6 +584,8 @@ export interface IPortfolioItemFormState {
   description: string;
   preview: number;
   fullImage: number;
+  nextPortfolioItemSlug?: string;
+  prevPortfolioItemSlug?: string;
 }
 
 export interface IPortfolioItemFormActions {

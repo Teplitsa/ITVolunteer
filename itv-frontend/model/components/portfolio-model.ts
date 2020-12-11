@@ -16,6 +16,8 @@ export const portfolioItemFormState: IPortfolioItemFormState = {
   description: "",
   preview: 0,
   fullImage: 0,
+  nextPortfolioItemSlug: "",
+  prevPortfolioItemSlug: "",
 };
 
 const portfolioItemFormActions: IPortfolioItemFormActions = {
@@ -64,6 +66,7 @@ const portfolioItemFormThunks: IPortfolioItemFormThunks = {
           auth_token: token,
           status: "publish",
           author: authorId,
+          context: "portfolio_edit"
         }
       );
 
@@ -124,6 +127,7 @@ const portfolioItemFormThunks: IPortfolioItemFormThunks = {
           auth_token: token,
           status: "publish",
           author: authorId,
+          context: "portfolio_edit"
         }
       );
 

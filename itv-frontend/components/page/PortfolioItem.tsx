@@ -96,12 +96,26 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="portfolio-item__nav">
-        <div className="portfolio-item__nav-item">
-          <a href="#">Предыдущая работа</a>
-        </div>
-        <div className="portfolio-item__nav-item">
-          <a href="#">Следующая работа</a>
-        </div>
+        {portfolioItem.prevPortfolioItemSlug && (
+          <div className="portfolio-item__nav-item">
+            <Link
+              href="/members/[username]/[portfolio_item_slug]"
+              as={`/members/${author.name}/${portfolioItem.prevPortfolioItemSlug}`}
+            >
+              <a>Предыдущая работа</a>
+            </Link>
+          </div>
+        )}
+        {portfolioItem.nextPortfolioItemSlug && (
+          <div className="portfolio-item__nav-item">
+            <Link
+              href="/members/[username]/[portfolio_item_slug]"
+              as={`/members/${author.name}/${portfolioItem.nextPortfolioItemSlug}`}
+            >
+              <a>Следующая работа</a>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -110,6 +110,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
           content: { rendered: string };
           featured_media: number;
           meta: { portfolio_image_id: number };
+          next_work_slug: string;
+          prev_work_slug: string;
         } = await portfolioItemResult.json();
 
         if (response.data?.status && response.data.status !== 200) {
@@ -124,6 +126,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
             content: { rendered: description },
             featured_media: preview,
             meta: { portfolio_image_id },
+            next_work_slug: nextPortfolioItemSlug,
+            prev_work_slug: prevPortfolioItemSlug
           } = response;
 
           let fullImage: number | string = portfolio_image_id;
@@ -142,6 +146,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
               description: stripTags(description).trim(),
               preview,
               fullImage,
+              nextPortfolioItemSlug,
+              prevPortfolioItemSlug
             },
           });
         }
