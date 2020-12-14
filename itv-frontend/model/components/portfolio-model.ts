@@ -45,7 +45,7 @@ const portfolioItemFormThunks: IPortfolioItemFormThunks = {
         (jsonData, [name, value]) => {
           switch (name) {
           case "description":
-            jsonData["excerpt"] = value;
+            jsonData["content"] = value;
             break;
           case "preview":
             jsonData["featured_media"] = Number(value);

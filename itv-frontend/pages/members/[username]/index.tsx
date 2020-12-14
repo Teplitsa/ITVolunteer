@@ -19,12 +19,7 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ /* req, */ query }) => {
-  // const parsedCookie = req.headers.cookie
-  //   ? decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[a-z0-9]+=([^|]+)[^;]+/)
-  //   : null;
-  // const memberName = Object.is(parsedCookie, null) ? "" : parsedCookie[1];
-  // const isAccountOwner = memberName === query.username;
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
