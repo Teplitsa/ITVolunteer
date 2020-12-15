@@ -19,7 +19,6 @@ function task_api_add_routes($server) {
             }
 
             $request->set_param('author', $user->ID);
-            $request->set_param('is_all_statuses', true);
             $request->set_route('/wp/v2/tasks');
 
             return rest_do_request( $request );
@@ -41,7 +40,6 @@ function task_api_add_routes($server) {
             }
 
             $request->set_param('doer', $user->ID);
-            $request->set_param('is_all_statuses', true);
             $request->set_route('/wp/v2/tasks');
 
             return rest_do_request( $request );
@@ -53,11 +51,12 @@ add_action( 'rest_api_init', 'task_api_add_routes' );
 
 function task_api_post_query($args, $request) {
     // filter by status
-    $is_all_statuses = $request->get_param('is_all_statuses');
-    // error_log("is_all_statuses: " . print_r($is_all_statuses, true) );
-    if($is_all_statuses) {
+    $status = $request->get_param('status');
+    // error_log("status: " . print_r($status, true) );
+    
+    if(in_array('any', $status)) {
         $args = array_merge($args, [
-            'post_status'       => ['publish', 'in_work', 'closed', 'draft'],
+            'post_status'       => ['publish', 'in_work', 'closed', 'draft', 'archived'],
             'suppress_filters'  => true,
         ]);
     }
