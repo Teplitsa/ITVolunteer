@@ -23,9 +23,9 @@ class TaskManager {
             'post_type'         => self::$post_type,
             'post_status'       => ['publish', 'closed', 'in_work', 'archived'],
             'connected_type'    => 'task-doers',
-            'connected_items'   => $user_id,
             'suppress_filters'  => true,
             'posts_per_page'    => 1,
+            'connected_items'   => $user_id,
             'connected_meta'    => array(
                 array(
                     'key'       =>'is_approved',
