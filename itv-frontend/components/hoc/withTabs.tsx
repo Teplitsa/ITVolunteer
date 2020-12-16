@@ -14,7 +14,7 @@ const withTabs = ({
   mode?: "default" | "landing-nav";
 }): React.FunctionComponent => {
   const addNavActiveClass = (tabNavItems: NodeListOf<Element>, activeIndex: number) => {
-    tabNavItems.forEach(navItem => navItem.classList.remove("tabs-nav__item_active"));
+    tabNavItems.forEach(navItem => navItem?.classList.remove("tabs-nav__item_active"));
     tabNavItems[activeIndex].classList.add("tabs-nav__item_active");
   };
   const addContentActiveClass = (tabContentItems: NodeListOf<Element>, activeIndex: number) => {
@@ -55,14 +55,14 @@ const withTabs = ({
     const [isFixedNav, setFixedNav] = useState<boolean>(false);
     const [isPageLoaded, setPageLoaded] = useState<boolean>(false);
     const [activeIndex, setActiveIndex] = useState<number>(defaultActiveIndex);
+    const [shownItems, setShownItems] = useState<Array<number>>([]);
 
     useEffect(() => {
       setPageLoaded(true);
 
       if (mode !== "landing-nav") return;
 
-      const tabNavItems = tabsRef.current.querySelectorAll(`.tabs-nav__item`);
-      const tabContentItems = tabsRef.current.querySelectorAll(`.tabs-content__item`);
+      const tabContentItems = tabsRef.current.querySelectorAll(`.tabs-content__item-substitute`);
       const tabNavObserver = new IntersectionObserver(
         ([tabNavSubstitute]) => {
           setFixedNav(
@@ -74,15 +74,17 @@ const withTabs = ({
       const tabContentObserver = new IntersectionObserver(
         tabContentList => {
           tabContentList.forEach(tabContent => {
+            const activeIndex = Array.from(tabContentItems).findIndex(
+              tabContentItem => tabContentItem === tabContent.target
+            );
             if (tabContent.isIntersecting) {
-              const activeIndex = Array.from(tabContentItems).findIndex(
-                tabContentItem => tabContentItem === tabContent.target
-              );
-              addNavActiveClass(tabNavItems, activeIndex);
+              setShownItems(prevShownItems => [...prevShownItems, activeIndex]);
+            } else {
+              setShownItems(prevShownItems =>  prevShownItems.filter(index => index !== activeIndex));
             }
           });
         },
-        { threshold: 0.5 }
+        { threshold: [0] }
       );
 
       tabNavObserver.observe(tabNavSubstituteRef.current);
@@ -105,6 +107,14 @@ const withTabs = ({
         break;
       }
     }, [activeIndex]);
+
+    useEffect(() => {
+      if (mode !== "landing-nav" || shownItems.length < 1) return;
+
+      const tabNavItems = tabsRef.current.querySelectorAll(`.tabs-nav__item`);
+
+      addNavActiveClass(tabNavItems, Math.min(...shownItems));
+    }, [shownItems]);
 
     return (
       <div className={`tabs tabs_${mode}`} ref={tabsRef}>

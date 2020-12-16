@@ -1,17 +1,27 @@
 import { ReactElement } from "react";
-// import { useStoreState } from "../../model/helpers/hooks";
-// import Link from "next/link";
-// import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import MemberNotificationItem from "./MemberNotificationItem";
 
 const MemberNotifications: React.FunctionComponent = (): ReactElement => {
-  //   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  //   const { tasks, memberTaskStats } = useStoreState(state => state.components.memberAccount);
+  const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
 
-  //   const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
-  //     actions => actions.components.memberAccount
-  //   );
+  if (!isAccountOwner) return null;
 
-  // const { username } = useStoreState(store => store.components.memberAccount);
+  const {
+    notificationStats,
+    notifications: { filter: notificationListFilter, list: notifications },
+  } = useStoreState(state => state.components.memberAccount);
+  const {
+    setNotificationListFilter,
+    setNotificationsPage,
+    getMemberNotificationsRequest,
+  } = useStoreActions(actions => actions.components.memberAccount);
+
+  const changeFilterHandle = (filter: "all" | "project" | "info"): void => {
+    setNotificationListFilter(filter);
+    setNotificationsPage(1);
+    getMemberNotificationsRequest({ isListReset: true });
+  };
 
   return (
     <div className="member-notifications">
@@ -19,63 +29,41 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
         <div className="member-notifications__title">Оповещения</div>
         <div className="member-tasks__filter">
           <ul>
-            <li>
-              <a
-                className="member-tasks__filter-control member-tasks__filter-control_active"
-                href="#"
-              >
-                Все (126)
-              </a>
-            </li>
-            <li>
-              <a className="member-tasks__filter-control" href="#">
-                По проектам (3)
-              </a>
-            </li>
-            <li>
-              <a className="member-tasks__filter-control" href="#">
-                Информационные (123)
-              </a>
-            </li>
+            {([
+              ["all", "Все"],
+              ["project", "По проектам"],
+              ["info", "Информационные"],
+            ] as Array<["all" | "project" | "info", string]>).map(
+              ([filterLabel, filterTitle], i) => (
+                <li key={`NotificationFilter-${i}`}>
+                  <a
+                    className={`member-tasks__filter-control ${
+                      notificationListFilter === filterLabel
+                        ? "member-tasks__filter-control_active"
+                        : ""
+                    }`}
+                    href="#"
+                    onClick={event => {
+                      event.preventDefault();
+                      changeFilterHandle(filterLabel);
+                    }}
+                  >
+                    {filterTitle} (
+                    {filterLabel === "all"
+                      ? Object.values(notificationStats).reduce((sum, value) => sum + value, 0)
+                      : notificationStats[filterLabel]}
+                    )
+                  </a>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </div>
       <div className="member-notifications__list">
-        <div className="member-notifications__list-item member-notifications__list-item_warning-message">
-          <div className="member-notifications__list-item-title">
-            У вас осталось 2 дня чтобы закрыть задачу{" "}
-            <span className="member-notifications__keyword">Нужен сайт на Word Press</span>
-          </div>
-          <div className="member-notifications__list-item-time">2 ч. назад</div>
-        </div>
-        <div className="member-notifications__list-item">
-          <div className="member-notifications__list-item-title">
-            <span className="member-notifications__keyword">Александр Гусев</span> прокомментировал
-            задачу <span className="member-notifications__keyword">Нужен сайт на Word Press</span>
-          </div>
-          <div className="member-notifications__list-item-time">3 ч. назад</div>
-        </div>
-        <div className="member-notifications__list-item">
-          <div className="member-notifications__list-item-title">
-            Приходите на конференцию 11 апреля, будет круто
-          </div>
-          <div className="member-notifications__list-item-time">3 ч. назад</div>
-        </div>
-        <div className="member-notifications__list-item member-notifications__list-item_new-message">
-          <div className="member-notifications__list-item-title">
-            <span className="member-notifications__keyword">Новая задача</span> по тегу{" "}
-            <span className="member-notifications__keyword">WordPress</span> посмотрим?{" "}
-            <a href="#">Перейти к задаче</a>
-          </div>
-          <div className="member-notifications__list-item-time">3 ч. назад</div>
-        </div>
-        <div className="member-notifications__list-item">
-          <div className="member-notifications__list-item-title">
-            Вы получили награду за{" "}
-            <span className="member-notifications__keyword">10 закрытых задач</span>
-          </div>
-          <div className="member-notifications__list-item-time">3 ч. назад</div>
-        </div>
+        {notifications.map((notification, i) => {
+          return <MemberNotificationItem key={i} {...notification} />;
+        })}
       </div>
       <div className="member-notifications__footer">
         <a
@@ -83,6 +71,7 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
           className="member-notifications__more-link"
           onClick={event => {
             event.preventDefault();
+            getMemberNotificationsRequest({ isListReset: false });
           }}
         >
           Показать ещё

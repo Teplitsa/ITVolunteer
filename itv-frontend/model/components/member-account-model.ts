@@ -8,6 +8,7 @@ import {
   IFetchResult,
   IRestApiResponse,
   IMemberReview,
+  INotification,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import storeJsLocalStorage from "store";
@@ -38,7 +39,11 @@ export const memberAccountPageState: IMemberAccountPageState = {
   isEmptyProfile: true,
   registrationDate: Date.now() / 1000,
   thankyouCount: 0,
-  memberTaskStats: {
+  notificationStats: {
+    project: 0,
+    info: 0,
+  },
+  taskStats: {
     publish: 0,
     in_work: 0,
     draft: 0,
@@ -54,6 +59,11 @@ export const memberAccountPageState: IMemberAccountPageState = {
     list: null,
   },
   portfolio: {
+    page: 0,
+    list: null,
+  },
+  notifications: {
+    filter: "all",
     page: 0,
     list: null,
   },
@@ -74,7 +84,15 @@ export const graphqlQuery: {
     user(id: $username, idType: USERNAME) {
       ${Object.keys(memberAccountPageState).filter(
     key =>
-      !["tasks", "reviews", "portfolio", "memberTaskStats", "profileFillStatus"].includes(key)
+      ![
+        "notificationStats",
+        "notifications",
+        "taskStats",
+        "tasks",
+        "reviews",
+        "portfolio",
+        "profileFillStatus",
+      ].includes(key)
   )}
     }
   }`,
@@ -156,7 +174,19 @@ const memberAccountPageActions: IMemberAccountPageActions = {
     prevState.reviews.list = [].concat(prevState.reviews.list, newReviews);
   }),
   setMemberTaskStats: action((prevState, stats) => {
-    prevState.memberTaskStats = stats;
+    prevState.taskStats = stats;
+  }),
+  setNotificationStats: action((prevState, stats) => {
+    prevState.notificationStats = stats;
+  }),
+  setNotificationListFilter: action((prevState, newFilter) => {
+    prevState.notifications.filter = newFilter;
+  }),
+  showMoreNotifications: action((prevState, newNotifications) => {
+    prevState.notifications.list = [...prevState.notifications.list].concat(newNotifications);
+  }),
+  setNotificationsPage: action((prevState, newPage) => {
+    prevState.notifications.page = newPage;
   }),
   setMemeberProfileFillStatus: action((prevState, profileFillStatusData) => {
     prevState.profileFillStatus = profileFillStatusData;
@@ -280,6 +310,156 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       } catch (error) {
         console.error(error);
       }
+    }
+  ),
+  getMemberNotificationsRequest: thunk(
+    async (
+      { setState, setNotificationsPage, showMoreNotifications },
+      { isListReset },
+      { getStoreState }
+    ) => {
+      const {
+        components: { memberAccount },
+      } = getStoreState() as IStoreModel;
+      const {
+        // databaseId: userId,
+        notifications: { filter, page },
+      } = memberAccount;
+      const nextPage = page + 1;
+
+      // const memberNotificationsRequestUrl = new URL(getRestApiUrl(`/wp/v2/notification`));
+
+      // memberNotificationsRequestUrl.search = new URLSearchParams({
+      //   filter,
+      //   page: `${nextPage}`,
+      //   per_page: "5",
+      //   author: `${userId}`,
+      // }).toString();
+
+      // try {
+      //   const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
+      //   const response: IRestApiResponse = await memberNotificationsResponse.json();
+
+      //   if (response.data?.status && response.data.status !== 200) {
+      //     console.error(response.message);
+      //   } else if (response instanceof Array && response.length > 0) {
+      //     const notificationList: Array<INotification> = response;
+
+      //     setNotificationsPage(nextPage);
+      // isListReset
+      //   ? setState({
+      //     ...memberAccount,
+      //     ...{
+      //       notifications: {
+      //         filter,
+      //         page: nextPage,
+      //         list: notificationList,
+      //       },
+      //     },
+      //   })
+      //   : showMoreNotifications(notificationList);
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      // }
+
+      const notificationList: Array<INotification> = [
+        {
+          icon: "notification",
+          type: "new-message",
+          title: [
+            { keyword: "Новая задача" },
+            { text: "по тегу" },
+            { keyword: "WordPress" },
+            { text: "посмотрим?" },
+            {
+              link: {
+                url: "/",
+                text: "Перейти к задаче",
+              },
+            },
+          ],
+          time: "3 ч. назад",
+        },
+        {
+          type: "warning-message",
+          icon: "notification",
+          title: [
+            { text: "У вас осталось 2 дня чтобы закрыть задачу" },
+            { keyword: "Нужен сайт на Word Press" },
+          ],
+          time: "2 ч. назад",
+        },
+        {
+          icon: "notification",
+          title: [
+            { keyword: "Александр Гусев" },
+            { text: "прокомментировал задачу" },
+            { keyword: "Нужен сайт на Word Press" },
+          ],
+          time: "3 ч. назад",
+        },
+        {
+          icon: "notification",
+          title: [{ text: "Приходите на конференцию 11 апреля, будет круто" }],
+          time: "3 ч. назад",
+        },
+        {
+          icon: "notification",
+          title: [{ text: "Вы получили награду за" }, { keyword: "10 закрытых задач" }],
+          time: "3 ч. назад",
+        },
+      ];
+
+      setNotificationsPage(nextPage);
+      isListReset
+        ? setState({
+          ...memberAccount,
+          ...{
+            notifications: {
+              filter,
+              page: nextPage,
+              list: notificationList,
+            },
+          },
+        })
+        : showMoreNotifications(notificationList);
+    }
+  ),
+  getMemberNotificationStatsRequest: thunk(
+    async ({ setNotificationStats }, params, { getStoreState }) => {
+      const {
+        components: {
+          memberAccount: { databaseId: userId },
+        },
+      } = getStoreState() as IStoreModel;
+
+      const memberNotificationStatsRequestUrl = new URL(getRestApiUrl(`/wp/v2/notification`));
+
+      memberNotificationStatsRequestUrl.search = new URLSearchParams({
+        show_stats: "1",
+        author: `${userId}`,
+      }).toString();
+
+      // try {
+      //   const memberNotificationStatsResponse = await fetch(
+      //     memberNotificationStatsRequestUrl.toString()
+      //   );
+      //   const response: IRestApiResponse & {
+      //     project?: number;
+      //     info?: number;
+      //   } = await memberNotificationStatsResponse.json();
+
+      //   if (response.data?.status && response.data.status !== 200) {
+      //     console.error(response.message);
+      //   } else if (typeof response.project === "number" && typeof response.info === "number") {
+      //     setNotificationStats(response as { project: number; info: number });
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      // }
+
+      setNotificationStats({ project: 3, info: 123 });
     }
   ),
   getMemberTasksRequest: thunk(

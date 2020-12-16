@@ -405,7 +405,17 @@ export interface IMemberAccountPageState {
   isEmptyProfile?: boolean;
   registrationDate: number;
   thankyouCount: number;
-  memberTaskStats: any;
+  notificationStats: {
+    project: number;
+    info: number;
+  };
+  taskStats: {
+    closed: number;
+    draft: number;
+    in_work: number;
+    publish: number;
+    open?: number;
+  };
   tasks?: {
     filter: "open" | "closed" | "draft";
     page: number;
@@ -418,6 +428,11 @@ export interface IMemberAccountPageState {
   portfolio?: {
     page: number;
     list: Array<IPortfolioItemFormState>;
+  };
+  notifications?: {
+    filter: "all" | "project" | "info";
+    page: number;
+    list: Array<INotification>;
   };
   profileFillStatus?: {
     createdTasksCount: number;
@@ -438,6 +453,16 @@ export interface IMemberAccountPageActions {
   setTaskListFilter: Action<IMemberAccountPageModel, "open" | "closed" | "draft">;
   setPortfolioPage: Action<IMemberAccountPageModel, number>;
   showMorePortfolio: Action<IMemberAccountPageModel, Array<IPortfolioItemFormState>>;
+  setNotificationStats: Action<
+    IMemberAccountPageModel,
+    {
+      project: number;
+      info: number;
+    }
+  >;
+  setNotificationListFilter: Action<IMemberAccountPageModel, "all" | "project" | "info">;
+  setNotificationsPage: Action<IMemberAccountPageModel, number>;
+  showMoreNotifications: Action<IMemberAccountPageModel, Array<INotification>>;
   setTasksPage: Action<IMemberAccountPageModel, number>;
   showMoreTasks: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviewsPage: Action<IMemberAccountPageModel, number>;
@@ -465,6 +490,8 @@ export interface IMemberAccountPageThunks {
   getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
   getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
   getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
+  getMemberNotificationsRequest: Thunk<IMemberAccountPageActions, { isListReset: boolean }>;
+  getMemberNotificationStatsRequest: Thunk<IMemberAccountPageActions>;
   giveThanksRequest: Thunk<IMemberAccountPageActions>;
   profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
   loadIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
@@ -1097,6 +1124,37 @@ export interface IUserNotifActions {
   loadNotifList: Thunk<IUserNotifActions>;
   loadFreshNotifList: Thunk<IUserNotifActions>;
   removeNotifFromList: Action<IUserNotifModel, any>;
+}
+
+/**
+ * Notification
+ */
+
+export type NotificationType = "warning-message" | "new-message";
+
+export type NotificationIcon = "notification" | "hard-rock" | "list" | "reward";
+
+export interface INotification {
+  type?: NotificationType;
+  avatar?: string;
+  icon: NotificationIcon;
+  title: Array<INotificationTitleText & INotificationTitleKeyword & INotificationTitleLink>;
+  time: string;
+}
+
+export interface INotificationTitleText {
+  text?: string;
+}
+
+export interface INotificationTitleKeyword {
+  keyword?: string;
+}
+
+export interface INotificationTitleLink {
+  link?: {
+    url: string;
+    text: string;
+  };
 }
 
 /**

@@ -4,7 +4,7 @@ import TaskCard from "../../components/TaskCard";
 
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  const { tasks, memberTaskStats } = useStoreState(state => state.components.memberAccount);
+  const { tasks, taskStats } = useStoreState(state => state.components.memberAccount);
 
   const { setTaskListFilter, getMemberTasksRequest } = useStoreActions(
     actions => actions.components.memberAccount
@@ -16,7 +16,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     draft: number;
     in_work: number;
     publish: number;
-  } = { ...memberTaskStats, open: 0 };
+  } = { ...taskStats, open: 0 };
 
   const isNullDesignRequired = Object.values(filters).every(filter => filter === 0);
 

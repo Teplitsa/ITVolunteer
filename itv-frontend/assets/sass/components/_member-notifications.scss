@@ -63,18 +63,60 @@
         background-color: $color-main-light;
       }
 
-      &-title {
-        margin-right: auto;
-      }
-      &-time {
-        margin-left: auto;
-        text-align: center;
-      }
-
       a {
         color: $color-main-dark;
       }
     }
+  }
+  &__item-card {
+    display: flex;
+    flex-flow: row nowrap;
+    margin-right: 10px;
+    min-width: 42px;
+  }
+  &__item-avatar {
+    border: 1px solid $color-gray-light-md;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    &_no-image {
+      background-color: $color-white;
+      border-style: none;
+    }
+  }
+  &__item-type {
+    background-color: $color-gray-light-lg;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    border: 1px solid $color-white;
+    margin-left: -6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    &_notification {
+      background-image: url("../../img/icon-notification.svg");
+    }
+    &_hard-rock {
+      background-image: url("../../img/icon-hard-rock.svg");
+    }
+    &_list {
+      background-image: url("../../img/icon-list.svg");
+    }
+    &_reward {
+      background-image: url("../../img/icon-reward.svg");
+    }
+  }
+  &__item-title {
+    margin-right: auto;
+    flex-shrink: 10;
+  }
+  &__item-time {
+    margin-left: auto;
+    text-align: center;
   }
   &__keyword {
     color: $color-gray-dark-xl;

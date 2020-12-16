@@ -35,10 +35,10 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: [
-      // {
-      //   title: "Оповещения",
-      //   content: () => <MemberNotifications />,
-      // },
+      {
+        title: "Оповещения",
+        content: () => <MemberNotifications />,
+      },
       {
         title: "Портфолио",
         content:
