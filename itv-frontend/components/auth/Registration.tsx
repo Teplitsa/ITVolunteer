@@ -2,6 +2,7 @@ import { ReactElement, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
+import MemberRoleSelector from "./MemberRoleSelector";
 
 import { regEvent } from "../../utilities/ga-events";
 
@@ -22,6 +23,7 @@ const Registration: React.FunctionComponent<{
   const [registrationSuccessText, setRegistrationSuccessText] = useState("");
   const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
   const [regFormData, setRegFormData] = useState(null);
+  const [role, setRole] = useState("");
 
   useEffect(() => {
     let allowed = true;
@@ -55,6 +57,14 @@ const Registration: React.FunctionComponent<{
   function validateFormData(formData) {
     let isValid = true;
     clearSnackbar();
+
+    if (!formData.get("itv_role")) {
+      isValid = false;
+      addSnackbar({
+        context: "error",
+        text: "Укажите, чем бы вы хотели заниматься на платформе помощи IT?",
+      });
+    }
 
     if (!formData.get("first_name") || !formData.get("first_name").trim()) {
       isValid = false;
@@ -115,6 +125,7 @@ const Registration: React.FunctionComponent<{
     regEvent("reg_reg", router);
 
     const formData = new FormData(formRef.current);
+    formData.append("itv_role", role);
     setRegFormData(formData);
 
     if (validateFormData(formData)) {
@@ -128,7 +139,7 @@ const Registration: React.FunctionComponent<{
   }
 
   return (
-    <div className="auth-page__illustration-container">
+    <div className="auth-page__illustration-container auth-page-registration">
       <div className="auth-page__content auth-page__registration">
         <h1 className="auth-page__title">Регистрация</h1>
         {(!registrationSuccessText || isRegistrationLoading) && (
@@ -149,7 +160,8 @@ const Registration: React.FunctionComponent<{
               dangerouslySetInnerHTML={{ __html: registrationSuccessText }}
             />
           )}
-          {!registrationSuccessText && !isRegistrationLoading && (
+          {!registrationSuccessText && !isRegistrationLoading && <MemberRoleSelector setRole={setRole} role={role} />}
+          {!registrationSuccessText && !isRegistrationLoading && !!role && (
             <form
               action=""
               method="post"
@@ -157,6 +169,9 @@ const Registration: React.FunctionComponent<{
               onSubmit={handleSubmit}
               ref={formRef}
             >
+              <div className="auth-page-form__splitter">
+                <div />
+              </div>
               <div className="auth-page-form__group">
                 <label className="auth-page-form__label">Ваше имя</label>
                 <input
