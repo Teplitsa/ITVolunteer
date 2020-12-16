@@ -56,7 +56,7 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
             href="/members/[username]/add-portfolio-item"
             as={`/members/${username}/add-portfolio-item`}
           >
-            <a className="btn btn_hint-alt" target="_blank">
+            <a className="btn btn_hint-alt">
               + Добавить работу
             </a>
           </Link>

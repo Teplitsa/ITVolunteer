@@ -25,7 +25,7 @@ const MemberPortfolioNoItems: React.FunctionComponent = (): ReactElement => {
           href="/members/[username]/add-portfolio-item"
           as={`/members/${username}/add-portfolio-item`}
         >
-          <a className="btn btn_default" target="_blank">
+          <a className="btn btn_default">
             Добавить первую работу
           </a>
         </Link>}
