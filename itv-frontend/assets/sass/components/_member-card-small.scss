@@ -12,7 +12,11 @@
   &__name {
     margin: 0 0 5px;
     font: 600 16px/1.25 "IBM Plex Sans", snas-serif;
-    color: $color-gray-dark-xl;
+
+    &,
+    & a {
+      color: $color-gray-dark-xl;
+    }
   }
   &__role {
     font: 600 11px/1.09 "IBM Plex Sans", snas-serif;
