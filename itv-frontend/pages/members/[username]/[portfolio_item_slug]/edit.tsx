@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
 
   const loggedIn = decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/);
 
-  if (loggedIn && (query.username as string).toLowerCase() === loggedIn[1].toLowerCase()) {
+  if (loggedIn /* && (query.username as string).toLowerCase() === loggedIn[1].toLowerCase() */) {
     return {
       props: { ...model },
     };
