@@ -563,6 +563,7 @@ export interface IPortfolioItemModel
 
 export interface IPortfolioItemAuthor {
   id: number;
+  slug: string;
   name: string;
   fullName: string;
   itvAvatar: string;

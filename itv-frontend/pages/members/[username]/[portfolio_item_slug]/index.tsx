@@ -68,6 +68,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
         portfolioItemAuthorRequestUrl.search = (() => {
           return [
             "id",
+            "slug",
             "name",
             "fullName",
             "authorReviewsCount",
@@ -143,7 +144,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
               id,
               slug,
               title: stripTags(title).trim(),
-              description: stripTags(description).trim(),
+              description,
               preview,
               fullImage,
               nextPortfolioItemSlug,

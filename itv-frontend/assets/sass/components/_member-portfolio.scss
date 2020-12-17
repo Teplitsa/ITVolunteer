@@ -24,7 +24,7 @@
       align-items: center;
 
       @include screen-from(md) {
-        align-items: flex-start;
+        align-items: stretch;
         flex-basis: calc(33.3333% - (20px + 20px) / 3);
       }
 
@@ -35,6 +35,14 @@
         @include screen-from(md) {
           margin-right: 20px;
         }
+      }
+      &-preview {
+        display: block;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding-top: 58.2568%;
+        min-width: 218px;
       }
       &-title {
         margin: 10px 0 0;

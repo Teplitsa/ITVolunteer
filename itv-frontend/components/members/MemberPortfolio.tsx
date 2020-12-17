@@ -38,7 +38,8 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
 
       const newPreviews = [].concat(previews);
 
-      newPreviews[currentPreviewIndex] = mediaData.mediaItemUrl;
+      newPreviews[currentPreviewIndex] =
+        mediaData.mediaItemSizes.logo?.source_url ?? mediaData.mediaItemUrl;
 
       setPreviews(newPreviews);
       setPreviewsToLoad(restPreviewsToLoad);
@@ -56,9 +57,7 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
             href="/members/[username]/add-portfolio-item"
             as={`/members/${username}/add-portfolio-item`}
           >
-            <a className="btn btn_hint-alt">
-              + Добавить работу
-            </a>
+            <a className="btn btn_hint-alt">+ Добавить работу</a>
           </Link>
         </div>
       </div>
