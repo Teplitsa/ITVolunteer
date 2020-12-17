@@ -74,7 +74,7 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
           className="form__control_textarea form__control_full-width"
           name="description"
           defaultValue={description}
-          maxLength={150}
+          maxLength={450}
           placeholder="Например, Помощь в разработке баннера"
           required
           onInput={event => setDescriptionLength(event.currentTarget.value.length)}
@@ -83,7 +83,7 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
           <div className="form__group-footer-left">
             <img src={IconAward} alt="" /> +10 баллов за заполненное поле
           </div>
-          <div className="form__group-footer-right">{descriptionLength}/150</div>
+          <div className="form__group-footer-right">{descriptionLength}/450</div>
         </div>
       </div>
       <div className="form__group">

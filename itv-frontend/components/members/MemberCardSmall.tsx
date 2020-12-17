@@ -4,7 +4,7 @@ import MemberCardSmallBage from "components/members/MemberCardSmallBage";
 import MemberStats from "components/MemberStats";
 
 const MemberCardSmall: React.FunctionComponent = (): ReactElement => {
-  const { rating, reviewsCount, xp } = useStoreState(
+  const { slug, rating, reviewsCount, xp } = useStoreState(
     state => state.components.portfolioItem.author
   );
 
@@ -16,6 +16,7 @@ const MemberCardSmall: React.FunctionComponent = (): ReactElement => {
           <MemberStats
             {...{
               useComponents: ["rating", "reviewsCount", "xp"],
+              memberSlug: slug,
               rating,
               reviewsCount,
               xp,

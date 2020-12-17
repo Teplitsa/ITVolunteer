@@ -13,6 +13,7 @@ import { getRestApiUrl } from "../../utilities/utilities";
 export const portfolioItemState: IPortfolioItemState = {
   author: {
     id: 0,
+    slug: "",
     name: "",
     fullName: "",
     itvAvatar: "",

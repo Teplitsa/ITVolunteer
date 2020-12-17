@@ -14,7 +14,12 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     if (router.asPath.search("#reviews") !== -1) {
-      reviewsRef.current.scrollIntoView();
+      const reviewsNode = reviewsRef.current;
+      const reviewsSubstituteNode = reviewsNode.parentNode.querySelector(
+        ".tabs-content__item-substitute"
+      );
+
+      (reviewsSubstituteNode ?? reviewsNode).scrollIntoView();
     }
   }, []);
 

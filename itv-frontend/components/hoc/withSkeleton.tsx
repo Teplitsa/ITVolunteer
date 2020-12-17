@@ -14,7 +14,7 @@ const withSkeleton = ({ pathname }: { pathname: string }): React.FunctionCompone
     MainSkeletonContent = () => <HomeSkeleton />;
   } else if (pathname.search(/^\/members$/i) !== -1) {
     MainSkeletonContent = () => <MemberListSkeleton />;
-  } else if (pathname.search(/^\/members\/\S+$/i) !== -1) {
+  } else if (pathname.search(/^\/members\/[^/]+$/i) !== -1) {
     MainSkeletonContent = () => <MemberAccountSkeleton />;
   } else if (pathname.search(/^\/tasks$/i) !== -1) {
     MainSkeletonContent = () => <TaskListSkeleton />;

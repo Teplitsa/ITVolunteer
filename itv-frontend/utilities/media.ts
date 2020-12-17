@@ -1,10 +1,20 @@
 import { IRestApiResponse } from "../model/model.typing";
 import { getRestApiUrl } from "./utilities";
 
+export type MediaSize = "avatar" | "full" | "logo" | "long" | "post-thumbnail" | "thumbnail";
+
 export interface IMediaData {
   databaseId: number;
   mediaItemUrl: string;
-  mediaItemRelativePath: string;
+  mediaItemWidth: string;
+  mediaItemHeight: string;
+  mediaItemSizes: {
+    [size: string]: {
+      width: string;
+      height: string;
+      source_url: string;
+    };
+  };
 }
 
 export const getMediaData = async (
@@ -22,7 +32,15 @@ export const getMediaData = async (
     const response: IRestApiResponse & {
       id: number;
       media_details: {
-        file: string;
+        width: string;
+        height: string;
+        sizes: {
+          [sizes: string]: {
+            width: string;
+            height: string;
+            source_url: string;
+          };
+        };
       };
       source_url: string;
     } = await result.json();
@@ -34,11 +52,11 @@ export const getMediaData = async (
     } else {
       const {
         id: databaseId,
-        media_details: { file: mediaItemRelativePath },
+        media_details: { width: mediaItemWidth, height: mediaItemHeight, sizes: mediaItemSizes },
         source_url: mediaItemUrl,
       } = response;
 
-      return { databaseId, mediaItemUrl, mediaItemRelativePath };
+      return { databaseId, mediaItemUrl, mediaItemWidth, mediaItemHeight, mediaItemSizes };
     }
   } catch (error) {
     console.error(error);

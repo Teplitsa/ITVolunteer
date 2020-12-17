@@ -15,7 +15,7 @@ const PortfolioItemDeleteConfirm: React.FunctionComponent<{
   );
 
   const deletePortfolioItemHandle = () => {
-    router.push(`/members/${author.name}`);
+    router.push(`/members/${author.slug}`);
   };
 
   return (

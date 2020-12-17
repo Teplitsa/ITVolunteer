@@ -21,7 +21,7 @@ const ModalContent: React.FunctionComponent<{ closeModal: () => void }> = ({ clo
 const PortfolioItem: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(store => store.session.isAccountOwner);
   const { author, item: portfolioItem } = useStoreState(store => store.components.portfolioItem);
-  const shareUrl = `${appConfig.BaseUrl}/members/${author.name}/${portfolioItem.slug}`;
+  const shareUrl = `${appConfig.BaseUrl}/members/${author.slug}/${portfolioItem.slug}`;
 
   return (
     <div className="portfolio-item">
@@ -32,7 +32,10 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
           </div>
           <div className="portfolio-item__right-column">
             <h1 className="portfolio-item__title">{portfolioItem.title}</h1>
-            <div className="portfolio-item__text">{portfolioItem.description}</div>
+            <div
+              className="portfolio-item__text"
+              dangerouslySetInnerHTML={{ __html: portfolioItem.description }}
+            />
           </div>
           {typeof portfolioItem.fullImage === "string" && (
             <div className="portfolio-item__center-column">
@@ -66,7 +69,7 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
             <div className="portfolio-item__actions">
               <Link
                 href="/members/[username]/[portfolio_item_slug]/edit"
-                as={`/members/${author.name}/${portfolioItem.slug}/edit`}
+                as={`/members/${author.slug}/${portfolioItem.slug}/edit`}
               >
                 <a className="portfolio-item__action-btn btn btn_default">Редактировать</a>
               </Link>
@@ -100,7 +103,7 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
           <div className="portfolio-item__nav-item">
             <Link
               href="/members/[username]/[portfolio_item_slug]"
-              as={`/members/${author.name}/${portfolioItem.prevPortfolioItemSlug}`}
+              as={`/members/${author.slug}/${portfolioItem.prevPortfolioItemSlug}`}
             >
               <a>Предыдущая работа</a>
             </Link>
@@ -110,7 +113,7 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
           <div className="portfolio-item__nav-item">
             <Link
               href="/members/[username]/[portfolio_item_slug]"
-              as={`/members/${author.name}/${portfolioItem.nextPortfolioItemSlug}`}
+              as={`/members/${author.slug}/${portfolioItem.nextPortfolioItemSlug}`}
             >
               <a>Следующая работа</a>
             </Link>

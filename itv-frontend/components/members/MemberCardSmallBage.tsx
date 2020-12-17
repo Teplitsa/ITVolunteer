@@ -1,9 +1,11 @@
 import { ReactElement } from "react";
+import Link from "next/link";
 import { useStoreState } from "../../model/helpers/hooks";
 import MemberAvatar from "../MemberAvatar";
 
 const MemberCardSmallBage: React.FunctionComponent = (): ReactElement => {
   const {
+    slug: memberSlug,
     itvAvatar: memberAvatar,
     fullName: memberFullName,
     itvRoleTitle: memberRole,
@@ -14,7 +16,11 @@ const MemberCardSmallBage: React.FunctionComponent = (): ReactElement => {
       <div className="member-card-small__avatar">
         <MemberAvatar {...{ memberAvatar, memberFullName, size: "medium-plus" }} />
       </div>
-      <div className="member-card-small__name">{memberFullName}</div>
+      <div className="member-card-small__name">
+        <Link href="/members/[username]" as={`/members/${memberSlug}`}>
+          {memberFullName}
+        </Link>
+      </div>
       <div className="member-card-small__role">{memberRole}</div>
     </div>
   );

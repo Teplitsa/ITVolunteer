@@ -11,7 +11,7 @@ const MemberPortfolioItem: React.FunctionComponent<{
     <div className="member-portfolio__list-item">
       <Link href="/members/[username]/[portfolio_item_slug]" as={`/members/${username}/${slug}`}>
         <a>
-          <img src={preview} alt="" />
+          <span style={{ backgroundImage: `url(${preview})` }} className="member-portfolio__list-item-preview" />
         </a>
       </Link>
       <div className="member-portfolio__list-item-title">
