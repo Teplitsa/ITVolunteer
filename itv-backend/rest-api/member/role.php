@@ -11,10 +11,18 @@ function member_role_api_init($server) {
             $slug = $request->get_param('slug');
             $user = get_user_by('slug', $slug);
 
+            if(!$user) {
+                return new WP_Error(
+                    'rest_itv_member_not_found',
+                    __( 'Member not found', 'itv-backend' ),
+                    array( 'status' => 404 )
+                );
+            }
+
             $members = new MemberManager();
             $role = $user ? $members->get_member_itv_role($user->ID) : "";
 
-            return ['role' => $role];
+            return ['itvRole' => $role];
         },
     ] );
 
@@ -24,6 +32,14 @@ function member_role_api_init($server) {
 
             $slug = $request->get_param('slug');
             $user = get_user_by('slug', $slug);
+
+            if(!$user) {
+                return new WP_Error(
+                    'rest_itv_member_not_found',
+                    __( 'Member not found', 'itv-backend' ),
+                    array( 'status' => 404 )
+                );
+            }
 
             $role = $request['itv_role'];
             $members = new MemberManager();
@@ -36,7 +52,7 @@ function member_role_api_init($server) {
                 }
             }
 
-            return ['role' => $role];
+            return ['itvRole' => $role];
         },
     ] );
 }

@@ -49,6 +49,11 @@ class MemberManager {
     public static $FIELD_ITV_ROLE_TITLE = 'itvRoleTitle';
     public static $FIELD_IS_HYBRID = 'isHybrid';
 
+    private function __lang() {
+        __('member_role_doer', 'itv-backend');
+        __('member_role_author', 'itv-backend');        
+    }
+
     public function get_member_itv_role($user_id) {
         $role = get_user_meta($user_id, self::$meta_role, true);
         return $role;
@@ -145,6 +150,3 @@ class MemberManager {
     }
 
 }
-
-// __('member_role_doer', 'itv-backend');
-// __('member_role_author', 'itv-backend');

@@ -1329,7 +1329,9 @@ function itv_get_user_in_gql_format($user) {
         'telegram' => get_user_meta($user->ID, 'telegram', true),
         'phone' => get_user_meta($user->ID, 'user_contacts', true),
         'organizationSite' =>  tst_get_member_field( 'user_website', $user->ID ),
-        'xp' => UserXPModel::instance()->get_user_xp($user->ID)
+        'xp' => UserXPModel::instance()->get_user_xp($user->ID),
+        'slug' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
+        'nicename' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
     ];
     
     return $user_data;

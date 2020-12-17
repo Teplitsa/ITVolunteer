@@ -4,18 +4,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ITV 2.0 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/itv-backend\n"
+"POT-Creation-Date: 2020-12-17T21:43:44+00:00\n"
+"PO-Revision-Date: 2020-12-17 23:44+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2020-12-09T22:36:51+00:00\n"
-"PO-Revision-Date: 2020-12-10 00:39+0200\n"
 "X-Generator: Poedit 2.0.5\n"
 "X-Domain: itv-backend\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Language: ru_RU\n"
 
 #. Theme Name of the theme
 msgid "ITV 2.0"
@@ -37,17 +37,17 @@ msgstr ""
 msgid "https://te-st.ru/"
 msgstr ""
 
-#: models/member/member.php:107
-msgid "member_role_"
-msgstr ""
-
-#: models/member/member.php:116
+#: models/member/member.php:53
 msgid "member_role_doer"
 msgstr "Волонтер"
 
-#: models/member/member.php:117
+#: models/member/member.php:54
 msgid "member_role_author"
 msgstr "Заказчик"
+
+#: models/member/member.php:139
+msgid "member_role_"
+msgstr ""
 
 #: post-types/portfolio_work.php:13 post-types/portfolio_work.php:37
 msgid "Portfolio works"
@@ -206,3 +206,10 @@ msgid ""
 "Portfolio work draft updated. <a target=\"_blank\" href=\"%s\">Preview "
 "portfolio work</a>"
 msgstr ""
+
+#: rest-api/member/notif.php:14 rest-api/member/review.php:14
+#: rest-api/member/review.php:65 rest-api/member/role.php:17
+#: rest-api/member/role.php:39 rest-api/task/task.php:16
+#: rest-api/task/task.php:37
+msgid "Member not found"
+msgstr "Пользователь не найден"
