@@ -22,6 +22,12 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   const loadFreshNotifList = useStoreActions(
     actions => actions.components.userNotif.loadFreshNotifList
   );
+  const setRole = useStoreActions(
+    actions => actions.session.setRole
+  );
+  const setUserItvRole = useStoreActions(
+    actions => actions.session.setUserItvRole
+  );
 
   useEffect(() => {
     if (!user.id) {
@@ -60,6 +66,19 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
     return () => abortController.abort();
   }, []);
+
+  function handleLoginAsRoleClick() {
+    const newItvRole = user.itvRole === "doer" ? "author" : "doer";
+    setRole({
+      itvRole: newItvRole, 
+      successCallbackFn: () => {
+        setUserItvRole(newItvRole);
+      },
+      errorCallbackFn: (message) => {
+        console.log(message);
+      },
+    });
+  }
 
   return (
     <>
@@ -116,12 +135,17 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
                 <a>Поиск задач</a>
               </Link>
             </li>
-            <li className="submenu__item">
+            <li className="submenu__item submenu__item_bottom-divider">
               <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
                 <a>Управление аккаунтом</a>
               </Link>
             </li>
-            <li className="submenu__item submenu__item_top-divider">
+            <li className="submenu__item">
+              <Link href="/members/[username]" as={`/members/${user.username}`}>
+                <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "заказчик" : "волонтер"}`}</a>
+              </Link>
+            </li>
+            <li className="submenu__item">
               <a href={utils.decodeHtmlEntities(user.logoutUrl)}>Выйти</a>
             </li>
           </ul>
@@ -147,6 +171,11 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         <li className="submenu__item">
           <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
             <a>Управление аккаунтом</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/members/[username]" as={`/members/${user.username}`}>
+            <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "заказчик" : "волонтер"}`}</a>
           </Link>
         </li>
         <li>

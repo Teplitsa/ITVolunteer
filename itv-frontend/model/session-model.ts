@@ -1,4 +1,5 @@
 import {
+  IStoreModel,
   ISessionModel,
   ISessionState,
   ISessionUser,
@@ -8,13 +9,14 @@ import {
   IFetchResult,
 } from "./model.typing";
 import { thunk, action, computed } from "easy-peasy";
-import { getAjaxUrl, stripTags } from "../utilities/utilities";
+import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
   id: "",
   databaseId: 0,
   username: "",
+  slug: "",
   email: "",
   fullName: "",
   firstName: "",
@@ -43,6 +45,7 @@ const sessionUserState: ISessionUser = {
   facebook: "",
   vk: "",
   instagram: "",
+  itvRole: null,
 };
 
 const sessionTokenState: ISessionToken = {
@@ -129,6 +132,9 @@ const sessionActions: ISessionActions = {
   }),
   setSubscribeTaskList: action((state, payload) => {
     state.user.subscribeTaskList = payload;
+  }),
+  setUserItvRole: action((state, payload) => {
+    state.user.itvRole = payload;
   }),
   loadSubscribeTaskList: thunk(actions => {
     const action = "get-task-list-subscription";
@@ -322,6 +328,40 @@ const sessionThunks: ISessionThunks = {
       }
     }
   ),
+  setRole: thunk(async (actions, { itvRole, successCallbackFn, errorCallbackFn }, { getStoreState }) => {
+    
+    const {
+      session: {
+        user,
+        validToken: token,
+      },
+    } = getStoreState() as IStoreModel;
+
+    const formData = new FormData();
+    formData.append("itv_role", itvRole );
+    formData.append("auth_token", String(token) );
+
+    try {
+
+      const result = await fetch(
+        getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`),
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (result.status !== 200) {
+        const { message: responseMessage } = await result.json();
+        errorCallbackFn(stripTags(responseMessage));
+      } else {
+        successCallbackFn();
+      }
+    } catch (error) {
+      console.error(error);
+      errorCallbackFn("Не удалось установить роль.");
+    }
+  }),
 };
 
 const sessionModel: ISessionModel = {

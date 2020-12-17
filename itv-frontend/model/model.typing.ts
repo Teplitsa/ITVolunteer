@@ -92,6 +92,7 @@ export interface ISessionUser {
   id: string;
   databaseId: number;
   username: string;
+  slug: string;
   email: string;
   fullName: string;
   firstName: string;
@@ -123,11 +124,13 @@ export interface ISessionUser {
   subscribeTaskList?: any | null;
   logoutUrl?: string;
   isAdmin?: boolean;
+  itvRole: "author" | "doer";
 }
 
 export interface ISessionActions {
   setState: Action<ISessionModel, ISessionState>;
   setIsLoaded: Action<ISessionState, boolean>;
+  setUserItvRole: Action<ISessionState, "author" | "doer">;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
 }
@@ -166,6 +169,15 @@ export interface ISessionThunks {
       successCallbackFn: () => void;
       errorCallbackFn: (message: string) => void;
     }
+  >;
+  setRole: Thunk<
+    ISessionActions,
+    {
+      itvRole: "author" | "doer";
+      successCallbackFn: () => void;
+      errorCallbackFn: (message: string) => void;
+    },
+    IStoreModel
   >;
 }
 
@@ -572,7 +584,7 @@ export interface IPortfolioItemAuthor {
   rating: number;
   xp: number;
   itvRole: "author" | "doer";
-  itvRoleTitle: "Автор" | "Волонтер";
+  itvRoleTitle: "Заказчик" | "Волонтер";
 }
 
 export interface IPortfolioItemState {
