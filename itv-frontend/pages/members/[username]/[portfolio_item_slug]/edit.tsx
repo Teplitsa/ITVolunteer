@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
 
   const loggedIn = decodeURIComponent(req.headers.cookie).match(/_logged_in_[^=]+=([^|]+)/);
 
-  if (!loggedIn || query.username !== loggedIn[1]) {
+  if (!loggedIn || (query.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
     res.statusCode = 401;
     Object.assign(model, { statusCode: 401 });
   }
