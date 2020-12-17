@@ -165,6 +165,7 @@ function itv_custom_content(){
         'hierarchical'       => false,
         'menu_position'      => 5,
 		'menu_icon'          => 'dashicons-welcome-write-blog',
+        'show_in_rest'       => true,
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
         
