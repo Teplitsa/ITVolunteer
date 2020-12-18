@@ -86,8 +86,8 @@ const sessionState: ISessionState = {
     (userId) => Boolean(userId)
   ),
   isAccountOwner: computed(
-    [state => state.user.username, (state, storeState) => storeState.entrypoint.page.slug],
-    (userName, pageSlug) => {
+    [state => state.user.slug, (state, storeState) => storeState.entrypoint.page.slug],
+    (userSlug, pageSlug) => {
       if (!pageSlug) return false;
 
       const destructedUri = pageSlug.match(/members\/([^/|\s]+)/);
@@ -95,8 +95,8 @@ const sessionState: ISessionState = {
       if (Object.is(destructedUri, null)) {
         return false;
       } else {
-        const [, memberName] = destructedUri;
-        return userName === memberName;
+        const [, memberSlug] = destructedUri;
+        return userSlug === memberSlug;
       }
     }
   ),

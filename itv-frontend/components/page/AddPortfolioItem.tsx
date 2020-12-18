@@ -7,7 +7,6 @@ import PortfolioItemForm from "../PortfolioItemForm";
 const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const {
     user: { username },
-    isAccountOwner,
   } = useStoreState(store => store.session);
   const { title, description, preview, fullImage } = useStoreState(
     store => store.components.portfolioItemForm
@@ -23,10 +22,6 @@ const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
       successCallbackFn: () => router.push(`/members/${username}`),
     });
   };
-
-  if (!isAccountOwner) {
-    return <p>Доступ запрещён.</p>;
-  }
 
   return (
     <div className="manage-portfolio-item">

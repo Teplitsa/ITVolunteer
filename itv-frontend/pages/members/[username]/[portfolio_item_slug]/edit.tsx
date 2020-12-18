@@ -102,7 +102,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
     /wordpress_logged_in_[^=]+=([^|]+)/
   );
 
-  if (!loggedIn /* || (query.username as string).toLowerCase() !== loggedIn[1].toLowerCase()*/) {
+  if (!loggedIn || (query.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
     res.statusCode = 401;
     Object.assign(model, { statusCode: 401 });
   }
