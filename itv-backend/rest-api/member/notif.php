@@ -7,6 +7,8 @@ function notif_api_add_routes($server) {
     register_rest_route( 'itv/v1', '/user-notif/(?P<slug>[- _0-9a-zA-Z]+)', [
         'methods' => WP_REST_Server::ALLMETHODS,
         'callback' => function($request) {
+            global $wpdb;
+
             $slug = $request->get_param('slug');
             $user = get_user_by('slug', $slug);
 
@@ -50,8 +52,6 @@ function notif_api_add_routes($server) {
                 $is_read_sql = $wpdb->prepare( " AND is_read = %d ", [ intval( $is_read ) ] );
             }
             
-            global $wpdb;
-
             $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d {$on_task_sql} {$is_read_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $notif_list = $wpdb->get_results($q);
 
