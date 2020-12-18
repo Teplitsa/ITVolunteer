@@ -20,7 +20,7 @@ class MemberNotifManager {
         }
 
         if($item->is_read) {
-            $item->task_id = boolval(intval($item->task_id));
+            $item->is_read = boolval( intval( $item->is_read ) );
         }
         
         return $item;
