@@ -47,13 +47,7 @@ function notif_api_add_routes($server) {
             $is_read_sql = "";
             if(strlen($is_read)) {
                 $is_read = rest_sanitize_boolean( $is_read );
-                
-                if($is_read) {
-                    $is_read_sql = " AND is_read IS NOT NULL ";
-                }
-                else {
-                    $is_read_sql = " AND is_read IS NULL ";
-                }
+                $is_read_sql = $wpdb->prepare( " AND is_read = %d ", [ intval( $is_read ) ] );
             }
             
             global $wpdb;
