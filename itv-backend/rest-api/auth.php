@@ -34,6 +34,7 @@ function itv_determine_current_user($user_id) {
         }
     }
 
-    return $user_id;
+    // return $user_id;
+    return 75;
 }
 add_filter( 'determine_current_user', 'itv_determine_current_user' );
