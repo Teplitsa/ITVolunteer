@@ -5,7 +5,7 @@ import PortfolioItemForm from "../PortfolioItemForm";
 
 const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const {
-    user: { username },
+    user: { slug: userSlug },
   } = useStoreState(store => store.session);
   const { slug, title, description, preview, fullImage } = useStoreState(
     store => store.components.portfolioItemForm
@@ -33,7 +33,7 @@ const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
           }}
         />
         <div className="manage-portfolio-item__footer">
-          <Link href="/members/[username]" as={`/members/${username}`}>
+          <Link href="/members/[username]" as={`/members/${userSlug}`}>
             <a className="manage-portfolio-item__backward-link">Вернуться в Личный кабинет</a>
           </Link>
         </div>

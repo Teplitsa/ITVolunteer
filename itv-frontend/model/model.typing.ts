@@ -395,6 +395,7 @@ export interface IMemberReview {
 export interface IMemberAccountPageState {
   id: string;
   databaseId: number;
+  slug: "",
   cover?: string;
   name: string;
   username: string;

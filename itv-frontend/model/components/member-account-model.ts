@@ -17,6 +17,7 @@ import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities"
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
   databaseId: 0,
+  slug: "",
   cover: "",
   name: "",
   username: "",
