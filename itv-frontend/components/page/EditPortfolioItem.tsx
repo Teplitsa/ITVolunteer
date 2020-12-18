@@ -6,7 +6,6 @@ import PortfolioItemForm from "../PortfolioItemForm";
 const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const {
     user: { username },
-    isAccountOwner,
   } = useStoreState(store => store.session);
   const { slug, title, description, preview, fullImage } = useStoreState(
     store => store.components.portfolioItemForm
@@ -18,10 +17,6 @@ const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const updatePortfolioItemData = (portFolioItemData: FormData) => {
     updatePortfolioItemRequest({ slug, inputData: portFolioItemData });
   };
-
-  if (!isAccountOwner) {
-    return <p>Доступ запрещён.</p>;
-  }
 
   return (
     <div className="manage-portfolio-item">
