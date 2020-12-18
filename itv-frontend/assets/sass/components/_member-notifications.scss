@@ -62,10 +62,6 @@
       &_new-message {
         background-color: $color-main-light;
       }
-
-      a {
-        color: $color-main-dark;
-      }
     }
   }
   &__item-card {
@@ -113,6 +109,15 @@
   &__item-title {
     margin-right: auto;
     flex-shrink: 10;
+
+    &-link {
+      &_normal {
+        color: $color-gray-dark-xl;
+      }
+      &_highlight {
+        color: $color-main-dark;
+      }
+    }
   }
   &__item-time {
     margin-left: auto;

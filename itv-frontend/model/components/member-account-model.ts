@@ -369,12 +369,25 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           icon: "notification",
           type: "new-message",
           title: [
-            { keyword: "Новая задача" },
+            {
+              link: {
+                type: "normal",
+                url: "/",
+                text: "Новая задача",
+              },
+            },
             { text: "по тегу" },
-            { keyword: "WordPress" },
+            {
+              link: {
+                type: "normal",
+                url: "/",
+                text: "WordPress",
+              },
+            },
             { text: "посмотрим?" },
             {
               link: {
+                type: "highlight",
                 url: "/",
                 text: "Перейти к задаче",
               },

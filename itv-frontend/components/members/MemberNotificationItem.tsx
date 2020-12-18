@@ -59,7 +59,15 @@ const MemberNotificationItem: React.FunctionComponent<INotification> = ({
             return (
               <Fragment key={`NotificationTitleElement-${i}}`}>
                 <Link href={link.url}>
-                  <a>{link.text}</a>
+                  <a
+                    className={`member-notifications__item-title ${
+                      (link.type === "highlight" &&
+                        "member-notifications__item-title-link_highlight") ||
+                      "member-notifications__item-title-link_normal"
+                    }`}
+                  >
+                    {link.text}
+                  </a>
                 </Link>{" "}
               </Fragment>
             );

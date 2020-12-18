@@ -395,7 +395,7 @@ export interface IMemberReview {
 export interface IMemberAccountPageState {
   id: string;
   databaseId: number;
-  slug: "",
+  slug: "";
   cover?: string;
   name: string;
   username: string;
@@ -1148,6 +1148,8 @@ export type NotificationType = "warning-message" | "new-message";
 
 export type NotificationIcon = "notification" | "hard-rock" | "list" | "reward";
 
+export type NotificationTitleLinkType = "normal" | "highlight";
+
 export interface INotification {
   type?: NotificationType;
   avatar?: string;
@@ -1166,6 +1168,7 @@ export interface INotificationTitleKeyword {
 
 export interface INotificationTitleLink {
   link?: {
+    type?: NotificationTitleLinkType;
     url: string;
     text: string;
   };

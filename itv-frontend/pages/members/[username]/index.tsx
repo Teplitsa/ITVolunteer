@@ -158,6 +158,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
                 { text: "посмотрим?" },
                 {
                   link: {
+                    type: "highlight",
                     url: "/",
                     text: "Перейти к задаче",
                   },
