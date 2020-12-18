@@ -23,7 +23,7 @@ class MemberNotifManager {
             $dt->setTimezone($utcTimezone);
             $item->dateGmt = $dt->format("Y-m-d H:i:s");
         }
+        
+        return $notif_list;
     }
-    
-    return $notif_list;
 }
