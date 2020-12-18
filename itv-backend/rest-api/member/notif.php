@@ -11,7 +11,7 @@ function notif_api_add_routes($server) {
 
             $user = wp_get_current_user();
             
-            if(!$user) {
+            if(!$user->ID) {
                 return new WP_Error(
                     'rest_itv_member_not_found',
                     __( 'Member not found', 'itv-backend' ),
