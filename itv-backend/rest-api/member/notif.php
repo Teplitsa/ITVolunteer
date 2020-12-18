@@ -4,14 +4,13 @@ use ITV\models\MemberNotifManager;
 
 function notif_api_add_routes($server) {
 
-    register_rest_route( 'itv/v1', '/user-notif/(?P<slug>[- _0-9a-zA-Z]+)', [
+    register_rest_route( 'itv/v1', '/user-notif', [
         'methods' => WP_REST_Server::ALLMETHODS,
         'callback' => function($request) {
             global $wpdb;
 
-            $slug = $request->get_param('slug');
-            $user = get_user_by('slug', $slug);
-
+            $user = wp_get_current_user();
+            
             if(!$user) {
                 return new WP_Error(
                     'rest_itv_member_not_found',
