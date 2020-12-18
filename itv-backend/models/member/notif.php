@@ -8,7 +8,7 @@ class MemberNotifManager {
         $item->id = intval($item->id);
         
         if(!empty($item->from_user_id)) {
-            $item->from_user_id = intval(from_user_id);
+            $item->from_user_id = intval($item->from_user_id);
         }
         
         if(!empty($item->user_id)) {
