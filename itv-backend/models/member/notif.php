@@ -3,6 +3,24 @@ namespace ITV\models;
 
 class MemberNotifManager {
     public static $table = 'itv_user_notif';
+    
+    public static function type_db_fields($item) {
+        $item->id = intval($item->id);
+        
+        if(!empty($item->from_user_id)) {
+            $item->from_user_id = intval(from_user_id);
+        }
+        
+        if(!empty($item->user_id)) {
+            $item->user_id = intval($item->user_id);
+        }
+        
+        if(!empty($item->task_id)) {
+            $item->task_id = intval($item->task_id);
+        }
+        
+        return $item;
+    }
 
     public function extend_list_with_connected_data($notif_list) {
         foreach($notif_list as $k => $item) {

@@ -47,8 +47,13 @@ function notif_api_add_routes($server) {
             $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d {$on_task_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $notif_list = $wpdb->get_results($q);
 
+            $notif_list_count = count($notif_list);
+            for($i; $i <= $notif_list_count; $i++) {
+                $notif_list[$i] = MemberNotifManager::type_db_fields( $notif_list[$i] );
+            }
+
             $member_notif_manager = new MemberNotifManager();
-            $notif_list = $member_notif_manager->extend_list_with_connected_data($notif_list);
+            $notif_list = $member_notif_manager->extend_with_connected_data($notif_list);
 
             return $notif_list;
         },
