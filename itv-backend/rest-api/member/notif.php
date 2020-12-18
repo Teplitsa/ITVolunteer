@@ -1,5 +1,7 @@
 <?php
 
+use ITV\models\MemberNotifManager;
+
 function notif_api_add_routes($server) {
 
     register_rest_route( 'itv/v1', '/user-notif/(?P<slug>[- _0-9a-zA-Z]+)', [
@@ -27,11 +29,26 @@ function notif_api_add_routes($server) {
             if($offset < 0) {
                 $offset = 0;
             }
+            
+            $on_task = $request->get_param('on_task');
+            $on_task_sql = "";
+            if(!empty($on_task)) {
+                $on_task = rest_sanitize_boolean( $on_task );
+                if($on_task) {
+                    $on_task_sql = " AND task_id IS NOT NULL ";
+                }
+                else {
+                    $on_task_sql = " AND task_id IS NULL ";
+                }
+            }
 
             global $wpdb;
 
-            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}itv_user_notif WHERE user_id = %d ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
-            $notif_list = $wpdb->get_results($q, ARRAY_A);
+            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}{MemberNotifManager::$table} WHERE user_id = %d {$on_task_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
+            $notif_list = $wpdb->get_results($q);
+
+            $member_notif_manager = MemberNotifManager();
+            $notif_list = $member_notif_manager->extend_list_with_connected_data($notif_list);
 
             return $notif_list;
         },

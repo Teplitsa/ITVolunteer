@@ -7,6 +7,7 @@ require_once( get_theme_file_path() . '/models/member/portfolio.php' );
 require_once( get_theme_file_path() . '/models/member/member.php' );
 require_once( get_theme_file_path() . '/models/task/task.php' );
 require_once( get_theme_file_path() . '/models/member/member-tasks.php' );
+require_once( get_theme_file_path() . '/models/member/notif.php' );
 
 // post-types
 require_once( get_theme_file_path() . '/post-types/portfolio_work.php' );
