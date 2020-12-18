@@ -118,7 +118,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
           <ul className="submenu">
             <li className="submenu__item submenu__item_bottom-divider">
-              <Link href="/members/[username]/profile" as={`/members/${user.username}/profile`}>
+              <Link href="/members/[username]/profile" as={`/members/${user.slug}/profile`}>
                 <a>
                   {user.firstName}
                   <span className="submenu__item-subtitle">Профиль</span>
@@ -126,7 +126,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li className="submenu__item">
-              <Link href="/members/[username]" as={`/members/${user.username}`}>
+              <Link href="/members/[username]" as={`/members/${user.slug}`}>
                 <a onClick={() => regEvent("m_profile", router)}>Личный кабинет</a>
               </Link>
             </li>
@@ -136,12 +136,12 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li className="submenu__item submenu__item_bottom-divider">
-              <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
+              <Link href="/members/[username]/security" as={`/members/${user.slug}/security`}>
                 <a>Управление аккаунтом</a>
               </Link>
             </li>
             <li className="submenu__item">
-              <Link href="/members/[username]" as={`/members/${user.username}`}>
+              <Link href="/members/[username]" as={`/members/${user.slug}`}>
                 <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "заказчик" : "волонтер"}`}</a>
               </Link>
             </li>
@@ -154,12 +154,12 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
       <ul className="submenu account-submenu-mobile">
         <li>
-          <Link href="/members/[username]/profile" as={`/members/${user.username}/profile`}>
+          <Link href="/members/[username]/profile" as={`/members/${user.slug}/profile`}>
             <a>Профиль</a>
           </Link>
         </li>
         <li>
-          <Link href="/members/[username]" as={`/members/${user.username}`}>
+          <Link href="/members/[username]" as={`/members/${user.slug}`}>
             <a onClick={() => regEvent("m_profile", router)}>Личный кабинет</a>
           </Link>
         </li>
@@ -169,12 +169,12 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           </Link>
         </li>
         <li className="submenu__item">
-          <Link href="/members/[username]/security" as={`/members/${user.username}/security`}>
+          <Link href="/members/[username]/security" as={`/members/${user.slug}/security`}>
             <a>Управление аккаунтом</a>
           </Link>
         </li>
         <li>
-          <Link href="/members/[username]" as={`/members/${user.username}`}>
+          <Link href="/members/[username]" as={`/members/${user.slug}`}>
             <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "заказчик" : "волонтер"}`}</a>
           </Link>
         </li>

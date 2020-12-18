@@ -7,7 +7,7 @@ import { getMediaData } from "../../utilities/media";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
   const {
-    username,
+    slug: userSlug,
     portfolio: { list: portfolioList },
   } = useStoreState(store => store.components.memberAccount);
   const [previewsToLoad, setPreviewsToLoad] = useState<Array<number>>(
@@ -55,7 +55,7 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
         <div className="member-portfolio__actions">
           <Link
             href="/members/[username]/add-portfolio-item"
-            as={`/members/${username}/add-portfolio-item`}
+            as={`/members/${userSlug}/add-portfolio-item`}
           >
             <a className="btn btn_hint-alt">+ Добавить работу</a>
           </Link>
@@ -63,7 +63,7 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
       </div>
       <div className="member-portfolio__list">
         {portfolioList.map(({ id, slug, title }, i) => (
-          <MemberPortfolioItem key={id} {...{ username, slug, title, preview: previews[i] }} />
+          <MemberPortfolioItem key={id} {...{ userSlug, slug, title, preview: previews[i] }} />
         ))}
       </div>
       <div className="member-portfolio__footer">

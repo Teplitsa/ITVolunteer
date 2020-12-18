@@ -14,7 +14,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     user: { logoutUrl },
   } = useStoreState((state) => state.session);
   const {
-    username: memberName,
+    slug: memberSlug,
     organizationName,
     thankyouCount,
     rating,
@@ -46,7 +46,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
         {organizationName && <MemberCardOrganization />}
         {isAccountOwner && (profileFillStatus && !profileFillStatus.isProfileInfoEnough) && 
           <div className="member-card__null-add-information">
-            <Link href={`/members/${memberName}/profile`}><a>Добавьте информацию о себе</a></Link>
+            <Link href={`/members/${memberSlug}/profile`}><a>Добавьте информацию о себе</a></Link>
           </div>
         }
         {isEmptyProfile &&
@@ -72,7 +72,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                   </a>
                 </Link>
                 }
-                <Link href={`/members/${memberName}/profile`}>
+                <Link href={`/members/${memberSlug}/profile`}>
                   <a className="btn btn_full-width edit-profile">
                     Редактировать профиль
                   </a>
@@ -100,7 +100,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
       </div>
       {isAccountOwner && !isEmptyProfile && (
         <>
-          <Link href={`/members/${memberName}/security`}>
+          <Link href={`/members/${memberSlug}/security`}>
             <a className="btn btn_default btn_full-width">
               Управление аккаунтом
             </a>

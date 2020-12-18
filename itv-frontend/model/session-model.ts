@@ -96,7 +96,7 @@ const sessionState: ISessionState = {
         return false;
       } else {
         const [, memberSlug] = destructedUri;
-        return userSlug === memberSlug;
+        return userSlug === memberSlug.toLowerCase();
       }
     }
   ),
