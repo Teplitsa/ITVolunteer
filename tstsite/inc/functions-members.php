@@ -15,6 +15,9 @@ use WPGraphQL\JWT_Authentication;
 use \ITV\dao\ReviewAuthor;
 use \ITV\dao\Review;
 
+// from itv-backend
+use \ITV\models\MemberManager;
+use \ITV\models\MemberTasks;
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -1295,6 +1298,9 @@ function itv_get_user_in_gql_format($user) {
     $solved_key = 'solved';
     $activity = tst_get_member_activity( $user->ID, $solved_key );
     
+    $members = new MemberManager();
+    $member_tasks = new MemberTasks($user->ID);
+    
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
         // 'databaseId' => $user->ID,
@@ -1330,6 +1336,8 @@ function itv_get_user_in_gql_format($user) {
         'phone' => get_user_meta($user->ID, 'user_contacts', true),
         'organizationSite' =>  tst_get_member_field( 'user_website', $user->ID ),
         'xp' => UserXPModel::instance()->get_user_xp($user->ID),
+        'itvRole' => $members->get_member_itv_role($user->ID),
+        'isHybrid' => $member_tasks->has_member_created_and_completed_tasks(),
         'slug' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
         'nicename' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
     ];
