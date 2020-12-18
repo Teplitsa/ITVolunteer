@@ -48,7 +48,7 @@ function notif_api_add_routes($server) {
             $notif_list = $wpdb->get_results($q);
 
             $notif_list_count = count($notif_list);
-            for($i; $i <= $notif_list_count; $i++) {
+            for($i = 0; $i <= $notif_list_count; $i++) {
                 $notif_list[$i] = MemberNotifManager::type_db_fields( $notif_list[$i] );
             }
 

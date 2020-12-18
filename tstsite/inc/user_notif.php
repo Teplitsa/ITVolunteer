@@ -18,7 +18,7 @@ function ajax_get_user_notif_short_list() {
     $member_notif_manager = new MemberNotifManager();
     
     $notif_list_count = count($notif_list);
-    for($i; $i <= $notif_list_count; $i++) {
+    for($i = 0; $i <= $notif_list_count; $i++) {
         $notif_list[$i] = $member_notif_manager->extend_with_connected_data($notif_list[$i]);
 	}
 	
