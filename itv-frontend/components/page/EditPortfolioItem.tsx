@@ -1,4 +1,5 @@
 import { ReactElement } from "react";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import PortfolioItemForm from "../PortfolioItemForm";
@@ -13,9 +14,14 @@ const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const { updatePortfolioItemRequest } = useStoreActions(
     actions => actions.components.portfolioItemForm
   );
+  const router = useRouter();
 
   const updatePortfolioItemData = (portFolioItemData: FormData) => {
-    updatePortfolioItemRequest({ slug, inputData: portFolioItemData });
+    updatePortfolioItemRequest({ 
+      slug,
+      inputData: portFolioItemData,
+      successCallbackFn: () => router.push(`/members/${userSlug}/${slug}`),
+    });
   };
 
   return (
