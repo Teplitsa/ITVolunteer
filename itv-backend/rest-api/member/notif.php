@@ -43,9 +43,22 @@ function notif_api_add_routes($server) {
                 }
             }
 
+            $is_read = $request->get_param('is_read');
+            $is_read_sql = "";
+            if(strlen($is_read)) {
+                $is_read = rest_sanitize_boolean( $is_read );
+                
+                if($is_read) {
+                    $is_read_sql = " AND is_read IS NOT NULL ";
+                }
+                else {
+                    $is_read_sql = " AND is_read IS NULL ";
+                }
+            }
+            
             global $wpdb;
 
-            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d {$on_task_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
+            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d {$on_task_sql} {$is_read_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $notif_list = $wpdb->get_results($q);
 
             $member_notif_manager = new MemberNotifManager();

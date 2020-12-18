@@ -7,16 +7,20 @@ class MemberNotifManager {
     public static function type_db_fields($item) {
         $item->id = intval($item->id);
         
-        if(!empty($item->from_user_id)) {
+        if($item->from_user_id) {
             $item->from_user_id = intval($item->from_user_id);
         }
         
-        if(!empty($item->user_id)) {
+        if($item->user_id) {
             $item->user_id = intval($item->user_id);
         }
         
-        if(!empty($item->task_id)) {
+        if($item->task_id) {
             $item->task_id = intval($item->task_id);
+        }
+
+        if($item->is_read) {
+            $item->task_id = boolval(intval($item->task_id));
         }
         
         return $item;
