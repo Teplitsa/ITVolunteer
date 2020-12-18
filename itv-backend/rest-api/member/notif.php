@@ -13,10 +13,10 @@ function notif_api_add_routes($server) {
             
             if(!$user->ID) {
                 return new WP_Error(
-                    'rest_itv_member_not_found',
-                    __( 'Member not found', 'itv-backend' ),
-                    array( 'status' => 404 )
-                );
+                    'rest_forbidden_view_itv_notif',
+                    __( 'Sorry, you are not allowed to view notifications.', 'itv-backend' ),
+                    array( 'status' => rest_authorization_required_code() )
+                );                
             }
 
             $page = (int) $request->get_param('page');
