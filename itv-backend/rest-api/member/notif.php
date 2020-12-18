@@ -31,6 +31,7 @@ function notif_api_add_routes($server) {
             }
             
             $on_task = $request->get_param('on_task');
+            error_log('on_task:', $on_task);
             $on_task_sql = "";
             if(!empty($on_task)) {
                 $on_task = rest_sanitize_boolean( $on_task );
