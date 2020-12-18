@@ -23,7 +23,6 @@ class MemberNotifManager {
     }
 
     public function extend_with_connected_data($item) {
-        $from_user = null;
         
         if($item->from_user_id !== null) {
             $from_user = get_user_by('id', $item->from_user_id);
