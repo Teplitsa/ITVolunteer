@@ -44,7 +44,7 @@ function notif_api_add_routes($server) {
 
             global $wpdb;
 
-            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}{MemberNotifManager::$table} WHERE user_id = %d {$on_task_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
+            $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d {$on_task_sql} ORDER BY created_at DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $notif_list = $wpdb->get_results($q);
 
             $member_notif_manager = new MemberNotifManager();
