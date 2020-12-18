@@ -36,6 +36,8 @@ function notif_api_add_routes($server) {
             $on_task_sql = "";
             if(!empty($on_task)) {
                 $on_task = rest_sanitize_boolean( $on_task );
+                error_log('on_task111:' . print_r( $on_task, true ));
+                
                 if($on_task) {
                     $on_task_sql = " AND task_id IS NOT NULL ";
                 }
