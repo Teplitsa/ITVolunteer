@@ -15,7 +15,7 @@ function ajax_get_user_notif_short_list() {
 	$newer_than_id = !empty($_GET['newer_than_id']) ? intval($_GET['newer_than_id']) : null;
 	$notif_list = UserNotifModel::instance()->get_list($user_id, false, $newer_than_id);
     
-    $member_notif_manager = MemberNotifManager();
+    $member_notif_manager = new MemberNotifManager();
     $notif_list = $member_notif_manager->extend_list_with_connected_data($notif_list);
 	
     wp_die(json_encode(array(
