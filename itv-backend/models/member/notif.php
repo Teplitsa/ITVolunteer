@@ -18,8 +18,8 @@ class MemberNotifManager {
                 $item->task = itv_get_ajax_task_short($task);
             }
             
-            $dt = new DateTime($item->created_at);
-            $utcTimezone = new DateTimeZone('UTC');
+            $dt = new \DateTime($item->created_at);
+            $utcTimezone = new \DateTimeZone('UTC');
             $dt->setTimezone($utcTimezone);
             $item->dateGmt = $dt->format("Y-m-d H:i:s");
         }
