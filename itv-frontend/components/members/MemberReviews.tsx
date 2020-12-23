@@ -55,7 +55,7 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
           className="member-reviews__more-link"
           onClick={event => {
             event.preventDefault();
-            getMemberReviewsRequest();
+            getMemberReviewsRequest({});
           }}
         >
           Показать ещё

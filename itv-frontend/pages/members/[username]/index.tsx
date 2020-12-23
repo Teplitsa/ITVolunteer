@@ -3,7 +3,7 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import MemberAccount from "../../../components/page/MemberAccount";
-import { getAjaxUrl, getRestApiUrl, stripTags } from "../../../utilities/utilities";
+import { getRestApiUrl, stripTags } from "../../../utilities/utilities";
 
 const AccountPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -47,11 +47,19 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       );
       let member = null;
 
+      const memberItvRoleResponse = await fetch(
+        getRestApiUrl(`/itv/v1/member/${query.username}/itv_role`)
+      );
+
+      member = Object.assign(member ?? {}, {
+        template: (await memberItvRoleResponse.json()).itvRole === "doer" ? "volunteer" : "author",
+      });
+
       const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {
         username: query.username,
       });
 
-      member = user;
+      member = Object.assign(member ?? {}, user);
 
       const { memberTasks: taskList } = await request(
         process.env.GraphQLServer,
@@ -70,19 +78,28 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         },
       });
 
-      const memberReviewsResponse = await fetch(
-        `${getAjaxUrl("get-member-reviews")}${`&username=${query.username}&page=${0}`}`
+      const memberReviewsRequestUrl = new URL(
+        getRestApiUrl(
+          `/itv/v1/reviews/${member.itvRole === "doer" ? "for-doer" : "for-author"}/${
+            query.username
+          }`
+        )
       );
-      const {
-        status: memberReviewsStatus = "error",
-        data: memberReviews = null,
-      } = await memberReviewsResponse.json();
 
-      memberReviewsStatus === "ok" &&
+      memberReviewsRequestUrl.search = new URLSearchParams({
+        page: `${memberAccountPageState.reviews.page}`,
+        per_page: "3",
+      }).toString();
+
+      const memberReviewsResponse = await fetch(memberReviewsRequestUrl.toString());
+
+      const memberReviewList = await memberReviewsResponse.json();
+
+      memberReviewList instanceof Array &&
         (member = Object.assign(member ?? {}, {
           reviews: {
             page: memberAccountPageState.reviews.page,
-            list: memberReviews,
+            list: memberReviewList,
           },
         }));
 
@@ -122,7 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       return ["memberAccount", { ...memberAccountPageState, ...member }];
     },
   });
-
+  
   return {
     props: { ...model },
   };
