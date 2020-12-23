@@ -8,35 +8,27 @@ import { getMediaData } from "../../utilities/media";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
   const userSlug = useStoreState(store => store.components.memberAccount.slug);
-  const {list: portfolioList} = useStoreState(state => state.components.memberAccount.portfolio);
+  const { list: portfolioList } = useStoreState(state => state.components.memberAccount.portfolio);
   const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
   const [previewsToLoad, setPreviewsToLoad] = useState<Array<number>>([]);
   const [loadedPreviews, setLoadedPreviews] = useState({});
-  const [previews, setPreviews] = useState(portfolioList.reduce((po, { preview }) => {
-    po[preview] = NoPreview;
-    return po;
-  }, {}));
+  const [previews, setPreviews] = useState(
+    portfolioList.reduce((po, { preview }) => {
+      po[preview] = NoPreview;
+      return po;
+    }, {})
+  );
   const { getMemberPortfolioRequest } = useStoreActions(
     actions => actions.components.memberAccount
   );
 
   useEffect(() => {
-    // console.log("portfolioList.map pl:", portfolioList.map(({ preview }) => preview));
-
     const pl = portfolioList
       .map(({ preview }) => preview)
       .filter(preview => !loadedPreviews[preview]);
 
-    // console.log("pl:", pl);
-
     setPreviewsToLoad(pl);
   }, [portfolioList]);
-
-  // useEffect(() => {
-  //   console.log("loadedPreviews:", Object.keys(loadedPreviews));
-  //   console.log("previews:", previews);
-  //   console.log("previewsToLoad:", previewsToLoad);
-  // }, [previews, previewsToLoad, loadedPreviews]);
 
   useEffect(() => {
     if (previewsToLoad.length === 0) return;
@@ -55,9 +47,9 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
 
       if (!mediaData) return;
 
-      setLoadedPreviews({...loadedPreviews, currentPreviewToLoad: true});
+      setLoadedPreviews({ ...loadedPreviews, currentPreviewToLoad: true });
 
-      const newPreviews = {...previews};
+      const newPreviews = { ...previews };
 
       newPreviews[currentPreviewToLoad] =
         mediaData.mediaItemSizes.logo?.source_url ?? mediaData.mediaItemUrl;
@@ -69,8 +61,8 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
     return () => abortController.abort();
   }, [previewsToLoad]);
 
-  if(noPortfolioItems) {
-    return  <MemberPortfolioNoItems />;
+  if (noPortfolioItems) {
+    return <MemberPortfolioNoItems />;
   }
 
   return (
@@ -88,7 +80,10 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
       </div>
       <div className="member-portfolio__list">
         {portfolioList.map(({ id, slug, title, preview }) => (
-          <MemberPortfolioItem key={id} {...{ userSlug, slug, title, preview: previews[preview] }} />
+          <MemberPortfolioItem
+            key={id}
+            {...{ userSlug, slug, title, preview: previews[preview] }}
+          />
         ))}
       </div>
       <div className="member-portfolio__footer">

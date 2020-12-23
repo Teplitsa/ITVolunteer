@@ -17,35 +17,52 @@ import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySect
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  const coverImage = useStoreState(state => state.components.memberAccount.cover);
-  const isEmptyProfile = useStoreState(state => state.components.memberAccount.isEmptyProfile);
-  const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
-  const username = useStoreState(state => state.components.memberAccount.username);
-  
-  const { 
-    profileFillStatusRequest, 
+  const {
+    reviews,
+    taskStats,
+    notifications: { list: notifications },
+    cover: coverImage,
+    isEmptyProfile,
+    itvAvatar,
+    username,
+  } = useStoreState(state => state.components.memberAccount);
+
+  const {
+    profileFillStatusRequest,
     getMemberNotificationsRequest,
     getMemberNotificationStatsRequest,
-  } = useStoreActions(
-    actions => actions.components.memberAccount
-  );
+  } = useStoreActions(actions => actions.components.memberAccount);
   const router = useRouter();
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
+  const tabList: Array<{
+    title: string;
+    content: React.FunctionComponent;
+  }> = [];
+
+  if (isAccountOwner && notifications) {
+    tabList.push({
+      title: "Оповещения",
+      content: MemberNotifications,
+    });
+  }
+
+  tabList.push({
+    title: "Портфолио",
+    content: MemberPortfolio,
+  });
+
+  if (!Object.values({ ...taskStats, open: 0 }).every(filter => filter === 0)) {
+    tabList.push({ title: "Задачи", content: MemberTasks });
+  }
+
+  if (reviews.list.length > 0) {
+    tabList.push({ title: "Отзывы", content: MemberReviews });
+  }
+
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
-    tabs: [
-      {
-        title: "Оповещения",
-        content: MemberNotifications,
-      },
-      {
-        title: "Портфолио",
-        content: MemberPortfolio,
-      },
-      { title: "Задачи", content: MemberTasks },
-      { title: "Отзывы", content: MemberReviews },
-    ],
+    tabs: tabList,
   });
 
   useEffect(() => {
@@ -64,7 +81,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     if (!username) {
       return;
     }
-    
+
     if (!isAccountOwner) {
       return;
     }
