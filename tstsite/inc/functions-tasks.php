@@ -210,10 +210,10 @@ function ajax_submit_task(){
           else { 
 
             if(!$durationValue) {
-                $durationValue = ItvConfig::instance()->get('TASK_DEFAULT_DEADLINE_DAYS');
+                $newDeadlineDateStr = date("Y-m-d", time() + 24 * ItvConfig::instance()->get('TASK_DEFAULT_DEADLINE_DAYS') * 3600);
+                $durationValue = $newDeadlineDateStr;
             }
 
-            $newDeadlineDateStr = date("Y-m-d", time() + 24 * intval($durationValue) * 3600);
           }
 
           $isDeadlineChanged = true;
