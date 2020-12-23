@@ -374,22 +374,18 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         components: { memberAccount },
       } = getStoreState() as IStoreModel;
       const {
-        // databaseId: userId,
         notifications: { filter, page },
       } = memberAccount;
       const nextPage = isListReset ? 1 : page + 1;
 
       const memberNotificationsRequestUrl = new URL(getRestApiUrl(`/itv/v1/user-notif`));
 
-      // console.log("filter:", filter);
       memberNotificationsRequestUrl.search = new URLSearchParams({
         filter,
         page: `${nextPage}`,
         per_page: "5",
         auth_token: String(token),
       }).toString();
-
-      // console.log("memberNotificationsRequestUrl: ", memberNotificationsRequestUrl.toString());
 
       try {
         const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
