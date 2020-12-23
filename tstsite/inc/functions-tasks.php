@@ -202,7 +202,8 @@ function ajax_submit_task(){
         $isDeadlineChanged = false;
         $newDeadlineDateStr = "";
         $oldPreferredDurationInput = get_post_meta($task_id, 'preferredDuration', true);
-        if($durationValue != $oldPreferredDurationInput) {
+        if($durationValue != $oldPreferredDurationInput || !$durationValue) {
+
           if(preg_match("/\d+-\d+-\d+/", $durationValue)) {
             $newDeadlineDateStr = $durationValue;
           }
