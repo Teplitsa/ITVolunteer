@@ -1079,7 +1079,7 @@ export interface ITaskListItemState {
   content: string;
   date: string;
   dateGmt: string;
-  deadline: string;
+  deadline?: string;
   viewsCount: number;
   doerCandidatesCount: number;
   status?: TaskStatus;
