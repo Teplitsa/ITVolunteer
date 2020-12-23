@@ -5,7 +5,7 @@ use ITV\models\MemberNotifManager;
 function notif_api_add_routes($server) {
 
     register_rest_route( 'itv/v1', '/user-notif', [
-        'methods' => WP_REST_Server::ALLMETHODS,
+        'methods' => WP_REST_Server::READABLE,
         'callback' => function($request) {
             global $wpdb;
 
@@ -31,12 +31,11 @@ function notif_api_add_routes($server) {
                 $offset = 0;
             }
             
-            $on_task = $request->get_param('on_task');
+            $filter = $request->get_param('filter');
             $on_task_sql = "";
-            if(strlen($on_task)) {
-                $on_task = rest_sanitize_boolean( $on_task );
+            if(!!$filter && $filter !== "all") {
                 
-                if($on_task) {
+                if($filter === "project") {
                     $on_task_sql = " AND task_id IS NOT NULL ";
                 }
                 else {
@@ -60,9 +59,40 @@ function notif_api_add_routes($server) {
             for($i = 0; $i < $notif_list_count; $i++) {
                 $notif_list[$i] = MemberNotifManager::type_db_fields( $notif_list[$i] );
                 $notif_list[$i] = $member_notif_manager->extend_with_connected_data( $notif_list[$i] );
+                $notif_list[$i] = $member_notif_manager->add_markup( $notif_list[$i], $user );
             }
 
             return $notif_list;
+        },
+    ] );
+
+    register_rest_route( 'itv/v1', '/user-notif/stats', [
+        'methods' => WP_REST_Server::READABLE,
+        'callback' => function($request) {
+            global $wpdb;
+
+            $user = wp_get_current_user();
+            
+            if(!$user->ID) {
+                return new WP_Error(
+                    'rest_forbidden_view_itv_notif',
+                    __( 'Sorry, you are not allowed to view notifications.', 'itv-backend' ),
+                    array( 'status' => rest_authorization_required_code() )
+                );                
+            }
+
+            $count_sql = "SELECT COUNT(*) FROM {$wpdb->prefix}" . MemberNotifManager::$table . " WHERE user_id = %d ";
+
+            $q = $wpdb->prepare("{$count_sql} AND task_id IS NOT NULL ", [$user->ID]);
+            $notif_count_on_task = intval($wpdb->get_var($q));
+
+            $q = $wpdb->prepare("{$count_sql} AND task_id IS NULL ", [$user->ID]);
+            $notif_count_info = intval($wpdb->get_var($q));
+
+            return [
+                'project'   => $notif_count_on_task,
+                'info'      => $notif_count_info,
+            ];
         },
     ] );
 

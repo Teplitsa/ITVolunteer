@@ -203,11 +203,16 @@ function ajax_submit_task(){
         $newDeadlineDateStr = "";
         $oldPreferredDurationInput = get_post_meta($task_id, 'preferredDuration', true);
         if($durationValue != $oldPreferredDurationInput) {
-          if(preg_match("/\d+-\d+\d+/", $durationValue)) {
-              $newDeadlineDateStr = $durationValue;
+          if(preg_match("/\d+-\d+-\d+/", $durationValue)) {
+            $newDeadlineDateStr = $durationValue;
           }
-          elseif($durationValue) {
-              $newDeadlineDateStr = date("Y-m-d", time() + 24 * intval($durationValue) * 3600);
+          else { 
+
+            if(!$durationValue) {
+                $durationValue = ItvConfig::instance()->get('TASK_DEFAULT_DEADLINE_DAYS');
+            }
+
+            $newDeadlineDateStr = date("Y-m-d", time() + 24 * intval($durationValue) * 3600);
           }
 
           $isDeadlineChanged = true;
@@ -696,7 +701,7 @@ function itv_get_task_cover($task_id) {
 
 function itv_get_ajax_task_short($task) {
     $author = get_user_by('id', $task->post_author);
-    
+
     return [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'task', $task->ID ),
         'databaseId' => $task->ID,
@@ -717,6 +722,7 @@ function itv_get_ajax_task_short($task) {
         'isApproved' => boolval(get_post_meta($task->ID, 'itv-approved', true)),
         'cover' => itv_get_task_cover($task->ID),
         'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'medium_large'),
+        'deadline' => itv_get_task_deadline_date($task->ID, $task->post_date),
 //         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }
@@ -1636,4 +1642,20 @@ function itv_get_members_tasks_portion($posts, $page, $posts_per_page) {
     }
 
     return $ret_posts;
+}
+
+function itv_get_task_deadline_date($task_id, $post_date) {
+
+    $preferredDurationDeadline = get_post_meta($task_id, 'preferredDurationDeadline', true);
+    // error_log("post_date: " . $post_date);
+
+    if($preferredDurationDeadline) {
+        $deadline = $preferredDurationDeadline . "T00:00:00";
+    }
+    else {
+        $durationValue = ItvConfig::instance()->get('TASK_DEFAULT_DEADLINE_DAYS');
+        $deadline = date("Y-m-dT00:00:00",  strtotime($post_date) + 24 * intval($durationValue) * 3600);
+    }
+
+    return $deadline;
 }

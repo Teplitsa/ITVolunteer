@@ -5,8 +5,6 @@ import MemberNotificationItem from "./MemberNotificationItem";
 const MemberNotifications: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
 
-  if (!isAccountOwner) return null;
-
   const {
     notificationStats,
     notifications: { filter: notificationListFilter, list: notifications },
@@ -22,6 +20,8 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
     setNotificationsPage(1);
     getMemberNotificationsRequest({ isListReset: true });
   };
+
+  if (!isAccountOwner || !notifications) return null;
 
   return (
     <div className="member-notifications">

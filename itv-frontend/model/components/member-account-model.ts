@@ -320,160 +320,90 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       { getStoreState }
     ) => {
       const {
+        session: { validToken: token },
         components: { memberAccount },
       } = getStoreState() as IStoreModel;
       const {
         // databaseId: userId,
         notifications: { filter, page },
       } = memberAccount;
-      const nextPage = page + 1;
+      const nextPage = isListReset ? 1 : page + 1;
 
-      // const memberNotificationsRequestUrl = new URL(getRestApiUrl(`/wp/v2/notification`));
+      const memberNotificationsRequestUrl = new URL(getRestApiUrl(`/itv/v1/user-notif`));
 
-      // memberNotificationsRequestUrl.search = new URLSearchParams({
-      //   filter,
-      //   page: `${nextPage}`,
-      //   per_page: "5",
-      //   author: `${userId}`,
-      // }).toString();
+      console.log("filter:", filter);
+      memberNotificationsRequestUrl.search = new URLSearchParams({
+        filter,
+        page: `${nextPage}`,
+        per_page: "5",
+        auth_token: String(token),
+      }).toString();
 
-      // try {
-      //   const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
-      //   const response: IRestApiResponse = await memberNotificationsResponse.json();
+      console.log("memberNotificationsRequestUrl: ", memberNotificationsRequestUrl.toString());
 
-      //   if (response.data?.status && response.data.status !== 200) {
-      //     console.error(response.message);
-      //   } else if (response instanceof Array && response.length > 0) {
-      //     const notificationList: Array<INotification> = response;
+      try {
+        const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
+        const response: IRestApiResponse = await memberNotificationsResponse.json();
 
-      //     setNotificationsPage(nextPage);
-      // isListReset
-      //   ? setState({
-      //     ...memberAccount,
-      //     ...{
-      //       notifications: {
-      //         filter,
-      //         page: nextPage,
-      //         list: notificationList,
-      //       },
-      //     },
-      //   })
-      //   : showMoreNotifications(notificationList);
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      // }
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(response.message);
+        } else if (response instanceof Array && response.length > 0) {
+          const notificationList: Array<INotification> = response;
 
-      const notificationList: Array<INotification> = [
-        {
-          icon: "notification",
-          type: "new-message",
-          title: [
-            {
-              link: {
-                type: "normal",
-                url: "/",
-                text: "Новая задача",
+          setNotificationsPage(nextPage);
+          isListReset
+            ? setState({
+              ...memberAccount,
+              ...{
+                notifications: {
+                  filter,
+                  page: nextPage,
+                  list: notificationList,
+                },
               },
-            },
-            { text: "по тегу" },
-            {
-              link: {
-                type: "normal",
-                url: "/",
-                text: "WordPress",
-              },
-            },
-            { text: "посмотрим?" },
-            {
-              link: {
-                type: "highlight",
-                url: "/",
-                text: "Перейти к задаче",
-              },
-            },
-          ],
-          time: "3 ч. назад",
-        },
-        {
-          type: "warning-message",
-          icon: "notification",
-          title: [
-            { text: "У вас осталось 2 дня чтобы закрыть задачу" },
-            { keyword: "Нужен сайт на Word Press" },
-          ],
-          time: "2 ч. назад",
-        },
-        {
-          icon: "notification",
-          title: [
-            { keyword: "Александр Гусев" },
-            { text: "прокомментировал задачу" },
-            { keyword: "Нужен сайт на Word Press" },
-          ],
-          time: "3 ч. назад",
-        },
-        {
-          icon: "notification",
-          title: [{ text: "Приходите на конференцию 11 апреля, будет круто" }],
-          time: "3 ч. назад",
-        },
-        {
-          icon: "notification",
-          title: [{ text: "Вы получили награду за" }, { keyword: "10 закрытых задач" }],
-          time: "3 ч. назад",
-        },
-      ];
+            })
+            : showMoreNotifications(notificationList);
+        }
+      } catch (error) {
+        console.error(error);
+      }
 
-      setNotificationsPage(nextPage);
-      isListReset
-        ? setState({
-          ...memberAccount,
-          ...{
-            notifications: {
-              filter,
-              page: nextPage,
-              list: notificationList,
-            },
-          },
-        })
-        : showMoreNotifications(notificationList);
     }
   ),
   getMemberNotificationStatsRequest: thunk(
     async ({ setNotificationStats }, params, { getStoreState }) => {
       const {
-        components: {
-          memberAccount: { databaseId: userId },
-        },
+        session: { validToken: token },
       } = getStoreState() as IStoreModel;
 
-      const memberNotificationStatsRequestUrl = new URL(getRestApiUrl(`/wp/v2/notification`));
+      const memberNotificationStatsRequestUrl = new URL(getRestApiUrl(`/itv/v1/user-notif/stats`));
 
       memberNotificationStatsRequestUrl.search = new URLSearchParams({
-        show_stats: "1",
-        author: `${userId}`,
+        auth_token: String(token),
       }).toString();
 
-      // try {
-      //   const memberNotificationStatsResponse = await fetch(
-      //     memberNotificationStatsRequestUrl.toString()
-      //   );
-      //   const response: IRestApiResponse & {
-      //     project?: number;
-      //     info?: number;
-      //   } = await memberNotificationStatsResponse.json();
+      // console.log("memberNotificationStatsRequestUrl:", memberNotificationStatsRequestUrl.toString());
 
-      //   if (response.data?.status && response.data.status !== 200) {
-      //     console.error(response.message);
-      //   } else if (typeof response.project === "number" && typeof response.info === "number") {
-      //     setNotificationStats(response as { project: number; info: number });
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      // }
+      try {
+        const memberNotificationStatsResponse = await fetch(
+          memberNotificationStatsRequestUrl.toString()
+        );
+        const response: IRestApiResponse & {
+          project?: number;
+          info?: number;
+        } = await memberNotificationStatsResponse.json();
 
-      setNotificationStats({ project: 3, info: 123 });
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(response.message);
+        } else if (typeof response.project === "number" && typeof response.info === "number") {
+          setNotificationStats(response as { project: number; info: number });
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+
+      // setNotificationStats({ project: 3, info: 123 });
     }
   ),
   getMemberTasksRequest: thunk(

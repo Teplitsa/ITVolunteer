@@ -47,7 +47,13 @@ const MemberNotificationItem: React.FunctionComponent<INotification> = ({
       </div>
       <div className="member-notifications__item-title">
         {title.map(({ text, keyword, link }, i) => {
-          if (typeof text !== "undefined") {
+          if(type === "custom-message") {
+            return (
+              <Fragment key={`NotificationTitleElement-${i}}`}>
+                <div dangerouslySetInnerHTML={{__html: text || ""}} />
+              </Fragment>
+            );
+          } else if (typeof text !== "undefined") {
             return <Fragment key={`NotificationTitleElement-${i}}`}>{text} </Fragment>;
           } else if (typeof keyword !== "undefined") {
             return (

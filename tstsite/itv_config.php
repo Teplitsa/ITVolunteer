@@ -40,6 +40,7 @@ class ItvConfig {
             'TASK_NO_DOER_NOTIF_DAYS' => 9,
             'TASK_LONG_WORK_NOTIF_DAYS' => 90,
             'TASK_LONG_WORK_ARCHIVE_DAYS' => 99,
+            'TASK_DEFAULT_DEADLINE_DAYS' => 14,
             'USER_NOT_ACTIVATED_ALERT_TIME' => 9,
             'BULK_ACTIVATION_EMAIL_SEND_LIMIT' => 50,
             'REACTIVATION_EMAILS_LIMIT' => 2,

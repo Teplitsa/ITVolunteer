@@ -31,13 +31,22 @@ function member_role_api_init($server) {
         'callback'  => function($request) {
 
             $slug = $request->get_param('slug');
-            $user = get_user_by('slug', $slug);
+            $member = get_user_by('slug', $slug);
 
-            if(!$user) {
+            if(!$member) {
                 return new WP_Error(
                     'rest_itv_member_not_found',
                     __( 'Member not found', 'itv-backend' ),
                     array( 'status' => 404 )
+                );
+            }
+
+            $user = wp_get_current_user();            
+            if(!$user->ID || $member->ID !== $user->ID) {
+                return new WP_Error(
+                    'rest_forbidden_set_another_user_role',
+                    __( 'Sorry, you are not allowed to set role for another member.', 'itv-backend' ),
+                    array( 'status' => rest_authorization_required_code() )
                 );
             }
 

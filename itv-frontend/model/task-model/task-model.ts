@@ -54,6 +54,7 @@ const taskState: ITaskState = {
   cover: null,
   coverImgSrcLong: "",
   files: [],
+  deadline: "",
   hasCloseSuggestion: computed(taskState => {
     return _.some(
       taskState.timeline,

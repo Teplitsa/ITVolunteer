@@ -229,7 +229,13 @@ function itv_register_task_graphql_fields() {
                     }
                     return $files;
                 },
-            ],            
+            ],
+            'deadline' => [
+                'type'        => 'String',
+                'resolve'     => function( $task, $args, $context ) {
+                    return itv_get_task_deadline_date($task->ID, $task->date);
+                },
+            ],
         ]
     );
 }

@@ -25,7 +25,12 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     username,
     portfolio: { list: portfolioList },
   } = useStoreState(state => state.components.memberAccount);
-  const { profileFillStatusRequest, getMemberTaskStatsRequest } = useStoreActions(
+  const { 
+    profileFillStatusRequest, 
+    getMemberTaskStatsRequest,
+    getMemberNotificationsRequest,
+    getMemberNotificationStatsRequest,
+  } = useStoreActions(
     actions => actions.components.memberAccount
   );
   const router = useRouter();
@@ -58,6 +63,8 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
+    getMemberNotificationsRequest({ isListReset: true });
+    getMemberNotificationStatsRequest();
     profileFillStatusRequest();
   }, [isAccountOwner, coverImage, itvAvatar]);
 

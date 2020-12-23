@@ -362,6 +362,7 @@ export interface IMemberTaskCard {
   content: string;
   author: ITaskCommentAuthor;
   dateGmt: string;
+  deadline: string;
   doerCandidatesCount: number;
   viewsCount: number;
   isApproved: boolean;
@@ -729,6 +730,7 @@ export interface ITaskState {
   content: string;
   date: string;
   dateGmt: string;
+  deadline: string;
   viewsCount: number;
   doerCandidatesCount: number;
   status?: TaskStatus;
@@ -1068,6 +1070,7 @@ export interface ITaskListItemState {
   content: string;
   date: string;
   dateGmt: string;
+  deadline: string;
   viewsCount: number;
   doerCandidatesCount: number;
   status?: TaskStatus;
@@ -1144,7 +1147,7 @@ export interface IUserNotifActions {
  * Notification
  */
 
-export type NotificationType = "warning-message" | "new-message";
+export type NotificationType = "warning-message" | "new-message" | "custom-message";
 
 export type NotificationIcon = "notification" | "hard-rock" | "list" | "reward";
 

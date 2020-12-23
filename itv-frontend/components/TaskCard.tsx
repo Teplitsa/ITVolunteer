@@ -37,15 +37,7 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
           <a>{task.title}</a>
         </Link>
       </div>
-      <TaskMeta
-        {...{
-          dateGmt: task.dateGmt,
-          doerCandidatesCount: task.doerCandidatesCount,
-          viewsCount: task.viewsCount,
-          isApproved: task.isApproved,
-          pemalinkPath: task.pemalinkPath,
-        }}
-      />
+      <TaskMeta {...task} />
       {task.content && (
         <div className="task-card__excerpt">
           {stripTags(task.content).trim().substr(0, 109)}…{" "}

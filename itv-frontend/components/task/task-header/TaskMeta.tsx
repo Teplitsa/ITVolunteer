@@ -16,12 +16,16 @@ const TaskMeta: React.FunctionComponent<{
   viewsCount: number;
   isApproved: boolean;
   pemalinkPath: string;
-}> = ({ dateGmt, doerCandidatesCount, viewsCount, isApproved, pemalinkPath }): ReactElement => {
+  deadline: string;
+}> = ({ dateGmt, doerCandidatesCount, viewsCount, isApproved, pemalinkPath, deadline }): ReactElement => {
   const [isShowShareButtons, setIsShowShareButtons] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
+  // console.log("dateGmt:", dateGmt);
+  // console.log("deadline:", deadline);
+
   const withMetaIconCalendar: Array<string> = [
-    utils.formatDate({ date: utils.itvWpDateTimeToDate(dateGmt) }),
+    utils.formatDate({ date: utils.itvWpDateTimeToDate(deadline) }),
     `Открыто ${utils.getTheIntervalToNow({
       fromDateString: dateGmt,
     })}`,

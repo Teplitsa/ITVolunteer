@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ITV 2.0 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/itv-backend\n"
-"POT-Creation-Date: 2020-12-17T21:43:44+00:00\n"
-"PO-Revision-Date: 2020-12-17 23:44+0200\n"
+"POT-Creation-Date: 2020-12-23T04:58:13+00:00\n"
+"PO-Revision-Date: 2020-12-23 06:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -48,6 +48,10 @@ msgstr "Заказчик"
 #: models/member/member.php:139
 msgid "member_role_"
 msgstr ""
+
+#: models/member/notif.php:99
+msgid "%s ago"
+msgstr "%s назад"
 
 #: post-types/portfolio_work.php:13 post-types/portfolio_work.php:37
 msgid "Portfolio works"
@@ -207,9 +211,16 @@ msgid ""
 "portfolio work</a>"
 msgstr ""
 
-#: rest-api/member/notif.php:14 rest-api/member/review.php:14
-#: rest-api/member/review.php:65 rest-api/member/role.php:17
-#: rest-api/member/role.php:39 rest-api/task/task.php:16
-#: rest-api/task/task.php:37
+#: rest-api/member/notif.php:17 rest-api/member/notif.php:79
+msgid "Sorry, you are not allowed to view notifications."
+msgstr ""
+
+#: rest-api/member/review.php:14 rest-api/member/review.php:65
+#: rest-api/member/role.php:17 rest-api/member/role.php:39
+#: rest-api/task/task.php:16 rest-api/task/task.php:37
 msgid "Member not found"
 msgstr "Пользователь не найден"
+
+#: rest-api/member/role.php:48
+msgid "Sorry, you are not allowed to set role for another member."
+msgstr ""
