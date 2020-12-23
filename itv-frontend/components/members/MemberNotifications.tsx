@@ -5,10 +5,8 @@ import MemberNotificationItem from "./MemberNotificationItem";
 const MemberNotifications: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
 
-  const {
-    notificationStats,
-    notifications: { filter: notificationListFilter, list: notifications },
-  } = useStoreState(state => state.components.memberAccount);
+  const notificationStats = useStoreState(state => state.components.memberAccount.notificationStats);
+  const { filter: notificationListFilter, list: notifications } = useStoreState(state => state.components.memberAccount.notifications);
   const {
     setNotificationListFilter,
     setNotificationsPage,

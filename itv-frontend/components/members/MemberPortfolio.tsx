@@ -2,21 +2,41 @@ import { ReactElement, useEffect, useState } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import Link from "next/link";
 import MemberPortfolioItem from "./MemberPortfolioItem";
+import MemberPortfolioNoItems from "../../components/members/MemberPortfolioNoItems";
 import NoPreview from "../../assets/img/pic-portfolio-item-no-preview.svg";
 import { getMediaData } from "../../utilities/media";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
-  const {
-    slug: userSlug,
-    portfolio: { list: portfolioList },
-  } = useStoreState(store => store.components.memberAccount);
-  const [previewsToLoad, setPreviewsToLoad] = useState<Array<number>>(
-    portfolioList.map(({ preview }) => preview)
-  );
-  const [previews, setPreviews] = useState(Array(portfolioList.length).fill(NoPreview));
+  const userSlug = useStoreState(store => store.components.memberAccount.slug);
+  const {list: portfolioList} = useStoreState(state => state.components.memberAccount.portfolio);
+  const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
+  const [previewsToLoad, setPreviewsToLoad] = useState<Array<number>>([]);
+  const [loadedPreviews, setLoadedPreviews] = useState({});
+  const [previews, setPreviews] = useState(portfolioList.reduce((po, { preview }) => {
+    po[preview] = NoPreview;
+    return po;
+  }, {}));
   const { getMemberPortfolioRequest } = useStoreActions(
     actions => actions.components.memberAccount
   );
+
+  useEffect(() => {
+    // console.log("portfolioList.map pl:", portfolioList.map(({ preview }) => preview));
+
+    const pl = portfolioList
+      .map(({ preview }) => preview)
+      .filter(preview => !loadedPreviews[preview]);
+
+    // console.log("pl:", pl);
+
+    setPreviewsToLoad(pl);
+  }, [portfolioList]);
+
+  // useEffect(() => {
+  //   console.log("loadedPreviews:", Object.keys(loadedPreviews));
+  //   console.log("previews:", previews);
+  //   console.log("previewsToLoad:", previewsToLoad);
+  // }, [previews, previewsToLoad, loadedPreviews]);
 
   useEffect(() => {
     if (previewsToLoad.length === 0) return;
@@ -28,7 +48,6 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    const currentPreviewIndex = portfolioList.length - previewsToLoad.length;
     const abortController = new AbortController();
 
     (async () => {
@@ -36,9 +55,11 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
 
       if (!mediaData) return;
 
-      const newPreviews = [].concat(previews);
+      setLoadedPreviews({...loadedPreviews, currentPreviewToLoad: true});
 
-      newPreviews[currentPreviewIndex] =
+      const newPreviews = {...previews};
+
+      newPreviews[currentPreviewToLoad] =
         mediaData.mediaItemSizes.logo?.source_url ?? mediaData.mediaItemUrl;
 
       setPreviews(newPreviews);
@@ -47,6 +68,10 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
 
     return () => abortController.abort();
   }, [previewsToLoad]);
+
+  if(noPortfolioItems) {
+    return  <MemberPortfolioNoItems />;
+  }
 
   return (
     <div className="member-portfolio">
@@ -62,8 +87,8 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-portfolio__list">
-        {portfolioList.map(({ id, slug, title }, i) => (
-          <MemberPortfolioItem key={id} {...{ userSlug, slug, title, preview: previews[i] }} />
+        {portfolioList.map(({ id, slug, title, preview }) => (
+          <MemberPortfolioItem key={id} {...{ userSlug, slug, title, preview: previews[preview] }} />
         ))}
       </div>
       <div className="member-portfolio__footer">

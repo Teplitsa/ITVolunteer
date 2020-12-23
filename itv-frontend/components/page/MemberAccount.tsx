@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
 import MemberPortfolio from "../../components/members/MemberPortfolio";
-import MemberPortfolioNoItems from "../../components/members/MemberPortfolioNoItems";
 import MemberNotifications from "../../components/members/MemberNotifications";
 import MemberTasks from "../../components/members/MemberTasks";
 import MemberReviews from "../../components/members/MemberReviews";
@@ -18,13 +17,11 @@ import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySect
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  const {
-    cover: coverImage,
-    isEmptyProfile,
-    itvAvatar,
-    username,
-    portfolio: { list: portfolioList },
-  } = useStoreState(state => state.components.memberAccount);
+  const coverImage = useStoreState(state => state.components.memberAccount.cover);
+  const isEmptyProfile = useStoreState(state => state.components.memberAccount.isEmptyProfile);
+  const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
+  const username = useStoreState(state => state.components.memberAccount.username);
+  
   const { 
     profileFillStatusRequest, 
     getMemberTaskStatsRequest,
@@ -34,7 +31,6 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     actions => actions.components.memberAccount
   );
   const router = useRouter();
-  const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
 
   const Tabs = withTabs({
@@ -42,15 +38,14 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     tabs: [
       {
         title: "Оповещения",
-        content: () => <MemberNotifications />,
+        content: MemberNotifications,
       },
       {
         title: "Портфолио",
-        content:
-          (noPortfolioItems && (() => <MemberPortfolioNoItems />)) || (() => <MemberPortfolio />),
+        content: MemberPortfolio,
       },
-      { title: "Задачи", content: () => <MemberTasks /> },
-      { title: "Отзывы", content: () => <MemberReviews /> },
+      { title: "Задачи", content: MemberTasks },
+      { title: "Отзывы", content: MemberReviews },
     ],
   });
 
@@ -63,10 +58,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    getMemberNotificationsRequest({ isListReset: true });
-    getMemberNotificationStatsRequest();
     profileFillStatusRequest();
   }, [isAccountOwner, coverImage, itvAvatar]);
+
+  useEffect(() => {
+    if (!isAccountOwner) {
+      return;
+    }
+
+    getMemberNotificationStatsRequest();
+    getMemberNotificationsRequest({ isListReset: true });
+  }, [isAccountOwner]);
 
   useEffect(() => {
     if (!username) {

@@ -57,7 +57,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 }}
               />
               <div className="details">
-                <span className="status">Заказчик</span>
+                <span className="status">Автор</span>
                 <Link href={new URL(toProfile).pathname}>
                   <a className="name">{fullName}</a>
                 </Link>
