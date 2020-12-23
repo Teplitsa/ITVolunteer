@@ -479,7 +479,14 @@ export interface IMemberAccountPageActions {
       info: number;
     }
   >;
-  setNotification: Action<IMemberAccountPageModel, any>;
+  setNotifications: Action<
+    IMemberAccountPageModel,
+    {
+      filter: "all" | "project" | "info";
+      page: number;
+      list: Array<INotification>;
+    }
+  >;
   setNotificationListFilter: Action<IMemberAccountPageModel, "all" | "project" | "info">;
   setNotificationsPage: Action<IMemberAccountPageModel, number>;
   showMoreNotifications: Action<IMemberAccountPageModel, Array<INotification>>;
@@ -1080,7 +1087,7 @@ export interface ITaskListItemState {
   content: string;
   date: string;
   dateGmt: string;
-  deadline: string;
+  deadline?: string;
   viewsCount: number;
   doerCandidatesCount: number;
   status?: TaskStatus;
