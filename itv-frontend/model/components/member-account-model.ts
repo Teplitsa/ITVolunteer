@@ -147,6 +147,7 @@ const memberAccountPageActions: IMemberAccountPageActions = {
     Object.assign(prevState, memberAccountPageState);
   }),
   setState: action((prevState, newState) => {
+    // console.log("memberAccountPageActions.setState...");
     Object.assign(prevState, newState);
   }),
   setTemplate: action((prevState, { template: newTemplate }) => {
@@ -174,12 +175,21 @@ const memberAccountPageActions: IMemberAccountPageActions = {
     prevState.tasks.page = newPage;
   }),
   showMoreTasks: action((prevState, newTasks) => {
+    if(prevState.tasks.list === null) {
+      prevState.tasks.list = [];
+    }
     prevState.tasks.list = [].concat(prevState.tasks.list, newTasks);
+  }),
+  setTaskList: action((prevState, newTasks) => {
+    prevState.tasks.list = newTasks;
   }),
   setReviewsPage: action((prevState, newPage) => {
     prevState.reviews.page = newPage;
   }),
   showMoreReviews: action((prevState, newReviews) => {
+    if(prevState.reviews.list === null) {
+      prevState.reviews.list = [];
+    }
     prevState.reviews.list = [].concat(prevState.reviews.list, newReviews);
   }),
   setMemberTaskStats: action((prevState, stats) => {
@@ -206,6 +216,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   setIsNeedAttentionPanelClosed: action((prevState, isClosed) => {
     prevState.isNeedAttentionPanelClosed = isClosed;
   }),
+  setReviews: action((prevState, reviews) => {
+    prevState.reviews = reviews;
+  }),  
 };
 
 const memberAccountPageThunks: IMemberAccountPageThunks = {
@@ -448,16 +461,17 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     }
   ),
   getMemberTasksRequest: thunk(
-    async ({ setTasksPage, showMoreTasks }, params, { getStoreState }) => {
+    async ({ setTasksPage, showMoreTasks, setTaskList }, { customPage, isTaskListReset }, { getStoreState }) => {
       const {
         components: {
           memberAccount: {
+            template,
             username,
             tasks: { page },
           },
         },
       } = getStoreState() as IStoreModel;
-      const nextPage = page + 1;
+      const nextPage = customPage ?? page + 1;
       const { request } = await import("graphql-request");
       const { graphqlQuery } = await import("../../model/components/member-account-model");
 
@@ -468,12 +482,20 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           {
             username: username,
             page: nextPage,
+            role: template === "volunteer" ? "doer" : "author",
           }
         );
 
         if (taskList.length > 0) {
           setTasksPage(nextPage);
-          showMoreTasks(taskList);
+
+          if(isTaskListReset) {
+            setTaskList(taskList);
+          }
+          else {
+            showMoreTasks(taskList);
+          }
+
         }
       } catch (error) {
         console.error(error);
@@ -483,13 +505,14 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
   getMemberTaskStatsRequest: thunk(async ({ setMemberTaskStats }, params, { getStoreState }) => {
     const {
       components: {
-        memberAccount: { username: name },
+        memberAccount: { username: name, template },
       },
     } = getStoreState() as IStoreModel;
 
     try {
       const formData = new FormData();
       formData.append("username", String(name));
+      formData.append("role", template === "volunteer" ? "doer" : "author");
 
       const action = "get-member-task-stats";
       const result = await fetch(getAjaxUrl(action), {
@@ -513,14 +536,18 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
   }),
   getMemberReviewsRequest: thunk(
     async (
-      { setState, setReviewsPage, showMoreReviews },
+      { setReviews, setReviewsPage, showMoreReviews },
       { customPage, isReviewListReset },
       { getStoreState }
     ) => {
       const {
         components: { memberAccount },
       } = getStoreState() as IStoreModel;
-      const nextPage = customPage ?? memberAccount.reviews.page + 1;
+      let nextPage = customPage ?? memberAccount.reviews.page + 1;
+
+      if(!nextPage) {
+        nextPage = 1;
+      }
 
       const memberReviewsRequestUrl = new URL(
         getRestApiUrl(
@@ -545,10 +572,13 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         } else if (response instanceof Array && response.length > 0) {
           const reviewList: Array<IMemberReview> = response;
 
-          setReviewsPage(nextPage);
-          isReviewListReset &&
-            setState({ ...memberAccount, ...{ reviews: { page: 0, list: [] } } });
-          showMoreReviews(reviewList);
+          if(isReviewListReset) {
+            setReviews({ page: nextPage, list: reviewList });
+          }
+          else {
+            setReviewsPage(nextPage);
+            showMoreReviews(reviewList);
+          }
         }
       } catch (error) {
         console.error(error);

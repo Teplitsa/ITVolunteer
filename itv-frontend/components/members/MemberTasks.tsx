@@ -133,7 +133,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
           className="member-tasks__more-link"
           onClick={event => {
             event.preventDefault();
-            getMemberTasksRequest();
+            getMemberTasksRequest({});
           }}
         >
           Показать ещё

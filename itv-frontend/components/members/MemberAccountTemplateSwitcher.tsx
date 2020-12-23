@@ -4,12 +4,18 @@ import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 const MemberAccountTemplateSwitcher: React.FunctionComponent = (): ReactElement => {
   const { isAccountOwner } = useStoreState(store => store.session);
   const memberAccount = useStoreState(store => store.components.memberAccount);
-  const { setTemplate, getMemberReviewsRequest, changeItvRoleRequest } = useStoreActions(
+  const { setTemplate, getMemberReviewsRequest, changeItvRoleRequest, getMemberTasksRequest, getMemberTaskStatsRequest } = useStoreActions(
     actions => actions.components.memberAccount
   );
 
   useEffect(() => {
+    if(!memberAccount.template) {
+      return;
+    }
+
     getMemberReviewsRequest({ customPage: 0, isReviewListReset: true });
+    getMemberTasksRequest({ customPage: 0, isTaskListReset: true });
+    getMemberTaskStatsRequest();
   }, [memberAccount.template]);
 
   return (

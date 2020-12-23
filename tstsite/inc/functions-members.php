@@ -1649,6 +1649,12 @@ add_action('wp_ajax_nopriv_get-member-reviews', 'ajax_get_member_reviews');
 function ajax_get_member_task_stats() {
     $user = get_user_by( 'login', @$_POST['username'] );
 
+    $role = !empty($args['role']) ? $args['role'] : "";
+    if(!$role) {
+        $members = new MemberManager();
+        $role = $members->get_member_itv_role($user->ID);
+    }
+
     if(!$user) {
         wp_die(json_encode(array(
             'status' => 'error',
@@ -1657,9 +1663,9 @@ function ajax_get_member_task_stats() {
         )));      
     }
 
-    $posts_where_doer = itv_get_user_approved_as_doer_tasks($user->ID);
+    $posts_where_doer = $role === "doer" ? itv_get_user_approved_as_doer_tasks($user->ID) : [];
 
-    $posts_where_author = itv_get_user_created_tasks($user->ID);
+    $posts_where_author = $role === "author" ? itv_get_user_created_tasks($user->ID) : [];
 
     $posts = array_merge($posts_where_doer, $posts_where_author);
 

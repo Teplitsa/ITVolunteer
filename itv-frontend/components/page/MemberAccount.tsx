@@ -24,7 +24,6 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   
   const { 
     profileFillStatusRequest, 
-    getMemberTaskStatsRequest,
     getMemberNotificationsRequest,
     getMemberNotificationStatsRequest,
   } = useStoreActions(
@@ -73,14 +72,6 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     getMemberNotificationStatsRequest();
     getMemberNotificationsRequest({ isListReset: true });
   }, [isAccountOwner, username]);
-
-  useEffect(() => {
-    if (!username) {
-      return;
-    }
-
-    getMemberTaskStatsRequest();
-  }, [username]);
 
   return (
     <div className="member-account">

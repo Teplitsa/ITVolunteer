@@ -5,7 +5,9 @@ import ReviewCard from "../../components/ReviewCard";
 import * as utils from "../../utilities/utilities";
 
 const MemberReviews: React.FunctionComponent = (): ReactElement => {
-  const { rating, reviewsCount, reviews } = useStoreState(store => store.components.memberAccount);
+  const rating = useStoreState(store => store.components.memberAccount.rating);
+  const reviewsCount = useStoreState(store => store.components.memberAccount.reviewsCount);
+  const reviews = useStoreState(store => store.components.memberAccount.reviews);
   const getMemberReviewsRequest = useStoreActions(
     actions => actions.components.memberAccount.getMemberReviewsRequest
   );

@@ -497,6 +497,8 @@ export interface IMemberAccountPageActions {
   setMemberTaskStats: Action<IMemberAccountPageModel, any>;
   setMemeberProfileFillStatus: Action<IMemberAccountPageModel, any>;
   setIsNeedAttentionPanelClosed: Action<IMemberAccountPageModel, boolean>;
+  setTaskList: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
+  setReviews: Action<IMemberAccountPageModel, any>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -514,7 +516,10 @@ export interface IMemberAccountPageThunks {
     }
   >;
   getMemberPortfolioRequest: Thunk<IMemberAccountPageActions>;
-  getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
+  getMemberTasksRequest: Thunk<
+    IMemberAccountPageActions,
+    { customPage?: number; isTaskListReset?: boolean }
+  >;
   getMemberReviewsRequest: Thunk<
     IMemberAccountPageActions,
     { customPage?: number; isReviewListReset?: boolean }

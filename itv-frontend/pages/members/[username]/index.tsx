@@ -67,6 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         {
           username: query.username,
           page: memberAccountPageState.tasks.page,
+          role: member.itvRole,
         }
       );
 

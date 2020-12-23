@@ -778,12 +778,22 @@ function itv_register_member_tasks_graphql_query() {
                         'non_null' => 'USERNAME',
                     ],
                 ],
+                'role'     => [
+                    'type' => 'String',
+                ],
                 'page' => [
                     'type' => 'Int',
                 ],
             ],
             'resolve' => function($source, array $args, AppContext $context) {
                 $user = get_user_by( 'login', $args['username'] );
+
+                $role = !empty($args['role']) ? $args['role'] : "";
+                if(!$role) {
+                    $members = new MemberManager();
+                    $role = $members->get_member_itv_role($user->ID);
+                }
+
                 $page = !empty($args['page']) ? intval( $args['page'] ) : 0;
                 $posts_per_page = 3;
 
@@ -792,24 +802,41 @@ function itv_register_member_tasks_graphql_query() {
                     return [];
                 }
 
-                $params = array(
-                    'post_type' => 'tasks',
-                    'connected_type' => 'task-doers',
-                    'connected_items' => $user->ID,
-                    'suppress_filters' => true,
-                    'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
-                );
-                $posts_where_doer = get_posts($params);
+                if($role === "doer") {
+                    $params = array(
+                        'post_type' => 'tasks',
+                        'connected_type' => 'task-doers',
+                        'connected_items' => $user->ID,
+                        'connected_meta'  => array(
+                             array(
+                                 'key'     =>'is_approved',
+                                 'value'   => 1,
+                                 'compare' => '='
+                             )
+                        ),
+                        'suppress_filters' => true,
+                        'nopaging' => true,
+                        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                    );
+                    $posts_where_doer = get_posts($params);
+                }
+                else {
+                    $posts_where_doer = [];
+                }
 
-                $params = array(
-                    'post_type' => 'tasks',
-                    'author'        =>  $user->ID,
-                    'suppress_filters' => true,
-                    'nopaging' => true,
-                    'post_status' => ['publish', 'in_work', 'closed', 'draft'],
-                );
-                $posts_where_author = get_posts($params);
+                if($role === "author") {
+                    $params = array(
+                        'post_type' => 'tasks',
+                        'author'        =>  $user->ID,
+                        'suppress_filters' => true,
+                        'nopaging' => true,
+                        'post_status' => ['publish', 'in_work', 'closed', 'draft'],
+                    );
+                    $posts_where_author = get_posts($params);
+                }
+                else {
+                    $posts_where_author = [];
+                }
 
                 // error_log("count: " . (count($posts_where_doer) + count($posts_where_author)) );
 
