@@ -18,6 +18,8 @@ export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
   databaseId: 0,
   slug: "",
+  isHybrid: false,
+  template: "volunteer",
   cover: "",
   name: "",
   username: "",
@@ -83,18 +85,21 @@ export const graphqlQuery: {
 } = {
   member: `query getMember($username: ID!) {
     user(id: $username, idType: USERNAME) {
-      ${Object.keys(memberAccountPageState).filter(
-    key =>
-      ![
-        "notificationStats",
-        "notifications",
-        "taskStats",
-        "tasks",
-        "reviews",
-        "portfolio",
-        "profileFillStatus",
-      ].includes(key)
-  )}
+      ${Object.keys(memberAccountPageState)
+    .filter(
+      key =>
+        ![
+          "template",
+          "notificationStats",
+          "notifications",
+          "taskStats",
+          "tasks",
+          "reviews",
+          "portfolio",
+          "profileFillStatus",
+        ].includes(key)
+    )
+    .join("\n")}
     }
   }`,
   memberTasks: `query getMemberTasks($username: String!, $page: Int!) {
@@ -143,6 +148,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
+  }),
+  setTemplate: action((prevState, { template: newTemplate }) => {
+    prevState.template = newTemplate;
   }),
   setAvatar: action((prevState, newItvAvatar) => {
     prevState.itvAvatar = newItvAvatar;
@@ -198,6 +206,45 @@ const memberAccountPageActions: IMemberAccountPageActions = {
 };
 
 const memberAccountPageThunks: IMemberAccountPageThunks = {
+  changeItvRoleRequest: thunk(async ({ setTemplate }, { itvRole }, { getStoreState }) => {
+    const {
+      session: { isAccountOwner, validToken: token },
+      components: {
+        memberAccount: { slug: userSlug },
+      },
+    } = getStoreState() as IStoreModel;
+
+    if (!isAccountOwner)
+      return console.error("Изменять роль в базе данных может только владелец аккаунта.");
+
+    try {
+      const memberItvRoleRequestUrl = new URL(getRestApiUrl(`/itv/v1/member/${userSlug}/itv_role`));
+      const memberItvRoleRequestParams = {
+        auth_token: token,
+        itv_role: itvRole,
+      };
+      const memberItvRoleResponse = await fetch(memberItvRoleRequestUrl.toString(), {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(memberItvRoleRequestParams),
+      });
+      const response: IRestApiResponse & {
+        itvRole?: "doer" | "author";
+      } = await memberItvRoleResponse.json();
+
+      if (response.data?.status && response.data.status !== 200) {
+        console.error(response.message);
+      } else if (typeof response === "object" && typeof response.itvRole !== "undefined") {
+        setTemplate({
+          template: response.itvRole === "doer" ? "volunteer" : response.itvRole,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }),
   uploadUserAvatarRequest: thunk(
     async ({ setAvatar }, { userAvatar, fileName }, { getStoreState }) => {
       if (!userAvatar || !fileName) return;
@@ -471,34 +518,43 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     }
   }),
   getMemberReviewsRequest: thunk(
-    async ({ setReviewsPage, showMoreReviews }, params, { getStoreState }) => {
+    async (
+      { setState, setReviewsPage, showMoreReviews },
+      { customPage, isReviewListReset },
+      { getStoreState }
+    ) => {
       const {
-        components: {
-          memberAccount: {
-            username,
-            reviews: { page },
-          },
-        },
+        components: { memberAccount },
       } = getStoreState() as IStoreModel;
-      const nextPage = page + 1;
+      const nextPage = customPage ?? memberAccount.reviews.page + 1;
+
+      const memberReviewsRequestUrl = new URL(
+        getRestApiUrl(
+          `/itv/v1/reviews/${memberAccount.template === "volunteer" ? "for-doer" : "for-author"}/${
+            memberAccount.slug
+          }`
+        )
+      );
+
+      memberReviewsRequestUrl.search = new URLSearchParams({
+        page: `${nextPage}`,
+        per_page: "3",
+      }).toString();
 
       try {
-        const result = await fetch(
-          `${getAjaxUrl("get-member-reviews")}${`&username=${username}&page=${nextPage}`}`
-        );
+        const memberReviewsResponse = await fetch(memberReviewsRequestUrl.toString());
+        const response: IRestApiResponse &
+          Array<IMemberReview> = await memberReviewsResponse.json();
 
-        const { status: responseStatus, message: responseMessage, data: responseData } = await (<
-          Promise<{
-            status: string;
-            message?: string;
-            data?: Array<IMemberReview>;
-          }>
-        >result.json());
-        if (responseStatus === "fail") {
-          console.error(stripTags(responseMessage));
-        } else if (responseData?.length > 0) {
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(response.message);
+        } else if (response instanceof Array && response.length > 0) {
+          const reviewList: Array<IMemberReview> = response;
+
           setReviewsPage(nextPage);
-          showMoreReviews(responseData);
+          isReviewListReset &&
+            setState({ ...memberAccount, ...{ reviews: { page: 0, list: [] } } });
+          showMoreReviews(reviewList);
         }
       } catch (error) {
         console.error(error);

@@ -1,5 +1,6 @@
 import { ReactElement, useRef, SyntheticEvent } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import MemberAccountTemplateSwitcher from "./MemberAccountTemplateSwitcher";
 import MemberAvatar from "../MemberAvatar";
 
 const MemberCardBage: React.FunctionComponent = (): ReactElement => {
@@ -53,6 +54,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
         )}
       </div>
       <div className="member-card__name">{memberFullName}</div>
+      <MemberAccountTemplateSwitcher />
       {organizationName && <div className="member-card__role">Представитель организации</div>}
     </div>
   );

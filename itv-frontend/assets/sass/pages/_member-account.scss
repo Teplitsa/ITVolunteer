@@ -63,6 +63,35 @@
       }
     }
   }
+  &__template-switcher {
+    display: flex;
+    max-width: 50%;
+    margin: 0 auto 20px;
+
+    &-btn {
+      flex-basis: 50%;
+      background-color: $color-white;
+      border: 1px solid $color-gray-light-lg;
+      padding: 4px 8px;
+      font: 600 11px/1.45 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+      outline: none;
+      transition: all .3s ease-in-out;
+
+      &:first-child {
+        border-radius: 12px 0 0 12px;
+      }
+
+      &:last-child {
+        border-radius: 0 12px 12px 0;
+      }
+
+      &_active {
+        background-color: $color-gray-light-lg;
+        color: $color-gray-dark-xl;
+      }
+    }
+  }
 }
 
 .member-tasks {

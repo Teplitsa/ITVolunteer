@@ -35,7 +35,7 @@ export const getMediaData = async (
         width: string;
         height: string;
         sizes: {
-          [sizes: string]: {
+          [size: string]: {
             width: string;
             height: string;
             source_url: string;

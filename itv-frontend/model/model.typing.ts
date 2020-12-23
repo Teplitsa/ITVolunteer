@@ -349,6 +349,8 @@ export interface IMembersPageThunks {
  * Member Account
  */
 
+export type MemberAccountTemplate = "volunteer" | "author";
+
 export interface IMemberAccountPageModel
   extends IMemberAccountPageState,
     IMemberAccountPageActions,
@@ -397,6 +399,8 @@ export interface IMemberAccountPageState {
   id: string;
   databaseId: number;
   slug: "";
+  isHybrid: boolean;
+  template: MemberAccountTemplate;
   cover?: string;
   name: string;
   username: string;
@@ -461,6 +465,7 @@ export interface IMemberAccountPageState {
 export interface IMemberAccountPageActions {
   initializeState: Action<IMemberAccountPageModel>;
   setState: Action<IMemberAccountPageModel, IMemberAccountPageState>;
+  setTemplate: Action<IMemberAccountPageModel, { template: MemberAccountTemplate }>;
   setAvatar: Action<IMemberAccountPageModel, string>;
   setCover: Action<IMemberAccountPageModel, string>;
   setThankyouCount: Action<IMemberAccountPageModel, number>;
@@ -502,7 +507,10 @@ export interface IMemberAccountPageThunks {
   >;
   getMemberPortfolioRequest: Thunk<IMemberAccountPageActions>;
   getMemberTasksRequest: Thunk<IMemberAccountPageActions>;
-  getMemberReviewsRequest: Thunk<IMemberAccountPageActions>;
+  getMemberReviewsRequest: Thunk<
+    IMemberAccountPageActions,
+    { customPage?: number; isReviewListReset?: boolean }
+  >;
   getMemberTaskStatsRequest: Thunk<IMemberAccountPageActions>;
   getMemberNotificationsRequest: Thunk<IMemberAccountPageActions, { isListReset: boolean }>;
   getMemberNotificationStatsRequest: Thunk<IMemberAccountPageActions>;
@@ -510,6 +518,7 @@ export interface IMemberAccountPageThunks {
   profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
   loadIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
   storeIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
+  changeItvRoleRequest: Thunk<IMemberAccountPageActions, { itvRole: "doer" | "author" }>;
 }
 
 /**
