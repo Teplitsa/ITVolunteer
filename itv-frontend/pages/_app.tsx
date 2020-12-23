@@ -30,8 +30,7 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [pathname, setPathname] = useState<string>("");
-  const Skeleton = withSkeleton({ pathname });
+  const [Skeleton, setSkeleton] = useState(null);
 
   dispatch({
     type: "@action.app.setState",
@@ -86,11 +85,17 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      setIsLoading(true);
-      setPathname(url);
+      if(isPageWithSkeleton(url)) {
+        setIsLoading(true);
+        setSkeleton(() => withSkeleton({ pathname: url }));
+      }
     };
 
-    const handleRouteChanged = () => setIsLoading(false);
+    const handleRouteChanged = (url: string) => {
+      if(isPageWithSkeleton(url)) {
+        setIsLoading(false);
+      }
+    };
 
     router.events.on("routeChangeStart", handleRouteChange);
     router.events.on("routeChangeComplete", handleRouteChanged);
@@ -109,5 +114,13 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
     </Provider>
   );
 };
+
+function isPageWithSkeleton(pathname) {
+  return pathname.search(/^\/$/i) !== -1 
+    || pathname.search(/^\/members$/i) !== -1
+    || pathname.search(/^\/members\/[^/]+$/i) !== -1
+    || pathname.search(/^\/tasks$/i) !== -1
+    || pathname.search(/^\/tasks\/\S+$/i) !== -1;
+}
 
 export default ITVApp;

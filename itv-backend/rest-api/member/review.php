@@ -32,6 +32,7 @@ function review_api_add_routes($server) {
 
             $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}reviews_author WHERE author_id = %d ORDER BY time_add DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $reviews_as_author = $wpdb->get_results($q, ARRAY_A);
+            $reviews = [];
 
             foreach($reviews_as_author as $review) {
 
@@ -83,6 +84,8 @@ function review_api_add_routes($server) {
 
             $q = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}reviews WHERE doer_id = %d ORDER BY time_add DESC LIMIT %d, %d", [$user->ID, $offset, $per_page ]);
             $reviews_as_doer = $wpdb->get_results($q, ARRAY_A);
+
+            $reviews = [];
 
             foreach($reviews_as_doer as $review) {
                 $review['type'] = 'as_doer';
