@@ -474,6 +474,7 @@ export interface IMemberAccountPageActions {
       info: number;
     }
   >;
+  setNotification: Action<IMemberAccountPageModel, any>;
   setNotificationListFilter: Action<IMemberAccountPageModel, "all" | "project" | "info">;
   setNotificationsPage: Action<IMemberAccountPageModel, number>;
   showMoreNotifications: Action<IMemberAccountPageModel, Array<INotification>>;

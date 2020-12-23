@@ -183,6 +183,9 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   setNotificationListFilter: action((prevState, newFilter) => {
     prevState.notifications.filter = newFilter;
   }),
+  setNotifications: action((prevState, notifications) => {
+    prevState.notifications = notifications;
+  }),
   showMoreNotifications: action((prevState, newNotifications) => {
     prevState.notifications.list = [...prevState.notifications.list].concat(newNotifications);
   }),
@@ -315,7 +318,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
   ),
   getMemberNotificationsRequest: thunk(
     async (
-      { setState, setNotificationsPage, showMoreNotifications },
+      { setNotifications, setNotificationsPage, showMoreNotifications },
       { isListReset },
       { getStoreState }
     ) => {
@@ -331,7 +334,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
 
       const memberNotificationsRequestUrl = new URL(getRestApiUrl(`/itv/v1/user-notif`));
 
-      console.log("filter:", filter);
+      // console.log("filter:", filter);
       memberNotificationsRequestUrl.search = new URLSearchParams({
         filter,
         page: `${nextPage}`,
@@ -339,7 +342,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         auth_token: String(token),
       }).toString();
 
-      console.log("memberNotificationsRequestUrl: ", memberNotificationsRequestUrl.toString());
+      // console.log("memberNotificationsRequestUrl: ", memberNotificationsRequestUrl.toString());
 
       try {
         const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
@@ -352,15 +355,10 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
 
           setNotificationsPage(nextPage);
           isListReset
-            ? setState({
-              ...memberAccount,
-              ...{
-                notifications: {
-                  filter,
-                  page: nextPage,
-                  list: notificationList,
-                },
-              },
+            ? setNotifications({
+              filter,
+              page: nextPage,
+              list: notificationList,
             })
             : showMoreNotifications(notificationList);
         }
