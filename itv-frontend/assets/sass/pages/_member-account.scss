@@ -65,6 +65,7 @@
   }
   &__template-switcher {
     display: flex;
+    justify-content: center;
     max-width: 50%;
     margin: 0 auto 20px;
 
@@ -76,14 +77,16 @@
       font: 600 11px/1.45 "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-md-001;
       outline: none;
-      transition: all .3s ease-in-out;
+      transition: all 0.3s ease-in-out;
 
       &:first-child {
-        border-radius: 12px 0 0 12px;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
       }
 
       &:last-child {
-        border-radius: 0 12px 12px 0;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
       }
 
       &_active {

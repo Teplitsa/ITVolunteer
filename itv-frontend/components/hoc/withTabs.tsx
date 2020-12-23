@@ -80,7 +80,9 @@ const withTabs = ({
             if (tabContent.isIntersecting) {
               setShownItems(prevShownItems => [...prevShownItems, activeIndex]);
             } else {
-              setShownItems(prevShownItems =>  prevShownItems.filter(index => index !== activeIndex));
+              setShownItems(prevShownItems =>
+                prevShownItems.filter(index => index !== activeIndex)
+              );
             }
           });
         },
@@ -130,7 +132,7 @@ const withTabs = ({
             }) ||
             {})()}
         >
-          {tabs.map((tab, i) => {
+          {tabs.map(({ title }, i) => {
             return (
               <li key={`tabsNavItem-${i}`} className="tabs-nav__item">
                 <a
@@ -141,19 +143,21 @@ const withTabs = ({
                     setActiveIndex(i);
                   }}
                 >
-                  {tab.title}
+                  {title}
                 </a>
               </li>
             );
           })}
         </ul>
         <div className="tabs-content">
-          {tabs.map(({ content: TabContent }, i) => (
-            <div key={`tabsContentItem-${i}`} className="tabs-content__item">
-              {mode === "landing-nav" && <div className="tabs-content__item-substitute" />}
-              <TabContent />
-            </div>
-          ))}
+          {tabs.map(({ content: TabContent }, i) => {
+            return (
+              <div key={`tabsContentItem-${i}`} className="tabs-content__item">
+                {mode === "landing-nav" && <div className="tabs-content__item-substitute" />}
+                <TabContent />
+              </div>
+            );
+          })}
         </div>
       </div>
     );

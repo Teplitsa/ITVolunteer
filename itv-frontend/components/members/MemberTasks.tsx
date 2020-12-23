@@ -59,7 +59,9 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     }
   }, []);
 
-  return isNullDesignRequired ? null : (
+  if (isNullDesignRequired) return null;
+
+  return (
     <div className="member-tasks">
       <div className="member-tasks__header">
         <div className="member-tasks__title">Задачи</div>

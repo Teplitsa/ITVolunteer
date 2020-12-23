@@ -25,6 +25,8 @@ const MemberReviews: React.FunctionComponent = (): ReactElement => {
     }
   }, []);
 
+  if (reviews.list.length === 0) return null;
+
   return (
     <div id="reviews" className="member-reviews" ref={reviewsRef}>
       <div className="member-reviews__header">
