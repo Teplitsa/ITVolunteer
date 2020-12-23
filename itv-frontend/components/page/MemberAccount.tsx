@@ -62,13 +62,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [isAccountOwner, coverImage, itvAvatar]);
 
   useEffect(() => {
+    if (!username) {
+      return;
+    }
+    
     if (!isAccountOwner) {
       return;
     }
 
     getMemberNotificationStatsRequest();
     getMemberNotificationsRequest({ isListReset: true });
-  }, [isAccountOwner]);
+  }, [isAccountOwner, username]);
 
   useEffect(() => {
     if (!username) {
