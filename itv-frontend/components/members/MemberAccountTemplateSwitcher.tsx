@@ -12,7 +12,7 @@ const MemberAccountTemplateSwitcher: React.FunctionComponent = (): ReactElement 
     if(!memberAccount.template) {
       return;
     }
-
+    
     getMemberReviewsRequest({ customPage: 0, isReviewListReset: true });
     getMemberTasksRequest({ customPage: 0, isTaskListReset: true });
     getMemberTaskStatsRequest();

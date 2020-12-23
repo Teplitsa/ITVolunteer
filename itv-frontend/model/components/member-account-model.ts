@@ -102,8 +102,8 @@ export const graphqlQuery: {
     .join("\n")}
     }
   }`,
-  memberTasks: `query getMemberTasks($username: String!, $page: Int!) {
-    memberTasks(username: $username, page: $page) {
+  memberTasks: `query getMemberTasks($username: String!, $role: String = "", $page: Int!) {
+    memberTasks(username: $username, role: $role, page: $page) {
       id
       slug
       status

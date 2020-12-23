@@ -786,6 +786,8 @@ function itv_register_member_tasks_graphql_query() {
                 ],
             ],
             'resolve' => function($source, array $args, AppContext $context) {
+                // error_log("args: " . print_r($args, true));
+
                 $user = get_user_by( 'login', $args['username'] );
 
                 $role = !empty($args['role']) ? $args['role'] : "";
@@ -801,6 +803,8 @@ function itv_register_member_tasks_graphql_query() {
                     error_log("invalid username: " . print_r($args, true));
                     return [];
                 }
+
+                // error_log("TASKS role:" . $role);
 
                 if($role === "doer") {
                     $params = array(
