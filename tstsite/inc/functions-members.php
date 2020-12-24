@@ -1842,8 +1842,9 @@ function itv_is_profile_info_enough($user_id) {
         || boolval(trim(get_user_meta($user_id, 'instagram', true)))
         || boolval(trim(get_user_meta($user_id, 'telegram', true)))
         || boolval(trim(get_user_meta($user_id, 'user_contacts', true)))
-    ) && (
-        !trim(tst_get_member_field( 'user_workplace', $user_id )) || tst_get_member_field( 'user_workplace_desc', $user_id )
+        || boolval(trim(tst_get_member_field( 'user_workplace', $user_id )))
+        || boolval(trim(tst_get_member_field( 'user_workplace_desc', $user_id )))
+        || boolval(trim(tst_get_member_field( 'user_website', $user_id )))
     );
 }
 
