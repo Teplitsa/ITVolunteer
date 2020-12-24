@@ -1651,11 +1651,11 @@ function itv_get_task_deadline_date($task_id, $post_date) {
     // error_log("post_date: " . $post_date);
 
     if($preferredDurationDeadline) {
-        $deadline = $preferredDurationDeadline . "T00:00:00";
+        $deadline = $preferredDurationDeadline . " 00:00:00";
     }
     else {
         $durationValue = ItvConfig::instance()->get('TASK_DEFAULT_DEADLINE_DAYS');
-        $deadline = date("Y-m-dT00:00:00",  strtotime($post_date) + 24 * intval($durationValue) * 3600);
+        $deadline = date("Y-m-d 00:00:00",  strtotime($post_date) + 24 * intval($durationValue) * 3600);
     }
 
     return $deadline;

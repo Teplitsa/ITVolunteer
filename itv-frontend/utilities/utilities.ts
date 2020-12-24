@@ -59,9 +59,13 @@ export const formatDate = ({ date = new Date(), stringFormat = "do MMMM Y" }): s
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-  if (wpDateTime && !wpDateTime.match(/.*[Z]{1}$/)) {
-    if (wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
-      wpDateTime += "Z";
+  if(wpDateTime) {
+    wpDateTime = wpDateTime.replace(/(^\d+-\d+-\d+)(.*?)(\d+:\d+:\d+.*)$/, "$1 $3")
+
+    if (!wpDateTime.match(/.*[Z]{1}$/)) {
+      if (wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
+        wpDateTime += "Z";
+      }
     }
   }
 
