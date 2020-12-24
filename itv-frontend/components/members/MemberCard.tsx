@@ -11,7 +11,6 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     isLoggedIn,
     isAccountOwner,
     isLoaded: isSessionLoaded,
-    user: { logoutUrl },
   } = useStoreState((state) => state.session);
   const {
     slug: memberSlug,
@@ -98,18 +97,6 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           </div>
         )}
       </div>
-      {isAccountOwner && !isEmptyProfile && (
-        <>
-          <Link href={`/members/${memberSlug}/security`}>
-            <a className="btn btn_default btn_full-width">
-              Управление аккаунтом
-            </a>
-          </Link>
-          <a className="btn btn_default btn_full-width" href={logoutUrl}>
-            Выйти
-          </a>
-        </>
-      )}
     </>
   );
 };

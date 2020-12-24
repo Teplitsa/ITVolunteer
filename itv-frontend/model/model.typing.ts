@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Action, Thunk, ThunkOn, Computed } from "easy-peasy";
+import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
   ICoreHeadingBlock,
@@ -133,6 +133,7 @@ export interface ISessionActions {
   setUserItvRole: Action<ISessionState, "author" | "doer">;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
+  onMemberAccountTemplateChange: ActionOn<ISessionModel, IStoreModel>;
   setUserAvatar: Action<ISessionState, any>;
   setUserAvatarFile: Action<ISessionState, any>;
   setUserCover: Action<ISessionState, any>;

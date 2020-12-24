@@ -8,7 +8,7 @@ import {
   ISessionThunks,
   IFetchResult,
 } from "./model.typing";
-import { thunk, action, computed } from "easy-peasy";
+import { thunk, action, computed, actionOn } from "easy-peasy";
 import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
@@ -83,7 +83,7 @@ const sessionState: ISessionState = {
       (state, storeState) => storeState.components.task?.author?.databaseId,
       (state, storeState) => storeState.components.task?.doers,
     ],
-    (userId) => Boolean(userId)
+    userId => Boolean(userId)
   ),
   isAccountOwner: computed(
     [state => state.user.slug, (state, storeState) => storeState.entrypoint.page.slug],
@@ -136,6 +136,14 @@ const sessionActions: ISessionActions = {
   setUserItvRole: action((state, payload) => {
     state.user.itvRole = payload;
   }),
+  onMemberAccountTemplateChange: actionOn(
+    (actions, storeActions) => storeActions.components.memberAccount.setTemplate,
+    (state, { payload: { template } }) => {
+      if (state.isAccountOwner) {
+        state.user.itvRole = template === "volunteer" ? "doer" : "author";
+      }
+    }
+  ),
   loadSubscribeTaskList: thunk(actions => {
     const action = "get-task-list-subscription";
     fetch(utils.getAjaxUrl(action), {
@@ -340,40 +348,34 @@ const sessionThunks: ISessionThunks = {
       }
     }
   ),
-  setRole: thunk(async (actions, { itvRole, successCallbackFn, errorCallbackFn }, { getStoreState }) => {
-    
-    const {
-      session: {
-        user,
-        validToken: token,
-      },
-    } = getStoreState() as IStoreModel;
+  setRole: thunk(
+    async (actions, { itvRole, successCallbackFn, errorCallbackFn }, { getStoreState }) => {
+      const {
+        session: { user, validToken: token },
+      } = getStoreState() as IStoreModel;
 
-    const formData = new FormData();
-    formData.append("itv_role", itvRole );
-    formData.append("auth_token", String(token) );
+      const formData = new FormData();
+      formData.append("itv_role", itvRole);
+      formData.append("auth_token", String(token));
 
-    try {
-
-      const result = await fetch(
-        getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`),
-        {
+      try {
+        const result = await fetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
           method: "POST",
           body: formData,
-        }
-      );
+        });
 
-      if (result.status !== 200) {
-        const { message: responseMessage } = await result.json();
-        errorCallbackFn(stripTags(responseMessage));
-      } else {
-        successCallbackFn();
+        if (result.status !== 200) {
+          const { message: responseMessage } = await result.json();
+          errorCallbackFn(stripTags(responseMessage));
+        } else {
+          successCallbackFn();
+        }
+      } catch (error) {
+        console.error(error);
+        errorCallbackFn("Не удалось установить роль.");
       }
-    } catch (error) {
-      console.error(error);
-      errorCallbackFn("Не удалось установить роль.");
     }
-  }),
+  ),
 };
 
 const sessionModel: ISessionModel = {

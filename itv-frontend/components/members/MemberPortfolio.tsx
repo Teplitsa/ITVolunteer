@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, useMemo } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import Link from "next/link";
 import MemberPortfolioItem from "./MemberPortfolioItem";
@@ -8,57 +8,45 @@ import { getMediaData } from "../../utilities/media";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
   const userSlug = useStoreState(store => store.components.memberAccount.slug);
-  const { list: portfolioList } = useStoreState(state => state.components.memberAccount.portfolio);
+  const portfolioList = useStoreState(state => state.components.memberAccount.portfolio.list);
   const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
-  const [previewsToLoad, setPreviewsToLoad] = useState<Array<number>>([]);
-  const [loadedPreviews, setLoadedPreviews] = useState({});
-  const [previews, setPreviews] = useState(
-    portfolioList.reduce((po, { preview }) => {
-      po[preview] = NoPreview;
-      return po;
-    }, {})
+  const previewsToLoad = useMemo(() => portfolioList.map(({ preview }) => preview), [
+    portfolioList,
+  ]);
+  const [previews, setPreviews] = useState<Array<string>>(
+    Array(portfolioList.length).fill(NoPreview)
   );
   const { getMemberPortfolioRequest } = useStoreActions(
     actions => actions.components.memberAccount
   );
 
   useEffect(() => {
-    const pl = portfolioList
-      .map(({ preview }) => preview)
-      .filter(preview => !loadedPreviews[preview]);
-
-    setPreviewsToLoad(pl);
-  }, [portfolioList]);
-
-  useEffect(() => {
-    if (previewsToLoad.length === 0) return;
-
-    const [currentPreviewToLoad, ...restPreviewsToLoad] = previewsToLoad;
-
-    if (currentPreviewToLoad === 0) {
-      setPreviewsToLoad(restPreviewsToLoad);
-      return;
-    }
-
-    const abortController = new AbortController();
+    const abortControllers: Array<AbortController> = [];
 
     (async () => {
-      const mediaData = await getMediaData(currentPreviewToLoad, abortController);
+      await Promise.all(
+        previewsToLoad.map(async (currentPreviewToLoad, i) => {
+          if (currentPreviewToLoad === 0) return previews[i];
 
-      if (!mediaData) return;
+          const abortController = new AbortController();
+          const mediaData = await getMediaData(currentPreviewToLoad, abortController);
 
-      setLoadedPreviews({ ...loadedPreviews, currentPreviewToLoad: true });
+          if (!mediaData) return previews[i];
 
-      const newPreviews = { ...previews };
+          const newPreview = mediaData.mediaItemSizes.logo?.source_url ?? mediaData.mediaItemUrl;
 
-      newPreviews[currentPreviewToLoad] =
-        mediaData.mediaItemSizes.logo?.source_url ?? mediaData.mediaItemUrl;
+          abortControllers[i] = abortController;
 
-      setPreviews(newPreviews);
-      setPreviewsToLoad(restPreviewsToLoad);
+          return newPreview;
+        })
+      ).then(newPreviews => {
+        if (!abortControllers.some(abortController => abortController.signal.aborted)) {
+          setPreviews(newPreviews);
+        }
+      });
     })();
 
-    return () => abortController.abort();
+    return () => abortControllers.forEach(abortController => abortController.abort());
   }, [previewsToLoad]);
 
   if (noPortfolioItems) {
@@ -79,11 +67,8 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
         </div>
       </div>
       <div className="member-portfolio__list">
-        {portfolioList.map(({ id, slug, title, preview }) => (
-          <MemberPortfolioItem
-            key={id}
-            {...{ userSlug, slug, title, preview: previews[preview] }}
-          />
+        {portfolioList.map(({ id, slug, title }, i) => (
+          <MemberPortfolioItem key={id} {...{ userSlug, slug, title, preview: previews[i] }} />
         ))}
       </div>
       <div className="member-portfolio__footer">
