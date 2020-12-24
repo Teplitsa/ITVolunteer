@@ -157,4 +157,13 @@
     border-radius: 8px;
     color: $color-gray-dark-md-001;
   }
+  &__main-text {
+    display: block;
+  }
+  &__sub-text {
+    font-size: 65%;
+  }
+  img {
+    vertical-align: middle;
+  }
 }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Dispatch, SetStateAction } from "react";
 import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
@@ -644,6 +645,15 @@ export interface IPortfolioItemThunks {
 /**
  * Portfolio item form
  */
+
+export interface IPortfolioItemFormProps {
+  title?: string;
+  description?: string;
+  preview?: number;
+  fullImage?: number;
+  submitBtnTitle: React.FunctionComponent;
+  afterSubmitHandler: (portfolioItemData: FormData) => void;
+}
 
 export interface IPortfolioItemFormModel
   extends IPortfolioItemFormState,

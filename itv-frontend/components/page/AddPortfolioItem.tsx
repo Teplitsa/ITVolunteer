@@ -3,6 +3,17 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import PortfolioItemForm from "../PortfolioItemForm";
+import IconRewardsRatingImage from "../../assets/img/icon-rewards-rating.svg";
+
+const SubmitBtnTitle: React.FunctionComponent = (): ReactElement => {
+  return (
+    <>
+      <span className="btn__main-text">Добавить работу</span>
+      <img src={IconRewardsRatingImage} alt="" />{" "}
+      <span className="btn__sub-text">+10 баллов за добавление</span>
+    </>
+  );
+};
 
 const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const {
@@ -33,6 +44,7 @@ const AddPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
             description,
             preview,
             fullImage,
+            submitBtnTitle: SubmitBtnTitle,
             afterSubmitHandler: savePortfolioItemData,
           }}
         />
