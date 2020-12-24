@@ -16,16 +16,15 @@ import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
+  const itvRole = useStoreState(state => state.session.user.itvRole);
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
-  const {
-    reviews,
-    taskStats,
-    notifications: { list: notifications },
-    cover: coverImage,
-    isEmptyProfile,
-    itvAvatar,
-    username,
-  } = useStoreState(state => state.components.memberAccount);
+  const reviews = useStoreState(state => state.components.memberAccount.reviews.list);
+  const taskStats = useStoreState(state => state.components.memberAccount.taskStats);
+  const notifications = useStoreState(state => state.components.memberAccount.notifications.list);
+  const coverImage = useStoreState(state => state.components.memberAccount.cover);
+  const isEmptyProfile = useStoreState(state => state.components.memberAccount.isEmptyProfile);
+  const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
+  const username = useStoreState(state => state.components.memberAccount.username);
 
   const {
     profileFillStatusRequest,
@@ -47,16 +46,18 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     });
   }
 
-  tabList.push({
-    title: "Портфолио",
-    content: MemberPortfolio,
-  });
+  if (itvRole === "doer") {
+    tabList.push({
+      title: "Портфолио",
+      content: MemberPortfolio,
+    });
+  }
 
   if (!Object.values({ ...taskStats, open: 0 }).every(filter => filter === 0)) {
     tabList.push({ title: "Задачи", content: MemberTasks });
   }
 
-  if (reviews.list.length > 0) {
+  if (reviews.length > 0) {
     tabList.push({ title: "Отзывы", content: MemberReviews });
   }
 
