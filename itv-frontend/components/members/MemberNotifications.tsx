@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MemberNotificationItem from "./MemberNotificationItem";
 
@@ -12,12 +12,17 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
     setNotificationsPage,
     getMemberNotificationsRequest,
   } = useStoreActions(actions => actions.components.memberAccount);
+  const [isNoMoreNotifications, setIsNoMoreNotifications] = useState(false);
 
   const changeFilterHandle = (filter: "all" | "project" | "info"): void => {
     setNotificationListFilter(filter);
     setNotificationsPage(1);
     getMemberNotificationsRequest({ isListReset: true });
   };
+
+  useEffect(() => {
+    setIsNoMoreNotifications(notificationStats[notificationListFilter] <= notifications.length);
+  }, [notificationStats, notificationListFilter, notifications]);
 
   if (!isAccountOwner || !notifications) return null;
 
@@ -58,11 +63,12 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
           </ul>
         </div>
       </div>
-      <div className="member-notifications__list">
+      <div className={`member-notifications__list ${isNoMoreNotifications && "no-footer"}`}>
         {notifications.map((notification, i) => {
           return <MemberNotificationItem key={i} {...notification} />;
         })}
       </div>
+      {!isNoMoreNotifications &&
       <div className="member-notifications__footer">
         <a
           href="#"
@@ -75,6 +81,7 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
           Показать ещё
         </a>
       </div>
+      }
     </div>
   );
 };
