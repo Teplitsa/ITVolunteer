@@ -11,7 +11,6 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     isLoggedIn,
     isAccountOwner,
     isLoaded: isSessionLoaded,
-    user: { logoutUrl },
   } = useStoreState((state) => state.session);
   const {
     slug: memberSlug,

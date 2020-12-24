@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Action, ActionOn, Thunk, Computed } from "easy-peasy";
+import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
   ICoreHeadingBlock,
