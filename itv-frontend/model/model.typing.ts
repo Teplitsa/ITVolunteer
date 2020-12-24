@@ -133,6 +133,10 @@ export interface ISessionActions {
   setUserItvRole: Action<ISessionState, "author" | "doer">;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
+  setUserAvatar: Action<ISessionState, any>;
+  setUserAvatarFile: Action<ISessionState, any>;
+  setUserCover: Action<ISessionState, any>;
+  setUserCoverFile: Action<ISessionState, any>;
 }
 
 export interface ISessionThunks {
@@ -402,10 +406,12 @@ export interface IMemberAccountPageState {
   isHybrid: boolean;
   template: MemberAccountTemplate;
   cover?: string;
+  coverFile?: any;
   name: string;
   username: string;
   fullName: string;
   itvAvatar?: string;
+  itvAvatarFile?: any;
   rating?: number;
   reviewsCount?: number;
   xp?: number;
@@ -499,6 +505,8 @@ export interface IMemberAccountPageActions {
   setIsNeedAttentionPanelClosed: Action<IMemberAccountPageModel, boolean>;
   setTaskList: Action<IMemberAccountPageModel, Array<IMemberTaskCard>>;
   setReviews: Action<IMemberAccountPageModel, any>;
+  setAvatarFile: Action<IMemberAccountPageModel, any>;
+  setCoverFile: Action<IMemberAccountPageModel, any>;
 }
 
 export interface IMemberAccountPageThunks {

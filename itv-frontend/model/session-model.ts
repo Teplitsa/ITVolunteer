@@ -162,6 +162,18 @@ const sessionActions: ISessionActions = {
         }
       );
   }),
+  setUserAvatar: action((state, payload) => {
+    state.user.itvAvatar = payload;
+  }),
+  setUserAvatarFile: action((state, payload) => {
+    state.user.itvAvatarFile = payload;
+  }),
+  setUserCover: action((state, payload) => {
+    state.user.cover = payload;
+  }),
+  setUserCoverFile: action((state, payload) => {
+    state.user.coverFile = payload;
+  }),
 };
 
 const sessionThunks: ISessionThunks = {

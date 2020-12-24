@@ -202,6 +202,7 @@ function ajax_upload_user_avatar_v2() {
       $res = array(
           'status' => 'ok',
           'imageUrl' => itv_avatar_url( $member->ID ),
+          'imageFile' => itv_get_user_file($member->ID, 'user_avatar'),
       );
     } else {
       $res = array(
@@ -243,6 +244,7 @@ function ajax_upload_user_cover() {
       $res = array(
           'status' => 'ok',
           'imageUrl' => itv_member_cover_url( $member->ID ),
+          'imageFile' => itv_get_user_file($member->ID, 'user_cover'),
       );
     } else {
       $res = array(

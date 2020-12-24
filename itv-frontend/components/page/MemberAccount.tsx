@@ -2,6 +2,7 @@
 import { ReactElement, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import * as _ from "lodash";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import withTabs from "../../components/hoc/withTabs";
 import MemberPortfolio from "../../components/members/MemberPortfolio";
@@ -17,15 +18,26 @@ import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySect
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
+  const user = useStoreState(state => state.session.user);
+
   const {
     reviews,
     taskStats,
     notifications: { list: notifications },
     cover: coverImage,
+    coverFile,
     isEmptyProfile,
     itvAvatar,
+    itvAvatarFile,
     username,
   } = useStoreState(state => state.components.memberAccount);
+
+  const {
+    setUserAvatar,
+    setUserAvatarFile,
+    setUserCover,
+    setUserCoverFile,
+  } = useStoreActions(actions => actions.session);
 
   const {
     profileFillStatusRequest,
@@ -89,6 +101,20 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     getMemberNotificationStatsRequest();
     getMemberNotificationsRequest({ isListReset: true });
   }, [isAccountOwner, username]);
+
+  useEffect(() => {
+    if(!!itvAvatarFile && _.get(itvAvatarFile, "databaseId") !== _.get(user.itvAvatarFile, "databaseId")) {
+      setUserAvatar(itvAvatar);
+      setUserAvatarFile(itvAvatarFile);
+    }
+  }, [itvAvatarFile]);
+
+  useEffect(() => {
+    if(!!coverFile && _.get(coverFile, "databaseId") !== _.get(user.coverFile, "databaseId")) {
+      setUserCover(coverImage);
+      setUserCoverFile(coverFile);
+    }
+  }, [coverFile]);
 
   return (
     <div className="member-account">

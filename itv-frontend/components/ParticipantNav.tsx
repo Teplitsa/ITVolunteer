@@ -17,6 +17,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   // notif
   const [isShowNotif, setIsShowNotif] = useState(false);
   const user = useStoreState(store => store.session.user);
+  const itvAvatar = useStoreState(store => store.session.user.itvAvatar);
   const notifList = useStoreState(store => store.components.userNotif.notifList);
   const loadNotifList = useStoreActions(actions => actions.components.userNotif.loadNotifList);
   const loadFreshNotifList = useStoreActions(
@@ -54,9 +55,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     const abortController = new AbortController();
 
     try {
-      user.itvAvatar &&
-        user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
-        fetch(user.itvAvatar, {
+      itvAvatar &&
+      itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        fetch(itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));
@@ -65,7 +66,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     }
 
     return () => abortController.abort();
-  }, []);
+  }, [itvAvatar]);
 
   function handleLoginAsRoleClick() {
     const newItvRole = user.itvRole === "doer" ? "author" : "doer";
@@ -107,7 +108,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               }`}
               style={{
                 backgroundImage: isAvatarImageValid
-                  ? `url(${user.itvAvatar})`
+                  ? `url(${itvAvatar})`
                   : `url(${MemberAvatarDefault}), linear-gradient(#fff, #fff)`,
               }}
               title={user && `Привет, ${user.fullName}!`}

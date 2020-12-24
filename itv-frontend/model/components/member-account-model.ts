@@ -21,10 +21,12 @@ export const memberAccountPageState: IMemberAccountPageState = {
   isHybrid: false,
   template: "volunteer",
   cover: "",
+  coverFile: null,
   name: "",
   username: "",
   fullName: "",
   itvAvatar: "",
+  itvAvatarFile: null,
   rating: 0,
   reviewsCount: 0,
   xp: 0,
@@ -97,6 +99,8 @@ export const graphqlQuery: {
           "reviews",
           "portfolio",
           "profileFillStatus",
+          "itvAvatarFile",
+          "coverFile",
         ].includes(key)
     )
     .join("\n")}
@@ -156,8 +160,14 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   setAvatar: action((prevState, newItvAvatar) => {
     prevState.itvAvatar = newItvAvatar;
   }),
+  setAvatarFile: action((prevState, file) => {
+    prevState.itvAvatarFile = file;
+  }),
   setCover: action((prevState, newCover) => {
     prevState.cover = newCover;
+  }),
+  setCoverFile: action((prevState, file) => {
+    prevState.coverFile = file;
   }),
   setThankyouCount: action((prevState, newThankyouCount) => {
     prevState.thankyouCount = newThankyouCount;
@@ -262,7 +272,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     }
   }),
   uploadUserAvatarRequest: thunk(
-    async ({ setAvatar }, { userAvatar, fileName }, { getStoreState }) => {
+    async ({ setAvatar, setAvatarFile }, { userAvatar, fileName }, { getStoreState }) => {
       if (!userAvatar || !fileName) return;
 
       const {
@@ -280,20 +290,24 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           body: formData,
         });
 
-        const { status: responseStatus, message: responseMessage, imageUrl } = await (<
+        const { status: responseStatus, message: responseMessage, imageUrl, imageFile } = await (<
           Promise<IFetchResult>
         >result.json());
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
         } else {
           setAvatar(imageUrl);
+
+          if(imageFile) {
+            setAvatarFile(imageFile);
+          }
         }
       } catch (error) {
         console.error(error);
       }
     }
   ),
-  uploadUserCoverRequest: thunk(async ({ setCover }, { userCover }, { getStoreState }) => {
+  uploadUserCoverRequest: thunk(async ({ setCover, setCoverFile }, { userCover }, { getStoreState }) => {
     if (!userCover) return;
 
     const {
@@ -311,13 +325,17 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         body: formData,
       });
 
-      const { status: responseStatus, message: responseMessage, imageUrl } = await (<
+      const { status: responseStatus, message: responseMessage, imageUrl, imageFile } = await (<
         Promise<IFetchResult>
       >result.json());
       if (responseStatus === "fail") {
         console.error(stripTags(responseMessage));
       } else {
         setCover(imageUrl);
+
+        if(imageFile) {
+          setCoverFile(imageFile);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -486,7 +504,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           }
         );
 
-        if (taskList.length > 0) {
+        if(taskList && taskList.length > 0) {
           setTasksPage(nextPage);
 
           if(isTaskListReset) {
