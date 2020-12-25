@@ -11,7 +11,8 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     isLoggedIn,
     isAccountOwner,
     isLoaded: isSessionLoaded,
-  } = useStoreState((state) => state.session);
+    user: { itvRole },
+  } = useStoreState(state => state.session);
   const {
     slug: memberSlug,
     organizationName,
@@ -21,16 +22,16 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     xp,
     isEmptyProfile,
     profileFillStatus,
-  } = useStoreState((state) => state.components.memberAccount);
+  } = useStoreState(state => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
-    (actions) => actions.components.memberAccount.giveThanksRequest
+    actions => actions.components.memberAccount.giveThanksRequest
   );
 
   return (
     <>
       <div className="member-card">
         <MemberCardBage />
-        {!isEmptyProfile &&
+        {!isEmptyProfile && (
           <MemberStats
             {...{
               useComponents: ["rating", "reviewsCount", "xp"],
@@ -41,59 +42,50 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
               align: "center",
             }}
           />
-        }
+        )}
         {organizationName && <MemberCardOrganization />}
-        {isAccountOwner && (profileFillStatus && !profileFillStatus.isProfileInfoEnough) && 
+        {isAccountOwner && profileFillStatus && !profileFillStatus.isProfileInfoEnough && (
           <div className="member-card__null-add-information">
-            <Link href={`/members/${memberSlug}/profile`}><a>Добавьте информацию о себе</a></Link>
+            <Link href={`/members/${memberSlug}/profile`}>
+              <a>Добавьте информацию о себе</a>
+            </Link>
           </div>
-        }
-        {isEmptyProfile &&
-          <hr className="member-card__divider" />
-        }
+        )}
+        {isEmptyProfile && <hr className="member-card__divider" />}
         <MemberCardBottom />
-        {(!isEmptyProfile || isAccountOwner) &&
-        <hr className="member-card__divider" />
-        }
+        {(!isEmptyProfile || isAccountOwner) && <hr className="member-card__divider" />}
         {isSessionLoaded && (
           <div className="member-card__action">
             {(isAccountOwner && (
               <>
-                {/* <Link href="tasks">
-                  <a className="btn btn_primary btn_full-width" target="_blank">
-                    Хочу помогать другим
-                  </a>
-                </Link> */}
-                {isEmptyProfile &&
-                <Link href="/task-actions">
-                  <a className="btn btn_primary btn_full-width cta">
-                    Создать задачу
-                  </a>
-                </Link>
-                }
-                <Link href={`/members/${memberSlug}/profile`}>
-                  <a className="btn btn_full-width edit-profile">
-                    Редактировать профиль
-                  </a>
-                </Link>
-              </>
-            )) || (
-              !isEmptyProfile &&
-              <>
-                {isLoggedIn && (
-                  <button
-                    className="btn btn_primary btn_full-width"
-                    type="button"
-                    onClick={() => giveThanksRequest()}
-                  >
-                    Сказать «Спасибо»
-                  </button>
+                {(itvRole === "doer" && (
+                  <Link href="/tasks">
+                    <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
+                  </Link>
+                )) || (
+                  <Link href="/task-actions">
+                    <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
+                  </Link>
                 )}
-                <span className="member-card__thank-count">
-                  Сказали спасибо: {thankyouCount}
-                </span>
+                <Link href={`/members/${memberSlug}/profile`}>
+                  <a className="btn btn_full-width edit-profile">Редактировать профиль</a>
+                </Link>
               </>
-            )}
+            )) ||
+              (!isEmptyProfile && (
+                <>
+                  {isLoggedIn && (
+                    <button
+                      className="btn btn_primary btn_full-width"
+                      type="button"
+                      onClick={() => giveThanksRequest()}
+                    >
+                      Сказать «Спасибо»
+                    </button>
+                  )}
+                  <span className="member-card__thank-count">Сказали спасибо: {thankyouCount}</span>
+                </>
+              ))}
           </div>
         )}
       </div>
