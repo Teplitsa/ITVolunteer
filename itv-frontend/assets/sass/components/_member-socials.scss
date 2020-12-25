@@ -5,12 +5,15 @@
     margin: 0 0 15px;
   }
   &__item {
+    margin: 0 10px 0 0;
     width: 16px;
     height: 16px;
     text-indent: -9999px;
 
-    &:not(:last-child) {
-      margin: 0 10px 0 0;
+    &:last-child {
+      @include screen-to(md) {
+        margin-right: 0;
+      }
     }
 
     &_24x24 {
