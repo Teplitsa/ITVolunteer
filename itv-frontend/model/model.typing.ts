@@ -890,6 +890,7 @@ export interface ITaskCommentLiker {
 
 export interface ITaskCommentAuthor {
   id: string;
+  slug?: string;
   fullName: string;
   itvAvatar: string;
   memberRole?: string;

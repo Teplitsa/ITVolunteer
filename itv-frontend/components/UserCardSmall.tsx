@@ -1,8 +1,10 @@
 import { ReactElement, useState, useEffect } from "react";
+import Link from "next/link";
 import { ITaskCommentAuthor } from "../model/model.typing";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
+  slug,
   fullName,
   itvAvatar: avatarImage,
   memberRole,
@@ -38,7 +40,11 @@ const UserCardSmall: React.FunctionComponent<ITaskCommentAuthor> = ({
       />
 
       <span className="name">
-        <span dangerouslySetInnerHTML={{ __html: fullName }} />
+        {(slug && (
+          <Link href="/members/[username]" as={`/members/${slug}`}>
+            <a dangerouslySetInnerHTML={{ __html: fullName }} />
+          </Link>
+        )) || <span dangerouslySetInnerHTML={{ __html: fullName }} />}
         {memberRole && ` / ${memberRole}`}
       </span>
     </div>
