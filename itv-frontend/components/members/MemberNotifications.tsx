@@ -21,7 +21,12 @@ const MemberNotifications: React.FunctionComponent = (): ReactElement => {
   };
 
   useEffect(() => {
-    setIsNoMoreNotifications(notificationStats[notificationListFilter] <= notifications.length);
+    if(["project", "info"].findIndex(filter => filter === notificationListFilter) > -1) {
+      setIsNoMoreNotifications(notificationStats[notificationListFilter] <= notifications.length);
+    }
+    else {
+      setIsNoMoreNotifications(Object.keys(notificationStats).reduce((sumStats, key) => sumStats + notificationStats[key], 0) <= notifications.length);
+    }
   }, [notificationStats, notificationListFilter, notifications]);
 
   if (!isAccountOwner || !notifications) return null;
