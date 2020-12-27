@@ -83,6 +83,42 @@ const EditMemberProfile: React.FunctionComponent<{
       });
     }
 
+    if (formData.get("user_website").trim()) {
+      try {
+        new URL(formData.get("user_website"));
+      } catch (error) {
+        isValid = false;
+        addSnackbar({
+          context: "error",
+          text: "Ссылка на сайт невалидна.",
+        });
+      }
+    }
+
+    if (formData.get("facebook").trim()) {
+      try {
+        new URL(formData.get("facebook"));
+      } catch (error) {
+        isValid = false;
+        addSnackbar({
+          context: "error",
+          text: "Ссылка на профиль Facebook невалидна.",
+        });
+      }
+    }
+
+    if (formData.get("vk").trim()) {
+      try {
+        new URL(formData.get("vk"));
+      } catch (error) {
+        isValid = false;
+        addSnackbar({
+          context: "error",
+          text: "Ссылка на профиль ВКонтакте невалидна.",
+        });
+      }
+    }
+
     return isValid;
   }
 

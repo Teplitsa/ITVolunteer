@@ -1,23 +1,14 @@
 import { ReactElement, FormEvent, useState, useEffect } from "react";
 import UploadFileInput from "./UploadFileInput";
-import IconAward from "../assets/img/icon-award.svg";
 import { IMediaData, getMediaData } from "../utilities/media";
+import { IPortfolioItemFormProps } from "../model/model.typing";
 
-interface IPortfolioItemForm {
-  title?: string;
-  description?: string;
-  preview?: number;
-  fullImage?: number;
-  submitBtnTitle?: string;
-  afterSubmitHandler: (portfolioItemData: FormData) => void;
-}
-
-const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
+const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
   title = "",
   description = "",
   preview = 0,
   fullImage = 0,
-  submitBtnTitle = "Добавить работу",
+  submitBtnTitle: SubmitBtnTitle,
   afterSubmitHandler,
 }): ReactElement => {
   const [titleLength, setTitleLength] = useState<number>(title.trim().length);
@@ -80,9 +71,6 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
           onInput={event => setDescriptionLength(event.currentTarget.value.length)}
         ></textarea>
         <div className="form__group-footer">
-          <div className="form__group-footer-left">
-            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
-          </div>
           <div className="form__group-footer-right">{descriptionLength}/450</div>
         </div>
       </div>
@@ -90,25 +78,15 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemForm> = ({
         <label className="forloadFileDatam__label">Изображение превью</label>
         <div className="form__group-header">Желаемый размер файла 430x250px</div>
         <UploadFileInput name="preview" isMultiple={false} fileData={previewObject} />
-        <div className="form__group-footer">
-          <div className="form__group-footer-left">
-            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
-          </div>
-        </div>
       </div>
       <div className="form__group">
         <label className="form__label">Изображение в портфолио</label>
         <div className="form__group-header">Желаемый размер файла 1200px по ширине</div>
         <UploadFileInput name="full_image" isMultiple={false} fileData={fullImageObject} />
-        <div className="form__group-footer">
-          <div className="form__group-footer-left">
-            <img src={IconAward} alt="" /> +10 баллов за заполненное поле
-          </div>
-        </div>
       </div>
       <div className="form__group">
         <button type="submit" className="btn btn_primary-extra">
-          {submitBtnTitle}
+          <SubmitBtnTitle />
         </button>
       </div>
     </form>

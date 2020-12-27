@@ -658,6 +658,11 @@ function itv_register_comment_author_graphql_fields() {
     register_graphql_fields(
         'commentAuthor',
         [
+            'slug' => [
+                'type'        => 'String',
+                'description' => __( 'User slug', 'tst' ),
+                'resolve'     => fn( $commentAuthor ) => $commentAuthor->nicename,
+            ],
             'itvAvatar' => [
                 'type'        => 'String',
                 'description' => __( 'ITV avatar', 'tst' ),

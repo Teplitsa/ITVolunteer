@@ -29,6 +29,7 @@ const taskComment: ITaskComment = {
   likers: null,
   author: {
     id: "",
+    slug: "",
     fullName: "",
     itvAvatar: "",
   },

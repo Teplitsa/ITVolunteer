@@ -14,14 +14,22 @@ const withTabs = ({
   mode?: "default" | "landing-nav";
 }): React.FunctionComponent => {
   const addNavActiveClass = (tabNavItems: NodeListOf<Element>, activeIndex: number) => {
+    const activeTabNavItem = tabNavItems.item(activeIndex);
+
+    if (Object.is(activeTabNavItem, null)) return;
+
     tabNavItems.forEach(navItem => navItem?.classList.remove("tabs-nav__item_active"));
-    tabNavItems[activeIndex].classList.add("tabs-nav__item_active");
+    activeTabNavItem.classList.add("tabs-nav__item_active");
   };
   const addContentActiveClass = (tabContentItems: NodeListOf<Element>, activeIndex: number) => {
+    const activeTabContentItem = tabContentItems.item(activeIndex);
+
+    if (Object.is(activeTabContentItem, null)) return;
+
     tabContentItems.forEach(contentItem =>
       contentItem.classList.remove("tabs-content__item_active")
     );
-    tabContentItems[activeIndex].classList.add("tabs-content__item_active");
+    activeTabContentItem.classList.add("tabs-content__item_active");
   };
   const addActiveClass = (tabsRef: MutableRefObject<HTMLDivElement>, activeIndex: number) => {
     const tabNavItems = tabsRef.current.querySelectorAll(`.tabs-nav__item`);

@@ -4,6 +4,10 @@ import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import PortfolioItemForm from "../PortfolioItemForm";
 
+const SubmitBtnTitle: React.FunctionComponent = (): ReactElement => {
+  return <>{"Сохранить изменения"}</>;
+};
+
 const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const {
     user: { slug: userSlug },
@@ -17,7 +21,7 @@ const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
 
   const updatePortfolioItemData = (portFolioItemData: FormData) => {
-    updatePortfolioItemRequest({ 
+    updatePortfolioItemRequest({
       slug,
       inputData: portFolioItemData,
       successCallbackFn: () => router.push(`/members/${userSlug}/${slug}`),
@@ -34,7 +38,7 @@ const EditPortfolioItemPage: React.FunctionComponent = (): ReactElement => {
             description,
             preview,
             fullImage,
-            submitBtnTitle: "Сохранить изменения",
+            submitBtnTitle: SubmitBtnTitle,
             afterSubmitHandler: updatePortfolioItemData,
           }}
         />
