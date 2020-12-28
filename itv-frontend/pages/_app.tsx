@@ -119,6 +119,7 @@ function isPageWithSkeleton(pathname) {
   return pathname.search(/^\/$/i) !== -1 
     || pathname.search(/^\/members$/i) !== -1
     || pathname.search(/^\/members\/[^/]+$/i) !== -1
+    || pathname.search(/^\/members\/[^/]+\/[^/]+$/i) !== -1
     || pathname.search(/^\/tasks$/i) !== -1
     || pathname.search(/^\/tasks\/\S+$/i) !== -1;
 }

@@ -6,6 +6,7 @@ import MemberListSkeleton from "../skeletons/MemberListSkeleton";
 import MemberAccountSkeleton from "../skeletons/MemberAccountSkeleton";
 import TaskListSkeleton from "../skeletons/TaskListSkeleton";
 import TaskSkeleton from "../skeletons/TaskSkeleton";
+import PortfolioItem from "../skeletons/PortfolioItem";
 
 const withSkeleton = ({ pathname }: { pathname: string }): React.FunctionComponent => {
   let MainSkeletonContent: React.FunctionComponent | null = null;
@@ -16,6 +17,8 @@ const withSkeleton = ({ pathname }: { pathname: string }): React.FunctionCompone
     MainSkeletonContent = () => <MemberListSkeleton />;
   } else if (pathname.search(/^\/members\/[^/]+$/i) !== -1) {
     MainSkeletonContent = () => <MemberAccountSkeleton />;
+  } else if (pathname.search(/^\/members\/[^/]+\/[^/]+$/i) !== -1) {
+    MainSkeletonContent = () => <PortfolioItem />;
   } else if (pathname.search(/^\/tasks$/i) !== -1) {
     MainSkeletonContent = () => <TaskListSkeleton />;
   } else if (pathname.search(/^\/tasks\/\S+$/i) !== -1) {

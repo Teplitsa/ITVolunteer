@@ -1,0 +1,57 @@
+.portfolio-item-skeleton {
+  padding: 0 15px;
+  width: 100%;
+  box-sizing: border-box;
+  &__inner {
+    background-color: $color-white;
+    margin: 50px auto 0;
+    padding: 15px;
+    width: 1168px;
+    max-width: 100%;
+    box-shadow: 0px 4px 24px rgba(75, 93, 3, 0.08);
+    border-radius: 32px;
+    box-sizing: border-box;
+
+    @include screen-from(md) {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      margin-top: 50px;
+      padding: 80px;
+    }
+  }
+  &__user-card {
+    @include screen-from(md) {
+      flex-basis: 30.9523%;
+    }
+  }
+  &__content {
+    margin-top: 40px;
+    @include screen-from(md) {
+      flex-basis: 65.0793%;
+      margin-top: 0;
+    }
+  }
+  &__media {
+    margin-top: 40px;
+    @include screen-from(md) {
+      flex-basis: 100%;
+    }
+  }
+  &__column {
+    &-mock {
+      background: $color-gray-light-lg;
+      max-width: 100%;
+      min-height: 232px;
+      box-sizing: border-box;
+
+      @extend .item-mock;
+
+      &_wide {
+        @include screen-from(md) {
+          min-height: 620px;
+        }
+      }
+    }
+  }
+}
