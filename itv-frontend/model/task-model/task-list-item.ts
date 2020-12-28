@@ -7,6 +7,7 @@ const taskState: ITaskListItemState = {
   content: "",
   date: "1970-01-01",
   dateGmt: "1970-01-01",
+  deadline: "1970-01-01",
   viewsCount: 0,
   doerCandidatesCount: 0,
   reviewsDone: false,
