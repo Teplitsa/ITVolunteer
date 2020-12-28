@@ -31,6 +31,12 @@ function itv_determine_current_user($user_id) {
         if (!is_wp_error($token)) {
 
             $user_id = $token->data->user->id;
+            
+            if($user_id) {
+                global $wp_rest_auth_cookie;
+                $wp_rest_auth_cookie = 0;
+            }
+            
         }
     }
 

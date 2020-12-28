@@ -119,6 +119,7 @@ export const graphqlQuery: {
         itvAvatar
       }
       dateGmt
+      deadline
       doerCandidatesCount
       viewsCount
       tags(where: {hideEmpty: false, shouldOutputInFlatList: true}) {
