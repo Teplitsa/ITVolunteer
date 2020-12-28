@@ -34,6 +34,11 @@ function itv_determine_current_user($user_id) {
         }
     }
 
+    if($user_id) {
+        global $wp_rest_auth_cookie;
+        $wp_rest_auth_cookie = 0;
+    }
+
     return $user_id;
 }
 add_filter( 'determine_current_user', 'itv_determine_current_user' );
