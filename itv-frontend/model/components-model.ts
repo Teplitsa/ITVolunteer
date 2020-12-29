@@ -6,7 +6,11 @@ import taskModel from "./task-model/task-model";
 import taskListModel from "./task-model/task-list-model";
 import taskListFilterModel from "./task-model/task-list-filter-model";
 import userNotifModel from "./user-notif-model";
-import { createTaskWizardModel, completeTaskWizardModel } from "./wizard-model";
+import {
+  createTaskWizardModel,
+  completeTaskWizardModel,
+  taskToPortfolioWizardModel,
+} from "./wizard-model";
 import createTaskAgreementPageModel from "./components/create-task-agreement-model";
 import helpPageModel from "./components/help-model";
 import newsItemModel from "./news-model/news-item-model";
@@ -35,6 +39,7 @@ const componentsState: IComponentsState = {
   userNotif: userNotifModel,
   createTaskWizard: createTaskWizardModel,
   completeTaskWizard: completeTaskWizardModel,
+  taskToPortfolioWizard: taskToPortfolioWizardModel,
   createTaskAgreement: createTaskAgreementPageModel,
   helpPage: helpPageModel,
   page: textPageModel,

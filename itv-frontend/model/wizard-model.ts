@@ -14,6 +14,10 @@ import {
   ICompleteTaskWizardState,
   ICompleteTaskWizardActions,
   ICompleteTaskWizardThunks,
+  ITaskToPortfolioWizardModel,
+  ITaskToPortfolioWizardState,
+  ITaskToPortfolioWizardActions,
+  ITaskToPortfolioWizardThunks,
 } from "./model.typing";
 import * as utils from "../utilities/utilities";
 
@@ -306,6 +310,100 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
   ),
 };
 
+const taskToPortfolioWizardState: ITaskToPortfolioWizardState = {
+  ...wizardState,
+  ...{
+    wizardName: "taskToPortfolio",
+    doer: {
+      databaseId: 0,
+      name: "",
+    },
+    task: {
+      databaseId: 0,
+      title: "",
+    },
+  },
+};
+
+const taskToPortfolioWizardActions: ITaskToPortfolioWizardActions = {
+  ...completeTaskWizardActions,
+  ...{
+    setInitState: action((prevState, { doer, task }) => {
+      Object.assign(prevState, { doer, task });
+    }),
+    resetFormData: action(state => {
+      state.formData = {};
+    }),
+    resetStep: action(state => {
+      state.step = 0;
+    }),
+    resetWizard: action(state => {
+      state.doer = {
+        databaseId: 0,
+        name: "",
+      };
+      state.task = {
+        databaseId: 0,
+        title: "",
+      };
+    }),
+  },
+};
+
+const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
+  loadWizardData: thunk(
+    async ({ setInitState, setFormData, setStep, setNeedReset }, payload, { getStoreState }) => {
+      const {
+        components: {
+          taskToPortfolioWizard: { wizardName },
+        },
+      } = getStoreState() as IStoreModel;
+      const { doer, task, formData, step, isNeedReset } =
+        storeJsLocalStorage.get(`wizard.${wizardName}.data`) ?? {};
+
+      setInitState({
+        doer: doer ?? {},
+        task: task ?? {},
+      });
+      setFormData(formData ?? {});
+      setStep(step ?? 0);
+      setNeedReset(isNeedReset ?? false);
+    }
+  ),
+  saveWizardData: thunk(async (actions, payload, { getStoreState }) => {
+    const {
+      components: {
+        taskToPortfolioWizard: { wizardName, formData, step, doer, task, isNeedReset },
+      },
+    } = getStoreState() as IStoreModel;
+    storeJsLocalStorage.set(`wizard.${wizardName}.data`, {
+      formData,
+      step,
+      doer,
+      task,
+      isNeedReset,
+    });
+  }),
+  removeWizardData: thunk(async (actions, payload, { getStoreState }) => {
+    const {
+      components: {
+        taskToPortfolioWizard: { wizardName },
+      },
+    } = getStoreState() as IStoreModel;
+    storeJsLocalStorage.remove(`wizard.${wizardName}.data`);
+  }),
+  newPortfolioItemRequest: thunk(
+    async (actions, { doer, task, title, description, demoLink, preview, fullImage }) => {
+      try {
+        // TODO
+        return { doer, task, title, description, demoLink, preview, fullImage };
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
+};
+
 export const createTaskWizardModel: ICreateTaskWizardModel = {
   ...createTaskWizardState,
   ...createTaskWizardActions,
@@ -316,4 +414,10 @@ export const completeTaskWizardModel: ICompleteTaskWizardModel = {
   ...completeTaskWizardState,
   ...completeTaskWizardActions,
   ...completeTaskWizardThunks,
+};
+
+export const taskToPortfolioWizardModel: ITaskToPortfolioWizardModel = {
+  ...taskToPortfolioWizardState,
+  ...taskToPortfolioWizardActions,
+  ...taskToPortfolioWizardThunks,
 };
