@@ -56,17 +56,11 @@ const Wizard: React.FunctionComponent<any> = ({
       };
     }),
 
-    goNextStep: () => {
-      if (step >= stepsCount - 1) {
-        return;
-      }
-      // console.log("set step:", step + 1)
+    goNextStep: (customStep?: number) => {
+      if (step >= stepsCount - 1) return;
 
-      setStep(step + 1);
-
-      if (saveWizardData) {
-        saveWizardData();
-      }
+      setStep(customStep ?? step + 1);
+      saveWizardData && saveWizardData();
     },
 
     goPrevStep: () => {

@@ -30,19 +30,36 @@
     }
   }
 
-  &_to-portfolio-intro {
-    overflow: visible;
-    position: relative;
-    background-image: url(../../img/bg-modal-ornament.svg),
-      url(../../img/bg-task-to-portfolio-intro.svg);
-    background-size: calc(100vw - 64px), 50vw;
-    background-position: 50% 50%, 50% 100%;
-    background-repeat: no-repeat, no-repeat;
-    padding: 0 0 50vw;
-    @include screen-from(md) {
-      background-size: 71.2277vw 83.7201vh, 36.5972vw 56.2417vh;
-      background-position: 19.1666vw 6.8331vh, 0 100%;
-      padding: 0;
+  &_to-portfolio {
+    &-intro {
+      overflow: visible;
+      position: relative;
+      background-image: url(../../img/bg-modal-ornament.svg),
+        url(../../img/bg-task-to-portfolio-intro.svg);
+      background-size: calc(100vw - 64px), 50vw;
+      background-position: 50% 50%, 50% 100%;
+      background-repeat: no-repeat, no-repeat;
+      padding: 0 0 50vw;
+      @include screen-from(md) {
+        background-size: 71.2277vw 83.7201vh, 36.5972vw 56.2417vh;
+        background-position: 19.1666vw 6.8331vh, 0 100%;
+        padding: 0;
+      }
+    }
+    &-failure {
+      overflow: visible;
+      position: relative;
+      background-image: url(../../img/bg-modal-ornament.svg),
+        url(../../img/bg-task-to-portfolio-failure.svg);
+      background-size: calc(100vw - 64px), 50vw;
+      background-position: 50% 50%, 50% 100%;
+      background-repeat: no-repeat, no-repeat;
+      padding: 0 0 50vw;
+      @include screen-from(md) {
+        background-size: 71.2277vw 83.7201vh, 23.8194vw 39.6846vh;
+        background-position: 19.1666vw 6.8331vh, 0 100%;
+        padding: 0;
+      }
     }
   }
 
@@ -207,7 +224,6 @@
   .wizard-screen-sidebar-right {
   }
 }
-
 
 .wizard-screen .wizard-steps {
   .step-list-item {

@@ -1,9 +1,12 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-// import Router from "next/router";
+import Router from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import DocumentHead from "../components/DocumentHead";
 import TaskToPortfolioIntro from "../components/task-actions/task-to-portfolio/TaskToPortfolioIntro";
+import TaskToPortfolioFailure from "../components/task-actions/task-to-portfolio/TaskToPortfolioFailure";
+import TaskToPortfolioTitle from "../components/task-actions/task-to-portfolio/TaskToPortfolioTitle";
+
 import Wizard from "../components/Wizard";
 
 const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
@@ -60,7 +63,7 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
     resetFormData();
     resetStep();
     removeWizardData();
-    // Router.push("/tasks");
+    Router.push("/tasks");
   }
 
   return (
@@ -76,6 +79,8 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
         onWizardCancel={handleCancelWizard}
       >
         <TaskToPortfolioIntro isIgnoreStepNumber={true} />
+        <TaskToPortfolioFailure isIgnoreStepNumber={true} />
+        <TaskToPortfolioTitle />
       </Wizard>
     </>
   );
