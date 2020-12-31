@@ -286,6 +286,7 @@ export interface IComponentsState {
   userNotif?: IUserNotifModel;
   createTaskWizard?: ICreateTaskWizardModel;
   completeTaskWizard?: ICompleteTaskWizardModel;
+  taskToPortfolioWizard?: ITaskToPortfolioWizardModel;
   createTaskAgreement?: ICreateTaskAgreementPageModel;
   helpPage?: IHelpPageModel;
   page?: IPageModel;
@@ -1406,6 +1407,46 @@ export interface ICompleteTaskWizardModel
   extends ICompleteTaskWizardState,
     ICompleteTaskWizardActions,
     ICompleteTaskWizardThunks {}
+
+export interface ITaskToPortfolioWizardState extends IWizardState {
+  doer: ICompleteTaskWizardPartner;
+  task: ICompleteTaskWizardMeta;
+}
+
+export interface ITaskToPortfolioWizardActions extends IWizardActions {
+  setInitState: Action<
+    IWizardState,
+    {
+      doer: ICompleteTaskWizardPartner;
+      task: ICompleteTaskWizardMeta;
+    }
+  >;
+  resetFormData: Action<ITaskToPortfolioWizardState>;
+  resetStep: Action<ITaskToPortfolioWizardState>;
+  resetWizard?: Action<ITaskToPortfolioWizardState>;
+}
+
+export interface ITaskToPortfolioWizardThunks extends IWizardThunks {
+  loadWizardData: Thunk<ITaskToPortfolioWizardActions>;
+  removeWizardData: Thunk<ITaskToPortfolioWizardActions>;
+  newPortfolioItemRequest: Thunk<
+  ITaskToPortfolioWizardActions,
+    {
+      doer: ICompleteTaskWizardPartner;
+      task: ICompleteTaskWizardMeta;
+      title: string;
+      description: string;
+      demoLink: string;
+      preview?: number;
+      fullImage?: number;
+    }
+  >;
+}
+
+export interface ITaskToPortfolioWizardModel
+  extends ITaskToPortfolioWizardState,
+    ITaskToPortfolioWizardActions,
+    ITaskToPortfolioWizardThunks {}
 
 /**
  * Help center page

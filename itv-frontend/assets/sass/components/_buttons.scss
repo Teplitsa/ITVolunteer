@@ -61,6 +61,14 @@
         border-bottom-color: $color-gray-dark-lg;
       }
     }
+
+    &-extra {
+      @extend .btn_link;
+
+      line-height: 1.33;
+      font-weight: 500;
+      font-size: 24px;
+    }
   }
   &_danger {
     background-color: $color-sec-dark;
