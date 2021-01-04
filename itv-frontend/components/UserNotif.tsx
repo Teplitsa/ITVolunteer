@@ -122,9 +122,9 @@ function NotifItem({ notif, user }) {
 
   const completeTask = () => {
     setCompleteTaskWizardState({
-      user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false },
-      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName },
-      task: { databaseId: notif.task.databaseId, title: notif.task.title },
+      user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false, slug: user.slug },
+      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName, slug: notif.from_user.slug },
+      task: { databaseId: notif.task.databaseId, title: notif.task.title, slug: notif.task.slug },
     });
 
     Router.push({

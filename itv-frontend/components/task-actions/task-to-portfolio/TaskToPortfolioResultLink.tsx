@@ -6,27 +6,24 @@ import {
   WizardScreenBottomBar,
 } from "../../layout/WizardScreen";
 
-const TaskToPortfolioTitle = (screenProps): ReactElement => {
+const TaskToPortfolioResultLink = (screenProps): ReactElement => {
   const props = {
     ...screenProps,
-    screenName: "Title",
-    onNextClick: () => {
-      screenProps.goNextStep();
-    },
+    screenName: "ResultLink",
   };
 
   return (
     <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
-          title={"Под каким названием поставим задачу в портфолио"}
-          isRequired={true}
+          title={"Добавьте ссылку на результат, если она есть"}
+          isRequired={false}
           {...props}
         >
           <WizardStringField
             {...props}
-            name="title"
-            placeholder="Нужен сайт на Word Press для нашей организации"
+            name="resultLink"
+            placeholder="http://ссылка на ваш результат"
             maxLength={50}
           />
         </WizardForm>
@@ -36,4 +33,4 @@ const TaskToPortfolioTitle = (screenProps): ReactElement => {
   );
 };
 
-export default TaskToPortfolioTitle;
+export default TaskToPortfolioResultLink;

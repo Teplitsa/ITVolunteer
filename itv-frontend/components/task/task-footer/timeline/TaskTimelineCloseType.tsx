@@ -6,9 +6,9 @@ import TaskTimelineSuggestComment from "./TaskTimelineSuggestComment";
 import TaskTimelineOpenCloseSuggest from "./TaskTimelineOpenCloseSuggest";
 
 const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
-  const { databaseId: userId, fullName: userName } = useStoreState(state => state.session.user);
+  const { databaseId: userId, fullName: userName, slug: userSlug } = useStoreState(state => state.session.user);
   const { isTaskAuthorLoggedIn, user } = useStoreState(state => state.session);
-  const { databaseId, title, approvedDoer } = useStoreState(state => state.components.task);
+  const { databaseId, title, approvedDoer, slug: taskSlug } = useStoreState(state => state.components.task);
 
   const isApprovedDoerLoggedIn = approvedDoer && user.databaseId === approvedDoer.databaseId;
   const setCompleteTaskWizardState = useStoreActions(
@@ -32,10 +32,11 @@ const TaskTimelineCloseType: React.FunctionComponent = (): ReactElement => {
       user: {
         databaseId: userId,
         name: userName,
+        slug: userSlug,
         isAuthor: isTaskAuthorLoggedIn,
       },
-      partner: { databaseId: approvedDoer.databaseId, name: approvedDoer.fullName },
-      task: { databaseId, title },
+      partner: { databaseId: approvedDoer.databaseId, name: approvedDoer.fullName, slug: approvedDoer.slug },
+      task: { databaseId, title, slug: taskSlug },
     });
 
     Router.push({

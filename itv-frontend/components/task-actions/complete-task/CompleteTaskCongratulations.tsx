@@ -8,10 +8,6 @@ const CompleteTaskCongratulations = (screenProps): ReactElement => {
   const props = {
     ...screenProps,
     screenName: "Congratulations",
-    onNextClick: event => {
-      event.preventDefault();
-      props.goNextStep();
-    },
   };
 
   return (
@@ -26,7 +22,10 @@ const CompleteTaskCongratulations = (screenProps): ReactElement => {
         </div>
         <a
           href="#"
-          onClick={props.onNextClick}
+          onClick={(event) => {
+            event.preventDefault();
+            screenProps.goNextStep();
+          }}
           className="wizard-screen__button wizard-screen__button_primary"
         >
           Продолжить

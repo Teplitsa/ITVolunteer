@@ -6,14 +6,6 @@ const TaskToPortfolioIntro = (screenProps): ReactElement => {
   const props = {
     ...screenProps,
     screenName: "Intro",
-    onNextClick: event => {
-      event.preventDefault();
-      props.goNextStep();
-    },
-    onStartClick: event => {
-      event.preventDefault();
-      props.goNextStep(2);
-    },
   };
 
   return (
@@ -31,7 +23,10 @@ const TaskToPortfolioIntro = (screenProps): ReactElement => {
         </div>
         <a
           href="#"
-          onClick={props.onStartClick}
+          onClick={(event) => {
+            event.preventDefault();
+            screenProps.goNextStep(2);
+          }}
           className="wizard-screen__button wizard-screen__button_primary"
         >
           Добавить в портфолио
@@ -40,7 +35,10 @@ const TaskToPortfolioIntro = (screenProps): ReactElement => {
           </span>
         </a>
         <div className="wizard-screen__cancel">
-          <a href="#" className="btn btn_link-extra" onClick={props.onNextClick}>
+          <a href="#" className="btn btn_link-extra" onClick={(event) => {
+            event.preventDefault();
+            screenProps.goNextStep();
+          }}>
             Отмена
           </a>
         </div>

@@ -18,6 +18,7 @@ import {
   ITaskToPortfolioWizardState,
   ITaskToPortfolioWizardActions,
   ITaskToPortfolioWizardThunks,
+  IRestApiResponse,
 } from "./model.typing";
 import * as utils from "../utilities/utilities";
 
@@ -173,15 +174,18 @@ const completeTaskWizardState: ICompleteTaskWizardState = {
     user: {
       databaseId: 0,
       name: "",
+      slug: "",
       isAuthor: false,
     },
     partner: {
       databaseId: 0,
       name: "",
+      slug: "",
     },
     task: {
       databaseId: 0,
       title: "",
+      slug: "",
     },
   },
 };
@@ -206,17 +210,22 @@ const completeTaskWizardActions: ICompleteTaskWizardActions = {
     state.step = 0;
   }),
   resetWizard: action(state => {
+    state.step = 0;
+    state.formData = {};
     state.partner = {
       databaseId: 0,
       name: "",
+      slug: "",
     };
     state.task = {
       databaseId: 0,
       title: "",
+      slug: "",
     };
     state.user = {
       databaseId: 0,
       name: "",
+      slug: "",
       isAuthor: false,
     };
   }),
@@ -232,16 +241,20 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
   loadWizardData: thunk(async (actions, payload, { getStoreState }) => {
     const {
       components: {
-        completeTaskWizard: { wizardName },
+        completeTaskWizard: { wizardName, user: existUser, partner: existPartner, task: existTask },
       },
     } = getStoreState() as IStoreModel;
     const wizardData = storeJsLocalStorage.get(`wizard.${wizardName}.data`);
     if (wizardData) {
-      actions.setInitState({
-        user: wizardData.user ?? {},
-        partner: wizardData.partner ?? {},
-        task: wizardData.task ?? {},
-      });
+
+      if(_.isEmpty(existUser) || _.isEmpty(existPartner) || _.isEmpty(existTask)) {      
+        actions.setInitState({
+          user: wizardData.user ?? {},
+          partner: wizardData.partner ?? {},
+          task: wizardData.task ?? {},
+        });
+      }
+
       actions.setFormData(wizardData.formData ?? {});
       actions.setStep(wizardData.step ?? 0);
       actions.setNeedReset(wizardData.isNeedReset ?? false);
@@ -314,40 +327,63 @@ const taskToPortfolioWizardState: ITaskToPortfolioWizardState = {
   ...wizardState,
   ...{
     wizardName: "taskToPortfolio",
+    createdPortfolioItemSlug: "",
     doer: {
       databaseId: 0,
       name: "",
+      slug: "",
     },
     task: {
       databaseId: 0,
       title: "",
+      slug: "",
     },
   },
 };
 
 const taskToPortfolioWizardActions: ITaskToPortfolioWizardActions = {
-  ...completeTaskWizardActions,
-  ...{
-    setInitState: action((prevState, { doer, task }) => {
-      Object.assign(prevState, { doer, task });
-    }),
-    resetFormData: action(state => {
-      state.formData = {};
-    }),
-    resetStep: action(state => {
-      state.step = 0;
-    }),
-    resetWizard: action(state => {
-      state.doer = {
-        databaseId: 0,
-        name: "",
-      };
-      state.task = {
-        databaseId: 0,
-        title: "",
-      };
-    }),
-  },
+  setState: action((prevState, newState) => {
+    Object.assign(prevState, newState);
+  }),
+  setInitState: action((prevState, { doer, task }) => {
+    Object.assign(prevState, { doer, task });
+  }),
+  setFormData: action((state, payload) => {
+    state.formData = { ...state.formData, ...payload };
+  }),
+  setStep: action((state, payload) => {
+    state.step = payload;
+  }),
+  resetFormData: action(state => {
+    state.formData = {};
+  }),
+  resetStep: action(state => {
+    state.step = 0;
+  }),
+  resetWizard: action(state => {
+    state.createdPortfolioItemSlug = "";
+    state.step = 0;
+    state.formData = {};
+    state.doer = {
+      databaseId: 0,
+      slug: "",
+      name: "",
+    };
+    state.task = {
+      databaseId: 0,
+      title: "",
+      slug: "",
+    };
+  }),
+  setWizardName: action((state, payload) => {
+    state.wizardName = payload;
+  }),
+  setNeedReset: action((state, payload) => {
+    state.isNeedReset = payload;
+  }),
+  setCreatedPortfolioItemSlug: action((state, payload) => {
+    state.createdPortfolioItemSlug = payload;
+  }),
 };
 
 const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
@@ -355,19 +391,25 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
     async ({ setInitState, setFormData, setStep, setNeedReset }, payload, { getStoreState }) => {
       const {
         components: {
-          taskToPortfolioWizard: { wizardName },
+          taskToPortfolioWizard: { wizardName, doer: existDoer, task: existTask },
         },
       } = getStoreState() as IStoreModel;
-      const { doer, task, formData, step, isNeedReset } =
-        storeJsLocalStorage.get(`wizard.${wizardName}.data`) ?? {};
 
-      setInitState({
-        doer: doer ?? {},
-        task: task ?? {},
-      });
-      setFormData(formData ?? {});
-      setStep(step ?? 0);
-      setNeedReset(isNeedReset ?? false);
+      const wizardData = storeJsLocalStorage.get(`wizard.${wizardName}.data`);
+      if (wizardData) {
+        const { doer, task, formData, step, isNeedReset } = wizardData;
+
+        if(_.isEmpty(existDoer) || _.isEmpty(existTask)) {
+          setInitState({
+            doer: doer ?? {},
+            task: task ?? {},
+          });
+        }
+
+        setFormData(formData ?? {});
+        setStep(step ?? 0);
+        setNeedReset(isNeedReset ?? false);
+      }
     }
   ),
   saveWizardData: thunk(async (actions, payload, { getStoreState }) => {
@@ -393,10 +435,53 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
     storeJsLocalStorage.remove(`wizard.${wizardName}.data`);
   }),
   newPortfolioItemRequest: thunk(
-    async (actions, { doer, task, title, description, demoLink, preview, fullImage }) => {
+    async (actions, { doer, task, title, description, resultLink, workDetails, preview, fullImage }, { getStoreState }) => {
+
+      const {
+        session: {
+          user: { databaseId: authorId },
+          validToken: token,
+        },
+      } = getStoreState() as IStoreModel;
+
+      const jsonData = {
+        title: title,
+        content: description,
+        featured_media: preview,
+        meta: {
+          portfolio_image_id: fullImage,
+          workDetails,
+          resultLink,
+        },
+        auth_token: token,
+        status: "publish",
+        author: authorId,
+        context: "portfolio_edit"
+      };
+
       try {
-        // TODO
-        return { doer, task, title, description, demoLink, preview, fullImage };
+        // console.log("create new portfolio item request...");
+        // console.log("jsonData:", jsonData);
+
+        const result = await fetch(utils.getRestApiUrl("/wp/v2/portfolio_work"), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(jsonData),
+        });
+
+        // console.log("result:", result);
+
+        if (result?.status && result.status !== 201) {
+          console.error("При добавлении портфолио произошла ошибка.");
+        } else {
+          const data = await (<Promise<IRestApiResponse>>result.json());
+          // console.log("portfolio added:", data);
+          actions.setCreatedPortfolioItemSlug(_.get(data, "slug", ""));
+        }
+        
+        return { doer, task, title, description, resultLink, workDetails, preview, fullImage };
       } catch (error) {
         console.error(error);
       }

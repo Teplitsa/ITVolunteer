@@ -666,6 +666,8 @@ export interface IPortfolioItemFormState {
   slug: string;
   title: string;
   description: string;
+  workDetails?: string;
+  resultLink?: string;
   preview: number;
   fullImage: number;
   nextPortfolioItemSlug?: string;
@@ -834,6 +836,7 @@ export interface ITaskApprovedDoer {
   id: string;
   databaseId: number;
   fullName: string;
+  slug: string;
   itvAvatar: string;
   profileURL: string;
   solvedTasksCount: number;
@@ -922,6 +925,7 @@ export interface ITaskTimelineItemDoer {
   id: string;
   fullName: string;
   memberRole: string;
+  slug: string;
   itvAvatar: string;
   authorReviewsCount: string;
   solvedTasksCount: string;
@@ -1237,6 +1241,7 @@ export interface IRestApiResponse {
   code: string;
   data: {
     status: number;
+    [x: string]: any;
   };
   message: string;
 }
@@ -1278,6 +1283,7 @@ export interface IWizardScreenProps {
   howtoUrl?: string;
   isShowHeader?: boolean;
   formData?: any;
+  setFormData?: (formData: any) => void;
   screenName?: string;
   selectOptions?: Array<any>;
   customOptions?: Array<any>;
@@ -1354,16 +1360,19 @@ export interface ICreateTaskWizardModel
 export interface ICompleteTaskWizardPartner {
   databaseId: number;
   name: string;
+  slug: string;
 }
 
 export interface ICompleteTaskWizardUser {
   databaseId: number;
   name: string;
+  slug: string;
   isAuthor: boolean;
 }
 
 export interface ICompleteTaskWizardMeta {
   databaseId: number;
+  slug: string;
   title?: string;
 }
 
@@ -1409,6 +1418,7 @@ export interface ICompleteTaskWizardModel
     ICompleteTaskWizardThunks {}
 
 export interface ITaskToPortfolioWizardState extends IWizardState {
+  createdPortfolioItemSlug: string;
   doer: ICompleteTaskWizardPartner;
   task: ICompleteTaskWizardMeta;
 }
@@ -1424,6 +1434,7 @@ export interface ITaskToPortfolioWizardActions extends IWizardActions {
   resetFormData: Action<ITaskToPortfolioWizardState>;
   resetStep: Action<ITaskToPortfolioWizardState>;
   resetWizard?: Action<ITaskToPortfolioWizardState>;
+  setCreatedPortfolioItemSlug: Action<ITaskToPortfolioWizardState, string>;
 }
 
 export interface ITaskToPortfolioWizardThunks extends IWizardThunks {
@@ -1436,7 +1447,8 @@ export interface ITaskToPortfolioWizardThunks extends IWizardThunks {
       task: ICompleteTaskWizardMeta;
       title: string;
       description: string;
-      demoLink: string;
+      resultLink?: string;
+      workDetails?: string;
       preview?: number;
       fullImage?: number;
     }

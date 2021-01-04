@@ -7,7 +7,7 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
   const approvedDoer = useStoreState(state => state.components.task?.approvedDoer);
   const reviewForDoer = useStoreState(state => state.components.task?.reviews?.reviewForDoer);
   const reviewForAuthor = useStoreState(state => state.components.task?.reviews?.reviewForAuthor);
-  const { databaseId, title, author } = useStoreState(state => state.components.task);
+  const { databaseId, title, author, slug: taskSlug } = useStoreState(state => state.components.task);
   const { user, isTaskAuthorLoggedIn } = useStoreState(state => state.session);
   const setCompleteTaskWizardState = useStoreActions(
     actions => actions.components.completeTaskWizard.setInitState
@@ -19,13 +19,15 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
       user: {
         databaseId: isTaskAuthorLoggedIn ? user.databaseId : approvedDoer.databaseId,
         name: isTaskAuthorLoggedIn ? user.fullName : approvedDoer.fullName,
+        slug: user.slug,
         isAuthor: isTaskAuthorLoggedIn,
       },
       partner: {
         databaseId: isTaskAuthorLoggedIn ? approvedDoer.databaseId : author.databaseId,
         name: isTaskAuthorLoggedIn ? approvedDoer.fullName : user.fullName,
+        slug: isTaskAuthorLoggedIn ? approvedDoer.slug : user.slug,
       },
-      task: { databaseId, title },
+      task: { databaseId, title, slug: taskSlug },
     });
 
     Router.push({

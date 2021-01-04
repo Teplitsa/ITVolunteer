@@ -364,6 +364,11 @@ export const WizardLimitedTextFieldWithHelp: React.FunctionComponent<
 
   useEffect(() => {
     if(_.isEmpty(formFieldPlaceholders)) {
+
+      if(props.placeholder) {
+        setInputPlaceholder(props.placeholder);
+      }
+      
       return;
     }
     
@@ -740,8 +745,8 @@ export const WizardUploadImageField: React.FunctionComponent<IWizardScreenProps>
 export const WizardUploadImageFieldInput: React.FunctionComponent<IWizardScreenProps> = props => {
   const [files, setFiles] = useState([]);
   const [isFileUploading, setIsFileUploading] = useState(false);
-  const formData = useStoreState(state => state.components.createTaskWizard.formData);
-  const setFormData = useStoreActions(actions => actions.components.createTaskWizard.setFormData);
+  const formData = props.formData;
+  const setFormData = props.setFormData;
   const fieldDescription = _.get(
     props,
     "description",

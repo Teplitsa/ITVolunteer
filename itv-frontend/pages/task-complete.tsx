@@ -10,21 +10,20 @@ import CompleteTaskReview from "../components/task-actions/complete-task/Complet
 import CompleteTaskThanks from "../components/task-actions/complete-task/CompleteTaskThanks";
 import Wizard from "../components/Wizard";
 
-const CreateTask: React.FunctionComponent = (): ReactElement => {
+const CompleteTask: React.FunctionComponent = (): ReactElement => {
   const [, /* isLoading */ setLoading] = useState<boolean>(true);
+  const [isPreventReset, setIsPreventReset] = useState(false);
   const { step, formData, user, partner, task, isNeedReset } = useStoreState(
     state => state.components.completeTaskWizard
   );
   const {
     setStep,
-    resetStep,
     setFormData,
-    resetFormData,
     loadWizardData,
     saveWizardData,
-    removeWizardData,
     newReviewRequest,
-    resetWizard,
+    resetFormData,
+    resetStep,
     setNeedReset,
   } = useStoreActions(actions => actions.components.completeTaskWizard);
 
@@ -34,21 +33,16 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    if (isNeedReset) {
-      setNeedReset(false);
-      saveWizardData();
+    if (!isNeedReset || isPreventReset) {
+      return;
     }
-  }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     !isLoading &&
-  //     step < 4 &&
-  //     (!user.name || !partner.name || !task.databaseId)
-  //   ) {
-  //     Router.push("/tasks");
-  //   }
-  // }, [isLoading, step, user, partner, task]);
+    resetFormData();
+    resetStep();
+    saveWizardData();
+    setNeedReset(false);
+
+  }, [isNeedReset, isPreventReset]);
 
   function handleCompleteWizard() {
     const { reviewRating, communicationRating, reviewText } = formData as {
@@ -64,19 +58,18 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
       partner,
       task,
     });
-    resetWizard();
-    resetFormData();
-    setStep(4);
+
+    setIsPreventReset(true);
+    setNeedReset(true);
     saveWizardData();
+    setStep(4);
   }
 
   function handleCancelWizard(event) {
     event.preventDefault();
-    resetWizard();
-    resetFormData();
-    resetStep();
-    removeWizardData();
-    Router.push("/tasks");
+    setIsPreventReset(true);
+    setNeedReset(true);
+    Router.push("/tasks/[slug]", "/tasks/" + task.slug);
   }
 
   return (
@@ -119,4 +112,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default CreateTask;
+export default CompleteTask;

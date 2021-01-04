@@ -11,8 +11,8 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
   doer: ITaskTimelineItemDoer;
   doerId: number;
 }> = ({ id, status, message, doer, doerId }): ReactElement => {
-  const { databaseId: userId, fullName: userName } = useStoreState(state => state.session.user);
-  const { databaseId: taskId, title } = useStoreState(state => state.components.task);
+  const { databaseId: userId, fullName: userName, slug: userSlug } = useStoreState(state => state.session.user);
+  const { databaseId: taskId, title, slug: taskSlug } = useStoreState(state => state.components.task);
   const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
   const { acceptSuggestedCloseRequest, rejectSuggestedCloseRequest } = useStoreActions(
     state => state.components.task
@@ -46,10 +46,11 @@ const TaskTimelineCloseSuggestType: React.FunctionComponent<{
                 user: {
                   databaseId: userId,
                   name: userName,
+                  slug: userSlug,
                   isAuthor: isTaskAuthorLoggedIn,
                 },
-                partner: { databaseId: doerId, name: doer.fullName },
-                task: { databaseId: taskId, title },
+                partner: { databaseId: doerId, name: doer.fullName, slug: doer.slug },
+                task: { databaseId: taskId, title, slug: taskSlug },
               });
 
               Router.push({

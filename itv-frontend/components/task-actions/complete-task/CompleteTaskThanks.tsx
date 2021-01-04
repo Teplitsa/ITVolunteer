@@ -1,6 +1,7 @@
 import { ReactElement, useEffect } from "react";
 import Router from "next/router";
-import { useStoreActions } from "../../../model/helpers/hooks";
+import * as _ from "lodash";
+import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
 import { WizardScreen } from "../../layout/WizardScreen";
 
 const CompleteTaskThanks = (screenProps): ReactElement => {
@@ -8,17 +9,28 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
     ...screenProps,
     screenName: "Thanks",
   };
-  const { resetStep, removeWizardData, setNeedReset } = useStoreActions(
-    actions => actions.components.completeTaskWizard
+
+  const { user, task } = useStoreState(
+    state => state.components.completeTaskWizard
   );
+
+  const setTaskToPortfolioWizardState = useStoreActions(actions => actions.components.taskToPortfolioWizard.setInitState);
+
   const exitWizard = event => {
     event.preventDefault();
-    setNeedReset(true);
-    resetStep();
-    removeWizardData();
-    Router.push({
-      pathname: "/tasks",
-    });
+    // console.log("exitWizard path:", "/tasks/" + props.task.slug);
+    
+    if(user.isAuthor) {
+      Router.push("/tasks/[slug]", "/tasks/" + task.slug);
+    }
+    else {
+      console.log("setTaskToPortfolioWizardState task:", task);
+      setTaskToPortfolioWizardState({
+        task: _.cloneDeep(task),
+        doer: _.cloneDeep(user),
+      });
+      Router.push("/task-to-portfolio");
+    }
   };
 
   useEffect(() => {

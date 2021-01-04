@@ -7,7 +7,7 @@ const TaskToPortfolioFailure = (screenProps): ReactElement => {
     screenName: "Failure",
     onStartClick: event => {
       event.preventDefault();
-      props.goNextStep(2);
+      screenProps.goNextStep(2);
     },
   };
 
