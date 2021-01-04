@@ -4,6 +4,7 @@ const taskApprovedDoer: ITaskApprovedDoer = {
   id: "",
   databaseId: 0,
   fullName: "",
+  slug: "",
   itvAvatar: "",
   profileURL: "",
   solvedTasksCount: 0,
