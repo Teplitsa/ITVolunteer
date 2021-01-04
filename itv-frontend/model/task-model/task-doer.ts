@@ -4,6 +4,7 @@ const taskDoer: ITaskDoer = {
   id: "",
   databaseId: 0,
   fullName: "",
+  slug: "",
   profileURL: "",
   itvAvatar: "",
   solvedTasksCount: 0,
