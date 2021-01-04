@@ -867,6 +867,7 @@ export interface ITaskDoer {
   id: string;
   databaseId: number;
   fullName: string;
+  slug: string;
   profileURL: string;
   itvAvatar: string;
   solvedTasksCount: number;
