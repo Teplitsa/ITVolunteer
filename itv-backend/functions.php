@@ -2,6 +2,12 @@
 
 load_theme_textdomain( 'itv-backend', get_theme_file_path() . '/lang' );
 
+add_filter('use_block_editor_for_post_type', 'itv_prefix_disable_gutenberg', 10, 2);
+function itv_prefix_disable_gutenberg($current_status, $post_type) {
+    if ($post_type === 'tasks') return false;
+    return $current_status;
+}
+
 // models
 require_once( get_theme_file_path() . '/models/member/portfolio.php' );
 require_once( get_theme_file_path() . '/models/member/member.php' );
