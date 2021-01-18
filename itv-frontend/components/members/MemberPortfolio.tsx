@@ -8,6 +8,7 @@ import { getMediaData } from "../../utilities/media";
 
 const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
   const userSlug = useStoreState(store => store.components.memberAccount.slug);
+  const user = useStoreState(store => store.session.user);
   const portfolioList = useStoreState(state => state.components.memberAccount.portfolio.list);
   const noPortfolioItems = portfolioList instanceof Array !== true || portfolioList.length === 0;
   const previewsToLoad = useMemo(() => portfolioList.map(({ preview }) => preview), [
@@ -58,12 +59,14 @@ const MemberPortfolio: React.FunctionComponent = (): ReactElement => {
       <div className="member-portfolio__header">
         <div className="member-portfolio__title">Портфолио</div>
         <div className="member-portfolio__actions">
-          <Link
-            href="/members/[username]/add-portfolio-item"
-            as={`/members/${userSlug}/add-portfolio-item`}
-          >
-            <a className="btn btn_hint-alt">+ Добавить работу</a>
-          </Link>
+          {user.slug === userSlug &&
+            <Link
+              href="/members/[username]/add-portfolio-item"
+              as={`/members/${userSlug}/add-portfolio-item`}
+            >
+              <a className="btn btn_hint-alt">+ Добавить работу</a>
+            </Link>
+          }
         </div>
       </div>
       <div className="member-portfolio__list">
