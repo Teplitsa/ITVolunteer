@@ -477,7 +477,7 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
           console.error("При добавлении портфолио произошла ошибка.");
         } else {
           const data = await (<Promise<IRestApiResponse>>result.json());
-          console.log("portfolio added:", data);
+          // console.log("portfolio added:", data);
           actions.setCreatedPortfolioItemSlug(_.get(data, "slug", ""));
         }
         
