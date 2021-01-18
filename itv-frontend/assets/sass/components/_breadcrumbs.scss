@@ -1,0 +1,22 @@
+.breadcrumbs {
+  @include text-xs-bold-line-lg;
+  color: $color-gray-dark-lg;
+
+  max-width: $content-width;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  &__separator {
+    margin: 0px 10px;
+  }
+
+  a {
+    color: $color-gray-dark-md-001;
+  }
+}

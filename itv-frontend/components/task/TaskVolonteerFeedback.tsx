@@ -8,11 +8,10 @@ const TaskVolonteerFeedback: React.FunctionComponent = (): ReactElement => {
   const doersRequest = useStoreActions(actions => actions.components.task.doersRequest);
 
   useEffect(() => {
-    isLoggedIn && doersRequest();
+    doersRequest();
   }, [isLoggedIn, doersRequest]);
 
   return (
-    isLoggedIn &&
     !approvedDoer &&
     doers &&
     doers.length > 0 && (

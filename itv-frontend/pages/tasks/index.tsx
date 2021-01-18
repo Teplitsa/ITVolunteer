@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, memo } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { useStoreActions } from "../../model/helpers/hooks";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import TaskListStats from "../../components/task-list/TaskListStats";
@@ -12,10 +13,17 @@ import { regEvent } from "../../utilities/ga-events";
 
 const TaskListPage: React.FunctionComponent<ITaskListModel> = (): ReactElement => {
   const router = useRouter();
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: "Задачи", url: "/tasks"},
+    ]);  
+  }, []);
 
   return (
     <>

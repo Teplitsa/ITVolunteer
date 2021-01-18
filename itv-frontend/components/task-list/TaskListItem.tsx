@@ -3,13 +3,12 @@ import { ITaskState } from "../../model/model.typing";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import * as utils from "../../utilities/utilities";
 import { regEvent } from "../../utilities/ga-events";
 
 import { UserSmallView } from "../UserView";
 import TaskMeta from "../task/task-header/TaskMeta";
-import TaskMetaItem from "../task/task-header/TaskMetaItem";
 import TaskTags from "../task/task-header/TaskTags";
+import TaskTagsHome from "../task/task-header/TaskTagsHome";
 
 const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const router = useRouter();
@@ -23,10 +22,12 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement =
             user={{
               itvAvatar: task.author.organizationLogo,
               fullName: task.author.organizationName,
+              slug: task.author.slug,
               memberRole: "Организация",
             }}
           />
         )}
+        <div className="task-author-meta-tail-shadow"></div>
       </div>
       <h1 className="task-body__title">
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
@@ -40,12 +41,18 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement =
       </h1>
       <TaskMeta {...task} />
       {!!task && !!task.coverImgSrcLong && (
-        <div className="task-cover">
-          <img src={task.coverImgSrcLong} />
-        </div>
+        <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
+          <a className="task-cover">
+            <img src={task.coverImgSrcLong} />
+          </a>
+        </Link>
       )}
       {task.content && (
-        <div className="task-content" dangerouslySetInnerHTML={{ __html: task.content }} />
+        <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
+          <a className="clickable-task-content">
+            <div className="task-content" dangerouslySetInnerHTML={{ __html: task.content }} />
+          </a>
+        </Link>        
       )}
       <TaskTags {...task} />
     </div>
@@ -58,7 +65,7 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
   return (
     <div className={`task-body`}>
       <div className="task-author-meta">
-        {!task.author?.organizationName && <UserSmallView user={task.author} />}
+        <UserSmallView user={task.author} />
         {task.author?.organizationName && (
           <UserSmallView
             user={{
@@ -67,16 +74,11 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
                 "/wp-content/themes/tstsite/assets/img/icon-briefcase.svg",
               fullName: task.author.organizationName,
               memberRole: "Организация",
+              slug: task.author.slug,
             }}
           />
         )}
-        <TaskMetaItem>
-          <span>
-            {`Открыто ${utils.getTheIntervalToNow({
-              fromDateString: task.dateGmt,
-            })}`}
-          </span>
-        </TaskMetaItem>
+        <div className="task-author-meta-tail-shadow"></div>
       </div>
       <h3 className="task-title">
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
@@ -88,7 +90,8 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
           />
         </Link>
       </h3>
-      <TaskTags {...task} />
+      <TaskMeta {...task} />      
+      <TaskTagsHome {...task} />
     </div>
   );
 };

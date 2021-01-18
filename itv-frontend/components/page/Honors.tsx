@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from "react";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { useRouter } from "next/router";
 import withGutenbergBlock from "../gutenberg/hoc/withGutenbergBlock";
 import HonorsListItemIndex from "./HonorsListItemIndex";
@@ -8,11 +8,19 @@ import { regEvent } from "../../utilities/ga-events";
 const Honors: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const { title, blocks } = useStoreState(state => state.components.honors);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
+
   let mediaTextBlockIndex = -1;
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: title},
+    ]);  
+  }, [title]);
 
   return (
     <article className="article article_honors">

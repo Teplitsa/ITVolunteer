@@ -9,6 +9,8 @@ import TaskComments from "../../components/task/TaskComments";
 import TaskSuggestionsForVolonteers from "../../components/task/TaskSuggestionsForVolonteers";
 import TaskAuthor from "../../components/task/author/TaskAuthor";
 import TaskBecomeCandidate from "../../components/task/TaskBecomeCandidate";
+import TaskCancelCandidate from "../../components/task/TaskCancelCandidate";
+import TaskNoCandidatesText from "../../components/task/TaskNoCandidatesText";
 import TaskReplyStatus from "../../components/task/TaskReplyStatus";
 import TaskApprovedDoer from "../../components/task/TaskApprovedDoer";
 import TaskVolonteerFeedback from "../../components/task/TaskVolonteerFeedback";
@@ -22,6 +24,7 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const { isLoggedIn } = useStoreState(state => state.session);
   const { ...taskState } = useStoreState(state => state.components.task);
   const setTaskState = useStoreActions(actions => actions.components.task.setState);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
   const router = useRouter();
   const { slug } = router.query;
 
@@ -54,6 +57,13 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
     });
   }, [slug, task, isLoggedIn]);
 
+  useEffect(() => {
+    setCrumbs([
+      {title: "Задачи", url: "/tasks"},
+      {title: task.title},
+    ]);  
+  }, [task]);
+
   return (
     <>
       <DocumentHead />
@@ -68,10 +78,12 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
             </section>
             <Sidebar>
               <TaskAuthor />
-              <TaskBecomeCandidate />
+              <TaskNoCandidatesText />
+              <TaskCancelCandidate />
               <TaskReplyStatus />
               <TaskApprovedDoer />
               <TaskVolonteerFeedback />
+              <TaskBecomeCandidate />
               <TaskAdminSupport buttonTitle="Что-то не так с задачей? Напишите администратору" />
             </Sidebar>
           </main>

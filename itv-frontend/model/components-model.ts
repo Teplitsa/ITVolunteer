@@ -23,6 +23,7 @@ import memberProfilePageModel from "./components/member-profile-model";
 import memberAccountPageModel from "./components/member-account-model";
 import membersPageModel from "./components/members-model";
 import homePageModel from "./components/home-page-model";
+import breadCrumbsModel from "./components/breadcrumbs-model";
 
 const componentsState: IComponentsState = {
   members: membersPageModel,
@@ -47,6 +48,7 @@ const componentsState: IComponentsState = {
   newsItem: newsItemModel,
   otherNewsList: otherNewsListModel,
   homePage: homePageModel,
+  breadCrumbs: breadCrumbsModel,
 };
 
 export const componentList = Object.keys(componentsState) as Array<keyof IComponentsState>;

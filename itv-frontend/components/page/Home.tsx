@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, Fragment } from "react";
+import { ReactElement, useEffect, Fragment, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState } from "../../model/helpers/hooks";
@@ -7,12 +7,29 @@ import NewsList from "../news/NewsList";
 import { TaskListItemHome } from "../task-list/TaskListItem";
 import { ITaskState } from "../../model/model.typing";
 import { regEvent } from "../../utilities/ga-events";
+import { HomeTaskListContext, homeTaskListContextDefault } from "../task-list/TaskListContext";
 
 const Home: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const homePage = useStoreState(state => state.components.homePage);
   const { title, content } = useStoreState(state => state.components.homePage);
   const { isLoggedIn } = useStoreState(state => state.session);
+
+  // hide task items overlay using react context
+  const [homeTaskListContextValue, setHomeTaskListContextValue] = useState({
+    ...homeTaskListContextDefault, 
+    setMustHideTaskItemOverlays: setMustHideTaskItemOverlays,
+  });
+
+  function setMustHideTaskItemOverlays(taskId, mustRefresh) {
+    setHomeTaskListContextValue({
+      ...homeTaskListContextValue, 
+      mustHideTaskItemOverlays: {
+        ...homeTaskListContextValue.mustHideTaskItemOverlays, 
+        [taskId]: mustRefresh,
+      }
+    });
+  }
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
@@ -82,20 +99,20 @@ const Home: React.FunctionComponent = (): ReactElement => {
         <div className="home-section-inner">
           <div className="home-list-section__title">Открытые задачи</div>
           <div className="home-list-section__list">
-            <div className="task-list">
-              {homePage.taskList.map((task, index) => (
-                <Fragment key={`home-taskListItem-${task.id}-${index}`}>
-                  <div className={`task-body-wrapper index-${index % 2}`}>
-                    <TaskListItemHome {...(task as ITaskState)} />
-                  </div>
-                  {!!(index % 2) && (
-                    <div className="task-list-item-separator">
-                      <div className="task-list-item-separator__line" />
+            <HomeTaskListContext.Provider value={homeTaskListContextValue}>
+              <div className="task-list">
+                {homePage.taskList.map((task, index) => (
+                  <Fragment key={`home-taskListItem-${task.id}-${index}`}>
+                    <div className={`task-body-wrapper index-${index % 2}`} onClick={() => {
+                      console.log("must refresh");
+                      setMustHideTaskItemOverlays(task.id, true);
+                    }}>
+                      <TaskListItemHome {...(task as ITaskState)} />
                     </div>
-                  )}
-                </Fragment>
-              ))}
-            </div>
+                  </Fragment>
+                ))}
+              </div>
+            </HomeTaskListContext.Provider>
           </div>
           <div className="home-list-section__footer">
             <Link href={"/tasks"}>

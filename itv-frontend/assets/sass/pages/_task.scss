@@ -3,7 +3,7 @@
   max-width: $content-width;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 40px;
+  margin-top: 0px;
 
   display: flex;
   justify-content: space-between;
@@ -39,8 +39,21 @@
     }
 
     .action-block {
-      margin-top: 41px;
+      margin-top: 20px;
       width: 100%;
+
+      &.cancel-candidate {
+        margin-top: 41px;
+      }
+
+      .chance-to-get-task-cta {
+        @include text-sm;
+        border-radius: 8px;
+        padding: 16px 24px;
+        background-color: $color-main-light;        
+        color: $color-gray-dark-lg;
+        margin-bottom: 20px;
+      }
     }
   }
 }
@@ -50,10 +63,19 @@
 .site-main.page-task-list .task-list,
 .site-main .home-list-section__list .task-list {
   .task-body {
+    position: relative;
     margin-top: 20px;
     border: 2px solid $color-gray-light-md;
     border-radius: 8px;
     padding: $base * 4;
+
+    .task-in-work-label {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      width: 193px;
+      height: 128px;
+    }
 
     header {
       padding-bottom: 20px;

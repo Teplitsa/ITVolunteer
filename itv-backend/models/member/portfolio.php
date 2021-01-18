@@ -31,6 +31,8 @@ class PortfolioWork {
 
 class PortfolioWorkManager {
     public static $post_type = 'portfolio_work';
+
+    // meta
     public static $meta_image_id = 'portfolio_image_id';
 
     public static $FIELD_NEXT_WORK_SLUG = 'next_work_slug';
@@ -91,3 +93,12 @@ class PortfolioWorkManager {
         return $posts[0] ?? null;        
     }
 }
+
+
+function itv_add_xp_for_portfolio($post_id, $post, $update) {
+    $doer_id = get_current_user_id();
+    if(!$update && $doer_id) {
+        UserXPModel::instance()->register_activity_from_gui($doer_id, UserXPModel::$ACTION_ADD_PORTFOLIO);
+    }
+}
+add_action( "save_post_" . PortfolioWorkManager::$post_type, "\ITV\models\itv_add_xp_for_portfolio", 10, 3 );

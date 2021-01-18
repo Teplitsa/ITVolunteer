@@ -1,6 +1,6 @@
 import { ReactElement, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { regEvent } from "../../utilities/ga-events";
 
 import PasechnikImage from "../../assets/img/pasechnik.svg";
@@ -10,10 +10,17 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
   const [isPasechnikImageShown, showPasechnikImage] = useState<boolean>(false);
   const pasechnikImageRef = useRef<HTMLImageElement>(null);
   const { title, content } = useStoreState(state => state.components.paseka);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: title},
+    ]);  
+  }, [title]);
 
   useEffect(() => {
     new IntersectionObserver(([imageRef]) => imageRef.isIntersecting && showPasechnikImage(true), {

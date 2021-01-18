@@ -9,6 +9,9 @@ import TaskStatus from "./task-footer/TaskStatus";
 import TaskActionButtons from "./task-footer/TaskActionButtons";
 import { TaskStatus as TaskStatusType } from "../../model/model.typing";
 
+import taskInWorkLabel from "../../assets/img/task-in-work-label.svg";
+
+
 export const status: Map<TaskStatusType, string> = new Map([
   ["draft", "Черновик"],
   ["publish", "Опубликовано"],
@@ -26,6 +29,7 @@ const Task: React.FunctionComponent = (): ReactElement => {
     referencesHtml,
     externalFileLinksList,
     files,
+    status,
   } = useStoreState(state => state.components.task);
 
   if (!taskId) {
@@ -34,6 +38,9 @@ const Task: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="task-body">
+      {status === "in_work" &&
+        <img src={taskInWorkLabel} className="task-in-work-label" alt="Задача в работе" />
+      }
       <article>
         <TaskHeader />
         <div className="task-body-text">

@@ -16,14 +16,14 @@ const TaskToPortfolioDescription = (screenProps): ReactElement => {
     <WizardScreen {...props}>
       <div className="wizard-screen">
         <WizardForm
-          title={"Как бы вы описали задачу"}
+          title={"Расскажите, в чем заключалась ваша работа"}
           isRequired={true}
           {...props}
         >
           <WizardTextField
             {...props}
             name="description"
-            placeholder="Например, Помощь в разработке баннера"
+            placeholder="Опишите, что вы сделали, в чем была сложность, что вызвало удовольствие. Каким решением, вы гордитесь"
             maxLength={450}
           />
         </WizardForm>

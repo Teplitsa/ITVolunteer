@@ -1,16 +1,23 @@
 import { ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MembersList from "../members/MembersList";
 import { regEvent } from "../../utilities/ga-events";
 
 const Members: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const totalVolunteers = useStoreState(state => state.components.members.userListStats.total);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+  
+  useEffect(() => {
+    setCrumbs([
+      {title: "Волонтеры"},
+    ]);  
+  }, []);
 
   return (
     <div className="members">

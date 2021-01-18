@@ -1,5 +1,5 @@
 import { ReactElement, useState, useEffect } from "react";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { useRouter } from "next/router";
 import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
 import TaskAdminSupportForm from "../task/TaskAdminSupportForm";
@@ -11,6 +11,7 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const { title, content } = useStoreState(state => state.components.page);
   const [isShowForm, setIsShowForm] = useState(true);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   function handleSuccess() {
     setIsShowForm(false);
@@ -19,6 +20,12 @@ const PageContacts: React.FunctionComponent = (): ReactElement => {
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: title},
+    ]);  
+  }, [title]);
 
   return (
     <article className="article article-page">

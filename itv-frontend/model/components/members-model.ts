@@ -18,6 +18,7 @@ export const membersPageState: IMembersPageState = {
 
 const memberListItemQueriedFields = `
   id
+  slug
   itvAvatar
   fullName
   username

@@ -7,9 +7,7 @@ import DocumentHead from "../components/DocumentHead";
 import TaskToPortfolioIntro from "../components/task-actions/task-to-portfolio/TaskToPortfolioIntro";
 import TaskToPortfolioFailure from "../components/task-actions/task-to-portfolio/TaskToPortfolioFailure";
 import TaskToPortfolioTitle from "../components/task-actions/task-to-portfolio/TaskToPortfolioTitle";
-// import TaskToPortfolioWorkDetails from "../components/task-actions/task-to-portfolio/TaskToPortfolioWorkDetails";
 import TaskToPortfolioDescription from "../components/task-actions/task-to-portfolio/TaskToPortfolioDescription";
-// import TaskToPortfolioResultLink from "../components/task-actions/task-to-portfolio/TaskToPortfolioResultLink";
 import TaskToPortfolioPreview from "../components/task-actions/task-to-portfolio/TaskToPortfolioPreview";
 import TaskToPortfolioFullImage from "../components/task-actions/task-to-portfolio/TaskToPortfolioFullImage";
 import Wizard from "../components/Wizard";
@@ -35,6 +33,18 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
   useEffect(() => {
     loadWizardData();
   }, []);
+
+  useEffect(() => {
+    if(!task) {
+      return;
+    }
+
+    if(formData.title || !task.title) {
+      return;
+    }
+
+    setFormData({...formData, title: task.title});
+  }, [task, formData]);
 
   useEffect(() => {
 
@@ -64,11 +74,9 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
   }, [createdPortfolioItemSlug]);
 
   function handleCompleteWizard() {
-    const { title, description, resultLink, workDetails, preview, fullImage } = formData as {
+    const { title, description, preview, fullImage } = formData as {
       title: string;
       description: string;
-      resultLink?: string;
-      workDetails?: string;
       preview?: number;
       fullImage?: number;
     };
@@ -78,8 +86,6 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
       task,
       title,
       description,
-      resultLink,
-      workDetails,
       preview: _.get(preview, "0.value", null), 
       fullImage: _.get(fullImage, "0.value", null), 
     });
@@ -116,12 +122,10 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
       >
         <TaskToPortfolioIntro isIgnoreStepNumber={true} />
         <TaskToPortfolioFailure isIgnoreStepNumber={true} />
-        {/* <TaskToPortfolioWorkDetails /> */}
         <TaskToPortfolioTitle />
         <TaskToPortfolioDescription />
-        {/* <TaskToPortfolioResultLink /> */}
-        <TaskToPortfolioPreview shortTitle="Превью" />
-        <TaskToPortfolioFullImage shortTitle="Фото" />
+        <TaskToPortfolioPreview shortTitle="Превью" description="Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”. Оптимальный размер картинки для превью 320x200." />
+        <TaskToPortfolioFullImage shortTitle="Фото"  description="Перетащите файлы в выделенную область для загрузки или кликните на кнопку “Загрузить”. Оптимальная ширина основной картинки 1140px." />
       </Wizard>
     </>
   );

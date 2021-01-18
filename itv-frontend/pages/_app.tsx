@@ -79,10 +79,6 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
   //     });
   // }, [componentName]);
 
-  // useEffect(() => {
-  //   console.log("Check for client-side storage and update store.");
-  // }, []);
-
   useEffect(() => {
     const handleRouteChange = (url: string) => {
       if(isPageWithSkeleton(url)) {
@@ -92,6 +88,11 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
     };
 
     const handleRouteChanged = (url: string) => {
+      // reset breadcrumbs
+      dispatch({
+        type: `@action.components.breadCrumbs.initializeState`,
+      });
+      
       if(isPageWithSkeleton(url)) {
         setIsLoading(false);
       }

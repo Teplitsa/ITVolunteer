@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { useStoreState } from "../../model/helpers/hooks";
 
 const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
-  const { isLoggedIn, isTaskAuthorLoggedIn } = useStoreState(state => state.session);
+  const { isTaskAuthorLoggedIn } = useStoreState(state => state.session);
   const { approvedDoer, doers } = useStoreState(state => state.components.task);
   // const addDoer = useStoreActions(
   //   (actions) => actions.components.task?.addDoerRequest
@@ -11,14 +11,6 @@ const TaskReplyStatus: React.FunctionComponent = (): ReactElement => {
   return (
     !approvedDoer && (
       <>
-        {!doers?.length && <h2>Откликов пока нет</h2>}
-
-        {!doers?.length && isLoggedIn && !isTaskAuthorLoggedIn && (
-          <div className="sidebar-users-block no-responses">
-            <p>Откликнитесь первыми и получите задачу</p>
-          </div>
-        )}
-
         {doers?.length < 2 && isTaskAuthorLoggedIn && (
           <div className="sidebar-users-block no-responses">
             <p>

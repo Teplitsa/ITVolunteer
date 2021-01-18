@@ -336,6 +336,10 @@
       }
     }
 
+    .clickable-task-content {
+      @include a-no-hover-underline;
+    }
+
     .task-content {
       @include text-sm;
       color: $color-gray-dark-md-001;
@@ -352,9 +356,25 @@
     .task-author-meta {
       display: flex;
       justify-content: flex-start;
+      position: relative;
+      overflow: hidden;
+
+      .task-author-meta-tail-shadow {
+        width: 50px;
+        height: 100%;
+        top: 0px;
+        right: 0px;
+        position: absolute;        
+        background: linear-gradient(270deg, $color-gray-light-xl 30.88%, rgba(251, 248, 244, 0) 100%);
+      }
 
       .itv-user-small-view {
         margin-right: $base * 3;
+
+        .name a, 
+        .name span {
+          white-space: nowrap;
+        }
       }
     }
   }

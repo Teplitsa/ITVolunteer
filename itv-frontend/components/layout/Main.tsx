@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import WithGlobalScripts from "../hoc/withGlobalScripts";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
@@ -10,6 +10,7 @@ import TeplitsaProjectLinks from "../TeplitsaProjectLinks";
 import Socials from "../Socials";
 import Copyright from "../Copyright";
 import HeaderNav from "./partials/HeaderNav";
+import BreadCrumbs from "../../components/BreadCrumbs";
 
 const Main: React.FunctionComponent = ({ children }): ReactElement => {
   return (
@@ -17,6 +18,7 @@ const Main: React.FunctionComponent = ({ children }): ReactElement => {
       <Header>
         <HeaderNav />
       </Header>
+      <BreadCrumbs />
       {children}
       <Footer>
         <FooterNav />

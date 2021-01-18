@@ -30,6 +30,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
   const itvAvatarFile = useStoreState(state => state.components.memberAccount.itvAvatarFile);
   const username = useStoreState(state => state.components.memberAccount.username);
+  const fullName = useStoreState(state => state.components.memberAccount.fullName);
   
 
   const {
@@ -46,6 +47,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   } = useStoreActions(actions => actions.components.memberAccount);
   const router = useRouter();
   const activeTabIndex = router.asPath.search(/#reviews/) !== -1 ? 1 : 0;
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   const tabList: Array<{
     title: string;
@@ -82,6 +84,13 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: "Волонтеры", url: "/members"},
+      {title: fullName},
+    ]);  
+  }, [fullName]);
 
   useEffect(() => {
     if (!isAccountOwner) {

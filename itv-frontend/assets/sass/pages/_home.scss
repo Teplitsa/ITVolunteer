@@ -179,14 +179,18 @@
   padding-bottom: 0px;
 
   .task-body-wrapper {
-    width: calc(50% - 20px);
+    width: calc(50% - 60px);
+    border: 2px solid #e6dfd1;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 8px;
 
     &.index-0 {
-      margin-right: 40px;
+      margin-right: 20px;
     }
 
     &:not(:first-child) {
-      margin-top: 0px;
+      // margin-top: 0px;
     }
   }
 
@@ -207,28 +211,88 @@
     .meta-terms {
       margin-top: 10px;
 
+      .all-terms-overlay {
+        position: absolute;
+        background-color: $color-gray-light-xl;
+        top: 0px;
+        left: 24px;
+        padding: 0px 16px 0px 0;
+        z-index: 10;
+        width: calc(100%);
+        display: flex;     
+        
+        .meta-term {
+          background-color: $color-gray-light-xl;          
+        }
+      }
+
       .terms {
         margin-right: 4px;
+        position: relative;
 
         & > img {
           margin-right: 4px;
         }
+
+        .plus-some {
+          &.invisible {
+            visibility: hidden;            
+          }
+
+          a {
+            color: $color-gray-dark-lg;
+          }
+        }
       }
+    }
+
+    .task-author-meta {
+      position: relative;
+      overflow: hidden;
+
+      .task-author-meta-tail-shadow {
+        width: 50px;
+        height: 100%;
+        top: 0px;
+        right: 0px;
+        position: absolute;        
+        background: linear-gradient(270deg, $color-gray-light-xl 30.88%, rgba(251, 248, 244, 0) 100%);
+      }
+
     }
 
     .itv-user-small-view {
       margin-right: 12px;
+
+      .name a, 
+      .name span {
+        white-space: nowrap;
+      }
     }
 
-    .meta-info {
-      margin-top: 0px;
+    div.meta-info {
+      margin-top: 10px;
       display: flex;
       align-items: center;
 
       span {
-        @include text-xs-line-lg;
+        @include text-xs-bold-line-lg;
         color: $color-gray-dark-lg;
         vertical-align: text-bottom;
+        margin-top: 0px;
+
+        // hide share link
+        &.meta-info {
+
+          &:last-child {
+            margin-right: 0px;
+            display: none;
+          }
+        }
+  
+        &.meta-info__item_deadline {
+          color: $color-sec-dark;
+        }
       }
     }
   }
@@ -447,6 +511,7 @@
       .meta-info {
         margin-top: 10px;
       }
+
     }
 
     .task-list-item-separator {

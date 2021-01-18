@@ -435,7 +435,7 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
     storeJsLocalStorage.remove(`wizard.${wizardName}.data`);
   }),
   newPortfolioItemRequest: thunk(
-    async (actions, { doer, task, title, description, resultLink, workDetails, preview, fullImage }, { getStoreState }) => {
+    async (actions, { doer, task, title, description, preview, fullImage }, { getStoreState }) => {
 
       const {
         session: {
@@ -448,16 +448,16 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
         title: title,
         content: description,
         featured_media: preview,
-        meta: {
-          portfolio_image_id: fullImage,
-          workDetails,
-          resultLink,
-        },
+        meta: {},
         auth_token: token,
         status: "publish",
         author: authorId,
         context: "portfolio_edit"
       };
+
+      if(fullImage) {
+        jsonData.meta["portfolio_image_id"] = fullImage;
+      }
 
       try {
         // console.log("create new portfolio item request...");
@@ -477,11 +477,11 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
           console.error("При добавлении портфолио произошла ошибка.");
         } else {
           const data = await (<Promise<IRestApiResponse>>result.json());
-          // console.log("portfolio added:", data);
+          console.log("portfolio added:", data);
           actions.setCreatedPortfolioItemSlug(_.get(data, "slug", ""));
         }
         
-        return { doer, task, title, description, resultLink, workDetails, preview, fullImage };
+        return { doer, task, title, description, preview, fullImage };
       } catch (error) {
         console.error(error);
       }

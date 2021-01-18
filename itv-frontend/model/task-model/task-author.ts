@@ -3,6 +3,7 @@ import { ITaskAuthor } from "../model.typing";
 const taskAuthor: ITaskAuthor = {
   id: "",
   databaseId: 0,
+  slug: "",
   fullName: "",
   itvAvatar: "",
   profileURL: "",

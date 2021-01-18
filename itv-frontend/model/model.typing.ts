@@ -294,6 +294,7 @@ export interface IComponentsState {
   newsItem?: INewsItemModel;
   otherNewsList?: IOtherNewsListModel;
   homePage?: IHomePageModel;
+  breadCrumbs?: IBreadCrumbsModel;
 }
 
 /**
@@ -666,8 +667,6 @@ export interface IPortfolioItemFormState {
   slug: string;
   title: string;
   description: string;
-  workDetails?: string;
-  resultLink?: string;
   preview: number;
   fullImage: number;
   nextPortfolioItemSlug?: string;
@@ -849,6 +848,7 @@ export interface ITaskAuthor {
   databaseId: number;
   fullName: string;
   itvAvatar: string;
+  slug: string;
   profileURL: string;
   authorReviewsCount: number;
   doerReviewsCount: number;
@@ -1448,8 +1448,6 @@ export interface ITaskToPortfolioWizardThunks extends IWizardThunks {
       task: ICompleteTaskWizardMeta;
       title: string;
       description: string;
-      resultLink?: string;
-      workDetails?: string;
       preview?: number;
       fullImage?: number;
     }
@@ -1580,4 +1578,27 @@ export interface IHomePageActions {
 export interface IHomePageThunks {
   loadStatsRequest: Thunk<IHomePageActions>;
   onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
+}
+
+/**
+ * task list context
+ */
+export interface IHomeTaskListContext {
+  mustHideTaskItemOverlays: any,
+  setMustHideTaskItemOverlays: (taskId: string, mustHide: boolean) => void,
+}
+
+/**
+ * BreadCrumbs
+ */
+export interface IBreadCrumbsModel extends IBreadCrumbsState, IBreadCrumbsActions {}
+
+export interface IBreadCrumbsState {
+  crumbs: Array<{title: string, url?: string}>;
+}
+
+export interface IBreadCrumbsActions {
+  initializeState: Action<IBreadCrumbsState>;
+  setState: Action<IBreadCrumbsModel, IBreadCrumbsState>;
+  setCrumbs: Action<IBreadCrumbsModel, Array<{title: string, url?: string}>>;
 }

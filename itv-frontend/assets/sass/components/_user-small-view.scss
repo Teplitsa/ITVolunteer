@@ -1,6 +1,8 @@
 .itv-user-small-view {
+  @include a-no-hover-underline;
   display: flex;
   align-items: center;
+
   .avatar-wrapper {
     display: inline-block;
     border-radius: 50%;

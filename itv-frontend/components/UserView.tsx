@@ -1,4 +1,6 @@
 import { ReactElement, useState, useEffect } from "react";
+import Link from "next/link";
+
 import IconBriefcase from "../assets/img/icon-briefcase.svg";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
 
@@ -7,6 +9,7 @@ export const UserSmallView: React.FunctionComponent<{
     itvAvatar?: string;
     fullName: string;
     memberRole: string;
+    slug?: string;
   };
 }> = ({ user }): ReactElement => {
   const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
@@ -30,20 +33,22 @@ export const UserSmallView: React.FunctionComponent<{
 
   return (
     user && (
-      <div className="itv-user-small-view">
-        <span
-          className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_default-image"}`}
-          style={{
-            backgroundImage: isAvatarImageValid
-              ? `url(${user.itvAvatar})`
-              : `url(${user.memberRole === "Организация" ? IconBriefcase : MemberAvatarDefault})`,
-          }}
-        />
-        <span className="name">
-          <span dangerouslySetInnerHTML={{ __html: user.fullName }} />
-          &nbsp;/&nbsp;{user.memberRole}
-        </span>
-      </div>
+      <Link href={`/members/${user.slug}`}>
+        <a className="itv-user-small-view" title={`${user.fullName} / ${user.memberRole}`}>
+          <span
+            className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_default-image"}`}
+            style={{
+              backgroundImage: isAvatarImageValid
+                ? `url(${user.itvAvatar})`
+                : `url(${user.memberRole === "Организация" ? IconBriefcase : MemberAvatarDefault})`,
+            }}
+          />
+          <span className="name">
+            <span dangerouslySetInnerHTML={{ __html: user.fullName }} />
+            &nbsp;/&nbsp;{user.memberRole}
+          </span>
+        </a>
+      </Link>
     )
   );
 };

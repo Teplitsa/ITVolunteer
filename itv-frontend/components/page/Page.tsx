@@ -1,15 +1,22 @@
 import { ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
-import { useStoreState } from "../../model/helpers/hooks";
+import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { regEvent } from "../../utilities/ga-events";
 
 const Page: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const { title, content } = useStoreState(state => state.components.page);
+  const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
+
+  useEffect(() => {
+    setCrumbs([
+      {title: title},
+    ]);  
+  }, [title]);
 
   return (
     <article className="article article-page">
