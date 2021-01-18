@@ -1565,7 +1565,7 @@ add_action('wp_ajax_nopriv_update-profile-v2', 'ajax_update_profile_v2');
 
 
 function ajax_get_member_reviews() {
-    $user = get_user_by( 'login', @$_GET['username'] );
+    $user = get_user_by( 'login', @$_GET['slug'] );
 
     if(!$user) {
         wp_die(json_encode(array(
@@ -1647,7 +1647,7 @@ add_action('wp_ajax_get-member-reviews', 'ajax_get_member_reviews');
 add_action('wp_ajax_nopriv_get-member-reviews', 'ajax_get_member_reviews');
 
 function ajax_get_member_task_stats() {
-    $user = get_user_by( 'login', @$_POST['username'] );
+    $user = get_user_by( 'slug', @$_POST['slug'] );
 
     $role = !empty($_POST['role']) ? $_POST['role'] : "";
     if(!$role) {

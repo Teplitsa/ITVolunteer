@@ -13,6 +13,7 @@ import {
 import { action, thunk } from "easy-peasy";
 import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
+import Slug from "pages/tasks/[slug]";
 
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
@@ -85,8 +86,8 @@ export const graphqlQuery: {
   member: string;
   memberTasks: string;
 } = {
-  member: `query getMember($username: ID!) {
-    user(id: $username, idType: USERNAME) {
+  member: `query getMember($slug: ID!) {
+    user(id: $slug, idType: SLUG) {
       ${Object.keys(memberAccountPageState)
     .filter(
       key =>
@@ -106,8 +107,8 @@ export const graphqlQuery: {
     .join("\n")}
     }
   }`,
-  memberTasks: `query getMemberTasks($username: String!, $role: String = "", $page: Int!) {
-    memberTasks(username: $username, role: $role, page: $page) {
+  memberTasks: `query getMemberTasks($slug: String!, $role: String = "", $page: Int!) {
+    memberTasks(slug: $slug, role: $role, page: $page) {
       id
       slug
       status
@@ -485,7 +486,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         components: {
           memberAccount: {
             template,
-            username,
+            slug,
             tasks: { page },
           },
         },
@@ -499,7 +500,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           process.env.GraphQLServer,
           graphqlQuery.memberTasks,
           {
-            username: username,
+            slug: slug,
             page: nextPage,
             role: template === "volunteer" ? "doer" : "author",
           }
@@ -524,13 +525,13 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
   getMemberTaskStatsRequest: thunk(async ({ setMemberTaskStats }, params, { getStoreState }) => {
     const {
       components: {
-        memberAccount: { username: name, template },
+        memberAccount: { slug, template },
       },
     } = getStoreState() as IStoreModel;
 
     try {
       const formData = new FormData();
-      formData.append("username", String(name));
+      formData.append("slug", String(slug));
       formData.append("role", template === "volunteer" ? "doer" : "author");
 
       const action = "get-member-task-stats";
@@ -659,12 +660,12 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
   storeIsNeedAttentionPanelClosed: thunk(async (_, params, { getStoreState }) => {
     const {
       components: {
-        memberAccount: { isNeedAttentionPanelClosed, username },
+        memberAccount: { isNeedAttentionPanelClosed, slug },
       },
     } = getStoreState() as IStoreModel;
 
     await storeJsLocalStorage.set(
-      `account.${username}.isNeedAttentionPanelClosed`,
+      `account.${slug}.isNeedAttentionPanelClosed`,
       isNeedAttentionPanelClosed
     );
   }),
@@ -672,12 +673,12 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     async ({ setIsNeedAttentionPanelClosed }, params, { getStoreState }) => {
       const {
         components: {
-          memberAccount: { username },
+          memberAccount: { slug },
         },
       } = getStoreState() as IStoreModel;
 
       const isClosed = await storeJsLocalStorage.get(
-        `account.${username}.isNeedAttentionPanelClosed`
+        `account.${slug}.isNeedAttentionPanelClosed`
       );
       setIsNeedAttentionPanelClosed(!!isClosed);
     }

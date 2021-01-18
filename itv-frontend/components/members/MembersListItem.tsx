@@ -44,7 +44,7 @@ const MembersListItem: React.FunctionComponent<{
           </div>
           <div className="volunteer__bage">
             <div className="volunteer__full-name">
-              <Link href={`/members/${volunteer.username}`}>
+              <Link href={`/members/${volunteer.slug}`}>
                 <a
                   className="volunteer__account-link"
                   target="_blank"
@@ -65,7 +65,7 @@ const MembersListItem: React.FunctionComponent<{
           <MemberStats
             {...{
               rating: volunteer.rating,
-              memberSlug: volunteer.username,
+              memberSlug: volunteer.slug,
               reviewsCount: volunteer.reviewsCount,
               xp: volunteer.xp,
               solvedProblems: volunteer.solvedProblems,

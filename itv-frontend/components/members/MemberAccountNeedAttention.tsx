@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 
 const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => {
-  const { username, profileFillStatus, isNeedAttentionPanelClosed } = useStoreState(
+  const { slug, profileFillStatus, isNeedAttentionPanelClosed } = useStoreState(
     state => state.components.memberAccount
   );
   const {
@@ -77,7 +77,7 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
         )}
         {!profileFillStatus.isProfileInfoEnough && (
           <li>
-            <Link href={`/members/${username}/profile`}>
+            <Link href={`/members/${slug}/profile`}>
               <a>Отредактируйте профиль</a>
             </Link>
             <p>Добавьте больше информации. Это позволит лучше с вами познакомиться.</p>

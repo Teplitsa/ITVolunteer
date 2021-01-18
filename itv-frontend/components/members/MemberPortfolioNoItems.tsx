@@ -5,7 +5,7 @@ import VolunteerPortfolioImage from "../../assets/img/illustration-volunteer-por
 
 const MemberPortfolioNoItems: React.FunctionComponent = (): ReactElement => {
   const { isAccountOwner } = useStoreState(store => store.session);
-  const { username } = useStoreState(store => store.components.memberAccount);
+  const { slug } = useStoreState(store => store.components.memberAccount);
 
   return (
     <div className="member-portfolio">
@@ -23,7 +23,7 @@ const MemberPortfolioNoItems: React.FunctionComponent = (): ReactElement => {
       <div className="member-portfolio__footer member-portfolio__footer_no-items">
         {isAccountOwner && <Link
           href="/members/[username]/add-portfolio-item"
-          as={`/members/${username}/add-portfolio-item`}
+          as={`/members/${slug}/add-portfolio-item`}
         >
           <a className="btn btn_default">
             Добавить первую работу

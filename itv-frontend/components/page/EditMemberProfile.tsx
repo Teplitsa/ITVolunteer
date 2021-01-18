@@ -357,7 +357,7 @@ const EditMemberProfile: React.FunctionComponent<{
                 </button>
               </div>
               <div className="auth-page-form__group center">
-                <Link href={`/members/${user.username}`}>
+                <Link href={`/members/${user.slug}`}>
                   <a className="auth-page-form__control-link-go-back">
                     Вернуться в режим просмотра
                   </a>

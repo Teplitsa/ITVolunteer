@@ -61,7 +61,17 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
 
   const loggedIn = decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/);
 
-  if (!loggedIn || (query.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
+  const { request } = await import("graphql-request");
+  const { graphqlQuery } = await import(
+    "../../../model/components/member-account-model"
+  );
+
+  // get user data
+  const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {
+    slug: query.username, // username is slug here
+  });
+
+  if (!loggedIn || (user.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
     res.statusCode = 401;
     Object.assign(model, { statusCode: 401 });
   }

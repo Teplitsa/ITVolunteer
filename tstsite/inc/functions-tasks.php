@@ -1218,11 +1218,12 @@ function get_likers(int $comment_id): array
         $wpdb->prepare(
             <<<SQL
             SELECT
-                userId, userName, userFullName
+                userId, userName, userFullName, userSlug
             FROM
                 (SELECT
                     users.ID AS userId,
                     users.display_name AS userName,
+                    users.nice_name AS userSlug,
                     usermeta.userFullName,
                     likes.comment_id AS commentId
                 FROM

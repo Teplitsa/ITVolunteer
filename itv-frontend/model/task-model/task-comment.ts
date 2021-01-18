@@ -51,6 +51,7 @@ export const graphqlQuery = {
         likers {
           userId
           userName
+          userSlug
           userFullName
         }
         author {

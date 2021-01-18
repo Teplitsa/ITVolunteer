@@ -778,7 +778,7 @@ function itv_register_member_tasks_graphql_query() {
             'description' => __( 'Member tasks', 'tst' ),
             'type' => [ 'list_of' => 'Task' ],
             'args'        => [
-                'username'     => [
+                'slug'     => [
                     'type' => [
                         'non_null' => 'USERNAME',
                     ],
@@ -793,7 +793,7 @@ function itv_register_member_tasks_graphql_query() {
             'resolve' => function($source, array $args, AppContext $context) {
                 // error_log("args: " . print_r($args, true));
 
-                $user = get_user_by( 'login', $args['username'] );
+                $user = get_user_by( 'slug', $args['slug'] );
 
                 $role = !empty($args['role']) ? $args['role'] : "";
                 if(!$role) {
