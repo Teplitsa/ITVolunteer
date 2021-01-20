@@ -24,8 +24,8 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
       },
       partner: {
         databaseId: isTaskAuthorLoggedIn ? approvedDoer.databaseId : author.databaseId,
-        name: isTaskAuthorLoggedIn ? approvedDoer.fullName : user.fullName,
-        slug: isTaskAuthorLoggedIn ? approvedDoer.slug : user.slug,
+        name: isTaskAuthorLoggedIn ? approvedDoer.fullName : author.fullName,
+        slug: isTaskAuthorLoggedIn ? approvedDoer.slug : author.slug,
       },
       task: { databaseId, title, slug: taskSlug },
     });

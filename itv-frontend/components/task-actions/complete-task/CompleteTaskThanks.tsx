@@ -24,7 +24,6 @@ const CompleteTaskThanks = (screenProps): ReactElement => {
       Router.push("/tasks/[slug]", "/tasks/" + task.slug);
     }
     else {
-      console.log("setTaskToPortfolioWizardState task:", task);
       setTaskToPortfolioWizardState({
         task: _.cloneDeep(task),
         doer: _.cloneDeep(user),

@@ -85,8 +85,8 @@ export const graphqlQuery: {
   member: string;
   memberTasks: string;
 } = {
-  member: `query getMember($username: ID!) {
-    user(id: $username, idType: USERNAME) {
+  member: `query getMember($slug: ID!) {
+    user(id: $slug, idType: SLUG) {
       ${Object.keys(memberAccountPageState)
     .filter(
       key =>

@@ -47,7 +47,6 @@ const TaskToPortfolio: React.FunctionComponent = (): ReactElement => {
   }, [task, formData]);
 
   useEffect(() => {
-
     if (!isNeedReset || isPreventReset) {
       return;
     }
