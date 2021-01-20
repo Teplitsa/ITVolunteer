@@ -514,7 +514,7 @@ function tst_get_member_url($member = null) {
 		$member = get_user_by('id', $member);
 	}
 	
-	return home_url('/members/'.$member->user_login);
+	return home_url('/members/'.$member->user_nicename);
 }
 
 function tst_get_member_field($field, $member_id = null){	
