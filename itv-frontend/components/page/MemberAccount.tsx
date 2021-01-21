@@ -72,7 +72,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     tabList.push({ title: "Задачи", content: MemberTasks });
   }
 
-  if (reviews.length > 0) {
+  if (reviews && reviews.length > 0) {
     tabList.push({ title: "Отзывы", content: MemberReviews });
   }
 

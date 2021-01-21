@@ -12,14 +12,12 @@ const TaskToPortfolioIntro = (screenProps): ReactElement => {
     <WizardScreen {...props} modifierClassNames={["wizard_to-portfolio-intro"]}>
       <div className="wizard-screen">
         <h1 className="wizard-screen__main-title">
-          Заказчик оценил вашу работу
+          Отличная работа! 
           <br />
-          на высшие баллы
+          Добавьте её в портфолио          
         </h1>
         <div className="wizard-screen__subtitle">
-          Хотите добавить в портфолио
-          <br />
-          задачу &laquo;<a href="#">Нужен сайт на Word Press</a>&raquo;?
+          Большинство заказчиков выбирают волонтёра по работам в портфолио
         </div>
         <a
           href="#"
@@ -39,7 +37,7 @@ const TaskToPortfolioIntro = (screenProps): ReactElement => {
             event.preventDefault();
             screenProps.goNextStep();
           }}>
-            Отмена
+            В другой раз
           </a>
         </div>
       </div>
