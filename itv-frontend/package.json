@@ -18,7 +18,9 @@
     "js-cookie": "^2.2.1",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
+    "mongodb": "^3.6.3",
     "next": "^10.0.3",
+    "next-connect": "^0.9.1",
     "next-images": "^1.6.2",
     "node-sass": "^4.14.1",
     "react": "^17.0.0",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^5.5.0",
+    "@types/mongodb": "^3.6.3",
     "@types/node": "^13.13.36",
     "@types/react": "^16.14.2",
     "@types/react-datepicker": "^2.11.1",
