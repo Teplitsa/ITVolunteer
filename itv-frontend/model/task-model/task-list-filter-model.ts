@@ -3,9 +3,7 @@ import {
   ITaskListFilterState,
   ITaskListFilterActions,
   ITaskListFilterModel,
-  IFetchResult,
 } from "../model.typing";
-import * as utils from "../../utilities/utilities";
 import * as _ from "lodash";
 
 import storeJsLocalStorage from "store";
@@ -79,7 +77,6 @@ const taskListFilterActions: ITaskListFilterActions = {
   setFilterData: action((state, payload) => {
     state.filterData = payload ? payload : [];
     state.isFilterDataLoaded = true;
-    // console.log("set state.filterData:", state.filterData)
   }),
   loadFilterData: thunk(async actions => {
     try {
@@ -89,31 +86,6 @@ const taskListFilterActions: ITaskListFilterActions = {
     } catch (error) {
       console.error("Failed to fetch the task list filter.");
     }
-
-    // const action = "get-task-list-filter";
-    // fetch(utils.getAjaxUrl(action), {
-    //   method: "get",
-    // })
-    //   .then(res => {
-    //     try {
-    //       return res.json();
-    //     } catch (ex) {
-    //       utils.showAjaxError({ action, error: ex });
-    //       return {};
-    //     }
-    //   })
-    //   .then(
-    //     (result: IFetchResult) => {
-    //       if (result.status == "error") {
-    //         return utils.showAjaxError({ message: result.message });
-    //       }
-
-    //       actions.setFilterData(result.sections);
-    //     },
-    //     error => {
-    //       utils.showAjaxError({ action, error });
-    //     }
-    //   );
   }),
 };
 
