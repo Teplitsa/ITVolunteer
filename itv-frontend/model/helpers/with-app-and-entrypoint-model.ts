@@ -74,15 +74,6 @@ const withAppAndEntrypointModel = async ({
   componentModel,
 }): Promise<IModelWithAppAndEntrypoint> => {
   const { request } = await import("graphql-request");
-  const appModel = await import("../app-model");
-  const appQuery = appModel.graphqlQuery.getMenusByLocation;
-
-  const {
-    menuItems: { nodes: socialMenu },
-  } = await request(process.env.GraphQLServer, appQuery, {
-    location: "SOCIAL",
-  });
-
   const [entrypointTemplate, entrypointModel] = isArchive
     ? await archiveModel(request, entrypointType, entrypointQueryVars)
     : isCustomPage
@@ -103,7 +94,6 @@ const withAppAndEntrypointModel = async ({
   const model = {
     app: {
       entrypointTemplate,
-      menus: { social: socialMenu },
     },
     entrypointType,
     entrypoint: {

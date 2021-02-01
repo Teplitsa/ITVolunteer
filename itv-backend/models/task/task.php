@@ -7,6 +7,63 @@ class Task
 
     const POST_TYPE = 'tasks';
 
+    public function update_item_cache(int $task_id)
+    {
+        if (!is_numeric($task_id)) {
+
+            throw new \Exception(__('A valid task ID is required.', 'itv-backend'));
+
+            return;
+        }
+
+        $task_id = (int) $task_id;
+
+        $task = Task::get_item($task_id);
+
+        if (is_null($task)) {
+
+            throw new \Exception(__('No task found for the given ID.', 'itv-backend'));
+
+            return;
+        }
+
+        if ($task["status"] !== "publish") {
+
+            throw new \Exception(__('The task is not a public.', 'itv-backend'));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{\Cache::STORAGE_NAME}->tasks;
+
+        $updateCacheResult = $collection->findOneAndUpdate(['databaseId' => $task_id], ['$set' => $task]);
+
+        // No task found to update.
+
+        if (is_null($updateCacheResult)) {
+
+            $collection->insertOne($task);
+        }
+    }
+
+    public static function register_hooks()
+    {
+        \add_action("save_post_" . self::POST_TYPE, [__CLASS__, "update_item_cache"]);
+    }
+
+    public static function get_item(int $task_id): ?array
+    {
+        $task = \get_post($task_id);
+
+        if (!is_null($task)) {
+            $task = \itv_get_ajax_task_short($task);
+        }
+
+        return $task;
+    }
+
     public static function get_list(): array
     {
         $tasks = [];
@@ -22,13 +79,19 @@ class Task
 
         if ($task_list->found_posts === 0) return null;
 
-
-
         foreach ($task_list->posts as $task) {
             $tasks[] = \itv_get_ajax_task_short($task);
         }
 
         return $tasks;
+    }
+
+    public static function get_filter_sections(): array
+    {
+        $task_list_filter = new \TaskListFilter();
+        $sections = $task_list_filter->create_filter_with_stats();
+
+        return $sections;
     }
 }
 

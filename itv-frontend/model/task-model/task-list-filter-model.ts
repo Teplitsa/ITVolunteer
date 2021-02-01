@@ -81,31 +81,39 @@ const taskListFilterActions: ITaskListFilterActions = {
     state.isFilterDataLoaded = true;
     // console.log("set state.filterData:", state.filterData)
   }),
-  loadFilterData: thunk(actions => {
-    const action = "get-task-list-filter";
-    fetch(utils.getAjaxUrl(action), {
-      method: "get",
-    })
-      .then(res => {
-        try {
-          return res.json();
-        } catch (ex) {
-          utils.showAjaxError({ action, error: ex });
-          return {};
-        }
-      })
-      .then(
-        (result: IFetchResult) => {
-          if (result.status == "error") {
-            return utils.showAjaxError({ message: result.message });
-          }
+  loadFilterData: thunk(async actions => {
+    try {
+      const { sections } = await (await fetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter`)).json();
 
-          actions.setFilterData(result.sections);
-        },
-        error => {
-          utils.showAjaxError({ action, error });
-        }
-      );
+      actions.setFilterData(sections);
+    } catch (error) {
+      console.error("Failed to fetch the task list filter.");
+    }
+
+    // const action = "get-task-list-filter";
+    // fetch(utils.getAjaxUrl(action), {
+    //   method: "get",
+    // })
+    //   .then(res => {
+    //     try {
+    //       return res.json();
+    //     } catch (ex) {
+    //       utils.showAjaxError({ action, error: ex });
+    //       return {};
+    //     }
+    //   })
+    //   .then(
+    //     (result: IFetchResult) => {
+    //       if (result.status == "error") {
+    //         return utils.showAjaxError({ message: result.message });
+    //       }
+
+    //       actions.setFilterData(result.sections);
+    //     },
+    //     error => {
+    //       utils.showAjaxError({ action, error });
+    //     }
+    //   );
   }),
 };
 

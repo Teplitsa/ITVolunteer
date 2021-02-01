@@ -41,23 +41,12 @@ export interface IStoreEntrypoint {
 export interface IAppModel extends IAppState, IAppActions {}
 
 export interface IAppState {
-  menus: IAppMenu;
   entrypointTemplate?: keyof IStoreEntrypoint;
   componentsLoaded?: IAppComponentsLoaded;
 }
 
 export interface IAppComponentsLoaded {
   [index: string]: Array<{ at: string; entrypoint: string }>;
-}
-
-export interface IAppMenu {
-  social: Array<IAppMenuItem>;
-}
-
-export interface IAppMenuItem {
-  id: string;
-  url: string;
-  label: string;
 }
 
 export interface IAppActions {

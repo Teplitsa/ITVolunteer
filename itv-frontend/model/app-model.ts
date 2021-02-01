@@ -3,22 +3,6 @@ import { action } from "easy-peasy";
 
 const appState: IAppState = {
   componentsLoaded: {},
-  menus: {
-    social: []
-  }
-};
-
-export const graphqlQuery = {
-  getMenusByLocation: `
-  query GetMenusByLocation($location: MenuLocationEnum!) {
-    menuItems(where: {location: $location}) {
-      nodes {
-        id
-        url
-        label
-      }
-    }
-  }`
 };
 
 const appActions: IAppActions = {

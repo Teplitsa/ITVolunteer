@@ -51,12 +51,23 @@ export const getServerSideProps: GetServerSideProps = async () => {
   );
 
   const model = await withAppAndEntrypointModel({
-    isArchive: true,
-    entrypointType: "task",
-    entrypointQueryVars: {
-      first: 10,
-      after: null,
-    },
+    isCustomPage: true,
+    entrypointType: "page",
+    customPageModel: async () => [
+      "page",
+      {
+        slug: `tasks`,
+        seo: {
+          canonical: `${process.env.BaseUrl}/tasks`,
+          title: `Задачи - it-волонтер`,
+          metaRobotsNoindex: "index",
+          metaRobotsNofollow: "follow",
+          opengraphTitle: "Задачи - it-волонтер",
+          opengraphUrl: "https://itv.te-st.ru/tasks",
+          opengraphSiteName: "it-волонтер",
+        },
+      },
+    ],
     componentModel: async () => {
       try {
         const { tasks: items } = await (await fetch(`${process.env.BaseUrl}/api/v1/cache/tasks?limit=${taskListLimit}`)).json();
