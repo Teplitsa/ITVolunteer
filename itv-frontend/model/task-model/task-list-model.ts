@@ -8,6 +8,8 @@ import {
 } from "../model.typing";
 import { graphqlQuery as archiveGraphqlQuery } from "../archive-model";
 
+export const taskListLimit = 50;
+
 const taskListState: ITaskListState = {
   items: [],
   isTaskListLoaded: false,
@@ -50,7 +52,7 @@ const taskListThunks: ITaskListThunks = {
         process.env.GraphQLServer,
         archiveGraphqlQuery.taskSearch,
         {
-          first: 50,
+          first: taskListLimit,
           after: lastViewedListItem,
           searchPhrase,
         }
