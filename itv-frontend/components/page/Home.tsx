@@ -80,7 +80,7 @@ const Home: React.FunctionComponent = (): ReactElement => {
                   title: "Задачи сейчас в работе",
                   status: "in_work",
                 },
-                { value: homePage.stats?.closed, title: "Решеных задач", status: "closed" },
+                { value: homePage.stats?.closed, title: "Решенных задач", status: "closed" },
               ].map((statsItem, index) => {
                 return (
                   <Link href={`/tasks/${statsItem.status}/`} key={`home-stats-item-${index}`}>

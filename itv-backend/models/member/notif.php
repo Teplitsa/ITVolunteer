@@ -67,7 +67,10 @@ class MemberNotifManager {
         
         if($item->from_user_id !== null) {
             $from_user = get_user_by('id', $item->from_user_id);
-            $item->from_user = itv_get_user_in_gql_format($from_user);
+            $from_user_data = itv_get_user_in_gql_format($from_user);
+            //TODO: remove using ID
+            $from_user_data['databaseId'] = $from_user->ID;
+            $item->from_user = $from_user_data;
         }
         else {
             $item->from_user = null;
