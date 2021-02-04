@@ -1,5 +1,4 @@
-const BaseUrl =
-  process.env.NODE_ENV === "development" ? "http://localhost:9000" : "https://itv.te-st.ru";
+const BaseUrl = "http://172.16.0.46";
 
 const appConfig = {
   BaseUrl,
@@ -7,7 +6,7 @@ const appConfig = {
   AjaxUrl: `${BaseUrl}/wp-admin/admin-ajax.php`,
   RestApiUrl: `${BaseUrl}/wp-json`,
   AuthTokenLifeTimeMs: 600,
-  MongoConnection: "mongodb://localhost:27017",
+  MongoConnection: "mongodb://mongo:27017",
 };
 
 module.exports = appConfig;

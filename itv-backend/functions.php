@@ -1,6 +1,7 @@
 <?php
 
 require_once(get_theme_file_path() . '/vendor/autoload.php');
+require_once(get_theme_file_path() . '/config.php');
 
 load_theme_textdomain('itv-backend', get_theme_file_path() . '/lang');
 
