@@ -19,7 +19,7 @@ final class MongoClient
 
             try {
                 // static::$instance::$client = new \MongoDB\Client(self::PROTOCOL . "://" . self::HOST . ":" . self::PORT);
-                static::$instance::$client = new \MongoDB\Client(ITV\Config::MONGO_CONNECTION);
+                static::$instance::$client = new \MongoDB\Client(\ITV\Config::MONGO_CONNECTION);
             } catch (\Exception $e) {
                 echo 'Не удалось подключиться к базе данных (mongodb): ',  $e->getMessage(), "\n";
             }
