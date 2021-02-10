@@ -35,19 +35,6 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
     login({ username: "", password: "" });
   }, []);
 
-  function handleOldDesignClick() {
-    if (!process.browser) {
-      return;
-    }
-
-    regEvent("ge_switch_desing_to_old", router);
-
-    Cookies.set(C.ITV_COOKIE.OLD_DESIGN.name, C.ITV_COOKIE.OLD_DESIGN.value, {
-      expires: C.ITV_COOKIE.OLD_DESIGN.period,
-    });
-    document.location.reload();
-  }
-
   return (
     <nav>
       <div className="nav-mobile">
@@ -184,9 +171,6 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
         </SnackbarContext.Consumer>
 
         <div className={`account-col ${isLoggedIn ? "logged-in" : ""}`}>
-          <a className="go-old" onClick={handleOldDesignClick}>
-            Старый&nbsp;дизайн
-          </a>
           {(isLoggedIn && <ParticipantNav />) || <GuestNav />}
         </div>
       </div>
