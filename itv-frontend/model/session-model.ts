@@ -9,7 +9,7 @@ import {
   IFetchResult,
 } from "./model.typing";
 import { thunk, action, computed, actionOn } from "easy-peasy";
-import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
+import { getAjaxUrl, getLoginUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
@@ -330,7 +330,7 @@ const sessionThunks: ISessionThunks = {
         formData.append("pass2", String(newPassword));
         formData.append("rp_key", String(key));
 
-        const result = await fetch("/wp-login.php?action=resetpass", {
+        const result = await fetch(getLoginUrl() + "?action=resetpass", {
           method: "post",
           body: formData,
         });
