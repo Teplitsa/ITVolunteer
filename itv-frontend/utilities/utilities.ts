@@ -100,7 +100,7 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
-export const getLoginUrl = (action: string): string => {
+export const getLoginUrl = (): string => {
   const url = new URL(process.env.LoginUrl);
   return url.toString();
 };
