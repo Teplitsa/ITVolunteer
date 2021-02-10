@@ -29,3 +29,5 @@ require_once( get_theme_file_path() . '/rest-api/task/task.php' );
 
 // wp-cli
 require_once( get_theme_file_path() . '/wp-cli/set_members_itv_role.php' );
+
+add_filter( 'xmlrpc_enabled', '__return_false' );
