@@ -36,3 +36,5 @@ ITV\models\Task::register_hooks();
 $itv_prefix_disable_gutenberg = fn (bool $current_status, string $post_type): bool => ($post_type === ITV\models\Task::POST_TYPE) ? false : $current_status;
 
 add_filter('use_block_editor_for_post_type', 'itv_prefix_disable_gutenberg', 10, 2);
+
+add_filter( 'xmlrpc_enabled', '__return_false' );
