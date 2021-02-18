@@ -1,0 +1,31 @@
+.accordion {
+  display: flex;
+  flex-flow: column nowrap;
+  &__title {
+    visibility: visible;
+    &_active {
+      visibility: visible;
+    }
+  }
+
+  &__content {
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s linear;
+
+    &_active {
+      opacity: 1;
+    }
+  }
+
+  &__control {
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s linear;
+
+    &_active {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+}
