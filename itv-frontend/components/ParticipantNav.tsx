@@ -65,7 +65,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   }, [itvAvatar]);
 
   function handleLoginAsRoleClick(event: MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
+    if (router.pathname === "/members/[username]") {
+      event.preventDefault();
+    }
 
     const newItvRole = user.itvRole === "doer" ? "author" : "doer";
 

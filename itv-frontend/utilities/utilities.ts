@@ -15,6 +15,24 @@ export const isLinkValid = (link: string): boolean => {
   return isValid;
 };
 
+export const convertUrlToAnchor = ({ html }: { html: string }): string => {
+  if (typeof html !== "string" || html.trim().length === 0) return html;
+
+  const urlList: Array<string> = html.match(
+    /(?:(?:http|https):\/\/)(?:www\.){0,1}(?:[-a-z0-9]+)(?:\.[-a-z0-9]+)*\.(?:[a-z]{2,})(?:\/[-_a-z0-9]+)*/gi
+  );
+
+  if (Object.is(null, urlList)) return html;
+
+  urlList.forEach(url => {
+    html = html.replace(url, () =>
+      isLinkValid(url) ? `<a href="${url}" target="_blank">${url}</a>` : url
+    );
+  });
+
+  return html;
+};
+
 export const generateUniqueKey = ({ base, prefix = "" }: { base: string; prefix?: string }) => {
   return (
     (prefix ? `${prefix}-` : "") +
@@ -59,8 +77,8 @@ export const formatDate = ({ date = new Date(), stringFormat = "do MMMM Y" }): s
 };
 
 export function itvWpDateTimeToDate(wpDateTime) {
-  if(wpDateTime) {
-    wpDateTime = wpDateTime.replace(/(^\d+-\d+-\d+)(.*?)(\d+:\d+:\d+.*)$/, "$1 $3")
+  if (wpDateTime) {
+    wpDateTime = wpDateTime.replace(/(^\d+-\d+-\d+)(.*?)(\d+:\d+:\d+.*)$/, "$1 $3");
 
     if (!wpDateTime.match(/.*[Z]{1}$/)) {
       if (wpDateTime.match(/\d+-\d+-\d+ \d+:\d+:\d+.*$/)) {
