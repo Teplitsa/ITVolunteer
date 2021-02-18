@@ -123,7 +123,11 @@ function NotifItem({ notif, user }) {
   const completeTask = () => {
     setCompleteTaskWizardState({
       user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false, slug: user.slug },
-      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName, slug: notif.from_user.slug },
+      partner: {
+        databaseId: notif.from_user.databaseId,
+        name: notif.from_user.fullName,
+        slug: notif.from_user.slug,
+      },
       task: { databaseId: notif.task.databaseId, title: notif.task.title, slug: notif.task.slug },
     });
 
@@ -162,7 +166,10 @@ function NotifItem({ notif, user }) {
 
           {!!notif.task && (
             <Link href="/tasks/[slug]" as={`/tasks/${notif.task.slug}`}>
-              <a className="notif-list__item-task">{notif.task.title}</a>
+              <a
+                className="notif-list__item-task"
+                dangerouslySetInnerHTML={{ __html: notif.task.title }}
+              />
             </Link>
           )}
 

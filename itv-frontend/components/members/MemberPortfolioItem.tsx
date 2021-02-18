@@ -16,7 +16,7 @@ const MemberPortfolioItem: React.FunctionComponent<{
       </Link>
       <div className="member-portfolio__list-item-title">
         <Link href="/members/[username]/[portfolio_item_slug]" as={`/members/${userSlug}/${slug}`}>
-          <a>{title}</a>
+          <a dangerouslySetInnerHTML={{ __html: title }} />
         </Link>
       </div>
     </div>

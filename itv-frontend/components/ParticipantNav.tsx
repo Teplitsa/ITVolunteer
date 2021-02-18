@@ -23,12 +23,8 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   const loadFreshNotifList = useStoreActions(
     actions => actions.components.userNotif.loadFreshNotifList
   );
-  const setRole = useStoreActions(
-    actions => actions.session.setRole
-  );
-  const setUserItvRole = useStoreActions(
-    actions => actions.session.setUserItvRole
-  );
+  const setRole = useStoreActions(actions => actions.session.setRole);
+  const setUserItvRole = useStoreActions(actions => actions.session.setUserItvRole);
 
   useEffect(() => {
     if (!user.id) {
@@ -56,7 +52,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
 
     try {
       itvAvatar &&
-      itvAvatar.search(/temp-avatar\.png/) === -1 &&
+        itvAvatar.search(/temp-avatar\.png/) === -1 &&
         fetch(itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
@@ -68,14 +64,17 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     return () => abortController.abort();
   }, [itvAvatar]);
 
-  function handleLoginAsRoleClick() {
+  function handleLoginAsRoleClick(event: MouseEvent) {
+    event.preventDefault();
+
     const newItvRole = user.itvRole === "doer" ? "author" : "doer";
+
     setRole({
-      itvRole: newItvRole, 
+      itvRole: newItvRole,
       successCallbackFn: () => {
         setUserItvRole(newItvRole);
       },
-      errorCallbackFn: (message) => {
+      errorCallbackFn: message => {
         console.log(message);
       },
     });
@@ -143,7 +142,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
             </li>
             <li className="submenu__item">
               <Link href="/members/[username]" as={`/members/${user.slug}`}>
-                <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "автор" : "волонтер"}`}</a>
+                <a onClick={handleLoginAsRoleClick}>{`Войти как ${
+                  user.itvRole === "doer" ? "автор" : "волонтер"
+                }`}</a>
               </Link>
             </li>
             <li className="submenu__item">
@@ -176,7 +177,9 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         </li>
         <li>
           <Link href="/members/[username]" as={`/members/${user.slug}`}>
-            <a onClick={handleLoginAsRoleClick}>{`Войти как ${user.itvRole === "doer" ? "автор" : "волонтер"}`}</a>
+            <a onClick={handleLoginAsRoleClick}>{`Войти как ${
+              user.itvRole === "doer" ? "автор" : "волонтер"
+            }`}</a>
           </Link>
         </li>
         <li>
