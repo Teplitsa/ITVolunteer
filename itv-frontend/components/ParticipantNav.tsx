@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, MouseEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
@@ -64,7 +64,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     return () => abortController.abort();
   }, [itvAvatar]);
 
-  function handleLoginAsRoleClick(event: MouseEvent) {
+  function handleLoginAsRoleClick(event: MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
 
     const newItvRole = user.itvRole === "doer" ? "author" : "doer";
