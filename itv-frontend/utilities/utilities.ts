@@ -26,7 +26,7 @@ export const convertUrlToAnchor = ({ html }: { html: string }): string => {
   if (typeof html !== "string" || html.trim().length === 0) return html;
 
   const urlList: Array<string> = html.match(
-    /(?:(?:http|https):\/\/)(?:www\.){0,1}(?:[-a-z0-9]+)(?:\.[-a-z0-9]+)*\.(?:[a-z]{2,})(?:\/[-_a-z0-9]+)*/gi
+    /(?:(?:http|https):\/\/)(?:www\.){0,1}(?:[-a-z0-9]+)(?:\.[-a-z0-9]+)*\.(?:[a-z]{2,})(?:\/[-_a-z0-9]+)*\/*/gi
   );
 
   if (Object.is(null, urlList)) return html;
