@@ -1,6 +1,13 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
+import { decode } from "html-entities";
+
+export const decodeSpecialChars = (html: string): string => {
+  if (typeof html !== "string" || html.trim().length === 0) return html;
+
+  return decode(html);
+};
 
 export const isLinkValid = (link: string): boolean => {
   let isValid = false;
