@@ -133,9 +133,16 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               </Link>
             </li>
             <li className="submenu__item">
-              <Link href="/tasks">
-                <a>Поиск задач</a>
-              </Link>
+              {user.itvRole === "doer" && (
+                <Link href="/tasks">
+                  <a>Найти задачу</a>
+                </Link>
+              )}
+              {user.itvRole === "author" && (
+                <Link href="/task-actions">
+                  <a>Создать задачу</a>
+                </Link>
+              )}
             </li>
             <li className="submenu__item submenu__item_bottom-divider">
               <Link href="/members/[username]/security" as={`/members/${user.slug}/security`}>
@@ -168,9 +175,16 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           </Link>
         </li>
         <li>
-          <Link href="/tasks">
-            <a>Поиск задач</a>
-          </Link>
+          {user.itvRole === "doer" && (
+            <Link href="/tasks">
+              <a>Найти задачу</a>
+            </Link>
+          )}
+          {user.itvRole === "author" && (
+            <Link href="/task-actions">
+              <a>Создать задачу</a>
+            </Link>
+          )}
         </li>
         <li className="submenu__item">
           <Link href="/members/[username]/security" as={`/members/${user.slug}/security`}>

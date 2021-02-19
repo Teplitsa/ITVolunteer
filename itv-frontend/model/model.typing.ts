@@ -511,6 +511,7 @@ export interface IMemberAccountPageActions {
   setReviews: Action<IMemberAccountPageModel, any>;
   setAvatarFile: Action<IMemberAccountPageModel, any>;
   setCoverFile: Action<IMemberAccountPageModel, any>;
+  onSessionUserItvRoleChange: ActionOn<IMemberAccountPageModel, IStoreModel>;
 }
 
 export interface IMemberAccountPageThunks {

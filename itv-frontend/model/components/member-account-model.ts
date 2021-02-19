@@ -10,7 +10,7 @@ import {
   IMemberReview,
   INotification,
 } from "../model.typing";
-import { action, thunk } from "easy-peasy";
+import { action, thunk, actionOn } from "easy-peasy";
 import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 
@@ -152,7 +152,6 @@ const memberAccountPageActions: IMemberAccountPageActions = {
     Object.assign(prevState, memberAccountPageState);
   }),
   setState: action((prevState, newState) => {
-    // console.log("memberAccountPageActions.setState...");
     Object.assign(prevState, newState);
   }),
   setTemplate: action((prevState, { template: newTemplate }) => {
@@ -229,7 +228,13 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   }),
   setReviews: action((prevState, reviews) => {
     prevState.reviews = reviews;
-  }),  
+  }),
+  onSessionUserItvRoleChange: actionOn(
+    (actions, storeActions) => storeActions.session.setUserItvRole,
+    (state, { payload: itvRole }) => {
+      state.template = itvRole === "doer" ? "volunteer" : "author";
+    }
+  ),
 };
 
 const memberAccountPageThunks: IMemberAccountPageThunks = {
