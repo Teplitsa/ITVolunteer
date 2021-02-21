@@ -1,6 +1,9 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
+import * as _ from "lodash";
+import Cookies from "js-cookie";
+import * as C from "../const";
 
 export const isLinkValid = (link: string): boolean => {
   let isValid = false;
@@ -207,4 +210,9 @@ export function getReviewsCountString(reviewsCount) {
     : [2, 3, 4].includes(reviewsCountModulo)
     ? "отзыва"
     : "отзывов";
+}
+
+export async function tokenFetch(url, options={}) {
+  _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
+  return await tokenFetch(url, options);
 }

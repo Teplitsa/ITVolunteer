@@ -60,7 +60,7 @@ const SetPassword: React.FunctionComponent = (): ReactElement => {
       router.push("/tasks");
     } else {
       setLoading(true);
-      fetch(
+      utils.tokenFetch(
         utils.getLoginUrl() + "?action=rp&key=" +
           _.get(router, "query.key", "") +
           "&login=" +

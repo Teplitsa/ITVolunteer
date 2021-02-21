@@ -51,7 +51,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     try {
       avatarImage &&
         avatarImage.search(/temp-avatar\.png/) === -1 &&
-        fetch(avatarImage, {
+        utils.tokenFetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

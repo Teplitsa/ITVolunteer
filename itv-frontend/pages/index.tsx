@@ -55,7 +55,7 @@ const fetchTasksList = async () => {
   const form = new FormData();
   form.append("limit", 10);
 
-  const res = await fetch(utils.getAjaxUrl(action), {
+  const res = await utils.tokenFetch(utils.getAjaxUrl(action), {
     method: "post",
     body: form,
   });

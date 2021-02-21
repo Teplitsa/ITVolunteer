@@ -9,6 +9,7 @@ import {
 import { action, thunk } from "easy-peasy";
 import { portfolioItemFormState } from "./portfolio-model";
 import { getRestApiUrl } from "../../utilities/utilities";
+import * as utils from "../../utilities/utilities";
 
 export const portfolioItemState: IPortfolioItemState = {
   author: {
@@ -59,7 +60,7 @@ const portfolioItemThunks: IPortfolioItemThunks = {
       }
 
       try {
-        const result = await fetch(
+        const result = await utils.tokenFetch(
           getRestApiUrl(`/wp/v2/portfolio_work/slug:${portfolioItemSlug}`),
           {
             method: "DELETE",

@@ -174,6 +174,7 @@ export interface ISessionThunks {
     },
     IStoreModel
   >;
+  authSession: Thunk<ISessionActions>;
 }
 
 /**

@@ -8,8 +8,6 @@ import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
 import iconMobileMenu from "../../../assets/img/icon-mobile-menu.png";
-import Cookies from "js-cookie";
-import * as C from "const";
 import { regEvent } from "../../../utilities/ga-events";
 
 const { SnackbarContext } = GlobalScripts;
@@ -17,7 +15,7 @@ const { SnackbarContext } = GlobalScripts;
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
-  const login = useStoreActions(actions => actions.session.login);
+  const authSession = useStoreActions(actions => actions.session.authSession);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
@@ -32,7 +30,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    login({ username: "", password: "" });
+    authSession();
   }, []);
 
   return (

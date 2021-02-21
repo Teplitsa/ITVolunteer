@@ -48,11 +48,6 @@ class Task
         }
     }
 
-    public static function register_hooks()
-    {
-        \add_action("save_post_" . self::POST_TYPE, [__CLASS__, "update_item_cache"]);
-    }
-
     public static function get_item(int $task_id): ?array
     {
         $task = \get_post($task_id);

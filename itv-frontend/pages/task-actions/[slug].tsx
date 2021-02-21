@@ -176,7 +176,7 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
     }
 
     const action = "submit-task";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: submitFormData,
     })
