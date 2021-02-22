@@ -13,14 +13,15 @@ import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
 import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
 import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList";
+import MemberPortfolioNoItems from  "../members/MemberPortfolioNoItems";
 import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
-  const itvRole = useStoreState(state => state.session.user.itvRole);
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
   const userCoverFile = useStoreState(state => state.session.user.coverFile);
   const userItvAvatarFile = useStoreState(state => state.session.user.itvAvatarFile);
+  const memberAccountTemplate = useStoreState(state => state.components.memberAccount.template);
   const reviews = useStoreState(state => state.components.memberAccount.reviews.list);
   const taskStats = useStoreState(state => state.components.memberAccount.taskStats);
   const notifications = useStoreState(state => state.components.memberAccount.notifications.list);
@@ -31,14 +32,10 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const itvAvatarFile = useStoreState(state => state.components.memberAccount.itvAvatarFile);
   const username = useStoreState(state => state.components.memberAccount.username);
   const fullName = useStoreState(state => state.components.memberAccount.fullName);
-  
 
-  const {
-    setUserAvatar,
-    setUserAvatarFile,
-    setUserCover,
-    setUserCoverFile,
-  } = useStoreActions(actions => actions.session);
+  const { setUserAvatar, setUserAvatarFile, setUserCover, setUserCoverFile } = useStoreActions(
+    actions => actions.session
+  );
 
   const {
     profileFillStatusRequest,
@@ -61,7 +58,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     });
   }
 
-  if (itvRole === "doer") {
+  if (memberAccountTemplate === "volunteer") {
     tabList.push({
       title: "Портфолио",
       content: MemberPortfolio,
@@ -86,10 +83,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setCrumbs([
-      {title: "Волонтеры", url: "/members"},
-      {title: fullName},
-    ]);  
+    setCrumbs([{ title: "Волонтеры", url: "/members" }, { title: fullName }]);
   }, [fullName]);
 
   useEffect(() => {
@@ -114,14 +108,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [isAccountOwner, username]);
 
   useEffect(() => {
-    if(!!itvAvatarFile && _.get(itvAvatarFile, "databaseId") !== _.get(userItvAvatarFile, "databaseId")) {
+    if (
+      !!itvAvatarFile &&
+      _.get(itvAvatarFile, "databaseId") !== _.get(userItvAvatarFile, "databaseId")
+    ) {
       setUserAvatar(itvAvatar);
       setUserAvatarFile(itvAvatarFile);
     }
   }, [itvAvatarFile]);
 
   useEffect(() => {
-    if(!!coverFile && _.get(coverFile, "databaseId") !== _.get(userCoverFile, "databaseId")) {
+    if (!!coverFile && _.get(coverFile, "databaseId") !== _.get(userCoverFile, "databaseId")) {
       setUserCover(coverImage);
       setUserCoverFile(coverFile);
     }
@@ -165,7 +162,8 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
               <>
                 <MemberAccountNeedAttention />
                 {/* <MemberAccountEmptyServiceShow /> */}
-                <MemberAccountEmptyTaskList />
+                {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
+                {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
               </>
             )}
             {isEmptyProfile && !isAccountOwner && <MemberAccountEmptySectionForGuest />}
