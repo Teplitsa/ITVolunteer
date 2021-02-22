@@ -185,73 +185,6 @@ const sessionActions: ISessionActions = {
 };
 
 const sessionThunks: ISessionThunks = {
-  login: thunk(async ({ setState, setIsLoaded } /*, { username, password }*/) => {
-    // const { request } = await import("graphql-request");
-    // const { v4: uuidv4 } = await import("uuid");
-    // const loginQuery: string = graphqlQuery.login;
-
-    console.log("sessionThunks...");
-
-    try {
-      const result = await utils.tokenFetch(getAjaxUrl("itv-get-jwt-auth-token"), {
-        method: "post",
-      });
-
-      const {
-        status: responseStatus,
-        message: responseMessage,
-        authToken: authToken,
-        refreshToken: refreshToken,
-        user: user,
-      } = await (<
-        Promise<{
-          status: string;
-          message: string;
-          authToken: string;
-          refreshToken: string;
-          user: any;
-        }>
-      >result.json());
-
-      // console.log("authToken:", authToken)
-
-      if (responseStatus === "fail") {
-        console.error(stripTags(responseMessage));
-        console.error("set session isLoaded on fail");
-
-        setState({
-          token: { timestamp: Date.now(), authToken: null, refreshToken: null },
-          user: sessionUserState,
-          isLoaded: true,
-        });
-      } else {
-        console.error("set session isLoaded on ok");
-
-        setState({
-          token: { timestamp: Date.now(), authToken, refreshToken },
-          user,
-          isLoaded: true,
-        });
-      }
-    } catch (error) {
-      console.error("set session isLoaded on exception");
-      setIsLoaded(true);
-      console.error(error);
-    }
-
-    // const {
-    //   login: { authToken, refreshToken, user },
-    // } = await request(process.env.GraphQLServer, loginQuery, {
-    //   mutationId: uuidv4(),
-    //   username,
-    //   password,
-    // });
-
-    // setState({
-    //   token: { timestamp: Date.now(), authToken, refreshToken },
-    //   user,
-    // });
-  }),
   register: thunk(async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
     try {
       const result = await utils.tokenFetch(getAjaxUrl("user-register"), {
@@ -410,7 +343,7 @@ const sessionThunks: ISessionThunks = {
       }
     }
   ),
-  authSession: thunk(async ({ setState, setIsLoaded }) => {
+  authorizeSession: thunk(async ({ setState, setIsLoaded }) => {
     try {
       const result = await utils.tokenFetch(getRestApiUrl("/itv/v1/auth/validate-token"), {
         method: "post",

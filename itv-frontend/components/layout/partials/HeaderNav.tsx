@@ -15,7 +15,7 @@ const { SnackbarContext } = GlobalScripts;
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
-  const authSession = useStoreActions(actions => actions.session.authSession);
+  const authorizeSession = useStoreActions(actions => actions.session.authorizeSession);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
@@ -30,7 +30,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    authSession();
+    authorizeSession();
   }, []);
 
   return (

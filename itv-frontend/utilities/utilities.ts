@@ -214,5 +214,5 @@ export function getReviewsCountString(reviewsCount) {
 
 export async function tokenFetch(url, options={}) {
   _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
-  return await tokenFetch(url, options);
+  return await fetch(url, options);
 }

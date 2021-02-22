@@ -6,6 +6,7 @@ use function \ITV\utils\{base64url_encode, base64url_decode};
 class Auth {
 
     public function login( $login, $password, $remember=false ) {
+        error_log("login...");
 
         $user = wp_authenticate( $login, $password );
 
@@ -25,10 +26,14 @@ class Auth {
         ];
     }
 
+    public function logout( $user_id ) {
+        setcookie('itv-token', "", time() - 3600, '/');
+    }
+
 	public function generate_token( $user ) {
 
 		$secret = \ITV\Config::AUTH_SECRET_KEY;
-		$expire     = time() + ( DAY_IN_SECONDS * \ITV\Config::AUTH_EXPIRE_DAYS );
+		$expire = time() + ( DAY_IN_SECONDS * \ITV\Config::AUTH_EXPIRE_DAYS );
 
 		$payload = json_encode([
 			'iss' => get_bloginfo( 'url' ),

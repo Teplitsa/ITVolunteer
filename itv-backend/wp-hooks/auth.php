@@ -1,64 +1,32 @@
 <?php
 
-function itv_determine_current_user_v001($user_id) {
+function itv_determine_current_user( $user_id ) {
+    error_log("itv_determine_current_user...");
+    error_log("input user_id=" . $user_id);
 
-    $rest_api_slug = rest_get_url_prefix();
-    $valid_api_uri = strpos($_SERVER['REQUEST_URI'], $rest_api_slug);
-
-    if (!$valid_api_uri) {
-
+    if(strpos($_SERVER['REQUEST_URI'], "/itv/v1/auth/") !== false) {
         return $user_id;
     }
 
-    $auth_token = $_POST['auth_token'] ?? $_GET['auth_token'] ?? '';
-
-    if(!$auth_token && in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE'] ) )  {
-
-        $input_json = file_get_contents('php://input');
-
-        if($input_json) {
-
-            $input = json_decode($input_json, true);
-        }
-
-        $auth_token = $input['auth_token'] ?? '';
-    }
-
-    if($auth_token) {
-
-        $token = WPGraphQL\JWT_Authentication\Auth::validate_token($auth_token);
-
-        if (!is_wp_error($token)) {
-
-            $user_id = $token->data->user->id;
-            
-            if($user_id) {
-                global $wp_rest_auth_cookie;
-                $wp_rest_auth_cookie = 0;
-            }
-            
-        }
-    }
-
-    return $user_id;
-}
-
-function itv_determine_current_user($user_id) {
     $valid_token = null;
-
-    if(!$user_id) {
-        try {
-            $auth = new \ITV\models\Auth();
-            $token = $auth->parse_token_from_request();
-            $valid_token = $auth->validate_token($token);
-        }
-        catch(Exception $ex) {}
+    try {
+        $auth = new \ITV\models\Auth();
+        $token = $auth->parse_token_from_request();
+        $valid_token = $auth->validate_token($token);
     }
+    catch(Exception $ex) {}
 
     if($valid_token && $valid_token['is_valid']) {
         $user_id = $valid_token['user']['databaseId'];
     }
 
+    error_log("result user_id=" . $user_id);
     return $user_id;
 }
 add_filter( 'determine_current_user', 'itv_determine_current_user' );
+
+function itv_logout( $user_id ) {
+    $auth = new \ITV\models\Auth();
+    $auth->logout( $user_id );
+}
+add_action( 'wp_logout', 'itv_logout' );
