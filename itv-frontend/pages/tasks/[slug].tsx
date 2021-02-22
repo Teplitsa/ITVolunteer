@@ -7,6 +7,7 @@ import Main from "../../components/layout/Main";
 import Task from "../../components/task/Task";
 import TaskComments from "../../components/task/TaskComments";
 import TaskSuggestionsForVolonteers from "../../components/task/TaskSuggestionsForVolonteers";
+import TaskFooterCTA from "../../components/task/TaskFooterCTA";
 import TaskAuthor from "../../components/task/author/TaskAuthor";
 import TaskBecomeCandidate from "../../components/task/TaskBecomeCandidate";
 import TaskCancelCandidate from "../../components/task/TaskCancelCandidate";
@@ -73,6 +74,7 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
             <section className="content">
               <h2>Задача</h2>
               <Task />
+              <TaskFooterCTA />
               <TaskComments />
               <TaskSuggestionsForVolonteers />
             </section>
