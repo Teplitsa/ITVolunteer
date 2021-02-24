@@ -34,3 +34,9 @@ require_once(get_theme_file_path() . '/wp-cli/set_members_itv_role.php');
 // filters
 add_filter('xmlrpc_enabled', '__return_false');
 add_filter('embed_oembed_discover', '__return_false');
+add_filter('wp_image_editors', function ($editors) {
+    $gd_editor = 'WP_Image_Editor_GD';
+    $editors = array_diff($editors, array($gd_editor));
+    array_unshift($editors, $gd_editor);
+    return $editors;
+});

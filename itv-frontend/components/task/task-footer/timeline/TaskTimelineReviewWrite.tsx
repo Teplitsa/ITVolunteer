@@ -4,11 +4,15 @@ import Router from "next/router";
 import { useStoreState, useStoreActions } from "../../../../model/helpers/hooks";
 
 const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
-  const approvedDoer = useStoreState(state => state.components.task?.approvedDoer);
-  const reviewForDoer = useStoreState(state => state.components.task?.reviews?.reviewForDoer);
-  const reviewForAuthor = useStoreState(state => state.components.task?.reviews?.reviewForAuthor);
-  const { databaseId, title, author, slug: taskSlug } = useStoreState(state => state.components.task);
-  const { user, isTaskAuthorLoggedIn } = useStoreState(state => state.session);
+  const approvedDoer = useStoreState(state => state.components.task.approvedDoer);
+  const reviewForDoer = useStoreState(state => state.components.task.reviews?.reviewForDoer);
+  const reviewForAuthor = useStoreState(state => state.components.task.reviews?.reviewForAuthor);
+  const databaseId = useStoreState(state => state.components.task.databaseId);
+  const title = useStoreState(state => state.components.task.title);
+  const author = useStoreState(state => state.components.task.author);
+  const taskSlug = useStoreState(state => state.components.task.slug);
+  const user = useStoreState(state => state.session.user);
+  const isTaskAuthorLoggedIn = useStoreState(state => state.session.isTaskAuthorLoggedIn);
   const setCompleteTaskWizardState = useStoreActions(
     actions => actions.components.completeTaskWizard.setInitState
   );
@@ -35,37 +39,38 @@ const TaskTimelineReviewWrite: React.FunctionComponent = (): ReactElement => {
     });
   };
 
+  if (
+    !(approvedDoer?.id === user.id && !reviewForAuthor) &&
+    !(isTaskAuthorLoggedIn && !reviewForDoer)
+  )
+    return null;
+
   return (
-    ((approvedDoer?.id === user.id && !reviewForAuthor) ||
-      (isTaskAuthorLoggedIn && !reviewForDoer)) && (
-      <>
-        <div className="comment-actions">
-          {!reviewForDoer && !reviewForAuthor && (
-            <div className="first-review-description">
-              Оставьте свой отзыв. Он важен для получения обратной связи
-            </div>
-          )}
-          <a
-            href="#"
-            className={`action add-review${
-              (!reviewForDoer && !reviewForAuthor && " first-review") || ""
-            }`}
-            onClick={event => {
-              event.preventDefault();
-              writeReview();
-              // toggleReviewForm(!isReviewFormShown);
-            }}
-          >
-            Написать отзыв
-          </a>
+    <div className="comment-actions">
+      {!reviewForDoer && !reviewForAuthor && (
+        <div className="first-review-description">
+          Оставьте свой отзыв. Он важен для получения обратной связи
         </div>
-        {/* {isReviewFormShown && (
-          <TaskTimelineReviewForm
-            hideReviewForm={toggleReviewForm.bind(null, false)}
-          />
-        )} */}
-      </>
-    )
+      )}
+      <a
+        href="#"
+        className={`action add-review${
+          (!reviewForDoer && !reviewForAuthor && " first-review") || ""
+        }`}
+        onClick={event => {
+          event.preventDefault();
+          writeReview();
+          // toggleReviewForm(!isReviewFormShown);
+        }}
+      >
+        Написать отзыв
+      </a>
+    </div>
+    // {isReviewFormShown && (
+    //   <TaskTimelineReviewForm
+    //     hideReviewForm={toggleReviewForm.bind(null, false)}
+    //   />
+    // )}
   );
 };
 
