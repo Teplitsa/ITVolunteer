@@ -50,13 +50,17 @@
     color: $color-gray-dark-lg;
   }
   &__organization {
-    border-bottom: 1px solid $color-gray-light-lg;
-    margin: 0 0 20px;
-    padding: 0 0 20px;
     text-align: center;
     @include screen-from(md) {
       text-align: left;
     }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-gray-light-lg;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
+
     &-header {
       margin: 0 0 20px;
       @include screen-from(md) {
@@ -113,7 +117,12 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin: 0 0 20px;
+
+    &:not(:last-child) {
+      @extend .member-card__divider;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
   }
   &__contacts {
     @include screen-from(md) {
@@ -156,7 +165,7 @@
     }
 
     .btn.cta {
-      margin-bottom: 10px;      
+      margin-bottom: 10px;
     }
   }
   &__thank-count {
@@ -169,9 +178,14 @@
 
   &__null-add-information {
     @include text-sm;
-    text-align: center;
-    margin-bottom: 22px;
     width: 100%;
+    text-align: center;
+
+    &:not(:last-child) {
+      @extend .member-card__divider;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
 
     & > a {
       @include solid-underline($color-main);

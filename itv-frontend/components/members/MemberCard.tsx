@@ -51,47 +51,46 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
             </Link>
           </div>
         )}
-        {isEmptyProfile && <hr className="member-card__divider" />}
-        <MemberCardBottom />
-        {(!isEmptyProfile || isAccountOwner) && <hr className="member-card__divider" />}
-        {isSessionLoaded && (
-          <div className="member-card__action">
-            {(isAccountOwner && (
-              <>
-                {(itvRole === "doer" && (
-                  <Link href="/tasks">
-                    <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
-                  </Link>
-                )) || (
-                  <Link href="/task-actions">
-                    <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
-                  </Link>
-                )}
-                <Link href={`/members/${memberSlug}/profile`}>
-                  <a className="btn btn_full-width edit-profile">Редактировать профиль</a>
-                </Link>
-              </>
-            )) ||
-              (!isEmptyProfile && (
+        {isLoggedIn && <MemberCardBottom />}
+        {isAccountOwner ||
+          (!isEmptyProfile && (isLoggedIn || thankyouCount > 0) && (
+            <div className="member-card__action">
+              {(isAccountOwner && (
                 <>
-                  {isLoggedIn && (
-                    <button
-                      className="btn btn_primary btn_full-width"
-                      type="button"
-                      onClick={() => giveThanksRequest()}
-                    >
-                      Сказать «Спасибо»
-                    </button>
+                  {(itvRole === "doer" && (
+                    <Link href="/tasks">
+                      <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
+                    </Link>
+                  )) || (
+                    <Link href="/task-actions">
+                      <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
+                    </Link>
                   )}
-                  {thankyouCount > 0 && (
-                    <span className="member-card__thank-count">
-                      Сказали спасибо: {thankyouCount}
-                    </span>
-                  )}
+                  <Link href={`/members/${memberSlug}/profile`}>
+                    <a className="btn btn_full-width edit-profile">Редактировать профиль</a>
+                  </Link>
                 </>
-              ))}
-          </div>
-        )}
+              )) ||
+                (!isEmptyProfile && (
+                  <>
+                    {isLoggedIn && (
+                      <button
+                        className="btn btn_primary btn_full-width"
+                        type="button"
+                        onClick={() => giveThanksRequest()}
+                      >
+                        Сказать «Спасибо»
+                      </button>
+                    )}
+                    {thankyouCount > 0 && (
+                      <span className="member-card__thank-count">
+                        Сказали спасибо: {thankyouCount}
+                      </span>
+                    )}
+                  </>
+                ))}
+            </div>
+          ))}
       </div>
     </>
   );
