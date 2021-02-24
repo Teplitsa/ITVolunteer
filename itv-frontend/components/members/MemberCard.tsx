@@ -83,7 +83,11 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                       Сказать «Спасибо»
                     </button>
                   )}
-                  <span className="member-card__thank-count">Сказали спасибо: {thankyouCount}</span>
+                  {thankyouCount > 0 && (
+                    <span className="member-card__thank-count">
+                      Сказали спасибо: {thankyouCount}
+                    </span>
+                  )}
                 </>
               ))}
           </div>
