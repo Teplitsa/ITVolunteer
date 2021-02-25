@@ -41,21 +41,21 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     const { filter: currentFilter } = tasks;
 
     switch (currentFilter) {
-    case "open":
-      if (open + in_work + publish === 0) {
-        (closed > 0 &&
+      case "open":
+        if (open + in_work + publish === 0) {
+          (closed > 0 &&
             (() => {
               setTaskListFilter("closed");
               return true;
             })()) ||
             (draft > 0 && setTaskListFilter("draft"));
-      }
-      break;
-    case "closed":
-      if (closed === 0) {
-        draft > 0 && setTaskListFilter("draft");
-      }
-      break;
+        }
+        break;
+      case "closed":
+        if (closed === 0) {
+          draft > 0 && setTaskListFilter("draft");
+        }
+        break;
     }
   }, []);
 
@@ -127,7 +127,7 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
             return cardStatus === tasks.filter;
           })
           .map(card => (
-            <TaskCard key={card.id} {...card} />
+            <TaskCard key={card.id} {...{ ...card, ...{ pemalinkPath: `/tasks/${card.slug}/` } }} />
           ))}
       </div>
       <div className="member-tasks__footer">
