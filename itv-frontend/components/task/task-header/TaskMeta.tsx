@@ -17,7 +17,13 @@ const TaskMeta: React.FunctionComponent<{
   isApproved: boolean;
   pemalinkPath: string;
   deadline: string;
-}> = ({ dateGmt, doerCandidatesCount, viewsCount, isApproved, pemalinkPath, deadline }): ReactElement => {
+}> = ({
+  dateGmt,
+  doerCandidatesCount,
+  /* viewsCount, */ isApproved,
+  pemalinkPath,
+  deadline,
+}): ReactElement => {
   const [isShowShareButtons, setIsShowShareButtons] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
 
@@ -27,7 +33,7 @@ const TaskMeta: React.FunctionComponent<{
       fromDateString: dateGmt,
     })}`,
     `${doerCandidatesCount} откликов`,
-    `${viewsCount} просмотров`,
+    // `${viewsCount} просмотров`,
   ];
 
   const toggleShareButtons = (event: React.MouseEvent<HTMLAnchorElement>) => {
