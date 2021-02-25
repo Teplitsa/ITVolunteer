@@ -8,6 +8,10 @@
     border-top: 1px solid $color-gray-light-md;
     border-radius: 8px 8px 0 0;
   }
+  :last-child > &:last-child {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
   &__header {
     margin: 0 0 5px;
     @include screen-from(md) {

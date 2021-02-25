@@ -2,6 +2,8 @@ import { useEffect, ReactElement, MouseEvent } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCard from "../../components/TaskCard";
 
+export const tasksPerPage = 3;
+
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
   const tasks = useStoreState(state => state.components.memberAccount.tasks);
@@ -130,18 +132,24 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
             <TaskCard key={card.id} {...{ ...card, ...{ pemalinkPath: `/tasks/${card.slug}/` } }} />
           ))}
       </div>
-      <div className="member-tasks__footer">
-        <a
-          href="#"
-          className="member-tasks__more-link"
-          onClick={event => {
-            event.preventDefault();
-            getMemberTasksRequest({});
-          }}
-        >
-          Показать ещё
-        </a>
-      </div>
+      {(tasks.filter === "open"
+        ? taskStats["in_work"] + taskStats["publish"]
+        : taskStats[tasks.filter]) -
+        tasksPerPage * (tasks.page + 1) >
+        0 && (
+        <div className="member-tasks__footer">
+          <a
+            href="#"
+            className="member-tasks__more-link"
+            onClick={event => {
+              event.preventDefault();
+              getMemberTasksRequest({});
+            }}
+          >
+            Показать ещё
+          </a>
+        </div>
+      )}
     </div>
   );
 };
