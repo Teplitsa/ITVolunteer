@@ -12,7 +12,7 @@ function itv_determine_current_user($user_id) {
 
     $auth_token = $_POST['auth_token'] ?? $_GET['auth_token'] ?? '';
 
-    if(!$auth_token && in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE'] ) )  {
+    if(!$auth_token && in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH', 'DELETE'] ) )  {
 
         $input_json = file_get_contents('php://input');
 

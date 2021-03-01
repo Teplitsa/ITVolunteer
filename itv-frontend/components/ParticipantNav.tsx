@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import NotifList from "../components/UserNotif";
 import * as utils from "../utilities/utilities";
-import * as _ from "lodash";
+//import * as _ from "lodash";
 import { regEvent } from "../utilities/ga-events";
 
 import Bell from "../assets/img/icon-bell.svg";
@@ -19,6 +19,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   const user = useStoreState(store => store.session.user);
   const itvAvatar = useStoreState(store => store.session.user.itvAvatar);
   const notifList = useStoreState(store => store.components.userNotif.notifList);
+  const setIsReadRequest = useStoreActions(actions => actions.components.userNotif.setIsReadRequest);
   const loadNotifList = useStoreActions(actions => actions.components.userNotif.loadNotifList);
   const loadFreshNotifList = useStoreActions(
     actions => actions.components.userNotif.loadFreshNotifList
@@ -37,6 +38,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
   function handleNotifClick(e) {
     e.preventDefault();
 
+    setIsReadRequest();
     setIsShowNotif(!isShowNotif);
   }
 
@@ -45,7 +47,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     return () => {
       clearInterval(id);
     };
-  });
+  }, []);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -89,10 +91,12 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
           <div className="open-notif__action" onClick={handleNotifClick}>
             <img src={Bell} alt="Сообщения" />
 
-            {!_.isEmpty(notifList) && <span className="new-notif"></span>}
+            {notifList instanceof Array && notifList.some(notif => Number(notif.is_read) === 0) && (
+              <span className="new-notif" />
+            )}
           </div>
 
-          {!!isShowNotif && !_.isEmpty(notifList) && (
+          {isShowNotif && notifList instanceof Array && notifList.length > 0 && (
             <NotifList
               clickOutsideHandler={() => {
                 setIsShowNotif(false);

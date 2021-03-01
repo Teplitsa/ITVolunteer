@@ -1174,22 +1174,33 @@ export interface ITaskListFilterActions {
 
 export interface IUserNotifModel extends IUserNotifState, IUserNotifActions {}
 export interface IUserNotifState {
-  notifList;
+  notifList: Array<IUserNotifItem>;
 }
 
 export interface IUserNotifItem {
-  id;
-  [x: string]: any;
+  id: number;
+  content: string;
+  created_at: string;
+  dateGmt: string;
+  from_user: ISessionUser;
+  from_user_id: string;
+  is_read: "0" | "1";
+  task: ITaskState;
+  task_id: string;
+  type: string;
+  updated_at: string;
+  user_id: string;
 }
 
 export interface IUserNotifActions {
   initializeState: Action<ITaskListFilterModel>;
   setState: Action<IUserNotifModel, IUserNotifState>;
-  setNotifList: Action<IUserNotifModel, Array<any>>;
-  prependNotifList: Action<IUserNotifModel, Array<any>>;
+  setNotifList: Action<IUserNotifModel, Array<IUserNotifItem>>;
+  prependNotifList: Action<IUserNotifModel, Array<IUserNotifItem>>;
   loadNotifList: Thunk<IUserNotifActions>;
   loadFreshNotifList: Thunk<IUserNotifActions>;
-  removeNotifFromList: Action<IUserNotifModel, any>;
+  removeNotifFromList: Action<IUserNotifModel, IUserNotifItem>;
+  setIsReadRequest: Thunk<IUserNotifActions>;
 }
 
 /**
