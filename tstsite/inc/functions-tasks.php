@@ -452,8 +452,23 @@ function itv_ajax_submit_task_comment(){
         
         //
         $task = get_post($task_id);
-        UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_COMMENT_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $user_id]);
-        UserNotifModel::instance()->push_notif($user_id, UserNotifModel::$TYPE_POST_COMMENT_USER, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+
+        // error_log("post_author:" . $task->post_author);
+        // error_log("user_id:" . $user_id);
+        if(intval($task->post_author) === intval($user_id)) {
+            $task_doer = tst_get_task_doers($task_id, $only_approved = true);
+            $task_doer = !empty($task_doer) ? $task_doer[0] : null;
+            // error_log("task_doer:" . $task_doer->ID);
+
+            if($task_doer) {
+                // UserNotifModel::instance()->push_notif($user_id, UserNotifModel::$TYPE_POST_COMMENT_USER, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+                UserNotifModel::instance()->push_notif($task_doer->ID, UserNotifModel::$TYPE_POST_COMMENT_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+            }
+        }
+        else {
+            UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_POST_COMMENT_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+            // UserNotifModel::instance()->push_notif($user_id, UserNotifModel::$TYPE_POST_COMMENT_USER, ['task_id' => $task_id, 'from_user_id' => $user_id]);
+        }
         
         wp_die(json_encode(array(
             'status' => 'ok',
