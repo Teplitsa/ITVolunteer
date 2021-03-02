@@ -36,10 +36,12 @@
   }
   &__list {
     border: 1px solid $color-gray-light-md;
-    border-radius: 8px 8px 0 0;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 
     &.no-footer {
-      border-radius: 0 0 8px 8px;  
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
     }
 
     &-item {
@@ -51,7 +53,13 @@
       color: $color-gray-dark-md-001;
 
       &:first-child {
-        border-radius: 8px 8px 0 0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
       }
 
       &:not(:last-child) {
