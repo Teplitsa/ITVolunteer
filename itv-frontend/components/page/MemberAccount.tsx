@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { ReactElement, useEffect } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import * as _ from "lodash";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
@@ -13,7 +13,7 @@ import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
 import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
 import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList";
-import MemberPortfolioNoItems from  "../members/MemberPortfolioNoItems";
+import MemberPortfolioNoItems from "../members/MemberPortfolioNoItems";
 import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
@@ -27,7 +27,12 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   const notifications = useStoreState(state => state.components.memberAccount.notifications.list);
   const coverImage = useStoreState(state => state.components.memberAccount.cover);
   const coverFile = useStoreState(state => state.components.memberAccount.coverFile);
-  const isEmptyProfile = useStoreState(state => state.components.memberAccount.isEmptyProfile);
+  const isEmptyProfileAsDoer = useStoreState(
+    state => state.components.memberAccount.isEmptyProfileAsDoer
+  );
+  const isEmptyProfileAsAuthor = useStoreState(
+    state => state.components.memberAccount.isEmptyProfileAsAuthor
+  );
   const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
   const itvAvatarFile = useStoreState(state => state.components.memberAccount.itvAvatarFile);
   const username = useStoreState(state => state.components.memberAccount.username);
@@ -142,7 +147,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             <MemberCard />
           </div>
           <div className="member-account__right-column">
-            {isAccountOwner && !isEmptyProfile && (
+            {/* {isAccountOwner && !isEmptyProfile && (
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
                   <Link href="/task-actions">
@@ -156,17 +161,22 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
                   </Link>
                 </div>
               </div>
-            )}
-            {!isEmptyProfile && <Tabs />}
-            {isEmptyProfile && isAccountOwner && (
-              <>
-                <MemberAccountNeedAttention />
-                {/* <MemberAccountEmptyServiceShow /> */}
-                {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
-                {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
-              </>
-            )}
-            {isEmptyProfile && !isAccountOwner && <MemberAccountEmptySectionForGuest />}
+            )} */}
+            {((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+              (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) && <Tabs />}
+            {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
+              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              isAccountOwner && (
+                <>
+                  <MemberAccountNeedAttention />
+                  {/* <MemberAccountEmptyServiceShow /> */}
+                  {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
+                  {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
+                </>
+              )}
+            {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
+              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              !isAccountOwner && <MemberAccountEmptySectionForGuest />}
           </div>
         </div>
       </div>

@@ -7,12 +7,7 @@ import MemberCardOrganization from "components/members/MemberCardOrganization";
 import MemberCardBottom from "components/members/MemberCardBottom";
 
 const MemberCard: React.FunctionComponent = (): ReactElement => {
-  const {
-    isLoggedIn,
-    isAccountOwner,
-    isLoaded: isSessionLoaded,
-    user: { itvRole },
-  } = useStoreState(state => state.session);
+  const { isLoggedIn, isAccountOwner } = useStoreState(state => state.session);
   const {
     slug: memberSlug,
     organizationName,
@@ -22,6 +17,9 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     xp,
     isEmptyProfile,
     profileFillStatus,
+    template: memberAccountTemplate,
+    isEmptyProfileAsDoer,
+    isEmptyProfileAsAuthor,
   } = useStoreState(state => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
     actions => actions.components.memberAccount.giveThanksRequest
@@ -44,7 +42,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           />
         )}
         {organizationName && <MemberCardOrganization />}
-        {isAccountOwner && profileFillStatus && !profileFillStatus.isProfileInfoEnough && (
+        {isAccountOwner && profileFillStatus?.isProfileInfoEnough === false && (
           <div className="member-card__null-add-information">
             <Link href={`/members/${memberSlug}/profile`}>
               <a>Добавьте информацию о себе</a>
@@ -52,45 +50,49 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           </div>
         )}
         {isLoggedIn && <MemberCardBottom />}
-        {isAccountOwner ||
-          (!isEmptyProfile && (isLoggedIn || thankyouCount > 0) && (
-            <div className="member-card__action">
-              {(isAccountOwner && (
-                <>
-                  {(itvRole === "doer" && (
-                    <Link href="/tasks">
-                      <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
-                    </Link>
-                  )) || (
-                    <Link href="/task-actions">
-                      <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
-                    </Link>
-                  )}
-                  <Link href={`/members/${memberSlug}/profile`}>
-                    <a className="btn btn_full-width edit-profile">Редактировать профиль</a>
+        {(isAccountOwner ||
+          (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+            (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) &&
+            (isLoggedIn || thankyouCount > 0))) && (
+          <div className="member-card__action">
+            {(isAccountOwner && (
+              <>
+                {memberAccountTemplate === "volunteer" && (
+                  <Link href="/tasks">
+                    <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
                   </Link>
+                )}
+                {memberAccountTemplate === "author" && (
+                  <Link href="/task-actions">
+                    <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
+                  </Link>
+                )}
+                <Link href={`/members/${memberSlug}/profile`}>
+                  <a className="btn btn_full-width edit-profile">Редактировать профиль</a>
+                </Link>
+              </>
+            )) ||
+              (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+                (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) && (
+                <>
+                  {isLoggedIn && (
+                    <button
+                      className="btn btn_primary btn_full-width"
+                      type="button"
+                      onClick={() => giveThanksRequest()}
+                    >
+                      Сказать «Спасибо»
+                    </button>
+                  )}
+                  {thankyouCount > 0 && (
+                    <span className="member-card__thank-count">
+                      Сказали спасибо: {thankyouCount}
+                    </span>
+                  )}
                 </>
-              )) ||
-                (!isEmptyProfile && (
-                  <>
-                    {isLoggedIn && (
-                      <button
-                        className="btn btn_primary btn_full-width"
-                        type="button"
-                        onClick={() => giveThanksRequest()}
-                      >
-                        Сказать «Спасибо»
-                      </button>
-                    )}
-                    {thankyouCount > 0 && (
-                      <span className="member-card__thank-count">
-                        Сказали спасибо: {thankyouCount}
-                      </span>
-                    )}
-                  </>
-                ))}
-            </div>
-          ))}
+              ))}
+          </div>
+        )}
       </div>
     </>
   );

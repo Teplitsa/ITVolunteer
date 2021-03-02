@@ -431,6 +431,8 @@ export interface IMemberAccountPageState {
   skype?: string;
   telegram?: string;
   isEmptyProfile?: boolean;
+  isEmptyProfileAsDoer?: boolean;
+  isEmptyProfileAsAuthor?: boolean;
   registrationDate: number;
   thankyouCount: number;
   notificationStats: {

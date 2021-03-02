@@ -42,6 +42,8 @@ export const memberAccountPageState: IMemberAccountPageState = {
   skype: "",
   telegram: "",
   isEmptyProfile: true,
+  isEmptyProfileAsDoer: true,
+  isEmptyProfileAsAuthor: true,
   registrationDate: Date.now() / 1000,
   thankyouCount: 0,
   notificationStats: {
