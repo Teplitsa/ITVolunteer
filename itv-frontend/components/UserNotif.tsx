@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import Router from "next/router";
 // import { IFetchResult } from "../model/model.typing";
 import Link from "next/link";
@@ -38,38 +38,29 @@ const ITV_USER_NOTIF_TEXT = {
 };
 
 export function NotifList({
-  clickOutsideHandler
+  clickOutsideHandler,
 }: {
-  clickOutsideHandler: () => void
+  clickOutsideHandler: () => void;
 }): ReactElement {
   const user = useStoreState(store => store.session.user);
   const notifList = useStoreState(store => store.components.userNotif.notifList);
-  const [notifListRef, setNotifListRef] = useState(null);
+  const notifListRef = useRef<HTMLDivElement>(null);
 
-  function handleClickOutside(e) {
-    if (notifListRef && !notifListRef.contains(e.target)) {
-      if (clickOutsideHandler) {
-        clickOutsideHandler();
-      }
-    }
-  }
+  const handleClickOutside = (event: Event): void => {
+    if (notifListRef.current?.contains(event.target as Node)) return;
+
+    clickOutsideHandler && clickOutsideHandler();
+  };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
   return (
-    <div className={`notif-list`} ref={ref => setNotifListRef(ref)}>
+    <div className={`notif-list`} ref={notifListRef}>
       <div className={`notif-list__container`}>
         <div className="notif-list__title">Оповещения</div>
         {notifList.map((item, index) => {
