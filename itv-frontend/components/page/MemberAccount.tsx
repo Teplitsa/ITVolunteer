@@ -56,28 +56,43 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     content: React.FunctionComponent;
   }> = [];
 
-  if (isAccountOwner && notifications) {
+  if (isAccountOwner && Array.isArray(notifications) && notifications.length > 0) {
     tabList.push({
       title: "Оповещения",
       content: MemberNotifications,
     });
   }
 
-  if (memberAccountTemplate === "volunteer") {
-    tabList.push({
-      title: "Портфолио",
-      content: MemberPortfolio,
-    });
-  }
+  if (
+    (memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+    (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)
+  ) {
+    if (memberAccountTemplate === "volunteer") {
+      tabList.push({
+        title: "Портфолио",
+        content: MemberPortfolio,
+      });
+    }
 
-  if (!Object.values({ ...taskStats, open: 0 }).every(filter => filter === 0)) {
-    tabList.push({ title: "Задачи", content: MemberTasks });
-  }
+    if (
+      Object.entries(taskStats).some(
+        (filters => ([filterName, filterValue]) => {
+          if (filters.includes(filterName)) {
+            return filterValue > 0;
+          }
 
-  if (reviews && reviews.length > 0) {
-    tabList.push({ title: "Отзывы", content: MemberReviews });
-  }
+          return false;
+        })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+      )
+    ) {
+      tabList.push({ title: "Задачи", content: MemberTasks });
+    }
 
+    if (Array.isArray(reviews) && reviews.length > 0) {
+      tabList.push({ title: "Отзывы", content: MemberReviews });
+    }
+  }
+  
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: tabList,
@@ -162,8 +177,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
                 </div>
               </div>
             )} */}
-            {((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
-              (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) && <Tabs />}
+            {tabList.length > 0 && <Tabs />}
             {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
               (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
               isAccountOwner && (

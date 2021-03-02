@@ -21,7 +21,15 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     publish: number;
   } = { ...taskStats, open: 0 };
 
-  const isNullDesignRequired = Object.values(filters).every(filter => filter === 0);
+  const isNullDesignRequired = !Object.entries(taskStats).some(
+    (filters => ([filterName, filterValue]) => {
+      if (filters.includes(filterName)) {
+        return filterValue > 0;
+      }
+
+      return false;
+    })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+  );
 
   const filter = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
