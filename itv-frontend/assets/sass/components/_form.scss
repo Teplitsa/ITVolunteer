@@ -30,6 +30,224 @@
       }
     }
   }
+  &__select {
+    &-group {
+      position: relative;
+    }
+    &-placeholder {
+      display: none;
+      margin-bottom: 7px;
+      font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+
+      &_active {
+        display: block;
+      }
+    }
+    &-control {
+      @extend .form__control_input[class*="_input"];
+      position: relative;
+      padding-right: calc(12px + 42px);
+      padding-bottom: 9px;
+
+      &[class*="__select-control"] {
+        display: flex;
+        flex-flow: row wrap;
+      }
+
+      select:invalid + [class*="_accordion_"] & {
+        border: 1px solid $color-sec-dark;
+        box-shadow: inset 1px 1px 2px rgba(89, 64, 0, 0.16);
+      }
+      &[class*="_active"] {
+        border: 1px solid $color-success !important;
+        box-shadow: 0px 0px 8px rgba(14, 163, 108, 0.2), inset 1px 1px 2px rgba(89, 64, 0, 0.16) !important;
+      }
+      &_small[class*="__select"] {
+        padding: 10px calc(12px + 42px) 3px 12px;
+      }
+    }
+    &-tag {
+      display: flex;
+      align-items: center;
+      background-color: $color-gray-light-lg;
+      border: 1px solid $color-gray-light-md;
+      margin: 0 7px 7px 0;
+      padding: 4px 12px;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+      border-radius: 10px;
+
+      &-close {
+        background: url(../../img/icon-tag-close.svg) 50% 50% no-repeat;
+        border-style: none;
+        margin-left: 8px;
+        width: 20px;
+        height: 20px;
+        outline: none;
+      }
+    }
+    &-toggle {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      background-color: transparent;
+      border-style: none;
+      padding: 0;
+      width: 54px;
+      height: 54px;
+      outline: none;
+      transform: translate(0, -50%);
+
+      &_small {
+        width: 42px;
+        height: 42px;
+      }
+
+      &::before {
+        content: "";
+        display: block;
+        background: url(../../img/icon-arrow-bottom.svg) 50% 50% no-repeat;
+        width: 100%;
+        height: 100%;
+        transform-origin: center;
+        transition: all 0.3s linear;
+      }
+
+      &[class*="_active"] {
+        &::before {
+          transform: rotate(-180deg);
+        }
+      }
+    }
+    &-list {
+      &-wrapper {
+        &::before {
+          content: "";
+          display: block;
+          height: 10px;
+        }
+      }
+      &-box {
+        background-color: $color-white;
+        border: 1px solid $color-gray-light-md;
+        max-height: 540px;
+        overflow-y: auto;
+        border-radius: 8px;
+
+        &::-webkit-scrollbar {
+          width: $base;
+        }
+        &::-webkit-scrollbar-track {
+          background-color: $color-gray-light-md;
+          border-radius: $base;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: $color-gray-dark-xl;
+          border-radius: $base;
+        }
+        scrollbar-width: thin;
+        scrollbar-color: $color-gray-dark-xl $color-gray-light-md;
+      }
+    }
+    &-option {
+      position: relative;
+      background-color: transparent;
+      padding: 10px 16px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+      z-index: 2;
+      transition: all 0.15s linear;
+
+      &:hover {
+        background-color: $color-gray-light-xl;
+        cursor: pointer;
+      }
+
+      &:first-child {
+        margin-top: 10px;
+      }
+
+      &:last-child {
+        margin-bottom: 10px;
+      }
+
+      &_active {
+        color: $color-main;
+      }
+      &_child {
+        display: flex;
+        align-items: center;
+        padding-left: 40px;
+
+        &::before {
+          content: "·";
+          display: block;
+          margin-right: 8px;
+          color: $color-gray-dark-md-001;
+        }
+
+        &[class*="_active"] {
+          &::before {
+            color: $color-main;
+          }
+        }
+      }
+    }
+  }
+  &__checkbox {
+    &-group {
+      margin-bottom: 20px;
+    }
+    &-label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+      user-select: none;
+      cursor: pointer;
+
+      &-text {
+        flex-shrink: 10;
+      }
+
+      &::before {
+        content: "";
+        display: block;
+        background: url(../../img/icon-checkbox.svg) 50% 50% no-repeat;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        transition: all 0.15s linear;
+      }
+
+      :checked + & {
+        &::before {
+          background: url(../../img/icon-checkbox-active.svg) 0 50% no-repeat;
+        }
+      }
+    }
+    &-explanation {
+      padding-left: 30px;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+
+      p {
+        &:not(:last-child) {
+          margin-bottom: 4px;
+        }
+      }
+      a {
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
   &__control {
     &_input {
       &[class*="_input"] {
@@ -64,6 +282,9 @@
           border: 1px solid $color-gray-light-lg;
         }
       }
+      &-small[class*="_input"] {
+        padding: 10px 12px;
+      }
     }
     &_textarea {
       background-color: $color-white;
@@ -96,6 +317,9 @@
         background-color: $color-gray-light-lg;
         border: 1px solid $color-gray-light-lg;
       }
+      &-small {
+        padding: 10px 12px;
+      }
     }
     &_submit {
       @extend .btn_primary;
@@ -109,8 +333,40 @@
     margin: 0 0 15px;
     font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
     color: $color-gray-dark-lg;
+
+    &_small {
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    }
   }
   &__required {
     color: $color-sec-dark;
+  }
+  &__char-counter {
+    position: relative;
+    &-value {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      font: 600 11px/1.09 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+      transform: translate(0, -50%);
+    }
+  }
+  &__date {
+    &-control {
+      &-wrapper {
+        position: relative;
+        user-select: none;
+      }
+    }
+    &-picker {
+      position: absolute;
+      top: calc(100% + 10px);
+      z-index: 10;
+    }
+    &-placeholder {
+      font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+    }
   }
 }

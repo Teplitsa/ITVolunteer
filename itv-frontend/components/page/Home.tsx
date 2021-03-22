@@ -43,7 +43,7 @@ const Home: React.FunctionComponent = (): ReactElement => {
             <h1 dangerouslySetInnerHTML={{ __html: title }} />
             <div className="home-header__cta-text" dangerouslySetInnerHTML={{ __html: content }} />
             <div className="home-header__actions">
-              <Link href={isLoggedIn ? "/task-actions" : "/login"}>
+              <Link href={isLoggedIn ? "/task-create" : "/login"}>
                 <a
                   className="home-header__action-primary"
                   onClick={() => {
@@ -151,7 +151,7 @@ const Home: React.FunctionComponent = (): ReactElement => {
             </h2>
             <div className="home-footer__cta-action">
               {isLoggedIn && (
-                <Link href="/task-actions">
+                <Link href="/task-create">
                   <a
                     className="home-footer__action-primary"
                     onClick={() => {

@@ -253,7 +253,6 @@ const EditTask: React.FunctionComponent<ITaskState> = (task): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params: { slug } }) => {
-  // const url = "/task-actions";
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );

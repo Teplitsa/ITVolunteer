@@ -143,7 +143,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
                 </Link>
               )}
               {user.itvRole === "author" && (
-                <Link href="/task-actions">
+                <Link href="/task-create">
                   <a>Создать задачу</a>
                 </Link>
               )}
@@ -185,7 +185,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
             </Link>
           )}
           {user.itvRole === "author" && (
-            <Link href="/task-actions">
+            <Link href="/task-create">
               <a>Создать задачу</a>
             </Link>
           )}

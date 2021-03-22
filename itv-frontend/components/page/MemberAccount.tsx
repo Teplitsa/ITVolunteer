@@ -165,7 +165,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             {/* {isAccountOwner && !isEmptyProfile && (
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
-                  <Link href="/task-actions">
+                  <Link href="/task-create">
                     <a
                       className="btn btn_primary"
                       target="_blank"

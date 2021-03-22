@@ -2,7 +2,10 @@ import { createContext, Dispatch } from "react";
 
 export interface IModal {
   isShown?: boolean;
+  hideBackdrop?: boolean;
+  hAlign?: "left" | "center" | "right",
   title?: string;
+  header?: React.FunctionComponent<{ closeModal: () => void }>;
   content?: React.FunctionComponent<{ closeModal: () => void }>;
   dispatch?: Dispatch<{
     type: string;
@@ -25,7 +28,10 @@ export interface ISnackbar {
 
 export const modalInitialState: IModal = {
   isShown: false,
+  hideBackdrop: false,
+  hAlign: "center",
   title: "",
+  header: null,
   content: null,
 };
 

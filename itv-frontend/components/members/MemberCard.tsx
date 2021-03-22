@@ -63,7 +63,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                   </Link>
                 )}
                 {memberAccountTemplate === "author" && (
-                  <Link href="/task-actions">
+                  <Link href="/task-create">
                     <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
                   </Link>
                 )}
