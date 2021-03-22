@@ -11,12 +11,16 @@ class MemberTasks {
         $this->user_id = $user_id;
     }    
 
-    public function has_member_created_and_completed_tasks() {
+    public function has_member_created_tasks() {
         $task_manager = new TaskManager();
         $latest_created_task = $task_manager->get_latest_user_created_task($this->user_id);
-        $latest_completed_task = $task_manager->get_latest_user_completed_task($this->user_id);
+        return boolval($latest_created_task);
+    }
 
-        return $latest_created_task && $latest_completed_task;
+    public function has_member_completed_tasks() {
+        $task_manager = new TaskManager();
+        $latest_completed_task = $task_manager->get_latest_user_completed_task($this->user_id);
+        return boolval($latest_completed_task);
     }
 
     public function calc_member_role_by_tasks() {

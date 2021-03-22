@@ -573,8 +573,8 @@ function itv_register_user_graphql_fields() {
                 'type' => 'Bool',
                 'description' => __( 'User is doer and author', 'tst' ),
                 'resolve' => function ($user) {
-                    $member_tasks = new MemberTasks($user->userId);
-                    return $member_tasks->has_member_created_and_completed_tasks();
+                    $members = new MemberManager();
+                    return $members->is_hybrid_profile($user->userId);
                 }
             ],
         ]
