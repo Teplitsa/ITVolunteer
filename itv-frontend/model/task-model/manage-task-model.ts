@@ -151,11 +151,14 @@ const manageTaskThunks: IManageTaskThunks = {
 
       Object.entries(formDataWillSubmit).forEach(([fieldName, fieldData]) => {
         if (fieldName === "files") {
-          submitFormData.append(fieldName, fieldData.map(file => file.value).join(","));
+          fieldData && submitFormData.append(
+            fieldName,
+            fieldData.map((file: { value: number; fileName: string }) => file.value).join(",")
+          );
         } else if (Object.prototype.toString.call(fieldData) === "[object Object]") {
-          submitFormData.append(fieldName, fieldData.value);
+          fieldData.value && submitFormData.append(fieldName, fieldData.value);
         } else {
-          submitFormData.append(fieldName, fieldData);
+          fieldData && submitFormData.append(fieldName, fieldData);
         }
       });
 

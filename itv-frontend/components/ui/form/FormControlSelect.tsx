@@ -8,6 +8,7 @@ import {
   useState,
   useEffect,
   ChangeEvent,
+  SyntheticEvent,
 } from "react";
 import FormGroup from "./FormGroup";
 import Accordion from "../../global-scripts/Accordion";
@@ -86,14 +87,21 @@ const FormControlSelect: React.FunctionComponent<
 
     if (!selectOption) return;
 
-    // if (nativeSelectProps.multiple) {
     selectOption.click();
-    // } else {
-    //   selectRef.current.options[0].selected = true;
-    //   selectRef.current.dispatchEvent(new Event("change"));
+  };
 
-    //   selectOption.classList.remove("form__select-option_active");
-    // }
+  const toggleSelectListBox = (event: MouseEvent<HTMLDivElement>): void => {
+    if (
+      (event.target as HTMLElement).classList.contains("form__select-tag") ||
+      (event.target as HTMLElement).classList.contains("form__select-tag-close")
+    )
+      return;
+
+    selectGroupRef.current
+      ?.querySelector<HTMLElement>(".form__select-toggle")
+      .classList.toggle("form__select-toggle_active");
+
+    selectGroupRef.current?.querySelector<HTMLElement>("[data-accordion-control]").click();
   };
 
   useEffect(() => {
@@ -179,6 +187,7 @@ const FormControlSelect: React.FunctionComponent<
             <div
               data-accordion-title
               className="form__select-control form__select-control_small form__control_full-width"
+              onClick={toggleSelectListBox}
             >
               {selectedOptionList?.map(option => {
                 return (
@@ -205,17 +214,7 @@ const FormControlSelect: React.FunctionComponent<
                   {selectPlaceholder}
                 </div>
               )}
-              <button
-                className="form__select-toggle form__select-toggle_small"
-                type="button"
-                onClick={event => {
-                  event.currentTarget.classList.toggle("form__select-toggle_active");
-
-                  selectGroupRef.current
-                    ?.querySelector<HTMLElement>("[data-accordion-control]")
-                    .click();
-                }}
-              />
+              <button className="form__select-toggle form__select-toggle_small" type="button" />
             </div>
             <div className="form__select-list-wrapper" data-accordion-content>
               <div className="form__select-list-box">

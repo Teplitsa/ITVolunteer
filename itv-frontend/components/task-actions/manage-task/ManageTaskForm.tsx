@@ -8,7 +8,7 @@ const ManageTaskForm: React.FunctionComponent<{
   // eslint-disable-next-line no-unused-vars
   submitHandler: (event: Event) => void;
   submitDisabled?: boolean;
-  FormFooter?: React.FunctionComponent;
+  FormFooter?: ReactElement;
 }> = ({
   title,
   subtitle,
@@ -41,11 +41,7 @@ const ManageTaskForm: React.FunctionComponent<{
       >
         {submitTitle}
       </button>
-      {FormFooter && (
-        <div className={styles["manage-task-form__footer"]}>
-          <FormFooter />
-        </div>
-      )}
+      {FormFooter && <div className={styles["manage-task-form__footer"]}>{FormFooter}</div>}
     </form>
   );
 };

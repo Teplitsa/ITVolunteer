@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
 import ManageTaskStep from "./ManageTaskStep";
 import ManageTaskForm from "./ManageTaskForm";
+import ManageTaskStep2Footer from "./ManageTaskStep2Footer";
 import SimpleTaskExplanation from "./agreement-explanations/SimpleTaskExplanation";
 import SocialProblemExplanation from "./agreement-explanations/SocialProblemExplanation";
 import EffectiveCooperationExplanation from "./agreement-explanations/EffectiveCooperationExplanation";
@@ -88,6 +89,14 @@ const ManageTask: React.FunctionComponent<{
 
   const goToStep2 = (event: Event): void => {
     event.preventDefault();
+
+    Array.from((event.currentTarget as HTMLFormElement).elements).forEach(
+      (control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement) => {
+        if (["title", "description", "taskTags", "ngoTags"].includes(control.name)) {
+          control.required = true;
+        }
+      }
+    );
 
     if ((event.currentTarget as HTMLFormElement).checkValidity()) {
       clearSnackbar();
@@ -294,34 +303,31 @@ const ManageTask: React.FunctionComponent<{
           >
             <FormControlInput
               label="Название задачи"
-              labelExtraClassName="form__label_small"
+              labelExtraClassName="form__label_small form__label_required"
               className="form__control_input form__control_input-small form__control_full-width"
               type="text"
               name="title"
               maxLength={50}
               defaultValue={taskRef.current?.title}
               placeholder="Что нужно сделать?"
-              required
               onChange={controlChangeHandler}
             />
             <FormControlTextarea
               label="Описание"
-              labelExtraClassName="form__label_small"
+              labelExtraClassName="form__label_small form__label_required"
               className="form__control_textarea form__control_textarea-small form__control_full-width"
               name="description"
               defaultValue={taskRef.current?.description}
               placeholder="Какая задача стоит перед IT-волонтером? Привидите примеры успешной реализации. Опишите результат"
-              required
               onChange={controlChangeHandler}
             />
             <FormControlSelect
               label="Категория задачи"
-              labelExtraClassName="form__label_small"
+              labelExtraClassName="form__label_small form__label_required"
               selectPlaceholder="Выберите категорию"
               name="taskTags"
               defaultValue={taskRef.current?.taskTags.value.map(value => String(value))}
               multiple
-              required
               onChange={selectMultipleChangeHandler}
             >
               {tags?.map(tag => ({
@@ -332,11 +338,10 @@ const ManageTask: React.FunctionComponent<{
             </FormControlSelect>
             <FormControlSelect
               label="Направление помощи"
-              labelExtraClassName="form__label_small"
+              labelExtraClassName="form__label_small form__label_required"
               selectPlaceholder="Выберите направление"
               name="ngoTags"
               defaultValue={taskRef.current?.ngoTags.value}
-              required
               onChange={selectChangeHandler}
             >
               {ngoTags?.map(tag => ({
@@ -356,24 +361,13 @@ const ManageTask: React.FunctionComponent<{
               subtitle: `Шаг ${step} из ${stepCount}`,
               submitTitle: "Опубликовать",
               submitHandler: publishTask,
-              FormFooter: () => (
-                <a
-                  className={styles["manage-task-form__footer-link"]}
-                  href="#"
-                  onClick={event => {
-                    event.preventDefault();
-                    goPrevStep();
-                  }}
-                >
-                  Вернуться
-                </a>
-              ),
+              FormFooter: <ManageTaskStep2Footer {...{ goPrevStep }} />,
             }}
           >
             <FormControlSelect
-              label="Вознагрождение"
+              label="Вознаграждение"
               labelExtraClassName="form__label_small"
-              selectPlaceholder="Выберите вознагрождение"
+              selectPlaceholder="Выберите вознаграждение"
               name="reward"
               defaultValue={taskRef.current?.reward.value}
               onChange={selectChangeHandler}
@@ -435,7 +429,7 @@ const ManageTask: React.FunctionComponent<{
                   </a>
                   <div className={styles["manage-task__tooltip-inline"]}>
                     {`Автоматически будет дедлайн ${new Date(
-                      minPreferredDuration
+                      Date.now() + 14 * 24 * 60 * 60 * 1000
                     ).toLocaleDateString()}`}
                   </div>
                 </div>

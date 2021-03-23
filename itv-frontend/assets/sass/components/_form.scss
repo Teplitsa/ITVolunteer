@@ -122,6 +122,12 @@
     }
     &-list {
       &-wrapper {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        z-index: 10;
+
         &::before {
           content: "";
           display: block;
@@ -336,6 +342,13 @@
 
     &_small {
       font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    }
+
+    &_required {
+      &::after {
+        content: "*";
+        @extend .form__required;
+      }
     }
   }
   &__required {
