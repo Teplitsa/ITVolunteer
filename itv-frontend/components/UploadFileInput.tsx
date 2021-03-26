@@ -11,7 +11,6 @@ import { getMediaData } from "../utilities/media";
 import { IFetchResult } from "../model/model.typing";
 
 import cloudUpload from "../assets/img/icon-wizard-cloud-upload.svg";
-import IconFileTypeDoc from "../assets/img/icon-file-type-doc.svg";
 
 type FileMedia = {
   fileId: number;

@@ -8,7 +8,6 @@ import {
   useState,
   useEffect,
   ChangeEvent,
-  SyntheticEvent,
 } from "react";
 import FormGroup from "./FormGroup";
 import Accordion from "../../global-scripts/Accordion";

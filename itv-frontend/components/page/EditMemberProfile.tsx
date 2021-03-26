@@ -7,8 +7,10 @@ import UploadFileInput from "../UploadFileInput";
 import { regEvent } from "../../utilities/ga-events";
 
 const EditMemberProfile: React.FunctionComponent<{
+  // eslint-disable-next-line no-unused-vars
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
+  // eslint-disable-next-line no-unused-vars
   deleteSnackbar: (message: ISnackbarMessage) => void;
 }> = ({ addSnackbar, clearSnackbar }): ReactElement => {
   const router = useRouter();

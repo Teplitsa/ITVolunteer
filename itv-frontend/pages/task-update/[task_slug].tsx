@@ -161,7 +161,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         if (data?.status && data.status !== 200) {
           console.error("При загрузке данных задачи произошла ошибка.");
         } else {
-          const extendedFiles = [];
+          const extendedFiles: Array<FileItem> = [];
 
           for (const fileId of files) {
             const mediaResult = await fetch(
