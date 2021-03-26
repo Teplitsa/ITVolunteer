@@ -192,7 +192,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   <UploadFileInput
                     name="user_avatar"
                     isMultiple={false}
-                    fileData={user.itvAvatarFile}
+                    initFileData={user.itvAvatarFile}
                   />
                 </div>
               )}
@@ -200,7 +200,11 @@ const EditMemberProfile: React.FunctionComponent<{
               {user.id && (
                 <div className="auth-page-form__group">
                   <label className="auth-page-form__label">Обложка профиля</label>
-                  <UploadFileInput name="user_cover" isMultiple={false} fileData={user.coverFile} />
+                  <UploadFileInput
+                    name="user_cover"
+                    isMultiple={false}
+                    initFileData={user.coverFile}
+                  />
                 </div>
               )}
 
@@ -226,7 +230,7 @@ const EditMemberProfile: React.FunctionComponent<{
                   <UploadFileInput
                     name="user_company_logo"
                     isMultiple={false}
-                    fileData={user.organizationLogoFile}
+                    initFileData={user.organizationLogoFile}
                   />
                 </div>
               )}

@@ -35,6 +35,7 @@ const FormControlSelect: React.FunctionComponent<
   label,
   labelExtraClassName,
   selectPlaceholder,
+  maxSelectedOptions,
   ...nativeSelectProps
 }): ReactElement => {
   const [optionList, setOptionList] = useState<
@@ -52,22 +53,42 @@ const FormControlSelect: React.FunctionComponent<
     setSelectedOptionList(selectedOptionList);
   };
 
+  const selectListBoxClickHandle = (event: Event): void => {
+    if (
+      !nativeSelectProps.multiple &&
+      (event.currentTarget as HTMLElement).classList.contains("form__select-list-box")
+    ) {
+      selectGroupRef.current
+        ?.querySelector<HTMLElement>(".form__select-toggle")
+        .classList.remove("form__select-toggle_active");
+
+      selectGroupRef.current?.querySelector<HTMLElement>("[data-accordion-control]").click();
+    }
+  };
+
   const optionClickHandle = (event: MouseEvent<HTMLDivElement>): void => {
     const option = selectRef.current.options[Number(event.currentTarget.dataset.optionIndex)];
 
-    option.selected = !option.selected;
+    if (
+      selectRef.current.selectedOptions.length < (maxSelectedOptions ?? Number.POSITIVE_INFINITY) ||
+      option.selected
+    ) {
+      option.selected = !option.selected;
 
-    event.currentTarget.classList[option.selected ? "add" : "remove"]("form__select-option_active");
+      event.currentTarget.classList[option.selected ? "add" : "remove"](
+        "form__select-option_active"
+      );
 
-    if (!nativeSelectProps.multiple) {
-      selectGroupRef.current.querySelectorAll(".form__select-option").forEach(selectOption => {
-        if (
-          (selectOption as HTMLElement).dataset.optionIndex !==
-          event.currentTarget.dataset.optionIndex
-        ) {
-          selectOption.classList.remove("form__select-option_active");
-        }
-      });
+      if (!nativeSelectProps.multiple) {
+        selectGroupRef.current?.querySelectorAll(".form__select-option").forEach(selectOption => {
+          if (
+            (selectOption as HTMLElement).dataset.optionIndex !==
+            event.currentTarget.dataset.optionIndex
+          ) {
+            selectOption.classList.remove("form__select-option_active");
+          }
+        });
+      }
     }
 
     nativeSelectProps.onChange &&
@@ -87,7 +108,7 @@ const FormControlSelect: React.FunctionComponent<
 
     if (!selectOption) return;
 
-    selectOption.click();
+    optionClickHandle({ currentTarget: selectOption } as MouseEvent<HTMLDivElement>);
   };
 
   const toggleSelectListBox = (event: MouseEvent<HTMLDivElement>): void => {
@@ -104,8 +125,33 @@ const FormControlSelect: React.FunctionComponent<
     selectGroupRef.current?.querySelector<HTMLElement>("[data-accordion-control]").click();
   };
 
+  const closeSelectListBox = (event: Event): void => {
+    if (!selectGroupRef.current?.contains(event.target as HTMLElement)) {
+      const selectHiddenControl = selectGroupRef.current?.querySelector<HTMLElement>(
+        `[class*="accordion__control_active"]`
+      );
+
+      if (selectHiddenControl) {
+        selectGroupRef.current
+          ?.querySelector<HTMLElement>(".form__select-toggle")
+          .classList.toggle("form__select-toggle_active");
+
+        selectHiddenControl.click();
+      }
+    }
+  };
+
   useEffect(() => {
-    selectRef.current.addEventListener("change", selectChangeHandle);
+    selectRef.current?.addEventListener("change", selectChangeHandle);
+
+    return () => selectRef.current?.removeEventListener("change", selectChangeHandle);
+  }, [selectRef.current]);
+
+  useEffect(() => {
+    selectRef.current?.addEventListener("click", selectChangeHandle);
+    selectRef.current?.addEventListener("change", selectChangeHandle);
+
+    return () => selectRef.current?.removeEventListener("change", selectChangeHandle);
   }, []);
 
   useEffect(() => {
@@ -166,6 +212,20 @@ const FormControlSelect: React.FunctionComponent<
       }, [])
     );
   }, [optionList]);
+
+  useEffect(() => {
+    document.addEventListener("click", closeSelectListBox, true);
+    selectGroupRef.current
+      ?.querySelector(".form__select-list-box")
+      .addEventListener("click", selectListBoxClickHandle, true);
+
+    return () => {
+      document.removeEventListener("click", closeSelectListBox);
+      selectGroupRef.current
+        ?.querySelector(".form__select-list-box")
+        .removeEventListener("click", selectListBoxClickHandle);
+    };
+  }, [selectGroupRef.current]);
 
   return (
     <FormGroup {...{ label, labelExtraClassName, required: nativeSelectProps.required }}>

@@ -214,7 +214,8 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(270deg, $color-white 43.55%, rgba(255, 255, 255, 0) 81.18%) 50% 50% no-repeat;
+        background: linear-gradient(270deg, $color-white 43.55%, rgba(255, 255, 255, 0) 81.18%) 50%
+          50% no-repeat;
         width: 60px;
       }
 
@@ -290,6 +291,23 @@
         margin-left: 18px;
         &:not(:last-child) {
           margin-bottom: 4px;
+        }
+      }
+    }
+  }
+  &__select {
+    &-guard {
+      position: relative;
+
+      &_active {
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 2;
         }
       }
     }

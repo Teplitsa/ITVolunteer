@@ -137,7 +137,7 @@
       &-box {
         background-color: $color-white;
         border: 1px solid $color-gray-light-md;
-        max-height: 540px;
+        max-height: 300px;
         overflow-y: auto;
         border-radius: 8px;
 
@@ -380,6 +380,170 @@
     &-placeholder {
       font: 400 16px/1.25 "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-md-001;
+    }
+  }
+  &-upload {
+    position: relative;
+
+    & > input[type="file"] {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      cursor: pointer;
+      outline: none;
+    }
+
+    &__inner {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background: $color-white;
+      border: 1px dashed $color-gray-light-md;
+      width: 100%;
+      border-radius: 10px;
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+
+    &__box {
+      padding: 32px 20px;
+      width: 100%;
+      box-sizing: border-box;
+      pointer-events: none;
+
+      @include screen-from(sm) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      &_has-files{
+        @include screen-from(sm) {
+          align-items: flex-start;
+        }
+      }
+    }
+
+    &__icon {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 7px;
+      pointer-events: none;
+
+      @include screen-from(sm) {
+        margin-right: 25px;
+        margin-bottom: 0;
+      }
+    }
+
+    &__btn {
+      @extend .btn;
+      @extend .btn_primary;
+      margin-top: 17px;
+      padding: 8px 40px;
+      width: 100%;
+      text-align: center;
+      pointer-events: none;
+
+      @include screen-from(sm) {
+        margin-top: 0;
+        width: auto;
+      }
+    }
+
+    &__title {
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      text-align: center;
+      color: $color-gray-dark-md-001;
+      pointer-events: none;
+
+      @include screen-from(sm) {
+        margin-right: 20px;
+        text-align: left;
+      }
+    }
+
+    &__files {
+      @include screen-from(sm) {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, calc(50% - 17px));
+        grid-column-gap: 17px;
+        grid-row-gap: 7px;
+        width: calc(100% - 144px);
+      }
+    }
+
+    &__file {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      background-color: $color-white;
+      border: 1px solid $color-gray-light-md;
+      margin-bottom: 7px;
+      height: 36px;
+      border-radius: 2px;
+      pointer-events: auto;
+      box-sizing: border-box;
+
+      @include screen-from(sm) {
+        margin-bottom: 0;
+      }
+
+      &-preview {
+        background-image: url(../../img/icon-file-type-doc.svg), none;
+        background-color: $color-gray-light-md;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-size: 10px 17px, 0 0;
+        margin-right: 8px;
+        min-width: 34px;
+        min-height: 34px;
+        border-radius: 2px 0 0 2px;
+        transition: all .3s ease-in;
+      }
+
+      &-name {
+        margin-right: 8px;
+        font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: $color-gray-dark-lg;
+        overflow: hidden;
+
+        @include screen-from(sm) {
+          flex-shrink: 10;
+        }
+      }
+
+      &-remove {
+        display: block;
+        background: url(../../img/icon-file-remove.svg) 50% 50% no-repeat;
+        border-style: none;
+        margin-right: 8px;
+        width: 16px;
+        height: 16px;
+        outline: none;
+      }
+    }
+
+    &__remove-file {
+      cursor: pointer;
+    }
+
+    &__spinner {
+      display: flex;
+      justify-content: center;
+      flex-grow: 1;
+
+      & > .spinner-border {
+        color: $color-gray-light-lg !important;
+      }
     }
   }
 }

@@ -2,12 +2,26 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
+import Error401 from "../components/page/Error401";
 import ManageTask from "../components/task-actions/manage-task/ManageTask";
 import GlobalScripts, { ISnackbarMessage } from "../context/global-scripts";
 
 const { SnackbarContext } = GlobalScripts;
 
-const TaskCreatePage: React.FunctionComponent = (): ReactElement => {
+const TaskCreatePage: React.FunctionComponent<{ statusCode?: number }> = ({
+  statusCode,
+}): ReactElement => {
+  if (statusCode === 401) {
+    return (
+      <>
+        <DocumentHead />
+        <Main>
+          <Error401 />
+        </Main>
+      </>
+    );
+  }
+
   return (
     <>
       <DocumentHead />
@@ -30,9 +44,12 @@ const TaskCreatePage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
+  );
+  const loggedIn = decodeURIComponent(req.headers.cookie).match(
+    /wordpress_logged_in_[^=]+=([^|]+)/
   );
 
   const model = await withAppAndEntrypointModel({
@@ -44,22 +61,24 @@ export const getServerSideProps: GetServerSideProps = async () => {
         slug: "task-create",
         seo: {
           canonical: "https://itv.te-st.ru/task-create",
-          title: "Создание задачаи - IT-волонтер",
+          title: "Создание задачи - IT-волонтер",
           metaRobotsNoindex: "noindex",
           metaRobotsNofollow: "nofollow",
-          opengraphTitle: "Создание задачаи - IT-волонтер",
+          opengraphTitle: "Создание задачи - IT-волонтер",
           opengraphUrl: "https://itv.te-st.ru/task-create",
           opengraphSiteName: "IT-волонтер",
         },
       },
     ],
     componentModel: async () => {
+      if (!loggedIn) res.statusCode = 401;
+
       return ["manageTask", null];
     },
   });
 
   return {
-    props: { ...model },
+    props: { statusCode: res.statusCode, ...model },
   };
 };
 

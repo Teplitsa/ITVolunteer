@@ -1630,6 +1630,7 @@ export interface IFormControlProps {
 
 export interface IFormSelectProps {
   selectPlaceholder?: string;
+  maxSelectedOptions?: number;
 }
 
 export interface IFormInputDateProps {
@@ -1671,7 +1672,7 @@ export interface IManageTaskFormData {
     value: string;
   };
   files?: Array<{
-    value: number;
+    value: string | number;
     fileName: string;
   }>;
   preferredDuration?: string;
@@ -1684,6 +1685,8 @@ export interface IManageTaskTag {
 }
 
 export interface IManageTaskState {
+  id: number;
+  slug: string;
   informativenessLevel: number;
   formData: IManageTaskFormData;
   tags: Array<IManageTaskTag>;

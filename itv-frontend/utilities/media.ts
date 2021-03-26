@@ -18,14 +18,15 @@ export interface IMediaData {
 }
 
 export const getMediaData = async (
-  mediaId: number,
+  mediaId: string | number,
   abortController?: AbortController
 ): Promise<IMediaData> => {
   try {
+    const endpoint = `/wp/v2/media/${mediaId}/?_fields[]=id&_fields[]=source_url&_fields[]=media_details`;
     const result =
       typeof abortController === "undefined"
-        ? await fetch(getRestApiUrl(`/wp/v2/media/${mediaId}`))
-        : await fetch(getRestApiUrl(`/wp/v2/media/${mediaId}`), {
+        ? await fetch(getRestApiUrl(endpoint))
+        : await fetch(getRestApiUrl(endpoint), {
           signal: abortController.signal,
         });
 

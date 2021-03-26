@@ -11,7 +11,9 @@ import {
 } from "../model.typing";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 
-const manageTaskState: IManageTaskState = {
+export const initManageTaskState: IManageTaskState = {
+  id: 0,
+  slug: "",
   informativenessLevel: 0,
   formData: {
     agreement: {
@@ -42,10 +44,10 @@ const manageTaskState: IManageTaskState = {
   reward: null,
 };
 
+const manageTaskState: IManageTaskState = { ...initManageTaskState };
+
 const manageTaskActions: IManageTaskActions = {
-  initializeState: action(prevState => {
-    Object.assign(prevState, manageTaskState);
-  }),
+  initializeState: action(() => ({ ...initManageTaskState })),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
@@ -142,6 +144,8 @@ const manageTaskThunks: IManageTaskThunks = {
         session: { validToken: token },
         components: {
           manageTask: {
+            id,
+            slug,
             formData: { agreement, ...formDataWillSubmit },
           },
         },
@@ -149,12 +153,15 @@ const manageTaskThunks: IManageTaskThunks = {
       const action = "submit-task";
       const submitFormData = new FormData();
 
+      id && slug && submitFormData.append("databaseId", String(id));
+
       Object.entries(formDataWillSubmit).forEach(([fieldName, fieldData]) => {
         if (fieldName === "files") {
-          fieldData && submitFormData.append(
-            fieldName,
-            fieldData.map((file: { value: number; fileName: string }) => file.value).join(",")
-          );
+          fieldData &&
+            submitFormData.append(
+              fieldName,
+              fieldData.map((file: { value: number; fileName: string }) => file.value).join(",")
+            );
         } else if (Object.prototype.toString.call(fieldData) === "[object Object]") {
           fieldData.value && submitFormData.append(fieldName, fieldData.value);
         } else {

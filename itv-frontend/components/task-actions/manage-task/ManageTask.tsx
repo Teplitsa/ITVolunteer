@@ -15,7 +15,7 @@ import FormControlTextarea from "../../ui/form/FormControlTextarea";
 import FormControlSelect from "../../ui/form/FormControlSelect";
 import FormControlInputDate from "../../ui/form/FormControlInputDate";
 import FormControlInputCheckbox from "../../ui/form/FormControlInputCheckbox";
-import UploadFileInput from "../../UploadFileInput";
+import UploadFileInput, { FileItem } from "../../UploadFileInput";
 import { IManageTaskFormData } from "../../../model/model.typing";
 import { ISnackbarMessage } from "../../../context/global-scripts";
 import { convertDateToLocalISOString } from "../../../utilities/utilities";
@@ -56,11 +56,14 @@ const ManageTask: React.FunctionComponent<{
   const ngoTags = useStoreState(state => state.components.manageTask.ngoTags);
   const reward = useStoreState(state => state.components.manageTask.reward);
   const formData = useStoreState(state => state.components.manageTask.formData);
+  const taskId = useStoreState(state => state.components.manageTask.id);
+  const taskSlug = useStoreState(state => state.components.manageTask.slug);
   const [step, setStep] = useState<number>(0);
   const [isPrinciplesAccepted, setIsPrinciplesAccepted] = useState<boolean>(false);
   const [isFileListShown, setIsFileListShown] = useState<boolean>(false);
   const [isDeadlineShown, setIsDeadlineShown] = useState<boolean>(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+  const [isEditMode] = useState<boolean>(Boolean(taskId) && Boolean(taskSlug));
   const taskRef = useRef<IManageTaskFormData>(null);
 
   const {
@@ -141,7 +144,27 @@ const ManageTask: React.FunctionComponent<{
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
+  const taskTagsGuardHandler = (event: SyntheticEvent<HTMLSelectElement>): boolean => {
+    if (
+      taskRef.current["taskTags"].value.length === 2 &&
+      event.currentTarget.selectedOptions.length === 2
+    ) {
+      addSnackbar({
+        context: "error",
+        text: "Можно выбрать одновременно не более двух категорий.",
+      });
+
+      return true;
+    }
+
+    clearSnackbar();
+
+    return false;
+  };
+
   const selectMultipleChangeHandler = (event: SyntheticEvent<HTMLSelectElement>) => {
+    if (taskTagsGuardHandler(event)) return;
+
     taskRef.current[event.currentTarget.name] = {
       value: Array.from(event.currentTarget.selectedOptions).map(option => option.value),
     };
@@ -158,31 +181,31 @@ const ManageTask: React.FunctionComponent<{
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
-  const fileChangeHandler = ({
-    inputProps,
-    files,
-  }: {
-    inputProps: {
-      name: string;
-    };
-    files: Array<{ value: number; fileName: string }>;
-  }) => {
-    taskRef.current[inputProps.name] = files;
+  const fileUploadHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+    taskRef.current.files = event.detail.files;
+
+    setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
+  };
+
+  const fileRemoveHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+    taskRef.current.files = event.detail.files;
 
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
   const beforeUserLeavesFormHandle = (): void => {
-    if (isFormSubmitted) {
-      localStorage?.removeItem("itv.manageTask");
-    } else {
-      localStorage?.setItem(
-        "itv.manageTask",
-        JSON.stringify({
-          step,
-          formData: taskRef.current,
-        })
-      );
+    if (!isEditMode) {
+      if (isFormSubmitted) {
+        localStorage?.removeItem("itv.manageTask");
+      } else {
+        localStorage?.setItem(
+          "itv.manageTask",
+          JSON.stringify({
+            step,
+            formData: taskRef.current,
+          })
+        );
+      }
     }
 
     initializeState();
@@ -193,17 +216,25 @@ const ManageTask: React.FunctionComponent<{
     loadNgoTags();
     loadReward();
 
-    const savedRawData = localStorage?.getItem("itv.manageTask");
-    const savedData = savedRawData ? JSON.parse(savedRawData) : null;
-
-    savedData?.formData && setFormData(savedData.formData);
-
-    savedData?.step && setStep(savedData.step);
-
     return () => {
       window.dispatchEvent(new Event("beforeunload"));
     };
   }, []);
+
+  useEffect(() => {
+    if (!isEditMode) {
+      const savedRawData = localStorage?.getItem("itv.manageTask");
+      const savedData = savedRawData ? JSON.parse(savedRawData) : null;
+
+      savedData?.formData && setFormData(savedData.formData);
+
+      savedData?.step && setStep(savedData.step);
+    }
+  }, [isEditMode]);
+
+  useEffect(() => {
+    isEditMode && step < 1 && setStep(1);
+  }, [isEditMode, step]);
 
   useEffect(() => {
     taskRef.current = { ...formData };
@@ -295,14 +326,14 @@ const ManageTask: React.FunctionComponent<{
         <ManageTaskStep>
           <ManageTaskForm
             {...{
-              title: "Описание задачи",
+              title: isEditMode ? "Редактирование задачи" : "Новая задача",
               subtitle: `Шаг ${step} из ${stepCount}`,
-              submitTitle: `Перейти к шагу ${step + 1}`,
+              submitTitle: "Следующий шаг",
               submitHandler: goToStep2,
             }}
           >
             <FormControlInput
-              label="Название задачи"
+              label="Название"
               labelExtraClassName="form__label_small form__label_required"
               className="form__control_input form__control_input-small form__control_full-width"
               type="text"
@@ -322,9 +353,10 @@ const ManageTask: React.FunctionComponent<{
               onChange={controlChangeHandler}
             />
             <FormControlSelect
-              label="Категория задачи"
+              label="Категория"
               labelExtraClassName="form__label_small form__label_required"
               selectPlaceholder="Выберите категорию"
+              maxSelectedOptions={2}
               name="taskTags"
               defaultValue={taskRef.current?.taskTags.value.map(value => String(value))}
               multiple
@@ -359,7 +391,7 @@ const ManageTask: React.FunctionComponent<{
             {...{
               title: "Дополнительно о задаче",
               subtitle: `Шаг ${step} из ${stepCount}`,
-              submitTitle: "Опубликовать",
+              submitTitle: isEditMode ? "Сохранить изменения" : "Опубликовать",
               submitHandler: publishTask,
               FormFooter: <ManageTaskStep2Footer {...{ goPrevStep }} />,
             }}
@@ -383,11 +415,12 @@ const ManageTask: React.FunctionComponent<{
                   description="Перетащите файлы в выделенную область для загрузки или кликните на кнопку Загрузить"
                   name="files"
                   isMultiple={true}
-                  fileData={taskRef.current?.files?.map(file => ({
+                  initFileData={taskRef.current?.files?.map(file => ({
                     mediaItemUrl: file.fileName,
                     databaseId: file.value,
                   }))}
-                  onChange={fileChangeHandler}
+                  onUpload={fileUploadHandler}
+                  onRemove={fileRemoveHandler}
                 />
               )) || (
                 <div className={styles["manage-task__action-container"]}>
@@ -425,7 +458,7 @@ const ManageTask: React.FunctionComponent<{
                       setIsDeadlineShown(true);
                     }}
                   >
-                    Добавить дедлайн
+                    Указать дедлайн
                   </a>
                   <div className={styles["manage-task__tooltip-inline"]}>
                     {`Автоматически будет дедлайн ${new Date(

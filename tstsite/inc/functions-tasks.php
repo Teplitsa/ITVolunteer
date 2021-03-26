@@ -174,9 +174,7 @@ function ajax_submit_task(){
         'post_type' => 'tasks',
         'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
         'post_content' => filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING),
-        'tags_input' => array_map(function($item) {
-            return is_numeric($item) ? intval($item) : 0;
-        }, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))),
+        'tags_input' => array_splice(array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0), 0, 2),
     );
 
     $is_new_task = true;
@@ -193,9 +191,7 @@ function ajax_submit_task(){
     if($task_id) {
         update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
         wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
-        wp_set_post_terms($task_id, array_map(function($item) {
-            return is_numeric($item) ? intval($item) : 0;
-        }, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), 'nko_task_tag');
+        wp_set_post_terms($task_id, array_splice(array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0), 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
 
         $durationValue = @$_POST['preferredDuration'];

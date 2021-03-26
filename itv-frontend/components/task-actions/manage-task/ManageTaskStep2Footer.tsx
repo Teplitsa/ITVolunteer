@@ -11,7 +11,7 @@ const ManageTaskStep2Footer: React.FunctionComponent<{
 
   return (
     <a className={styles["manage-task-form__footer-link"]} href="#" onClick={goBack}>
-      Вернуться
+      Предыдущий шаг
     </a>
   );
 };

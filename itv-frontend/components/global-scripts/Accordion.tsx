@@ -1,4 +1,4 @@
-import { Children, ReactElement, useState, useRef, useEffect, MutableRefObject } from "react";
+import { Children, ReactElement, useState, useRef, useEffect, useLayoutEffect, MutableRefObject } from "react";
 import styles from "../../assets/sass/modules/Accordion.module.scss";
 
 type AccordionItemComponents = "title" | "content" | "control";
@@ -35,7 +35,7 @@ const Accordion: React.FunctionComponent = ({ children }): ReactElement => {
     setActiveIndex(prevItemIindex => (prevItemIindex === itemIndex ? -1 : itemIndex));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     AccordionItemComponentList.forEach(itemComponentName => {
       const collection = accordionRef.current.querySelectorAll(
         `[data-accordion-${itemComponentName}]`

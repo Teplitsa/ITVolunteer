@@ -1,10 +1,27 @@
-import { useState, useEffect, SyntheticEvent } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  SyntheticEvent,
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+} from "react";
 import * as utils from "../utilities/utilities";
-
+import { getMediaData } from "../utilities/media";
 import { IFetchResult } from "../model/model.typing";
 
 import cloudUpload from "../assets/img/icon-wizard-cloud-upload.svg";
-import removeFile from "../assets/img/icon-wizard-remove-file.svg";
+import IconFileTypeDoc from "../assets/img/icon-file-type-doc.svg";
+
+type FileMedia = {
+  fileId: number;
+  preview?: string;
+};
+
+export type FileItem = {
+  value: string | number;
+  fileName: string;
+};
 
 export type FileDataItem = {
   databaseId: string | number;
@@ -13,32 +30,62 @@ export type FileDataItem = {
 
 export type FileData<T = FileDataItem> = T | Array<T>;
 
-export const UploadFileInput = props => {
-  const [files, setFiles] = useState(null);
-  const [isFileUploading, setIsFileUploading] = useState(false);
-  const [fileData, setFileData] = useState(null);
-  const fieldDescription =
-    props.description ?? "Перетащите файл в выделенную область или кликните Загрузить";
-  const acceptFileFormat = props.acceptFileFormat ?? "";
+export interface IUploadFileInputProps
+  extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+  description?: string;
+  acceptFileFormat?: string;
+  isMultiple?: boolean;
+  initFileData?: FileData;
+  // eslint-disable-next-line no-unused-vars
+  onUpload?: (event: CustomEvent<{ files: Array<FileItem> }>) => void;
+  // eslint-disable-next-line no-unused-vars
+  onRemove?: (event: CustomEvent<{ files: Array<FileItem> }>) => void;
+}
+
+export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = ({
+  description,
+  acceptFileFormat,
+  isMultiple,
+  initFileData,
+  onUpload,
+  onRemove,
+  ...nativeProps
+}) => {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [files, setFiles] = useState<Array<FileItem>>(null);
+  const [media, setMedia] = useState<Array<FileMedia>>(null);
+  const [isFileUploading, setIsFileUploading] = useState<boolean>(false);
+  const [fileData, setFileData] = useState<FileData>(null);
+  description = description ?? "Перетащите файл в выделенную область или кликните Загрузить";
+  nativeProps.accept = acceptFileFormat ?? nativeProps.accept ?? "";
+  nativeProps.multiple = isMultiple ?? nativeProps.multiple ?? null;
+  useEffect(() => {
+    inputFileRef.current?.addEventListener("change", handleFileChange);
+    onUpload && inputFileRef.current?.addEventListener("upload", onUpload);
+    onRemove && inputFileRef.current?.addEventListener("remove", onRemove);
+
+    return () => {
+      inputFileRef.current?.removeEventListener("change", handleFileChange);
+      onUpload && inputFileRef.current?.removeEventListener("upload", onUpload);
+      onRemove && inputFileRef.current?.removeEventListener("remove", onRemove);
+    };
+  }, [inputFileRef.current]);
 
   useEffect(() => {
-    if (props.fileData) {
-      setFileData(props.fileData);
+    if (initFileData) {
+      setFileData(initFileData);
     }
-  }, [props.fileData]);
+  }, [initFileData]);
 
   useEffect(() => {
     if (typeof fileData !== "object") return;
 
-    let initFiles: Array<{
-      value: string;
-      fileName: string;
-    }> = null;
+    let newFiles: Array<FileItem> = null;
 
-    switch (props.isMultiple ? 0 : 1) {
+    switch (nativeProps.multiple ? 0 : 1) {
       case 0:
         if (fileData instanceof Array) {
-          initFiles = fileData.map(file => ({
+          newFiles = fileData.map(file => ({
             fileName: file.mediaItemUrl.replace(/^.*\//, ""),
             value: file.databaseId,
           }));
@@ -51,49 +98,77 @@ export const UploadFileInput = props => {
             ["databaseId", "mediaItemUrl"].includes(fileField)
           )
         ) {
-          initFiles = [
+          newFiles = [
             {
-              fileName: fileData.mediaItemUrl.replace(/^.*\//, ""),
-              value: fileData.databaseId,
+              fileName: (fileData as FileDataItem).mediaItemUrl.replace(/^.*\//, ""),
+              value: (fileData as FileDataItem).databaseId,
             },
           ];
         }
         break;
     }
 
-    if (Object.is(initFiles, null)) return;
+    if (Object.is(newFiles, null)) return;
 
-    if (props.isMultiple) {
-      setFiles(
-        [...(files ?? []), ...initFiles].reduce((uniqueFiles, file) => {
-          if (!uniqueFiles.some(({ value }) => value === file.value)) {
-            uniqueFiles.push(file);
-          }
-          return uniqueFiles;
-        }, [])
-      );
-    } else {
-      setFiles(initFiles);
+    if (nativeProps.multiple) {
+      newFiles = [...(files ?? []), ...newFiles].reduce((uniqueFiles, file) => {
+        if (!uniqueFiles.some(({ value }) => value === file.value)) {
+          uniqueFiles.push(file);
+        }
+        return uniqueFiles;
+      }, []);
     }
+
+    setFiles(newFiles);
+
+    (files ?? []).length < newFiles.length &&
+      inputFileRef.current?.dispatchEvent(
+        new CustomEvent("upload", { detail: { files: newFiles } })
+      );
   }, [fileData]);
 
   useEffect(() => {
     if (Object.is(files, null)) return;
 
-    props.onChange && props.onChange({ inputProps: props, files });
+    const abortControllers: Array<AbortController> = [];
+
+    const abortController = new AbortController();
+
+    (async () => {
+      const newMedia: Array<FileMedia> = [];
+
+      for (const { value } of files) {
+        if ((media ?? []).every(({ fileId }) => Number(value) !== Number(fileId))) {
+          const { databaseId: fileId, mediaItemSizes } = await getMediaData(value, abortController);
+
+          abortControllers.push(abortController);
+
+          newMedia.push({
+            fileId,
+            preview: mediaItemSizes?.thumbnail?.source_url,
+          });
+        }
+      }
+
+      newMedia.length > 0 && setMedia([...(media ?? []), ...newMedia]);
+
+      return () => abortControllers.forEach(abortController => abortController.abort());
+    })();
   }, [files]);
 
-  function handleFileChange(e) {
+  const handleFileChange = (event: Event): void => {
     let newFileData: FileData;
 
     setIsFileUploading(true);
 
     const form = new FormData();
-    for (let fi = 0; fi < e.target.files.length; fi++) {
-      form.append("file_" + fi, e.target.files[fi], e.target.files[fi].name);
-    }
+
+    Array.from((event.target as HTMLInputElement).files).forEach((file, i) =>
+      form.append(`file_${i}`, file, file.name)
+    );
 
     const action = "upload-file";
+
     fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
@@ -113,8 +188,8 @@ export const UploadFileInput = props => {
             return utils.showAjaxError({ message: "Ошибка!" });
           }
 
-          if (props.isMultiple) {
-            newFileData = result.files.map(file => ({
+          if (nativeProps.multiple) {
+            newFileData = result.files?.map(file => ({
               databaseId: String(file.file_id),
               mediaItemUrl: file.file_url,
             }));
@@ -133,71 +208,94 @@ export const UploadFileInput = props => {
           utils.showAjaxError({ action, error });
         }
       );
-  }
+  };
 
-  function handleRemoveFileClick(event: SyntheticEvent<HTMLImageElement>) {
+  const handleRemoveFileClick = (event: SyntheticEvent<HTMLButtonElement>): void => {
     event.stopPropagation();
 
-    setFiles(
-      files.filter(
-        (file: { value: number; fileName: string }) =>
-          Number(file.value) !== Number(event.currentTarget.dataset.value)
-      )
+    const newFiles = (files ?? []).filter(
+      (file: { value: number; fileName: string }) =>
+        Number(file.value) !== Number(event.currentTarget.dataset.value)
     );
-  }
+
+    setFiles(newFiles);
+
+    (files ?? []).length > newFiles.length &&
+      inputFileRef.current?.dispatchEvent(
+        new CustomEvent("remove", { detail: { files: newFiles } })
+      );
+  };
 
   return (
-    <div className="wizard-upload">
+    <div className="form-upload">
       <input
         type="hidden"
-        name={props.name}
-        defaultValue={fileData ? fileData["databaseId"] : ""}
+        name={nativeProps.name}
+        defaultValue={files?.map(file => file.value).join(",") ?? ""}
       />
       <input
+        {...nativeProps}
         type="file"
-        onChange={handleFileChange}
-        title=""
-        multiple={!!props.isMultiple}
-        accept={acceptFileFormat}
+        name={`${nativeProps.name}_native`}
+        title={nativeProps.title ?? ""}
+        ref={inputFileRef}
       />
-      <div className="wizard-upload__inner">
-        <div className="wizard-upload__box">
+      <div className="form-upload__inner">
+        <div
+          className={`form-upload__box ${
+            files instanceof Array && files.length ? "form-upload__box_has-files" : ""
+          }`.trim()}
+        >
           {!isFileUploading && (!(files instanceof Array) || files.length === 0) && (
-            <img src={cloudUpload} />
+            <img className="form-upload__icon" src={cloudUpload} />
           )}
 
           {isFileUploading && (
-            <div className="wizard-upload__spinner">
-              <div className="spinner-border" role="status"></div>
+            <div className="form-upload__spinner">
+              <div className="spinner-border" />
             </div>
-          )}
-
-          {!isFileUploading && files instanceof Array && files.length > 0 && (
-            <div className="wizard-upload__files">
-              {files.map(({ fileName, value }, key) => {
-                return (
-                  <div className="wizard-upload__file" key={key}>
-                    <span>{fileName}</span>
-                    <img
-                      src={removeFile}
-                      className="wizard-upload__remove-file"
-                      onClick={handleRemoveFileClick}
-                      data-value={value}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {!isFileUploading && (!(files instanceof Array) || files.length === 0) && (
-            <div className="wizard-upload__title">{fieldDescription}</div>
           )}
 
           {!isFileUploading && (
-            <a href="#" className="wizard-upload__btn">
-              Загрузить
-            </a>
+            <>
+              {files instanceof Array && files.length > 0 && (
+                <div className="form-upload__files">
+                  {files.map(({ fileName, value }, key) => {
+                    const backgroundImageUrl = media
+                      ?.filter(({ fileId }) => {
+                        return Number(fileId) === Number(value);
+                      })
+                      .shift()?.preview;
+
+                    return (
+                      <div className="form-upload__file" key={key}>
+                        <div
+                          style={
+                            backgroundImageUrl && {
+                              backgroundImage: `none, url(${backgroundImageUrl})`,
+                              backgroundSize: "0 0, 34px 34px",
+                            }}
+                          className="form-upload__file-preview"
+                        />
+                        <div className="form-upload__file-name">{fileName}</div>
+                        <button
+                          className="form-upload__file-remove"
+                          type="button"
+                          onClick={handleRemoveFileClick}
+                          data-value={value}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+              {(!(files instanceof Array) || files.length === 0) && (
+                <div className="form-upload__title">{description}</div>
+              )}
+              <a href="#" className="form-upload__btn">
+                Загрузить
+              </a>
+            </>
           )}
         </div>
       </div>
