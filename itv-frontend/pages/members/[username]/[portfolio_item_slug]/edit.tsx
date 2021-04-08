@@ -5,6 +5,7 @@ import Main from "../../../../components/layout/Main";
 import EditPortfolioItem from "../../../../components/page/EditPortfolioItem";
 import Error401 from "../../../../components/page/Error401";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
+import * as utils from "../../../../utilities/utilities";
 
 const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
   statusCode,
@@ -59,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
       const componentData = { slug: query.portfolio_item_slug };
 
       try {
-        const result = await fetch(
+        const result = await utils.tokenFetch(
           getRestApiUrl(`/wp/v2/portfolio_work/slug:${query.portfolio_item_slug}`)
         );
 

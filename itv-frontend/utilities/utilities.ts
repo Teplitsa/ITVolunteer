@@ -1,6 +1,9 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
+import * as _ from "lodash";
+import Cookies from "js-cookie";
+import * as C from "../const";
 
 export const isLinkValid = (link: string): boolean => {
   let isValid = false;
@@ -97,6 +100,11 @@ export const formatIntervalToNow = ({ fromDate = new Date() }): string => {
 export const getAjaxUrl = (action: string): string => {
   const url = new URL(process.env.AjaxUrl);
   url.searchParams.set("action", action);
+  return url.toString();
+};
+
+export const getLoginUrl = (): string => {
+  const url = new URL(process.env.LoginUrl);
   return url.toString();
 };
 
@@ -202,4 +210,9 @@ export function getReviewsCountString(reviewsCount) {
     : [2, 3, 4].includes(reviewsCountModulo)
     ? "отзыва"
     : "отзывов";
+}
+
+export async function tokenFetch(url, options={}) {
+  _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
+  return await fetch(url, options);
 }

@@ -1,4 +1,5 @@
 import { action, thunk, thunkOn, computed } from "easy-peasy";
+import * as _ from "lodash";
 import {
   IFetchResult,
   IStoreModel,
@@ -15,7 +16,7 @@ import { queriedFields as authorQueriedFields } from "./task-author";
 import { graphqlQuery as doerGraphqlQuery } from "./task-doer";
 import { findCommentById, graphqlQuery as commentGraphqlQuery } from "./task-comment";
 import { getLocaleDateTimeISOString, stripTags, getAjaxUrl } from "../../utilities/utilities";
-import * as _ from "lodash";
+import * as utils from "../../utilities/utilities";
 
 const taskState: ITaskState = {
   id: "",
@@ -227,7 +228,7 @@ const taskThunks: ITaskThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -301,7 +302,7 @@ const taskThunks: ITaskThunks = {
       }
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -358,7 +359,7 @@ const taskThunks: ITaskThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -405,7 +406,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -450,7 +451,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -498,7 +499,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -553,7 +554,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -615,7 +616,7 @@ const taskThunks: ITaskThunks = {
       }
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -700,7 +701,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -735,7 +736,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -779,7 +780,7 @@ const taskThunks: ITaskThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -856,7 +857,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -889,7 +890,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -925,7 +926,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -947,7 +948,7 @@ const taskThunks: ITaskThunks = {
     formData.append("task_gql_id", taskId);
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -1034,7 +1035,7 @@ const taskThunks: ITaskThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await utils.tokenFetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -1072,7 +1073,7 @@ const taskThunks: ITaskThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });

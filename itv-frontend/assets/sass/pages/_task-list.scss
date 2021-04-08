@@ -270,6 +270,7 @@
   opacity: 1;
   visibility: visible;
   transition: all 0.15s ease-in;
+  overflow: hidden;
 
   &.hidden {
     opacity: 0;

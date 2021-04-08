@@ -131,7 +131,6 @@ export interface ISessionActions {
 }
 
 export interface ISessionThunks {
-  login: Thunk<ISessionActions, { username: string; password: string }>;
   register: Thunk<
     ISessionActions,
     {
@@ -174,6 +173,7 @@ export interface ISessionThunks {
     },
     IStoreModel
   >;
+  authorizeSession: Thunk<ISessionActions>;
 }
 
 /**

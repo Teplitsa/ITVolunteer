@@ -52,7 +52,7 @@ export const UploadFileInput = props => {
     }
 
     const action = "upload-file";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })
