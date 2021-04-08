@@ -1,34 +1,6 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
-import * as _ from "lodash";
-import Cookies from "js-cookie";
-import * as C from "../const";
-import { decode } from "html-entities";
-
-export const convertDateToLocalISOString = ({
-  date,
-  locale = "ru-RU",
-}: {
-  date: Date;
-  locale?: string;
-}) => {
-  if (!(date instanceof Date)) return;
-
-  return new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  })
-    .format(date)
-    .replace(/^(\d{2})\.(\d{2})\.(\d{4})$/g, "$3-$2-$1");
-};
-
-export const decodeSpecialChars = (html: string): string => {
-  if (typeof html !== "string" || html.trim().length === 0) return html;
-
-  return decode(html);
-};
 
 export const isLinkValid = (link: string): boolean => {
   let isValid = false;
@@ -146,11 +118,6 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
-export const getLoginUrl = (): string => {
-  const url = new URL(process.env.LoginUrl);
-  return url.toString();
-};
-
 export const getRestApiUrl = (route: string): string => {
   const url = new URL(process.env.RestApiUrl + route);
   return url.toString();
@@ -253,9 +220,4 @@ export function getReviewsCountString(reviewsCount) {
     : [2, 3, 4].includes(reviewsCountModulo)
     ? "отзыва"
     : "отзывов";
-}
-
-export async function tokenFetch(url, options={}) {
-  _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
-  return await fetch(url, options);
 }

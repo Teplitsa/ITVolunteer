@@ -20,6 +20,8 @@ import removeFile from "../../assets/img/icon-wizard-remove-file.svg";
 export const WizardScreen: React.FunctionComponent<
   { modifierClassNames?: Array<any> } & IWizardScreenProps
 > = ({ children, ...props }): ReactElement => {
+  const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const login = useStoreActions(actions => actions.session.login);
   const showScreenHelpModalState = useStoreState(
     state => state.components.createTaskWizard.showScreenHelpModalState
   );
@@ -29,6 +31,20 @@ export const WizardScreen: React.FunctionComponent<
     modifierClassNames: [],
   };
   props = { ...defaultProps, ...props };
+
+  useEffect(() => {
+    console.log("run login in wizard...");
+
+    if (!process.browser) {
+      return;
+    }
+
+    if (isLoggedIn) {
+      return;
+    }
+
+    login({ username: "", password: "" });
+  }, []);
 
   return (
     <WithGlobalScripts>
@@ -759,7 +775,7 @@ export const WizardUploadImageFieldInput: React.FunctionComponent<IWizardScreenP
     }
 
     const action = "upload-file";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
+    fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })

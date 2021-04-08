@@ -1,6 +1,5 @@
 import { ReactElement, useState, useEffect } from "react";
 import Link from "next/link";
-import * as utils from "../utilities/utilities";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 const ReviewerCardSmall: React.FunctionComponent<{
@@ -19,7 +18,7 @@ const ReviewerCardSmall: React.FunctionComponent<{
     try {
       avatar &&
         avatar.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(avatar, {
+        fetch(avatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

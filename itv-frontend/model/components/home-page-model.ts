@@ -7,6 +7,7 @@ import {
 } from "../model.typing";
 import * as utils from "../../utilities/utilities";
 import { action, thunk, thunkOn } from "easy-peasy";
+import { withPostType } from "../page-model";
 
 const homePageState: IHomePageState = {
   id: "",
@@ -38,11 +39,13 @@ const homePageActions: IHomePageActions = {
 
 const homePageThunks: IHomePageThunks = {
   loadStatsRequest: thunk(
-    async() => {
+    async (actions, _, { getStoreState }) => {
+      const {
+      } = getStoreState() as IStoreModel;
 
       try {
         const action = "get-task-status-stats";
-        const result = await utils.tokenFetch(utils.getAjaxUrl(action), {
+        const result = await fetch(utils.getAjaxUrl(action), {
           method: "post",
         });
 

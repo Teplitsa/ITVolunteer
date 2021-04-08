@@ -1,25 +1,5 @@
 version: '3'
 services:
-  nginx:
-    build:
-      context: nginx
-      dockerfile: Dockerfile
-    environment:
-      - APP_ENV=dev
-    ports:
-      - "80:80"
-    links:
-      - backend
-      - frontend
-    extra_hosts:
-      - "v1.tep-itv.dench:127.0.0.1"
-      - "tep-itv.dench:0.0.0.0"
-  mongo:
-    build:
-      context: mongo
-      dockerfile: Dockerfile
-    ports:
-      - "27017:27017"
   backend:
     build:
       context: backend
@@ -27,9 +7,7 @@ services:
     environment:
       - APP_ENV=dev
     ports:
-      - "9000:9000"
-    links:
-      - mongo
+      - "80:80"
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
     extra_hosts:
@@ -41,8 +19,6 @@ services:
       dockerfile: Dockerfile
     environment:
       - APP_ENV=dev
-    links:
-      - mongo
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
     stdin_open: true

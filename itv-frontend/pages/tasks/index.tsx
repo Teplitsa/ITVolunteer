@@ -11,7 +11,6 @@ import { ITaskListModel } from "../../model/model.typing";
 import { taskListLimit } from "../../model/task-model/task-list-model";
 // import * as utils from "../../utilities/utilities";
 import { regEvent } from "../../utilities/ga-events";
-import * as utils from "../../utilities/utilities";
 
 const TaskListPage: React.FunctionComponent<ITaskListModel> = (): ReactElement => {
   const router = useRouter();
@@ -71,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     ],
     componentModel: async () => {
       try {
-        const { tasks: items } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks?limit=${taskListLimit}`)).json();
+        const { tasks: items } = await (await fetch(`${process.env.BaseUrl}/api/v1/cache/tasks?limit=${taskListLimit}`)).json();
 
         return ["taskList", { items }];
       } catch (error) {

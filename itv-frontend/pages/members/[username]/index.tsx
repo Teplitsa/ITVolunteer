@@ -4,7 +4,6 @@ import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import MemberAccount from "../../../components/page/MemberAccount";
 import { getRestApiUrl, stripTags } from "../../../utilities/utilities";
-import * as utils from "../../../utilities/utilities";
 
 const AccountPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -51,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       );
       let member = null;
 
-      const memberItvRoleResponse = await utils.tokenFetch(
+      const memberItvRoleResponse = await fetch(
         getRestApiUrl(`/itv/v1/member/${query.username}/itv_role`)
       );
 
@@ -96,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         per_page: "3",
       }).toString();
 
-      const memberReviewsResponse = await utils.tokenFetch(memberReviewsRequestUrl.toString());
+      const memberReviewsResponse = await fetch(memberReviewsRequestUrl.toString());
 
       const memberReviewList = await memberReviewsResponse.json();
 
@@ -116,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         author: `${user.databaseId}`,
       }).toString();
 
-      const memberPortfolioResponse = await utils.tokenFetch(memberPortfolioRequestUrl.toString());
+      const memberPortfolioResponse = await fetch(memberPortfolioRequestUrl.toString());
 
       member = Object.assign(member ?? {}, {
         portfolio: {

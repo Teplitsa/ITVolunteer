@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "start2": "next start -p 3002"
+    "start": "next start"
   },
   "dependencies": {
     "@zeit/next-css": "^1.0.1",

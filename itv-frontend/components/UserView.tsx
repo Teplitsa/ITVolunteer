@@ -1,6 +1,5 @@
 import { ReactElement, useState, useEffect } from "react";
 import Link from "next/link";
-import * as utils from "../utilities/utilities";
 
 import IconBriefcase from "../assets/img/icon-briefcase.svg";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
@@ -21,7 +20,7 @@ export const UserSmallView: React.FunctionComponent<{
     try {
       user?.itvAvatar &&
         user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(user.itvAvatar, {
+        fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));
@@ -67,7 +66,7 @@ export const UserSmallPicView: React.FunctionComponent<{
     try {
       user?.itvAvatar &&
         user.itvAvatar.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(user.itvAvatar, {
+        fetch(user.itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

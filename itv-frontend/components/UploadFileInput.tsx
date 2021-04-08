@@ -167,7 +167,7 @@ export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = (
     );
 
     const action = "upload-file";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
+    fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })

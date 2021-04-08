@@ -1,11 +1,10 @@
 import { action, thunk } from "easy-peasy";
-import * as _ from "lodash";
 import {
   ITaskListFilterState,
   ITaskListFilterActions,
   ITaskListFilterModel,
 } from "../model.typing";
-import * as utils from "../../utilities/utilities";
+import * as _ from "lodash";
 
 import storeJsLocalStorage from "store";
 
@@ -81,7 +80,7 @@ const taskListFilterActions: ITaskListFilterActions = {
   }),
   loadFilterData: thunk(async actions => {
     try {
-      const { sections } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter`)).json();
+      const { sections } = await (await fetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter`)).json();
 
       actions.setFilterData(sections);
     } catch (error) {

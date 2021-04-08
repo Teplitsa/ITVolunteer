@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import * as utils from "../../utilities/utilities";
 import { useStoreState } from "../../model/helpers/hooks";
 import MemberOrganizationDescription from "../MemberOrganizationDescription";
 import OrganizationLogoDefault from "../../assets/img/icon-briefcase.svg";
@@ -20,7 +19,7 @@ const MemberCardOrganization: React.FunctionComponent = (): ReactElement => {
 
     try {
       organizationLogo &&
-        utils.tokenFetch(organizationLogo, {
+        fetch(organizationLogo, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setOrganizationLogoValid(response.ok));

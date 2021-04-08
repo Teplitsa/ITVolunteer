@@ -1,7 +1,5 @@
 FROM node:carbon
 
-WORKDIR /site/tep-itv/frontend/
-RUN npm install -g n
-RUN n 12.16.3
+WORKDIR /site/tep-itv/wp-content/themes/tstsite/src_spa/
 RUN npm install
-ENV PATH /site/tep-itv/frontend/node_modules/.bin:$PATH
+ENV PATH /site/tep-itv/wp-content/themes/tstsite/src_spa/node_modules/.bin:$PATH

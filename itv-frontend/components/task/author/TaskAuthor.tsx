@@ -28,7 +28,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
     try {
       avatarImage &&
         avatarImage.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(avatarImage, {
+        fetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

@@ -55,7 +55,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
     try {
       itvAvatar &&
       itvAvatar.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(itvAvatar, {
+        fetch(itvAvatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

@@ -13,7 +13,7 @@ import {
 import { action, thunk, actionOn } from "easy-peasy";
 import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
-import * as utils from "../../utilities/utilities";
+import Slug from "pages/tasks/[slug]";
 
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
@@ -258,7 +258,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         auth_token: token,
         itv_role: itvRole,
       };
-      const memberItvRoleResponse = await utils.tokenFetch(memberItvRoleRequestUrl.toString(), {
+      const memberItvRoleResponse = await fetch(memberItvRoleRequestUrl.toString(), {
         method: "put",
         headers: {
           "Content-Type": "application/json",
@@ -294,7 +294,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await utils.tokenFetch(getAjaxUrl(action), {
+        const result = await fetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -329,7 +329,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await utils.tokenFetch(getAjaxUrl(action), {
+      const result = await fetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -371,7 +371,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }).toString();
 
       try {
-        const memberPortfolioResponse = await utils.tokenFetch(memberPortfolioRequestUrl.toString());
+        const memberPortfolioResponse = await fetch(memberPortfolioRequestUrl.toString());
         const response: IRestApiResponse = await memberPortfolioResponse.json();
 
         if (response.data?.status && response.data.status !== 200) {
@@ -428,7 +428,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }).toString();
 
       try {
-        const memberNotificationsResponse = await utils.tokenFetch(memberNotificationsRequestUrl.toString());
+        const memberNotificationsResponse = await fetch(memberNotificationsRequestUrl.toString());
         const response: IRestApiResponse = await memberNotificationsResponse.json();
 
         if (response.data?.status && response.data.status !== 200) {
@@ -466,7 +466,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       // console.log("memberNotificationStatsRequestUrl:", memberNotificationStatsRequestUrl.toString());
 
       try {
-        const memberNotificationStatsResponse = await utils.tokenFetch(
+        const memberNotificationStatsResponse = await fetch(
           memberNotificationStatsRequestUrl.toString()
         );
         const response: IRestApiResponse & {
@@ -542,7 +542,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       formData.append("role", template === "volunteer" ? "doer" : "author");
 
       const action = "get-member-task-stats";
-      const result = await utils.tokenFetch(getAjaxUrl(action), {
+      const result = await fetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -590,7 +590,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
       }).toString();
 
       try {
-        const memberReviewsResponse = await utils.tokenFetch(memberReviewsRequestUrl.toString());
+        const memberReviewsResponse = await fetch(memberReviewsRequestUrl.toString());
         const response: IRestApiResponse &
           Array<IMemberReview> = await memberReviewsResponse.json();
 
@@ -627,7 +627,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     formData.append("auth_token", String(token));
 
     try {
-      const result = await utils.tokenFetch(getAjaxUrl(action), {
+      const result = await fetch(getAjaxUrl(action), {
         method: "post",
         body: formData,
       });
@@ -648,7 +648,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     const action = "get-member-profile-fill-status";
 
     try {
-      const result = await utils.tokenFetch(getAjaxUrl(action), {
+      const result = await fetch(getAjaxUrl(action), {
         method: "post",
       });
 

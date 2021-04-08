@@ -8,7 +8,6 @@ import {
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import { stripTags, getAjaxUrl } from "../../utilities/utilities";
-import * as utils from "../../utilities/utilities";
 
 export const memberSecurityPageState: IMemberSecurityPageState = {};
 
@@ -38,7 +37,7 @@ const memberSecurityPageThunks: IMemberSecurityPageThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await utils.tokenFetch(getAjaxUrl(action), {
+        const result = await fetch(getAjaxUrl(action), {
           method: "post",
           body: formData,
         });

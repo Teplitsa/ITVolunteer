@@ -2,11 +2,10 @@ import { MongoClient } from "mongodb";
 import { ExtendedRequest } from "../server-model/server-model.typing";
 import { NextApiResponse } from "next";
 import nextConnect from "next-connect";
-import appConfig from "../app.config";
 
 const database = async (req: ExtendedRequest, res: NextApiResponse, next) => {
   try {
-    const client = new MongoClient(appConfig.MongoConnection, {
+    const client = new MongoClient("mongodb://localhost:27017", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import * as utils from "../../../utilities/utilities";
 import { useStoreState } from "../../../model/helpers/hooks";
 import MemberOrganizationDescription from "../../MemberOrganizationDescription";
 import IconApproved from "../../../assets/img/icon-all-done.svg";
@@ -19,7 +18,7 @@ const TaskAuthorCompany: React.FunctionComponent = (): ReactElement => {
 
     try {
       companyLogo &&
-        utils.tokenFetch(companyLogo, {
+        fetch(companyLogo, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setCompanyLogoValid(response.ok));
