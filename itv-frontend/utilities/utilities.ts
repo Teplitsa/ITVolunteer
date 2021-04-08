@@ -1,6 +1,31 @@
 import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
+import { decode } from "html-entities";
+
+export const convertDateToLocalISOString = ({
+  date,
+  locale = "ru-RU",
+}: {
+  date: Date;
+  locale?: string;
+}) => {
+  if (!(date instanceof Date)) return;
+
+  return new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })
+    .format(date)
+    .replace(/^(\d{2})\.(\d{2})\.(\d{4})$/g, "$3-$2-$1");
+};
+
+export const decodeSpecialChars = (html: string): string => {
+  if (typeof html !== "string" || html.trim().length === 0) return html;
+
+  return decode(html);
+};
 
 export const isLinkValid = (link: string): boolean => {
   let isValid = false;
