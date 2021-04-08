@@ -10,22 +10,22 @@
 
   &__content {
     opacity: 0;
+    visibility: hidden;
     overflow: hidden;
-    transition: all 0.3s linear;
+    transition: all 0.3s ease-out;
 
     &_active {
       opacity: 1;
+      visibility: visible;
+      transition: all 0.3s ease-in;
     }
   }
 
   &__control {
-    opacity: 1;
-    visibility: visible;
-    transition: all 0.3s linear;
+    transition: all 0.3s ease-out;
 
     &_active {
-      opacity: 0;
-      visibility: hidden;
+        transition: all 0.3s ease-in;
     }
   }
 }

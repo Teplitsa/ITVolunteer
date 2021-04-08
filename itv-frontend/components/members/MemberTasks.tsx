@@ -2,6 +2,8 @@ import { useEffect, ReactElement, MouseEvent } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import TaskCard from "../../components/TaskCard";
 
+export const tasksPerPage = 3;
+
 const MemberTasks: React.FunctionComponent = (): ReactElement => {
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
   const tasks = useStoreState(state => state.components.memberAccount.tasks);
@@ -19,7 +21,15 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     publish: number;
   } = { ...taskStats, open: 0 };
 
-  const isNullDesignRequired = Object.values(filters).every(filter => filter === 0);
+  const isNullDesignRequired = !Object.entries(taskStats).some(
+    (filters => ([filterName, filterValue]) => {
+      if (filters.includes(filterName)) {
+        return filterValue > 0;
+      }
+
+      return false;
+    })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+  );
 
   const filter = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -41,21 +51,21 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
     const { filter: currentFilter } = tasks;
 
     switch (currentFilter) {
-    case "open":
-      if (open + in_work + publish === 0) {
-        (closed > 0 &&
+      case "open":
+        if (open + in_work + publish === 0) {
+          (closed > 0 &&
             (() => {
               setTaskListFilter("closed");
               return true;
             })()) ||
             (draft > 0 && setTaskListFilter("draft"));
-      }
-      break;
-    case "closed":
-      if (closed === 0) {
-        draft > 0 && setTaskListFilter("draft");
-      }
-      break;
+        }
+        break;
+      case "closed":
+        if (closed === 0) {
+          draft > 0 && setTaskListFilter("draft");
+        }
+        break;
     }
   }, []);
 
@@ -127,21 +137,27 @@ const MemberTasks: React.FunctionComponent = (): ReactElement => {
             return cardStatus === tasks.filter;
           })
           .map(card => (
-            <TaskCard key={card.id} {...card} />
+            <TaskCard key={card.id} {...{ ...card, ...{ pemalinkPath: `/tasks/${card.slug}/` } }} />
           ))}
       </div>
-      <div className="member-tasks__footer">
-        <a
-          href="#"
-          className="member-tasks__more-link"
-          onClick={event => {
-            event.preventDefault();
-            getMemberTasksRequest({});
-          }}
-        >
-          Показать ещё
-        </a>
-      </div>
+      {(tasks.filter === "open"
+        ? taskStats["in_work"] + taskStats["publish"]
+        : taskStats[tasks.filter]) -
+        tasksPerPage * (tasks.page + 1) >
+        0 && (
+        <div className="member-tasks__footer">
+          <a
+            href="#"
+            className="member-tasks__more-link"
+            onClick={event => {
+              event.preventDefault();
+              getMemberTasksRequest({});
+            }}
+          >
+            Показать ещё
+          </a>
+        </div>
+      )}
     </div>
   );
 };

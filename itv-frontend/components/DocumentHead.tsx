@@ -2,6 +2,7 @@ import Head from "next/head";
 import { ReactElement } from "react";
 import { useStoreState } from "../model/helpers/hooks";
 import Favicon from "../assets/img/favicon.svg";
+import { decodeSpecialChars } from "../utilities/utilities";
 
 const DocumentHead: React.FunctionComponent = (): ReactElement => {
   const seo = useStoreState(({ app: { entrypointTemplate }, entrypoint }) => {
@@ -32,7 +33,7 @@ const DocumentHead: React.FunctionComponent = (): ReactElement => {
 
   return (
     <Head>
-      <title>{title}</title>
+      <title>{decodeSpecialChars(title)}</title>
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       {focuskw && <meta name="keywords" content={focuskw} />}
       {metaDesc && <meta name="description" content={metaDesc} />}

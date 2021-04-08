@@ -13,7 +13,7 @@ const TaskStatus: React.FunctionComponent = (): ReactElement => {
       {statusLabel && <span className={`status ${status}`}>{statusLabel}</span>}
 
       {isTaskAuthorLoggedIn && (
-        <Link href="/task-actions/[slug]" as={`/task-actions/${slug}`}>
+        <Link href="/task-update/[slug]" as={`/task-update/${slug}`}>
           <a className="edit">Редактировать</a>
         </Link>
       )}

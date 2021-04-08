@@ -21,6 +21,9 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { fullName } = await (await fetch(getRestApiUrl(
+    `/itv/v1/member/${query.username}?_fields[]=fullName`
+  ))).json();
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -33,12 +36,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         slug: `members/${query.username}`,
         seo: {
           canonical: `https://itv.te-st.ru/members/${query.username}`,
-          title: `${query.username} - аккаунт на сайте it-волонтер`,
+          title: `${fullName} — IT-волонтер`,
           metaRobotsNoindex: "index",
           metaRobotsNofollow: "follow",
-          opengraphTitle: `${query.username} - аккаунт на сайте it-волонтер`,
+          opengraphTitle: `${fullName} — IT-волонтер`,
           opengraphUrl: `https://itv.te-st.ru/members/${query.username}`,
-          opengraphSiteName: "it-волонтер",
+          opengraphSiteName: "IT-волонтер",
         },
       },
     ],

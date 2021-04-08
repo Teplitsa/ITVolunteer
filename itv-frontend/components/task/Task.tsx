@@ -8,9 +8,9 @@ import TaskActionBar from "./task-footer/TaskActionBar";
 import TaskStatus from "./task-footer/TaskStatus";
 import TaskActionButtons from "./task-footer/TaskActionButtons";
 import { TaskStatus as TaskStatusType } from "../../model/model.typing";
+import { convertUrlToAnchor } from "../../utilities/utilities";
 
 import taskInWorkLabel from "../../assets/img/task-in-work-label.svg";
-
 
 export const status: Map<TaskStatusType, string> = new Map([
   ["draft", "Черновик"],
@@ -38,9 +38,9 @@ const Task: React.FunctionComponent = (): ReactElement => {
 
   return (
     <div className="task-body">
-      {status === "in_work" &&
+      {status === "in_work" && (
         <img src={taskInWorkLabel} className="task-in-work-label" alt="Задача в работе" />
-      }
+      )}
       <article>
         <TaskHeader />
         <div className="task-body-text">
@@ -49,7 +49,7 @@ const Task: React.FunctionComponent = (): ReactElement => {
               <h3>Суть задачи</h3>
               <div
                 className="task-body-text__section-content"
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: convertUrlToAnchor({ html: content }) }}
               />
             </div>
           )}

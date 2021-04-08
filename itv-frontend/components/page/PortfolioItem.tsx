@@ -31,7 +31,7 @@ const PortfolioItem: React.FunctionComponent = (): ReactElement => {
             <MemberCardSmall />
           </div>
           <div className="portfolio-item__right-column">
-            <h1 className="portfolio-item__title">{portfolioItem.title}</h1>
+            <h1 className="portfolio-item__title" dangerouslySetInnerHTML={{ __html: portfolioItem.title }} />
             <div
               className="portfolio-item__text"
               dangerouslySetInnerHTML={{ __html: portfolioItem.description }}

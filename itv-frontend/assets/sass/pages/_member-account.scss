@@ -42,27 +42,27 @@
       margin: 0 0 0 40px;
     }
   }
-  &__create-task {
-    padding: 20px 0 0;
-    @include screen-from(md) {
-      position: relative;
-      padding: 0;
-    }
-    &-button {
-      text-align: center;
-      @include screen-from(md) {
-        position: absolute;
-        top: 22px;
-        right: 0;
-      }
-      .btn {
-        width: 100%;
-        @include screen-from(md) {
-          width: auto;
-        }
-      }
-    }
-  }
+  // &__create-task {
+  //   padding: 20px 0 0;
+  //   @include screen-from(md) {
+  //     position: relative;
+  //     padding: 0;
+  //   }
+  //   &-button {
+  //     text-align: center;
+  //     @include screen-from(md) {
+  //       position: absolute;
+  //       top: 22px;
+  //       right: 0;
+  //     }
+  //     .btn {
+  //       width: 100%;
+  //       @include screen-from(md) {
+  //         width: auto;
+  //       }
+  //     }
+  //   }
+  // }
   &__template-switcher {
     display: flex;
     justify-content: center;

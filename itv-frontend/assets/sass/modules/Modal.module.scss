@@ -1,4 +1,5 @@
 @import "../base/presets";
+@import "../helpers/mixins";
 
 .modal {
   position: fixed;
@@ -9,32 +10,88 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;
   background-color: transparent;
   padding: 15px;
   z-index: 888;
   visibility: hidden;
   transition: all 0.3s ease-in-out 0s;
+
+  &_halign {
+    &-left {
+      align-items: center;
+      @include screen-from(sm) {
+        align-items: flex-start;
+        margin-left: -15px;
+      }
+    }
+    &-center {
+      align-items: center;
+    }
+    &-right {
+      align-items: center;
+      @include screen-from(sm) {
+        align-items: flex-end;
+        margin-right: -15px;
+      }
+    }
+  }
+
   &_active {
-    background-color: rgba($color-gray-dark-xl, 0.3);
     visibility: visible;
     > [class*="__dialog"] {
       transform: none;
       opacity: 1;
     }
   }
+
+  &_backdrop[class*="_active"] {
+    background-color: rgba($color-gray-dark-xl, 0.3);
+  }
+
   &__dialog {
     background: $color-white;
     border: 1px solid $color-gray-light-lg;
     padding: 15px 25px;
     width: 537px;
     max-width: 100%;
+    max-height: calc(100vh - 30px);
     box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
-    border-radius: 8px;
     box-sizing: border-box;
     transform: scale(0.5);
     opacity: 0;
+    overflow-y: auto;
     transition: all 0.3s linear 0s;
+
+    &::-webkit-scrollbar {
+      width: $base;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: $color-gray-light-md;
+      border-radius: $base;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $color-gray-dark-xl;
+      border-radius: $base;
+    }
+    scrollbar-width: thin;
+    scrollbar-color: $color-gray-dark-xl $color-gray-light-md;
+
+    &_no-left-side-rounded {
+      border-radius: 8px;
+      @include screen-from(sm) {
+        border-radius: 0 8px 8px 0;
+      }
+    }
+    &_all-rounded {
+      border-radius: 8px;
+    }
+
+    &_no-right-side-rounded {
+      border-radius: 8px;
+      @include screen-from(sm) {
+        border-radius: 8px 0 0 8px;
+      }
+    }
   }
   &__header {
     display: flex;

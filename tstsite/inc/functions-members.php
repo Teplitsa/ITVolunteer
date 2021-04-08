@@ -1337,7 +1337,7 @@ function itv_get_user_in_gql_format($user) {
         'organizationSite' =>  tst_get_member_field( 'user_website', $user->ID ),
         'xp' => UserXPModel::instance()->get_user_xp($user->ID),
         'itvRole' => $members->get_member_itv_role($user->ID),
-        'isHybrid' => $member_tasks->has_member_created_and_completed_tasks(),
+        'isHybrid' => $members->is_hybrid_profile($user->ID),
         'slug' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
         'nicename' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
     ];

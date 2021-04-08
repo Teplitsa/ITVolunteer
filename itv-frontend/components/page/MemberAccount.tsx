@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 import { ReactElement, useEffect } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import * as _ from "lodash";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
@@ -13,32 +13,34 @@ import MemberCard from "../../components/members/MemberCard";
 import MemberUploadCover from "../../components/members/MemberUploadCover";
 import MemberAccountNeedAttention from "../../components/members/MemberAccountNeedAttention";
 import MemberAccountEmptyTaskList from "../members/MemberAccountEmptyTaskList";
+import MemberPortfolioNoItems from "../members/MemberPortfolioNoItems";
 import { regEvent } from "../../utilities/ga-events";
 import MemberAccountEmptySectionForGuest from "../members/MemberAccountEmptySectionForGuest";
 
 const MemberAccount: React.FunctionComponent = (): ReactElement => {
-  const itvRole = useStoreState(state => state.session.user.itvRole);
   const isAccountOwner = useStoreState(state => state.session.isAccountOwner);
   const userCoverFile = useStoreState(state => state.session.user.coverFile);
   const userItvAvatarFile = useStoreState(state => state.session.user.itvAvatarFile);
+  const memberAccountTemplate = useStoreState(state => state.components.memberAccount.template);
   const reviews = useStoreState(state => state.components.memberAccount.reviews.list);
   const taskStats = useStoreState(state => state.components.memberAccount.taskStats);
   const notifications = useStoreState(state => state.components.memberAccount.notifications.list);
   const coverImage = useStoreState(state => state.components.memberAccount.cover);
   const coverFile = useStoreState(state => state.components.memberAccount.coverFile);
-  const isEmptyProfile = useStoreState(state => state.components.memberAccount.isEmptyProfile);
+  const isEmptyProfileAsDoer = useStoreState(
+    state => state.components.memberAccount.isEmptyProfileAsDoer
+  );
+  const isEmptyProfileAsAuthor = useStoreState(
+    state => state.components.memberAccount.isEmptyProfileAsAuthor
+  );
   const itvAvatar = useStoreState(state => state.components.memberAccount.itvAvatar);
   const itvAvatarFile = useStoreState(state => state.components.memberAccount.itvAvatarFile);
   const username = useStoreState(state => state.components.memberAccount.username);
   const fullName = useStoreState(state => state.components.memberAccount.fullName);
-  
 
-  const {
-    setUserAvatar,
-    setUserAvatarFile,
-    setUserCover,
-    setUserCoverFile,
-  } = useStoreActions(actions => actions.session);
+  const { setUserAvatar, setUserAvatarFile, setUserCover, setUserCoverFile } = useStoreActions(
+    actions => actions.session
+  );
 
   const {
     profileFillStatusRequest,
@@ -54,28 +56,43 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
     content: React.FunctionComponent;
   }> = [];
 
-  if (isAccountOwner && notifications) {
+  if (isAccountOwner && Array.isArray(notifications) && notifications.length > 0) {
     tabList.push({
       title: "Оповещения",
       content: MemberNotifications,
     });
   }
 
-  if (itvRole === "doer") {
-    tabList.push({
-      title: "Портфолио",
-      content: MemberPortfolio,
-    });
-  }
+  if (
+    (memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+    (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)
+  ) {
+    if (memberAccountTemplate === "volunteer") {
+      tabList.push({
+        title: "Портфолио",
+        content: MemberPortfolio,
+      });
+    }
 
-  if (!Object.values({ ...taskStats, open: 0 }).every(filter => filter === 0)) {
-    tabList.push({ title: "Задачи", content: MemberTasks });
-  }
+    if (
+      Object.entries(taskStats).some(
+        (filters => ([filterName, filterValue]) => {
+          if (filters.includes(filterName)) {
+            return filterValue > 0;
+          }
 
-  if (reviews && reviews.length > 0) {
-    tabList.push({ title: "Отзывы", content: MemberReviews });
-  }
+          return false;
+        })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+      )
+    ) {
+      tabList.push({ title: "Задачи", content: MemberTasks });
+    }
 
+    if (Array.isArray(reviews) && reviews.length > 0) {
+      tabList.push({ title: "Отзывы", content: MemberReviews });
+    }
+  }
+  
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: tabList,
@@ -86,10 +103,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setCrumbs([
-      {title: "Волонтеры", url: "/members"},
-      {title: fullName},
-    ]);  
+    setCrumbs([{ title: "Волонтеры", url: "/members" }, { title: fullName }]);
   }, [fullName]);
 
   useEffect(() => {
@@ -114,14 +128,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [isAccountOwner, username]);
 
   useEffect(() => {
-    if(!!itvAvatarFile && _.get(itvAvatarFile, "databaseId") !== _.get(userItvAvatarFile, "databaseId")) {
+    if (
+      !!itvAvatarFile &&
+      _.get(itvAvatarFile, "databaseId") !== _.get(userItvAvatarFile, "databaseId")
+    ) {
       setUserAvatar(itvAvatar);
       setUserAvatarFile(itvAvatarFile);
     }
   }, [itvAvatarFile]);
 
   useEffect(() => {
-    if(!!coverFile && _.get(coverFile, "databaseId") !== _.get(userCoverFile, "databaseId")) {
+    if (!!coverFile && _.get(coverFile, "databaseId") !== _.get(userCoverFile, "databaseId")) {
       setUserCover(coverImage);
       setUserCoverFile(coverFile);
     }
@@ -145,10 +162,10 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             <MemberCard />
           </div>
           <div className="member-account__right-column">
-            {isAccountOwner && !isEmptyProfile && (
+            {/* {isAccountOwner && !isEmptyProfile && (
               <div className="member-account__create-task">
                 <div className="member-account__create-task-button">
-                  <Link href="/task-actions">
+                  <Link href="/task-create">
                     <a
                       className="btn btn_primary"
                       target="_blank"
@@ -159,16 +176,21 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
                   </Link>
                 </div>
               </div>
-            )}
-            {!isEmptyProfile && <Tabs />}
-            {isEmptyProfile && isAccountOwner && (
-              <>
-                <MemberAccountNeedAttention />
-                {/* <MemberAccountEmptyServiceShow /> */}
-                <MemberAccountEmptyTaskList />
-              </>
-            )}
-            {isEmptyProfile && !isAccountOwner && <MemberAccountEmptySectionForGuest />}
+            )} */}
+            {tabList.length > 0 && <Tabs />}
+            {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
+              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              isAccountOwner && (
+                <>
+                  <MemberAccountNeedAttention />
+                  {/* <MemberAccountEmptyServiceShow /> */}
+                  {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
+                  {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
+                </>
+              )}
+            {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
+              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              !isAccountOwner && <MemberAccountEmptySectionForGuest />}
           </div>
         </div>
       </div>

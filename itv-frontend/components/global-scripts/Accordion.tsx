@@ -1,4 +1,4 @@
-import { Children, ReactElement, useState, useRef, useEffect, MutableRefObject } from "react";
+import { Children, ReactElement, useState, useRef, useEffect, useLayoutEffect, MutableRefObject } from "react";
 import styles from "../../assets/sass/modules/Accordion.module.scss";
 
 type AccordionItemComponents = "title" | "content" | "control";
@@ -19,8 +19,8 @@ const onActiveIndexSet = (accordionRef: MutableRefObject<HTMLDivElement>, active
       );
 
       if (itemComponentName === "content") {
-        itemComponent.style.maxHeight =
-          i === activeIndex ? itemComponent.dataset.accordionMaxHeight : "0px";
+        itemComponent.style.height =
+          i === activeIndex ? itemComponent.dataset.accordionHeight : "0px";
       }
     });
   });
@@ -28,14 +28,14 @@ const onActiveIndexSet = (accordionRef: MutableRefObject<HTMLDivElement>, active
 
 const Accordion: React.FunctionComponent = ({ children }): ReactElement => {
   const accordionRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   const createHandleItemControlClick = (itemIndex: number) => (event: MouseEvent) => {
     event.preventDefault();
-    setActiveIndex(itemIndex);
+    setActiveIndex(prevItemIindex => (prevItemIindex === itemIndex ? -1 : itemIndex));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     AccordionItemComponentList.forEach(itemComponentName => {
       const collection = accordionRef.current.querySelectorAll(
         `[data-accordion-${itemComponentName}]`
@@ -47,9 +47,9 @@ const Accordion: React.FunctionComponent = ({ children }): ReactElement => {
         if (itemComponentName === "content") {
           const { height: collectionItemContentHeight } = collectionItem.getBoundingClientRect();
 
-          collectionItem.dataset.accordionMaxHeight = `${collectionItemContentHeight}px`;
-          collectionItem.style.maxHeight =
-            i === activeIndex ? collectionItem.dataset.accordionMaxHeight : "0px";
+          collectionItem.dataset.accordionHeight = `${collectionItemContentHeight}px`;
+          collectionItem.style.height =
+            i === activeIndex ? collectionItem.dataset.accordionHeight : "0px";
         } else if (itemComponentName === "control") {
           collectionItem.onclick = createHandleItemControlClick(i);
         }

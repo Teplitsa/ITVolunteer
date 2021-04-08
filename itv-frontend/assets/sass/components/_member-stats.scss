@@ -2,13 +2,21 @@
   display: flex;
   flex-flow: column;
   align-items: center;
-  margin: 25px 0;
+  margin: 25px 0 0;
   font: 500 13px/20px "IBM Plex Sans", sans-serif;
   color: $color-gray-dark-md;
   @include screen-from(md) {
     flex-flow: row;
     justify-content: flex-start;
-    margin: 20px 0;
+    margin: 20px 0 0;
+  }
+
+  &:not(:last-child) {
+    margin-bottom: 25px;
+
+    @include screen-from(md) {
+      margin-bottom: 20px;
+    }
   }
   &_align-center {
     @include screen-from(md) {
@@ -16,17 +24,21 @@
     }
   }
   &_top-divider {
-    border-top: 1px solid $color-gray-light-lg;
-    padding-top: 25px;
-    @include screen-from(md) {
-      padding-top: 20px;
+    &:not(:first-child) {
+      border-top: 1px solid $color-gray-light-lg;
+      padding-top: 25px;
+      @include screen-from(md) {
+        padding-top: 20px;
+      }
     }
   }
   &_bottom-divider {
-    border-bottom: 1px solid $color-gray-light-lg;
-    padding-bottom: 25px;
-    @include screen-from(md) {
-      padding-bottom: 20px;
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-gray-light-lg;
+      padding-bottom: 25px;
+      @include screen-from(md) {
+        padding-bottom: 20px;
+      }
     }
   }
   &::before,

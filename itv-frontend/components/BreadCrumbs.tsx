@@ -8,11 +8,11 @@ import separator from "../assets/img/breadcrumbs-separator.svg";
 const BreadCrumbs: React.FunctionComponent = (): ReactElement => {
   const crumbs = useStoreState(state => state.components.breadCrumbs.crumbs);
 
-  if(!crumbs) {
+  if (!crumbs) {
     return null;
   }
 
-  if(!crumbs.length) {
+  if (!crumbs.length) {
     return null;
   }
 
@@ -27,12 +27,13 @@ const BreadCrumbs: React.FunctionComponent = (): ReactElement => {
         return (
           <Fragment key={`crumb${index}`}>
             <img className="breadcrumbs__separator" src={separator} />
-            {crumb.url 
-              ? <Link href={crumb.url}>
-                <a>{crumb.title}</a>
+            {crumb.url ? (
+              <Link href={crumb.url}>
+                <a dangerouslySetInnerHTML={{ __html: crumb.title }} />
               </Link>
-              : <span>{crumb.title}</span>
-            }
+            ) : (
+              <span dangerouslySetInnerHTML={{ __html: crumb.title }} />
+            )}
           </Fragment>
         );
       })}
