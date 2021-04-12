@@ -4,7 +4,7 @@ function itv_determine_current_user( $user_id ) {
     error_log("itv_determine_current_user...");
     error_log("input user_id=" . $user_id);
 
-    if(strpos($_SERVER['REQUEST_URI'], "/itv/v1/auth/") !== false) {
+    if((strpos($_SERVER['REQUEST_URI'], "/itv/v1/auth/") !== false) || (defined('WP_CLI') && boolval(WP_CLI))) {
         return $user_id;
     }
 
