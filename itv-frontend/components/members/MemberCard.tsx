@@ -7,12 +7,7 @@ import MemberCardOrganization from "components/members/MemberCardOrganization";
 import MemberCardBottom from "components/members/MemberCardBottom";
 
 const MemberCard: React.FunctionComponent = (): ReactElement => {
-  const {
-    isLoggedIn,
-    isAccountOwner,
-    isLoaded: isSessionLoaded,
-    user: { itvRole },
-  } = useStoreState(state => state.session);
+  const { isLoggedIn, isAccountOwner } = useStoreState(state => state.session);
   const {
     slug: memberSlug,
     organizationName,
@@ -22,6 +17,9 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     xp,
     isEmptyProfile,
     profileFillStatus,
+    template: memberAccountTemplate,
+    isEmptyProfileAsDoer,
+    isEmptyProfileAsAuthor,
   } = useStoreState(state => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
     actions => actions.components.memberAccount.giveThanksRequest
@@ -44,26 +42,28 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
           />
         )}
         {organizationName && <MemberCardOrganization />}
-        {isAccountOwner && profileFillStatus && !profileFillStatus.isProfileInfoEnough && (
+        {isAccountOwner && profileFillStatus?.isProfileInfoEnough === false && (
           <div className="member-card__null-add-information">
             <Link href={`/members/${memberSlug}/profile`}>
               <a>Добавьте информацию о себе</a>
             </Link>
           </div>
         )}
-        {isEmptyProfile && <hr className="member-card__divider" />}
-        <MemberCardBottom />
-        {(!isEmptyProfile || isAccountOwner) && <hr className="member-card__divider" />}
-        {isSessionLoaded && (
+        {isLoggedIn && <MemberCardBottom />}
+        {(isAccountOwner ||
+          (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+            (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) &&
+            (isLoggedIn || thankyouCount > 0))) && (
           <div className="member-card__action">
             {(isAccountOwner && (
               <>
-                {(itvRole === "doer" && (
+                {memberAccountTemplate === "volunteer" && (
                   <Link href="/tasks">
                     <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
                   </Link>
-                )) || (
-                  <Link href="/task-actions">
+                )}
+                {memberAccountTemplate === "author" && (
+                  <Link href="/task-create">
                     <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
                   </Link>
                 )}
@@ -72,7 +72,8 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                 </Link>
               </>
             )) ||
-              (!isEmptyProfile && (
+              (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
+                (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) && (
                 <>
                   {isLoggedIn && (
                     <button
@@ -83,7 +84,11 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                       Сказать «Спасибо»
                     </button>
                   )}
-                  <span className="member-card__thank-count">Сказали спасибо: {thankyouCount}</span>
+                  {thankyouCount > 0 && (
+                    <span className="member-card__thank-count">
+                      Сказали спасибо: {thankyouCount}
+                    </span>
+                  )}
                 </>
               ))}
           </div>

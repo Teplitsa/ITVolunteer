@@ -5,6 +5,7 @@ import {
   IUserNotifActions,
   IFetchResult,
   IStoreModel,
+  IRestApiResponse,
 } from "./model.typing";
 import * as utils from "../utilities/utilities";
 
@@ -94,6 +95,69 @@ const userNotifActions: IUserNotifActions = {
   }),
   removeNotifFromList: action((state, payload) => {
     state.notifList = state.notifList.filter(item => item.id !== payload.id);
+  }),
+  setIsReadRequest: thunk(async ({ setState }, payload, { getStoreState }) => {
+    const {
+      session: { user, validToken: token },
+      components: {
+        userNotif: { notifList },
+      },
+    } = getStoreState() as IStoreModel;
+    const id = [];
+
+    notifList.forEach(notif => {
+      if (notif.is_read === "0" && Number(notif.user_id) === user.databaseId) {
+        id.push(notif.id);
+      }
+    });
+
+    if (id.length === 0) return;
+
+    try {
+      const isReadRequestUrl = new URL(utils.getRestApiUrl(`/itv/v1/user-notif`));
+      const isReadRequestParams = {
+        auth_token: token,
+        id,
+        user_id: user.databaseId,
+      };
+      const isReadResponse = await fetch(isReadRequestUrl.toString(), {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(isReadRequestParams),
+      });
+      const response: IRestApiResponse = await isReadResponse.json();
+
+      if (response.data?.status && response.data.status !== 200) {
+        console.error(response.message);
+      } else if (response.data?.notifList instanceof Array && response.data.notifList.length > 0) {
+        setState({
+          notifList: notifList.map(notif => {
+            let isReadState: "0" | "1";
+
+            if (
+              response.data.notifList.some(({ id, is_read }) => {
+                if (id === notif.id) {
+                  isReadState = is_read ? "1" : "0";
+
+                  return true;
+                }
+
+                return false;
+              })
+            ) {
+              notif.is_read = isReadState;
+            }
+
+            return notif;
+          }),
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }),
 };
 

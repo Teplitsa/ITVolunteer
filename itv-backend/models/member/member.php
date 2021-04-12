@@ -71,6 +71,12 @@ class MemberManager {
         update_user_meta($user_id, self::$meta_role, $itvRole);
     }
 
+    public function is_hybrid_profile($user_id) {
+        $user_role = $this->get_member_itv_role($user_id);
+        $member_tasks = new MemberTasks($user_id);
+        return $user_role === self::$ROLE_AUTHOR ? $member_tasks->has_member_completed_tasks() : $member_tasks->has_member_created_tasks();
+    }
+
     public function get_property($response_data, $property_name, $request) {
         $value = null;
         $user_id = $response_data['id'];
@@ -140,8 +146,7 @@ class MemberManager {
                 break;
 
             case self::$FIELD_IS_HYBRID:
-                $member_tasks = new MemberTasks($user_id);
-                $value = $member_tasks->has_member_created_and_completed_tasks();
+                $value = $this->is_hybrid_profile($user_id);
                 break;
 
         }

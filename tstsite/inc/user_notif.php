@@ -13,7 +13,7 @@ function ajax_get_user_notif_short_list() {
 	
 	$user_id = get_current_user_id(); 
 	$newer_than_id = !empty($_GET['newer_than_id']) ? intval($_GET['newer_than_id']) : null;
-	$notif_list = UserNotifModel::instance()->get_list($user_id, false, $newer_than_id);
+	$notif_list = UserNotifModel::instance()->get_list($user_id, null, $newer_than_id);
     
     $member_notif_manager = new MemberNotifManager();
     

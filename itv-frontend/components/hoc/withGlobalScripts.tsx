@@ -13,11 +13,17 @@ const modalReducer = (state: IModal, action: { type: string; payload: IModal }):
     case "open":
       return { ...state, ...{ isShown: true } };
     case "close":
-      return { ...state, ...{ title: "", content: null, isShown: false } };
+      return { ...state, ...modalInitialState };
     case "template":
       return {
         ...state,
-        ...{ title: action.payload.title, content: action.payload.content },
+        ...{
+          hideBackdrop: action.payload.hideBackdrop,
+          hAlign: action.payload.hAlign,
+          title: action.payload.title,
+          header: action.payload.header,
+          content: action.payload.content,
+        },
       };
     default:
       throw new Error(`Неизвестное действие '${action.type}' модуля Modal.`);

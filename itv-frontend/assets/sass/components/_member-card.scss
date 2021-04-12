@@ -50,13 +50,17 @@
     color: $color-gray-dark-lg;
   }
   &__organization {
-    border-bottom: 1px solid $color-gray-light-lg;
-    margin: 0 0 20px;
-    padding: 0 0 20px;
     text-align: center;
     @include screen-from(md) {
       text-align: left;
     }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $color-gray-light-lg;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
+
     &-header {
       margin: 0 0 20px;
       @include screen-from(md) {
@@ -80,9 +84,12 @@
         margin: 0;
       }
       &-image {
+        width: auto;
+        height: 100%;
+        max-width: none;
         &_default {
           height: 60%;
-          width: auto;
+          max-width: 100%;
         }
       }
     }
@@ -113,7 +120,12 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    margin: 0 0 20px;
+
+    &:not(:last-child) {
+      @extend .member-card__divider;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
   }
   &__contacts {
     @include screen-from(md) {
@@ -148,7 +160,6 @@
   }
   &__action {
     .btn.edit-profile {
-      margin: 0 0 10px;
       color: $color-gray-dark-lg;
       &:hover {
         text-decoration: underline;
@@ -156,22 +167,27 @@
     }
 
     .btn.cta {
-      margin-bottom: 10px;      
+      margin-bottom: 10px;
     }
   }
   &__thank-count {
     display: flex;
     justify-content: center;
-    margin: 20 0 0;
+    margin: 20px 0 0;
     font: 600 13px/20px "IBM Plex Sans", sans-serfif;
     color: $color-gray-dark-lg;
   }
 
   &__null-add-information {
     @include text-sm;
-    text-align: center;
-    margin-bottom: 22px;
     width: 100%;
+    text-align: center;
+
+    &:not(:last-child) {
+      @extend .member-card__divider;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+    }
 
     & > a {
       @include solid-underline($color-main);

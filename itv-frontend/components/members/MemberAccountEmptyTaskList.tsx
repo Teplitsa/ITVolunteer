@@ -6,7 +6,7 @@ const MemberAccountEmptyTaskList: React.FunctionComponent = (): ReactElement => 
     <MemberAccountEmptySection
       title="Задачи"
       text="Здесь будут собраны все созданные вами задачи.<br />Возможно, стоит создать свою первую задачу?"
-      linkUrl="/task-actions"
+      linkUrl="/task-create"
       linkCaption="Создать новую задачу"
     />
   );

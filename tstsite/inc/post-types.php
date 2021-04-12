@@ -60,6 +60,9 @@ function itv_custom_content(){
         'show_ui'                   => true,
         'show_admin_column'         => true,
         '_builtin'                  => true,
+
+        'show_in_rest' => true,
+        'rest_base' => 'tags',
         
         'show_in_graphql' => true,
         'graphql_single_name' => 'tag',
@@ -95,6 +98,9 @@ function itv_custom_content(){
         'query_var'         => true,
         'rewrite'           => array('slug' => 'reward', 'with_front' => false),
         //'update_count_callback' => '', 
+
+        'show_in_rest' => true,
+        'rest_base' => 'rewards',
         
 	    'show_in_graphql' => true,
 	    'graphql_single_name' => 'RewardTag',
@@ -128,6 +134,9 @@ function itv_custom_content(){
         'show_admin_column' => false,
         'query_var'         => true,
         'rewrite'           => array('slug' => 'nko_task_tag'),
+
+        'show_in_rest' => true,
+        'rest_base' => 'ngo-tags',
         
         'show_in_graphql' => true,
         'graphql_single_name' => 'NgoTaskTag',

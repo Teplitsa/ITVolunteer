@@ -77,12 +77,20 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
       <div className="form__group">
         <label className="forloadFileDatam__label">Изображение превью</label>
         <div className="form__group-header">Желаемый размер файла 430x250px</div>
-        <UploadFileInput name="preview" isMultiple={false} fileData={previewObject} />
+        <UploadFileInput
+          name="preview"
+          isMultiple={false}
+          initFileData={previewObject as IMediaData}
+        />
       </div>
       <div className="form__group">
         <label className="form__label">Изображение в портфолио</label>
         <div className="form__group-header">Желаемый размер файла 1200px по ширине</div>
-        <UploadFileInput name="full_image" isMultiple={false} fileData={fullImageObject} />
+        <UploadFileInput
+          name="full_image"
+          isMultiple={false}
+          initFileData={fullImageObject as IMediaData}
+        />
       </div>
       <div className="form__group">
         <button type="submit" className="btn btn_primary-extra">

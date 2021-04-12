@@ -257,6 +257,18 @@ function task_api_register_fields($server) {
                 return itv_get_task_deadline_date($task->ID, $task->post_date);
             },
         ],
+        'files' => [
+            'type'        => [ 'list_of' => 'String' ],
+            'resolve'     => function( $task, $args, $context ) {
+                return get_post_meta($task->ID, 'files', true);
+            },
+        ],
+        'authorSlug' => [
+            'type'        => 'String',
+            'resolve'     => function( $task, $args, $context ) {
+                return get_the_author_meta('nicename', $task->author);
+            },
+        ],
     ];
 
     foreach ($task_fields as $field_name => $field) {

@@ -28,13 +28,13 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
           {doerCandidatesCountModulo === 1
             ? "отклик"
             : [2, 3, 4].includes(doerCandidatesCountModulo)
-              ? "отклика"
-              : "откликов"}
+            ? "отклика"
+            : "откликов"}
         </div>
       </div>
       <div className="task-card__title">
         <Link href={`/tasks/${task.slug}`}>
-          <a>{task.title}</a>
+          <a dangerouslySetInnerHTML={{ __html: task.title }} />
         </Link>
       </div>
       <TaskMeta {...task} />

@@ -5,6 +5,7 @@ import textPageModel from "./text-page-model";
 import taskModel from "./task-model/task-model";
 import taskListModel from "./task-model/task-list-model";
 import taskListFilterModel from "./task-model/task-list-filter-model";
+import manageTaskModel from "./task-model/manage-task-model";
 import userNotifModel from "./user-notif-model";
 import {
   createTaskWizardModel,
@@ -37,6 +38,7 @@ const componentsState: IComponentsState = {
   task: taskModel,
   taskList: taskListModel,
   taskListFilter: taskListFilterModel,
+  manageTask: manageTaskModel,
   userNotif: userNotifModel,
   createTaskWizard: createTaskWizardModel,
   completeTaskWizard: completeTaskWizardModel,

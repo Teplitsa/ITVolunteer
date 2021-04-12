@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import Router from "next/router";
-import { IFetchResult } from "../model/model.typing";
+// import { IFetchResult } from "../model/model.typing";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../model/helpers/hooks";
 import { UserSmallPicView } from "../components/UserView";
@@ -37,37 +37,30 @@ const ITV_USER_NOTIF_TEXT = {
   decline_doer_to_taskdoer: "отклонил(а) вас в качестве исполнителя задачи",
 };
 
-export function NotifList(props) {
+export function NotifList({
+  clickOutsideHandler,
+}: {
+  clickOutsideHandler: () => void;
+}): ReactElement {
   const user = useStoreState(store => store.session.user);
-
-  const clickOutsideHandler = props.clickOutsideHandler;
   const notifList = useStoreState(store => store.components.userNotif.notifList);
-  const [notifListRef, setNotifListRef] = useState(null);
+  const notifListRef = useRef<HTMLDivElement>(null);
 
-  function handleClickOutside(e) {
-    if (notifListRef && !notifListRef.contains(e.target)) {
-      if (clickOutsideHandler) {
-        clickOutsideHandler();
-      }
-    }
-  }
+  const handleClickOutside = (event: Event): void => {
+    if (notifListRef.current?.contains(event.target as Node)) return;
+
+    clickOutsideHandler && clickOutsideHandler();
+  };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("click", handleClickOutside);
     };
-  });
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
+  }, []);
 
   return (
-    <div className={`notif-list`} ref={ref => setNotifListRef(ref)}>
+    <div className={`notif-list`} ref={notifListRef}>
       <div className={`notif-list__container`}>
         <div className="notif-list__title">Оповещения</div>
         {notifList.map((item, index) => {
@@ -82,48 +75,52 @@ export function NotifList(props) {
 }
 
 function NotifItem({ notif, user }) {
-  const removeNotifFromList = useStoreActions(
-    actions => actions.components.userNotif.removeNotifFromList
-  );
+  // const removeNotifFromList = useStoreActions(
+  //   actions => actions.components.userNotif.removeNotifFromList
+  // );
   const setCompleteTaskWizardState = useStoreActions(
     actions => actions.components.completeTaskWizard.setInitState
   );
 
-  function handleNotifItemClick() {
-    removeNotifFromList(notif);
+  // function handleNotifItemClick() {
+  //   removeNotifFromList(notif);
 
-    const formData = new FormData();
-    formData.append("notifIdList[]", notif.id);
+  //   const formData = new FormData();
+  //   formData.append("notifIdList[]", notif.id);
 
-    const action = "set_user_notif_read";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
-      method: "post",
-      body: formData,
-    })
-      .then(res => {
-        try {
-          return res.json();
-        } catch (ex) {
-          utils.showAjaxError({ action, error: ex });
-          return {};
-        }
-      })
-      .then(
-        (result: IFetchResult) => {
-          if (result.status == "error") {
-            return utils.showAjaxError({ message: result.message });
-          }
-        },
-        error => {
-          utils.showAjaxError({ action, error });
-        }
-      );
-  }
+  //   const action = "set_user_notif_read";
+  //   fetch(utils.getAjaxUrl(action), {
+  //     method: "post",
+  //     body: formData,
+  //   })
+  //     .then(res => {
+  //       try {
+  //         return res.json();
+  //       } catch (ex) {
+  //         utils.showAjaxError({ action, error: ex });
+  //         return {};
+  //       }
+  //     })
+  //     .then(
+  //       (result: IFetchResult) => {
+  //         if (result.status == "error") {
+  //           return utils.showAjaxError({ message: result.message });
+  //         }
+  //       },
+  //       error => {
+  //         utils.showAjaxError({ action, error });
+  //       }
+  //     );
+  // }
 
   const completeTask = () => {
     setCompleteTaskWizardState({
       user: { databaseId: user.databaseId, name: user.fullName, isAuthor: false, slug: user.slug },
-      partner: { databaseId: notif.from_user.databaseId, name: notif.from_user.fullName, slug: notif.from_user.slug },
+      partner: {
+        databaseId: notif.from_user.databaseId,
+        name: notif.from_user.fullName,
+        slug: notif.from_user.slug,
+      },
       task: { databaseId: notif.task.databaseId, title: notif.task.title, slug: notif.task.slug },
     });
 
@@ -162,7 +159,10 @@ function NotifItem({ notif, user }) {
 
           {!!notif.task && (
             <Link href="/tasks/[slug]" as={`/tasks/${notif.task.slug}`}>
-              <a className="notif-list__item-task">{notif.task.title}</a>
+              <a
+                className="notif-list__item-task"
+                dangerouslySetInnerHTML={{ __html: notif.task.title }}
+              />
             </Link>
           )}
 
@@ -188,7 +188,7 @@ function NotifItem({ notif, user }) {
             })}`}</span>
           </div>
         </div>
-        <a href="#" className="notif-list__item-set-read" onClick={handleNotifItemClick}></a>
+        {/* <a href="#" className="notif-list__item-set-read" onClick={handleNotifItemClick}></a> */}
       </div>
     </div>
   );

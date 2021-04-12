@@ -48,18 +48,25 @@ const MemberNotificationItem: React.FunctionComponent<INotification> = ({
       </div>
       <div className="member-notifications__item-title">
         {title.map(({ text, keyword, link }, i) => {
-          if(type === "custom-message") {
+          if (type === "custom-message") {
             return (
               <Fragment key={`NotificationTitleElement-${i}}`}>
-                <div dangerouslySetInnerHTML={{__html: text || ""}} />
+                <span dangerouslySetInnerHTML={{ __html: text || "" }} />{" "}
               </Fragment>
             );
           } else if (typeof text !== "undefined") {
-            return <Fragment key={`NotificationTitleElement-${i}}`}>{text} </Fragment>;
+            return (
+              <Fragment key={`NotificationTitleElement-${i}}`}>
+                <span dangerouslySetInnerHTML={{ __html: text }} />{" "}
+              </Fragment>
+            );
           } else if (typeof keyword !== "undefined") {
             return (
               <Fragment key={`NotificationTitleElement-${i}}`}>
-                <span className="member-notifications__keyword">{keyword}</span>{" "}
+                <span
+                  className="member-notifications__keyword"
+                  dangerouslySetInnerHTML={{ __html: keyword }}
+                />{" "}
               </Fragment>
             );
           } else if (typeof link !== "undefined") {
@@ -72,9 +79,8 @@ const MemberNotificationItem: React.FunctionComponent<INotification> = ({
                         "member-notifications__item-title-link_highlight") ||
                       "member-notifications__item-title-link_normal"
                     }`}
-                  >
-                    {link.text}
-                  </a>
+                    dangerouslySetInnerHTML={{ __html: link.text }}
+                  />
                 </Link>{" "}
               </Fragment>
             );

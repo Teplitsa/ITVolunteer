@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Action, ActionOn, Thunk, ThunkOn, Computed } from "easy-peasy";
 import { ISnackbarMessage } from "../context/global-scripts";
 import {
@@ -272,6 +272,7 @@ export interface IComponentsState {
   task?: ITaskModel;
   taskList?: ITaskListModel;
   taskListFilter?: ITaskListFilterModel;
+  manageTask?: IManageTaskModel;
   userNotif?: IUserNotifModel;
   createTaskWizard?: ICreateTaskWizardModel;
   completeTaskWizard?: ICompleteTaskWizardModel;
@@ -421,6 +422,8 @@ export interface IMemberAccountPageState {
   skype?: string;
   telegram?: string;
   isEmptyProfile?: boolean;
+  isEmptyProfileAsDoer?: boolean;
+  isEmptyProfileAsAuthor?: boolean;
   registrationDate: number;
   thankyouCount: number;
   notificationStats: {
@@ -501,6 +504,7 @@ export interface IMemberAccountPageActions {
   setReviews: Action<IMemberAccountPageModel, any>;
   setAvatarFile: Action<IMemberAccountPageModel, any>;
   setCoverFile: Action<IMemberAccountPageModel, any>;
+  onSessionUserItvRoleChange: ActionOn<IMemberAccountPageModel, IStoreModel>;
 }
 
 export interface IMemberAccountPageThunks {
@@ -1163,22 +1167,33 @@ export interface ITaskListFilterActions {
 
 export interface IUserNotifModel extends IUserNotifState, IUserNotifActions {}
 export interface IUserNotifState {
-  notifList;
+  notifList: Array<IUserNotifItem>;
 }
 
 export interface IUserNotifItem {
-  id;
-  [x: string]: any;
+  id: number;
+  content: string;
+  created_at: string;
+  dateGmt: string;
+  from_user: ISessionUser;
+  from_user_id: string;
+  is_read: "0" | "1";
+  task: ITaskState;
+  task_id: string;
+  type: string;
+  updated_at: string;
+  user_id: string;
 }
 
 export interface IUserNotifActions {
   initializeState: Action<ITaskListFilterModel>;
   setState: Action<IUserNotifModel, IUserNotifState>;
-  setNotifList: Action<IUserNotifModel, Array<any>>;
-  prependNotifList: Action<IUserNotifModel, Array<any>>;
+  setNotifList: Action<IUserNotifModel, Array<IUserNotifItem>>;
+  prependNotifList: Action<IUserNotifModel, Array<IUserNotifItem>>;
   loadNotifList: Thunk<IUserNotifActions>;
   loadFreshNotifList: Thunk<IUserNotifActions>;
-  removeNotifFromList: Action<IUserNotifModel, any>;
+  removeNotifFromList: Action<IUserNotifModel, IUserNotifItem>;
+  setIsReadRequest: Thunk<IUserNotifActions>;
 }
 
 /**
@@ -1432,7 +1447,7 @@ export interface ITaskToPortfolioWizardThunks extends IWizardThunks {
   loadWizardData: Thunk<ITaskToPortfolioWizardActions>;
   removeWizardData: Thunk<ITaskToPortfolioWizardActions>;
   newPortfolioItemRequest: Thunk<
-  ITaskToPortfolioWizardActions,
+    ITaskToPortfolioWizardActions,
     {
       doer: ICompleteTaskWizardPartner;
       task: ICompleteTaskWizardMeta;
@@ -1574,8 +1589,8 @@ export interface IHomePageThunks {
  * task list context
  */
 export interface IHomeTaskListContext {
-  mustHideTaskItemOverlays: any,
-  setMustHideTaskItemOverlays: (taskId: string, mustHide: boolean) => void,
+  mustHideTaskItemOverlays: any;
+  setMustHideTaskItemOverlays: (taskId: string, mustHide: boolean) => void;
 }
 
 /**
@@ -1584,11 +1599,111 @@ export interface IHomeTaskListContext {
 export interface IBreadCrumbsModel extends IBreadCrumbsState, IBreadCrumbsActions {}
 
 export interface IBreadCrumbsState {
-  crumbs: Array<{title: string, url?: string}>;
+  crumbs: Array<{ title: string; url?: string }>;
 }
 
 export interface IBreadCrumbsActions {
   initializeState: Action<IBreadCrumbsState>;
   setState: Action<IBreadCrumbsModel, IBreadCrumbsState>;
-  setCrumbs: Action<IBreadCrumbsModel, Array<{title: string, url?: string}>>;
+  setCrumbs: Action<IBreadCrumbsModel, Array<{ title: string; url?: string }>>;
+}
+
+/**
+ * Form
+ */
+
+export interface IFormControlProps {
+  label?: string;
+  labelExtraClassName?: string;
+  required?: boolean;
+}
+
+export interface IFormSelectProps {
+  selectPlaceholder?: string;
+  maxSelectedOptions?: number;
+}
+
+export interface IFormInputDateProps {
+  label?: string;
+  labelExtraClassName?: string;
+  inputDatePlaceholder?: string;
+}
+
+export interface IFormInputCheckboxProps {
+  label?: string;
+  Explanation?: React.FunctionComponent;
+}
+
+/**
+ * Manage task
+ */
+
+export interface IManageTaskModel extends IManageTaskState, IManageTaskActions, IManageTaskThunks {}
+
+export interface IManageTaskFormData {
+  agreement?: {
+    simpleTask: boolean;
+    socialProblem: boolean;
+    effectiveCooperation: boolean;
+    beInTouch: boolean;
+    personalDataSecurity: boolean;
+  };
+  title: string;
+  description: string;
+  taskTags: {
+    value: Array<number>;
+  };
+  ngoTags: {
+    index: number;
+    value: string;
+  };
+  reward?: {
+    index: number;
+    value: string;
+  };
+  files?: Array<{
+    value: string | number;
+    fileName: string;
+  }>;
+  preferredDuration?: string;
+}
+
+export interface IManageTaskTag {
+  id: number;
+  name: string;
+  parent?: number;
+}
+
+export interface IManageTaskState {
+  id: number;
+  slug: string;
+  informativenessLevel: number;
+  formData: IManageTaskFormData;
+  tags: Array<IManageTaskTag>;
+  ngoTags: Array<IManageTaskTag>;
+  reward: Array<IManageTaskTag>;
+}
+
+export interface IManageTaskActions {
+  initializeState: Action<IManageTaskModel>;
+  setState: Action<IManageTaskModel, IManageTaskState>;
+  setInformativenessLevel: Action<IManageTaskModel, number>;
+  setFormData: Action<IManageTaskModel, IManageTaskFormData>;
+  setTagList: Action<IManageTaskModel, Array<IManageTaskTag>>;
+  setNgoTagList: Action<IManageTaskModel, Array<IManageTaskTag>>;
+  setRewardList: Action<IManageTaskModel, Array<IManageTaskTag>>;
+}
+
+export interface IManageTaskThunks {
+  loadTags: Thunk<IManageTaskActions>;
+  loadNgoTags: Thunk<IManageTaskActions>;
+  loadReward: Thunk<IManageTaskActions>;
+  submitFormData: Thunk<
+    IManageTaskActions,
+    {
+      addSnackbar: (message: ISnackbarMessage) => void;
+      setIsFormSubmitted: Dispatch<SetStateAction<boolean>>;
+      callback?: ({ taskSlug: string }) => void;
+    }
+  >;
 }

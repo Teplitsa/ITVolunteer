@@ -22,6 +22,7 @@ function auth_api_add_routes($server) {
             $auth = new \ITV\models\Auth();
             $auth_result = $auth->login($login, $password, $remember);
 
+    if(!$auth_token && in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH', 'DELETE'] ) )  {
             if ( is_wp_error( $auth_result ) ) {
                 $error_code = $auth_result->get_error_code();
     

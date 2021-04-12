@@ -3,7 +3,12 @@
 require_once(get_theme_file_path() . '/vendor/autoload.php');
 require_once(get_theme_file_path() . '/config.php');
 
-load_theme_textdomain('itv-backend', get_theme_file_path() . '/lang');
+add_filter('use_block_editor_for_post_type', 'itv_prefix_disable_gutenberg', 10, 2);
+function itv_prefix_disable_gutenberg($current_status, $post_type)
+{
+    if ($post_type === 'tasks') return false;
+    return $current_status;
+}
 
 // utils
 require_once(get_theme_file_path() . '/utils/encode.php');
@@ -35,6 +40,15 @@ require_once(get_theme_file_path() . '/rest-api/task/task.php');
 require_once(get_theme_file_path() . '/wp-cli/set_members_itv_role.php');
 require_once(get_theme_file_path() . '/wp-cli/cache.php');
 
+// filters
+add_filter('xmlrpc_enabled', '__return_false');
+add_filter('embed_oembed_discover', '__return_false');
+add_filter('wp_image_editors', function ($editors) {
+    $gd_editor = 'WP_Image_Editor_GD';
+    $editors = array_diff($editors, array($gd_editor));
+    array_unshift($editors, $gd_editor);
+    return $editors;
+});
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');
 require_once(get_theme_file_path() . '/wp-hooks/task.php');
