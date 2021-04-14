@@ -10,6 +10,7 @@ import {
   IManageTaskTag,
 } from "../model.typing";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
+import * as utils from "../../utilities/utilities";
 
 export const initManageTaskState: IManageTaskState = {
   id: 0,
@@ -78,7 +79,7 @@ const manageTaskThunks: IManageTaskThunks = {
     ]).toString();
 
     try {
-      const rawResponse = await fetch(requestUrl.toString());
+      const rawResponse = await utils.tokenFetch(requestUrl.toString());
       const response: IRestApiResponse & Array<IManageTaskTag> = await rawResponse.json();
 
       if (response.data?.status && response.data.status !== 200) {
@@ -101,7 +102,7 @@ const manageTaskThunks: IManageTaskThunks = {
     ]).toString();
 
     try {
-      const rawResponse = await fetch(requestUrl.toString());
+      const rawResponse = await utils.tokenFetch(requestUrl.toString());
       const response: IRestApiResponse & Array<IManageTaskTag> = await rawResponse.json();
 
       if (response.data?.status && response.data.status !== 200) {
@@ -124,7 +125,7 @@ const manageTaskThunks: IManageTaskThunks = {
     ]).toString();
 
     try {
-      const rawResponse = await fetch(requestUrl.toString());
+      const rawResponse = await utils.tokenFetch(requestUrl.toString());
       const response: IRestApiResponse & Array<IManageTaskTag> = await rawResponse.json();
 
       if (response.data?.status && response.data.status !== 200) {
@@ -172,7 +173,7 @@ const manageTaskThunks: IManageTaskThunks = {
       submitFormData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getAjaxUrl(action), {
+        const result = await utils.tokenFetch(getAjaxUrl(action), {
           method: "post",
           body: submitFormData,
         });

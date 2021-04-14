@@ -7,6 +7,7 @@ import Error404 from "../../components/page/Error404";
 import ManageTask from "../../components/task-actions/manage-task/ManageTask";
 import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
 import { getRestApiUrl, stripTags } from "../../utilities/utilities";
+import * as utils from "../../utilities/utilities";
 import { FileItem } from "../../components/UploadFileInput";
 import { IRestApiResponse } from "../../model/model.typing";
 
@@ -116,7 +117,7 @@ export const getServerSideProps: GetServerSideProps = async ({
             .join("&");
         })();
 
-        const rawResult = await fetch(requestURL.toString());
+        const rawResult = await utils.tokenFetch(requestURL.toString());
 
         const result = await rawResult.json();
 
@@ -164,7 +165,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           const extendedFiles: Array<FileItem> = [];
 
           for (const fileId of files) {
-            const mediaResult = await fetch(
+            const mediaResult = await utils.tokenFetch(
               getRestApiUrl(`/wp/v2/media/${fileId}/?_fields[]=id&_fields[]=source_url`)
             );
 

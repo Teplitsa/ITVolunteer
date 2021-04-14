@@ -26,8 +26,8 @@ export const getMediaData = async (
     const endpoint = `/wp/v2/media/${mediaId}/?_fields[]=id&_fields[]=source_url&_fields[]=media_details`;
     const result =
       typeof abortController === "undefined"
-        ? await fetch(getRestApiUrl(endpoint))
-        : await fetch(getRestApiUrl(endpoint), {
+        ? await utils.tokenFetch(getRestApiUrl(endpoint))
+        : await utils.tokenFetch(getRestApiUrl(endpoint), {
           signal: abortController.signal,
         });
 
