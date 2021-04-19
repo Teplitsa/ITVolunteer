@@ -1,4 +1,4 @@
-const BaseUrl = "http://172.16.0.46";
+const BaseUrl = "http://tep-itv.dench";
 
 const appConfig = {
   BaseUrl,

@@ -50,6 +50,7 @@ function auth_api_add_routes($server) {
 
             try {
                 $token = $auth->parse_token_from_request();
+                // error_log("token: " . $token);
             }
             catch(\ITV\models\NoAuthHeaderException $ex) {
                 return new \WP_REST_Response(

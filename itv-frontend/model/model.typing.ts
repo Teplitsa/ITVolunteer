@@ -14,6 +14,7 @@ import {
 
 export interface IModelWithAppAndEntrypoint extends IComponentsState {
   app: IAppState;
+  session?: ISessionState,
   entrypointType: PostType;
   entrypoint: IStoreEntrypoint;
 }
@@ -118,6 +119,7 @@ export interface ISessionUser {
 }
 
 export interface ISessionActions {
+  setStateGuest: Action<ISessionModel>;
   setState: Action<ISessionModel, ISessionState>;
   setIsLoaded: Action<ISessionState, boolean>;
   setUserItvRole: Action<ISessionState, "author" | "doer">;
@@ -1092,6 +1094,7 @@ export interface ITaskListActions {
   resetTaskListLoaded: Action<ITaskListModel>;
   appendTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
   setTaskList: Action<ITaskListModel, Array<ITaskListItemState>>;
+  setIsTaskListLoaded: Action<ITaskListModel, boolean>;
 }
 
 export interface ITaskListThunks {
@@ -1139,6 +1142,7 @@ export interface ITaskListFilterState {
   sectionClose;
   filterData;
   isFilterDataLoaded;
+  needReload: boolean;
 }
 
 export interface ITaskListFilterActions {
@@ -1152,11 +1156,11 @@ export interface ITaskListFilterActions {
   loadSectionClose: Thunk<ITaskListFilterActions, any>;
   setOptionCheck: Action<ITaskListFilterState, any>;
   saveOptionCheck: Action<ITaskListFilterState>;
-  loadOptionCheck: Thunk<ITaskListFilterActions, any>;
+  loadOptionCheck: Thunk<ITaskListFilterActions>;
   setOptionOpen: Action<ITaskListFilterState, any>;
   saveOptionOpen: Action<ITaskListFilterState>;
-  loadOptionOpen: Thunk<ITaskListFilterActions, any>;
-  loadFilterData: Thunk<ITaskListFilterActions, any>;
+  loadOptionOpen: Thunk<ITaskListFilterActions>;
+  loadFilterData: Thunk<ITaskListFilterActions>;
   setStatusStats: Action<ITaskListFilterState, any>;
   setFilterData: Action<ITaskListFilterState, any>;
 }

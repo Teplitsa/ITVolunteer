@@ -80,6 +80,8 @@ class Auth {
     public function validate_token( $token ) {
 
 		list($is_valid, $payload_data) = $this->parse_token($token);
+        // error_log("token: is_valid" . print_r($is_valid, true));
+        // error_log("token: payload_data" . print_r($payload_data, true));
 
         if(!$is_valid) {
             throw new InvalidAuthTokenException();
@@ -97,12 +99,18 @@ class Auth {
         return [
             'is_valid' => $is_valid, 
             'user' => $user_data,
+            'token' => $token,
         ];
     }
 
     public function parse_token($token) {
 
         $parts = explode('.', $token);
+
+        if(empty($parts) || count($parts) !== 3) {
+            return [false, null];
+        }
+
         $base64_header = $parts[0];
         $base64_payload = $parts[1];
 

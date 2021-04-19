@@ -14,12 +14,20 @@ services:
     extra_hosts:
       - "v1.tep-itv.dench:127.0.0.1"
       - "tep-itv.dench:0.0.0.0"
+    volumes:
+      - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+    networks:
+      default:
+        aliases:
+          - "tep-itv.dench"
   mongo:
     build:
       context: mongo
       dockerfile: Dockerfile
     ports:
       - "27017:27017"
+    volumes:
+      - tep-itv-mongo-data:/data/db
   backend:
     build:
       context: backend
@@ -32,9 +40,6 @@ services:
       - mongo
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
-    extra_hosts:
-      - "v1.tep-itv.dench:127.0.0.1"
-      - "tep-itv.dench:0.0.0.0"
   frontend:
     build:
       context: frontend
@@ -61,3 +66,9 @@ services:
       - ./vsftpd/home:/home/vsftpd
       - ./vsftpd/logs:/var/log/vsftpd    
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+
+volumes:
+  tep-itv-mongo-data:    
+
+networks:
+  default:

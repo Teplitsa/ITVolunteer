@@ -175,7 +175,7 @@ export function showAjaxError(errorData) {
 }
 
 export function decodeHtmlEntities(textWithEntities) {
-  if (!document) {
+  if (typeof document === "undefined" || !document) {
     return textWithEntities;
   }
 
@@ -191,7 +191,7 @@ export function decodeHtmlEntities(textWithEntities) {
 }
 
 export function getSiteUrl(path = "") {
-  if (!window) {
+  if(typeof window === "undefined" || !window) {
     return path;
   }
 

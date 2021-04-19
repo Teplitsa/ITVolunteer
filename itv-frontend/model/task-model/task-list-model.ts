@@ -28,6 +28,7 @@ const taskListActions: ITaskListActions = {
     Object.assign(prevState, newState);
   }),
   resetTaskListLoaded: action((state) => {
+    // console.log("resetTaskListLoaded...");
     state.isTaskListLoaded = false;
   }),
   appendTaskList: action((state, newItems) => {
@@ -36,6 +37,10 @@ const taskListActions: ITaskListActions = {
   setTaskList: action((state, payload) => {
     state.items = payload;
     state.isTaskListLoaded = true;
+  }),
+  setIsTaskListLoaded: action((state, payload) => {
+    // console.log("setIsTaskListLoaded payload:", payload);
+    state.isTaskListLoaded = payload;
   }),
 };
 

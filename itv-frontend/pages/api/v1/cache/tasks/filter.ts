@@ -9,7 +9,7 @@ handler.use(mongodbConnection);
 
 handler.get<ExtendedRequest, NextApiResponse>(async ({ db }, res) => {
   try {
-    const filterSections = await db.collection("task_list_filter").find({}).toArray();
+    const filterSections = await db.collection("task_list_filter").find().toArray();
 
     res.status(200);
     res.json({ sections: filterSections });

@@ -9,6 +9,7 @@ import {
   IFetchResult,
 } from "./model.typing";
 import { thunk, action, computed, actionOn } from "easy-peasy";
+import * as C from "../const";
 import { getAjaxUrl, getLoginUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
@@ -123,7 +124,80 @@ export const graphqlQuery = {
   }`,
 };
 
+export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
+  const guestSession = {
+    token: { timestamp: Date.now(), authToken: null, refreshToken: null },
+    user: sessionUserState,
+    isLoaded: true,
+  } as ISessionState;
+
+  try {
+
+    const cookieAuthToken = cookieSSR.get(C.ITV_COOKIE.AUTH_TOKEN.name);
+    console.log("cookieAuthToken:", cookieAuthToken);
+    if(!cookieAuthToken) {
+      return guestSession;
+    }
+
+    const result = await fetch(getRestApiUrl("/itv/v1/auth/validate-token"), {
+      method: "post",
+      headers: {
+        Authorization: "Bearer " + cookieAuthToken,
+      }
+    });
+
+    console.log("result.ok:", result.ok);
+    
+    if(result.ok) {
+      const {
+        token: authToken,
+        user: user,
+      } = await (<
+        Promise<{
+          token: string;
+          user: any;
+        }>
+      >result.json());
+
+      console.error("set session isLoaded on ok");
+      // console.log("authToken:", authToken);
+      // console.log("user:", user);
+
+      return {
+        token: { timestamp: Date.now(), authToken, refreshToken: null },
+        user,
+        isLoaded: true,
+      } as ISessionState;
+
+    }
+    else {
+
+      const {
+        code: errorCode,
+        message: errorMessage,
+      } = await (<
+        Promise<{
+          code: string;
+          message: string;
+        }>
+      >result.json());
+
+      console.error("authorizeSessionSSR errorCode:", errorCode);
+      console.error(stripTags(errorMessage));
+      console.error("authorizeSessionSSR set session isLoaded on fail");
+
+    }
+  } catch (error) {
+    console.error("authorizeSessionSSR exception:", error);
+  }
+
+  return guestSession;
+}
+
 const sessionActions: ISessionActions = {
+  setStateGuest: action((state) => {
+    state.isLoaded = true;
+  }),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),

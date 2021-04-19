@@ -10,8 +10,12 @@ handler.use(mongodbConnection);
 
 handler.get<ExtendedRequest, NextApiResponse>(async ({ db, query: { limit } }, res) => {
   try {
-    const findOptions = { limit: Number.isNaN(Number(limit)) ? 0 : Number(limit) };
-    const tasks: Array<ITaskState> = await db.collection("tasks").find({}, findOptions).toArray();
+    const tasks: Array<ITaskState> = await db.collection("tasks")
+      .find()
+      .limit(Number.isNaN(Number(limit)) ? 0 : Number(limit))
+      .toArray();
+
+    // console.log("tasks:", tasks);
 
     res.status(200);
     res.json({ tasks });

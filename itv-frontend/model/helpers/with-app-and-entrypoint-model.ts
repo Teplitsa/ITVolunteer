@@ -77,13 +77,13 @@ const withAppAndEntrypointModel = async ({
   const [entrypointTemplate, entrypointModel] = isArchive
     ? await archiveModel(request, entrypointType, entrypointQueryVars)
     : isCustomPage
-    ? await customPageModel()
-    : await pageModel(request, entrypointType, entrypointQueryVars);
+      ? await customPageModel()
+      : await pageModel(request, entrypointType, entrypointQueryVars);
 
   const componentData = isArchive
     ? {
-        items: entrypointModel.edges.map(({ node: item }) => item),
-      }
+      items: entrypointModel.edges.map(({ node: item }) => item),
+    }
     : null;
 
   const [componentName, component] = await componentModel(
@@ -95,6 +95,7 @@ const withAppAndEntrypointModel = async ({
     app: {
       entrypointTemplate,
     },
+    session: null,
     entrypointType,
     entrypoint: {
       [entrypointTemplate]: entrypointModel,

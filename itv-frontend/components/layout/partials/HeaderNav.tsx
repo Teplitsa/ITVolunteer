@@ -20,7 +20,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("run login...");
+    // console.log("run login...");
 
     if (!process.browser) {
       return;
