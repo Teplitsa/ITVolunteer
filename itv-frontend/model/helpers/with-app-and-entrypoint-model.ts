@@ -66,7 +66,7 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
 const withAppAndEntrypointModel = async ({
   isArchive = false,
   isCustomPage = false,
-  customPageModel = async (): Promise<Array<keyof IStoreEntrypoint | IPageState>> => [
+  customPageModel = async (): Promise<Array<string | IPageState>> => [
     "page",
     { slug: "" },
   ],
@@ -79,6 +79,8 @@ const withAppAndEntrypointModel = async ({
   const [entrypointTemplate, entrypointModel] = await customPageModel();
   const componentData = null;
 
+  const entrypointTemplateCast:keyof IStoreEntrypoint = entrypointTemplate === "archive" ? "archive" : "page";
+
   const [componentName, component] = await componentModel(
     request,
     componentData
@@ -86,7 +88,7 @@ const withAppAndEntrypointModel = async ({
 
   const model = {
     app: {
-      entrypointTemplate,
+      entrypointTemplate: entrypointTemplateCast,
     },
     session: null,
     entrypointType,
