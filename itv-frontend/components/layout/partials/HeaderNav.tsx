@@ -15,6 +15,8 @@ const { SnackbarContext } = GlobalScripts;
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const isLoaded = useStoreState(store => store.session.isLoaded);
+  const login = useStoreActions(actions => actions.session.login);
   const authorizeSession = useStoreActions(actions => actions.session.authorizeSession);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
@@ -30,7 +32,14 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    authorizeSession();
+    if(!isLoaded) {
+      console.log("run ajax login...");
+      login({ username: "", password: "" });
+    }
+    else {
+      console.log("run authorizeSession...");
+      authorizeSession();
+    }
   }, []);
 
   return (

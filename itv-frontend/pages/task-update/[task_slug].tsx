@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
+import { authorizeSessionSSRFromRequest } from "../../model/session-model";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import Error401 from "../../components/page/Error401";
@@ -68,9 +69,8 @@ export const getServerSideProps: GetServerSideProps = async ({
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
-  const loggedIn = decodeURIComponent(req.headers.cookie).match(
-    /wordpress_logged_in_[^=]+=([^|]+)/
-  );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,
@@ -117,7 +117,8 @@ export const getServerSideProps: GetServerSideProps = async ({
             .join("&");
         })();
 
-        const rawResult = await utils.tokenFetch(requestURL.toString());
+        console.log("task request:", requestURL.toString());
+        const rawResult = await utils.sessionFetch(requestURL.toString(), session);
 
         const result = await rawResult.json();
 
@@ -126,8 +127,7 @@ export const getServerSideProps: GetServerSideProps = async ({
             res.statusCode = 404;
             return ["manageTask", null];
           } else if (
-            !loggedIn ||
-            result[0].authorSlug.toLowerCase() !== loggedIn[1].toLowerCase()
+            !session.user.databaseId || (result[0].authorSlug !== session.user.slug)            
           ) {
             res.statusCode = 401;
             return ["manageTask", null];
@@ -221,7 +221,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   });
 
   return {
-    props: { statusCode: res.statusCode, ...model },
+    props: { statusCode: res.statusCode, ...model, session },
   };
 };
 

@@ -19,57 +19,6 @@ function itv_svg_mime_type($mimes = array())
     return $mimes;
 }
 
-/** WPGraphQl JWT */
-
-add_filter("graphql_jwt_auth_secret_key", function() {
-    return '!aoRS- P`:Dl$swR+lx{<W+Sb%*9{G}:rn<+a_gie({xk~R-5d4c8yj2OmMkq0+P';
-});
-
-add_action("admin_init", "wp_ajax_login_by_auth_token");
-
-function wp_ajax_login_by_auth_token()
-{
-    if (wp_doing_ajax() && !is_user_logged_in()) {
-        switch ($_REQUEST["action"]) {
-            case "publish-task":
-            case "unpublish-task":
-            case "approve-candidate":
-            case "decline-candidate":
-            case "submit-comment":
-            case "like-comment":
-            case "add-candidate":
-            case "get-task-timeline":
-            case "get-task-reviews":
-            case "leave-review":
-            case "leave-review-author":
-            case "accept-close-date":
-            case "reject-close-date":
-            case "accept-close":
-            case "reject-close":
-            case "suggest-close-date":
-            case "suggest-close-task":
-            // case "add-message":
-                $_POST["auth_token"] = $_POST["auth_token"] ?? null;
-                try {
-                    $token = WPGraphQL\JWT_Authentication\Auth::validate_token($_POST["auth_token"]);
-                    if (is_wp_error($token)) {
-                        throw new Exception();
-                    }
-                    $user_id = $token->data->user->id;
-                    if($user_id) {
-                        wp_set_current_user($user_id);
-                    }
-                } catch (Exception $error) {
-                    wp_die(json_encode(array(
-                        "status" => "fail",
-                        "message" => __("Unauthorized request.", "tst"),
-                    )));
-                }
-                break;
-        }
-    }
-}
-
 /** Favicon  **/
 function itv_favicon(){
 	

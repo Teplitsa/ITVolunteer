@@ -62,17 +62,22 @@ class Auth {
 
     public function parse_token_from_request() {
         $headerkey = 'HTTP_AUTHORIZATION';
-        $auth = isset( $_SERVER[ $headerkey ] ) ? $_SERVER[ $headerkey ] : false;
+        $auth_header = isset( $_SERVER[ $headerkey ] ) ? $_SERVER[ $headerkey ] : false;
 
-        if( !$auth ) {
-            $auth = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] : false;
+        if( !$auth_header ) {
+            $auth_header = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] : false;
         }
 
-        if( !$auth ) {
+        if( !$auth_header ) {
             throw new NoAuthHeaderException();
         }
 
-        list($token) = sscanf( $auth, 'Bearer %s' );
+        list($token) = sscanf( $auth_header, 'Bearer %s' );
+
+        if(!isset($token) || $token === 'undefined') {
+            error_log("token not set in header");
+            $token = "";
+        }
 
         return $token;
     }

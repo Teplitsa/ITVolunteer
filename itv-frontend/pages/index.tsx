@@ -1,12 +1,11 @@
 import { ReactElement, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import SsrCookie from "ssr-cookie";
 import FormData from "form-data";
 import { request } from "graphql-request";
 import { useStoreActions } from "../model/helpers/hooks";
 import { INewsListModel } from "../model/model.typing";
 import * as archiveModel from "../model/archive-model";
-import { authorizeSessionSSR } from "../model/session-model";
+import { authorizeSessionSSRFromRequest } from "../model/session-model";
 
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
@@ -71,11 +70,10 @@ const fetchTasksList = async () => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
   const url = "/home";
 
-  const cookieSSR = new SsrCookie(context.req, context.res);
-  const session = await authorizeSessionSSR(cookieSSR);
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"

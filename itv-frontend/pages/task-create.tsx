@@ -4,6 +4,7 @@ import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import Error401 from "../components/page/Error401";
 import ManageTask from "../components/task-actions/manage-task/ManageTask";
+import { authorizeSessionSSRFromRequest } from "../model/session-model";
 import GlobalScripts, { ISnackbarMessage } from "../context/global-scripts";
 
 const { SnackbarContext } = GlobalScripts;
@@ -44,13 +45,12 @@ const TaskCreatePage: React.FunctionComponent<{ statusCode?: number }> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
-  const loggedIn = decodeURIComponent(req.headers.cookie).match(
-    /wordpress_logged_in_[^=]+=([^|]+)/
-  );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,
@@ -71,14 +71,16 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
     ],
     componentModel: async () => {
-      if (!loggedIn) res.statusCode = 401;
+      if (!session.user.databaseId) {
+        res.statusCode = 401;
+      }
 
       return ["manageTask", null];
     },
   });
 
   return {
-    props: { statusCode: res.statusCode, ...model },
+    props: { statusCode: res.statusCode, ...model, session },
   };
 };
 

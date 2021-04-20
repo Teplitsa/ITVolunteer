@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
+import { authorizeSessionSSRFromRequest } from "../../../../model/session-model";
 import DocumentHead from "../../../../components/DocumentHead";
 import Main from "../../../../components/layout/Main";
 import EditPortfolioItem from "../../../../components/page/EditPortfolioItem";
@@ -99,14 +100,16 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
     },
   });
 
-  const loggedIn = decodeURIComponent(req.headers.cookie).match(
-    /wordpress_logged_in_[^=]+=([^|]+)/
-  );
-
   const { request } = await import("graphql-request");
   const { graphqlQuery } = await import(
     "../../../../model/components/member-account-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
+
+  if(!session.user.databaseId && decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/)) {
+    session.isLoaded = false;
+  }
 
   // get user data
   const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {
@@ -114,13 +117,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
   });
 
   // check username in cookie
-  if (!loggedIn || (user.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
+  if (!session.user.databaseId || (user.slug !== session.user.slug)) {
     res.statusCode = 401;
     Object.assign(model, { statusCode: 401 });
   }
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

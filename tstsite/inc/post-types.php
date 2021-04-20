@@ -178,6 +178,9 @@ function itv_custom_content(){
         'supports'           => array('title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author'),
         'taxonomies'         => array('category', 'post_tag', 'reward'),
         
+        'show_in_rest' => true,
+        'rest_base' => 'tasks',
+
         'show_in_graphql'    =>  true,
         'graphql_single_name' => 'task',
         'graphql_plural_name' => 'tasks',

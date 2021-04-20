@@ -11,7 +11,7 @@ import TaskListStats from "../../components/task-list/TaskListStats";
 import TaskList from "../../components/task-list/TaskList";
 import TaskListFilter from "../../components/task-list/TaskListFilter";
 import { ITaskListModel } from "../../model/model.typing";
-import { authorizeSessionSSR } from "../../model/session-model";
+import { authorizeSessionSSRFromRequest } from "../../model/session-model";
 import { taskListLimit } from "../../model/task-model/task-list-model";
 // import * as utils from "../../utilities/utilities";
 import { regEvent } from "../../utilities/ga-events";
@@ -74,13 +74,13 @@ const fetchTasksList = async (checkedOptions) => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
 
-  const cookieSSR = new SsrCookie(context.req, context.res);
-  const session = await authorizeSessionSSR(cookieSSR);
+  const cookieSSR = new SsrCookie(req, res);
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,

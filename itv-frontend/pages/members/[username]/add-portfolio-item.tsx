@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
+import { authorizeSessionSSRFromRequest } from "../../../model/session-model";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import AddPortfolioItem from "../../../components/page/AddPortfolioItem";
@@ -59,25 +60,25 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
     },
   });
 
-  const loggedIn = decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/);
-
   const { request } = await import("graphql-request");
   const { graphqlQuery } = await import(
     "../../../model/components/member-account-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   // get user data
   const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {
     slug: query.username, // username is slug here
   });
 
-  if (!loggedIn || (user.username as string).toLowerCase() !== loggedIn[1].toLowerCase()) {
+  if (!session.user.databaseId || (user.slug !== session.user.slug)) {
     res.statusCode = 401;
     Object.assign(model, { statusCode: 401 });
   }
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 
