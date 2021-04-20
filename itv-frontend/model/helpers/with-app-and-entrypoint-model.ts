@@ -2,6 +2,7 @@ import {
   IModelWithAppAndEntrypoint,
   IPageState,
   PostType,
+  IStoreEntrypoint,
 } from "../model.typing";
 import { capitalize } from "../../utilities/utilities";
 
@@ -65,7 +66,7 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
 const withAppAndEntrypointModel = async ({
   isArchive = false,
   isCustomPage = false,
-  customPageModel = async (): Promise<Array<string | IPageState>> => [
+  customPageModel = async (): Promise<Array<keyof IStoreEntrypoint | IPageState>> => [
     "page",
     { slug: "" },
   ],
