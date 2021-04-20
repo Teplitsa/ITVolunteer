@@ -9,7 +9,7 @@ const TaskVolonteerFeedback: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     doersRequest();
-  }, [isLoggedIn, doersRequest]);
+  }, [isLoggedIn]);
 
   return (
     !approvedDoer &&

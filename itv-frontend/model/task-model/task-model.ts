@@ -267,7 +267,7 @@ const taskThunks: ITaskThunks = {
 
     import("graphql-request").then(async ({ GraphQLClient }) => {
       const getTaskStateQuery = graphqlQuery.getBySlug;
-      const graphQLClient = new GraphQLClient(process.env.GraphQLServer, {
+      const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=fron-task-request", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -967,14 +967,17 @@ const taskThunks: ITaskThunks = {
   }),
   commentsRequest: thunk(async ({ updateComments }, _, { getStoreState }) => {
     const {
+      session,
       components: {
         task: { databaseId: taskDatabaseId },
       },
     } = getStoreState() as IStoreModel;
-    const { request } = await import("graphql-request");
+    const { GraphQLClient } = await import("graphql-request");
+    const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=front-get-task-comments", { headers: utils.getGraphQLClientTokenHeader(session) });
+
     const {
       comments: { nodes: commentCollection },
-    } = await request(process.env.GraphQLServer, commentGraphqlQuery.commentsRequest, {
+    } = await graphQLClient.request(commentGraphqlQuery.commentsRequest, {
       taskId: taskDatabaseId,
     });
 
@@ -982,13 +985,15 @@ const taskThunks: ITaskThunks = {
   }),
   doersRequest: thunk(async ({ updateDoers }, _, { getStoreState }) => {
     const {
+      session,
       components: {
         task: { id: taskId },
       },
     } = getStoreState() as IStoreModel;
-    const { request } = await import("graphql-request");
-    const { taskDoers: doers } = await request(
-      process.env.GraphQLServer,
+    const { GraphQLClient } = await import("graphql-request");
+    const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=front-get-task-doers", { headers: utils.getGraphQLClientTokenHeader(session) });
+
+    const { taskDoers: doers } = await graphQLClient.request(
       doerGraphqlQuery.doersRequest,
       {
         taskGqlId: taskId,

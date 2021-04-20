@@ -15,3 +15,19 @@ add_filter('wp_image_editors', function ($editors) {
     array_unshift($editors, $gd_editor);
     return $editors;
 });
+
+// actions
+function itv_setup_ajax_auth_user($param) {
+    if(!(defined('DOING_AJAX') && DOING_AJAX)) {
+        return;
+    }
+
+    global $current_user;
+
+    if ( is_object( $current_user ) && isset( $current_user->ID ) && $current_user->ID) {
+        return;
+    }
+
+    $current_user = null;
+}
+add_filter('admin_init', 'itv_setup_ajax_auth_user');

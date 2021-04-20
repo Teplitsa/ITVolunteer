@@ -236,9 +236,9 @@ export const regEvent = (triggerId, router): void => {
     const pageType = detectPageType(router);
 
     //debug
-    console.log("ga_category:", gaEventsData[triggerId].ga_category);
-    console.log("ga_action:", gaEventsData[triggerId].ga_action);
-    console.log("pageType:", pageType);
+    // console.log("ga_category:", gaEventsData[triggerId].ga_category);
+    // console.log("ga_action:", gaEventsData[triggerId].ga_action);
+    // console.log("pageType:", pageType);
 
     itvGa(
       "send",

@@ -6,7 +6,7 @@ use function \ITV\utils\{base64url_encode, base64url_decode};
 class Auth {
 
     public function login( $login, $password, $remember=false ) {
-        error_log("login...");
+        // error_log("login...");
 
         $user = wp_authenticate( $login, $password );
 
@@ -75,7 +75,7 @@ class Auth {
         list($token) = sscanf( $auth_header, 'Bearer %s' );
 
         if(!isset($token) || $token === 'undefined') {
-            error_log("token not set in header");
+            // error_log("token not set in header");
             $token = "";
         }
 

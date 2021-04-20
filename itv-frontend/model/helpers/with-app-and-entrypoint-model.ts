@@ -74,17 +74,9 @@ const withAppAndEntrypointModel = async ({
   componentModel,
 }): Promise<IModelWithAppAndEntrypoint> => {
   const { request } = await import("graphql-request");
-  const [entrypointTemplate, entrypointModel] = isArchive
-    ? await archiveModel(request, entrypointType, entrypointQueryVars)
-    : isCustomPage
-      ? await customPageModel()
-      : await pageModel(request, entrypointType, entrypointQueryVars);
 
-  const componentData = isArchive
-    ? {
-      items: entrypointModel.edges.map(({ node: item }) => item),
-    }
-    : null;
+  const [entrypointTemplate, entrypointModel] = await customPageModel();
+  const componentData = null;
 
   const [componentName, component] = await componentModel(
     request,

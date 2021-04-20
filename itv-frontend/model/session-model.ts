@@ -145,7 +145,7 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
 
   try {
     const cookieAuthToken = cookieSSR.get(C.ITV_COOKIE.AUTH_TOKEN.name);
-    console.log("cookieAuthToken:", cookieAuthToken);
+    // console.log("cookieAuthToken:", cookieAuthToken);
     if(!cookieAuthToken) {
       return guestSession;
     }
@@ -157,7 +157,7 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
       }
     });
 
-    console.log("result.ok:", result.ok);
+    // console.log("result.ok:", result.ok);
     
     if(result.ok) {
       const {

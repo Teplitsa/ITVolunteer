@@ -7,7 +7,7 @@ class Task
 
     const POST_TYPE = 'tasks';
 
-    public function update_item_cache(int $task_id)
+    public static function update_item_cache(int $task_id)
     {
         if (!is_numeric($task_id)) {
 

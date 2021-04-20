@@ -19,46 +19,17 @@ import TaskVolonteerFeedback from "../../components/task/TaskVolonteerFeedback";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import Sidebar from "../../components/layout/partials/Sidebar";
 import { ITaskState } from "../../model/model.typing";
-import { graphqlQuery as graphqlTaskQuery } from "../../model/task-model/task-model";
 import { regEvent } from "../../utilities/ga-events";
 import * as utils from "../../utilities/utilities";
 
 const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
-  const { isLoggedIn } = useStoreState(state => state.session);
   const { ...taskState } = useStoreState(state => state.components.task);
-  const setTaskState = useStoreActions(actions => actions.components.task.setState);
   const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
   const router = useRouter();
-  const { slug } = router.query;
-
-  // useEffect(() => {
-  //   setTaskState(task);
-  // }, [task]);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
-
-  // useEffect(() => {
-  //   // console.log("input:", task.databaseId, slug, isLoggedIn)
-
-  //   if (task.databaseId || !slug || !isLoggedIn) {
-  //     return;
-  //   }
-
-  //   import("graphql-request").then(async ({ GraphQLClient }) => {
-  //     const graphQLClient = new GraphQLClient(process.env.GraphQLServer, { headers: utils.getGraphQLClientTokenHeader(session) });
-
-  //     try {
-  //       const { task } = await graphQLClient.request(graphqlTaskQuery.getBySlug, {
-  //         taskSlug: String(slug),
-  //       });
-  //       setTaskState(task);
-  //     } catch (error) {
-  //       console.error(error.message);
-  //     }
-  //   });
-  // }, [slug, task, isLoggedIn]);
 
   useEffect(() => {
     setCrumbs([
@@ -109,6 +80,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, params:
     "../../model/helpers/with-app-and-entrypoint-model"
   );
 
+  const session = await authorizeSessionSSRFromRequest(req, res);
+
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { slug },
     entrypointType: "task",
@@ -116,28 +89,19 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res, params:
       const taskModel = await import("../../model/task-model/task-model");
       const taskQuery = taskModel.graphqlQuery.getBySlug;
 
-      const session = await authorizeSessionSSRFromRequest(req, res);
       const { GraphQLClient } = await import("graphql-request");
-      const graphQLClient = new GraphQLClient(process.env.GraphQLServer, { headers: utils.getGraphQLClientTokenHeader(session) });
+      const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=ssr-get-task", { headers: utils.getGraphQLClientTokenHeader(session) });
 
       const { task: component } = await graphQLClient.request(taskQuery, {
         taskSlug: String(slug),
       });
-
-      console.log("taskQuery: ", taskQuery.replace(/\n/g, " ").replace(/\s{2,}/g, " "));
-      // console.log("task component: ", component);
-  
-
-      // const { task: component } = await request(process.env.GraphQLServer, taskQuery, {
-      //   taskSlug: slug,
-      // });
 
       return ["task", component];
     },
   });
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

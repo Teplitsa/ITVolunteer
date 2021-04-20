@@ -66,8 +66,8 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    console.log("isLoggedIn:", isLoggedIn);
-    console.log("isSessionLoaded:", isSessionLoaded);
+    // console.log("isLoggedIn:", isLoggedIn);
+    // console.log("isSessionLoaded:", isSessionLoaded);
 
     if (!isSessionLoaded) {
       return;

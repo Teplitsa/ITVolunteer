@@ -51,7 +51,7 @@ const Login: React.FunctionComponent<{
     }
 
     if (!formData.get("pass") || !formData.get("pass").trim()) {
-      console.log("invalid password!!!");
+      // console.log("invalid password!!!");
       isValid = false;
       addSnackbar({
         context: "error",

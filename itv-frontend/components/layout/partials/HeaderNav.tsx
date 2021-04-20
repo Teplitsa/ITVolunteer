@@ -33,11 +33,11 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
     }
 
     if(!isLoaded) {
-      console.log("run ajax login...");
+      // console.log("run ajax login...");
       login({ username: "", password: "" });
     }
     else {
-      console.log("run authorizeSession...");
+      // console.log("run authorizeSession...");
       authorizeSession();
     }
   }, []);

@@ -32,7 +32,7 @@ const TaskListPage: React.FunctionComponent<ITaskListModel> = (): ReactElement =
     ]);  
   }, []);
 
-  console.log("session SSR user.slug:", user.slug);
+  // console.log("session SSR user.slug:", user.slug);
 
   return (
     <>
@@ -104,7 +104,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
       let items = [];
 
       let checkedOptions = cookieSSR.get("taskFilter.optionCheck");
-      console.log("SSR checkedOptions:", checkedOptions);
+      // console.log("SSR checkedOptions:", checkedOptions);
 
       if(checkedOptions) {
         try {
@@ -120,7 +120,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
 
       if(_.isEmpty(checkedOptions)) {
         try {
-          console.log("fetch tasks from mongo");
+          // console.log("fetch tasks from mongo");
           // special sytax to destruct to var "items"
           ( { tasks: items } = await (await fetch(`${process.env.BaseUrl}/api/v1/cache/tasks?limit=${taskListLimit}`)).json() );
         } catch (error) {
@@ -128,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
         }
       }
       else {
-        console.log("fetch tasks from WP");
+        // console.log("fetch tasks from WP");
         items = await fetchTasksList(checkedOptions);
       }
 
