@@ -90,7 +90,7 @@ const withAppAndEntrypointModel = async ({
     session: null,
     entrypointType,
     entrypoint: {
-      [entrypointTemplate]: entrypointModel,
+      [entrypointTemplate as string]: entrypointModel,
     },
     [componentName]: component,
   };
