@@ -1,15 +1,20 @@
 import { ReactElement, useEffect, Fragment, useState } from "react";
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from "next/router";
-import { useStoreState } from "../../model/helpers/hooks";
+// import { useStoreState } from "../../model/helpers/hooks";
 
-import NewsList from "../news/NewsList";
-import { TaskListItemHome } from "../task-list/TaskListItem";
-import { ITaskState } from "../../model/model.typing";
+// import NewsList from "../news/NewsList";
+// import { TaskListItemHome } from "../task-list/TaskListItem";
+// import { ITaskState } from "../../model/model.typing";
 import { regEvent } from "../../utilities/ga-events";
-import { HomeTaskListContext, homeTaskListContextDefault } from "../task-list/TaskListContext";
+// import { HomeTaskListContext, homeTaskListContextDefault } from "../task-list/TaskListContext";
 
+import HomeHero from "../home/HomeHero";
+import HomeAbout from "../home/HomeAbout";
+import HomeStats from "../home/HomeStats";
+import HomeTop from "../home/HomeTop";
 import HomeBenefits from "../home/HomeBenefits";
+import HomeReviews from "../home/HomeReviews";
 import HomePaseka from "../home/HomePaseka";
 import HomeFounder from "../home/HomeFounder";
 import HomePartners from "../home/HomePartners";
@@ -19,25 +24,25 @@ import HomeFAQ from "../home/HomeFAQ";
 
 const Home: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
-  const homePage = useStoreState(state => state.components.homePage);
-  const { title, content } = useStoreState(state => state.components.homePage);
-  const { isLoggedIn } = useStoreState(state => state.session);
+  // const homePage = useStoreState(state => state.components.homePage);
+  // const { title, content } = useStoreState(state => state.components.homePage);
+  // const { isLoggedIn } = useStoreState(state => state.session);
 
   // hide task items overlay using react context
-  const [homeTaskListContextValue, setHomeTaskListContextValue] = useState({
-    ...homeTaskListContextDefault,
-    setMustHideTaskItemOverlays: setMustHideTaskItemOverlays,
-  });
+  // const [homeTaskListContextValue, setHomeTaskListContextValue] = useState({
+  //   ...homeTaskListContextDefault,
+  //   setMustHideTaskItemOverlays: setMustHideTaskItemOverlays,
+  // });
 
-  function setMustHideTaskItemOverlays(taskId, mustRefresh) {
-    setHomeTaskListContextValue({
-      ...homeTaskListContextValue,
-      mustHideTaskItemOverlays: {
-        ...homeTaskListContextValue.mustHideTaskItemOverlays,
-        [taskId]: mustRefresh,
-      },
-    });
-  }
+  // function setMustHideTaskItemOverlays(taskId, mustRefresh) {
+  //   setHomeTaskListContextValue({
+  //     ...homeTaskListContextValue,
+  //     mustHideTaskItemOverlays: {
+  //       ...homeTaskListContextValue.mustHideTaskItemOverlays,
+  //       [taskId]: mustRefresh,
+  //     },
+  //   });
+  // }
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
@@ -45,53 +50,12 @@ const Home: React.FunctionComponent = (): ReactElement => {
 
   return (
     <>
-      <section className="home-about">
-        <h2 className="home-about__title home-title">Что такое IT-волонтёр</h2>
-        <div className="home-about__description">
-          Это платформа, на которой встречаются IT-специалисты и гражданские активисты. Специалисты
-          помогают активистам решать задачи, чтобы те могли делать свою работу лучше.
-        </div>
-      </section>
-      <section className="home-stats">
-        <div className="home-stats__item">
-          <div className="home-stats__item-value">6000</div>
-          <div className="home-stats__item-label">Участников</div>
-        </div>
-        <div className="home-stats__item">
-          <div className="home-stats__item-value">1265</div>
-          <div className="home-stats__item-label">Решеных задач</div>
-        </div>
-        <div className="home-stats__item">
-          <div className="home-stats__item-value home-stats__item-value_primary">10</div>
-          <div className="home-stats__item-label">Задач ожидают решения</div>
-        </div>
-      </section>
-      <section className="home-tasks">
-        <h3 className="home-tasks__title home-title">Открытые задачи</h3>
-        <div className="slider">
-          <div className="slider__item">
-            <div className="home-tasks__item">
-              <div className="home-tasks__item-media">
-                <img src="" alt="" />
-              </div>
-              <div className="home-tasks__item-content">{/* Написать компонет слайдера */}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeHero />
+      <HomeAbout />
+      <HomeStats />
+      <HomeTop />
       <HomeBenefits />
-      <section className="home-reviews">
-        <div className="slider">
-          <div className="slider__item">
-            <div className="home-reviews__item">
-              <div className="home-reviews__item-media">
-                <img src="" alt="" />
-              </div>
-              <div className="home-tasks__item-content">{/* Написать компонет слайдера */}</div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeReviews />
       <HomePaseka />
       <HomeFAQ />
       <HomeNews />

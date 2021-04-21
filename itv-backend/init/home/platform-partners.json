@@ -1,0 +1,22 @@
+[
+  {
+    "title": "stepik",
+    "content": "HTML Academy – современные интерактивные онлайн-курсы для начала карьеры в IT",
+    "thumbnail": "/init/home/assets/img/home-partners-stepik.svg"
+  },
+  {
+    "title": "HTML Academy",
+    "content": "PILnet – сообщество юристов, которые помогают некоммерческим организациям бесплатно",
+    "thumbnail": "/init/home/assets/img/home-partners-html-academy.svg"
+  },
+  {
+    "title": "KISLOROD.IO",
+    "content": "HTML Academy – современные интерактивные онлайн-курсы для начала карьеры в IT",
+    "thumbnail": "/init/home/assets/img/home-partners-kislorod-io.svg"
+  },
+  {
+    "title": "IMPACTHUBMoscow",
+    "content": "PILnet – сообщество юристов, которые помогают некоммерческим организациям бесплатно",
+    "thumbnail": "/init/home/assets/img/home-partners-impact-hub.svg"
+  }
+]

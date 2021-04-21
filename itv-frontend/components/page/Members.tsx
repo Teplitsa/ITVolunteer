@@ -1,7 +1,7 @@
 import { ReactElement, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
-import MembersList from "../members/MembersList";
+import MemberList from "../members/MemberList";
 import { regEvent } from "../../utilities/ga-events";
 
 const Members: React.FunctionComponent = (): ReactElement => {
@@ -31,7 +31,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
           </div>
         </div>
         <div className="members__list">
-          <MembersList />
+          <MemberList />
         </div>
       </div>
     </div>

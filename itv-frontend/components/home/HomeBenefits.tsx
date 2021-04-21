@@ -1,69 +1,82 @@
 import { ReactElement } from "react";
+import { useStoreState } from "../../model/helpers/hooks";
+import withFadeIn from "../hoc/withFadeIn";
+import { Image } from "../gutenberg/CoreMediaTextBlock";
 import HomeInterfaceSwitch from "./HomeInterfaceSwitch";
+import { IAdvantage } from "../../model/model.typing";
 
-import RealPracticeImage from "../../assets/img/home-benefits-real-practice.svg";
-import LongTermCooperationImage from "../../assets/img/home-benefits-long-term-cooperation.svg";
-import PermanentGrowthImage from "../../assets/img/home-benefits-permanent-growth.svg";
-import BenefitsPortfolioImage from "../../assets/img/home-benefits-portfolio.svg";
-import SocialTasksImage from "../../assets/img/home-benefits-social-tasks.svg";
-
-const benefits = [
-  {
-    image: RealPracticeImage,
-    title: "Реальная практика",
-    text:
-      "Волонтёрство — билет в профессию для новичков: здесь вы найдёте свой первый проект и прокачаете навыки в бою.",
-  },
-  {
-    image: LongTermCooperationImage,
-    title: "Долгосрочное сотрудничество",
-    text: "Многие волонтёры после разовых задач получают приглашение в большой проект.",
-  },
-  {
-    image: PermanentGrowthImage,
-    title: "Постоянное развитие",
-    text:
-      "Мы регулярно проводим обучающие мастерские с опытными кураторами, где волонтёры прокачивают свои навыки.",
-  },
-  {
-    image: BenefitsPortfolioImage,
-    title: "Кейсы в портфолио",
-    text: "Вы добавите реальные проекты в портфолио вместо того, чтобы работать  «в стол».",
-  },
-  {
-    image: BenefitsPortfolioImage,
-    title: "Вдохновляющие проекты",
-    text:
-      "Делайте то, что находит у вас отклик — например, помогайте детям или улучшайте городскую среду.",
-  },
-  {
-    image: SocialTasksImage,
-    title: "Социально значимые задачи",
-    text: "Каждый проект делает чью-то жизнь лучше — ваша помощь будет иметь реальный эффект. ",
-  },
-];
-
-const HomeBenefits: React.FunctionComponent = (): ReactElement => {
+const HomeBenefitsVolunteer: React.FunctionComponent<{ volunteerBenefits: Array<IAdvantage> }> = ({
+  volunteerBenefits,
+}): ReactElement => {
   return (
     <section className="home-benefits">
-      <h3 className="home-benefits__title home-title">Что вы найдете на IT-волонтере</h3>
+      <h3 className="home-benefits__title home-title">Что вы найдёте на IT-волонтёре</h3>
       <HomeInterfaceSwitch />
       <ul className="home-benefits__list">
-        {benefits.map(({ image, title, text }, i) => (
-          <li key={`BenefitListItem-${i}`} className="home-benefits__item">
+        {volunteerBenefits.map(({ _id, title, content, thumbnail }) => (
+          <li key={`BenefitListItem-${_id}`} className="home-benefits__item">
             <div className="home-benefits__item-media">
-              <img src={image} alt={title} />
+              {withFadeIn({
+                component: Image,
+                mediaUrl: thumbnail,
+                mediaAlt: title,
+              })}
             </div>
             <div className="home-benefits__item-content">
               <h4 className="home-benefits__item-title">{title}</h4>
               <div className="home-benefits__item-text">
-                <p>{text}</p>
+                <p>{content}</p>
               </div>
             </div>
           </li>
         ))}
       </ul>
     </section>
+  );
+};
+
+const HomeBenefitsAuthor: React.FunctionComponent<{ authorBenefits: Array<IAdvantage> }> = ({
+  authorBenefits,
+}): ReactElement => {
+  return (
+    <section className="home-benefits">
+      <h3 className="home-benefits__title home-title">Что вы найдёте на IT-волонтёре</h3>
+      <HomeInterfaceSwitch />
+      <ul className="home-benefits__list">
+        {authorBenefits.map(({ _id, title, content, thumbnail }) => (
+          <li key={`BenefitListItem-${_id}`} className="home-benefits__item">
+            <div className="home-benefits__item-media">
+              {withFadeIn({
+                component: Image,
+                mediaUrl: thumbnail,
+                mediaAlt: title,
+              })}
+            </div>
+            <div className="home-benefits__item-content">
+              <h4 className="home-benefits__item-title">{title}</h4>
+              <div className="home-benefits__item-text">
+                <p>{content}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+};
+
+const HomeBenefits: React.FunctionComponent = (): ReactElement => {
+  const template = useStoreState(state => state.components.homePage.template);
+  const advantageList = useStoreState(state => state.components.homePage.advantageList);
+
+  return template === "author" ? (
+    <HomeBenefitsAuthor
+      authorBenefits={advantageList.filter(advantage => advantage.userRole === "author")}
+    />
+  ) : (
+    <HomeBenefitsVolunteer
+      volunteerBenefits={advantageList.filter(advantage => advantage.userRole === "volunteer")}
+    />
   );
 };
 

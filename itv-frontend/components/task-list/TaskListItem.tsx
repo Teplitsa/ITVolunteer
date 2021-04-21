@@ -8,7 +8,6 @@ import { regEvent } from "../../utilities/ga-events";
 import { UserSmallView } from "../UserView";
 import TaskMeta from "../task/task-header/TaskMeta";
 import TaskTags from "../task/task-header/TaskTags";
-import TaskTagsHome from "../task/task-header/TaskTagsHome";
 
 const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const router = useRouter();
@@ -40,7 +39,7 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement =
         </Link>
       </h1>
       <TaskMeta {...task} />
-      {!!task && !!task.coverImgSrcLong && (
+      {task.coverImgSrcLong && (
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
           <a className="task-cover">
             <img src={task.coverImgSrcLong} />
@@ -63,24 +62,22 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
   const router = useRouter();
 
   return (
-    <div className={`task-body`}>
+    <div className="task-body">
       <div className="task-author-meta">
         <UserSmallView user={task.author} />
         {task.author?.organizationName && (
           <UserSmallView
             user={{
-              itvAvatar:
-                task.author.organizationLogo ||
-                "/wp-content/themes/tstsite/assets/img/icon-briefcase.svg",
+              itvAvatar: task.author.organizationLogo,
               fullName: task.author.organizationName,
-              memberRole: "Организация",
               slug: task.author.slug,
+              memberRole: "Организация",
             }}
           />
         )}
         <div className="task-author-meta-tail-shadow"></div>
       </div>
-      <h3 className="task-title">
+      <h3 className="task-body__title">
         <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
           <a
             dangerouslySetInnerHTML={{ __html: task.title }}
@@ -90,8 +87,15 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
           />
         </Link>
       </h3>
-      <TaskMeta {...task} />      
-      <TaskTagsHome {...task} />
+      <TaskMeta {...task} />
+      {task.coverImgSrcLong && (
+        <Link href="/tasks/[slug]" as={`/tasks/${task.slug}`}>
+          <a className="task-cover">
+            <img src={task.coverImgSrcLong} />
+          </a>
+        </Link>
+      )}
+      <TaskTags {...task} />
     </div>
   );
 };

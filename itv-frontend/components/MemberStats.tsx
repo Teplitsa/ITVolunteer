@@ -9,6 +9,7 @@ const MemberStats: React.FunctionComponent<{
   reviewsCount?: number;
   xp?: number;
   solvedProblems?: number;
+  noMargin?: boolean;
   withTopdivider?: boolean;
   withBottomdivider?: boolean;
   align?: "left" | "center";
@@ -19,6 +20,7 @@ const MemberStats: React.FunctionComponent<{
   xp,
   solvedProblems,
   useComponents = ["rating", "reviewsCount", "xp", "solvedProblems"],
+  noMargin = false,
   withTopdivider = false,
   withBottomdivider = false,
   align = "center",
@@ -33,9 +35,13 @@ const MemberStats: React.FunctionComponent<{
 
   return (
     <div
-      className={`member-stats ${withTopdivider ? "member-stats_top-divider" : ""} ${
-        withBottomdivider ? "member-stats_bottom-divider" : ""
-      } ${align === "center" ? "member-stats_align-center" : ""}`}
+      className={utils.convertObjectToClassName({
+        "member-stats": true,
+        "member-stats_top-divider": withTopdivider,
+        "member-stats_bottom-divider": withBottomdivider,
+        "member-stats_align-center": align === "center",
+        "member-stats_no-margin": noMargin,
+      })}
     >
       {useComponents.includes("rating") && (
         <div className="member-stats__item member-stats__item_calculated-rating">

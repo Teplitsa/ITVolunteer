@@ -83,15 +83,44 @@ export const getServerSideProps: GetServerSideProps = async () => {
       const { pageBy: component } = await request(process.env.GraphQLServer, pageQuery, {
         uri: url,
       });
+      const homePage = {
+        ...component,
+        template: "volunteer",
+        taskList: [],
+        newsList: { isNewsListLoaded: false, items: [] } as INewsListModel,
+      };
 
-      return [
-        "homePage",
-        {
-          ...component,
-          taskList: [],
-          newsList: { isNewsListLoaded: false, items: [] } as INewsListModel,
-        },
-      ];
+      try {
+        const { advantages } = await (
+          await fetch(`${process.env.BaseUrl}/api/v1/cache/advantages`)
+        ).json();
+
+        Object.assign(homePage, { advantageList: advantages });
+      } catch (error) {
+        console.error("Failed to fetch the advantage list.");
+      }
+
+      try {
+        const { faqs } = await (
+          await fetch(`${process.env.BaseUrl}/api/v1/cache/faqs`)
+        ).json();
+
+        Object.assign(homePage, { faqList: faqs });
+      } catch (error) {
+        console.error("Failed to fetch the faq list.");
+      }
+
+      try {
+        const { partners } = await (
+          await fetch(`${process.env.BaseUrl}/api/v1/cache/partners`)
+        ).json();
+
+        Object.assign(homePage, { partnerList: partners });
+      } catch (error) {
+        console.error("Failed to fetch the faq list.");
+      }
+
+      return ["homePage", homePage];
     },
   });
 

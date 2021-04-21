@@ -1,0 +1,10 @@
+.fade-in {
+  transform: scale(0.5);
+  opacity: 0;
+  transition: opacity 0.3s ease-in, transform 0.3s ease;
+
+  &_active {
+    transform: none;
+    opacity: 1;
+  }
+}

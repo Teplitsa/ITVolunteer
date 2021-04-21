@@ -3,6 +3,15 @@ import { ru } from "date-fns/locale";
 import moment from "moment";
 import { decode } from "html-entities";
 
+export const convertObjectToClassName = (classNameMatrix: { [className: string]: boolean }): string =>
+  Object.entries(classNameMatrix)
+    .reduce(
+      (activeClassList, [className, activityFlag]) =>
+        (activityFlag && [...activeClassList, className]) || activeClassList,
+      []
+    )
+    .join(" ");
+
 export const convertDateToLocalISOString = ({
   date,
   locale = "ru-RU",

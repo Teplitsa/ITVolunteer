@@ -7,6 +7,7 @@ import {
   ICoreParagraphBlock,
   ICoreMediaTextBlock,
 } from "./gutenberg/gutenberg.typing";
+import { BSONType } from "mongodb";
 
 /**
  * Model helpers
@@ -1560,13 +1561,76 @@ export interface INewsItemActions {
 export interface INewsItemThunks {}
 
 /**
+ * Cacheable
+ */
+
+export interface ICacheable {
+  _id: BSONType;
+}
+
+/**
+ * Advantage
+ */
+
+export interface IAdvantage extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  userRole: MemberAccountTemplate;
+}
+
+/**
+ * Faq
+ */
+
+export interface IFaq extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  userRole: MemberAccountTemplate;
+}
+
+/**
+ * Partner
+ */
+
+export interface IPartner extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+}
+
+/**
+ * Review
+ */
+
+export interface IReview extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+}
+
+/**
  * HomePage
  */
 
 export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomePageThunks {}
 
-export interface IHomePageState extends IPageState {
-  id: string;
+// export interface IHomePageState extends IPageState {
+//   id: string;
+//   taskList: Array<ITaskState>;
+//   newsList?: INewsListModel;
+//   stats: any;
+// }
+
+export interface IHomePageState {
+  template: MemberAccountTemplate;
+  advantageList: Array<IAdvantage>;
+  faqList: Array<IFaq>;
+  partnerList: Array<IPartner>;
   taskList: Array<ITaskState>;
   newsList?: INewsListModel;
   stats: any;
@@ -1575,6 +1639,7 @@ export interface IHomePageState extends IPageState {
 export interface IHomePageActions {
   initializeState: Action<IHomePageModel>;
   setState: Action<IHomePageModel, IHomePageState>;
+  setTemplate: Action<IHomePageModel, { template: MemberAccountTemplate }>;
   setStats: Action<IHomePageModel, any>;
   setTaskList: Action<IHomePageModel, any>;
   setNewsList: Action<IHomePageModel, any>;
@@ -1583,14 +1648,6 @@ export interface IHomePageActions {
 export interface IHomePageThunks {
   loadStatsRequest: Thunk<IHomePageActions>;
   onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
-}
-
-/**
- * task list context
- */
-export interface IHomeTaskListContext {
-  mustHideTaskItemOverlays: any;
-  setMustHideTaskItemOverlays: (taskId: string, mustHide: boolean) => void;
 }
 
 /**

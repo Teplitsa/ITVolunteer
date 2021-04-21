@@ -1,4 +1,103 @@
 .home {
+  &-hero {
+    background-color: $color-white;
+    margin: 0 -15px;
+    padding: 0 24px 40px;
+
+    @include screen-from(sm) {
+      padding: 0 15px;
+    }
+
+    &__inner {
+      margin: 0 auto;
+      max-width: 1100px;
+
+      @include screen-from(sm) {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 353px;
+      }
+    }
+
+    &__content {
+      margin-top: 20px;
+
+      @include screen-from(sm) {
+        flex-shrink: 10;
+        order: 1;
+        margin-top: 0;
+      }
+    }
+
+    &__media {
+      @include screen-from(sm) {
+        align-self: flex-end;
+        order: 2;
+        max-width: 550px;
+      }
+    }
+
+    &__title {
+      margin-bottom: 10px;
+      font: 500 24px/1.33 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+
+      @include screen-from(sm) {
+        font-size: 30px;
+      }
+    }
+
+    &__subtitle {
+      margin-bottom: 10px;
+      font: 400 16px/1.6 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+
+      @include screen-from(sm) {
+        font-size: 20px;
+      }
+    }
+
+    &__cta {
+      margin-top: 20px;
+    }
+
+    &__advice {
+      margin-top: 20px;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+
+      @include screen-from(sm) {
+        margin-top: 57px;
+        font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+      }
+    }
+
+    &__link {
+      border: 1px solid $color-gray-light-md;
+      margin-bottom: 10px;
+      padding: 4px 12px;
+      font: 600 11px/1.09 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+      border-radius: 16px;
+
+      @include screen-from(sm) {
+        margin-right: 10px;
+        font: 600 16px/1.5 "IBM Plex Sans", sans-serif;
+      }
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &-list {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: flex-start;
+      }
+    }
+  }
   &-about {
     margin: 0 auto;
     padding: 75px 0 0;
@@ -66,6 +165,42 @@
       }
     }
   }
+  &-top {
+    &__list {
+      margin: 0 auto;
+      max-width: 1100px;
+
+      [class*="-list"] {
+        display: grid;
+        grid-template-columns: 100%;
+        grid-gap: 30px;
+
+        @include screen-from(sm) {
+          grid-template-columns: repeat(2, calc(50% - 15px));
+        }
+
+        .task-body {
+          margin: 0 !important;
+          padding: 20px !important;
+
+          @include screen-from(sm) {
+            height: 100%;
+          }
+        }
+      }
+    }
+    &__more {
+      display: flex;
+      margin: 25px auto 40px;
+      border-color: $color-main;
+      font: 600 16px/1.5 "IBM Plex Sans", sans-serif;
+      color: $color-main;
+
+      @include screen-from(sm) {
+        margin: 25px auto 80px;
+      }
+    }
+  }
   &-benefits {
     margin-bottom: 40px;
 
@@ -110,12 +245,92 @@
       }
     }
   }
+  &-reviews {
+    margin-bottom: 50px;
+
+    @include screen-from(sm) {
+      margin-bottom: 80px;
+    }
+
+    &__item {
+      background-color: $color-main;
+      margin: 0 -15px;
+      padding-top: 32px;
+
+      @include screen-from(sm) {
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
+        padding-top: 20px;
+      }
+
+      &-media {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: flex-end;
+        background: url(../../img/home-review-photo-bg.svg) calc(50% - 10px) 100% no-repeat;
+        margin-top: 32px;
+        min-width: 300px;
+        min-height: 232px;
+
+        @include screen-from(sm) {
+          order: 1;
+          background: url(../../img/home-review-photo-bg_desktop.svg) 50% 100% no-repeat;
+          margin-top: 0;
+          margin-right: 20px;
+          min-width: 429px;
+          min-height: 283px;
+        }
+
+        &-image {
+          max-width: 242px;
+
+          @include screen-from(sm) {
+            max-width: 311px;
+          }
+        }
+      }
+
+      &-content {
+        padding: 0 24px;
+        font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+        color: $color-white;
+
+        @include screen-from(sm) {
+          position: relative;
+          top: -27px;
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: center;
+          order: 2;
+          flex-basis: 420px;
+          margin-left: 20px;
+          padding: 0;
+          font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
+        }
+
+        cite {
+          display: block;
+          margin-top: 20px;
+          line-height: 1.25;
+          font-size: 16px;
+          font-style: normal;
+        }
+
+        small {
+          font-size: 0.8125em;
+        }
+      }
+    }
+  }
   &-paseka {
+    margin: 50px auto;
     @include screen-from(sm) {
       display: flex;
       flex-flow: row nowrap;
       align-items: center;
-      margin: 0 auto;
+      margin: 100px auto;
       max-width: 1100px;
     }
     &__media {
@@ -487,6 +702,11 @@
     justify-content: center;
     margin: 0 0 40px;
 
+    &_hero {
+      justify-content: flex-start;
+      margin: 0 0 20px;
+    }
+
     &__item {
       display: flex;
       background-color: $color-gray-light-xl;
@@ -528,6 +748,68 @@
         border: 1px solid $color-gray-light-md;
         box-shadow: inset -1px -1px 1px rgba(199, 190, 173, 0.5);
         cursor: default;
+      }
+    }
+  }
+}
+
+.site-main.home-page .home-tasks .home-tasks__list {
+  margin: 0 auto;
+  max-width: 1100px;
+
+  .task-list {
+    padding-bottom: 0;
+
+    @include screen-from(sm) {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+    }
+
+    .task-body {
+      padding: 20px;
+
+      @include screen-from(sm) {
+        width: calc(50% - 10px);
+        box-sizing: border-box;
+      }
+
+      &:first-child {
+        & + .task-body {
+          @include screen-from(sm) {
+            margin-top: 0;
+          }
+        }
+      }
+
+      &__title {
+        font: 500 18px/1.33 "IBM Plex Sans", sans-serif;
+      }
+    }
+  }
+}
+
+.slider {
+  &__nav {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: 20px;
+
+    &-item {
+      background-color: $color-gray-light-md;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s linear;
+
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+
+      &_active {
+        background-color: $color-main;
       }
     }
   }
@@ -728,108 +1010,108 @@
 //     }
 //   }
 
-//   .task-body {
-//     border: none;
-//     padding: 0px;
+// .task-body {
+// border: none;
+// padding: 0px;
 
-//     h3.task-title {
-//       @include news-item-title;
-//       margin-top: 10px;
+// h3.task-title {
+//   @include news-item-title;
+//   margin-top: 10px;
+
+//   a {
+//     @include news-item-title;
+//     color: $color-gray-dark-xl;
+//   }
+// }
+
+// .meta-terms {
+//   margin-top: 10px;
+
+//   .all-terms-overlay {
+//     position: absolute;
+//     background-color: $color-gray-light-xl;
+//     top: 0px;
+//     left: 24px;
+//     padding: 0px 16px 0px 0;
+//     z-index: 10;
+//     width: calc(100%);
+//     display: flex;
+
+//     .meta-term {
+//       background-color: $color-gray-light-xl;
+//     }
+//   }
+
+//   .terms {
+//     margin-right: 4px;
+//     position: relative;
+
+//     & > img {
+//       margin-right: 4px;
+//     }
+
+//     .plus-some {
+//       &.invisible {
+//         visibility: hidden;
+//       }
 
 //       a {
-//         @include news-item-title;
-//         color: $color-gray-dark-xl;
-//       }
-//     }
-
-//     .meta-terms {
-//       margin-top: 10px;
-
-//       .all-terms-overlay {
-//         position: absolute;
-//         background-color: $color-gray-light-xl;
-//         top: 0px;
-//         left: 24px;
-//         padding: 0px 16px 0px 0;
-//         z-index: 10;
-//         width: calc(100%);
-//         display: flex;
-
-//         .meta-term {
-//           background-color: $color-gray-light-xl;
-//         }
-//       }
-
-//       .terms {
-//         margin-right: 4px;
-//         position: relative;
-
-//         & > img {
-//           margin-right: 4px;
-//         }
-
-//         .plus-some {
-//           &.invisible {
-//             visibility: hidden;
-//           }
-
-//           a {
-//             color: $color-gray-dark-lg;
-//           }
-//         }
-//       }
-//     }
-
-//     .task-author-meta {
-//       position: relative;
-//       overflow: hidden;
-
-//       .task-author-meta-tail-shadow {
-//         width: 50px;
-//         height: 100%;
-//         top: 0px;
-//         right: 0px;
-//         position: absolute;
-//         background: linear-gradient(270deg, $color-gray-light-xl 30.88%, rgba(251, 248, 244, 0) 100%);
-//       }
-
-//     }
-
-//     .itv-user-small-view {
-//       margin-right: 12px;
-
-//       .name a,
-//       .name span {
-//         white-space: nowrap;
-//       }
-//     }
-
-//     div.meta-info {
-//       margin-top: 10px;
-//       display: flex;
-//       align-items: center;
-
-//       span {
-//         @include text-xs-bold-line-lg;
 //         color: $color-gray-dark-lg;
-//         vertical-align: text-bottom;
-//         margin-top: 0px;
-
-//         // hide share link
-//         &.meta-info {
-
-//           &:last-child {
-//             margin-right: 0px;
-//             display: none;
-//           }
-//         }
-
-//         &.meta-info__item_deadline {
-//           color: $color-sec-dark;
-//         }
 //       }
 //     }
 //   }
+// }
+
+// .task-author-meta {
+//   position: relative;
+//   overflow: hidden;
+
+//   .task-author-meta-tail-shadow {
+//     width: 50px;
+//     height: 100%;
+//     top: 0px;
+//     right: 0px;
+//     position: absolute;
+//     background: linear-gradient(270deg, $color-gray-light-xl 30.88%, rgba(251, 248, 244, 0) 100%);
+//   }
+
+// }
+
+// .itv-user-small-view {
+//   margin-right: 12px;
+
+//   .name a,
+//   .name span {
+//     white-space: nowrap;
+//   }
+// }
+
+// div.meta-info {
+//   margin-top: 10px;
+//   display: flex;
+//   align-items: center;
+
+//   span {
+//     @include text-xs-bold-line-lg;
+//     color: $color-gray-dark-lg;
+//     vertical-align: text-bottom;
+//     margin-top: 0px;
+
+//     // hide share link
+//     &.meta-info {
+
+//       &:last-child {
+//         margin-right: 0px;
+//         display: none;
+//       }
+//     }
+
+//     &.meta-info__item_deadline {
+//       color: $color-sec-dark;
+//     }
+//   }
+// }
+// }
 
 //   .task-list-item-separator {
 //     display: flex;
@@ -1019,39 +1301,38 @@
 //     }
 //   }
 
-//   .site-main.home-page .home-tasks .home-list-section__list .task-list {
-//     display: block;
-//     flex-wrap: wrap;
-//     padding-bottom: 0px;
+// .site-main.home-page .home-tasks .home-list-section__list .task-list {
+// display: block;
+// flex-wrap: wrap;
+// padding-bottom: 0px;
 
-//     .task-body-wrapper {
-//       width: 100%;
+// .task-body-wrapper {
+//   width: 100%;
 
-//       &.index-0 {
-//         margin-right: 0px;
-//       }
-
-//       &:not(:first-child) {
-//         margin-top: 40px;
-//       }
-//     }
-
-//     .task-body {
-//     }
-
-//     .task-author-meta {
-//       display: block;
-
-//       .meta-info {
-//         margin-top: 10px;
-//       }
-
-//     }
-
-//     .task-list-item-separator {
-//       display: none;
-//     }
+//   &.index-0 {
+//     margin-right: 0px;
 //   }
+
+//   &:not(:first-child) {
+//     margin-top: 40px;
+//   }
+// }
+
+// .task-body {}
+
+// .task-author-meta {
+//   display: block;
+
+//   .meta-info {
+//     margin-top: 10px;
+//   }
+
+// }
+
+// .task-list-item-separator {
+//   display: none;
+// }
+// }
 
 //   .home-page .home-footer {
 //     &__cta {

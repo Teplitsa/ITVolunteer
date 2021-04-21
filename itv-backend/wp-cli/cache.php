@@ -1,6 +1,6 @@
 <?php
 
-use ITV\models\{Task, MongoClient};
+use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review};
 
 if (!class_exists('WP_CLI')) {
     return;
@@ -101,6 +101,93 @@ class Cache
         $updateCacheResult = $collection->insertMany($filter_sections);
 
         WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
+    }
+
+    public function update_advantage_list(): void
+    {
+        $advantage_list = Advantage::get_list();
+
+        if (!$advantage_list) {
+
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Advantage::$post_type));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{Advantage::$collection_name};
+
+        $collection->drop();
+
+        $updateCacheResult = $collection->insertMany($advantage_list);
+
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Advantage::$post_type));
+    }
+
+    public function update_faq_list(): void
+    {
+        $faq_list = Faq::get_list();
+
+        if (!$faq_list) {
+
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Faq::$post_type));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{Faq::$collection_name};
+
+        $collection->drop();
+
+        $updateCacheResult = $collection->insertMany($faq_list);
+
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Faq::$post_type));
+    }
+
+    public function update_partner_list(): void
+    {
+        $partner_list = Partner::get_list();
+
+        if (!$partner_list) {
+
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Partner::$post_type));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{Partner::$collection_name};
+
+        $collection->drop();
+
+        $updateCacheResult = $collection->insertMany($partner_list);
+
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Partner::$post_type));
+    }
+    public function update_review_list(): void
+    {
+        $review_list = Review::get_list();
+
+        if (!$review_list) {
+
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Review::$post_type));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{Review::$collection_name};
+
+        $collection->drop();
+
+        $updateCacheResult = $collection->insertMany($review_list);
+
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Review::$post_type));
     }
 }
 

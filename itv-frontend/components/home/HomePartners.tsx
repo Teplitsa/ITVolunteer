@@ -1,40 +1,26 @@
 import { ReactElement } from "react";
-import StepikLogoImage from "../../assets/img/home-partners-stepik.svg";
-import HtmlAcademyLogoImage from "../../assets/img/home-partners-html-academy.svg";
-import KislorodIoLogoImage from "../../assets/img/home-partners-kislorod-io.svg";
-import ImpactHubLogoImage from "../../assets/img/home-partners-impact-hub.svg";
-
-const partners = [
-  {
-    image: StepikLogoImage,
-    description: "HTML Academy – современные интерактивные онлайн-курсы для начала карьеры в IT",
-  },
-  {
-    image: HtmlAcademyLogoImage,
-    description: "PILnet – сообщество юристов, которые помогают некоммерческим организациям бесплатно",
-  },
-  {
-    image: KislorodIoLogoImage,
-    description: "HTML Academy – современные интерактивные онлайн-курсы для начала карьеры в IT",
-  },
-  {
-    image: ImpactHubLogoImage,
-    description: "PILnet – сообщество юристов, которые помогают некоммерческим организациям бесплатно",
-  },
-];
+import { useStoreState } from "../../model/helpers/hooks";
+import withFadeIn from "../hoc/withFadeIn";
+import { Image } from "../gutenberg/CoreMediaTextBlock";
 
 const HomePartners: React.FunctionComponent = (): ReactElement => {
+  const partnerList = useStoreState(state => state.components.homePage.partnerList);
+
   return (
     <section className="home-partners">
       <h3 className="home-partners__title">Наши партнеры</h3>
       <ul className="home-partners__list">
-        {partners.map(({ image, description }, i) => (
-          <li key={`PartnerListItem-${i}`} className="home-partners__item">
+        {partnerList.map(({ _id, thumbnail, title, content }) => (
+          <li key={`PartnerListItem-${_id}`} className="home-partners__item">
             <div className="home-partners__item-logo">
-              <img src={image} alt="" />
+              {withFadeIn({
+                component: Image,
+                mediaUrl: thumbnail,
+                mediaAlt: title,
+              })}
             </div>
             <div className="home-partners__item-description">
-              <p>{description}</p>
+              <p>{content}</p>
             </div>
           </li>
         ))}

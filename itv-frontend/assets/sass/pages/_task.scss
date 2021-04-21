@@ -61,7 +61,7 @@
 // task
 .site-main.page-task .content,
 .site-main.page-task-list .task-list,
-.site-main .home-list-section__list .task-list {
+.site-main .home-top__list .task-list {
   .task-body {
     position: relative;
     margin-top: 20px;
@@ -197,7 +197,7 @@
       &__section-files {
         display: flex;
         justify-content: flex-start;
-        align-item: center;
+        align-items: center;
         flex-wrap: wrap;
       }
 
