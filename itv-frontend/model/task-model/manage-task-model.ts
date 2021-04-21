@@ -12,7 +12,7 @@ import {
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 import * as utils from "../../utilities/utilities";
 
-export const initManageTaskState: IManageTaskState = {
+export const manageTaskState: IManageTaskState = {
   id: 0,
   slug: "",
   informativenessLevel: 0,
@@ -45,10 +45,10 @@ export const initManageTaskState: IManageTaskState = {
   reward: null,
 };
 
-const manageTaskState: IManageTaskState = { ...initManageTaskState };
-
 const manageTaskActions: IManageTaskActions = {
-  initializeState: action(() => ({ ...initManageTaskState })),
+  initializeState: action(prevState => {
+    Object.assign(prevState, manageTaskState);
+  }),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),

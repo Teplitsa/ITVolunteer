@@ -71,11 +71,15 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
       },
     ],
     componentModel: async () => {
+      const { manageTaskState } = await import("../model/task-model/manage-task-model");
+
+      const manageTask = { ...manageTaskState };
+
       if (!session.user.databaseId) {
         res.statusCode = 401;
       }
 
-      return ["manageTask", null];
+      return ["manageTask", manageTask];
     },
   });
 

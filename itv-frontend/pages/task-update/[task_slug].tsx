@@ -91,9 +91,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     ],
     componentModel: async () => {
-      const { initManageTaskState } = await import("../../model/task-model/manage-task-model");
+      const { manageTaskState } = await import("../../model/task-model/manage-task-model");
 
-      const componentData = { ...initManageTaskState };
+      const componentData = { ...manageTaskState };
 
       try {
         const requestURL = new URL(getRestApiUrl("/wp/v2/tasks/"));
