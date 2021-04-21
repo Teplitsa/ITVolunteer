@@ -27,6 +27,9 @@ class Task
             return;
         }
 
+        error_log("task slug:" . $task['slug']);
+        error_log("task status:" . $task['status']);
+        
         if ($task["status"] !== "publish") {
 
             throw new \Exception(__('The task is not a public.', 'itv-backend'));
