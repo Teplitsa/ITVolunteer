@@ -2,7 +2,6 @@ import {
   IModelWithAppAndEntrypoint,
   IPageState,
   PostType,
-  IStoreEntrypoint,
 } from "../model.typing";
 import { capitalize } from "../../utilities/utilities";
 
@@ -75,9 +74,6 @@ const withAppAndEntrypointModel = async ({
   componentModel,
 }): Promise<IModelWithAppAndEntrypoint> => {
   const { request } = await import("graphql-request");
-
-  const [entrypointTemplate, entrypointModel] = await customPageModel();
-  const componentData = null;
 
   const [entrypointTemplate, entrypointModel] = isArchive
     ? await archiveModel(request, entrypointType, entrypointQueryVars)
