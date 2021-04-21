@@ -1,6 +1,6 @@
 import { ReactElement, FormEvent, useState, useEffect } from "react";
-import UploadFileInput from "./UploadFileInput";
-import { IMediaData, getMediaData } from "../utilities/media";
+import UploadFileInput, { FileData } from "./UploadFileInput";
+import { getMediaData } from "../utilities/media";
 import { IPortfolioItemFormProps } from "../model/model.typing";
 
 const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
@@ -13,8 +13,8 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
 }): ReactElement => {
   const [titleLength, setTitleLength] = useState<number>(title.trim().length);
   const [descriptionLength, setDescriptionLength] = useState<number>(description.trim().length);
-  const [previewObject, setPreviewObject] = useState<number | IMediaData>(preview);
-  const [fullImageObject, setFullImageObject] = useState<number | IMediaData>(fullImage);
+  const [previewObject, setPreviewObject] = useState<FileData>(null);
+  const [fullImageObject, setFullImageObject] = useState<FileData>(null);
 
   const submitHandler = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -24,16 +24,16 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
   useEffect(() => {
     preview > 0 &&
       (async () => {
-        const fileData = await getMediaData(preview);
+        const { databaseId, mediaItemUrl } = await getMediaData(preview);
 
-        setPreviewObject(fileData);
+        setPreviewObject({ databaseId, mediaItemUrl });
       })();
 
     fullImage > 0 &&
       (async () => {
-        const fileData = await getMediaData(fullImage);
+        const { databaseId, mediaItemUrl } = await getMediaData(fullImage);
 
-        setFullImageObject(fileData);
+        setFullImageObject({ databaseId, mediaItemUrl });
       })();
   }, []);
 
@@ -80,7 +80,7 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
         <UploadFileInput
           name="preview"
           isMultiple={false}
-          initFileData={previewObject as IMediaData}
+          initFileData={previewObject}
         />
       </div>
       <div className="form__group">
@@ -89,7 +89,7 @@ const PortfolioItemForm: React.FunctionComponent<IPortfolioItemFormProps> = ({
         <UploadFileInput
           name="full_image"
           isMultiple={false}
-          initFileData={fullImageObject as IMediaData}
+          initFileData={fullImageObject}
         />
       </div>
       <div className="form__group">
