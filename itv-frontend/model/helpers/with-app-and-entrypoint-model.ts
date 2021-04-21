@@ -79,7 +79,17 @@ const withAppAndEntrypointModel = async ({
   const [entrypointTemplate, entrypointModel] = await customPageModel();
   const componentData = null;
 
-  const entrypointTemplateCast:keyof IStoreEntrypoint = entrypointTemplate === "archive" ? "archive" : "page";
+  const [entrypointTemplate, entrypointModel] = isArchive
+    ? await archiveModel(request, entrypointType, entrypointQueryVars)
+    : isCustomPage
+    ? await customPageModel()
+    : await pageModel(request, entrypointType, entrypointQueryVars);
+
+  const componentData = isArchive
+    ? {
+        items: entrypointModel.edges.map(({ node: item }) => item),
+      }
+    : null;
 
   const [componentName, component] = await componentModel(
     request,
@@ -88,12 +98,12 @@ const withAppAndEntrypointModel = async ({
 
   const model = {
     app: {
-      entrypointTemplate: entrypointTemplateCast,
+      entrypointTemplate,
     },
     session: null,
     entrypointType,
     entrypoint: {
-      [entrypointTemplate as string]: entrypointModel,
+      [entrypointTemplate]: entrypointModel,
     },
     [componentName]: component,
   };
