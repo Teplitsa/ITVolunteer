@@ -306,15 +306,15 @@ export interface IMemberListItem {
   memberRole: string;
   organizationName: string;
   organizationDescription: string;
+  organizationSite: string;
   rating: number;
   reviewsCount: number;
   xp: number;
   solvedProblems: number;
-  facebook: string;
-  instagram: string;
-  vk: string;
-  organizationSite: string;
-  registrationDate: number;
+  facebook?: string;
+  instagram?: string;
+  vk?: string;
+  registrationDate?: number;
 }
 
 export interface IMembersPageState {
@@ -1614,6 +1614,19 @@ export interface IReview extends ICacheable {
 }
 
 /**
+ * Review
+ */
+
+export interface INews extends ICacheable {
+  externalId: number;
+  title: string;
+  date: string;
+  permalink: string;
+  content?: string;
+  thumbnail?: string;
+}
+
+/**
  * HomePage
  */
 
@@ -1631,8 +1644,10 @@ export interface IHomePageState {
   advantageList: Array<IAdvantage>;
   faqList: Array<IFaq>;
   partnerList: Array<IPartner>;
+  reviewList: Array<IReview>;
   taskList: Array<ITaskState>;
-  newsList?: INewsListModel;
+  memberList: Array<IMemberListItem>;
+  newsList: Array<INews>;
   stats: any;
 }
 
@@ -1640,14 +1655,15 @@ export interface IHomePageActions {
   initializeState: Action<IHomePageModel>;
   setState: Action<IHomePageModel, IHomePageState>;
   setTemplate: Action<IHomePageModel, { template: MemberAccountTemplate }>;
+  setMemberList: Action<IHomePageModel, { memberList: Array<IMemberListItem> }>;
   setStats: Action<IHomePageModel, any>;
-  setTaskList: Action<IHomePageModel, any>;
-  setNewsList: Action<IHomePageModel, any>;
 }
 
 export interface IHomePageThunks {
   loadStatsRequest: Thunk<IHomePageActions>;
+  loadMembersRequest: Thunk<IHomePageActions>;
   onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
+  onMemberListRequestSuccess: ThunkOn<IHomePageModel>;
 }
 
 /**

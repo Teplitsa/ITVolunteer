@@ -1,0 +1,44 @@
+@import "../base/presets";
+
+.slider {
+  display: block;
+
+  &__inner {
+    display: grid;
+    grid-auto-flow: column;
+    transition: all 0.6s ease-in-out;
+    will-change: auto;
+  }
+
+  &__item {
+    width: auto;
+
+    &_active {
+      z-index: 1;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-top: 20px;
+
+    &-item {
+      background-color: $color-gray-light-md;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.6s linear;
+
+      &:not(:last-child) {
+        margin-right: 12px;
+      }
+
+      &_active {
+        background-color: $color-main;
+      }
+    }
+  }
+}

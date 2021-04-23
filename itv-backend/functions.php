@@ -15,6 +15,7 @@ require_once(get_theme_file_path() . '/models/member/member.php');
 require_once(get_theme_file_path() . '/models/task/task.php');
 require_once(get_theme_file_path() . '/models/member/member-tasks.php');
 require_once(get_theme_file_path() . '/models/member/notif.php');
+require_once(get_theme_file_path() . '/models/news/news.php');
 require_once(get_theme_file_path() . '/models/advantage/advantage.php');
 require_once(get_theme_file_path() . '/models/faq/faq.php');
 require_once(get_theme_file_path() . '/models/partner/partner.php');
@@ -50,6 +51,7 @@ require_once(get_theme_file_path() . '/wp-cli/load_reviews.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');
+require_once(get_theme_file_path() . '/wp-hooks/news.php');
 require_once(get_theme_file_path() . '/wp-hooks/advantage.php');
 require_once(get_theme_file_path() . '/wp-hooks/faq.php');
 require_once(get_theme_file_path() . '/wp-hooks/partner.php');

@@ -1,6 +1,6 @@
 <?php
 
-use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review};
+use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review, News};
 
 if (!class_exists('WP_CLI')) {
     return;
@@ -188,6 +188,27 @@ class Cache
         $updateCacheResult = $collection->insertMany($review_list);
 
         WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Review::$post_type));
+    }
+    public function update_news_list(): void
+    {
+        $news_list = News::get_list();
+
+        if (!$news_list) {
+
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), News::$post_type));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{News::$collection_name};
+
+        $collection->drop();
+
+        $updateCacheResult = $collection->insertMany($news_list);
+
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), News::$post_type));
     }
 }
 

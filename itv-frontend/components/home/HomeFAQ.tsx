@@ -14,11 +14,9 @@ const HomeFAQAccordionVolunteer: React.FunctionComponent<{ volunteerFaqs: Array<
       {volunteerFaqs.map(({ _id, title, content }) => {
         return (
           <div key={`HomeFaqItem-${_id}`} data-accordion-item className="home-faq__item">
-            <div
-              data-accordion-title
-              className="home-faq__item-title"
-              dangerouslySetInnerHTML={{ __html: title }}
-            />
+            <div data-accordion-title className="home-faq__item-title">
+              <div data-accordion-control dangerouslySetInnerHTML={{ __html: title }} />
+            </div>
             <div
               data-accordion-content
               className="home-faq__item-content"

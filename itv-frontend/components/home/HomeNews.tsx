@@ -1,35 +1,23 @@
 import { ReactElement } from "react";
-
-const news = [
-  {
-    url: "#",
-    title: "Готовы включиться в борьбу с пандемией? Присоединяйтесь к группе IT-помощи",
-    date: "2020-12-09",
-  },
-  {
-    url: "#",
-    title: "Вебинар: как выжить малому бизнесу и срочно перейти в онлайн",
-    date: "2020-12-20",
-  },
-  {
-    url: "#",
-    title: "Готовы включиться в борьбу с пандемией? Присоединяйтесь к группе IT-помощи",
-    date: "2020-12-20",
-  },
-];
+import { useStoreState } from "../../model/helpers/hooks";
+import Link from "next/link";
 
 const HomeNews: React.FunctionComponent = (): ReactElement => {
+  const news = useStoreState(state => state.components.homePage.newsList);
+
   return (
     <section className="home-news">
       <h3 className="home-news__title">Новости платформы</h3>
       <ul className="home-news__list">
-        {news.map(({ url, title, date }, i) => (
-          <li key={i} className="home-news__item">
+        {news?.map(({ _id, title, date, permalink }) => (
+          <li key={`HomeNewsItem-${_id}`} className="home-news__item">
             <h4 className="home-news__item-title">
-              <a href={url}>{title}</a>
+              <Link href={permalink}>
+                <a>{title}</a>
+              </Link>
             </h4>
             <time className="home-news__item-date" dateTime={date}>
-              {new Intl.DateTimeFormat("ru-RU").format(new Date(date))}
+              {date}
             </time>
           </li>
         ))}

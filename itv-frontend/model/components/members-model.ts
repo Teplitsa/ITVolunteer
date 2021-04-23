@@ -16,7 +16,7 @@ export const membersPageState: IMembersPageState = {
   userList: null,
 };
 
-const memberListItemQueriedFields = `
+export const memberListItemQueriedFields = `
   id
   slug
   itvAvatar

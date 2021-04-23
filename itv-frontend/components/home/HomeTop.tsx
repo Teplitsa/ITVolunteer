@@ -1,697 +1,12 @@
-import { ReactElement } from "react";
-import { useStoreState } from "../../model/helpers/hooks";
+import { ReactElement, MouseEvent, useEffect } from "react";
+import { useStoreActions, useStoreState } from "../../model/helpers/hooks";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import HomeInterfaceSwitch from "./HomeInterfaceSwitch";
 import { TaskListItemHome } from "../task-list/TaskListItem";
 import MemberListItemTop from "../members/MemberListItemTop";
 import withSlideIn from "../hoc/withSlideIn";
-
-import { ITaskState } from "../../model/model.typing";
-
-const tasks: Array<ITaskState & { _id: string }> = [
-  {
-    _id: "6009a38cdb2a50046c39b872",
-    id: "dGFzazo3NDM1",
-    databaseId: 7435,
-    title: "121Тригонометрический тройной интеграл: методология и особенности",
-    content: "",
-    slug: "trigonometricheskij-trojnoj-integral-metodologiya-i-osobennosti",
-    date: "2020-12-23 08:27:57",
-    dateGmt: "2020-12-23 05:27:57",
-    viewsCount: 0,
-    doerCandidatesCount: 0,
-    status: "publish",
-    pemalink:
-      "http://localhost:9000/tasks/trigonometricheskij-trojnoj-integral-metodologiya-i-osobennosti/",
-    pemalinkPath: "/tasks/trigonometricheskij-trojnoj-integral-metodologiya-i-osobennosti/",
-    tags: {
-      nodes: [
-        {
-          term_id: 186,
-          name: "Маркетинг и коммуникации",
-          slug: "marketing",
-          term_group: 0,
-          term_taxonomy_id: 187,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 0,
-          count: 1,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 252,
-          name: "Раздельный сбор",
-          slug: "separate-collection",
-          term_group: 0,
-          term_taxonomy_id: 253,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 227,
-          count: 1,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 17,
-          name: "Упоминание на сайте и/или в соцсетях",
-          slug: "upominanie-na-sajte",
-          term_group: 0,
-          term_taxonomy_id: 17,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 16,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjo3NQ==",
-      fullName: "Денис Геннадьевич Чернятьев",
-      name: "denisch",
-      username: "denisch",
-      firstName: "Денис Геннадьевич",
-      lastName: "Чернятьев",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/1bbed88969621560ce2818ca701-3.jpg",
-        databaseId: 7346,
-      },
-      authorReviewsCount: "11",
-      solvedTasksCount: 7,
-      doerReviewsCount: 6,
-      totalReviewsCount: 17,
-      isPartner: true,
-      isPasekaMember: true,
-      organizationName: "Теплица социальных технологий - творим добро",
-      organizationDescription:
-        "Неопределенный интеграл продуцирует возрастающий минимум. Асимптота очевидна не для всех. Ортогональный определитель, конечно, определяет абстрактный интеграл от функции, имеющий конечный разрыв. Матожидание, не вдаваясь в подробности, непосредственно концентрирует нормальный контрпример.",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/0e261687005a438f100d19f55bba73d4_full.jpg",
-        databaseId: 7347,
-      },
-      profileURL: "http://localhost:9000/members/denisch-slug",
-      isAdmin: true,
-      thankyouCount: "18",
-      skype: "dench888",
-      twitter: "twitter333",
-      facebook: "",
-      vk: "",
-      instagram: "insta222",
-      telegram: "denischTELEGA",
-      phone: "+79097790111",
-      organizationSite: "",
-      xp: "1523",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "denisch-slug",
-      nicename: "denisch-slug",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2020-12-31 00:00:00",
-  },
-  {
-    _id: "6009a38cdb2a50046c39b873",
-    id: "dGFzazo3NDM0",
-    databaseId: 7434,
-    title: "Абстрактный график функции многих переменных в XXI веке",
-    content: "",
-    slug: "abstraktnyj-grafik-funktsii-mnogih-peremennyh-v-xxi-veke",
-    date: "2020-12-23 08:26:43",
-    dateGmt: "2020-12-23 05:26:43",
-    viewsCount: 0,
-    doerCandidatesCount: 0,
-    status: "publish",
-    pemalink:
-      "http://localhost:9000/tasks/abstraktnyj-grafik-funktsii-mnogih-peremennyh-v-xxi-veke/",
-    pemalinkPath: "/tasks/abstraktnyj-grafik-funktsii-mnogih-peremennyh-v-xxi-veke/",
-    tags: {
-      nodes: [
-        {
-          term_id: 194,
-          name: "Базы данных",
-          slug: "database",
-          term_group: 0,
-          term_taxonomy_id: 195,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 184,
-          count: 65,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 244,
-          name: "Градозащита",
-          slug: "city-protection",
-          term_group: 0,
-          term_taxonomy_id: 245,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 226,
-          count: 1,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 113,
-          name: "Сувенир",
-          slug: "gift",
-          term_group: 0,
-          term_taxonomy_id: 117,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 3,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjo3NQ==",
-      fullName: "Денис Геннадьевич Чернятьев",
-      name: "denisch",
-      username: "denisch",
-      firstName: "Денис Геннадьевич",
-      lastName: "Чернятьев",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/1bbed88969621560ce2818ca701-3.jpg",
-        databaseId: 7346,
-      },
-      authorReviewsCount: "11",
-      solvedTasksCount: 7,
-      doerReviewsCount: 6,
-      totalReviewsCount: 17,
-      isPartner: true,
-      isPasekaMember: true,
-      organizationName: "Теплица социальных технологий - творим добро",
-      organizationDescription:
-        "Неопределенный интеграл продуцирует возрастающий минимум. Асимптота очевидна не для всех. Ортогональный определитель, конечно, определяет абстрактный интеграл от функции, имеющий конечный разрыв. Матожидание, не вдаваясь в подробности, непосредственно концентрирует нормальный контрпример.",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/0e261687005a438f100d19f55bba73d4_full.jpg",
-        databaseId: 7347,
-      },
-      profileURL: "http://localhost:9000/members/denisch",
-      isAdmin: true,
-      thankyouCount: "18",
-      skype: "dench888",
-      twitter: "twitter333",
-      facebook: "",
-      vk: "",
-      instagram: "insta222",
-      telegram: "denischTELEGA",
-      phone: "+79097790111",
-      organizationSite: "",
-      xp: "1523",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "denisch-slug",
-      nicename: "denisch-slug",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2020-12-26 00:00:00",
-  },
-  {
-    _id: "6009a38cdb2a50046c39b874",
-    id: "dGFzazo3NDMz",
-    databaseId: 7433,
-    title: "Комплексный неопределенный интеграл: гипотеза и теории",
-    content: "",
-    slug: "kompleksnyj-neopredelennyj-integral-gipoteza-i-teorii",
-    date: "2020-12-23 08:25:22",
-    dateGmt: "2020-12-23 05:25:22",
-    viewsCount: 0,
-    doerCandidatesCount: 0,
-    status: "publish",
-    pemalink: "http://localhost:9000/tasks/kompleksnyj-neopredelennyj-integral-gipoteza-i-teorii/",
-    pemalinkPath: "/tasks/kompleksnyj-neopredelennyj-integral-gipoteza-i-teorii/",
-    tags: {
-      nodes: [
-        {
-          term_id: 221,
-          name: "Google Grants",
-          slug: "google-grants",
-          term_group: 0,
-          term_taxonomy_id: 222,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 186,
-          count: 4,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 250,
-          name: "Биоразнообразие",
-          slug: "biodiversity",
-          term_group: 0,
-          term_taxonomy_id: 251,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 227,
-          count: 2,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 112,
-          name: "Сcылка на ваш сайт",
-          slug: "link",
-          term_group: 0,
-          term_taxonomy_id: 116,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 15,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjo3NQ==",
-      fullName: "Денис Геннадьевич Чернятьев",
-      name: "denisch",
-      username: "denisch",
-      firstName: "Денис Геннадьевич",
-      lastName: "Чернятьев",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/1bbed88969621560ce2818ca701-3.jpg",
-        databaseId: 7346,
-      },
-      authorReviewsCount: "11",
-      solvedTasksCount: 7,
-      doerReviewsCount: 6,
-      totalReviewsCount: 17,
-      isPartner: true,
-      isPasekaMember: true,
-      organizationName: "Теплица социальных технологий - творим добро",
-      organizationDescription:
-        "Неопределенный интеграл продуцирует возрастающий минимум. Асимптота очевидна не для всех. Ортогональный определитель, конечно, определяет абстрактный интеграл от функции, имеющий конечный разрыв. Матожидание, не вдаваясь в подробности, непосредственно концентрирует нормальный контрпример.",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/0e261687005a438f100d19f55bba73d4_full.jpg",
-        databaseId: 7347,
-      },
-      profileURL: "http://localhost:9000/members/denisch",
-      isAdmin: true,
-      thankyouCount: "18",
-      skype: "dench888",
-      twitter: "twitter333",
-      facebook: "",
-      vk: "",
-      instagram: "insta222",
-      telegram: "denischTELEGA",
-      phone: "+79097790111",
-      organizationSite: "",
-      xp: "1523",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "denisch-slug",
-      nicename: "denisch-slug",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2021-01-06 00:00:00",
-  },
-  {
-    _id: "6009a38cdb2a50046c39b875",
-    id: "dGFzazo3NDMy",
-    databaseId: 7432,
-    title: "Косвенный предел последовательности: гипотеза и теории",
-    content: "",
-    slug: "kosvennyj-predel-posledovatelnosti-gipoteza-i-teorii",
-    date: "2020-12-23 08:19:30",
-    dateGmt: "2020-12-23 05:19:30",
-    viewsCount: 0,
-    doerCandidatesCount: 0,
-    status: "publish",
-    pemalink: "http://localhost:9000/tasks/kosvennyj-predel-posledovatelnosti-gipoteza-i-teorii/",
-    pemalinkPath: "/tasks/kosvennyj-predel-posledovatelnosti-gipoteza-i-teorii/",
-    tags: {
-      nodes: [
-        {
-          term_id: 121,
-          name: "SMM",
-          slug: "smm",
-          term_group: 0,
-          term_taxonomy_id: 126,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 186,
-          count: 140,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 263,
-          name: "Борьба с бедностью",
-          slug: "fighting-poverty",
-          term_group: 0,
-          term_taxonomy_id: 264,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 229,
-          count: 2,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 115,
-          name: "Коллективное селфи",
-          slug: "selfie",
-          term_group: 0,
-          term_taxonomy_id: 119,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 2,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjo3NQ==",
-      fullName: "Денис Геннадьевич Чернятьев",
-      name: "denisch",
-      username: "denisch",
-      firstName: "Денис Геннадьевич",
-      lastName: "Чернятьев",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/1bbed88969621560ce2818ca701-3.jpg",
-        databaseId: 7346,
-      },
-      authorReviewsCount: "11",
-      solvedTasksCount: 7,
-      doerReviewsCount: 6,
-      totalReviewsCount: 17,
-      isPartner: true,
-      isPasekaMember: true,
-      organizationName: "Теплица социальных технологий - творим добро",
-      organizationDescription:
-        "Неопределенный интеграл продуцирует возрастающий минимум. Асимптота очевидна не для всех. Ортогональный определитель, конечно, определяет абстрактный интеграл от функции, имеющий конечный разрыв. Матожидание, не вдаваясь в подробности, непосредственно концентрирует нормальный контрпример.",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/0e261687005a438f100d19f55bba73d4_full.jpg",
-        databaseId: 7347,
-      },
-      profileURL: "http://localhost:9000/members/denisch",
-      isAdmin: true,
-      thankyouCount: "18",
-      skype: "dench888",
-      twitter: "twitter333",
-      facebook: "",
-      vk: "",
-      instagram: "insta222",
-      telegram: "denischTELEGA",
-      phone: "+79097790111",
-      organizationSite: "",
-      xp: "1523",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "denisch-slug",
-      nicename: "denisch-slug",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2021-01-06 00:00:00",
-  },
-  {
-    _id: "6009a38cdb2a50046c39b876",
-    id: "dGFzazo3MjA2",
-    databaseId: 7206,
-    title: "Что-то новое",
-    content: "",
-    slug: "chto-to-novoe",
-    date: "2020-12-09 16:27:01",
-    dateGmt: "2020-12-09 13:27:01",
-    viewsCount: 2,
-    doerCandidatesCount: 1,
-    status: "publish",
-    pemalink: "http://localhost:9000/tasks/chto-to-novoe/",
-    pemalinkPath: "/tasks/chto-to-novoe/",
-    tags: {
-      nodes: [
-        {
-          term_id: 204,
-          name: "Брендбук",
-          slug: "brandbook",
-          term_group: 0,
-          term_taxonomy_id: 205,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 185,
-          count: 361,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 225,
-          name: "Помогать людям в беде",
-          slug: "help-people",
-          term_group: 0,
-          term_taxonomy_id: 226,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 0,
-          count: 35,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 116,
-          name: "Небольшой гонорар",
-          slug: "symbol",
-          term_group: 0,
-          term_taxonomy_id: 120,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 18,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjo3NQ==",
-      fullName: "Денис Геннадьевич Чернятьев",
-      name: "denisch",
-      username: "denisch",
-      firstName: "Денис Геннадьевич",
-      lastName: "Чернятьев",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/1bbed88969621560ce2818ca701-3.jpg",
-        databaseId: 7346,
-      },
-      authorReviewsCount: "11",
-      solvedTasksCount: 7,
-      doerReviewsCount: 6,
-      totalReviewsCount: 17,
-      isPartner: true,
-      isPasekaMember: true,
-      organizationName: "Теплица социальных технологий - творим добро",
-      organizationDescription:
-        "Неопределенный интеграл продуцирует возрастающий минимум. Асимптота очевидна не для всех. Ортогональный определитель, конечно, определяет абстрактный интеграл от функции, имеющий конечный разрыв. Матожидание, не вдаваясь в подробности, непосредственно концентрирует нормальный контрпример.",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: {
-        mediaItemUrl:
-          "http://localhost:9000/wp-content/uploads/2020/09/0e261687005a438f100d19f55bba73d4_full.jpg",
-        databaseId: 7347,
-      },
-      profileURL: "http://localhost:9000/members/denisch",
-      isAdmin: true,
-      thankyouCount: "18",
-      skype: "dench888",
-      twitter: "twitter333",
-      facebook: "",
-      vk: "",
-      instagram: "insta222",
-      telegram: "denischTELEGA",
-      phone: "+79097790111",
-      organizationSite: "",
-      xp: "1523",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "denisch-slug",
-      nicename: "denisch-slug",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2020-12-23 00:00:00",
-  },
-  {
-    _id: "6009a38cdb2a50046c39b877",
-    id: "dGFzazo3Mzg5",
-    databaseId: 7389,
-    title: "asdfasdfdsafasdf asdf asdf",
-    content: "",
-    slug: "asdfasdfdsafasdf-asdf-asdf",
-    date: "2020-11-19 15:32:05",
-    dateGmt: "2020-11-19 12:32:05",
-    viewsCount: 0,
-    doerCandidatesCount: 0,
-    status: "publish",
-    pemalink: "http://localhost:9000/tasks/asdfasdfdsafasdf-asdf-asdf/",
-    pemalinkPath: "/tasks/asdfasdfdsafasdf-asdf-asdf/",
-    tags: {
-      nodes: [
-        {
-          term_id: 129,
-          name: "WordPress",
-          slug: "wordpress",
-          term_group: 0,
-          term_taxonomy_id: 81,
-          taxonomy: "post_tag",
-          description: "",
-          parent: 184,
-          count: 641,
-          filter: "raw",
-        },
-      ],
-    },
-    ngoTaskTags: {
-      nodes: [
-        {
-          term_id: 263,
-          name: "Борьба с бедностью",
-          slug: "fighting-poverty",
-          term_group: 0,
-          term_taxonomy_id: 264,
-          taxonomy: "nko_task_tag",
-          description: "",
-          parent: 229,
-          count: 2,
-          filter: "raw",
-        },
-      ],
-    },
-    rewardTags: {
-      nodes: [
-        {
-          term_id: 112,
-          name: "Сcылка на ваш сайт",
-          slug: "link",
-          term_group: 0,
-          term_taxonomy_id: 116,
-          taxonomy: "reward",
-          description: "",
-          parent: 0,
-          count: 15,
-          filter: "raw",
-        },
-      ],
-    },
-    author: {
-      id: "dXNlcjoxNzEy",
-      fullName: "Тест Аксиомович",
-      name: "test",
-      username: "test",
-      firstName: "Тест",
-      lastName: "Аксиомович",
-      memberRole: "Супергерой",
-      itvAvatar: "http://localhost:9000/wp-content/themes/tstsite/assets/img/temp-avatar.png",
-      itvAvatarFile: null,
-      authorReviewsCount: "2",
-      solvedTasksCount: 5,
-      doerReviewsCount: 14,
-      totalReviewsCount: 16,
-      isPartner: false,
-      isPasekaMember: false,
-      organizationName: "",
-      organizationDescription: "",
-      organizationLogo: "",
-      organizationLogoFile: null,
-      cover: "",
-      coverFile: null,
-      profileURL: "http://localhost:9000/members/test",
-      isAdmin: false,
-      thankyouCount: "1",
-      skype: "",
-      twitter: "",
-      facebook: "",
-      vk: "",
-      instagram: "",
-      telegram: "",
-      phone: "",
-      organizationSite: "",
-      xp: "2775",
-      itvRole: "doer",
-      isHybrid: true,
-      slug: "test",
-      nicename: "test",
-    },
-    isApproved: false,
-    cover: null,
-    coverImgSrcLong: "",
-    deadline: "2020-12-03 00:00:00",
-  },
-];
+import { regEvent } from "../../utilities/ga-events";
 
 const users: any = [
   {
@@ -811,38 +126,61 @@ const users: any = [
 ];
 
 const HomeTaskTop: React.FunctionComponent = (): ReactElement => {
+  const taskList = useStoreState(state => state.components.homePage.taskList);
+  const router = useRouter();
+
+  const handleMoreBtnClick = () => regEvent("hp_more_nav", router);
+
   return (
     <section className="home-top">
       <h3 className="home-top__title home-title">Открытые задачи</h3>
       <HomeInterfaceSwitch />
       <div className="home-top__list">
         <div className="task-list">
-          {tasks.map((task, i) =>
+          {taskList.map((task, i) =>
             withSlideIn({
               component: TaskListItemHome,
               from: i % 2 ? "right" : "left",
               fullWidth: false,
-              key: task._id,
+              key: task.id,
               ...task,
             })
           )}
         </div>
       </div>
-      <button className="home-top__more btn btn_link" type="button">
-        Все задачи
-      </button>
+      <div className="home-top__more">
+        <Link href="/tasks">
+          <a className="btn btn_link" onClick={handleMoreBtnClick}>
+            Все задачи
+          </a>
+        </Link>
+      </div>
     </section>
   );
 };
 
 const HomeUserTop: React.FunctionComponent = (): ReactElement => {
+  const isLoggedIn = useStoreState(state => state.session.isLoggedIn);
+  const memberList = useStoreState(state => state.components.homePage.memberList);
+  const router = useRouter();
+
+  const handleMoreBtnClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    if (isLoggedIn) {
+      router.push("/task-create");
+    } else {
+      router.push("/registration");
+    }
+  };
+
   return (
     <section className="home-top">
       <h3 className="home-top__title home-title">Десятки волонтёров готовы вам помочь</h3>
       <HomeInterfaceSwitch />
       <div className="home-top__list">
         <div className="volunteer-list">
-          {users.map((user, i) =>
+          {memberList?.map((user, i) =>
             withSlideIn({
               component: MemberListItemTop,
               from: i % 2 ? "right" : "left",
@@ -854,15 +192,20 @@ const HomeUserTop: React.FunctionComponent = (): ReactElement => {
           )}
         </div>
       </div>
-      <button className="home-top__more btn btn_link" type="button">
-        Создай задачу
-      </button>
+      <div className="home-top__more">
+        <a href="#" className="btn btn_link" onClick={handleMoreBtnClick}>
+          Создай задачу
+        </a>
+      </div>
     </section>
   );
 };
 
 const HomeTop: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
+  const loadMembersRequest = useStoreActions(state => state.components.homePage.loadMembersRequest);
+
+  useEffect(() => loadMembersRequest(), []);
 
   return template === "author" ? <HomeUserTop /> : <HomeTaskTop />;
 };
