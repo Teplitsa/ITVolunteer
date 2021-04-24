@@ -1,7 +1,7 @@
 <?php
 
-if(!defined('ITV_PLUGIN') && !defined( 'WP_ADMIN' )) {
-    die('ITV Plugin not installed');
+if(!defined('ITV_PLUGIN')) {
+    error_log('[ITV ERROR]: ITV Plugin not installed');
 }
 
 require_once(get_theme_file_path() . '/vendor/autoload.php');
