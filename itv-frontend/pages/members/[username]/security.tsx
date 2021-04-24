@@ -6,6 +6,7 @@ import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import EditMemberSecurity from "../../../components/page/EditMemberSecurity";
 import GlobalScripts, { ISnackbarMessage } from "../../../context/global-scripts";
+import { authorizeSessionSSRFromRequest } from "../../../model/session-model";
 
 const { SnackbarContext } = GlobalScripts;
 
@@ -47,10 +48,13 @@ const SecurityPage: React.FunctionComponent = (): ReactElement => {
     </>
   );
 };
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
+
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,
     entrypointType: "page",
@@ -78,7 +82,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   });
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

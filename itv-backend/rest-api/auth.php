@@ -49,10 +49,10 @@ function auth_api_add_routes($server) {
             $auth = new \ITV\models\Auth();
 
             try {
-                $token = $auth->parse_token_from_request();
+                $token = \ITV\Plugin\Auth::parse_token_from_request();
                 // error_log("token: " . $token);
             }
-            catch(\ITV\models\NoAuthHeaderException $ex) {
+            catch(\ITV\Plugin\NoAuthHeaderException $ex) {
                 return new \WP_REST_Response(
                     array(
                         'code' => 'no_auth_header',

@@ -32,7 +32,7 @@ class Auth {
 
 	public function generate_token( $user ) {
 
-		$secret = \ITV\Config::AUTH_SECRET_KEY;
+		$secret = \ITV\Plugin\Auth::AUTH_SECRET_KEY;
 		$expire = time() + ( DAY_IN_SECONDS * \ITV\Config::AUTH_EXPIRE_DAYS );
 
 		$payload = json_encode([
@@ -49,42 +49,20 @@ class Auth {
             'typ' => 'JWT',
             'alg' => 'HS256'
         ]);
-        $base64_header = base64url_encode($header);
+        $base64_header = \ITV\Plugin\utils\base64url_encode($header);
         
-        $base64_payload = base64url_encode($payload);
+        $base64_payload = \ITV\Plugin\utils\base64url_encode($payload);
         $signature = hash_hmac('sha256', $base64_header . "." . $base64_payload, $secret, true);
-        $base64_signature = base64url_encode($signature);
+        $base64_signature = \ITV\Plugin\utils\base64url_encode($signature);
 
         $token = $base64_header . "." . $base64_payload . "." . $base64_signature;
 
         return $token;
  	}
 
-    public function parse_token_from_request() {
-        $headerkey = 'HTTP_AUTHORIZATION';
-        $auth_header = isset( $_SERVER[ $headerkey ] ) ? $_SERVER[ $headerkey ] : false;
-
-        if( !$auth_header ) {
-            $auth_header = isset( $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ) ? $_SERVER['REDIRECT_HTTP_AUTHORIZATION'] : false;
-        }
-
-        if( !$auth_header ) {
-            throw new NoAuthHeaderException();
-        }
-
-        list($token) = sscanf( $auth_header, 'Bearer %s' );
-
-        if(!isset($token) || $token === 'undefined') {
-            // error_log("token not set in header");
-            $token = "";
-        }
-
-        return $token;
-    }
-
     public function validate_token( $token ) {
 
-		list($is_valid, $payload_data) = $this->parse_token($token);
+		list($is_valid, $payload_data) = \ITV\Plugin\Auth::parse_token($token);
         // error_log("token: is_valid" . print_r($is_valid, true));
         // error_log("token: payload_data" . print_r($payload_data, true));
 
@@ -107,34 +85,7 @@ class Auth {
             'token' => $token,
         ];
     }
-
-    public function parse_token($token) {
-
-        $parts = explode('.', $token);
-
-        if(empty($parts) || count($parts) !== 3) {
-            return [false, null];
-        }
-
-        $base64_header = $parts[0];
-        $base64_payload = $parts[1];
-
-        $payload = json_decode(base64url_decode($base64_payload));
-
-        $is_expired = $payload->exp - time() < 0;
-
-        $secret = \ITV\Config::AUTH_SECRET_KEY;
-        $signature_check = hash_hmac('sha256', $base64_header . "." . $base64_payload, $secret, true);
-        $base64_signature_check = base64url_encode($signature_check);
-
-        $token_check = $base64_header . "." . $base64_payload . "." . $base64_signature_check;
-        $is_signature_valid = $token === $token_check;
-
-        return [!$is_expired && $is_signature_valid, $payload->data];
-    }
-    
 }
 
-class NoAuthHeaderException extends \Exception {}
 class InvalidAuthTokenException extends \Exception {}
 class UserNotFoundException extends \Exception {}

@@ -1,6 +1,6 @@
 <?php
 
-namespace ITV\utils;
+namespace ITV\Plugin\utils;
 
 function base64url_encode($data) {
   $b64 = base64_encode($data);

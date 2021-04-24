@@ -8,6 +8,7 @@ import { IRestApiResponse, IPortfolioItemAuthor } from "../../../../model/model.
 import Error404 from "../../../../components/page/Error404";
 import { getMediaData } from "../../../../utilities/media";
 import * as utils from "../../../../utilities/utilities";
+import { authorizeSessionSSRFromRequest } from "../../../../model/session-model";
 
 const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
   statusCode,
@@ -36,10 +37,13 @@ const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../../../model/helpers/with-app-and-entrypoint-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
+
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,
     entrypointType: "page",
@@ -167,7 +171,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
   }
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

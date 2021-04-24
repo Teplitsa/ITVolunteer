@@ -1,10 +1,11 @@
 <?php
 
+if(!defined('ITV_PLUGIN') && !defined( 'WP_ADMIN' )) {
+    die('ITV Plugin not installed');
+}
+
 require_once(get_theme_file_path() . '/vendor/autoload.php');
 require_once(get_theme_file_path() . '/config.php');
-
-// utils
-require_once(get_theme_file_path() . '/utils/encode.php');
 
 // system models
 require_once(get_theme_file_path() . '/models/db/mongo.php');
