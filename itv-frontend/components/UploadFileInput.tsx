@@ -85,7 +85,7 @@ export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = (
       case 0:
         if (fileData instanceof Array) {
           newFiles = fileData.map(file => ({
-            fileName: file.mediaItemUrl.replace(/^.*\//, ""),
+            fileName: file.mediaItemUrl ? file.mediaItemUrl.replace(/^.*\//, "") : "",
             value: file.databaseId,
           }));
         }
