@@ -82,7 +82,14 @@ class Auth {
         error_log("result user_id=" . $user_id);
         return $user_id;
     }
+    
+    function rest_cookie_collect_status($cookie_elements) {
+        global $wp_rest_auth_cookie;
+        $wp_rest_auth_cookie = false;
+    }
+
 }
 add_filter( 'determine_current_user', '\ITV\Plugin\Auth::determine_current_user' );
+add_filter( 'auth_cookie_valid', '\ITV\Plugin\Auth::rest_cookie_collect_status', 100 );
 
 class NoAuthHeaderException extends \Exception {}
