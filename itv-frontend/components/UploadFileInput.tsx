@@ -85,7 +85,7 @@ export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = (
       case 0:
         if (fileData instanceof Array) {
           newFiles = fileData.map(file => ({
-            fileName: file.mediaItemUrl.replace(/^.*\//, ""),
+            fileName: file.mediaItemUrl ? file.mediaItemUrl.replace(/^.*\//, "") : "",
             value: file.databaseId,
           }));
         }
@@ -99,7 +99,7 @@ export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = (
         ) {
           newFiles = [
             {
-              fileName: (fileData as FileDataItem).mediaItemUrl.replace(/^.*\//, ""),
+              fileName: (fileData as FileDataItem).mediaItemUrl ? (fileData as FileDataItem).mediaItemUrl.replace(/^.*\//, "") : "",
               value: (fileData as FileDataItem).databaseId,
             },
           ];
@@ -167,7 +167,7 @@ export const UploadFileInput: React.FunctionComponent<IUploadFileInputProps> = (
     );
 
     const action = "upload-file";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })

@@ -10,12 +10,12 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
   const items = useStoreState(state => state.components.taskList.items);
   const isTaskListLoaded = useStoreState(state => state.components.taskList.isTaskListLoaded);
 
-  const resetTaskListLoaded = useStoreActions(
-    actions => actions.components.taskList.resetTaskListLoaded
-  );
+  const resetTaskListLoaded = useStoreActions(actions => actions.components.taskList.resetTaskListLoaded);
+  const setIsTaskListLoaded = useStoreActions(actions => actions.components.taskList.setIsTaskListLoaded);
 
   const optionCheck = useStoreState(store => store.components.taskListFilter.optionCheck);
   const statusStats = useStoreState(store => store.components.taskListFilter.statusStats);
+  const needReload = useStoreState(store => store.components.taskListFilter.needReload);
 
   const [isHidden, setIsHidden] = useState<boolean>(true);
 
@@ -26,6 +26,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
   const setTaskList = useStoreActions(actions => actions.components.taskList.setTaskList);
 
   async function loadFilteredTaskList(optionCheck, page) {
+    console.log("loadFilteredTaskList...");
     const isLoadMore = page > 1;
 
     if (!isLoadMore) {
@@ -74,11 +75,25 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
+    if(!needReload) {
+      // console.log("NO NEED RELOAD TASK LIST");
+      setIsTaskListLoaded(true);
+      return;
+    }
+
+    // console.log("RELOAD TASK LIST");
+
     loadFilteredTaskList(optionCheck, page);
-  }, [page, optionCheck]);
+  }, [page, optionCheck, needReload]);
 
   useEffect(() => {
+    // console.log("optionCheck changed");
+    
     if (optionCheck === null) {
+      return;
+    }
+
+    if(!needReload) {
       return;
     }
 
@@ -108,13 +123,15 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
     setPage(page + 1);
   }
 
+  // console.log("isTaskListLoaded:", isTaskListLoaded);
+
   return (
     (isTaskListLoaded && (
       <section className={`task-list ${isHidden ? "hidden" : ""}`}>
         {items?.map(task => (
           <TaskListItem key={`taskListItem-${task.id}`} {...(task as ITaskState)} />
         ))}
-        {isLoadMoreTaskCount && (
+        {isLoadMoreTaskCount && !!items?.length && (
           <div className="load-more-tasks">
             <a href="#" className="btn btn-load-more" onClick={handleLoadMoreTasks}>
               Загрузить ещё

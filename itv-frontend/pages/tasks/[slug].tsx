@@ -2,6 +2,7 @@ import { ReactElement, memo, useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import { authorizeSessionSSRFromRequest } from "../../model/session-model";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import Task from "../../components/task/Task";
@@ -18,45 +19,17 @@ import TaskVolonteerFeedback from "../../components/task/TaskVolonteerFeedback";
 import TaskAdminSupport from "../../components/task/TaskAdminSupport";
 import Sidebar from "../../components/layout/partials/Sidebar";
 import { ITaskState } from "../../model/model.typing";
-import { graphqlQuery as graphqlTaskQuery } from "../../model/task-model/task-model";
 import { regEvent } from "../../utilities/ga-events";
+import * as utils from "../../utilities/utilities";
 
 const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
-  const { isLoggedIn } = useStoreState(state => state.session);
   const { ...taskState } = useStoreState(state => state.components.task);
-  const setTaskState = useStoreActions(actions => actions.components.task.setState);
   const setCrumbs = useStoreActions(actions => actions.components.breadCrumbs.setCrumbs);
   const router = useRouter();
-  const { slug } = router.query;
-
-  useEffect(() => {
-    setTaskState(task);
-  }, [task]);
 
   useEffect(() => {
     regEvent("ge_show_new_desing", router);
   }, [router.pathname]);
-
-  useEffect(() => {
-    // console.log("input:", task.databaseId, slug, isLoggedIn)
-
-    if (task.databaseId || !slug || !isLoggedIn) {
-      return;
-    }
-
-    import("graphql-request").then(async ({ GraphQLClient }) => {
-      const graphQLClient = new GraphQLClient(process.env.GraphQLServer);
-
-      try {
-        const { task } = await graphQLClient.request(graphqlTaskQuery.getBySlug, {
-          taskSlug: String(slug),
-        });
-        setTaskState(task);
-      } catch (error) {
-        console.error(error.message);
-      }
-    });
-  }, [slug, task, isLoggedIn]);
 
   useEffect(() => {
     setCrumbs([
@@ -102,10 +75,12 @@ const TaskPage: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ params: { slug } }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res, params: { slug } }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
 
   const model = await withAppAndEntrypointModel({
     entrypointQueryVars: { slug },
@@ -113,8 +88,12 @@ export const getServerSideProps: GetServerSideProps = async ({ params: { slug } 
     componentModel: async request => {
       const taskModel = await import("../../model/task-model/task-model");
       const taskQuery = taskModel.graphqlQuery.getBySlug;
-      const { task: component } = await request(process.env.GraphQLServer, taskQuery, {
-        taskSlug: slug,
+
+      const { GraphQLClient } = await import("graphql-request");
+      const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=ssr-get-task", { headers: utils.getGraphQLClientTokenHeader(session) });
+
+      const { task: component } = await graphQLClient.request(taskQuery, {
+        taskSlug: String(slug),
       });
 
       return ["task", component];
@@ -122,7 +101,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params: { slug } 
   });
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

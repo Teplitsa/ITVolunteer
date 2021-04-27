@@ -1,45 +1,100 @@
 <?php
 
-function itv_determine_current_user($user_id) {
+namespace ITV\REST;
 
-    $rest_api_slug = rest_get_url_prefix();
-    $valid_api_uri = strpos($_SERVER['REQUEST_URI'], $rest_api_slug);
+function auth_api_add_routes($server) {
 
-    if (!$valid_api_uri) {
+    register_rest_route( 'itv/v1', '/auth/login', [
+        'methods' => \WP_REST_Server::EDITABLE,
+        'callback' => function($request) {
+            $login = $request->get_param('login');
+            $password = $request->get_param('pass');
+            $remember = $request->get_param('remember');
 
-        return $user_id;
-    }
-
-    $auth_token = $_POST['auth_token'] ?? $_GET['auth_token'] ?? '';
-
-    if(!$auth_token && in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'DELETE'] ) )  {
-
-        $input_json = file_get_contents('php://input');
-
-        if($input_json) {
-
-            $input = json_decode($input_json, true);
-        }
-
-        $auth_token = $input['auth_token'] ?? '';
-    }
-
-    if($auth_token) {
-
-        $token = WPGraphQL\JWT_Authentication\Auth::validate_token($auth_token);
-
-        if (!is_wp_error($token)) {
-
-            $user_id = $token->data->user->id;
-            
-            if($user_id) {
-                global $wp_rest_auth_cookie;
-                $wp_rest_auth_cookie = 0;
+            if(!$login || !$password) {
+                return new \WP_Error(
+                    'invalid_params',
+                    __( 'Invalid params', 'itv-backend' ),
+                    array( 'status' => 400 )
+                );
             }
-            
-        }
-    }
 
-    return $user_id;
+            $auth = new \ITV\models\Auth();
+            $auth_result = $auth->login($login, $password, $remember);
+
+            if(in_array( $_SERVER['REQUEST_METHOD'], ['POST', 'PUT', 'PATCH', 'DELETE'] ) )  {
+
+                if ( is_wp_error( $auth_result ) ) {
+                    $error_code = $auth_result->get_error_code();
+        
+                    return new \WP_REST_Response(
+                        array(
+                            'code'       => $error_code,
+                            'message'    => strip_tags( $auth_result->get_error_message( $error_code ) ),
+                        ),
+                        403
+                    );
+                }
+
+                return $auth_result;
+            }
+        },
+    ] );
+
+    register_rest_route( 'itv/v1', '/auth/validate-token', [
+        'methods' => \WP_REST_Server::EDITABLE,
+        'callback' => function($request) {
+            $token = $request->get_param('token');
+            
+            $auth = new \ITV\models\Auth();
+
+            try {
+                $token = \ITV\Plugin\Auth::parse_token_from_request();
+                // error_log("token: " . $token);
+            }
+            catch(\ITV\Plugin\NoAuthHeaderException $ex) {
+                return new \WP_REST_Response(
+                    array(
+                        'code' => 'no_auth_header',
+                        'message' => __( 'No auth header', 'itv-backend' ),
+                    ),
+                    400
+                );
+            }
+
+            if ( !$token ) {
+                return new \WP_REST_Response(
+                    array(
+                        'code' => 'bad_auth_header',
+                        'message' => __( 'Bad auth header', 'itv-backend' ),
+                    ),
+                    400
+                );
+            }
+    
+            try {
+                return $auth->validate_token($token);
+            }
+            catch(\ITV\models\InvalidAuthTokenException $ex) {
+                return new \WP_REST_Response(
+                    array(
+                        'code' => 'invalid_auth_token',
+                        'message' => __( 'Invalid auth token', 'itv-backend' ),
+                    ),
+                    403
+                );
+            }
+            catch(\ITV\models\UserNotFoundException $ex) {
+                return new \WP_REST_Response(
+                    array(
+                        'code' => 'user_not_found',
+                        'message' => __( 'User not found', 'itv-backend' ),
+                    ),
+                    403
+                );
+            }
+        },
+    ] );
+
 }
-add_filter( 'determine_current_user', 'itv_determine_current_user' );
+add_action( 'rest_api_init', 'ITV\REST\auth_api_add_routes' );

@@ -18,10 +18,12 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
   const {
     statusCode,
     app,
+    session,
     entrypointType,
     entrypoint: { archive = null, page = null },
     ...component
   } = pageProps;
+  // console.log("session:", session);
   const archiveEntrypoint: string | boolean =
     archive && `archive/${entrypointType}`;
   const pageEntrypoint: string | boolean =
@@ -63,6 +65,12 @@ const ITVApp = ({ Component, pageProps }: AppProps): ReactElement => {
         seo: archive.seo,
       }) ||
       null,
+  });
+  dispatch({
+    type: `@action.session.${
+      session ? "setState" : "setStateGuest"
+    }`,
+    payload: session ?? null,
   });
   dispatch({
     type: `@action.components.${componentName}.setState`,

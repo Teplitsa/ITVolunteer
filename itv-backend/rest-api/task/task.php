@@ -54,7 +54,7 @@ function task_api_post_query($args, $request) {
     $status = $request->get_param('status');
     // error_log("status: " . print_r($status, true) );
     
-    if(in_array('any', $status)) {
+    if(in_array('any', $status) || $request->get_param('slug')) {
         $args = array_merge($args, [
             'post_status'       => ['publish', 'in_work', 'closed', 'draft', 'archived'],
             'suppress_filters'  => true,

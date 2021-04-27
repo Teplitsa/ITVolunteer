@@ -1,5 +1,5 @@
 import { IRestApiResponse } from "../model/model.typing";
-import { getRestApiUrl } from "./utilities";
+import { tokenFetch, getRestApiUrl } from "./utilities";
 
 export type MediaSize = "avatar" | "full" | "logo" | "long" | "post-thumbnail" | "thumbnail";
 
@@ -25,8 +25,8 @@ export const getMediaData = async (
     const endpoint = `/wp/v2/media/${mediaId}/?_fields[]=id&_fields[]=source_url&_fields[]=media_details`;
     const result =
       typeof abortController === "undefined"
-        ? await fetch(getRestApiUrl(endpoint))
-        : await fetch(getRestApiUrl(endpoint), {
+        ? await tokenFetch(getRestApiUrl(endpoint))
+        : await tokenFetch(getRestApiUrl(endpoint), {
           signal: abortController.signal,
         });
 

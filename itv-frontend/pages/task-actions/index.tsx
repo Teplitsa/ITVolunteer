@@ -66,8 +66,8 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    console.log("isLoggedIn:", isLoggedIn);
-    console.log("isSessionLoaded:", isSessionLoaded);
+    // console.log("isLoggedIn:", isLoggedIn);
+    // console.log("isSessionLoaded:", isSessionLoaded);
 
     if (!isSessionLoaded) {
       return;
@@ -112,7 +112,7 @@ const CreateTask: React.FunctionComponent = (): ReactElement => {
     }
 
     const action = "submit-task";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: submitFormData,
     })

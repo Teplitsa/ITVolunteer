@@ -1,11 +1,20 @@
 <?php
 
-require_once(get_theme_file_path() . '/vendor/autoload.php');
+if (!defined('ITV_PLUGIN')) {
+    error_log('[ITV ERROR]: ITV Plugin not installed');
+}
 
 load_theme_textdomain('itv-backend', get_theme_file_path() . '/lang');
 
+require_once(get_theme_file_path() . '/vendor/autoload.php');
+require_once(get_theme_file_path() . '/config.php');
+
 // utils
 require_once(get_theme_file_path() . '/utils/upload_image.php');
+
+// system models
+require_once(get_theme_file_path() . '/models/db/mongo.php');
+require_once(get_theme_file_path() . '/models/auth.php');
 
 // models
 require_once(get_theme_file_path() . '/models/common/cacheable.php');
@@ -58,8 +67,5 @@ require_once(get_theme_file_path() . '/wp-hooks/faq.php');
 require_once(get_theme_file_path() . '/wp-hooks/partner.php');
 require_once(get_theme_file_path() . '/wp-hooks/review.php');
 require_once(get_theme_file_path() . '/wp-hooks/stats.php');
-ITV\models\Task::register_hooks();
-
-// filters
-
-add_filter('use_block_editor_for_post_type', fn (bool $current_status, string $post_type): bool => ($post_type === ITV\models\Task::POST_TYPE) ? false : $current_status, 10, 2);
+require_once(get_theme_file_path() . '/wp-hooks/task.php');
+require_once(get_theme_file_path() . '/wp-hooks/auth.php');

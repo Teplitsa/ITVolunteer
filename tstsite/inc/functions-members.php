@@ -11,7 +11,6 @@ use ITV\models\ItvThankyouRecentlySaidException;
 use ITV\dao\ThankYou;
 use \WeDevs\ORM\WP\User as User;
 use \WeDevs\ORM\WP\UserMeta as UserMeta;
-use WPGraphQL\JWT_Authentication;
 use \ITV\dao\ReviewAuthor;
 use \ITV\dao\Review;
 
@@ -1391,8 +1390,8 @@ function ajax_get_current_user_jwt_auth_token() {
         
         try {
             $user = wp_get_current_user();
-            $token = WPGraphQL\JWT_Authentication\Auth::get_token( $user );
-            $gql_id = \GraphQLRelay\Relay::toGlobalId( 'user', $user->data->ID );
+            $auth = new \ITV\models\Auth();
+            $token = $auth->generate_token( $user );
             $user_data = itv_get_user_in_gql_format($user);
             $user_data = itv_append_user_private_data($user_data, $user);
             
@@ -1400,10 +1399,10 @@ function ajax_get_current_user_jwt_auth_token() {
                 "status" => "ok",
                 "message" => "",
                 'authToken'    => $token,
-                'refreshToken' => WPGraphQL\JWT_Authentication\Auth::get_refresh_token( $user ),
                 'user'         => $user_data,
-                'id'           => $gql_id,
             ];
+
+            setcookie('itv-token', $token, time() + ( DAY_IN_SECONDS * \ITV\Config::AUTH_EXPIRE_DAYS ), '/');
     		
             wp_die(json_encode($response));    
     		

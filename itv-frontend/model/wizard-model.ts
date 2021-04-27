@@ -143,7 +143,7 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
   }),
   formFieldPlaceholdersRequest: thunk(async actions => {
     const route = "/itv/v1/task/form-placeholders";
-    console.log("formFieldPlaceholdersRequest:", utils.getRestApiUrl(route));
+    // console.log("formFieldPlaceholdersRequest:", utils.getRestApiUrl(route));
 
     fetch(utils.getRestApiUrl(route), {
       method: "get",

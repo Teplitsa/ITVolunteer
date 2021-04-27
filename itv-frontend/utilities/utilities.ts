@@ -2,8 +2,14 @@ import { format, formatDistanceToNow } from "date-fns";
 import { ru } from "date-fns/locale";
 import moment from "moment";
 import { decode } from "html-entities";
+import * as _ from "lodash";
+import Cookies from "js-cookie";
+import * as C from "../const";
+import { ISessionState } from "model/model.typing";
 
-export const convertObjectToClassName = (classNameMatrix: { [className: string]: boolean }): string =>
+export const convertObjectToClassName = (classNameMatrix: {
+  [className: string]: boolean;
+}): string =>
   Object.entries(classNameMatrix)
     .reduce(
       (activeClassList, [className, activityFlag]) =>
@@ -176,7 +182,7 @@ export function showAjaxError(errorData) {
 }
 
 export function decodeHtmlEntities(textWithEntities) {
-  if (!document) {
+  if (typeof document === "undefined" || !document) {
     return textWithEntities;
   }
 
@@ -192,7 +198,7 @@ export function decodeHtmlEntities(textWithEntities) {
 }
 
 export function getSiteUrl(path = "") {
-  if (!window) {
+  if (typeof window === "undefined" || !window) {
     return path;
   }
 
@@ -254,4 +260,28 @@ export function getReviewsCountString(reviewsCount) {
     : [2, 3, 4].includes(reviewsCountModulo)
     ? "отзыва"
     : "отзывов";
+}
+
+export function getGraphQLClientTokenHeader(session, headers = null) {
+  if (!headers) {
+    headers = {};
+  }
+
+  headers = {
+    ...headers,
+    Authorization: "Bearer " + session.token.authToken,
+  };
+  return headers;
+}
+
+export async function tokenFetch(url, options = {}) {
+  _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
+  return await fetch(url, options);
+}
+
+export async function sessionFetch(url, session: ISessionState, options = {}) {
+  if (session.user.databaseId) {
+    _.set(options, "headers.Authorization", "Bearer " + session.token.authToken);
+  }
+  return await fetch(url, options);
 }

@@ -20,7 +20,7 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { fullName } = await (await fetch(getRestApiUrl(
+  const { fullName } = await (await utils.tokenFetch(getRestApiUrl(
     `/itv/v1/member/${query.username}?_fields[]=fullName`
   ))).json();
   const { default: withAppAndEntrypointModel } = await import(

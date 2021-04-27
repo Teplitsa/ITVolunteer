@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
+import { authorizeSessionSSRFromRequest } from "../model/session-model";
 import DocumentHead from "../components/DocumentHead";
 import Main from "../components/layout/Main";
 import Home from "../components/page/Home";
@@ -17,7 +18,8 @@ const HomePage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const session = await authorizeSessionSSRFromRequest(req, res);
   const { default: withAppAndEntrypointModel } = await import(
     "../model/helpers/with-app-and-entrypoint-model"
   );
@@ -128,7 +130,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   });
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

@@ -74,6 +74,7 @@ const withAppAndEntrypointModel = async ({
   componentModel,
 }): Promise<IModelWithAppAndEntrypoint> => {
   const { request } = await import("graphql-request");
+
   const [entrypointTemplate, entrypointModel] = isArchive
     ? await archiveModel(request, entrypointType, entrypointQueryVars)
     : isCustomPage
@@ -95,6 +96,7 @@ const withAppAndEntrypointModel = async ({
     app: {
       entrypointTemplate,
     },
+    session: null,
     entrypointType,
     entrypoint: {
       [entrypointTemplate]: entrypointModel,

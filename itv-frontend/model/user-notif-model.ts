@@ -98,7 +98,7 @@ const userNotifActions: IUserNotifActions = {
   }),
   setIsReadRequest: thunk(async ({ setState }, payload, { getStoreState }) => {
     const {
-      session: { user, validToken: token },
+      session: { user },
       components: {
         userNotif: { notifList },
       },
@@ -116,11 +116,10 @@ const userNotifActions: IUserNotifActions = {
     try {
       const isReadRequestUrl = new URL(utils.getRestApiUrl(`/itv/v1/user-notif`));
       const isReadRequestParams = {
-        auth_token: token,
         id,
         user_id: user.databaseId,
       };
-      const isReadResponse = await fetch(isReadRequestUrl.toString(), {
+      const isReadResponse = await utils.tokenFetch(isReadRequestUrl.toString(), {
         method: "PATCH",
         headers: {
           Accept: "application/json",

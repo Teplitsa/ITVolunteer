@@ -17,12 +17,14 @@ const { SnackbarContext } = GlobalScripts;
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const isLoaded = useStoreState(store => store.session.isLoaded);
   const login = useStoreActions(actions => actions.session.login);
+  const authorizeSession = useStoreActions(actions => actions.session.authorizeSession);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isHeaderSearchOpen, setHeaderSearchOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log("run login...");
+    // console.log("run login...");
 
     if (!process.browser) {
       return;
@@ -32,7 +34,14 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    login({ username: "", password: "" });
+    if(!isLoaded) {
+      // console.log("run ajax login...");
+      login({ username: "", password: "" });
+    }
+    else {
+      // console.log("run authorizeSession...");
+      authorizeSession();
+    }
   }, []);
 
   function handleOldDesignClick() {

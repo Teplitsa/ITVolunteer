@@ -67,7 +67,7 @@ function tst_preserve_task_author($data, $postarr) {
 /** AJAX on task edits **/
 function ajax_add_edit_task(){
 
-    $task_id = (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
+    $task_id = isset($_POST['id']) && (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
     $itv_log = ItvLog::instance();
     
     $params = array(
@@ -167,14 +167,15 @@ function ajax_submit_task(){
 
     // error_log("task POST: " . print_r($_POST, true));
 
-    $task_id = (int)$_POST['databaseId'] > 0 ? (int)$_POST['databaseId'] : 0;
+    $task_id = isset($_POST['databaseId']) && (int)$_POST['databaseId'] > 0 ? (int)$_POST['databaseId'] : 0;
     $itv_log = ItvLog::instance();
     
+    $tags_input_all = array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0);
     $params = array(
         'post_type' => 'tasks',
         'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
         'post_content' => filter_var(trim($_POST['description']), FILTER_SANITIZE_STRING),
-        'tags_input' => array_splice(array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['taskTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0), 0, 2),
+        'tags_input' => array_splice($tags_input_all, 0, 2),
     );
 
     $is_new_task = true;
@@ -189,9 +190,11 @@ function ajax_submit_task(){
     $task_id = wp_insert_post($params);
 
     if($task_id) {
+        $tags_all = array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0);
+
         update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
         wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
-        wp_set_post_terms($task_id, array_splice(array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0), 0, 1), 'nko_task_tag');
+        wp_set_post_terms($task_id, array_splice($tags_all, 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
 
         $durationValue = @$_POST['preferredDuration'];
@@ -712,6 +715,7 @@ function itv_get_task_cover($task_id) {
 }
 
 function itv_get_ajax_task_short($task) {
+    // error_log("task->post_author:" . $task->post_author);
     $author = get_user_by('id', $task->post_author);
 
     return [

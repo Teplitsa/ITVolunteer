@@ -89,7 +89,7 @@ function NotifItem({ notif, user }) {
   //   formData.append("notifIdList[]", notif.id);
 
   //   const action = "set_user_notif_read";
-  //   fetch(utils.getAjaxUrl(action), {
+  //   utils.tokenFetch(utils.getAjaxUrl(action), {
   //     method: "post",
   //     body: formData,
   //   })

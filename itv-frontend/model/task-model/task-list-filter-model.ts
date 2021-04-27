@@ -1,4 +1,6 @@
 import { action, thunk } from "easy-peasy";
+import Cookies from "js-cookie";
+import storeJsLocalStorage from "store";
 import {
   ITaskListFilterState,
   ITaskListFilterActions,
@@ -6,7 +8,33 @@ import {
 } from "../model.typing";
 import * as _ from "lodash";
 
-import storeJsLocalStorage from "store";
+async function loadFilterCheckedOptions() {
+  let checkedOptionsFromCookie = Cookies.get("taskFilter.optionCheck");
+  // console.log("FRONT checkedOptionsFromCookie:", checkedOptionsFromCookie);
+
+  if(checkedOptionsFromCookie) {
+    try {
+      checkedOptionsFromCookie = JSON.parse(checkedOptionsFromCookie);
+    }
+    catch(ex) {
+      console.log("parsing taskFilter.optionCheck failed:", ex);
+    }
+  }
+
+  // TODO: remove in text version, migrated to cookie store for taskFilter.optionCheck
+  const checkedOptions = _.isEmpty(checkedOptionsFromCookie) ? await storeJsLocalStorage.get("taskFilter.optionCheck") : checkedOptionsFromCookie;
+
+  // console.log("FRONT checkedOptions ret:", checkedOptions);
+  
+  return {checkedOptions, checkedOptionsFromCookie};
+}
+
+async function storeFilterCheckedOptions(data) {
+  if(_.isEmpty(data)) {
+    storeJsLocalStorage.remove("taskFilter.optionCheck");
+  }
+  Cookies.set("taskFilter.optionCheck", JSON.stringify(data), {expires: 365});
+}
 
 const taskListFilterState: ITaskListFilterState = {
   optionCheck: null,
@@ -16,6 +44,7 @@ const taskListFilterState: ITaskListFilterState = {
   sectionClose: {},
   filterData: [],
   isFilterDataLoaded: false,
+  needReload: false,
 };
 
 export const graphqlQuery = {};
@@ -54,12 +83,25 @@ const taskListFilterActions: ITaskListFilterActions = {
   setOptionCheck: action((state, payload) => {
     state.optionCheck = payload;
   }),
-  loadOptionCheck: thunk(actions => {
-    const optionCheck = storeJsLocalStorage.get("taskFilter.optionCheck");
-    actions.setOptionCheck(_.isEmpty(optionCheck) ? {} : optionCheck);
+  loadOptionCheck: thunk(async (actions) => {
+    const {checkedOptions, checkedOptionsFromCookie} = await loadFilterCheckedOptions();
+    actions.setOptionCheck(_.isEmpty(checkedOptions) ? {} : checkedOptions);
+
+    if(checkedOptionsFromCookie === checkedOptions) {
+      // console.log("cookie equals ls");
+    }
+    else if(!_.isEmpty(checkedOptions)) {
+      // console.log("cookie differs from ls and ls not empty");
+      actions.saveOptionCheck();
+    }
+    else {
+      // console.log("cookie differs from ls and ls empty");      
+    }
+
   }),
   saveOptionCheck: action(state => {
-    storeJsLocalStorage.set("taskFilter.optionCheck", state.optionCheck);
+    state.needReload = true;
+    storeFilterCheckedOptions(state.optionCheck);
   }),
   setOptionOpen: action((state, payload) => {
     state.optionOpen = payload;

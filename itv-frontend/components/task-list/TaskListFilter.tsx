@@ -88,7 +88,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
         foundItem = itemData;
       }
       else {
-        foundItem = findCheckedItem(itemData.subterms, checkedSlug)
+        foundItem = findCheckedItem(itemData.subterms, checkedSlug);
       }
 
       if(foundItem) {
@@ -100,6 +100,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
   }
 
   useEffect(() => {
+    // console.log("task list FRONT running...");
     loadFilterData();
     loadTipClose();
     loadOptionCheck();
@@ -321,7 +322,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     return <TaskListFilterLoader />;
   }
 
-  console.log("render filter...");
+  // console.log("render filter...");
 
   return (
     <section className="task-list-filter">
@@ -500,8 +501,8 @@ function FilterSectionItems(props) {
                       isChecked
                         ? imgFilterCheckOn
                         : isSemiChecked
-                        ? imgFilterCheckSemi
-                        : imgFilterCheckOff
+                          ? imgFilterCheckSemi
+                          : imgFilterCheckOff
                     }
                   />
                   <span
