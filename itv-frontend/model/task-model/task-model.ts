@@ -14,7 +14,12 @@ import { queriedFields as approvedDoerQueriedFields } from "./task-approved-doer
 import { queriedFields as authorQueriedFields } from "./task-author";
 import { graphqlQuery as doerGraphqlQuery } from "./task-doer";
 import { findCommentById, graphqlQuery as commentGraphqlQuery } from "./task-comment";
-import { getLocaleDateTimeISOString, stripTags, getAjaxUrl } from "../../utilities/utilities";
+import {
+  getLocaleDateTimeISOString,
+  stripTags,
+  getAjaxUrl,
+  getGraphQLClientTokenHeader,
+} from "../../utilities/utilities";
 import * as _ from "lodash";
 
 const taskState: ITaskState = {
@@ -266,11 +271,14 @@ const taskThunks: ITaskThunks = {
 
     import("graphql-request").then(async ({ GraphQLClient }) => {
       const getTaskStateQuery = graphqlQuery.getBySlug;
-      const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=fron-task-request", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
+      const graphQLClient = new GraphQLClient(
+        process.env.GraphQLServer + "?rid=fron-task-request",
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       try {
         const { task } = await graphQLClient.request(getTaskStateQuery, {
@@ -972,7 +980,10 @@ const taskThunks: ITaskThunks = {
       },
     } = getStoreState() as IStoreModel;
     const { GraphQLClient } = await import("graphql-request");
-    const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=front-get-task-comments", { headers: utils.getGraphQLClientTokenHeader(session) });
+    const graphQLClient = new GraphQLClient(
+      process.env.GraphQLServer + "?rid=front-get-task-comments",
+      { headers: getGraphQLClientTokenHeader(session) }
+    );
 
     const {
       comments: { nodes: commentCollection },
@@ -990,14 +1001,14 @@ const taskThunks: ITaskThunks = {
       },
     } = getStoreState() as IStoreModel;
     const { GraphQLClient } = await import("graphql-request");
-    const graphQLClient = new GraphQLClient(process.env.GraphQLServer + "?rid=front-get-task-doers", { headers: utils.getGraphQLClientTokenHeader(session) });
-
-    const { taskDoers: doers } = await graphQLClient.request(
-      doerGraphqlQuery.doersRequest,
-      {
-        taskGqlId: taskId,
-      }
+    const graphQLClient = new GraphQLClient(
+      process.env.GraphQLServer + "?rid=front-get-task-doers",
+      { headers: getGraphQLClientTokenHeader(session) }
     );
+
+    const { taskDoers: doers } = await graphQLClient.request(doerGraphqlQuery.doersRequest, {
+      taskGqlId: taskId,
+    });
 
     updateDoers(doers);
   }),
