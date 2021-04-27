@@ -10,7 +10,7 @@ function load_faqs(): void
 {
     $source_file_name = 'faqs.json';
 
-    $source = file_get_contents(get_theme_file_path() . '/init/home/' . $source_file_name);
+    $source = file_get_contents(get_stylesheet_directory() . '/init/home/' . $source_file_name);
 
     if (!$source) {
         \WP_CLI::error(sprintf(__('Failed to get the source file: %s.', 'itv-backend'), $source_file_name));
