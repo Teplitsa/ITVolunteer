@@ -1,4 +1,4 @@
-const BaseUrl = "https://itv.ngo2.ru";
+const BaseUrl = "http://localhost:9000";
 
 const appConfig = {
   BaseUrl,
