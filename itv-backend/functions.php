@@ -20,6 +20,7 @@ require_once(get_theme_file_path() . '/models/advantage/advantage.php');
 require_once(get_theme_file_path() . '/models/faq/faq.php');
 require_once(get_theme_file_path() . '/models/partner/partner.php');
 require_once(get_theme_file_path() . '/models/review/review.php');
+require_once(get_theme_file_path() . '/models/stats/stats.php');
 
 // post-types
 require_once(get_theme_file_path() . '/post-types/portfolio_work.php');
@@ -56,6 +57,7 @@ require_once(get_theme_file_path() . '/wp-hooks/advantage.php');
 require_once(get_theme_file_path() . '/wp-hooks/faq.php');
 require_once(get_theme_file_path() . '/wp-hooks/partner.php');
 require_once(get_theme_file_path() . '/wp-hooks/review.php');
+require_once(get_theme_file_path() . '/wp-hooks/stats.php');
 ITV\models\Task::register_hooks();
 
 // filters

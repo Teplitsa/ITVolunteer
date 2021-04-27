@@ -5,7 +5,6 @@ import {
   IHomePageThunks,
   IMemberListItem,
 } from "../model.typing";
-import * as utils from "../../utilities/utilities";
 import { action, thunk, thunkOn } from "easy-peasy";
 
 const homePageState: IHomePageState = {
@@ -30,38 +29,12 @@ const homePageActions: IHomePageActions = {
   setTemplate: action((prevState, { template: newTemplate }) => {
     prevState.template = newTemplate;
   }),
-  setStats: action((state, payload) => {
-    state.stats = payload;
-  }),
   setMemberList: action((state, { memberList }) => {
     state.memberList = memberList;
   }),
 };
 
 const homePageThunks: IHomePageThunks = {
-  loadStatsRequest: thunk(async () => {
-    try {
-      const action = "get-task-status-stats";
-      const result = await fetch(utils.getAjaxUrl(action), {
-        method: "post",
-      });
-
-      const { status: responseStatus, stats: stats } = await (<
-        Promise<{
-          status: string;
-          stats?: any;
-        }>
-      >result.json());
-
-      if (responseStatus === "ok") {
-        return { stats };
-      }
-    } catch (error) {
-      console.error(error);
-    }
-
-    return { stats: null };
-  }),
   loadMembersRequest: thunk(async () => {
     const { request } = await import("graphql-request");
     const { memberListItemQueriedFields } = await import("../../model/components/members-model");
@@ -87,14 +60,6 @@ const homePageThunks: IHomePageThunks = {
 
     return { memberList: null };
   }),
-  onLoadStatsRequestSuccess: thunkOn(
-    actions => actions.loadStatsRequest.successType,
-    ({ setStats }, { result }) => {
-      const { stats } = result;
-
-      setStats(stats);
-    }
-  ),
   onMemberListRequestSuccess: thunkOn(
     actions => actions.loadMembersRequest.successType,
     ({ setMemberList }, { result }) => {

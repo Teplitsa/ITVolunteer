@@ -7,11 +7,11 @@ class Task
 
     const POST_TYPE = 'tasks';
 
-    public function update_item_cache(int $task_id)
+    public static function update_item_cache(int $task_id)
     {
         if (!is_numeric($task_id)) {
 
-            throw new \Exception(__('A valid task ID is required.', 'itv-backend'));
+            trigger_error(__('A valid task ID is required.', 'itv-backend'), E_USER_WARNING);
 
             return;
         }
@@ -22,14 +22,12 @@ class Task
 
         if (is_null($task)) {
 
-            throw new \Exception(__('No task found for the given ID.', 'itv-backend'));
+            trigger_error(__('No task found for the given ID.', 'itv-backend'), E_USER_WARNING);
 
             return;
         }
 
         if ($task["status"] !== "publish") {
-
-            throw new \Exception(__('The task is not a public.', 'itv-backend'));
 
             return;
         }
@@ -50,7 +48,7 @@ class Task
 
     public static function register_hooks()
     {
-        \add_action("save_post_" . self::POST_TYPE, [__CLASS__, "update_item_cache"]);
+        \add_action('save_post_' . self::POST_TYPE, ['ITV\models\Task', 'update_item_cache']);
     }
 
     public static function get_item(int $task_id): ?array

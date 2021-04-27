@@ -1,6 +1,6 @@
 <?php
 
-use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review, News};
+use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review, News, Stats, MemberStats, TaskStats};
 
 if (!class_exists('WP_CLI')) {
     return;
@@ -209,6 +209,61 @@ class Cache
         $updateCacheResult = $collection->insertMany($news_list);
 
         WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), News::$post_type));
+    }
+
+    public function update_stats(): void
+    {
+        $task_stats_list = TaskStats::get_list();
+
+        if (!$task_stats_list) {
+
+            WP_CLI::warning(__('No task stats items found.', 'itv-backend'));
+
+            return;
+        }
+
+        $task_stats_featured_categories = TaskStats::get_featured_categories();
+
+        if (!$task_stats_featured_categories) {
+
+            WP_CLI::warning(__('No task stats categories found.', 'itv-backend'));
+
+            return;
+        }
+
+        $member_stats_count = MemberStats::get_count();
+
+        if (!$member_stats_count) {
+
+            WP_CLI::warning(__('No members found.', 'itv-backend'));
+
+            return;
+        }
+
+        $mongo_client = MongoClient::getInstance();
+
+        $collection = $mongo_client->{self::STORAGE_NAME}->{Stats::$collection_name};
+
+        $collection->drop();
+
+        $member_collection_name = MemberStats::$child_collection_name;
+        $task_collection_name = TaskStats::$child_collection_name;
+
+        $updateCacheResult = $collection->insertOne([
+            "{$member_collection_name}" => [
+                'total' => $member_stats_count
+            ],
+            "{$task_collection_name}" => [
+                'featuredCategories' => $task_stats_featured_categories,
+                'total'              => $task_stats_list
+            ],
+        ]);
+
+        if (!$updateCacheResult->getInsertedCount()) {
+            WP_CLI::error(__('Failted to update stats.', 'itv-backend'));
+        }
+
+        WP_CLI::success(__('Stats successfully updated.', 'itv-backend'));
     }
 }
 
