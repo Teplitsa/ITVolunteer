@@ -21,9 +21,9 @@ class MemberStats extends Stats
                 SELECT
                     COUNT(*)
                 FROM
-                    {$wpdb->prefix}itv_user_xp
+                    {$wpdb->users}
                 WHERE
-                    user_id <> %s
+                    ID <> %d
                 SQL,
                 ACCOUNT_DELETED_ID
             )

@@ -15,7 +15,7 @@ import { BSONType } from "mongodb";
 
 export interface IModelWithAppAndEntrypoint extends IComponentsState {
   app: IAppState;
-  session?: ISessionState,
+  session?: ISessionState;
   entrypointType: PostType;
   entrypoint: IStoreEntrypoint;
 }
@@ -177,6 +177,7 @@ export interface ISessionThunks {
     },
     IStoreModel
   >;
+  authorizeSession: Thunk<ISessionActions>;
 }
 
 /**
