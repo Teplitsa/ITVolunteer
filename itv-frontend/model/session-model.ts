@@ -11,7 +11,7 @@ import {
 import { thunk, action, computed, actionOn } from "easy-peasy";
 import SsrCookie from "ssr-cookie";
 import * as C from "../const";
-import { getAjaxUrl, getLoginUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
+import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
