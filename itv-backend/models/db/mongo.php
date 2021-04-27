@@ -4,10 +4,6 @@ namespace ITV\models;
 
 final class MongoClient
 {
-    const PROTOCOL = "mongodb";
-    const HOST = "localhost";
-    const PORT = "27017";
-
     private static ?MongoClient $instance = null;
 
     private static ?\MongoDB\Client $client = null;
@@ -18,7 +14,7 @@ final class MongoClient
             static::$instance = new static();
 
             try {
-                static::$instance::$client = new \MongoDB\Client(self::PROTOCOL . "://" . self::HOST . ":" . self::PORT);
+                static::$instance::$client = new \MongoDB\Client(\ITV\Config::MONGO_CONNECTION);
             } catch (\Exception $e) {
                 echo 'Не удалось подключиться к базе данных (mongodb): ',  $e->getMessage(), "\n";
             }
