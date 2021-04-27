@@ -33,4 +33,4 @@ function insert_platform_user_role_terms(): void
     WP_CLI::success('Platform user role terms has been successfully inserted.');
 }
 
-WP_CLI::add_command('insert-platform-user-role-terms', 'insert_platform_user_role_terms');
+WP_CLI::add_command('insert_platform_user_role_terms', 'insert_platform_user_role_terms');
