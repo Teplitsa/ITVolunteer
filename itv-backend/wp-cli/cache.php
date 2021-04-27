@@ -1,6 +1,8 @@
 <?php
 
-use ITV\models\{Task, MongoClient};
+namespace ITV\cli;
+
+use ITV\models\{Task, MongoClient, CacheManager};
 
 if (!class_exists('WP_CLI')) {
     return;
@@ -12,9 +14,6 @@ if (!class_exists('WP_CLI')) {
 
 class Cache
 {
-
-    const STORAGE_NAME = 'itv_cache';
-
     public function update_task($args, $assoc_args)
     {
         ["task_id" => $task_id] = $assoc_args;
@@ -46,7 +45,7 @@ class Cache
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->tasks;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->tasks;
 
         $updateCacheResult = $collection->findOneAndUpdate(['databaseId' => $task_id], ['$set' => $task]);
 
@@ -65,20 +64,20 @@ class Cache
 
         if (!$task_list) {
 
-            WP_CLI::warning(__('No task found.', 'itv-backend'));
+            \WP_CLI::warning(__('No task found.', 'itv-backend'));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->tasks;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->tasks;
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($task_list);
 
-        WP_CLI::success(sprintf(__('%d task(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
+        \WP_CLI::success(sprintf(__('%d task(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
     }
 
     public function update_task_list_filter()
@@ -87,21 +86,21 @@ class Cache
 
         if (!$filter_sections) {
 
-            WP_CLI::warning(__('No filter sections found.', 'itv-backend'));
+            \WP_CLI::warning(__('No filter sections found.', 'itv-backend'));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->task_list_filter;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->task_list_filter;
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($filter_sections);
 
-        WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
+        \WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
     }
 }
 
-WP_CLI::add_command('itv_cache', 'Cache');
+\WP_CLI::add_command('itv_cache', '\ITV\cli\Cache');

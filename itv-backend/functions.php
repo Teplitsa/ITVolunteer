@@ -28,11 +28,13 @@ require_once(get_theme_file_path() . '/rest-api/member/role.php');
 require_once(get_theme_file_path() . '/rest-api/member/member.php');
 require_once(get_theme_file_path() . '/rest-api/member/review.php');
 require_once(get_theme_file_path() . '/rest-api/member/notif.php');
+require_once(get_theme_file_path() . '/rest-api/member/ratingList.php');
 require_once(get_theme_file_path() . '/rest-api/task/task.php');
 
 // wp-cli
 require_once(get_theme_file_path() . '/wp-cli/set_members_itv_role.php');
 require_once(get_theme_file_path() . '/wp-cli/cache.php');
+require_once(get_theme_file_path() . '/wp-cli/member_rating.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');
