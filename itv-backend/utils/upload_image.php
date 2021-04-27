@@ -6,14 +6,34 @@ function upload_image(array $image_props): ?int
 {
     ['url' => $url, 'attached_to' => $attached_to, 'desc' => $desc] = $image_props;
 
-    require_once ABSPATH . 'wp-admin/includes/media.php';
-    require_once ABSPATH . 'wp-admin/includes/file.php';
-    require_once ABSPATH . 'wp-admin/includes/image.php';
+    $url_filename = basename(parse_url($url, PHP_URL_PATH));
 
-    $img_id = media_sideload_image(get_stylesheet_directory_uri() . $url, $attached_to, $desc, 'id');
+    $upload_file = \wp_upload_bits($url_filename, null, file_get_contents(\get_stylesheet_directory() . $url));
 
-    if (!is_wp_error($img_id)) {
-        return $img_id;
+    if (!$upload_file['error']) {
+
+        $mime = \wp_check_filetype($url_filename, null);
+
+        $attachment = array(
+            'post_mime_type' => $mime['type'],
+            'post_parent'    => $attached_to,
+            'post_title'     => $desc,
+            'post_content'   => '',
+            'post_status'    => 'inherit'
+        );
+
+        $attachment_id = \wp_insert_attachment($attachment, $upload_file['file'], $attached_to);
+
+        if (!\is_wp_error($attachment_id)) {
+
+            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+
+            $attachment_data = \wp_generate_attachment_metadata($attachment_id, $upload_file['file']);
+
+            \wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+            return $attachment_id;
+        }
     }
 
     return null;
