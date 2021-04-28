@@ -21,7 +21,7 @@ const Stats: React.FunctionComponent = (): ReactElement => {
     const formData = new FormData();
 
     const action = "get_general_stats";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
+    fetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })

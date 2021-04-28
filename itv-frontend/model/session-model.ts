@@ -11,7 +11,7 @@ import {
 import { thunk, action, computed, actionOn } from "easy-peasy";
 import SsrCookie from "ssr-cookie";
 import * as C from "../const";
-import { getAjaxUrl, getLoginUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
+import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
@@ -125,18 +125,21 @@ export const graphqlQuery = {
   }`,
 };
 
-export async function authorizeSessionSSRFromRequest(req, res):Promise<ISessionState> {
+export async function authorizeSessionSSRFromRequest(req, res): Promise<ISessionState> {
   const cookieSSR = new SsrCookie(req, res);
   const session = await authorizeSessionSSR(cookieSSR);
 
-  if(!session.user.databaseId && decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/)) {
+  if (
+    !session.user.databaseId &&
+    decodeURIComponent(req.headers.cookie).match(/wordpress_logged_in_[^=]+=([^|]+)/)
+  ) {
     session.isLoaded = false;
   }
 
   return session;
 }
 
-export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
+export async function authorizeSessionSSR(cookieSSR): Promise<ISessionState> {
   const guestSession = {
     token: { timestamp: Date.now(), authToken: null, refreshToken: null },
     user: sessionUserState,
@@ -146,7 +149,7 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
   try {
     const cookieAuthToken = cookieSSR.get(C.ITV_COOKIE.AUTH_TOKEN.name);
     // console.log("cookieAuthToken:", cookieAuthToken);
-    if(!cookieAuthToken) {
+    if (!cookieAuthToken) {
       return guestSession;
     }
 
@@ -154,16 +157,13 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
       method: "post",
       headers: {
         Authorization: "Bearer " + cookieAuthToken,
-      }
+      },
     });
 
     // console.log("result.ok:", result.ok);
-    
-    if(result.ok) {
-      const {
-        token: authToken,
-        user: user,
-      } = await (<
+
+    if (result.ok) {
+      const { token: authToken, user: user } = await (<
         Promise<{
           token: string;
           user: any;
@@ -179,14 +179,8 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
         user,
         isLoaded: true,
       } as ISessionState;
-
-    }
-    else {
-
-      const {
-        code: errorCode,
-        message: errorMessage,
-      } = await (<
+    } else {
+      const { code: errorCode, message: errorMessage } = await (<
         Promise<{
           code: string;
           message: string;
@@ -196,7 +190,6 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
       console.error("authorizeSessionSSR errorCode:", errorCode);
       console.error(stripTags(errorMessage));
       console.error("authorizeSessionSSR set session isLoaded on fail");
-
     }
   } catch (error) {
     console.error("authorizeSessionSSR exception:", error);
@@ -206,7 +199,7 @@ export async function authorizeSessionSSR(cookieSSR):Promise<ISessionState> {
 }
 
 const sessionActions: ISessionActions = {
-  setStateGuest: action((state) => {
+  setStateGuest: action(state => {
     state.isLoaded = true;
   }),
   setState: action((prevState, newState) => {
@@ -231,7 +224,7 @@ const sessionActions: ISessionActions = {
   ),
   loadSubscribeTaskList: thunk(actions => {
     const action = "get-task-list-subscription";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
+    fetch(utils.getAjaxUrl(action), {
       method: "get",
     })
       .then(res => {
@@ -339,7 +332,7 @@ const sessionThunks: ISessionThunks = {
   }),
   register: thunk(async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
     try {
-      const result = await utils.tokenFetch(getAjaxUrl("user-register"), {
+      const result = await fetch(getAjaxUrl("user-register"), {
         method: "post",
         body: utils.formDataToJSON(formData),
         headers: {
@@ -362,7 +355,7 @@ const sessionThunks: ISessionThunks = {
   }),
   userLogin: thunk(async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
     try {
-      const result = await utils.tokenFetch(getRestApiUrl("/itv/v1/auth/login"), {
+      const result = await fetch(getAjaxUrl("login"), {
         method: "post",
         body: utils.formDataToJSON(formData),
         headers: {
@@ -370,48 +363,14 @@ const sessionThunks: ISessionThunks = {
         },
       });
 
-      if(result.ok) {
-
-        const {
-          token: authToken,
-          user: user,
-        } = await (<
-          Promise<{
-            token: string;
-            user: any;
-          }>
-        >result.json());
-
-        console.error("set session isLoaded on ok");
-
-        actions.setState({
-          token: { timestamp: Date.now(), authToken, refreshToken: null },
-          user,
-          isLoaded: true,
-        });
-
+      const { status: responseStatus, message: responseMessage } = await (<Promise<IFetchResult>>(
+        result.json()
+      ));
+      if (responseStatus === "fail") {
+        errorCallbackFn(stripTags(responseMessage));
+      } else {
         successCallbackFn();
-
       }
-      else {
-
-        const {
-          code: errorCode,
-          message: errorMessage,
-        } = await (<
-          Promise<{
-            code: string;
-            message: string;
-          }>
-        >result.json());
-
-        console.error("errorCode:", errorCode);
-        console.error(stripTags(errorMessage));
-        console.error("set session isLoaded on fail");
-
-        errorCallbackFn(stripTags(errorMessage));
-      }
-
     } catch (error) {
       console.error(error);
       errorCallbackFn("Во время входа произашла ошибка.");
@@ -422,7 +381,7 @@ const sessionThunks: ISessionThunks = {
       const formData = new FormData();
       formData.append("user_login", String(userLogin));
 
-      const result = await utils.tokenFetch(getAjaxUrl("reset-password"), {
+      const result = await fetch(getAjaxUrl("reset-password"), {
         method: "post",
         body: formData,
       });
@@ -449,7 +408,7 @@ const sessionThunks: ISessionThunks = {
         formData.append("pass2", String(newPassword));
         formData.append("rp_key", String(key));
 
-        const result = await utils.tokenFetch(getLoginUrl() + "?action=resetpass", {
+        const result = await fetch("/wp-login.php?action=resetpass", {
           method: "post",
           body: formData,
         });
@@ -478,7 +437,7 @@ const sessionThunks: ISessionThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await utils.tokenFetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
+        const result = await fetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
           method: "POST",
           body: formData,
         });
@@ -501,12 +460,8 @@ const sessionThunks: ISessionThunks = {
         method: "post",
       });
 
-      if(result.ok) {
-
-        const {
-          token: authToken,
-          user: user,
-        } = await (<
+      if (result.ok) {
+        const { token: authToken, user: user } = await (<
           Promise<{
             token: string;
             user: any;
@@ -520,14 +475,8 @@ const sessionThunks: ISessionThunks = {
           user,
           isLoaded: true,
         });
-
-      }
-      else {
-
-        const {
-          code: errorCode,
-          message: errorMessage,
-        } = await (<
+      } else {
+        const { code: errorCode, message: errorMessage } = await (<
           Promise<{
             code: string;
             message: string;

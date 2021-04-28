@@ -1,0 +1,20 @@
+<svg width="80" height="81" viewBox="0 0 80 81" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 40.4453C0 18.3539 17.9086 0.445312 40 0.445312C62.0914 0.445312 80 18.3539 80 40.4453C80 62.5367 62.0914 80.4453 40 80.4453C17.9086 80.4453 0 62.5367 0 40.4453Z" fill="#F3EFE7"/>
+<circle cx="40.2609" cy="41.7062" r="18.2609" fill="#FECA55"/>
+<path d="M27 53.4453H53L48.4118 60.4453H33.1176L27 53.4453Z" fill="#FECA55"/>
+<line x1="1" y1="-1" x2="23.8963" y2="-1" transform="matrix(0.13971 0.990193 -0.991617 0.129215 32.3486 36.4453)" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<line x1="1" y1="-1" x2="23.8963" y2="-1" transform="matrix(-0.13971 0.990193 0.991617 0.129215 47.1309 36.4453)" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<line x1="30.3047" y1="36.4453" x2="48.3047" y2="36.4453" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<line x1="32" y1="41.4453" x2="47.3913" y2="41.4453" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<path d="M19.3046 52.8364L16.4785 54.5756" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M60.0001 52.8364L62.8262 54.5756" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M16.6957 41.3149H13" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M62.609 41.3149H66.3047" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M19.7388 29.7933L16.6953 28.0542" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M39.957 18.4888V15.4453" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M28.2176 21.3149L26.4785 18.4888" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M51.6953 21.7495L53.2171 18.7061" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<path d="M60.1738 30.0106L62.9999 28.2715" stroke="#BAB5AB" stroke-width="1.5" stroke-linecap="round"/>
+<rect x="29.5" y="60.9453" width="22" height="5" rx="2.5" fill="#8DB8A8" stroke="#F3EFE7"/>
+<path d="M40 57.4453V44.9453" stroke="#D24A43" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

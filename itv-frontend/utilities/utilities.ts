@@ -7,6 +7,17 @@ import Cookies from "js-cookie";
 import * as C from "../const";
 import { ISessionState } from "model/model.typing";
 
+export const convertObjectToClassName = (classNameMatrix: {
+  [className: string]: boolean;
+}): string =>
+  Object.entries(classNameMatrix)
+    .reduce(
+      (activeClassList, [className, activityFlag]) =>
+        (activityFlag && [...activeClassList, className]) || activeClassList,
+      []
+    )
+    .join(" ");
+
 export const convertDateToLocalISOString = ({
   date,
   locale = "ru-RU",
@@ -147,11 +158,6 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
-export const getLoginUrl = (): string => {
-  const url = new URL(process.env.LoginUrl);
-  return url.toString();
-};
-
 export const getRestApiUrl = (route: string): string => {
   const url = new URL(process.env.RestApiUrl + route);
   return url.toString();
@@ -192,7 +198,7 @@ export function decodeHtmlEntities(textWithEntities) {
 }
 
 export function getSiteUrl(path = "") {
-  if(typeof window === "undefined" || !window) {
+  if (typeof window === "undefined" || !window) {
     return path;
   }
 
@@ -256,8 +262,8 @@ export function getReviewsCountString(reviewsCount) {
     : "отзывов";
 }
 
-export function getGraphQLClientTokenHeader(session, headers=null) {
-  if(!headers) {
+export function getGraphQLClientTokenHeader(session, headers = null) {
+  if (!headers) {
     headers = {};
   }
 
@@ -268,13 +274,13 @@ export function getGraphQLClientTokenHeader(session, headers=null) {
   return headers;
 }
 
-export async function tokenFetch(url, options={}) {
+export async function tokenFetch(url, options = {}) {
   _.set(options, "headers.Authorization", "Bearer " + Cookies.get(C.ITV_COOKIE.AUTH_TOKEN.name));
   return await fetch(url, options);
 }
 
-export async function sessionFetch(url, session:ISessionState, options={}) {
-  if(session.user.databaseId) {
+export async function sessionFetch(url, session: ISessionState, options = {}) {
+  if (session.user.databaseId) {
     _.set(options, "headers.Authorization", "Bearer " + session.token.authToken);
   }
   return await fetch(url, options);

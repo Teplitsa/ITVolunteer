@@ -1,4 +1,12 @@
-import { Children, ReactElement, useState, useRef, useEffect, useLayoutEffect, MutableRefObject } from "react";
+import {
+  Children,
+  ReactElement,
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  MutableRefObject,
+} from "react";
 import styles from "../../assets/sass/modules/Accordion.module.scss";
 
 type AccordionItemComponents = "title" | "content" | "control";
@@ -51,7 +59,11 @@ const Accordion: React.FunctionComponent = ({ children }): ReactElement => {
           collectionItem.style.height =
             i === activeIndex ? collectionItem.dataset.accordionHeight : "0px";
         } else if (itemComponentName === "control") {
-          collectionItem.onclick = createHandleItemControlClick(i);
+          const item = collectionItem.closest("[data-accordion-item]");
+          const itemList = Array.from(item.parentNode.children);
+          const itemIndex = itemList.findIndex(currentItem => currentItem === item);
+
+          collectionItem.onclick = createHandleItemControlClick(itemIndex);
         }
       });
     });

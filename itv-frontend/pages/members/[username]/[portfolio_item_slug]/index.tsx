@@ -7,7 +7,6 @@ import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
 import { IRestApiResponse, IPortfolioItemAuthor } from "../../../../model/model.typing";
 import Error404 from "../../../../components/page/Error404";
 import { getMediaData } from "../../../../utilities/media";
-import * as utils from "../../../../utilities/utilities";
 import { authorizeSessionSSRFromRequest } from "../../../../model/session-model";
 
 const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
@@ -89,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
             .join("&");
         })();
 
-        const portfolioItemAuthorResult = await utils.tokenFetch(portfolioItemAuthorRequestUrl.toString());
+        const portfolioItemAuthorResult = await fetch(portfolioItemAuthorRequestUrl.toString());
 
         const response: IRestApiResponse &
           IPortfolioItemAuthor = await portfolioItemAuthorResult.json();
@@ -106,7 +105,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
       }
 
       try {
-        const portfolioItemResult = await utils.tokenFetch(
+        const portfolioItemResult = await fetch(
           getRestApiUrl(`/wp/v2/portfolio_work/slug:${query.portfolio_item_slug}`)
         );
         const response: IRestApiResponse & {

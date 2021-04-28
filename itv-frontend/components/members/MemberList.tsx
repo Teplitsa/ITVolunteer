@@ -1,35 +1,35 @@
 import { ReactElement, useState } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
-import MembersListItem from "./MembersListItem";
+import MemberListItem from "./MemberListItem";
 import { USER_PER_PAGE } from "../../model/components/members-model";
 import Loader from "../Loader";
 
-const MembersList: React.FunctionComponent = (): ReactElement => {
+const MemberList: React.FunctionComponent = (): ReactElement => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const {
     paged,
-    userListStats: { total: totalVolunteers },
-    userList: volunteers = null,
+    userListStats: { total: totalMembers },
+    userList: members = null,
   } = useStoreState(state => state.components.members);
   const moreVolunteersRequest = useStoreActions(
     actions => actions.components.members.moreVolunteersRequest
   );
 
-  return volunteers ? (
+  return members ? (
     <>
       <div className="members-list">
-        {volunteers
-          ?.filter(volunteer => !!volunteer)
-          .map((volunteer, index) => {
+        {members
+          ?.filter(member => !!member)
+          .map((member, index) => {
             return (
-              <MembersListItem
-                key={`Volunteer-${volunteer.id}`}
-                {...{ isOdd: index % 2 === 0, index: index + 1, volunteer }}
+              <MemberListItem
+                key={`Volunteer-${member.id}`}
+                {...{ isOdd: index % 2 === 0, index: index + 1, member }}
               />
             );
           })}
       </div>
-      {USER_PER_PAGE * paged < totalVolunteers && (
+      {USER_PER_PAGE * paged < totalMembers && (
         <div className="members-list-more">
           {(isLoading && <Loader />) || (
             <a
@@ -50,4 +50,4 @@ const MembersList: React.FunctionComponent = (): ReactElement => {
   ) : null;
 };
 
-export default MembersList;
+export default MemberList;

@@ -41,6 +41,9 @@
       }
     }
   }
+  &_no-margin {
+    margin: 0;
+  }
   &::before,
   &::after,
   &__divider {

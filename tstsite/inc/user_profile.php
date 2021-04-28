@@ -93,7 +93,7 @@ function tst_get_member_user_company_logo_src($member_id) {
     $image_id = get_user_meta($member_id, 'user_company_logo', true);
     $res = '';
     if($image_id) {
-        $res = wp_get_attachment_image_src( $image_id, 'logo' );
+        $res = wp_get_attachment_image_src( $image_id, 'avatar' );
         $res = $res ? $res[0] : '';
     }
     return $res;

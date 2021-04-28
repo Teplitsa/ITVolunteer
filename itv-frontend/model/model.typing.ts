@@ -7,6 +7,7 @@ import {
   ICoreParagraphBlock,
   ICoreMediaTextBlock,
 } from "./gutenberg/gutenberg.typing";
+import { BSONType } from "mongodb";
 
 /**
  * Model helpers
@@ -14,7 +15,7 @@ import {
 
 export interface IModelWithAppAndEntrypoint extends IComponentsState {
   app: IAppState;
-  session?: ISessionState,
+  session?: ISessionState;
   entrypointType: PostType;
   entrypoint: IStoreEntrypoint;
 }
@@ -308,15 +309,15 @@ export interface IMemberListItem {
   memberRole: string;
   organizationName: string;
   organizationDescription: string;
+  organizationSite: string;
   rating: number;
   reviewsCount: number;
   xp: number;
   solvedProblems: number;
-  facebook: string;
-  instagram: string;
-  vk: string;
-  organizationSite: string;
-  registrationDate: number;
+  facebook?: string;
+  instagram?: string;
+  vk?: string;
+  registrationDate?: number;
 }
 
 export interface IMembersPageState {
@@ -1565,37 +1566,124 @@ export interface INewsItemActions {
 export interface INewsItemThunks {}
 
 /**
+ * Cacheable
+ */
+
+export interface ICacheable {
+  _id: BSONType;
+}
+
+/**
+ * Advantage
+ */
+
+export interface IAdvantage extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  userRole: MemberAccountTemplate;
+}
+
+/**
+ * Faq
+ */
+
+export interface IFaq extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  userRole: MemberAccountTemplate;
+}
+
+/**
+ * Partner
+ */
+
+export interface IPartner extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+}
+
+/**
+ * Review
+ */
+
+export interface IReview extends ICacheable {
+  externalId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+}
+
+/**
+ * News
+ */
+
+export interface INews extends ICacheable {
+  externalId: number;
+  title: string;
+  date: string;
+  permalink: string;
+  content?: string;
+  thumbnail?: string;
+}
+
+/**
+ * Featured category
+ */
+
+export interface IFeaturedCategory extends ICacheable {
+  categoryName: string;
+  categorySlug: string;
+  taskCount: number;
+}
+
+/**
+ * Stats
+ */
+
+export interface IStats extends ICacheable {
+  member: { total: number };
+  task: {
+    featuredCategories: Array<IFeaturedCategory>;
+    total: {
+      publish: number;
+      closed: number;
+    };
+  };
+}
+
+/**
  * HomePage
  */
 
 export interface IHomePageModel extends IHomePageState, IHomePageActions, IHomePageThunks {}
 
-export interface IHomePageState extends IPageState {
-  id: string;
+export interface IHomePageState {
+  template: MemberAccountTemplate;
+  advantageList: Array<IAdvantage>;
+  faqList: Array<IFaq>;
+  partnerList: Array<IPartner>;
+  reviewList: Array<IReview>;
   taskList: Array<ITaskState>;
-  newsList?: INewsListModel;
-  stats: any;
+  memberList: Array<IMemberListItem>;
+  newsList: Array<INews>;
+  stats: IStats;
 }
 
 export interface IHomePageActions {
   initializeState: Action<IHomePageModel>;
   setState: Action<IHomePageModel, IHomePageState>;
-  setStats: Action<IHomePageModel, any>;
-  setTaskList: Action<IHomePageModel, any>;
-  setNewsList: Action<IHomePageModel, any>;
+  setTemplate: Action<IHomePageModel, { template: MemberAccountTemplate }>;
+  setMemberList: Action<IHomePageModel, { memberList: Array<IMemberListItem> }>;
 }
 
 export interface IHomePageThunks {
-  loadStatsRequest: Thunk<IHomePageActions>;
-  onLoadStatsRequestSuccess: ThunkOn<IHomePageModel>;
-}
-
-/**
- * task list context
- */
-export interface IHomeTaskListContext {
-  mustHideTaskItemOverlays: any;
-  setMustHideTaskItemOverlays: (taskId: string, mustHide: boolean) => void;
+  loadMembersRequest: Thunk<IHomePageActions>;
+  onMemberListRequestSuccess: ThunkOn<IHomePageModel>;
 }
 
 /**

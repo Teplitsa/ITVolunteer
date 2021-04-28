@@ -3,7 +3,7 @@ import { ICoreMediaTextBlock } from "../../model/gutenberg/gutenberg.typing";
 import withGutenbergBlock from "./hoc/withGutenbergBlock";
 import withSlideIn from "../hoc/withSlideIn";
 
-const Image: React.FunctionComponent<{
+export const Image: React.FunctionComponent<{
   mediaUrl: string;
   mediaAlt?: string;
   className?: string;

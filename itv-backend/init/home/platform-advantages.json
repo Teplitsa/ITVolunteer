@@ -1,0 +1,98 @@
+[
+  {
+    "title": "Реальная практика",
+    "content": "Волонтёрство — билет в профессию для новичков: здесь вы найдёте свой первый проект и прокачаете навыки в бою.",
+    "thumbnail": "/init/home/assets/img/home-benefits-real-practice.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Долгосрочное сотрудничество",
+    "content": "Многие волонтёры после разовых задач получают приглашение в большой проект.",
+    "thumbnail": "/init/home/assets/img/home-benefits-long-term-cooperation.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Постоянное развитие",
+    "content": "Мы регулярно проводим обучающие мастерские с опытными кураторами, где волонтёры прокачивают свои навыки.",
+    "thumbnail": "/init/home/assets/img/home-benefits-permanent-growth.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Кейсы в портфолио",
+    "content": "Вы добавите реальные проекты в портфолио вместо того, чтобы работать  «в стол».",
+    "thumbnail": "/init/home/assets/img/home-benefits-portfolio.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Вдохновляющие проекты",
+    "content": "Делайте то, что находит у вас отклик — например, помогайте детям или улучшайте городскую среду.",
+    "thumbnail": "/init/home/assets/img/home-benefits-portfolio.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Социально значимые задачи",
+    "content": "Каждый проект делает чью-то жизнь лучше — ваша помощь будет иметь реальный эффект.",
+    "thumbnail": "/init/home/assets/img/home-benefits-social-tasks.svg",
+    "tax_input": {
+      "platform_user_role": "volunteer"
+    }
+  },
+  {
+    "title": "Неравнодушных волонтёров",
+    "content": "Наши специалисты мотивированы работать с гражданскими инициативами — это близко им по духу.",
+    "thumbnail": "/init/home/assets/img/home-benefits-caring-volunteers.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  },
+  {
+    "title": "Решение любых задач",
+    "content": "На платформе есть специалисты разных профилей — от разработчиков и дизайнеров до юристов.",
+    "thumbnail": "/init/home/assets/img/home-benefits-solving-any-problems.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  },
+  {
+    "title": "Помощь и поддержку",
+    "content": "Вы сможете присоединиться к чату IT-волонтёров в Telegram, где сможете просить совета и помощи.",
+    "thumbnail": "/init/home/assets/img/home-benefits-help-and-support.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  },
+  {
+    "title": "Специалистов нужного уровня",
+    "content": "На простую задачу откликнутся новички, на сложную — опытные специалисты и веб-студии.",
+    "thumbnail": "/init/home/assets/img/home-benefits-highly-qualified-specialists.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  },
+  {
+    "title": "Постоянных исполнителей",
+    "content": "Если вам понравится волонтёр, вы можете предложить ему долгосрочное сотрудничество.",
+    "thumbnail": "/init/home/assets/img/home-benefits-long-term-collaboration.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  },
+  {
+    "title": "Полезные знания",
+    "content": "Мы учим сотрудников НКО самостоятельно решать простые IT-задачи на онлайн-курсах и мастер-классах. ",
+    "thumbnail": "/init/home/assets/img/home-benefits-useful-knowledge.svg",
+    "tax_input": {
+      "platform_user_role": "author"
+    }
+  }
+]

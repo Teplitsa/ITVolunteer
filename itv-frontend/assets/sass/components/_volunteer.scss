@@ -117,4 +117,10 @@
       text-align: right;
     }
   }
+  &__divider {
+    display: block;
+    border-top: 1px solid $color-gray-light-md;
+    margin: 10px 0;
+    width: 100%;
+  }
 }

@@ -78,11 +78,15 @@ export const AgreementScreen: React.FunctionComponent<IWizardScreenProps> = scre
   }
 
   async function loadCreateTaskAgreementPageData() {
-    const pageQuery = createTaskAgreementModel.graphqlQuery;
-    const { pageBy: component } = await request(process.env.GraphQLServer, pageQuery, {
-      uri: "/create_task_agreement",
-    });
-    setCreateTaskAgreement(component);
+    try {
+      const pageQuery = createTaskAgreementModel.graphqlQuery;
+      const { pageBy: component } = await request(process.env.GraphQLServer, pageQuery, {
+        uri: "/create_task_agreement",
+      });
+      setCreateTaskAgreement(component);
+    } catch (error) {
+      console.error(`При загрузке страницы проризошла ошибка.`);
+    }
   }
 
   if (!createTaskAgreement) {

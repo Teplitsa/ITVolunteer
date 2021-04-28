@@ -3,77 +3,71 @@ import {
   IHomePageModel,
   IHomePageActions,
   IHomePageThunks,
-  IStoreModel,
+  IMemberListItem,
 } from "../model.typing";
-import * as utils from "../../utilities/utilities";
 import { action, thunk, thunkOn } from "easy-peasy";
 
 const homePageState: IHomePageState = {
-  id: "",
-  title: "",
-  slug: "",
-  content: "",
+  template: "volunteer",
+  advantageList: null,
+  faqList: null,
+  partnerList: null,
+  reviewList: null,
   newsList: null,
-  taskList: [],
+  taskList: null,
+  memberList: null,
   stats: null,
 };
 
 const homePageActions: IHomePageActions = {
-  initializeState: action((prevState) => {
+  initializeState: action(prevState => {
     Object.assign(prevState, homePageState);
   }),
   setState: action((prevState, newState) => {
     Object.assign(prevState, newState);
   }),
-  setStats: action((state, payload) => {
-    state.stats = payload
+  setTemplate: action((prevState, { template: newTemplate }) => {
+    prevState.template = newTemplate;
   }),
-  setTaskList: action((state, payload) => {
-    state.taskList = payload;
-  }),
-  setNewsList: action((state, payload) => {
-    state.newsList = {isNewsListLoaded: true, items: payload};
+  setMemberList: action((state, { memberList }) => {
+    state.memberList = memberList;
   }),
 };
 
 const homePageThunks: IHomePageThunks = {
-  loadStatsRequest: thunk(
-    async() => {
+  loadMembersRequest: thunk(async () => {
+    const { request } = await import("graphql-request");
+    const { memberListItemQueriedFields } = await import("../../model/components/members-model");
 
-      try {
-        const action = "get-task-status-stats";
-        const result = await utils.tokenFetch(utils.getAjaxUrl(action), {
-          method: "post",
-        });
-
-        const { status: responseStatus, stats: stats } = await (<
-          Promise<{
-            status: string;
-            stats?: any;
-          }>
-        >result.json());
-
-        if (responseStatus === "ok") {
-          return {stats};
+    try {
+      const { userList }: { userList: Array<IMemberListItem> } = await request(
+        process.env.GraphQLServer,
+        `query getUsers($userPerPage: Int!, $paged: Int!) {
+          userList(userPerPage: $userPerPage, paged: $paged) {
+            ${memberListItemQueriedFields}
+          }
+        }`,
+        {
+          userPerPage: 6,
+          paged: 1,
         }
+      );
 
-      } catch (error) {
-        console.error(error);
-      }
+      return { memberList: userList };
+    } catch (error) {
+      console.error(error);
+    }
 
-      return {stats: null};
+    return { memberList: null };
+  }),
+  onMemberListRequestSuccess: thunkOn(
+    actions => actions.loadMembersRequest.successType,
+    ({ setMemberList }, { result }) => {
+      const { memberList } = result;
+
+      setMemberList({ memberList });
     }
   ),
-  onLoadStatsRequestSuccess: thunkOn(
-    (actions) => actions.loadStatsRequest.successType,
-    ({ setStats }, { result }) => {
-      const {
-        stats,
-      } = result;
-
-      setStats(stats);
-    }
-  ),  
 };
 
 const homePageModel: IHomePageModel = {
