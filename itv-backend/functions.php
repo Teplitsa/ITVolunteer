@@ -14,6 +14,7 @@ require_once(get_theme_file_path() . '/utils/upload_image.php');
 
 // system models
 require_once(get_theme_file_path() . '/models/db/mongo.php');
+require_once(get_theme_file_path() . '/models/cache.php');
 require_once(get_theme_file_path() . '/models/auth.php');
 
 // models
