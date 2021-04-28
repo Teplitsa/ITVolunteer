@@ -8,8 +8,6 @@ import ParticipantNav from "../../ParticipantNav";
 import GuestNav from "../../GuestNav";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
 import iconMobileMenu from "../../../assets/img/icon-mobile-menu.png";
-import Cookies from "js-cookie";
-import * as C from "const";
 import { regEvent } from "../../../utilities/ga-events";
 
 const { SnackbarContext } = GlobalScripts;
@@ -34,28 +32,14 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       return;
     }
 
-    if(!isLoaded) {
+    if (!isLoaded) {
       // console.log("run ajax login...");
       login({ username: "", password: "" });
-    }
-    else {
+    } else {
       // console.log("run authorizeSession...");
       authorizeSession();
     }
   }, []);
-
-  function handleOldDesignClick() {
-    if (!process.browser) {
-      return;
-    }
-
-    regEvent("ge_switch_desing_to_old", router);
-
-    Cookies.set(C.ITV_COOKIE.OLD_DESIGN.name, C.ITV_COOKIE.OLD_DESIGN.value, {
-      expires: C.ITV_COOKIE.OLD_DESIGN.period,
-    });
-    document.location.reload();
-  }
 
   return (
     <nav>
@@ -193,9 +177,6 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
         </SnackbarContext.Consumer>
 
         <div className={`account-col ${isLoggedIn ? "logged-in" : ""}`}>
-          <a className="go-old" onClick={handleOldDesignClick}>
-            Старый&nbsp;дизайн
-          </a>
           {(isLoggedIn && <ParticipantNav />) || <GuestNav />}
         </div>
       </div>

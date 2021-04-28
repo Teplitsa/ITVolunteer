@@ -50,8 +50,8 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
               if (isLinkListShown || i <= 1) {
                 return (
                   <Link href={`/tasks/tag/${categorySlug}`} key={`HelpLineCategory-${i}`}>
-                    <a className="home-hero__link">
-                      {categoryName} ({taskCount})
+                    <a className="home-hero__link" title={`Количество задач: ${taskCount}`}>
+                      {categoryName}
                     </a>
                   </Link>
                 );

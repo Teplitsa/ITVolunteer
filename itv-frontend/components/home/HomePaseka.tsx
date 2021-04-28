@@ -5,7 +5,7 @@ import HomePasekaImage from "../../assets/img/home-paseka.svg";
 const HomePaseka: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  if (template === "volunteer") return null;
+  if (template === "author") return null;
 
   return (
     <section className="home-paseka">
@@ -23,7 +23,12 @@ const HomePaseka: React.FunctionComponent = (): ReactElement => {
           независимых профессионалов, которые умеют и любят работать с некоммерческими организациями
           и социальными проектами.
         </div>
-        <a className="home-paseka__cta-btn btn btn_primary" href="#">
+        <a
+          href="https://paseka.te-st.ru/"
+          className="home-paseka__cta-btn btn btn_primary"
+          target="_blank"
+          rel="noreferrer"
+        >
           Присоединиться
         </a>
       </div>

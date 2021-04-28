@@ -25,7 +25,7 @@ const HomeInterfaceSwitch: React.FunctionComponent<{ extraClasses?: string }> = 
         type="button"
         onClick={onSwitchInterface}
       >
-        Волонтер
+        Волонтёр
       </button>
       <button
         className={`home-interface-switch__item home-interface-switch__item_author ${
