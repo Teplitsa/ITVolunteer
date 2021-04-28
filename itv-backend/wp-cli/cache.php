@@ -65,7 +65,7 @@ class Cache
 
         if (!$task_list) {
 
-            WP_CLI::warning(__('No task found.', 'itv-backend'));
+            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Task::$post_type));
 
             return;
         }
@@ -78,7 +78,7 @@ class Cache
 
         $updateCacheResult = $collection->insertMany($task_list);
 
-        WP_CLI::success(sprintf(__('%d task(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
+        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Task::$post_type));
     }
 
     public function update_task_list_filter()

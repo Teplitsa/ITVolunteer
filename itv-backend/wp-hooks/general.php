@@ -2,7 +2,7 @@
 
 // filters
 
-add_filter('use_block_editor_for_post_type', fn (bool $current_status, string $post_type) => ($post_type === ITV\models\Task::POST_TYPE) ? false : $current_status, 10, 2);
+add_filter('use_block_editor_for_post_type', fn (bool $current_status, string $post_type) => ($post_type === ITV\models\Task::$post_type) ? false : $current_status, 10, 2);
 
 add_filter('xmlrpc_enabled', '__return_false');
 

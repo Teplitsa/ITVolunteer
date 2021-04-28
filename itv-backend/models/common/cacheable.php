@@ -8,8 +8,8 @@ abstract class AbstractCacheable
     public static string $collection_name = '';
 
     abstract public static function update_item_cache(int $item_id): void;
-    abstract public static function delete_item_cache(int $item_id, \WP_Post $item): void;
-    abstract protected static function check_validity(int $item_id): array;
+    abstract public static function delete_item_cache(int $item_id): void;
+    abstract protected static function check_validity(int $item_id): ?array;
     abstract protected static function filter_fields(\WP_Post $item): array;
     abstract public static function get_item(int $item_id): ?array;
     abstract public static function get_list(): ?array;
@@ -19,27 +19,36 @@ class Cacheable extends AbstractCacheable
 {
     public static function update_item_cache(int $item_id): void
     {
-        if (\get_post_status($item_id) === 'trash') return;
-
         $item = self::check_validity($item_id);
 
         $mongo_client = MongoClient::getInstance();
 
         $collection = $mongo_client->{\Cache::STORAGE_NAME}->{static::$collection_name};
 
-        $updateCacheResult = $collection->findOneAndUpdate(['externalId' => $item_id], ['$set' => $item]);
+        if (is_null($item)) {
 
-        // No item found to update.
+            $deleteCacheResult = $collection->findOneAndDelete(['externalId' => $item_id]);
 
-        if (is_null($updateCacheResult)) {
+            if (is_null($deleteCacheResult)) {
 
-            $collection->insertOne($item);
+                trigger_error(sprintf(__('No %s found to delete.', 'itv-backend'), static::$post_type), E_USER_WARNING);
+            }
+        } else {
+
+            $updateCacheResult = $collection->findOneAndUpdate(['externalId' => $item_id], ['$set' => $item]);
+
+            // No item found to update.
+
+            if (is_null($updateCacheResult)) {
+
+                $collection->insertOne($item);
+            }
         }
     }
 
-    public static function delete_item_cache(int $item_id, \WP_Post $item): void
+    public static function delete_item_cache(int $item_id): void
     {
-        if ($item->post_type !== static::$post_type) return;
+        if (\get_post_type($item_id) !== static::$post_type) return;
 
         $mongo_client = MongoClient::getInstance();
 
@@ -51,15 +60,17 @@ class Cacheable extends AbstractCacheable
 
         if (is_null($deleteCacheResult)) {
 
-            throw new \Exception(sprintf(__('No %s found to delete.', 'itv-backend'), static::$post_type));
+            trigger_error(sprintf(__('No %s found to delete.', 'itv-backend'), static::$post_type), E_USER_WARNING);
         }
     }
 
-    public static function check_validity(int $item_id): array
+    public static function check_validity(int $item_id): ?array
     {
         if (!is_numeric($item_id)) {
 
-            throw new \Exception(sprintf(__('A valid %s ID is required.', 'itv-backend'), static::$post_type));
+            trigger_error(sprintf(__('A valid %s ID is required.', 'itv-backend'), static::$post_type), E_USER_WARNING);
+
+            return null;
         }
 
         $item_id = (int) $item_id;
@@ -68,12 +79,16 @@ class Cacheable extends AbstractCacheable
 
         if (is_null($item)) {
 
-            throw new \Exception(sprintf(__('No %s found for the given ID.', 'itv-backend'), static::$post_type));
+            trigger_error(sprintf(__('No %s found for the given ID.', 'itv-backend'), static::$post_type), E_USER_WARNING);
+
+            return null;
         }
 
         if (\get_post_status($item_id) !== "publish") {
 
-            throw new \Exception(sprintf(__('The %s is not a public.', 'itv-backend'), static::$post_type));
+            trigger_error(sprintf(__('The %s is not a public.', 'itv-backend'), static::$post_type), E_USER_WARNING);
+
+            return null;
         }
 
         return $item;
