@@ -12,10 +12,9 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
       <div className="home-stats__item">
         <div className="home-stats__item-value">
           {withFadeIn({
-            component: CoreParagraphBlock,
-            attributes: {
-              content: stats?.member.total,
-            },
+            component: Link,
+            children: <a className="text-default">{stats?.member.total}</a>,
+            href: "/members",
           })}
         </div>
         <div className="home-stats__item-label">Участников</div>
@@ -23,10 +22,9 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
       <div className="home-stats__item">
         <div className="home-stats__item-value">
           {withFadeIn({
-            component: CoreParagraphBlock,
-            attributes: {
-              content: stats?.task.total.closed,
-            },
+            component: Link,
+            children: <a className="text-default">{stats?.task.total.closed}</a>,
+            href: "/tasks/closed",
           })}
         </div>
         <div className="home-stats__item-label">Решеных задач</div>
@@ -36,7 +34,7 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
           {withFadeIn({
             component: Link,
             children: <a>{stats?.task.total.publish}</a>,
-            href: "/tasks/publish"
+            href: "/tasks/publish",
           })}
         </div>
         <div className="home-stats__item-label">Задач ожидают решения</div>
