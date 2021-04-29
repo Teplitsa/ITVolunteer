@@ -77,14 +77,14 @@
     &__link {
       border: 1px solid $color-gray-light-md;
       margin-bottom: 10px;
-      padding: 2px 10px;
+      padding: 8px 16px;
       font: 600 11px/1.09 "IBM Plex Sans", sans-serif;
-      color: $color-gray-dark-md-001;
+      color: $color-gray-dark-lg;
       border-radius: 16px;
 
       @include screen-from(sm) {
         margin-right: 10px;
-        font: 600 16px/1.5 "IBM Plex Sans", sans-serif;
+        font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
       }
 
       &:hover {
