@@ -511,10 +511,9 @@
     }
     &__list {
       @include screen-from(sm) {
-        display: flex;
-        flex-flow: row nowrap;
-        justify-content: space-between;
-        align-items: stretch;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 30px;
       }
     }
     &__item {
