@@ -244,7 +244,7 @@ export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
   return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
 }
 
-export function getDeclensionOfNoun({
+export function getDeclension({
   count,
   caseOneItem,
   caseTwoThreeFourItems,
@@ -276,7 +276,7 @@ export function getDeclensionOfNoun({
 }
 
 export function getProjectCountString(projectCount: number): string {
-  return getDeclensionOfNoun({
+  return getDeclension({
     count: projectCount,
     caseOneItem: "проект",
     caseTwoThreeFourItems: "проекта",
@@ -285,7 +285,7 @@ export function getProjectCountString(projectCount: number): string {
 }
 
 export function getReviewsCountString(reviewsCount: number): string {
-  return getDeclensionOfNoun({
+  return getDeclension({
     count: reviewsCount,
     caseOneItem: "отзыв",
     caseTwoThreeFourItems: "отзыва",

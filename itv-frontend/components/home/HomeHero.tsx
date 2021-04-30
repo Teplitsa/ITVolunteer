@@ -6,7 +6,7 @@ import { Image } from "../gutenberg/CoreMediaTextBlock";
 import withFadeIn from "../hoc/withFadeIn";
 import { useRouter } from "next/router";
 import { regEvent } from "../../utilities/ga-events";
-import { getProjectCountString } from "../../utilities/utilities";
+import { getDeclension, getProjectCountString } from "../../utilities/utilities";
 
 import HomeAuthorHeroImage from "../../assets/img/home-author-hero.svg";
 import HomeVolunteerHeroImage from "../../assets/img/home-volunteer-hero.svg";
@@ -34,8 +34,14 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
         <div className="home-hero__content">
           <HomeInterfaceSwitch extraClasses="home-interface-switch_hero" />
           <div className="home-hero__title">
-            {task.total.publish} {getProjectCountString(task.total.publish)} ждут помощи
-            прямо&nbsp;сейчас
+            {task.total.publish} {getProjectCountString(task.total.publish)}{" "}
+            {getDeclension({
+              count: task.total.publish,
+              caseOneItem: "ждёт",
+              caseTwoThreeFourItems: "ждут",
+              restCases: "ждут",
+            })}{" "}
+            помощи прямо&nbsp;сейчас
           </div>
           <div className="home-hero__subtitle">Чем вы можете помочь сейчас?</div>
           <div className="home-hero__link-list">
