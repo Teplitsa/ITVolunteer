@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import Link from "next/link";
 import { useStoreState } from "../../model/helpers/hooks";
 import withFadeIn from "../hoc/withFadeIn";
-import CoreParagraphBlock from "../gutenberg/CoreParagraphBlock";
 
 const HomeStats: React.FunctionComponent = (): ReactElement => {
   const stats = useStoreState(state => state.components.homePage.stats);

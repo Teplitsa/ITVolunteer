@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState, MouseEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
@@ -15,6 +15,7 @@ const { SnackbarContext } = GlobalScripts;
 const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const router = useRouter();
   const isLoggedIn = useStoreState(store => store.session.isLoggedIn);
+  const itvRole = useStoreState(store => store.session.user.itvRole);
   const isLoaded = useStoreState(store => store.session.isLoaded);
   const login = useStoreActions(actions => actions.session.login);
   const authorizeSession = useStoreActions(actions => actions.session.authorizeSession);
@@ -40,6 +41,20 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
       authorizeSession();
     }
   }, []);
+
+  const handleCtaBtnClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    if (isLoggedIn) {
+      if (itvRole === "author") {
+        router.push("/task-create");
+      } else {
+        router.push("/tasks");
+      }
+    } else {
+      router.push("/registration");
+    }
+  };
 
   return (
     <nav>
@@ -157,6 +172,18 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               </ul>
             </li>
           </ul>
+        )}
+
+        {!isHeaderSearchOpen && (
+          <div className="site-header__cta">
+            <a
+              href="#"
+              className="site-header__cta-btn btn btn_primary"
+              onClick={handleCtaBtnClick}
+            >
+              {isLoggedIn && itvRole === "author" ? "Создать задачу" : "Смотреть задачи"}
+            </a>
+          </div>
         )}
 
         <SnackbarContext.Consumer>

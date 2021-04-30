@@ -3,6 +3,7 @@
     background-color: $color-white;
     margin: 0 -15px;
     padding: 0 24px 40px;
+    box-shadow: 0px 4px 24px rgba(75, 93, 3, 0.08);
 
     @include screen-from(sm) {
       padding: 0 15px;
@@ -17,7 +18,7 @@
         flex-flow: row nowrap;
         justify-content: space-between;
         align-items: center;
-        min-height: 353px;
+        min-height: 384px;
       }
     }
 
@@ -35,13 +36,19 @@
       @include screen-from(sm) {
         align-self: flex-end;
         order: 2;
-        max-width: 550px;
+      }
+
+      img {
+        @include screen-from(sm) {
+          max-width: none;
+        }
       }
     }
 
     &__title {
       margin-bottom: 10px;
-      font: 500 24px/1.33 "IBM Plex Sans", sans-serif;
+      font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
+      letter-spacing: -0.01em;
       color: $color-gray-dark-xl;
 
       @include screen-from(sm) {
@@ -50,9 +57,9 @@
     }
 
     &__subtitle {
-      margin-bottom: 10px;
-      font: 400 16px/1.6 "IBM Plex Sans", sans-serif;
-      color: $color-gray-dark-lg;
+      margin-bottom: 20px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
 
       @include screen-from(sm) {
         font-size: 20px;
@@ -66,24 +73,31 @@
     &__advice {
       margin-top: 20px;
       font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
-      color: $color-gray-dark-lg;
+      color: $color-gray-dark-md-001;
 
       @include screen-from(sm) {
-        margin-top: 57px;
-        font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+        margin-top: 60px;
+        font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      }
+
+      a {
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
     }
 
     &__link {
       border: 1px solid $color-gray-light-md;
-      margin-bottom: 10px;
+      margin: 10px 10px 0 0;
       padding: 8px 16px;
       font: 600 11px/1.09 "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-lg;
       border-radius: 16px;
 
       @include screen-from(sm) {
-        margin-right: 10px;
         font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
       }
 
@@ -101,7 +115,6 @@
   &-about {
     margin: 0 auto;
     padding: 75px 0 0;
-    max-width: 660px;
 
     @include screen-from(sm) {
       padding: 80px 0 0;
@@ -237,7 +250,8 @@
       }
       &-title {
         margin-bottom: 8px;
-        font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+        font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+        letter-spacing: -0.01em;
         color: $color-gray-dark-xl;
       }
       &-text {
@@ -291,8 +305,8 @@
         &-image {
           max-width: 242px;
           opacity: 0;
-          transform: scale(.75) translate(0, 25%);
-          transition: all .6s ease-in .3s;
+          transform: scale(0.75) translate(0, 25%);
+          transition: all 0.6s ease-in 0.3s;
 
           @include screen-from(sm) {
             max-width: 311px;
@@ -311,7 +325,7 @@
         color: $color-white;
         opacity: 0;
         transform: translate(50%, 0);
-        transition: all 1.2s ease-out .3s;
+        transition: all 1.2s ease-out 0.3s;
 
         @include screen-from(sm) {
           position: relative;
@@ -371,17 +385,18 @@
     }
     &__title {
       margin: 0 0 15px;
-      font: 500 24px/1.33 "IBM Plex Sans", sans-serif;
+      font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
       letter-spacing: -0.01em;
       color: $color-gray-dark-xl;
     }
     &__text {
       margin: 0 0 15px;
-      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-xl;
     }
     &__cta-btn {
       width: 100%;
+      font-weight: 500;
       text-align: center;
       @include screen-from(sm) {
         width: auto;
@@ -396,7 +411,8 @@
     }
     &__title {
       margin: 0 0 20px;
-      font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+      font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+      letter-spacing: -0.01em;
       color: $color-gray-dark-xl;
     }
     &__list {
@@ -445,7 +461,7 @@
       @include screen-from(sm) {
         margin: 0 0 10px;
         padding-left: calc(80px + 20% + 80px);
-        font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
+        font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
       }
     }
     &__content {
@@ -511,9 +527,9 @@
     }
     &__list {
       @include screen-from(sm) {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 30px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: center;
       }
     }
     &__item {
@@ -522,7 +538,12 @@
         display: flex;
         flex-flow: column nowrap;
         justify-content: space-between;
-        margin: 0;
+        flex-basis: calc(25% - ((30px * 3) / 4));
+        margin: 0 30px 0 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
       }
       &-logo {
         margin: 0 0 35px;
@@ -539,9 +560,6 @@
         @include screen-from(sm) {
           margin: 20px 0 0;
         }
-      }
-      @include screen-from(sm) {
-        flex-basis: calc(25% - ((30px * 3) / 4));
       }
     }
   }
@@ -564,11 +582,12 @@
 
       &-title {
         font: 500 18px/1.33 "IBM Plex Sans", sans-serif;
+        letter-spacing: -0.01em;
         color: #3d414d;
         cursor: pointer;
 
         @include screen-from(sm) {
-          font: 600 20px/1.6 "IBM Plex Sans", sans-serif;
+          font: 500 22px/1.6 "IBM Plex Sans", sans-serif;
         }
       }
       &-content {
@@ -606,6 +625,15 @@
         width: 32px;
         height: 32px;
         cursor: pointer;
+
+
+        transition: all 0.3s ease-out;
+
+        [class*="_active"] + &,
+        &[class*="_active"] {
+          transform: rotate(90deg);
+          transition: all 0.3s ease-in;
+        }
       }
     }
     &__more {
@@ -634,7 +662,7 @@
       position: relative;
       padding: 74px 24px 72px;
       text-align: center;
-      font: 500 24px/1.33 "IBM Plex Sans", sans-serif;
+      font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
       letter-spacing: -0.01em;
       color: $color-white;
 
@@ -671,6 +699,8 @@
     &__btn {
       background-color: $color-white;
       border-radius: 8px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      letter-spacing: -0.01em;
     }
   }
   &-title {
@@ -730,10 +760,10 @@
 
     &__item {
       display: flex;
-      background-color: $color-gray-light-xl;
+      background-color: $color-white;
       border: 1px solid $color-gray-light-lg;
-      padding: 6px 12px;
-      font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
+      padding: 5px 12px;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
       cursor: pointer;
       outline: none;
       transition: all 0.3s ease-out;

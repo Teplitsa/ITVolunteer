@@ -80,7 +80,7 @@
     margin-top: $base * 3;
 
     h3 {
-      @include text-line-sm;
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
       color: $color-gray-dark-xl;
       margin-bottom: $base * 2;
     }
@@ -180,13 +180,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-top: 1px solid $color-gray-light-md;
     margin-top: 20px;
+    padding-top: 20px;
 
     .col-text {
       @include text-xs-line-lg;
-      color: $color-gray-dark-md;
+      color: $color-gray-dark-md-001;
 
-      p {
+      a {
+        color: $color-gray-dark-md-001;
       }
     }
 

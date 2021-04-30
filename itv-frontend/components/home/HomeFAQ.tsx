@@ -81,11 +81,7 @@ const HomeFAQ: React.FunctionComponent = (): ReactElement => {
 
   return (
     <section className="home-faq">
-      <h3 className="home-faq__title home-title">
-        Остались вопросы?
-        <br />
-        Сейчас всё расскажем!
-      </h3>
+      <h3 className="home-faq__title home-title">Остались вопросы? Сейчас всё расскажем!</h3>
       <HomeInterfaceSwitch />
       <HomeFAQAccordion />
       {!isFullListShown && maxFaqCount > 3 && (
