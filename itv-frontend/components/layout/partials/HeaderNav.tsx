@@ -45,14 +45,10 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const handleCtaBtnClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
-    if (isLoggedIn) {
-      if (itvRole === "author") {
-        router.push("/task-create");
-      } else {
-        router.push("/tasks");
-      }
+    if (isLoggedIn && itvRole === "author") {
+      router.push("/task-create");
     } else {
-      router.push("/registration");
+      router.push("/tasks");
     }
   };
 
