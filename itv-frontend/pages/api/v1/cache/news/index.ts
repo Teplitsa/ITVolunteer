@@ -8,7 +8,7 @@ const handler = nextConnect();
 
 handler.use(mongodbConnection);
 
-handler.get<ExtendedRequest, NextApiResponse>(async ({ db, query: { limit } }, res) => {
+handler.get<ExtendedRequest, NextApiResponse>(async ({ db, dbClient, query: { limit } }, res) => {
   try {
     const findOptions = { limit: Number.isNaN(Number(limit)) ? 0 : Number(limit) };
     const news: Array<INews> = await db.collection("news").find({}, findOptions).toArray();
@@ -17,6 +17,8 @@ handler.get<ExtendedRequest, NextApiResponse>(async ({ db, query: { limit } }, r
     res.json({ news });
   } catch (error) {
     console.error(error);
+  } finally {
+    await dbClient.close();
   }
 });
 
