@@ -31,6 +31,7 @@ require_once(get_theme_file_path() . '/models/faq/faq.php');
 require_once(get_theme_file_path() . '/models/partner/partner.php');
 require_once(get_theme_file_path() . '/models/review/review.php');
 require_once(get_theme_file_path() . '/models/stats/stats.php');
+require_once(get_theme_file_path() . '/models/member/member-rating.php');
 
 // post-types
 require_once(get_theme_file_path() . '/post-types/portfolio_work.php');

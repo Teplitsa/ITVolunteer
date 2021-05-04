@@ -2,7 +2,7 @@
 
 namespace ITV\cli;
 
-use ITV\models\{Task, MongoClient, MemberManager};
+use ITV\models\{Task, MongoClient, MemberManager, MemberRatingDoers};
 
 if (!class_exists('\WP_CLI')) {
     return;
@@ -18,20 +18,22 @@ class MemberRating
             $time_start = microtime(true);
             \WP_CLI::line('Memory before anything: ' . memory_get_usage(true));
 
-            $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}itv_rating (
-`id` bigint(20) NOT NULL AUTO_INCREMENT,
-`user_id` bigint(20) NULL DEFAULT NULL,
-`month` bigint(20) NOT NULL,
-`year` bigint(20) NOT NULL,
-`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-PRIMARY KEY (`id`),
-CONSTRAINT `user_comment` UNIQUE (`user_id`, `month`, `year`),
-) ENGINE=MyISAM DEFAULT CHARSET=utf8";
+            $table = MemberRatingDoers::TABLE;
+            $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$table} (
+                `user_id` bigint(20) NULL DEFAULT NULL,
+                `month` bigint(20) NOT NULL,
+                `year` bigint(20) NOT NULL,
+                `solved_tasks_count` int(20) NOT NULL,
+                `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+                PRIMARY KEY (`user_id`, `month`, `year`)
+                ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4";
+
+            // \WP_CLI::line($sql);
             
             $res = $wpdb->query($sql);
             
-            if(is_wp_error($res)) {
-                echo $res->get_message();
+            if($res === false) {
+                \WP_CLI::error($wpdb->last_error);
             }
             
             \WP_CLI::line('DONE');
@@ -50,31 +52,45 @@ CONSTRAINT `user_comment` UNIQUE (`user_id`, `month`, `year`),
 
     public function build_month_doers($args, $assoc_args)
     {
-        ["month" => $month, "year" => $year] = $assoc_args;
+        \WP_CLI::line("assoc_args=" . print_r($assoc_args, true));
 
-        if (!is_numeric($month)) {
+        $assoc_args_name = ["month", "year", "all"];
+        foreach($assoc_args_name as $arg_name) {
+            if(isset($assoc_args[$arg_name])) {
+                $$arg_name = $assoc_args[$arg_name];
+            }
+            else {
+                $$arg_name = null;
+            }
+        }
 
-            \WP_CLI::warning(__('Int month number is required.', 'itv-backend'));
+        $current_user_id = \get_current_user_id(); // set by --user param
+
+        if ($month && !is_numeric($month)) {
+
+            \WP_CLI::warning(__('Month must be a valid int.', 'itv-backend'));
 
             return;
         }
 
-        if (!is_numeric($year)) {
+        if($year && !is_numeric($year)) {
 
-            \WP_CLI::warning(__('Int year is required.', 'itv-backend'));
+            \WP_CLI::warning(__('Year must be a valid int.', 'itv-backend'));
 
             return;
         }
 
-        $month = (int) $month;
-        $year = (int) $year;
+        $month = intval($month);
+        $year = intval($year);
 
         \WP_CLI::line("month=" . $month);
         \WP_CLI::line("year=" . $year);
+        \WP_CLI::line("user=" . $current_user_id);
+        \WP_CLI::line("all=" . $all);
 
         global $wpdb;
 
-        $user_id_list = $wpdb->get_col( $wpdb->prepare( 
+        $user_id_list = $current_user_id ? [$current_user_id] : $wpdb->get_col( $wpdb->prepare( 
             "SELECT users.ID
                 FROM        {$wpdb->users} users
                 INNER JOIN  {$wpdb->usermeta} key1 
@@ -85,8 +101,19 @@ CONSTRAINT `user_comment` UNIQUE (`user_id`, `month`, `year`),
             MemberManager::$meta_role, 
             MemberManager::$ROLE_DOER
         ));
-
         \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
+
+        foreach($user_id_list as $user_id) {
+            $rating_calculator = new MemberRatingDoers($user_id);
+
+            if($all) {
+                $rating_calculator->store_all_periods_rating();
+                $rating_calculator->store_all_time_rating();
+            }
+            else {
+                $rating_calculator->store_month_rating($year, $month);
+            }
+        }
 
         \WP_CLI::success(__('The task is successfully updated.', 'itv-backend'));
     }
