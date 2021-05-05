@@ -40,14 +40,16 @@ function load_reviews(): void
             \WP_CLI::error($review_id->get_error_message());
         }
 
-        $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $review_id, 'desc' => $title]);
+        if ($thumbnail) {
+            $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $review_id, 'desc' => $title]);
 
-        if (is_null($thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
-        }
+            if (is_null($thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
+            }
 
-        if (!set_post_thumbnail($review_id, $thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Review::$post_type, $review_id));
+            if (!set_post_thumbnail($review_id, $thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Review::$post_type, $review_id));
+            }
         }
 
         $inserted_item_count++;

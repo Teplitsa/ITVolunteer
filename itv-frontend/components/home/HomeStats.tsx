@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import Link from "next/link";
 import { useStoreState } from "../../model/helpers/hooks";
 import withFadeIn from "../hoc/withFadeIn";
-import CoreParagraphBlock from "../gutenberg/CoreParagraphBlock";
 
 const HomeStats: React.FunctionComponent = (): ReactElement => {
   const stats = useStoreState(state => state.components.homePage.stats);
@@ -12,10 +11,9 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
       <div className="home-stats__item">
         <div className="home-stats__item-value">
           {withFadeIn({
-            component: CoreParagraphBlock,
-            attributes: {
-              content: stats?.member.total,
-            },
+            component: Link,
+            children: <a className="text-default">{stats?.member.total}</a>,
+            href: "/members",
           })}
         </div>
         <div className="home-stats__item-label">Участников</div>
@@ -23,10 +21,9 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
       <div className="home-stats__item">
         <div className="home-stats__item-value">
           {withFadeIn({
-            component: CoreParagraphBlock,
-            attributes: {
-              content: stats?.task.total.closed,
-            },
+            component: Link,
+            children: <a className="text-default">{stats?.task.total.closed}</a>,
+            href: "/tasks/closed",
           })}
         </div>
         <div className="home-stats__item-label">Решеных задач</div>
@@ -36,7 +33,7 @@ const HomeStats: React.FunctionComponent = (): ReactElement => {
           {withFadeIn({
             component: Link,
             children: <a>{stats?.task.total.publish}</a>,
-            href: "/tasks/publish"
+            href: "/tasks/publish",
           })}
         </div>
         <div className="home-stats__item-label">Задач ожидают решения</div>

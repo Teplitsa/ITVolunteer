@@ -40,14 +40,17 @@ function load_platform_partners(): void
             \WP_CLI::error($partner_id->get_error_message());
         }
 
-        $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $partner_id, 'desc' => $title]);
+        if ($thumbnail) {
 
-        if (is_null($thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
-        }
+            $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $partner_id, 'desc' => $title]);
 
-        if (!set_post_thumbnail($partner_id, $thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Partner::$post_type, $partner_id));
+            if (is_null($thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
+            }
+
+            if (!set_post_thumbnail($partner_id, $thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Partner::$post_type, $partner_id));
+            }
         }
 
         $inserted_item_count++;

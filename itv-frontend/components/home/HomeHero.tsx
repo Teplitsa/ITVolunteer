@@ -6,6 +6,7 @@ import { Image } from "../gutenberg/CoreMediaTextBlock";
 import withFadeIn from "../hoc/withFadeIn";
 import { useRouter } from "next/router";
 import { regEvent } from "../../utilities/ga-events";
+import { getDeclension, getProjectCountString } from "../../utilities/utilities";
 
 import HomeAuthorHeroImage from "../../assets/img/home-author-hero.svg";
 import HomeVolunteerHeroImage from "../../assets/img/home-volunteer-hero.svg";
@@ -14,7 +15,11 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
   const [isLinkListShown, setIsLinkListShown] = useState<boolean>(false);
   const { task } = useStoreState(state => state.components.homePage.stats);
 
-  const handleMoreClick = () => setIsLinkListShown(true);
+  const handleMoreClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    setIsLinkListShown(true);
+  };
 
   return (
     <section className="home-hero">
@@ -29,7 +34,14 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
         <div className="home-hero__content">
           <HomeInterfaceSwitch extraClasses="home-interface-switch_hero" />
           <div className="home-hero__title">
-            {task.total.publish} проектов ждут помощи прямо сейчас
+            {task.total.publish} {getProjectCountString(task.total.publish)}{" "}
+            {getDeclension({
+              count: task.total.publish,
+              caseOneItem: "ждёт",
+              caseTwoThreeFourItems: "ждут",
+              restCases: "ждут",
+            })}{" "}
+            помощи прямо&nbsp;сейчас
           </div>
           <div className="home-hero__subtitle">Чем вы можете помочь сейчас?</div>
           <div className="home-hero__link-list">
@@ -38,8 +50,8 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
                 return (
                   <a
                     key="HelpLineCategory-More"
-                    className="home-hero__link"
                     href="#"
+                    className="home-hero__link"
                     onClick={handleMoreClick}
                   >
                     {`+${task.featuredCategories.length - 2}`}

@@ -1,22 +1,12 @@
 [
   {
-    "title": "Валентина Назарова",
-    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Нежно люблю платформу. На ней начался мой путь как «настоящего дизайнера»</p><cite>Валентина Назарова<br><small>веб-дизайнер, участник IT-волонтера</small></cite></blockquote><!-- /wp:quote -->",
-    "thumbnail": "/init/home/assets/img/photo-designer.png"
+    "title": "Александр Свинаренко",
+    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Здесь получил драгоценный опыт и познакомился с замечательными людьми</p><cite>Александр Свинаренко<br><small>разработчик, IT-волонтёр</small></cite></blockquote><!-- /wp:quote -->",
+    "thumbnail": ""
   },
   {
     "title": "Валентина Назарова",
-    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Нежно люблю платформу. На ней начался мой путь как «настоящего дизайнера»</p><cite>Валентина Назарова<br><small>веб-дизайнер, участник IT-волонтера</small></cite></blockquote><!-- /wp:quote -->",
-    "thumbnail": "/init/home/assets/img/photo-designer.png"
-  },
-  {
-    "title": "Валентина Назарова",
-    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Нежно люблю платформу. На ней начался мой путь как «настоящего дизайнера»</p><cite>Валентина Назарова<br><small>веб-дизайнер, участник IT-волонтера</small></cite></blockquote><!-- /wp:quote -->",
-    "thumbnail": "/init/home/assets/img/photo-designer.png"
-  },
-  {
-    "title": "Валентина Назарова",
-    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Нежно люблю платформу. На ней начался мой путь как «настоящего дизайнера»</p><cite>Валентина Назарова<br><small>веб-дизайнер, участник IT-волонтера</small></cite></blockquote><!-- /wp:quote -->",
-    "thumbnail": "/init/home/assets/img/photo-designer.png"
+    "content": "<!-- wp:quote --><blockquote class=\"wp-block-quote\"><p>Нежно люблю платформу. На ней начался мой путь как «настоящего дизайнера»</p><cite>Валентина Назарова<br><small>веб-дизайнер, IT-волонтёр</small></cite></blockquote><!-- /wp:quote -->",
+    "thumbnail": ""
   }
 ]

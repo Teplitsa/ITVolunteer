@@ -144,3 +144,9 @@ $body-font-family: "IBM Plex Sans";
 @mixin text-primary {
   color: $color-main;
 }
+
+.text {
+  &-default {
+    color: $color-gray-dark-xl;
+  }
+}

@@ -44,14 +44,17 @@ function load_platform_advantages(): void
             \WP_CLI::error($advantage_id->get_error_message());
         }
 
-        $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $advantage_id, 'desc' => $title]);
+        if ($thumbnail) {
 
-        if (is_null($thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
-        }
+            $thumbnail_id = upload_image(['url' => $thumbnail, 'attached_to' => $advantage_id, 'desc' => $title]);
 
-        if (!set_post_thumbnail($advantage_id, $thumbnail_id)) {
-            \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Advantage::$post_type, $advantage_id));
+            if (is_null($thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to upload an image from url: %s.', 'itv-backend'), $thumbnail));
+            }
+
+            if (!set_post_thumbnail($advantage_id, $thumbnail_id)) {
+                \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Advantage::$post_type, $advantage_id));
+            }
         }
 
         if (!wp_set_object_terms($advantage_id, $tax_input['platform_user_role'], 'platform_user_role')) {

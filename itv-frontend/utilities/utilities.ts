@@ -244,22 +244,53 @@ export function getPostFeaturedImageUrlBySize(postFeaturedImage, size) {
   return foundSize ? foundSize.sourceUrl : fallbackImageUrl;
 }
 
-export function getReviewsCountString(reviewsCount) {
-  const reviewsCountModulo =
-    reviewsCount < 10 ? reviewsCount : Number([...Array.from(String(reviewsCount))].pop());
+export function getDeclension({
+  count,
+  caseOneItem,
+  caseTwoThreeFourItems,
+  restCases,
+}: {
+  count: number;
+  caseOneItem: string;
+  caseTwoThreeFourItems: string;
+  restCases: string;
+}): string {
+  const reviewsCountModulo = count < 10 ? count : Number([...Array.from(String(count))].pop());
 
   const reviewsCountModulo100 =
-    reviewsCount < 10
-      ? reviewsCount
-      : Number([...Array.from(String(reviewsCount))].slice(-2).join(""));
+    count < 10 ? count : Number([...Array.from(String(count))].slice(-2).join(""));
 
-  return reviewsCountModulo100 > 10 && reviewsCountModulo100 < 20
-    ? "отзывов"
-    : reviewsCountModulo === 1
-    ? "отзыв"
-    : [2, 3, 4].includes(reviewsCountModulo)
-    ? "отзыва"
-    : "отзывов";
+  if (reviewsCountModulo100 > 10 && reviewsCountModulo100 < 20) {
+    return restCases;
+  }
+
+  if (reviewsCountModulo === 1) {
+    return caseOneItem;
+  }
+
+  if ([2, 3, 4].includes(reviewsCountModulo)) {
+    return caseTwoThreeFourItems;
+  }
+
+  return restCases;
+}
+
+export function getProjectCountString(projectCount: number): string {
+  return getDeclension({
+    count: projectCount,
+    caseOneItem: "проект",
+    caseTwoThreeFourItems: "проекта",
+    restCases: "проектов",
+  });
+}
+
+export function getReviewsCountString(reviewsCount: number): string {
+  return getDeclension({
+    count: reviewsCount,
+    caseOneItem: "отзыв",
+    caseTwoThreeFourItems: "отзыва",
+    restCases: "отзывов",
+  });
 }
 
 export function getGraphQLClientTokenHeader(session, headers = null) {

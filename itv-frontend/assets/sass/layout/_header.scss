@@ -7,6 +7,22 @@
 .site-header {
   border-bottom: 1px solid $color-gray-light-md;
 
+  &__cta {
+    border-right: 1px solid $color-gray-light-md;
+    margin-bottom: 20px;
+
+    @include screen-from(sm) {
+      margin: 0 20px 0 0;
+      padding-right: 20px;
+    }
+    &-btn {
+      &[class*="btn"] {
+        padding: 13px 20px;
+        font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      }
+    }
+  }
+
   nav {
     max-width: $content-width;
     margin-left: auto;
@@ -46,9 +62,10 @@
         > a {
           display: flex;
           align-items: center;
+          line-height: 1.25;
           font-weight: 600;
-          font-size: 13px;
-          color: $color-gray-dark-md;
+          font-size: 16px;
+          color: $color-gray-dark-md-001;
           transition: all 0.15s ease-in-out 0s;
           @include screen-from(md) {
             padding: 0 16px;
@@ -113,9 +130,10 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        min-height: 46px;
 
         a {
-          @include text-sm-bold;
+          font: 600 16px/1.25 "IBM Plex Sans";
 
           &:first-child {
             margin-left: $base * 4;
@@ -149,8 +167,8 @@
         align-items: stretch;
         justify-content: stretch;
         background-color: $color-white;
-        border: 2px solid $color-gray-light-lg;
-        border-radius: 10px;
+        border: 2px solid $color-gray-light-md;
+        border-radius: 6px;
         width: 42px;
         height: 42px;
         margin-right: 20px;
@@ -204,8 +222,8 @@
 
         &__avatar-card {
           display: flex;
-          border: 2px solid $color-gray-light-lg;
-          border-radius: 10px;
+          border: 2px solid $color-gray-light-md;
+          border-radius: 6px;
           transition: all 0.15s linear;
           &:hover {
             border: 2px solid $color-gray-light-md;
@@ -276,7 +294,7 @@
       display: flex;
       flex-flow: row nowrap;
       border: 1px solid $color-gray-light-md;
-      border-radius: 10px;
+      border-radius: 6px;
       @include screen-from(md) {
         position: relative;
         border-style: none;
@@ -289,7 +307,7 @@
       border-style: none;
       padding: 12px !important;
       font: 400 16px/20px "IBM Plex Sans", sans-serif;
-      border-radius: 10px;
+      border-radius: 6px;
       &:focus {
         @include screen-from(md) {
           border: 2px solid $color-gray-light-md;
@@ -298,11 +316,11 @@
       }
       @include screen-from(md) {
         position: relative;
-        border: 2px solid $color-gray-light-lg;
+        border: 2px solid $color-gray-light-md;
         border-right-style: none;
         padding: 11px 0 !important;
         text-indent: 12px;
-        border-radius: 10px 0 0 10px;
+        border-radius: 6px 0 0 6px;
         right: calc(-100% + 44px);
         transition: all 0.3s linear 0s;
       }
@@ -327,11 +345,11 @@
       @include screen-from(md) {
         display: block;
         background: url("../../img/icon-search.svg") 50% 50% no-repeat $color-white;
-        border: 2px solid $color-gray-light-lg;
+        border: 2px solid $color-gray-light-md;
         padding: 21px;
         width: 44px;
         height: 44px;
-        border-radius: 10px;
+        border-radius: 6px;
         outline: none;
         z-index: 10;
         transition: all 0.3s step-end 0s;
@@ -340,7 +358,7 @@
         @include screen-from(md) {
           background: url("../../img/icon-header-search-close.svg") 50% 50% no-repeat $color-white;
           border-left-style: none !important;
-          border-radius: 0 10px 10px 0;
+          border-radius: 0 6px 6px 0;
           transition: all 0.3s step-start 0s;
         }
         :focus + & {

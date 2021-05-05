@@ -8,7 +8,7 @@ const handler = nextConnect();
 
 handler.use(mongodbConnection);
 
-handler.get<ExtendedRequest, NextApiResponse>(async ({ db }, res) => {
+handler.get<ExtendedRequest, NextApiResponse>(async ({ db, dbClient }, res) => {
   try {
     const partners: Array<IPartner> = await db.collection("partners").find().toArray();
 
@@ -16,6 +16,8 @@ handler.get<ExtendedRequest, NextApiResponse>(async ({ db }, res) => {
     res.json({ partners });
   } catch (error) {
     console.error(error);
+  } finally {
+    await dbClient.close();
   }
 });
 
