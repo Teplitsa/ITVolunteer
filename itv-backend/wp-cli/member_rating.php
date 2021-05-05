@@ -110,7 +110,7 @@ class MemberRating
             MemberManager::$meta_role, 
             MemberManager::$ROLE_DOER
         ));
-        \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
+        // \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
 
         foreach($user_id_list as $user_id) {
             $rating_calculator = new MemberRatingDoers($user_id);

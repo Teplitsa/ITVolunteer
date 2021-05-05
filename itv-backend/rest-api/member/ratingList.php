@@ -49,7 +49,7 @@ class RatingLIst {
         }
 
         global $wpdb;
-        $sql_select = " {$wpdb->users}.* ";
+        $sql_select = " SQL_CALC_FOUND_ROWS {$wpdb->users}.* ";
         $sql_from = " FROM {$wpdb->users} ";
         $sql_where = " WHERE 1 ";
         $args_from = [];
@@ -90,6 +90,7 @@ class RatingLIst {
     
         $args['custom_sql'] = call_user_func_array([$wpdb, 'prepare'], array_merge([$sql_select . $sql_from . $sql_where . $sql_group_by], $args_from, $args_where));    
         $args['custom_sql_order'] = " ORDER BY solved_tasks_count DESC, {$wpdb->users}.ID ASC";
+        $args['count_total'] = true;
     
         return $args;
     }
@@ -98,7 +99,7 @@ class RatingLIst {
         global $wpdb;
     
         // error_log("query_vars: " . print_r($query->query_vars, true));
-        error_log("custom_sql:" . $query->query_vars['custom_sql']);
+        // error_log("custom_sql:" . $query->query_vars['custom_sql']);
         // error_log("custom_sql_order:" . $query->query_vars['custom_sql_order']);
     
         if(!empty($query->query_vars['custom_sql'])) {
