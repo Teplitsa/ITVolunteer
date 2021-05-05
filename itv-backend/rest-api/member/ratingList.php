@@ -65,8 +65,8 @@ class RatingLIst {
         }
 
         if(!empty($name)) {
-            $sql_where .= "  AND MATCH ({$wpdb->users}.display_name) AGAINST (%s) ";
-            $args_where[] = $name;
+            $sql_where .= "  AND MATCH ({$wpdb->users}.display_name) AGAINST (%s IN BOOLEAN MODE) ";
+            $args_where[] = $name . "*";
         }
 
         $table = MemberRatingDoers::TABLE;
@@ -98,7 +98,7 @@ class RatingLIst {
         global $wpdb;
     
         // error_log("query_vars: " . print_r($query->query_vars, true));
-        // error_log("custom_sql:" . $query->query_vars['custom_sql']);
+        error_log("custom_sql:" . $query->query_vars['custom_sql']);
         // error_log("custom_sql_order:" . $query->query_vars['custom_sql_order']);
     
         if(!empty($query->query_vars['custom_sql'])) {
