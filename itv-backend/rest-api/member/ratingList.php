@@ -89,7 +89,7 @@ class RatingLIst {
         $sql_group_by = " GROUP BY {$wpdb->users}.ID ";
     
         $args['custom_sql'] = call_user_func_array([$wpdb, 'prepare'], array_merge([$sql_select . $sql_from . $sql_where . $sql_group_by], $args_from, $args_where));    
-        $args['custom_sql_order'] = " ORDER BY rating_table.solved_tasks_count DESC, {$wpdb->users}.ID ASC";
+        $args['custom_sql_order'] = " ORDER BY solved_tasks_count DESC, {$wpdb->users}.ID ASC";
     
         return $args;
     }
