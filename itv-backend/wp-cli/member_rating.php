@@ -27,7 +27,7 @@ class MemberRating
                 `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
                 PRIMARY KEY (`user_id`, `month`, `year`),
                 KEY (`month`, `year`)
-                ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4";
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
             // \WP_CLI::line($sql);
             
