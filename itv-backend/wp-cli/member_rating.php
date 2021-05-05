@@ -20,7 +20,7 @@ class MemberRating
 
             $table = MemberRatingDoers::TABLE;
             $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$table} (
-                `user_id` bigint(20) NULL DEFAULT NULL,
+                `user_id` bigint(20) NOT NULL,
                 `month` bigint(20) NOT NULL,
                 `year` bigint(20) NOT NULL,
                 `solved_tasks_count` int(20) NOT NULL,
