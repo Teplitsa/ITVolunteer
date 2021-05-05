@@ -27,7 +27,8 @@ class Member {
         } else {
             return null;
         }
-    }    
+    }
+
 }
 
 class MemberManager {
@@ -48,6 +49,7 @@ class MemberManager {
     public static $FIELD_ITV_ROLE = 'itvRole';
     public static $FIELD_ITV_ROLE_TITLE = 'itvRoleTitle';
     public static $FIELD_IS_HYBRID = 'isHybrid';
+    public static $FIELD_RATING_SOLVED_TASKS_COUNT = 'rating_solved_tasks_count';
 
     private function __lang() {
         __('member_role_doer', 'itv-backend');
@@ -77,13 +79,17 @@ class MemberManager {
         return $user_role === self::$ROLE_AUTHOR ? $member_tasks->has_member_completed_tasks() : $member_tasks->has_member_created_tasks();
     }
 
+    public function get_member_name($user_id) {
+        return tst_get_member_name( $user_id );
+    }
+
     public function get_property($response_data, $property_name, $request) {
         $value = null;
         $user_id = $response_data['id'];
 
         switch($property_name) {
             case self::$FIELD_FULL_NAME:
-                $value = tst_get_member_name( $user_id );
+                $value = $this->get_member_name( $user_id );
                 break;
 
             case self::$FIELD_AVATAR:
@@ -149,6 +155,9 @@ class MemberManager {
                 $value = $this->is_hybrid_profile($user_id);
                 break;
 
+            case self::$FIELD_RATING_SOLVED_TASKS_COUNT:
+                $value = 0;
+                break;
         }
         
         return $value;
