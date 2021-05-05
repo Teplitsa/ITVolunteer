@@ -94,7 +94,7 @@ class RatingLIst {
         return $args;
     }
 
-    function filter_users_for_rating($results, $query) {
+    public static function filter_users_for_rating($results, $query) {
         global $wpdb;
     
         // error_log("query_vars: " . print_r($query->query_vars, true));
@@ -114,7 +114,7 @@ class RatingLIst {
         return $results;
     }
 
-    function rating_prepare_user($response, $user, $request) {
+    public static function rating_prepare_user($response, $user, $request) {
         // error_log("data: " . print_r($response->data, true));
         // error_log("user.solved_tasks_count: " . $user->solved_tasks_count);
         $response->data[MemberManager::$FIELD_RATING_SOLVED_TASKS_COUNT] = $user->solved_tasks_count;
