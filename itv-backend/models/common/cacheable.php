@@ -23,7 +23,7 @@ class Cacheable extends AbstractCacheable
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{\Cache::STORAGE_NAME}->{static::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{static::$collection_name};
 
         if (is_null($item)) {
 
@@ -52,7 +52,7 @@ class Cacheable extends AbstractCacheable
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{\Cache::STORAGE_NAME}->{static::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{static::$collection_name};
 
         $deleteCacheResult = $collection->findOneAndDelete(['externalId' => $item_id]);
 

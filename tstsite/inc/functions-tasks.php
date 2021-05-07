@@ -4,6 +4,7 @@ use ITV\models\ResultScreenshots;
 use ITV\models\TimelineModel;
 use ITV\models\CommentsLikeModel;
 use ITV\models\UserNotifModel;
+use ITV\models\MemberRatingDoers;
 
 /**
  * Task related utilities and manipulations
@@ -1059,6 +1060,11 @@ function itv_close_task($task, $user_id) {
     $doer = array_shift($doers);
     if($doer) {
         UserXPModel::instance()->register_activity_from_gui($doer->ID, UserXPModel::$ACTION_TASK_DONE);
+        $rating_calculator = new MemberRatingDoers($doer->ID);
+        $month = intval(date('m'));
+        $year = intval(date('Y'));
+        $rating_calculator->store_month_rating($year, $month);
+        $rating_calculator->store_all_time_rating();
     }
     
     tst_send_admin_notif_task_complete($task->ID);

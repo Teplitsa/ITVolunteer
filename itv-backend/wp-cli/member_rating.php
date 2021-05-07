@@ -120,6 +120,16 @@ class MemberRating
                 $rating_calculator->store_all_time_rating();
             }
             else {
+                if(!$month) {
+                    $month = intval(date('m', time() - 24 * 3600));
+                }
+                \WP_CLI::line("calc for month=" . $month);
+
+                if(!$year) {
+                    $year = intval(date('Y', time() - 24 * 3600));
+                }
+                \WP_CLI::line("calc for year=" . $year);
+
                 $rating_calculator->store_month_rating($year, $month);
             }
         }

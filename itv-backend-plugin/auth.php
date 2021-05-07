@@ -83,7 +83,7 @@ class Auth {
         return $user_id;
     }
     
-    function rest_cookie_collect_status($cookie_elements) {
+    public static function rest_cookie_collect_status($cookie_elements) {
         global $wp_rest_auth_cookie;
         $wp_rest_auth_cookie = false;
     }
