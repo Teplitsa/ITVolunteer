@@ -1,53 +1,54 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, MouseEvent, Dispatch, SetStateAction } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MemberListItem from "./MemberListItem";
+import MemberListNoItems from "./MemberListNoItems";
+import { MemberListSkeletonItemsOnly } from "../skeletons/MemberListSkeleton";
 import { USER_PER_PAGE } from "../../model/components/members-model";
-import Loader from "../Loader";
 
-const MemberList: React.FunctionComponent = (): ReactElement => {
-  const [isLoading, setLoading] = useState<boolean>(false);
-  const {
-    paged,
-    userListStats: { total: totalMembers },
-    userList: members = null,
-  } = useStoreState(state => state.components.members);
-  const moreVolunteersRequest = useStoreActions(
-    actions => actions.components.members.moreVolunteersRequest
-  );
+const MemberList: React.FunctionComponent<{
+  isLoading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}> = ({ isLoading, setLoading }): ReactElement => {
+  const [isMoreLoading, setMoreLoading] = useState<boolean>(false);
+  const page = useStoreState(state => state.components.members.userFilter.page);
+  const total = useStoreState(state => state.components.members.userListStats.total);
+  const members = useStoreState(state => state.components.members.userList);
 
-  return members ? (
+  const setFilter = useStoreActions(actions => actions.components.members.setFilter);
+  const userListRequest = useStoreActions(actions => actions.components.members.userListRequest);
+
+  const handleMoreLink = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+
+    setFilter({ page: page + 1 });
+    setLoading(true);
+    setMoreLoading(true);
+    userListRequest({ setLoading, setMoreLoading });
+  };
+
+  if (Object.is(members, null) || (Array.isArray(members) && members.length === 0)) {
+    return <MemberListNoItems />;
+  }
+
+  return (
     <>
-      <div className="members-list">
-        {members
-          ?.filter(member => !!member)
-          .map((member, index) => {
-            return (
-              <MemberListItem
-                key={`Volunteer-${member.id}`}
-                {...{ isOdd: index % 2 === 0, index: index + 1, member }}
-              />
-            );
-          })}
-      </div>
-      {USER_PER_PAGE * paged < totalMembers && (
+      {(!isLoading || isMoreLoading) && (
+        <div className="members-list">
+          {members?.map((member, index) => (
+            <MemberListItem key={`Volunteer-${member.id}`} {...{ index: index + 1, member }} />
+          ))}
+        </div>
+      )}
+      {isLoading && <MemberListSkeletonItemsOnly />}
+      {!isLoading && USER_PER_PAGE * page < total && (
         <div className="members-list-more">
-          {(isLoading && <Loader />) || (
-            <a
-              className="btn btn_secondary"
-              href="#"
-              onClick={event => {
-                event.preventDefault();
-                setLoading(true);
-                moreVolunteersRequest({ setLoading });
-              }}
-            >
-              Загрузить ещё
-            </a>
-          )}
+          <a href="#" className="members-list-more__link" onClick={handleMoreLink}>
+            Показать ещё
+          </a>
         </div>
       )}
     </>
-  ) : null;
+  );
 };
 
 export default MemberList;

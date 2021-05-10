@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import HomeInterfaceSwitch from "./HomeInterfaceSwitch";
 import { TaskListItemHome } from "../task-list/TaskListItem";
-import MemberListItemTop from "../members/MemberListItemTop";
+import MemberListItem from "../members/MemberListItem";
 import withSlideIn from "../hoc/withSlideIn";
 import { regEvent } from "../../utilities/ga-events";
 
@@ -65,7 +65,7 @@ const HomeUserTop: React.FunctionComponent = (): ReactElement => {
         <div className="volunteer-list">
           {memberList?.map((user, i) =>
             withSlideIn({
-              component: MemberListItemTop,
+              component: MemberListItem,
               from: i % 2 ? "right" : "left",
               fullWidth: false,
               key: user.id,

@@ -355,6 +355,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Категория"
               labelExtraClassName="form__label_small form__label_required"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите категорию"
               maxSelectedOptions={2}
               name="taskTags"
@@ -371,6 +372,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Направление помощи"
               labelExtraClassName="form__label_small form__label_required"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите направление"
               name="ngoTags"
               defaultValue={taskRef.current?.ngoTags.value}
@@ -399,6 +401,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Вознаграждение"
               labelExtraClassName="form__label_small"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите вознаграждение"
               name="reward"
               defaultValue={taskRef.current?.reward.value}

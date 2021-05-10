@@ -1,15 +1,21 @@
 .volunteer {
   position: relative;
   background: $color-white;
-  border: 2px solid $color-gray-light-md;
-  padding: 20px 25px;
+  border: 2px solid $color-gray-light-lg;
+  padding: 20px;
   border-radius: 8px;
   @include screen-from(md) {
     display: flex;
     flex-flow: column nowrap;
   }
-  &_top {
-    border: 3px solid $color-gold;
+  &_first {
+    border: 2px solid #f6d288;
+  }
+  &_second {
+    border: 2px solid #c9c9c9;
+  }
+  &_third {
+    border: 2px solid #eba189;
   }
   &__header {
     display: flex;
@@ -23,17 +29,42 @@
   }
   &__index {
     position: absolute;
-    top: -18px;
-    right: 26px;
-    background-color: $color-gold;
+    top: 20px;
+    right: 20px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font: 600 16px/21px "IBM Plex Sans", sans-serif;
+    font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+    letter-spacing: -0.01em;
     color: $color-gray-dark-lg;
+
+    &_first,
+    &_second,
+    &_third {
+      &::before {
+        content: "";
+        display: block;
+        background: none 50% 50% no-repeat;
+        margin: 0 10px 0 0;
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &_first {
+      &::before {
+        background-image: url("../../img/icon-award-gold.svg");
+      }
+    }
+    &_second {
+      &::before {
+        background-image: url("../../img/icon-award-silver.svg");
+      }
+    }
+    &_third {
+      &::before {
+        background-image: url("../../img/icon-award-bronze.svg");
+      }
+    }
   }
   &__avatar {
     margin: 0 0 5px;
@@ -47,15 +78,7 @@
       flex-flow: row wrap;
       align-items: center;
       flex-grow: 10;
-      margin: 0 0 0 10px;
-    }
-  }
-  &__organization-name {
-    font: 600 13px/20px "IBM Plex Sans", sans-serif;
-    color: $color-gray-dark-md;
-
-    @include screen-from(md) {
-      flex-basis: 100%;
+      margin: 0 0 0 20px;
     }
   }
   &__account-link {
@@ -63,33 +86,15 @@
   }
   &__full-name {
     margin: 0 0 5px;
-    font: 600 20px/32px "IBM Plex Sans", sans-serif;
+    font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+    letter-spacing: -0.01em;
     color: $color-gray-dark-xl;
     @include screen-from(md) {
-      margin: 0 10px 5px 0;
+      margin: 0 0 10px;
     }
   }
-  &__role {
-    margin: 0 0 10px;
-    @include screen-from(md) {
-      margin: 0 0 5px 0;
-    }
-    &-bage {
-      display: inline-block;
-      background-color: $color-main-light;
-      padding: 2px 10px;
-      font: 600 11px/16px "IBM Plex Sans", sans-serif;
-      color: $color-main;
-      border-radius: 10px;
-    }
-  }
-  &__organization-description {
-    margin: 0 0 25px;
-    text-align: center;
-    @include screen-from(md) {
-      margin: 0 0 20px;
-      text-align: left;
-    }
+  &__stats {
+    flex-basis: 100%;
   }
   &__footer {
     display: flex;
@@ -100,27 +105,26 @@
       margin-top: auto;
     }
   }
-  &__socials {
-    > :only-child {
-      margin: 0 0 5px;
+  &__give-thanks {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+
+    .volunteer:hover & {
+      visibility: visible;
+      opacity: 1;
     }
-  }
-  &__organization-site {
-    margin: 0 0 5px;
-    font: 500 13px/20px "IBM Plex Sans", sans-serif;
-  }
-  &__registration-date {
-    font: 500 13px/20px "IBM Plex Sans", sans-serif;
-    color: $color-gray;
-    @include screen-from(md) {
-      flex-grow: 10;
-      text-align: right;
+    &-btn {
+      background: $color-gray-light-xl;
+      border: 2px solid $color-gray-light-md;
+      padding: 6px 8px;
+      font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+      border-radius: 8px;
+      box-sizing: border-box;
     }
-  }
-  &__divider {
-    display: block;
-    border-top: 1px solid $color-gray-light-md;
-    margin: 10px 0;
-    width: 100%;
   }
 }

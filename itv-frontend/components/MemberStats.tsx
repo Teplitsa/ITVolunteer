@@ -46,15 +46,14 @@ const MemberStats: React.FunctionComponent<{
       {useComponents.includes("rating") && (
         <div className="member-stats__item member-stats__item_calculated-rating">
           <div className="member-stats__calculated-rating">
-            Оценка{" "}
             <span className="member-stats__calculated-rating-value">
               {rating
                 ? rating.toFixed(1).toString().search(/\.0/) === -1
                   ? rating.toFixed(1)
                   : Math.round(rating)
                 : 0}
-            </span>{" "}
-            из 5
+            </span>
+            /5
           </div>
         </div>
       )}

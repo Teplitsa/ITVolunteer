@@ -43,8 +43,9 @@ export interface IStoreEntrypoint {
 export interface IAppModel extends IAppState, IAppActions {}
 
 export interface IAppState {
-  entrypointTemplate?: keyof IStoreEntrypoint;
   componentsLoaded?: IAppComponentsLoaded;
+  entrypointTemplate?: keyof IStoreEntrypoint;
+  now: number;
 }
 
 export interface IAppComponentsLoaded {
@@ -301,27 +302,24 @@ export interface IMembersPageModel
     IMembersPageThunks {}
 
 export interface IMemberListItem {
-  id: string;
-  itvAvatar: string;
-  fullName: string;
-  username: string;
+  id: number;
   slug: string;
-  memberRole: string;
-  organizationName: string;
-  organizationDescription: string;
-  organizationSite: string;
-  rating: number;
+  fullName: string;
   reviewsCount: number;
+  rating: number;
   xp: number;
-  solvedProblems: number;
-  facebook?: string;
-  instagram?: string;
-  vk?: string;
-  registrationDate?: number;
+  itvAvatar: string;
+}
+
+export interface IMemberListFilter {
+  month?: number;
+  year?: number;
+  name?: string;
+  page?: number;
 }
 
 export interface IMembersPageState {
-  paged: number;
+  userFilter: IMemberListFilter;
   userListStats: {
     total: number;
   };
@@ -331,20 +329,32 @@ export interface IMembersPageState {
 export interface IMembersPageActions {
   initializeState: Action<IMembersPageModel>;
   setState: Action<IMembersPageModel, IMembersPageState>;
-  setPaged: Action<IMembersPageModel, number>;
+  setFilter: Action<IMembersPageModel, IMemberListFilter>;
   setUserListStats: Action<
     IMembersPageModel,
     {
       total: number;
     }
   >;
-  addMoreVolunteers: Action<IMembersPageModel, Array<IMemberListItem>>;
+  addUsers: Action<IMembersPageModel, Array<IMemberListItem>>;
+  addMoreUsers: Action<IMembersPageModel, Array<IMemberListItem>>;
 }
 
 export interface IMembersPageThunks {
-  moreVolunteersRequest: Thunk<
+  userListRequest: Thunk<
     IMembersPageActions,
-    { setLoading: Dispatch<SetStateAction<boolean>> }
+    {
+      replaceUserList?: boolean;
+      setLoading: Dispatch<SetStateAction<boolean>>;
+      setMoreLoading?: Dispatch<SetStateAction<boolean>>;
+    }
+  >;
+  giveThanksRequest: Thunk<
+    IMembersPageActions,
+    {
+      toUserId: number;
+      setIsThanksGiven: Dispatch<SetStateAction<boolean>>;
+    }
   >;
 }
 
@@ -1712,8 +1722,10 @@ export interface IFormControlProps {
 }
 
 export interface IFormSelectProps {
+  selectExtraClassName?: string;
   selectPlaceholder?: string;
   maxSelectedOptions?: number;
+  useTags?: boolean;
 }
 
 export interface IFormInputDateProps {

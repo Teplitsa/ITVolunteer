@@ -186,7 +186,7 @@
       [class*="-list"] {
         display: grid;
         grid-template-columns: 100%;
-        grid-gap: 30px;
+        gap: 30px;
 
         @include screen-from(sm) {
           grid-template-columns: repeat(2, calc(50% - 15px));
