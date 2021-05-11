@@ -309,8 +309,6 @@ export interface IMemberListItem {
   rating: number;
   xp: number;
   itvAvatar: string;
-  memberRole: string;
-  solvedProblems?: number;
 }
 
 export interface IMemberListFilter {
