@@ -312,6 +312,11 @@ export interface IMemberListItem {
   memberRole: string;
   organizationName?: string;
   organizationDescription?: string;
+  facebook?: string;
+  twitter?: string;
+  vk?: string;
+  skype?: string;
+  telegram?: string;
   solvedProblems?: number;
 }
 
