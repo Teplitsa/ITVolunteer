@@ -310,13 +310,6 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   memberRole: string;
-  organizationName?: string;
-  organizationDescription?: string;
-  facebook?: string;
-  twitter?: string;
-  vk?: string;
-  skype?: string;
-  telegram?: string;
   solvedProblems?: number;
 }
 
@@ -325,7 +318,6 @@ export interface IMemberListFilter {
   year?: number;
   name?: string;
   page?: number;
-  paged?: number;
 }
 
 export interface IMembersPageState {
