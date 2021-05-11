@@ -310,6 +310,7 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   memberRole: string;
+  organizationName?: string;
 }
 
 export interface IMemberListFilter {

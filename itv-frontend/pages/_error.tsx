@@ -51,6 +51,7 @@ Error.getInitialProps = ({ res, err }: NextPageContext) => {
     app: {
       componentsLoaded: [],
       entrypointTemplate: "page",
+      now: Date.now(),
     },
     entrypoint: { archive: null, page: entrypointModel },
   };
