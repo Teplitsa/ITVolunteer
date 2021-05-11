@@ -319,6 +319,7 @@ export interface IMemberListFilter {
   year?: number;
   name?: string;
   page?: number;
+  paged?: number;
 }
 
 export interface IMembersPageState {
