@@ -95,6 +95,7 @@ const withAppAndEntrypointModel = async ({
   const model = {
     app: {
       entrypointTemplate,
+      now: Date.now(),
     },
     session: null,
     entrypointType,

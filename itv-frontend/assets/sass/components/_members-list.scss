@@ -1,40 +1,47 @@
 .members-list {
-  @include screen-from(md) {
-    display: flex;
-    flex-flow: row wrap;
-  }
-  &__item {
-    margin: 0 0 30px;
-    transform: scale(0.85);
-    opacity: 0;
-    box-sizing: border-box;
-    transition: all 0.3s ease-in;
-    @include screen-from(md) {
-      flex-grow: 10;
-      flex-basis: calc(50% - 15px);
-    }
-    &_shown {
-      transform: none;
-      opacity: 1;
-    }
-    &_odd {
-      @include screen-from(md) {
-        margin: 0 15px 30px 0;
-      }
-    }
-    &_even {
-      @include screen-from(md) {
-        margin: 0 0 30px 15px;
-      }
-    }
-  }
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
   &-more {
+    margin: 30px 0 0;
     text-align: center;
+
+    &__link {
+      border-bottom: 1px dashed $color-main;
+      text-decoration: none;
+
+      &:hover {
+        border-bottom: 1px dashed transparent;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+      }
+    }
   }
-  &-divider {
-    display: block;
-    margin: 0 0 30px;
-    border-top: 1px solid $color-gray-light-md;
-    width: 100%;
+  &-no-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 20px;
+    justify-items: center;
+    margin-bottom: -40px;
+
+    &__message {
+      font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+      letter-spacing: -0.01em;
+      text-align: center;
+      color: $color-gray-dark-xl;
+    }
+    &__cta {
+      [class*="btn"] {
+        padding: 12px 20px;
+        font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+        border-radius: 6px;
+      }
+    }
+    &__image {
+      //
+    }
   }
 }
