@@ -51,7 +51,7 @@ const MemberAccountTemplateSwitcher: React.FunctionComponent = (): ReactElement 
               setTemplate({ template: "author" });
           }}
         >
-          Автор
+          Заказчик
         </button>
       )}
     </div>

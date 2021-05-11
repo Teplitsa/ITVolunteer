@@ -290,6 +290,10 @@
       }
       &-small[class*="_input"] {
         padding: 10px 12px;
+
+        &[class*="_input-with-counter"] {
+          padding-right: 52px;
+        }
       }
     }
     &_textarea {

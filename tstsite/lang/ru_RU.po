@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Blank v1.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/tstsite\n"
 "POT-Creation-Date: 2020-11-18T08:44:52+00:00\n"
-"PO-Revision-Date: 2020-11-18 10:52+0200\n"
+"PO-Revision-Date: 2021-05-11 10:22+0200\n"
 "Last-Translator: Anna Ladoshkina <webdev@foralien.com>\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -888,10 +888,8 @@ msgid "Task doer candidates count"
 msgstr "Сортировать по количеству волонтеров"
 
 #: inc/graphql.php:55
-#, fuzzy
-#| msgid "Author reviews"
 msgid "Author and doer left reviews"
-msgstr "Отзывы про автора"
+msgstr "Отзывы про заказчика"
 
 #: inc/graphql.php:65
 #, fuzzy
@@ -948,10 +946,8 @@ msgid "Number of tasks user solved as DOER"
 msgstr ""
 
 #: inc/graphql.php:338
-#, fuzzy
-#| msgid "All author reviews"
 msgid "User author reviews count"
-msgstr "Все отзывы автора"
+msgstr "Все отзывы заказчика"
 
 #: inc/graphql.php:345
 #, fuzzy
@@ -2229,7 +2225,7 @@ msgstr "Сообщение кандидату об утверждении"
 
 #: inc/itv_lang.php:35
 msgid "itv_task_actions_log_email_approve_candidate_author"
-msgstr "Сообщение автору об утверждении кандидата"
+msgstr "Сообщение заказчику об утверждении кандидата"
 
 #: inc/itv_lang.php:36
 msgid "itv_task_actions_log_email_refuse_candidate_author"
@@ -2237,11 +2233,11 @@ msgstr "Сообщение кандидату об отказе"
 
 #: inc/itv_lang.php:37
 msgid "itv_task_actions_log_email_add_candidate_author"
-msgstr "Сообщение автору о появлении кандидата"
+msgstr "Сообщение заказчику о появлении кандидата"
 
 #: inc/itv_lang.php:38
 msgid "itv_task_actions_log_email_remove_candidate_author"
-msgstr "Сообщение автору об отказе кандидата"
+msgstr "Сообщение заказчику об отказе кандидата"
 
 #: inc/itv_lang.php:39
 msgid "itv_task_actions_log_email_doer_about_task_closed"
@@ -2249,7 +2245,7 @@ msgstr "Сообщение исполнителю о закрытии задач
 
 #: inc/itv_lang.php:40
 msgid "itv_task_actions_log_email_author_about_task_closed"
-msgstr "Сообщение автору о закрытии задачи"
+msgstr "Сообщение заказчику о закрытии задачи"
 
 #: inc/itv_lang.php:41
 msgid "itv_task_actions_log_email_doer_about_task_status_changed"
@@ -3695,7 +3691,7 @@ msgstr "Возврат к просмотру профиля"
 
 #: page-author-reviews.php:61 partials/content-member_single.php:211
 msgid "Author reviews"
-msgstr "Отзывы про автора"
+msgstr "Отзывы про заказчика"
 
 #: page-author-reviews.php:63 partials/content-member_single.php:196
 msgid "Doer reviews"
@@ -4037,7 +4033,7 @@ msgstr ""
 
 #: page-task-actions.php:122
 msgid "Task's author"
-msgstr "Автор:"
+msgstr "Заказчик:"
 
 # @ tst
 #: page-task-actions.php:130
@@ -4154,7 +4150,7 @@ msgstr "Все отзывы исполнителя"
 
 #: partials/content-member_single.php:220
 msgid "All author reviews"
-msgstr "Все отзывы автора"
+msgstr "Все отзывы заказчика"
 
 # @ tst
 #: partials/content-member_single.php:243
@@ -4406,7 +4402,8 @@ msgid ""
 "Send a little message to the task author about why you wish to refuse your "
 "help."
 msgstr ""
-"Отправьте небольшое сообщение автору о том, почему вы отказываетесь помогать."
+"Отправьте небольшое сообщение заказчику о том, почему вы отказываетесь "
+"помогать."
 
 # @ tst
 #: post-types/task_placeholder.php:9 post-types/task_placeholder.php:33
@@ -4654,12 +4651,12 @@ msgid ""
 "Good author. Gives clean task description. Communicative. Recommend this "
 "author."
 msgstr ""
-"Был рад сотрудничеству. Автор очень детально и понятно описывает задачи. "
+"Был рад сотрудничеству. Заказчик очень детально и понятно описывает задачи. "
 "Быстро отвечает на вопросы."
 
 #: single-tasks.php:131
 msgid "Please rate author work result"
-msgstr "Пожалуйста, оцените работу с автором"
+msgstr "Пожалуйста, оцените работу с заказчиком"
 
 # @ tst
 #: single-tasks.php:158
