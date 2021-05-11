@@ -311,6 +311,7 @@ export interface IMemberListItem {
   itvAvatar: string;
   memberRole: string;
   organizationName?: string;
+  organizationDescription?: string;
   solvedProblems?: number;
 }
 
