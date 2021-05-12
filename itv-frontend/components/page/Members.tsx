@@ -55,12 +55,14 @@ const Members: React.FunctionComponent = (): ReactElement => {
 
   const handleMonthChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     setFilter({ month: Number(event.currentTarget.selectedOptions[0].value), page: 1 });
+    isReset && setIsReset(false);
     setLoading(true);
     userListRequest({ replaceUserList: true, setLoading });
   };
 
   const handleYearChange = (event: ChangeEvent<HTMLSelectElement>): void => {
     setFilter({ year: Number(event.currentTarget.selectedOptions[0].value), page: 1 });
+    isReset && setIsReset(false);
     setLoading(true);
     userListRequest({ replaceUserList: true, setLoading });
   };

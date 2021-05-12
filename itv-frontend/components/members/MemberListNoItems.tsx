@@ -37,6 +37,7 @@ const MemberListNoItems: React.FunctionComponent = (): ReactElement => {
         mediaUrl:
           isLoggedIn && itvRole === "author" ? NoItemsForAuthorImage : NoItemsForVolunteerImage,
         mediaAlt: "",
+        mediaHeight: 350,
         className: "members-list-no-items__image",
       })}
     </div>
