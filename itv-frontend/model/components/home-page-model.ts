@@ -5,7 +5,7 @@ import {
   IHomePageThunks,
   IMemberListItem,
   IRestApiResponse,
-  IStoreModel
+  IStoreModel,
 } from "../model.typing";
 import { action, thunk, thunkOn } from "easy-peasy";
 import { getRestApiUrl } from "../../utilities/utilities";
@@ -40,9 +40,11 @@ const homePageActions: IHomePageActions = {
 const homePageThunks: IHomePageThunks = {
   loadMembersRequest: thunk(async (actions, _, { getStoreState }) => {
     const {
-      app: { now }
+      app: { now },
     } = getStoreState() as IStoreModel;
     const { memberListItemQueriedFields } = await import("../../model/components/members-model");
+    const currentMonth = new Date(now).getMonth();
+    const currentYear = new Date(now).getFullYear();
 
     try {
       const requestURL = new URL(getRestApiUrl(`/itv/v1/member/ratingList/doer`));
@@ -51,8 +53,10 @@ const homePageThunks: IHomePageThunks = {
         return memberListItemQueriedFields.map(paramValue => `_fields[]=${paramValue}`).join("&");
       })();
 
-      requestURL.searchParams.set("month", String(new Date(now).getMonth()));
-      requestURL.searchParams.set("year", String(new Date(now).getFullYear()));
+      requestURL.searchParams.set(
+        "year",
+        String(currentMonth === 0 ? currentYear - 1 : currentYear)
+      );
       requestURL.searchParams.set("page", "1");
       requestURL.searchParams.set("per_page", "6");
 
