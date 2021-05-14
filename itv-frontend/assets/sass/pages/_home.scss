@@ -264,6 +264,8 @@
     }
   }
   &-reviews {
+    background: linear-gradient($color-main, $color-main) 50% 0 no-repeat;
+    background-size: 100% calc(100% - 30px);
     margin: 0 -15px 50px;
 
     @include screen-from(sm) {
@@ -271,7 +273,7 @@
     }
 
     &__item {
-      background-color: $color-main;
+      
       padding-top: 32px;
 
       @include screen-from(sm) {
