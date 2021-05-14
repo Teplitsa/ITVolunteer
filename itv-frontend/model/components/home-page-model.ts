@@ -7,6 +7,7 @@ import {
   IRestApiResponse,
   IStoreModel
 } from "../model.typing";
+import * as utils from "../../utilities/utilities";
 import { action, thunk, thunkOn } from "easy-peasy";
 import { getRestApiUrl } from "../../utilities/utilities";
 
@@ -56,7 +57,7 @@ const homePageThunks: IHomePageThunks = {
       requestURL.searchParams.set("page", "1");
       requestURL.searchParams.set("per_page", "6");
 
-      const memberListResponse = await fetch(requestURL.toString());
+      const memberListResponse = await utils.tokenFetch(requestURL.toString());
       const response: IRestApiResponse & Array<IMemberListItem> = await memberListResponse.json();
 
       if (response.data?.status && response.data.status !== 200) {

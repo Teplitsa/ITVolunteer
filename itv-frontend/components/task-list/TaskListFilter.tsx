@@ -253,7 +253,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     formData.append("filter", JSON.stringify(optionCheck));
 
     const action = "subscribe-task-list";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })
@@ -285,7 +285,7 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     const formData = new FormData();
 
     const action = "unsubscribe-task-list";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })

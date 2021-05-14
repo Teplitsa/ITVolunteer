@@ -38,7 +38,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
     formData.append("filter", JSON.stringify(optionCheck));
 
     const action = "get-task-list";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: formData,
     })

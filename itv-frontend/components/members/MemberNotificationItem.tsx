@@ -1,5 +1,6 @@
 import { ReactElement, Fragment, useState, useEffect } from "react";
 import Link from "next/link";
+import * as utils from "../../utilities/utilities";
 import { INotification } from "../../model/model.typing";
 import NoAvatarIcon from "../../assets/img/icon-no-avatar_24x24.svg";
 
@@ -18,7 +19,7 @@ const MemberNotificationItem: React.FunctionComponent<INotification> = ({
     try {
       avatar &&
         avatar.search(/temp-avatar\.png/) === -1 &&
-        fetch(avatar, {
+        utils.tokenFetch(avatar, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));

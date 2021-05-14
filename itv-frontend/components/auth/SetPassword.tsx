@@ -2,6 +2,7 @@ import { ReactElement, useState, useEffect, ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import * as _ from "lodash";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
+import * as utils from "../../utilities/utilities";
 import Loader from "../Loader";
 
 const SetPassword: React.FunctionComponent = (): ReactElement => {
@@ -59,8 +60,8 @@ const SetPassword: React.FunctionComponent = (): ReactElement => {
       router.push("/tasks");
     } else {
       setLoading(true);
-      fetch(
-        "/wp-login.php?action=rp&key=" +
+      utils.tokenFetch(
+        utils.getLoginUrl() + "?action=rp&key=" +
           _.get(router, "query.key", "") +
           "&login=" +
           _.get(router, "query.login", "")

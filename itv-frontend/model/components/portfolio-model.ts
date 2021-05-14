@@ -8,6 +8,7 @@ import {
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
 import { getRestApiUrl } from "../../utilities/utilities";
+import * as utils from "../../utilities/utilities";
 
 export const portfolioItemFormState: IPortfolioItemFormState = {
   id: 0,
@@ -71,7 +72,7 @@ const portfolioItemFormThunks: IPortfolioItemFormThunks = {
       );
 
       try {
-        const result = await fetch(getRestApiUrl("/wp/v2/portfolio_work"), {
+        const result = await utils.tokenFetch(getRestApiUrl("/wp/v2/portfolio_work"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -132,7 +133,7 @@ const portfolioItemFormThunks: IPortfolioItemFormThunks = {
       );
 
       try {
-        const result = await fetch(getRestApiUrl(`/wp/v2/portfolio_work/slug:${slug}`), {
+        const result = await utils.tokenFetch(getRestApiUrl(`/wp/v2/portfolio_work/slug:${slug}`), {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
