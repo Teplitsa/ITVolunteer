@@ -41,7 +41,11 @@ class Cacheable extends AbstractCacheable
 
             if (is_null($updateCacheResult)) {
 
-                $collection->insertOne($item);
+                $list = self::get_list();
+
+                $collection->drop();
+
+                $updateCacheResult = $collection->insertMany($list);
             }
         }
     }
