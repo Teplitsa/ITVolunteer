@@ -11,7 +11,7 @@ import {
 import { thunk, action, computed, actionOn } from "easy-peasy";
 import SsrCookie from "ssr-cookie";
 import * as C from "../const";
-import { getAjaxUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
+import { getAjaxUrl, getLoginUrl, stripTags, getRestApiUrl } from "../utilities/utilities";
 import * as utils from "../utilities/utilities";
 
 const sessionUserState: ISessionUser = {
@@ -224,7 +224,7 @@ const sessionActions: ISessionActions = {
   ),
   loadSubscribeTaskList: thunk(actions => {
     const action = "get-task-list-subscription";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "get",
     })
       .then(res => {
@@ -332,7 +332,7 @@ const sessionThunks: ISessionThunks = {
   }),
   register: thunk(async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
     try {
-      const result = await fetch(getAjaxUrl("user-register"), {
+      const result = await utils.tokenFetch(getAjaxUrl("user-register"), {
         method: "post",
         body: utils.formDataToJSON(formData),
         headers: {
@@ -355,7 +355,7 @@ const sessionThunks: ISessionThunks = {
   }),
   userLogin: thunk(async (actions, { formData, successCallbackFn, errorCallbackFn }) => {
     try {
-      const result = await fetch(getAjaxUrl("login"), {
+      const result = await utils.tokenFetch(getRestApiUrl("/itv/v1/auth/login"), {
         method: "post",
         body: utils.formDataToJSON(formData),
         headers: {
@@ -363,14 +363,48 @@ const sessionThunks: ISessionThunks = {
         },
       });
 
-      const { status: responseStatus, message: responseMessage } = await (<Promise<IFetchResult>>(
-        result.json()
-      ));
-      if (responseStatus === "fail") {
-        errorCallbackFn(stripTags(responseMessage));
-      } else {
+      if(result.ok) {
+
+        const {
+          token: authToken,
+          user: user,
+        } = await (<
+          Promise<{
+            token: string;
+            user: any;
+          }>
+        >result.json());
+
+        console.error("set session isLoaded on ok");
+
+        actions.setState({
+          token: { timestamp: Date.now(), authToken, refreshToken: null },
+          user,
+          isLoaded: true,
+        });
+
         successCallbackFn();
+
       }
+      else {
+
+        const {
+          code: errorCode,
+          message: errorMessage,
+        } = await (<
+          Promise<{
+            code: string;
+            message: string;
+          }>
+        >result.json());
+
+        console.error("errorCode:", errorCode);
+        console.error(stripTags(errorMessage));
+        console.error("set session isLoaded on fail");
+
+        errorCallbackFn(stripTags(errorMessage));
+      }
+
     } catch (error) {
       console.error(error);
       errorCallbackFn("Во время входа произашла ошибка.");
@@ -381,7 +415,7 @@ const sessionThunks: ISessionThunks = {
       const formData = new FormData();
       formData.append("user_login", String(userLogin));
 
-      const result = await fetch(getAjaxUrl("reset-password"), {
+      const result = await utils.tokenFetch(getAjaxUrl("reset-password"), {
         method: "post",
         body: formData,
       });
@@ -408,7 +442,7 @@ const sessionThunks: ISessionThunks = {
         formData.append("pass2", String(newPassword));
         formData.append("rp_key", String(key));
 
-        const result = await fetch("/wp-login.php?action=resetpass", {
+        const result = await utils.tokenFetch(getLoginUrl() + "?action=resetpass", {
           method: "post",
           body: formData,
         });
@@ -437,7 +471,7 @@ const sessionThunks: ISessionThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await fetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
+        const result = await utils.tokenFetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
           method: "POST",
           body: formData,
         });

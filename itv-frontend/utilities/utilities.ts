@@ -158,6 +158,11 @@ export const getAjaxUrl = (action: string): string => {
   return url.toString();
 };
 
+export const getLoginUrl = (): string => {
+  const url = new URL(process.env.LoginUrl);
+  return url.toString();
+};
+
 export const getRestApiUrl = (route: string): string => {
   const url = new URL(process.env.RestApiUrl + route);
   return url.toString();
