@@ -120,10 +120,10 @@ class MemberRatingDoers {
 
         $table = self::TABLE;
         $sql = "update `{$wpdb->prefix}{$table}` as t3 
-            left join (
+            join (
                 SELECT t1.*, count(t2.user_id) + 1 AS count_before
                 FROM `{$wpdb->prefix}{$table}` as t1 
-                left join {$wpdb->prefix}{$table} as t2 
+                join {$wpdb->prefix}{$table} as t2 
                     on t2.year = t1.year
                         and t2.month = t1.month
                         and (t2.solved_tasks_count > t1.solved_tasks_count
