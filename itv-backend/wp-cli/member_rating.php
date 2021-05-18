@@ -179,8 +179,6 @@ class MemberRating
         }
 
         \WP_CLI::line("recalc positions...");
-        global $wpdb;
-        $wpdb->query('START TRANSACTION');
 
         if($all) {
             MemberRatingDoers::recalculate_positions();
@@ -189,7 +187,6 @@ class MemberRating
             MemberRatingDoers::recalculate_positions($year, $month);
         }
         MemberRatingDoers::recalculate_positions(0, 0);
-        $wpdb->query('COMMIT');
 
         \WP_CLI::success(__('Done.', 'itv-backend'));
     }
