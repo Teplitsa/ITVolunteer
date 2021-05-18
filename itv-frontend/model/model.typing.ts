@@ -1615,6 +1615,7 @@ export interface IPartner extends ICacheable {
   title: string;
   content: string;
   thumbnail: string;
+  website: string;
 }
 
 /**
