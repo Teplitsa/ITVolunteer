@@ -26,9 +26,9 @@ const MemberListItem: React.FunctionComponent<{
     <div
       className={convertObjectToClassName({
         volunteer: true,
-        volunteer_first: index === 1,
-        volunteer_second: index === 2,
-        volunteer_third: index === 3,
+        volunteer_first: member.ratingSolvedTasksPosition === 1,
+        volunteer_second: member.ratingSolvedTasksPosition === 2,
+        volunteer_third: member.ratingSolvedTasksPosition === 3,
       })}
     >
       <div className="volunteer__header">
