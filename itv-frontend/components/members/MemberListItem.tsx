@@ -69,12 +69,12 @@ const MemberListItem: React.FunctionComponent<{
       <div
         className={convertObjectToClassName({
           volunteer__index: true,
-          volunteer__index_first: index === 1,
-          volunteer__index_second: index === 2,
-          volunteer__index_third: index === 3,
+          volunteer__index_first: member.ratingSolvedTasksPosition === 1,
+          volunteer__index_second: member.ratingSolvedTasksPosition === 2,
+          volunteer__index_third: member.ratingSolvedTasksPosition === 3,
         })}
       >
-        {index}
+        {member.ratingSolvedTasksPosition}
       </div>
       {isLoggedIn && (
         <div className="volunteer__give-thanks">

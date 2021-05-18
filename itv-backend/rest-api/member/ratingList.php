@@ -72,7 +72,7 @@ class RatingLIst {
         $table = MemberRatingDoers::TABLE;
         $sql_from .= " LEFT JOIN  {$wpdb->prefix}{$table} rating_table
             ON  rating_table.user_id = {$wpdb->users}.ID";
-        $sql_select .= ", SUM(rating_table.solved_tasks_count) AS solved_tasks_count ";
+        $sql_select .= ", SUM(rating_table.solved_tasks_count) AS solved_tasks_count, rating_table.position AS solved_tasks_position ";
 
         if($month) {
             $sql_where .= " AND rating_table.month = %s ";
@@ -89,7 +89,7 @@ class RatingLIst {
         $sql_group_by = " GROUP BY {$wpdb->users}.ID ";
     
         $args['custom_sql'] = call_user_func_array([$wpdb, 'prepare'], array_merge([$sql_select . $sql_from . $sql_where . $sql_group_by], $args_from, $args_where));    
-        $args['custom_sql_order'] = " HAVING solved_tasks_count > 0 ORDER BY solved_tasks_count DESC, {$wpdb->users}.ID ASC";
+        $args['custom_sql_order'] = " HAVING solved_tasks_count > 0 AND solved_tasks_position > 0 ORDER BY solved_tasks_count DESC, {$wpdb->users}.ID ASC";
         $args['count_total'] = true;
     
         return $args;
@@ -118,7 +118,9 @@ class RatingLIst {
     public static function rating_prepare_user($response, $user, $request) {
         // error_log("data: " . print_r($response->data, true));
         // error_log("user.solved_tasks_count: " . $user->solved_tasks_count);
-        $response->data[MemberManager::$FIELD_RATING_SOLVED_TASKS_COUNT] = $user->solved_tasks_count;
+        // error_log("user.position: " . $user->position);
+        $response->data[MemberManager::$FIELD_RATING_SOLVED_TASKS_COUNT] = intval($user->solved_tasks_count);
+        $response->data[MemberManager::$FIELD_RATING_SOLVED_TASKS_POSITION] = intval($user->solved_tasks_position);
         return $response;
     }
 }

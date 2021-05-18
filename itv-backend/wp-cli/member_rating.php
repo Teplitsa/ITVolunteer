@@ -24,6 +24,7 @@ class MemberRating
                 `month` bigint(20) NOT NULL,
                 `year` bigint(20) NOT NULL,
                 `solved_tasks_count` int(20) NOT NULL,
+                `position` int(20) NOT NULL DEFAULT 0,
                 `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
                 PRIMARY KEY (`user_id`, `month`, `year`),
                 KEY (`month`, `year`)
@@ -118,6 +119,8 @@ class MemberRating
             if($all) {
                 $rating_calculator->store_all_periods_rating();
                 $rating_calculator->store_all_time_rating();
+                MemberRatingDoers::recalculate_positions();
+                MemberRatingDoers::recalculate_positions(0, 0);
             }
             else {
                 if(!$month) {
@@ -131,6 +134,8 @@ class MemberRating
                 \WP_CLI::line("calc for year=" . $year);
 
                 $rating_calculator->store_month_rating($year, $month);
+                MemberRatingDoers::recalculate_positions($year, $month);
+                MemberRatingDoers::recalculate_positions(0, 0);
             }
         }
 

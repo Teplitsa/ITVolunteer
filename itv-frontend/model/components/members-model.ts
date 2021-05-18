@@ -35,6 +35,7 @@ export const memberListItemQueriedFields: Array<keyof IMemberListItem> = [
   "rating",
   "xp",
   "itvAvatar",
+  "ratingSolvedTasksPosition",
 ];
 
 const membersPageActions: IMembersPageActions = {

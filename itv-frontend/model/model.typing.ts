@@ -309,6 +309,7 @@ export interface IMemberListItem {
   rating: number;
   xp: number;
   itvAvatar: string;
+  ratingSolvedTasksPosition?: number;
 }
 
 export interface IMemberListFilter {

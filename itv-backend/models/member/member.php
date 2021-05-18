@@ -49,7 +49,8 @@ class MemberManager {
     public static $FIELD_ITV_ROLE = 'itvRole';
     public static $FIELD_ITV_ROLE_TITLE = 'itvRoleTitle';
     public static $FIELD_IS_HYBRID = 'isHybrid';
-    public static $FIELD_RATING_SOLVED_TASKS_COUNT = 'rating_solved_tasks_count';
+    public static $FIELD_RATING_SOLVED_TASKS_COUNT = 'ratingSolvedTasksCount';
+    public static $FIELD_RATING_SOLVED_TASKS_POSITION = 'ratingSolvedTasksPosition';
 
     private function __lang() {
         __('member_role_doer', 'itv-backend');
@@ -158,6 +159,11 @@ class MemberManager {
             case self::$FIELD_RATING_SOLVED_TASKS_COUNT:
                 $value = 0;
                 break;
+
+            case self::$FIELD_RATING_SOLVED_TASKS_POSITION:
+                $value = 0;
+                break;
+    
         }
         
         return $value;
