@@ -139,9 +139,17 @@ class MemberRatingDoers {
             SET t3.position = tstats.count_before + 1
             WHERE t3.year = %d and t3.month = %d";
 
+        $sql_champion = "update `{$wpdb->prefix}{$table}` 
+            SET position = 1
+            WHERE year = %d 
+                AND month = %d
+                AND solved_tasks_count > 0
+                AND position = 0";
+
         foreach($years as $year) {
             foreach($months as $month) {
                 $wpdb->query( $wpdb->prepare($sql, $year, $month, $year, $month) );
+                $wpdb->query( $wpdb->prepare($sql_champion, $year, $month) );
             }
         }
     }
