@@ -162,8 +162,6 @@ class MemberRating
             if($all) {
                 $rating_calculator->store_all_periods_rating();
                 $rating_calculator->store_all_time_rating();
-                MemberRatingDoers::recalculate_positions();
-                MemberRatingDoers::recalculate_positions(0, 0);
             }
             else {
                 if(!$month) {
@@ -177,12 +175,23 @@ class MemberRating
                 \WP_CLI::line("calc for year=" . $year);
 
                 $rating_calculator->store_month_rating($year, $month);
-                MemberRatingDoers::recalculate_positions($year, $month);
-                MemberRatingDoers::recalculate_positions(0, 0);
             }
         }
 
-        \WP_CLI::success(__('The task is successfully updated.', 'itv-backend'));
+        \WP_CLI::line("recalc positions...");
+        global $wpdb;
+        $wpdb->query('START TRANSACTION');
+
+        if($all) {
+            MemberRatingDoers::recalculate_positions();
+        }
+        else {
+            MemberRatingDoers::recalculate_positions($year, $month);
+        }
+        MemberRatingDoers::recalculate_positions(0, 0);
+        $wpdb->query('COMMIT');
+
+        \WP_CLI::success(__('Done.', 'itv-backend'));
     }
 
 }
