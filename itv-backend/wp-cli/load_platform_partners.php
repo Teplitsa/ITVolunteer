@@ -1,6 +1,6 @@
 <?php
 
-use ITV\models\Partner;
+use ITV\models\{Partner, PartnerAdminUI};
 use function ITV\utils\upload_image;
 
 if (!class_exists('\WP_CLI')) {
@@ -25,7 +25,7 @@ function load_platform_partners(): void
 
     $inserted_item_count = 0;
 
-    foreach ($partners as ['title' => $title, 'content' => $content, 'thumbnail' => $thumbnail]) {
+    foreach ($partners as ['title' => $title, 'content' => $content, 'thumbnail' => $thumbnail, 'website' => $website]) {
         $partner_data = [
             'post_type'    => Partner::$post_type,
             'post_title'   => $title,
@@ -51,6 +51,11 @@ function load_platform_partners(): void
             if (!set_post_thumbnail($partner_id, $thumbnail_id)) {
                 \WP_CLI::error(sprintf(__('Failed to set a thumbnail to %s with the ID #%d.', 'itv-backend'), Partner::$post_type, $partner_id));
             }
+        }
+
+        if (filter_var($website, FILTER_VALIDATE_URL)) {
+
+            update_post_meta($partner_id, PartnerAdminUI::$field_name, $website);
         }
 
         $inserted_item_count++;
