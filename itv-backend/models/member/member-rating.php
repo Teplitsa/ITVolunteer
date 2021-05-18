@@ -121,7 +121,7 @@ class MemberRatingDoers {
         $table = self::TABLE;
         $sql = "update `{$wpdb->prefix}{$table}` as t3 
             join (
-                SELECT t1.*, count(t2.user_id) + 1 AS count_before
+                SELECT t1.*, count(t2.user_id) AS count_before
                 FROM `{$wpdb->prefix}{$table}` as t1 
                 join {$wpdb->prefix}{$table} as t2 
                     on t2.year = t1.year
@@ -135,8 +135,8 @@ class MemberRatingDoers {
             ) as tstats
                 on tstats.user_id = t3.user_id
                     and tstats.year = t3.year 
-                    and tstats.month = tstats.month
-            SET t3.position = tstats.count_before
+                    and tstats.month = t3.month
+            SET t3.position = tstats.count_before + 1
             WHERE t3.year = %d and t3.month = %d";
 
         foreach($years as $year) {

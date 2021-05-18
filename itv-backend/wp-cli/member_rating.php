@@ -154,6 +154,16 @@ class MemberRating
         ));
         // \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
 
+        if(!$month) {
+            $month = intval(date('m', time() - 24 * 3600));
+        }
+        \WP_CLI::line("calc for month=" . $month);
+
+        if(!$year) {
+            $year = intval(date('Y', time() - 24 * 3600));
+        }
+        \WP_CLI::line("calc for year=" . $year);
+
         foreach($user_id_list as $user_id) {
             \WP_CLI::line("user: " . $user_id);
 
@@ -164,16 +174,6 @@ class MemberRating
                 $rating_calculator->store_all_time_rating();
             }
             else {
-                if(!$month) {
-                    $month = intval(date('m', time() - 24 * 3600));
-                }
-                \WP_CLI::line("calc for month=" . $month);
-
-                if(!$year) {
-                    $year = intval(date('Y', time() - 24 * 3600));
-                }
-                \WP_CLI::line("calc for year=" . $year);
-
                 $rating_calculator->store_month_rating($year, $month);
             }
         }
