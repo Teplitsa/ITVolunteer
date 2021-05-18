@@ -25,7 +25,7 @@ class MemberRating
                 `year` bigint(20) NOT NULL,
                 `solved_tasks_count` int(20) NOT NULL,
                 `position` int(20) NOT NULL DEFAULT 0,
-                `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+                `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`user_id`, `month`, `year`),
                 KEY (`month`, `year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
@@ -59,6 +59,47 @@ class MemberRating
             \WP_CLI::error($ex);
         }        
     }
+
+    public function reset()
+    {
+        global $wpdb;
+
+        try {
+            $time_start = microtime(true);
+            \WP_CLI::line('Memory before anything: ' . memory_get_usage(true));
+
+            $table = MemberRatingDoers::TABLE;
+            $sql = "DROP TABLE {$wpdb->prefix}{$table}";
+
+            // \WP_CLI::line($sql);
+            
+            $res = $wpdb->query($sql);
+            
+            if($res === false) {
+                \WP_CLI::error($wpdb->last_error);
+            }
+
+            // fultext index
+            $sql = "DROP INDEX display_name_IDX ON {$wpdb->users}";
+            $res = $wpdb->query($sql);
+            
+            if($res === false) {
+                \WP_CLI::error($wpdb->last_error);
+            }
+            
+            \WP_CLI::line('DONE');
+        
+            //Final
+            \WP_CLI::line('Memory ' . memory_get_usage(true));
+            \WP_CLI::line('Total execution time in sec: ' . (microtime(true) - $time_start));
+
+            \WP_CLI::success(__('Table created.', 'itv-backend'));
+            
+        }
+        catch (Exception $ex) {
+            \WP_CLI::error($ex);
+        }        
+    }    
 
     public function build_month_doers($args, $assoc_args)
     {
@@ -114,6 +155,8 @@ class MemberRating
         // \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
 
         foreach($user_id_list as $user_id) {
+            \WP_CLI::line("user: " . $user_id);
+
             $rating_calculator = new MemberRatingDoers($user_id);
 
             if($all) {

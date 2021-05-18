@@ -15,12 +15,50 @@ class MemberRatingDoers {
     }    
 
     public function store_all_periods_rating() {
+        global $wpdb;
+
+        $sql = "SELECT COUNT(posts.ID) AS solved_tasks_count, SUBSTRING(tact.action_time, 1, 7) AS action_month 
+        FROM str_posts AS posts
+        INNER JOIN str_p2p AS p2p
+            ON p2p.p2p_from = posts.ID
+        INNER JOIN str_p2pmeta AS p2pmeta
+            ON p2p.p2p_id = p2pmeta.p2p_id
+        JOIN str_itv_task_actions_log AS tact
+            ON tact.task_id = posts.ID
+                AND tact.action = 'close'
+        WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+            AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from
+            AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
+            AND CAST(p2pmeta.meta_value AS CHAR) = '1'
+        group by action_month";
+
+        $result = $wpdb->get_results( $wpdb->prepare($sql, $this->user_id) );
+
         $now_year = intval(date('Y'));
-        for($year = self::START_YEAR; $year <= $now_year; $year++) {
-            for($month = 0; $month <= 12; $month++) {
-                $this->store_month_rating($year, $month);
+        $wpdb->query('START TRANSACTION');
+        try {
+            for($year = self::START_YEAR; $year <= $now_year; $year++) {
+                $year_count = 0;
+                for($month = 0; $month <= 12; $month++) {
+                    $month_str = sprintf('%02d', $month);
+    
+                    foreach($result as $row) {
+                        if($row->action_month === $year . "-" . $month_str) {
+                            $year_count += $row->solved_tasks_count;
+                            $this->store_rating($year, $month, $row->solved_tasks_count);
+                            break;
+                        }
+                    }
+                    // $this->store_month_rating($year, $month);
+                }
+
+                $this->store_rating($year, 0, $year_count);
             }
         }
+        catch(Exception $ex) {
+            $wpdb->query('ROLLBACK');
+        }
+        $wpdb->query('COMMIT');
     }
 
     public function store_month_rating($year, $month) {
