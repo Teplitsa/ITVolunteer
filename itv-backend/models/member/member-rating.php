@@ -148,7 +148,7 @@ class MemberRatingDoers {
 
         foreach($years as $year) {
             foreach($months as $month) {
-                // echo "{$year}-{$month}\n";
+                echo "positions for: {$year}-{$month}\n";
                 $wpdb->query( $wpdb->prepare($sql, $year, $month, $year, $month) );
                 // echo $wpdb->prepare($sql_champion, $year, $month) . "\n\n";
                 $wpdb->query( $wpdb->prepare($sql_champion, $year, $month) );
