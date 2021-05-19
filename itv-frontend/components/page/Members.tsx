@@ -61,8 +61,16 @@ const Members: React.FunctionComponent = (): ReactElement => {
   };
 
   const handleYearChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    setFilter({ year: Number(event.currentTarget.selectedOptions[0].value), page: 1 });
-    isReset && setIsReset(false);
+    const year = Number(event.currentTarget.selectedOptions[0].value);
+
+    if (year == 0) {
+      setFilter({ year, month: 0, page: 1 });
+      !isReset && setIsReset(true);
+    } else {
+      setFilter({ year, page: 1 });
+      isReset && setIsReset(false);
+    }
+
     setLoading(true);
     userListRequest({ replaceUserList: true, setLoading });
   };

@@ -11,7 +11,7 @@ import {
 import { action, thunk } from "easy-peasy";
 import { getAjaxUrl, getRestApiUrl, stripTags } from "../../utilities/utilities";
 
-export const USER_RATING_START_YEAR = 2014;
+export const USER_RATING_START_YEAR = 2016;
 export const USER_PER_PAGE = 10;
 
 export const membersPageState: IMembersPageState = {
