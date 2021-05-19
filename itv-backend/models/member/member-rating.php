@@ -4,7 +4,7 @@ namespace ITV\models;
 use \ITV\models\MemberTasks;
 
 class MemberRatingDoers {
-    const START_YEAR = 2014;
+    const START_YEAR = 2015;
     const TABLE = 'itv_rating_doers';
     private $user_id = null;
     private $member_tasks_manager = null;
@@ -16,14 +16,14 @@ class MemberRatingDoers {
 
     public function store_all_periods_rating() {
         global $wpdb;
-
+        
         $sql = "SELECT COUNT(posts.ID) AS solved_tasks_count, SUBSTRING(tact.action_time, 1, 7) AS action_month 
-        FROM str_posts AS posts
-        INNER JOIN str_p2p AS p2p
+        FROM {$wpdb->posts} AS posts
+        INNER JOIN {$wpdb->prefix}p2p AS p2p
             ON p2p.p2p_from = posts.ID
-        INNER JOIN str_p2pmeta AS p2pmeta
+        INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta
             ON p2p.p2p_id = p2pmeta.p2p_id
-        JOIN str_itv_task_actions_log AS tact
+        JOIN {$wpdb->prefix}itv_task_actions_log AS tact
             ON tact.task_id = posts.ID
                 AND tact.action = 'close'
         WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
@@ -33,7 +33,7 @@ class MemberRatingDoers {
         group by action_month";
 
         $result = $wpdb->get_results( $wpdb->prepare($sql, $this->user_id) );
-
+        
         $now_year = intval(date('Y'));
         $wpdb->query('START TRANSACTION');
         try {

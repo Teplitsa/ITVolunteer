@@ -55,14 +55,14 @@ class RatingLIst {
         $args_from = [];
         $args_where = [];
 
-        if(in_array($role, [MemberManager::$ROLE_DOER, MemberManager::$ROLE_AUTHOR])) {
-            $sql_from .= " INNER JOIN  {$wpdb->usermeta} key1 
-                ON  key1.user_id = {$wpdb->users}.ID
-                AND key1.meta_key = %s ";
-            $sql_where .= "  AND key1.meta_value = %s ";
-            $args_from[] = MemberManager::$meta_role;
-            $args_where[] = $role;
-        }
+        // if(in_array($role, [MemberManager::$ROLE_DOER, MemberManager::$ROLE_AUTHOR])) {
+            // $sql_from .= " INNER JOIN  {$wpdb->usermeta} key1 
+                // ON  key1.user_id = {$wpdb->users}.ID
+                // AND key1.meta_key = %s ";
+            // $sql_where .= "  AND key1.meta_value = %s ";
+            // $args_from[] = MemberManager::$meta_role;
+            // $args_where[] = $role;
+        // }
 
         if(!empty($name)) {
             $sql_where .= "  AND MATCH ({$wpdb->users}.display_name) AGAINST (%s IN BOOLEAN MODE) ";
