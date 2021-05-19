@@ -1064,8 +1064,10 @@ function itv_close_task($task, $user_id) {
         $month = intval(date('m'));
         $year = intval(date('Y'));
         $rating_calculator->store_month_rating($year, $month);
+        $rating_calculator->store_month_rating($year, 0);
         $rating_calculator->store_all_time_rating();
         MemberRatingDoers::recalculate_positions($year, $month);
+        MemberRatingDoers::recalculate_positions($year, 0);
         MemberRatingDoers::recalculate_positions(0, 0);
     }
     
