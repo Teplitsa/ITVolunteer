@@ -20,14 +20,7 @@ const MembersPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const {
-    "filter[month]": month,
-    "filter[year]": year,
-    "filter[name]": name,
-    "filter[page]": page,
-  } = query;
-
+export const getServerSideProps: GetServerSideProps = async () => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -41,8 +34,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         seo: {
           canonical: `https://itv.te-st.ru/members`,
           title: `Участники - it-волонтер`,
-          metaRobotsNoindex: "noindex",
-          metaRobotsNofollow: "nofollow",
+          metaRobotsNoindex: "index",
+          metaRobotsNofollow: "follow",
           opengraphTitle: `Участники - it-волонтер`,
           opengraphUrl: `https://itv.te-st.ru/members`,
           opengraphSiteName: "it-волонтер",
@@ -54,13 +47,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         "../../model/components/members-model"
       );
 
-      const memberListState = Object.assign({}, membersPageState, {
-        userFilter: {
-          month: Number.isNaN(Number(month)) ? new Date().getMonth() + 1 : Number(month),
-          year: Number.isNaN(Number(year)) ? new Date().getFullYear() : Number(year),
-          name: name ?? membersPageState.userFilter.name,
-          page: Number.isNaN(Number(page)) ? membersPageState.userFilter.page : Number(page),
-        },
+      const memberListState = Object.assign({}, membersPageState);
+      Object.assign(memberListState.userFilter, {
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
       });
 
       try {
