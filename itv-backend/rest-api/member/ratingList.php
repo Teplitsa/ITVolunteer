@@ -74,16 +74,10 @@ class RatingLIst {
             ON  rating_table.user_id = {$wpdb->users}.ID";
         $sql_select .= ", SUM(rating_table.solved_tasks_count) AS solved_tasks_count, rating_table.position AS solved_tasks_position ";
 
-        if($month) {
-            $sql_where .= " AND rating_table.month = %s ";
-            $args_where[] = $month;
+        $sql_where .= " AND rating_table.month = %d ";
+        $args_where[] = $month;
 
-            if(!$year) {
-                $year = intval(date('Y'));
-            }
-        }
-
-        $sql_where .= " AND rating_table.year = %s ";
+        $sql_where .= " AND rating_table.year = %d ";
         $args_where[] = $year;
 
         $sql_group_by = " GROUP BY {$wpdb->users}.ID ";
