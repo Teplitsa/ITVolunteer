@@ -20,14 +20,14 @@ class MemberRating
 
             $table = MemberRatingDoers::TABLE;
             $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}{$table} (
-                `user_id` bigint(20) NOT NULL,
-                `month` bigint(20) NOT NULL,
-                `year` bigint(20) NOT NULL,
-                `solved_tasks_count` int(20) NOT NULL,
-                `position` int(20) NOT NULL DEFAULT 0,
+                `user_id` bigint NOT NULL,
+                `month` TINYINT NOT NULL,
+                `year` SMALLINT NOT NULL,
+                `solved_tasks_count` int NOT NULL,
+                `position` int NOT NULL DEFAULT 0,
                 `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (`user_id`, `month`, `year`),
-                KEY (`month`, `year`)
+                KEY period (`month`, `year`)
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
 
             // \WP_CLI::line($sql);
