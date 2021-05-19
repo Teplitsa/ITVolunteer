@@ -7,8 +7,24 @@ export const Image: React.FunctionComponent<{
   mediaUrl: string;
   mediaAlt?: string;
   className?: string;
-}> = ({ mediaUrl, mediaAlt = "", className = "media-image" }): ReactElement => {
-  return <img className={className} src={mediaUrl} alt={mediaAlt} />;
+  mediaWidth?: number;
+  mediaHeight?: number;
+}> = ({
+  mediaUrl,
+  mediaAlt = "",
+  className = "media-image",
+  mediaWidth = "auto",
+  mediaHeight = "auto",
+}): ReactElement => {
+  return (
+    <img
+      className={className}
+      src={mediaUrl}
+      alt={mediaAlt}
+      width={mediaWidth}
+      height={mediaHeight}
+    />
+  );
 };
 
 const CoreMediaTextBlock: React.FunctionComponent<ICoreMediaTextBlock> = ({

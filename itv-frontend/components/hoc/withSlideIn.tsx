@@ -5,8 +5,9 @@ const withSlideIn: React.FunctionComponent<{
   component: React.FunctionComponent;
   fullWidth?: boolean;
   from?: "left" | "right";
+  key?: any;
   [x: string]: unknown;
-}> = ({ component: Component, fullWidth = true, from = "left", ...props }): ReactElement => {
+}> = ({ component: Component, fullWidth = true, from = "left", key="", ...props }): ReactElement => {
   const [isShown, show] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -19,6 +20,7 @@ const withSlideIn: React.FunctionComponent<{
   return (
     <div
       ref={ref}
+      key={key}
       className={convertObjectToClassName({
         "slide-in": true,
         "slide-in_full-width": fullWidth,

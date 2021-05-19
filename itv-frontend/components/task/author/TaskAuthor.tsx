@@ -28,7 +28,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
     try {
       avatarImage &&
         avatarImage.search(/temp-avatar\.png/) === -1 &&
-        fetch(avatarImage, {
+        utils.tokenFetch(avatarImage, {
           signal: abortController.signal,
           mode: "no-cors",
         }).then(response => setAvatarImageValid(response.ok));
@@ -57,7 +57,7 @@ const TaskAuthor: React.FunctionComponent = (): ReactElement => {
                 }}
               />
               <div className="details">
-                <span className="status">Автор</span>
+                <span className="status">Заказчик</span>
                 <Link href={new URL(toProfile).pathname}>
                   <a className="name">{fullName}</a>
                 </Link>

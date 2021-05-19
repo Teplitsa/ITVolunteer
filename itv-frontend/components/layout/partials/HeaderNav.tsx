@@ -45,7 +45,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
   const handleCtaBtnClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
-    if (isLoggedIn && itvRole === "author") {
+    if (!isLoggedIn || (isLoggedIn && itvRole === "author")) {
       router.push("/task-create");
     } else {
       router.push("/tasks");
@@ -177,7 +177,7 @@ const HeaderNav: React.FunctionComponent = (): ReactElement => {
               className="site-header__cta-btn btn btn_primary"
               onClick={handleCtaBtnClick}
             >
-              {isLoggedIn && itvRole === "author" ? "Создать задачу" : "Смотреть задачи"}
+              {!isLoggedIn || (isLoggedIn && itvRole === "author") ? "Создать задачу" : "Смотреть задачи"}
             </a>
           </div>
         )}

@@ -29,7 +29,11 @@ const CompleteTaskReview = (screenProps): ReactElement => {
           <WizardTextField
             {...props}
             name="reviewText"
-            placeholder="Опишите, как проходила работа над задачей, как вы общались с волонтером"
+            placeholder={
+              isAuthor
+                ? "Опишите, как проходила работа над задачей, как вы общались с волонтером"
+                : "Опишите, как проходила работа над задачей, как вы общались с заказчиком"
+            }
             maxLength={250}
           />
         </WizardForm>

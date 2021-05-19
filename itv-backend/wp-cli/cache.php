@@ -1,6 +1,8 @@
 <?php
 
-use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review, News, Stats, MemberStats, TaskStats};
+namespace ITV\cli;
+use ITV\models\{MongoClient, Task, Advantage, Faq, Partner, Review, News, Stats, MemberStats, TaskStats, CacheManager};
+
 
 if (!class_exists('WP_CLI')) {
     return;
@@ -12,9 +14,6 @@ if (!class_exists('WP_CLI')) {
 
 class Cache
 {
-
-    const STORAGE_NAME = 'itv_cache';
-
     public function update_task($args, $assoc_args)
     {
         ["task_id" => $task_id] = $assoc_args;
@@ -46,7 +45,7 @@ class Cache
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->tasks;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->tasks;
 
         $updateCacheResult = $collection->findOneAndUpdate(['databaseId' => $task_id], ['$set' => $task]);
 
@@ -65,20 +64,20 @@ class Cache
 
         if (!$task_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Task::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Task::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->tasks;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->tasks;
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($task_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Task::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Task::$post_type));
     }
 
     public function update_task_list_filter()
@@ -87,20 +86,20 @@ class Cache
 
         if (!$filter_sections) {
 
-            WP_CLI::warning(__('No filter sections found.', 'itv-backend'));
+            \WP_CLI::warning(__('No filter sections found.', 'itv-backend'));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->task_list_filter;
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->task_list_filter;
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($filter_sections);
 
-        WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
+        \WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
     }
 
     public function update_advantage_list(): void
@@ -109,20 +108,20 @@ class Cache
 
         if (!$advantage_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Advantage::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Advantage::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{Advantage::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Advantage::$collection_name};
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($advantage_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Advantage::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Advantage::$post_type));
     }
 
     public function update_faq_list(): void
@@ -131,20 +130,20 @@ class Cache
 
         if (!$faq_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Faq::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Faq::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{Faq::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Faq::$collection_name};
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($faq_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Faq::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Faq::$post_type));
     }
 
     public function update_partner_list(): void
@@ -153,20 +152,20 @@ class Cache
 
         if (!$partner_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Partner::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Partner::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{Partner::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Partner::$collection_name};
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($partner_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Partner::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Partner::$post_type));
     }
     public function update_review_list(): void
     {
@@ -174,20 +173,20 @@ class Cache
 
         if (!$review_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Review::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), Review::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{Review::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Review::$collection_name};
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($review_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Review::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), Review::$post_type));
     }
     public function update_news_list(): void
     {
@@ -195,20 +194,20 @@ class Cache
 
         if (!$news_list) {
 
-            WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), News::$post_type));
+            \WP_CLI::warning(sprintf(__('No %s found.', 'itv-backend'), News::$post_type));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{News::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{News::$collection_name};
 
         $collection->drop();
 
         $updateCacheResult = $collection->insertMany($news_list);
 
-        WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), News::$post_type));
+        \WP_CLI::success(sprintf(__('%d %s(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount(), News::$post_type));
     }
 
     public function update_stats(): void
@@ -217,7 +216,7 @@ class Cache
 
         if (!$task_stats_list) {
 
-            WP_CLI::warning(__('No task stats items found.', 'itv-backend'));
+            \WP_CLI::warning(__('No task stats items found.', 'itv-backend'));
 
             return;
         }
@@ -226,7 +225,7 @@ class Cache
 
         if (!$task_stats_featured_categories) {
 
-            WP_CLI::warning(__('No task stats categories found.', 'itv-backend'));
+            \WP_CLI::warning(__('No task stats categories found.', 'itv-backend'));
 
             return;
         }
@@ -235,14 +234,14 @@ class Cache
 
         if (!$member_stats_count) {
 
-            WP_CLI::warning(__('No members found.', 'itv-backend'));
+            \WP_CLI::warning(__('No members found.', 'itv-backend'));
 
             return;
         }
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{self::STORAGE_NAME}->{Stats::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Stats::$collection_name};
 
         $collection->drop();
 
@@ -260,11 +259,11 @@ class Cache
         ]);
 
         if (!$updateCacheResult->getInsertedCount()) {
-            WP_CLI::error(__('Failted to update stats.', 'itv-backend'));
+            \WP_CLI::error(__('Failted to update stats.', 'itv-backend'));
         }
 
-        WP_CLI::success(__('Stats successfully updated.', 'itv-backend'));
+        \WP_CLI::success(__('Stats successfully updated.', 'itv-backend'));
     }
 }
 
-WP_CLI::add_command('itv_cache', 'Cache');
+\WP_CLI::add_command('itv_cache', '\ITV\cli\Cache');

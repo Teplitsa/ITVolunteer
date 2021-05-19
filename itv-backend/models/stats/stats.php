@@ -44,7 +44,7 @@ class MemberStats extends Stats
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{\Cache::STORAGE_NAME}->{Stats::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Stats::$collection_name};
 
         $member_collection_name = self::$child_collection_name;
 
@@ -179,7 +179,7 @@ class TaskStats extends Stats
 
         $mongo_client = MongoClient::getInstance();
 
-        $collection = $mongo_client->{\Cache::STORAGE_NAME}->{Stats::$collection_name};
+        $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{Stats::$collection_name};
 
         $task_collection_name = self::$child_collection_name;
 

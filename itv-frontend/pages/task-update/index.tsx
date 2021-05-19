@@ -23,6 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       app: {
         componentsLoaded: [],
         entrypointTemplate: "page",
+        now: Date.now(),
       },
       entrypoint: {
         archive: null,

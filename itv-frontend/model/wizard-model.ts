@@ -115,7 +115,7 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
   loadTaxonomyData: thunk(async actions => {
     const action = "get-task-taxonomy-data";
 
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
     })
       .then(res => {
@@ -145,7 +145,7 @@ const createTaskWizardThunks: ICreateTaskWizardThunks = {
     const route = "/itv/v1/task/form-placeholders";
     // console.log("formFieldPlaceholdersRequest:", utils.getRestApiUrl(route));
 
-    fetch(utils.getRestApiUrl(route), {
+    utils.tokenFetch(utils.getRestApiUrl(route), {
       method: "get",
     })
       .then(res => {
@@ -302,7 +302,7 @@ const completeTaskWizardThunks: ICompleteTaskWizardThunks = {
       }
 
       try {
-        const result = await fetch(utils.getAjaxUrl(action), {
+        const result = await utils.tokenFetch(utils.getAjaxUrl(action), {
           method: "post",
           body: formData,
         });
@@ -463,7 +463,7 @@ const taskToPortfolioWizardThunks: ITaskToPortfolioWizardThunks = {
         // console.log("create new portfolio item request...");
         // console.log("jsonData:", jsonData);
 
-        const result = await fetch(utils.getRestApiUrl("/wp/v2/portfolio_work"), {
+        const result = await utils.tokenFetch(utils.getRestApiUrl("/wp/v2/portfolio_work"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

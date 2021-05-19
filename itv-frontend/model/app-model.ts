@@ -3,6 +3,7 @@ import { action } from "easy-peasy";
 
 const appState: IAppState = {
   componentsLoaded: {},
+  now: Date.now(),
 };
 
 const appActions: IAppActions = {

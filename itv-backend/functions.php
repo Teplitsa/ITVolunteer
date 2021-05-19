@@ -14,6 +14,7 @@ require_once(get_theme_file_path() . '/utils/upload_image.php');
 
 // system models
 require_once(get_theme_file_path() . '/models/db/mongo.php');
+require_once(get_theme_file_path() . '/models/cache.php');
 require_once(get_theme_file_path() . '/models/auth.php');
 
 // models
@@ -30,6 +31,8 @@ require_once(get_theme_file_path() . '/models/faq/faq.php');
 require_once(get_theme_file_path() . '/models/partner/partner.php');
 require_once(get_theme_file_path() . '/models/review/review.php');
 require_once(get_theme_file_path() . '/models/stats/stats.php');
+require_once(get_theme_file_path() . '/models/member/member-rating.php');
+require_once(get_theme_file_path() . '/models/taxonomy/reward.php');
 
 // post-types
 require_once(get_theme_file_path() . '/post-types/portfolio_work.php');
@@ -48,6 +51,7 @@ require_once(get_theme_file_path() . '/rest-api/member/role.php');
 require_once(get_theme_file_path() . '/rest-api/member/member.php');
 require_once(get_theme_file_path() . '/rest-api/member/review.php');
 require_once(get_theme_file_path() . '/rest-api/member/notif.php');
+require_once(get_theme_file_path() . '/rest-api/member/ratingList.php');
 require_once(get_theme_file_path() . '/rest-api/task/task.php');
 
 // wp-cli
@@ -58,6 +62,8 @@ require_once(get_theme_file_path() . '/wp-cli/load_platform_advantages.php');
 require_once(get_theme_file_path() . '/wp-cli/load_faqs.php');
 require_once(get_theme_file_path() . '/wp-cli/load_platform_partners.php');
 require_once(get_theme_file_path() . '/wp-cli/load_reviews.php');
+require_once(get_theme_file_path() . '/wp-cli/member_rating.php');
+require_once(get_theme_file_path() . '/wp-cli/update_rewards_v2.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');

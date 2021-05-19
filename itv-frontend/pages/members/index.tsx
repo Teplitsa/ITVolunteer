@@ -3,7 +3,8 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../components/DocumentHead";
 import Main from "../../components/layout/Main";
 import Members from "../../components/page/Members";
-import { IMembersPageState } from "../../model/model.typing";
+import { getRestApiUrl } from "../../utilities/utilities";
+import { IRestApiResponse, IMemberListItem } from "../../model/model.typing";
 
 const MembersPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -33,29 +34,56 @@ export const getServerSideProps: GetServerSideProps = async () => {
         seo: {
           canonical: `https://itv.te-st.ru/members`,
           title: `Участники - it-волонтер`,
-          metaRobotsNoindex: "noindex",
-          metaRobotsNofollow: "nofollow",
+          metaRobotsNoindex: "index",
+          metaRobotsNofollow: "follow",
           opengraphTitle: `Участники - it-волонтер`,
           opengraphUrl: `https://itv.te-st.ru/members`,
           opengraphSiteName: "it-волонтер",
         },
       },
     ],
-    componentModel: async (request) => {
-      const {
-        membersPageState,
-        graphqlQuery: membersGraphqlQuery,
-      } = await import("../../model/components/members-model");
-
-      const response: IMembersPageState = await request(
-        process.env.GraphQLServer,
-        membersGraphqlQuery,
-        {
-          paged: membersPageState.paged,
-        }
+    componentModel: async () => {
+      const { membersPageState, memberListItemQueriedFields } = await import(
+        "../../model/components/members-model"
       );
 
-      return ["members", { ...membersPageState, ...response }];
+      const memberListState = Object.assign({}, membersPageState);
+      Object.assign(memberListState.userFilter, {
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear(),
+      });
+
+      try {
+        const requestURL = new URL(getRestApiUrl(`/itv/v1/member/ratingList/doer`));
+
+        requestURL.search = (() => {
+          return memberListItemQueriedFields.map(paramValue => `_fields[]=${paramValue}`).join("&");
+        })();
+
+        requestURL.searchParams.set("month", String(memberListState.userFilter.month));
+        requestURL.searchParams.set("year", String(memberListState.userFilter.year));
+        requestURL.searchParams.set("name", memberListState.userFilter.name);
+        requestURL.searchParams.set("page", String(memberListState.userFilter.page));
+
+        const memberListResponse = await fetch(requestURL.toString());
+        const response: IRestApiResponse & Array<IMemberListItem> = await memberListResponse.json();
+
+        if (response.data?.status && response.data.status !== 200) {
+          console.error(response.message);
+        } else if (Array.isArray(response)) {
+          Object.assign(memberListState, {
+            userListStats: {
+              total:
+                memberListResponse.headers.get("x-wp-total") ?? memberListState.userListStats.total,
+            },
+            userList: response.length === 0 ? memberListState.userList : response,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+      return ["members", { ...memberListState }];
     },
   });
 

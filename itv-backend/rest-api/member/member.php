@@ -76,6 +76,11 @@ function member_api_register_fields($server) {
         'get_callback' => [ $member_manager, 'get_property' ], 
         'context' => [ 'view', MemberManager::$rest_context_view_card ] 
     ] );
+
+    register_rest_field( 'user', MemberManager::$FIELD_RATING_SOLVED_TASKS_COUNT, [ 
+        'get_callback' => [ $member_manager, 'get_property' ], 
+        'context' => [ 'view', MemberManager::$rest_context_view_card ] 
+    ] );
     
 }
 add_action( 'rest_api_init', 'member_api_register_fields', 11 );

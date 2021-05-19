@@ -16,7 +16,7 @@ const EditMemberProfile: React.FunctionComponent<{
   const router = useRouter();
   const formRef = useRef(null);
   const user = useStoreState(state => state.session.user);
-  const login = useStoreActions(actions => actions.session.login);
+  const authorizeSession = useStoreActions(actions => actions.session.authorizeSession);
   const updateProfileRequest = useStoreActions(
     actions => actions.components.memberProfile.updateProfileRequest
   );
@@ -53,7 +53,7 @@ const EditMemberProfile: React.FunctionComponent<{
       context: "success",
       text: message,
     });
-    await login({ username: "", password: "" });
+    await authorizeSession();
     setIsLoading(false);
   }
 

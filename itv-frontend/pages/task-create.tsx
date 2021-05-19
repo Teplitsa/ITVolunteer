@@ -75,9 +75,9 @@ export const getServerSideProps: GetServerSideProps = async ({req, res}) => {
 
       const manageTask = { ...manageTaskState };
 
-      if (!session.user.databaseId) {
-        res.statusCode = 401;
-      }
+      // if (!session.user.databaseId) {
+      //   res.statusCode = 401;
+      // }
 
       return ["manageTask", manageTask];
     },

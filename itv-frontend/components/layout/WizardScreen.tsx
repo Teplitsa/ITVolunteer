@@ -775,7 +775,7 @@ export const WizardUploadImageFieldInput: React.FunctionComponent<IWizardScreenP
     }
 
     const action = "upload-file";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "post",
       body: form,
     })

@@ -13,6 +13,26 @@
   &:focus {
     text-decoration: none;
   }
+
+  &_filter {
+    background-color: $color-gray-light-xl;
+    border: 1px solid $color-gray-light-md;
+    padding: 8px 16px;
+    font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-lg;
+    border-radius: 16px;
+    box-shadow: none;
+    cursor: pointer;
+    @include btn-transition;
+
+    &:hover {
+      border: 1px solid $color-gray;
+    }
+
+    &[class*="_active"] {
+      background-color: $color-gray-light-lg;
+    }
+  }
   &_hint {
     padding: 0;
     border-bottom: 1px dashed $color-main;
@@ -93,8 +113,8 @@
     &-lg {
       @extend .btn_primary;
       padding: 12px 16px;
-      font: 500 16px/20px "IBM Plex Sans", sans-serif;
-      border-radius: 12px;
+      font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+      border-radius: 6px;
     }
 
     &-extra {

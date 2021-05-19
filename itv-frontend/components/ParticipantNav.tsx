@@ -156,7 +156,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
             <li className="submenu__item">
               <Link href="/members/[username]" as={`/members/${user.slug}`}>
                 <a onClick={handleLoginAsRoleClick}>{`Войти как ${
-                  user.itvRole === "doer" ? "автор" : "волонтер"
+                  user.itvRole === "doer" ? "заказчик" : "волонтер"
                 }`}</a>
               </Link>
             </li>
@@ -198,7 +198,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
         <li>
           <Link href="/members/[username]" as={`/members/${user.slug}`}>
             <a onClick={handleLoginAsRoleClick}>{`Войти как ${
-              user.itvRole === "doer" ? "автор" : "волонтер"
+              user.itvRole === "doer" ? "заказчик" : "волонтер"
             }`}</a>
           </Link>
         </li>

@@ -47,4 +47,61 @@ class MemberTasks {
         }
     }
 
+    public function calc_member_solved_tasks_in_month($year, $month) {
+        global $wpdb;
+
+        $month_str = sprintf('%02d', $month);
+        
+        $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts 
+            INNER JOIN {$wpdb->prefix}p2p AS p2p 
+                ON p2p.p2p_from = posts.ID 
+            INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta
+                ON p2p.p2p_id = p2pmeta.p2p_id 
+            JOIN {$wpdb->prefix}itv_task_actions_log AS tact 
+                ON tact.task_id = posts.ID
+                    AND tact.action = 'close'
+            WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+                AND tact.action_time LIKE '{$year}-{$month_str}-%'
+                AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
+                AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
+                AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
+        
+        return $wpdb->get_var($wpdb->prepare($sql, $this->user_id));
+    }
+    
+    public function calc_member_solved_tasks_in_year($year) {
+        global $wpdb;
+
+        $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts 
+            INNER JOIN {$wpdb->prefix}p2p AS p2p 
+                ON p2p.p2p_from = posts.ID 
+            INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta
+                ON p2p.p2p_id = p2pmeta.p2p_id 
+            JOIN {$wpdb->prefix}itv_task_actions_log AS tact 
+                ON tact.task_id = posts.ID
+                    AND tact.action = 'close'
+            WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+                AND tact.action_time LIKE '{$year}-%'
+                AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
+                AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
+                AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
+        
+        return $wpdb->get_var($wpdb->prepare($sql, $this->user_id));
+    }
+    
+    public function calc_member_solved_tasks() {
+        global $wpdb;
+        
+        $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts 
+            INNER JOIN {$wpdb->prefix}p2p AS p2p 
+                ON p2p.p2p_from = posts.ID 
+            INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta 
+                ON p2p.p2p_id = p2pmeta.p2p_id 
+            WHERE posts.post_type = 'tasks' AND posts.post_status = 'closed'
+                AND p2p.p2p_type = 'task-doers' AND posts.ID = p2p.p2p_from 
+                AND p2p.p2p_to = %d AND p2pmeta.meta_key = 'is_approved'
+                AND CAST(p2pmeta.meta_value AS CHAR) = '1' ";
+        
+        return $wpdb->get_var($wpdb->prepare($sql, $this->user_id));
+    }
 }

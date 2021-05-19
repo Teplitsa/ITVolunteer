@@ -32,7 +32,7 @@ const userNotifActions: IUserNotifActions = {
   }),
   loadNotifList: thunk(actions => {
     const action = "get_user_notif_short_list";
-    fetch(utils.getAjaxUrl(action), {
+    utils.tokenFetch(utils.getAjaxUrl(action), {
       method: "get",
     })
       .then(res => {
@@ -69,7 +69,7 @@ const userNotifActions: IUserNotifActions = {
       requestUrl += "&newer_than_id=" + notifList[0].id;
     }
 
-    fetch(requestUrl, {
+    utils.tokenFetch(requestUrl, {
       method: "get",
     })
       .then(res => {

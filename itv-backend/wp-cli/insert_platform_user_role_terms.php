@@ -28,7 +28,7 @@ function insert_platform_user_role_term(string $term_slug, string $term_name): v
 function insert_platform_user_role_terms(): void
 {
     insert_platform_user_role_term('volunteer', __('Волонтёр', 'itv-backend'));
-    insert_platform_user_role_term('author', __('Автор', 'itv-backend'));
+    insert_platform_user_role_term('author', __('Заказчик', 'itv-backend'));
 
     WP_CLI::success('Platform user role terms has been successfully inserted.');
 }

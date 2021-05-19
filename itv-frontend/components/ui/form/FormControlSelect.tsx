@@ -33,8 +33,10 @@ const FormControlSelect: React.FunctionComponent<
   children,
   label,
   labelExtraClassName,
+  selectExtraClassName,
   selectPlaceholder,
   maxSelectedOptions,
+  useTags = true,
   ...nativeSelectProps
 }): ReactElement => {
   const [optionList, setOptionList] = useState<
@@ -245,24 +247,28 @@ const FormControlSelect: React.FunctionComponent<
           <div ref={selectGroupRef} data-accordion-item className="form__select-group">
             <div
               data-accordion-title
-              className="form__select-control form__select-control_small form__control_full-width"
+              className={`form__select-control ${selectExtraClassName ?? ""}`.trim()}
               onClick={toggleSelectListBox}
             >
               {selectedOptionList?.map(option => {
-                return (
-                  <div
-                    key={`FormSelectTag-${option.value}`}
-                    className="form__select-tag"
-                    data-option-value={option.value}
-                  >
-                    {option.label}
-                    <button
-                      className="form__select-tag-close"
-                      type="button"
-                      onClick={tagClickHandle}
-                    />
-                  </div>
-                );
+                if (useTags) {
+                  return (
+                    <div
+                      key={`FormSelectTag-${option.value}`}
+                      className="form__select-tag"
+                      data-option-value={option.value}
+                    >
+                      {option.label}
+                      <button
+                        className="form__select-tag-close"
+                        type="button"
+                        onClick={tagClickHandle}
+                      />
+                    </div>
+                  );
+                }
+
+                return option.label;
               })}
               {selectPlaceholder && (
                 <div

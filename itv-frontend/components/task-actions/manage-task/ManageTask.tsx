@@ -49,7 +49,7 @@ const ManageTask: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
   clearSnackbar: () => void;
 }> = ({ addSnackbar, clearSnackbar }): ReactElement => {
-  const isLoggedIn = useStoreState(state => state.session.isLoggedIn);
+  const { isLoggedIn, isLoaded } = useStoreState(state => state.session);
   const userRole = useStoreState(state => state.session.user.itvRole);
   const userSlug = useStoreState(state => state.session.user.slug);
   const tags = useStoreState(state => state.components.manageTask.tags);
@@ -222,6 +222,16 @@ const ManageTask: React.FunctionComponent<{
   }, []);
 
   useEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, isLoaded, router]);
+
+  useEffect(() => {
     if (!isEditMode) {
       const savedRawData = localStorage?.getItem("itv.manageTask");
       const savedData = savedRawData ? JSON.parse(savedRawData) : null;
@@ -335,10 +345,10 @@ const ManageTask: React.FunctionComponent<{
             <FormControlInput
               label="Название"
               labelExtraClassName="form__label_small form__label_required"
-              className="form__control_input form__control_input-small form__control_full-width"
+              className="form__control_input form__control_input-small form__control_full-width form__control_input-with-counter"
               type="text"
               name="title"
-              maxLength={50}
+              maxLength={70}
               defaultValue={taskRef.current?.title}
               placeholder="Что нужно сделать?"
               onChange={controlChangeHandler}
@@ -355,6 +365,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Категория"
               labelExtraClassName="form__label_small form__label_required"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите категорию"
               maxSelectedOptions={2}
               name="taskTags"
@@ -371,6 +382,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Направление помощи"
               labelExtraClassName="form__label_small form__label_required"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите направление"
               name="ngoTags"
               defaultValue={taskRef.current?.ngoTags.value}
@@ -399,6 +411,7 @@ const ManageTask: React.FunctionComponent<{
             <FormControlSelect
               label="Вознаграждение"
               labelExtraClassName="form__label_small"
+              selectExtraClassName="form__select-control_small form__control_full-width"
               selectPlaceholder="Выберите вознаграждение"
               name="reward"
               defaultValue={taskRef.current?.reward.value}
