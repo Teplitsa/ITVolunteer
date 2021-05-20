@@ -8,7 +8,7 @@
     width: 100%;
     margin-bottom: -40px;
     padding-bottom: 106px;
-  }  
+  }
 
   &__ornament-container {
     background-image: url(../../img/auth-ornament.svg);
@@ -17,7 +17,7 @@
     margin-top: 20px;
     padding-top: 1px;
     min-height: 450px;
-  }  
+  }
 
   &__content {
     max-width: 730px;
@@ -25,7 +25,7 @@
     margin-right: auto;
     margin-top: 40px;
     text-align: center;
-  }  
+  }
 
   &__title {
     @include htext-xl-bold;
@@ -69,10 +69,10 @@
       }
     }
 
-    input[type="text"], 
-    input[type="email"], 
-    input[type="url"], 
-    input[type="password"], 
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="password"],
     input[type="search"],
     input[type="tel"],
     textarea {
@@ -111,12 +111,11 @@
           color: $color-gray-dark-lg-001;
           display: block;
           height: unset;
-          margin-bottom: 0px; 
+          margin-bottom: 0px;
 
           a {
             @include text-sm;
           }
-
         }
       }
 
@@ -155,6 +154,19 @@
       padding-top: 12px;
     }
 
+    &__footer {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      margin-top: 20px;
+    }
+  }
+
+  &__cta {
+    &_register {
+      font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-md-001;
+    }
   }
 
   &__loading {
@@ -186,7 +198,7 @@
           max-width: 360px;
         }
       }
-    }    
+    }
   }
 }
 
@@ -217,7 +229,7 @@
       color: $color-white;
       background: $color-main;
       border: 2px solid $color-main;
-      box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24), inset -1px -1px 2px rgba(0, 89, 56, 0.53);      
+      box-shadow: 2px 2px 16px rgba(0, 68, 43, 0.24), inset -1px -1px 2px rgba(0, 89, 56, 0.53);
 
       & > div.icon {
         background-color: rgba(255, 255, 255, 0.1);
@@ -232,7 +244,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: visible;      
+      overflow: visible;
       min-width: 80px;
       max-width: 80px;
       height: 80px;
@@ -259,7 +271,6 @@
       }
     }
   }
-  
 }
 
 // upload file
@@ -294,9 +305,9 @@
       max-width: 160px;
       max-height: 12px;
       overflow: hidden;
-      text-overflow: ellipsis;      
+      text-overflow: ellipsis;
     }
-  }  
+  }
 
   &__btn {
     @include wizard-button-upload;

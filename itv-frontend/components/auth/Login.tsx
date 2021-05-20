@@ -1,5 +1,6 @@
 import { ReactElement, useState, useRef } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
 
@@ -152,6 +153,14 @@ const Login: React.FunctionComponent<{
                 >
                   Войти
                 </button>
+              </div>
+              <div className="auth-page-form__footer">
+                <div className="auth-page__cta auth-page__cta_register">
+                  У вас нет аккаунта?{" "}
+                  <Link href="/registration">
+                    <a className="auth-page__cta-control">Зарегистрируйтесь</a>
+                  </Link>
+                </div>
               </div>
             </form>
           )}
