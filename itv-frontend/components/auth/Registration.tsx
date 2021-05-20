@@ -142,12 +142,6 @@ const Registration: React.FunctionComponent<{
     <div className="auth-page__illustration-container auth-page-registration">
       <div className="auth-page__content auth-page__registration">
         <h1 className="auth-page__title">Регистрация</h1>
-        {(!registrationSuccessText || isRegistrationLoading) && (
-          <p className="auth-page__subtitle">
-            IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и
-            хорошо смотрятся в портфолио! Вы можете помочь?
-          </p>
-        )}
         <div className="auth-page__ornament-container">
           {!!isRegistrationLoading && (
             <div className="auth-page__loading">
@@ -160,7 +154,9 @@ const Registration: React.FunctionComponent<{
               dangerouslySetInnerHTML={{ __html: registrationSuccessText }}
             />
           )}
-          {!registrationSuccessText && !isRegistrationLoading && <MemberRoleSelector setRole={setRole} role={role} />}
+          {!registrationSuccessText && !isRegistrationLoading && (
+            <MemberRoleSelector setRole={setRole} role={role} />
+          )}
           {!registrationSuccessText && !isRegistrationLoading && !!role && (
             <form
               action=""

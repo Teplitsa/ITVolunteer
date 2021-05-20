@@ -2,7 +2,6 @@ import { ReactElement, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import { useStoreActions } from "../../model/helpers/hooks";
 import { ISnackbarMessage } from "../../context/global-scripts";
-import * as _ from "lodash";
 
 import { regEvent } from "../../utilities/ga-events";
 
@@ -92,14 +91,7 @@ const Login: React.FunctionComponent<{
       <div className="auth-page__content auth-page__registration">
         <h1 className="auth-page__title">Вход</h1>
         <p className="auth-page__subtitle">
-          {_.get(router, "query.passwordChanged", "") ? (
-            <>Новый пароль вступил в силу.</>
-          ) : (
-            <>
-              IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и
-              хорошо смотрятся в портфолио! Вы можете помочь?
-            </>
-          )}
+          {router.query.passwordChanged && "Новый пароль вступил в силу."}
         </p>
         <div className="auth-page__ornament-container">
           {!!isLoading && (
