@@ -45,7 +45,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
         {isAccountOwner && profileFillStatus?.isProfileInfoEnough === false && (
           <div className="member-card__null-add-information">
             <Link href={`/members/${memberSlug}/profile`}>
-              <a>Добавьте информацию о себе</a>
+              <a>Рассказать о себе</a>
             </Link>
           </div>
         )}
