@@ -25,12 +25,6 @@ const MemberStats: React.FunctionComponent<{
   withBottomdivider = false,
   align = "center",
 }): ReactElement => {
-  const solvedProblemsModulo =
-    solvedProblems < 10 ? solvedProblems : Number([...Array.from(String(solvedProblems))].pop());
-  const solvedProblemsModulo100 =
-    solvedProblems < 10
-      ? solvedProblems
-      : Number([...Array.from(String(solvedProblems))].slice(-2).join(""));
   const reviewsCountTitle = `${reviewsCount}${" "}${utils.getReviewsCountString(reviewsCount)}`;
 
   return (
@@ -43,7 +37,7 @@ const MemberStats: React.FunctionComponent<{
         "member-stats_no-margin": noMargin,
       })}
     >
-      {useComponents.includes("rating") && (
+      {useComponents.includes("rating") && rating > 0 && (
         <div className="member-stats__item member-stats__item_calculated-rating">
           <div className="member-stats__calculated-rating">
             <span className="member-stats__calculated-rating-value">
@@ -76,17 +70,15 @@ const MemberStats: React.FunctionComponent<{
       )}
       {useComponents.includes("solvedProblems") && (
         <>
-          <div className="member-stats__divider" />
           <div className="member-stats__item member-stats__item_solved-problems">
             <div className="member-stats__solved-problems">
               {solvedProblems ?? 0}{" "}
-              {solvedProblemsModulo100 > 10 && solvedProblemsModulo100 < 20
-                ? "решенных задач"
-                : solvedProblemsModulo === 1
-                ? "решенная задача"
-                : [2, 3, 4].includes(solvedProblemsModulo)
-                ? "решенные задачи"
-                : "решенных задач"}
+              {utils.getDeclension({
+                count: solvedProblems,
+                caseOneItem: "решенная задача",
+                caseTwoThreeFourItems: "решенные задачи",
+                restCases: "решенных задач",
+              })}
             </div>
           </div>
         </>
