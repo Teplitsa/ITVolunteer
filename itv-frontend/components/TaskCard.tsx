@@ -4,7 +4,7 @@ import { IMemberTaskCard } from "../model/model.typing";
 import UserCardSmall from "./UserCardSmall";
 import TaskTags from "../components/task/task-header/TaskTags";
 import TaskMeta from "../components/task/task-header/TaskMeta";
-import { stripTags, getTheIntervalToNow } from "../utilities/utilities";
+import { stripTags, decodeSpecialChars, getTheIntervalToNow } from "../utilities/utilities";
 
 const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement => {
   const doerCandidatesCountModulo =
@@ -40,7 +40,7 @@ const TaskCard: React.FunctionComponent<IMemberTaskCard> = (task): ReactElement 
       <TaskMeta {...task} />
       {task.content && (
         <div className="task-card__excerpt">
-          {stripTags(task.content).trim().substr(0, 109)}…{" "}
+          {stripTags(decodeSpecialChars(task.content)).trim().substr(0, 109)}…{" "}
           <Link href={`/tasks/${task.slug}`}>
             <a>Подробнее</a>
           </Link>
