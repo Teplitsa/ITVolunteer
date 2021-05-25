@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import DocumentHead from "../../../components/DocumentHead";
 import Main from "../../../components/layout/Main";
 import MemberAccount from "../../../components/page/MemberAccount";
+import with404 from "../../../components/hoc/with404";
 import { getRestApiUrl, stripTags } from "../../../utilities/utilities";
 import * as utils from "../../../utilities/utilities";
 
@@ -20,10 +21,12 @@ const AccountPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { fullName } = await (await utils.tokenFetch(getRestApiUrl(
-    `/itv/v1/member/${query.username}?_fields[]=fullName`
-  ))).json();
+const AccountPageWith404 = with404(AccountPage);
+
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+  const { fullName } = await (
+    await utils.tokenFetch(getRestApiUrl(`/itv/v1/member/${query.username}?_fields[]=fullName`))
+  ).json();
   const { default: withAppAndEntrypointModel } = await import(
     "../../../model/helpers/with-app-and-entrypoint-model"
   );
@@ -63,7 +66,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
         slug: query.username,
       });
 
-      member = Object.assign(member ?? {}, user);
+      if (Object.is(user, null)) {
+        res.statusCode = 404;
+
+        return ["memberAccount", { ...memberAccountPageState }];
+      }
 
       const { memberTasks: taskList } = await request(
         process.env.GraphQLServer,
@@ -144,10 +151,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       return ["memberAccount", { ...memberAccountPageState, ...member }];
     },
   });
-  
+
+  if (res.statusCode === 404) {
+    Object.assign(model, { statusCode: 404 });
+  }
+
   return {
     props: { ...model },
   };
 };
 
-export default AccountPage;
+export default AccountPageWith404;

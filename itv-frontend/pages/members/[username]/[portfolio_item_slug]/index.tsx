@@ -5,25 +5,12 @@ import Main from "../../../../components/layout/Main";
 import PortfolioItem from "../../../../components/page/PortfolioItem";
 import { getRestApiUrl, stripTags } from "../../../../utilities/utilities";
 import { IRestApiResponse, IPortfolioItemAuthor } from "../../../../model/model.typing";
-import Error404 from "../../../../components/page/Error404";
+import with404 from "../../../../components/hoc/with404";
 import { getMediaData } from "../../../../utilities/media";
 import * as utils from "../../../../utilities/utilities";
 import { authorizeSessionSSRFromRequest } from "../../../../model/session-model";
 
-const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
-  statusCode,
-}): ReactElement => {
-  if (statusCode === 404) {
-    return (
-      <>
-        <DocumentHead />
-        <Main>
-          <Error404 />
-        </Main>
-      </>
-    );
-  }
-
+const PortfolioItemPage: React.FunctionComponent = (): ReactElement => {
   return (
     <>
       <DocumentHead />
@@ -36,6 +23,8 @@ const PortfolioItemPage: React.FunctionComponent<{ statusCode?: number }> = ({
     </>
   );
 };
+
+const PortfolioItemPageWith404 = with404(PortfolioItemPage);
 
 export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
@@ -89,10 +78,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
             .join("&");
         })();
 
-        const portfolioItemAuthorResult = await utils.tokenFetch(portfolioItemAuthorRequestUrl.toString());
+        const portfolioItemAuthorResult = await utils.tokenFetch(
+          portfolioItemAuthorRequestUrl.toString()
+        );
 
-        const response: IRestApiResponse &
-          IPortfolioItemAuthor = await portfolioItemAuthorResult.json();
+        const response: IRestApiResponse & IPortfolioItemAuthor =
+          await portfolioItemAuthorResult.json();
 
         if (response.data?.status && response.data.status !== 200) {
           console.error("При получении данных автора работы в портфолио произошла ошибка.");
@@ -133,7 +124,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
             featured_media: preview,
             meta: { portfolio_image_id },
             next_work_slug: nextPortfolioItemSlug,
-            prev_work_slug: prevPortfolioItemSlug
+            prev_work_slug: prevPortfolioItemSlug,
           } = response;
 
           let fullImage: number | string = portfolio_image_id;
@@ -153,7 +144,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
               preview,
               fullImage,
               nextPortfolioItemSlug,
-              prevPortfolioItemSlug
+              prevPortfolioItemSlug,
             },
           });
         }
@@ -175,4 +166,4 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
   };
 };
 
-export default PortfolioItemPage;
+export default PortfolioItemPageWith404;
