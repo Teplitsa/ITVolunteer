@@ -72,6 +72,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
         return ["memberAccount", { ...memberAccountPageState }];
       }
 
+      member = Object.assign(member, user);
+
       const { memberTasks: taskList } = await request(
         process.env.GraphQLServer,
         graphqlQuery.memberTasks,
