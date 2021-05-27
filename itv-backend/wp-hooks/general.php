@@ -17,19 +17,3 @@ add_filter('wp_image_editors', function ($editors) {
 });
 
 add_filter('image_sideload_extensions', fn ($allowed_extensions) => [...$allowed_extensions, 'svg']);
-
-// actions
-function itv_setup_ajax_auth_user($param) {
-    if(!(defined('DOING_AJAX') && DOING_AJAX)) {
-        return;
-    }
-
-    global $current_user;
-
-    if ( is_object( $current_user ) && isset( $current_user->ID ) && $current_user->ID) {
-        return;
-    }
-
-    $current_user = null;
-}
-add_filter('admin_init', 'itv_setup_ajax_auth_user');

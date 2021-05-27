@@ -980,13 +980,6 @@ function ajax_add_message() {
 add_action('wp_ajax_add-message', 'ajax_add_message');
 add_action('wp_ajax_nopriv_add-message', 'ajax_add_message');
 
-add_filter('retrieve_password_message', function($message, $key){
-
-    return nl2br(str_replace(array('>', '<'), array('', ''), $message));
-
-}, 10, 2);
-
-
 function tst_get_days_until_deadline($deadline) {
 
     if(date_create($deadline) > date_create())
