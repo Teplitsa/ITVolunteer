@@ -12,4 +12,4 @@
 
 */10 * * * *    cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/create_push_notif_for_all.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/create_push_notif_for_all.log 2>&1
 
-30 0 * * *      cd ~/web/itv.te-st.ru/public_html/; wp itv_member_rating build_month_doers >> /tmp/itv_member_rating-build_month_doers_cron.log 2>&1;
+30 0 * * *      cd /home/itv/web/itv.te-st.ru/public_html/; date >> /tmp/itv_member_rating-build_month_doers_cron.log; /usr/local/bin/wp itv_member_rating build_month_doers >> /tmp/itv_member_rating-build_month_doers_cron.log 2>&1; date >> /tmp/itv_member_rating-build_month_doers_cron.log;
