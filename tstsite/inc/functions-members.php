@@ -445,6 +445,7 @@ function tst_send_activation_email($user) {
     ItvAtvetka::instance()->mail('activate_account_notice', [
         'mailto' => $user_email,
         'login' => $user_login,
+        'user_first_name' => $user->first_name,
         'complete_reg_url' => $link,
     ]);
 }

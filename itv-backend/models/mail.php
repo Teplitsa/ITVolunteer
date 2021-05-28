@@ -60,6 +60,7 @@ class Mail
                 '{username}' => $user['display_name'],
                 '{admin_email}' => \get_option('admin_email'),
                 '{user_email}' => $user['user_email'],
+                '{mail_icon_url}' => get_template_directory_uri() . "/assets_email/img",
             ],
             'user_id' => $user['ID'],
         ];
@@ -87,6 +88,7 @@ class Mail
             'email_placeholders' => [
                 '{user_login}' => $user_login,
                 '{reset_password_url}' => site_url(sprintf("/reset-password-set?key=%s&login=%s", $key, $user_login)),
+                '{mail_icon_url}' => get_template_directory_uri() . "/assets_email/img",
             ],
             'user_id' => $user_data->ID,
         ];

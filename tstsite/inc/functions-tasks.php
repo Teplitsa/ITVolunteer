@@ -121,6 +121,16 @@ function ajax_add_edit_task(){
 		
         if($is_new_task) {
             tst_send_admin_notif_new_task($task_id);
+            
+            $task = get_post($task_id);
+            $task_author = get_user_by('id', $task->post_author);
+            ItvAtvetka::instance()->mail('task_successfully_published', [
+                'user_id' => $task_author->ID,
+                'user_first_name' => $task_author->first_name,        
+                'task_title' => $task->post_title,
+                'task_url' => get_permalink($task->ID),
+                'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            ]);
         }
         
         if($new_is_tst_consult_needed) {
@@ -256,6 +266,16 @@ function ajax_submit_task(){
     
         if($is_new_task) {
             tst_send_admin_notif_new_task($task_id);
+            
+            $task = get_post($task_id);
+            $task_author = get_user_by('id', $task->post_author);
+            ItvAtvetka::instance()->mail('task_successfully_published', [
+                'user_id' => $task_author->ID,
+                'user_first_name' => $task_author->first_name,        
+                'task_title' => $task->post_title,
+                'task_url' => get_permalink($task->ID),
+                'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            ]);
         }
 
         $task = get_post($task_id);
@@ -1576,8 +1596,10 @@ function ajax_decline_task() {
     ItvAtvetka::instance()->mail('your_task_declined', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,        
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_url' => get_permalink($task->ID),
+        'task_edit_url' => site_url('/task-update/' . $task->post_name),
     ]);
 	
     wp_die(json_encode(array(
@@ -1685,4 +1707,60 @@ function itv_get_task_deadline_date($task_id, $post_date) {
     }
 
     return $deadline;
+}
+
+function itv_get_new_tasks_for_email($filter) {
+    $args = array(
+        'query_id' => "itv_filtered_task_list",
+        'post_type' => 'tasks',
+        'post_status' => 'publish',
+        'author__not_in' => array(ACCOUNT_DELETED_ID),
+        'paged' => 1,
+        'posts_per_page' => 5,
+        'date_query' => array(
+            'after' => date('Y-m-d', strtotime('-2 days')),
+            'before' => date('Y-m-d') 
+        )        
+    );
+
+    if(isset($filter['status'])) {
+        unset($filter['status']);
+    }
+
+    if(isset($filter['all_time'])) {
+        unset($args['date_query']);
+    }
+    
+    if(!empty($filter)) {
+        $tlf = new TaskListFilter();
+        $filter_options = $tlf->get_task_list_filter_options();
+        foreach($filter_options as $key => $section) {
+            if(!empty($section['items'])) {
+                foreach($section['items'] as $ik => $item) {
+                    foreach($filter as $fk => $fv) {
+                        if($fv && $fk === $section['id'] . "." . $item['id']) {
+                            $args = add_task_list_filter_param($args, $section['id'], $item['id'], $fv);
+                        }
+                    }
+                }
+            }
+            elseif(!empty($filter[$section['id']])) {
+                $args = add_task_list_filter_param($args, $section['id'], null, $filter[$section['id']]);                
+            }
+        }
+    }
+
+    $task_list = [];
+    $GLOBALS['wp_query'] = new WP_Query($args);
+    
+    while ( $GLOBALS['wp_query']->have_posts() ) {
+        $GLOBALS['wp_query']->the_post();
+        $post = get_post();
+        
+        if($post) {
+            $task_list[] = $post;
+        }
+    }
+
+    return  $task_list;
 }

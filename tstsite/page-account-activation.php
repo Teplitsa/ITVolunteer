@@ -21,12 +21,21 @@ if( !$user ) {
 
 } else {
     update_user_meta($user->ID, 'activation_code', '');
+    
+    $tasks = itv_get_new_tasks_for_email(['all_time' => true]);
+    $task_list = [];
+    foreach ($tasks as $task) {
+        $task_list[] = "<a href=\"" . get_permalink($task) . "\">{$task->post_title}</a><br /><br />";
+    }
 
     ob_start();
     ItvAtvetka::instance()->mail('account_activated_notice', [
         'mailto' => $user->user_email,
         'login' => $user->user_login,
+        'user_first_name' => $user->first_name,
+        'open_tasks' => implode("\n", $task_list),
         'activation_url' => home_url('/login/'),
+        'cta_url' => site_url('/tasks'),
     ]);
     ob_end_clean();
 

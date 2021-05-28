@@ -65,7 +65,7 @@ require_once(get_theme_file_path() . '/wp-cli/load_platform_partners.php');
 require_once(get_theme_file_path() . '/wp-cli/load_reviews.php');
 require_once(get_theme_file_path() . '/wp-cli/member_rating.php');
 require_once(get_theme_file_path() . '/wp-cli/update_rewards_v2.php');
-require_once(get_theme_file_path() . '/wp-cli/setup_change_password_mail.php');
+require_once(get_theme_file_path() . '/wp-cli/setup_mail.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');

@@ -26,8 +26,48 @@ add_filter('wp_mail_content_type', function(){
     return 'text/html';
 });
 
-add_filter('comment_notification_text', function($email_text, $comment){
-    return sprintf(ItvEmailTemplates::instance()->get_text('new_comment_task_author_notification'), get_comment_link($comment));
+add_filter('comment_notification_text', function($message, $comment_id){
+    $comment = get_comment($comment_id);
+    $task = get_post($comment->comment_post_ID);
+    $task_author = get_user_by('id', $task->post_author);
+    
+    $email_data = [
+        'email_placeholders' => [
+            '{mail_icon_url}' => get_template_directory_uri() . "/assets_email/img",
+            '{user_first_name}' => $task_author->first_name,
+            '{view_instruction_url}' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            '{task_url}' => get_permalink($task->ID),
+            '{task_link}' => itv_get_task_link($task),
+        ],
+        'user_id' => $task_author->ID,
+    ];
+
+    $atv = \ATV_Email_Core::get_instance();
+
+    $emails  = $atv->get_emails( 'new_comment_task_author_notification' );
+    if(empty($emails[0])) {
+        return $message;
+    }
+
+    $email = $emails[0];
+    $subject = $email->post_title;
+    $message = $atv->handle_placeholders( $email->post_content, $email_data );
+
+    return $message;
+}, 10, 2);
+
+add_filter( 'comment_notification_subject', function(string $subject, int $comment_id) {
+    $atv = \ATV_Email_Core::get_instance();
+
+    $emails  = $atv->get_emails( 'new_comment_task_author_notification' );
+    if(empty($emails[0])) {
+        return $subject;
+    }
+
+    $email = $emails[0];
+    $subject = $email->post_title;
+
+    return $subject;
 }, 10, 2);
 
 add_filter('get_comment_link', function($link, $comment, $args){
@@ -506,14 +546,20 @@ function ajax_add_candidate() {
 	
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
-
+    
+    
+    $task_doer = get_user_by('id', $task_doer_id);
     ItvAtvetka::instance()->mail('add_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
         'task_url' => get_permalink($task_id),
+        'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+        'doer_url' => site_url('/member/' . $task_doer->user_nicename),
+        'doer_display_name' => $task_doer->display_name,
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
     
