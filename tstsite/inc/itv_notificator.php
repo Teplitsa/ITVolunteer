@@ -6,7 +6,7 @@ class ItvNotificator {
     protected $tasks_to_check_count;
     protected $already_sent_count;
     protected $is_skip_sending = false;
-    protected $is_debug = false;
+    protected $is_debug = true;
     protected $stats_by_actions = [];
     
     public function __construct() {
@@ -190,7 +190,10 @@ class ItvNotificator {
                     ItvAtvetka::instance()->mail('task_no_doer_notif', [
                         'mailto' => $user_email,
                         'username' => $user_nicename,
-                        'task_link' => $task_permalink, 
+                        'user_first_name' => $user->first_name,
+                        'task_link' => itv_get_task_link($task),
+                        'task_edit_url' => site_url('/task-update/' . $task->post_name),
+                        'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
                     ]);
                     
                     $this->pring_debug ( "SENT\n" );
@@ -387,6 +390,45 @@ class ItvNotificator {
         } else {
             $this->already_sent_count += 1;
             $this->stats_by_actions[$notif_key]['already_sent_count'] += 1;
+        }
+    }
+
+    public function notif_tasks_soon_deadline() {
+        $task_notif_days = ItvConfig::instance()->get( 'TASK_DEADLINE_SOON_NOTIF_DAYS' );	
+
+        $deadline_date = new \DateTime('+ ' . $task_notif_days . 'day');
+        $deadline_date_str = $deadline_date->format('Y-m-d');
+    
+        echo 'deadline: ' . $deadline_date_str . "\n";
+    
+        $args = array (
+            'post_type' => 'tasks',
+            'nopaging' => true,
+            'post_status' => 'in_work',
+            'meta_query' => array (
+                array (
+                    'key' => 'preferredDurationDeadline',
+                    'value' => $deadline_date_str,
+                )
+            )
+        );
+    
+        $query = new WP_Query ( $args );
+    
+        foreach ( $query->posts as $task ) {
+            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
+
+            $task_author = get_user_by('id', $task->post_author);
+            ItvAtvetka::instance()->mail('deadline_coming_author_notification', [
+                'user_id' => $task_author->ID,
+                'mailto' => $task_author->user_email,
+                'user_first_name' => $task_author->first_name,
+                'task_title' => $task->post_title,
+                'task_link' => itv_get_task_link($task),
+                'task_url' => get_permalink($task),
+                'deadline_date' => $deadline_date->format('d.m.Y'),
+                'n_days' => sprintf(_n( '%s day', '%s days', $task_notif_days ), $task_notif_days),
+            ]);
         }
     }
     

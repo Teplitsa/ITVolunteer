@@ -699,6 +699,20 @@ function ajax_suggest_close_date() {
     //
 	$timeline = ITV\models\TimelineModel::instance();
     $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message, 'due_date' => $due_date]);
+
+    $task_author = get_user_by('id', $task->post_author);
+    $doer = get_user_by('id', $doer_id);
+    ItvAtvetka::instance()->mail('new_deadline_suggested', [
+        'user_id' => $task_author->ID,
+        'mailto' => $task_author->user_email,
+        'user_first_name' => $task_author->first_name,
+        'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
+        'task_url' => get_permalink($task),
+        'doer_display_name' => $doer->display_name,
+        'task_edit_url' => site_url('/task-update/' . $task->post_name),
+        'deadline_date' => date('d.m.Y', strtotime($due_date)),
+    ]);
     
     //
     UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_SUGGEST_NEW_DEADLINE_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);

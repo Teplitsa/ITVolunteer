@@ -383,10 +383,12 @@ function ajax_approve_candidate() {
     ItvAtvetka::instance()->mail('approve_candidate_doer_notice', [
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
+        'user_first_name' => $doer->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
         'author_email' => $task_author->user_email,
-        'author_profile_url' => home_url('members/'.$task_author->user_login.'/'),
+        'author_profile_url' => home_url('members/'.$task_author->user_nicename.'/'),
+        'author_display_name' => $task_author->display_name,
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_DOER, $doer->ID, $email_templates->get_title('approve_candidate_doer_notice'), $task ? $task->ID : 0);
 
@@ -394,10 +396,13 @@ function ajax_approve_candidate() {
     ItvAtvetka::instance()->mail('approve_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
+        'task_url' => get_permalink($task->ID),
         'task_link' => itv_get_task_link($task),
         'doer_email' => $doer->user_email,
-        'doer_profile_url' => home_url('members/'.$doer->user_login.'/'),
+        'doer_display_name' => $doer->display_name,
+        'doer_profile_url' => home_url('members/'.$doer->user_nicename.'/'),
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('approve_candidate_author_notice'), $task ? $task->ID : 0);
 
@@ -643,11 +648,15 @@ function ajax_remove_candidate() {
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
+    $doer = get_user_by('id', $task_doer_id);
     ItvAtvetka::instance()->mail('refuse_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
+        'task_url' => get_permalink ( $task ),
+        'doer_display_name' => $doer->display_name,
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
