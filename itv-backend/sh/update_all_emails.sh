@@ -9,4 +9,11 @@
 # wp --allow-root itv_mail setup_mail task_no_doer_notif
 # wp --allow-root itv_mail setup_mail refuse_candidate_author_notice
 # wp --allow-root itv_mail setup_mail deadline_coming_author_notification
-wp --allow-root itv_mail setup_mail new_deadline_suggested
+# wp --allow-root itv_mail setup_mail new_deadline_suggested
+# wp --allow-root itv_mail setup_mail task_archive_soon_notif
+# wp --allow-root itv_mail setup_mail thankyou_notification
+# wp --allow-root itv_mail setup_mail you_have_been_blocked
+# wp --allow-root itv_mail setup_mail you_have_been_unblocked
+# wp --allow-root itv_mail setup_mail task_status_closed_author
+# wp --allow-root itv_mail setup_mail task_status_closed_doer
+wp --allow-root itv_mail setup_mail doer_left_review

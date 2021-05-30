@@ -553,7 +553,11 @@ function ajax_leave_review() {
 			'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
 			)));
 		}
+
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
+
+        $itv_notificator = new ItvNotificator();
+        $itv_notificator->notif_doer_about_task_closed( $task_doer, $task );
 	}
 
 	//
@@ -648,6 +652,10 @@ function ajax_leave_review_author() {
 			)));
 		}
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
+
+        $itv_notificator = new ItvNotificator();
+        $task_author = get_user_by('id', $author_id);
+        $itv_notificator->notif_author_about_doer_review( $task_author, $task_doer, $task );
 	}
 	
 	//

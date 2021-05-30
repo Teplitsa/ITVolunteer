@@ -1129,7 +1129,7 @@ function on_all_status_transitions( $new_status, $old_status, $task ) {
             $doers = tst_get_task_doers ( $task->ID, true );
             foreach ( $doers as $doer ) {
                 $doers_id[] = $doer->ID;
-                $itv_notificator->notif_doer_about_task_closed( $doer, $task );
+                // $itv_notificator->notif_doer_about_task_closed( $doer, $task );
             }
         }
         else {
