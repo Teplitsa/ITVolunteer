@@ -1,24 +1,24 @@
-# wp --allow-root itv_mail setup_mail account_activated_notice
-# wp --allow-root itv_mail setup_mail activate_account_notice
-# wp --allow-root itv_mail setup_mail task_successfully_published
-# wp --allow-root itv_mail setup_mail your_task_declined
-# wp --allow-root itv_mail setup_mail add_candidate_author_notice
-# wp --allow-root itv_mail setup_mail new_comment_task_author_notification
-# wp --allow-root itv_mail setup_mail approve_candidate_doer_notice
-# wp --allow-root itv_mail setup_mail approve_candidate_author_notice
-# wp --allow-root itv_mail setup_mail task_no_doer_notif
-# wp --allow-root itv_mail setup_mail refuse_candidate_author_notice
-# wp --allow-root itv_mail setup_mail deadline_coming_author_notification
-# wp --allow-root itv_mail setup_mail new_deadline_suggested
-# wp --allow-root itv_mail setup_mail task_archive_soon_notif
-# wp --allow-root itv_mail setup_mail thankyou_notification
-# wp --allow-root itv_mail setup_mail you_have_been_blocked
-# wp --allow-root itv_mail setup_mail you_have_been_unblocked
-# wp --allow-root itv_mail setup_mail task_status_closed_author
-# wp --allow-root itv_mail setup_mail task_status_closed_doer
-# wp --allow-root itv_mail setup_mail doer_left_review
-# wp --allow-root itv_mail setup_mail no_review_from_author
-# wp --allow-root itv_mail setup_mail new_tasks_subscription
-# wp --allow-root itv_mail setup_mail user_subscribed_on_tasks
-# wp --allow-root itv_mail setup_mail inform_paseka_members_about_tasks
+wp --allow-root itv_mail setup_mail account_activated_notice
+wp --allow-root itv_mail setup_mail activate_account_notice
+wp --allow-root itv_mail setup_mail task_successfully_published
+wp --allow-root itv_mail setup_mail your_task_declined
+wp --allow-root itv_mail setup_mail add_candidate_author_notice
+wp --allow-root itv_mail setup_mail new_comment_task_author_notification
+wp --allow-root itv_mail setup_mail approve_candidate_doer_notice
+wp --allow-root itv_mail setup_mail approve_candidate_author_notice
+wp --allow-root itv_mail setup_mail task_no_doer_notif
+wp --allow-root itv_mail setup_mail refuse_candidate_author_notice
+wp --allow-root itv_mail setup_mail deadline_coming_author_notification
+wp --allow-root itv_mail setup_mail new_deadline_suggested
+wp --allow-root itv_mail setup_mail task_archive_soon_notif
+wp --allow-root itv_mail setup_mail thankyou_notification
+wp --allow-root itv_mail setup_mail you_have_been_blocked
+wp --allow-root itv_mail setup_mail you_have_been_unblocked
+wp --allow-root itv_mail setup_mail task_status_closed_author
+wp --allow-root itv_mail setup_mail task_status_closed_doer
+wp --allow-root itv_mail setup_mail doer_left_review
+wp --allow-root itv_mail setup_mail no_review_from_author
+wp --allow-root itv_mail setup_mail new_tasks_subscription
+wp --allow-root itv_mail setup_mail user_subscribed_on_tasks
+wp --allow-root itv_mail setup_mail inform_paseka_members_about_tasks
 wp --allow-root itv_mail setup_mail new_tasks_digest
