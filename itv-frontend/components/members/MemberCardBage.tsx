@@ -11,6 +11,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
     name: memberName,
     fullName: memberFullName,
     organizationName,
+    isPasekaMember,
   } = useStoreState(store => store.components.memberAccount);
   const uploadUserAvatarRequest = useStoreActions(
     actions => actions.components.memberAccount.uploadUserAvatarRequest
@@ -18,9 +19,8 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
 
   const uploadAvatar = (event: SyntheticEvent<HTMLInputElement>) => {
     if (!event.currentTarget.files[0]) return;
-    const [, /* mimeType */ imageExtension] = event.currentTarget.files[0].type.match(
-      /image\/(\w+)/
-    );
+    const [, /* mimeType */ imageExtension] =
+      event.currentTarget.files[0].type.match(/image\/(\w+)/);
 
     uploadUserAvatarRequest({
       userAvatar: event.currentTarget.files[0],
@@ -31,7 +31,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
   return (
     <div className="member-card__bage">
       <div className="member-card__avatar">
-        <MemberAvatar {...{ memberAvatar, memberFullName, size: "large" }} />
+        <MemberAvatar {...{ memberAvatar, memberFullName, size: "large", isPasekaMember }} />
         {isAccountOwner && (
           <>
             <button

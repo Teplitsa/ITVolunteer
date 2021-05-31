@@ -310,6 +310,7 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   ratingSolvedTasksPosition?: number;
+  isPasekaMember?: boolean;
 }
 
 export interface IMemberListFilter {
@@ -478,6 +479,7 @@ export interface IMemberAccountPageState {
     isProfileInfoEnough: boolean;
   };
   isNeedAttentionPanelClosed?: boolean;
+  isPasekaMember?: boolean;
 }
 
 export interface IMemberAccountPageActions {
@@ -631,6 +633,7 @@ export interface IPortfolioItemAuthor {
   xp: number;
   itvRole: "author" | "doer";
   itvRoleTitle: "Заказчик" | "Волонтер";
+  isPasekaMember?: boolean;
 }
 
 export interface IPortfolioItemState {
