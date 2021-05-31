@@ -38,9 +38,12 @@ try {
 	$task_notif_days = $itv_config->get ( 'TASK_LONG_WORK_NOTIF_DAYS' );	
 	$itv_notificator->notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers);
 
-	echo "   notif_deadline_soon\n";
+	echo "   notif_tasks_soon_deadline\n";
 	$itv_notificator->notif_tasks_soon_deadline();
 	
+	echo "   notif_no_review_from_author\n";
+	$itv_notificator->notif_no_review_from_author();
+
 	echo_end_text();
 }
 catch (ItvNotCLIRunException $ex) {

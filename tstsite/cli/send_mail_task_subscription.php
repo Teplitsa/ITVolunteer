@@ -34,8 +34,8 @@ foreach ($users as $user) {
 
         ItvAtvetka::instance()->mail('new_tasks_subscription', [
             'mailto' => $user->user_email,
-            'username' => $user->first_name,
-            'task_list_url' => site_url("/tasks/"),
+            'user_first_name' => $user->first_name,
+            'task_list_url' => site_url("/tasks"),
             'task_list' => implode("\n", $task_list),
         ]);
         echo "mail sent\n";

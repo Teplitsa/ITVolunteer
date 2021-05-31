@@ -369,7 +369,7 @@ function tst_register_user($user_params) {
 					'user_pass' => $user_params['pass'],
 					'first_name' => $user_params['first_name'],
 					'last_name' => $user_params['last_name'],
-					'role' => 'author',
+					'role' => 'customer',
 			);
 			
 			// process extra params
@@ -1325,7 +1325,7 @@ function itv_get_user_in_gql_format($user) {
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'totalReviewsCount' => intval(ItvReviewsAuthor::instance()->count_author_reviews( $user->ID )) + intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
-        'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
+        'isPasekaMember' => $members->is_paseka_member($user->ID),
         'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),
@@ -1675,7 +1675,7 @@ function ajax_get_member_task_stats() {
 
     $posts_where_doer = ($role === "doer") ? itv_get_user_approved_as_doer_tasks($user->ID) : [];
 
-    $posts_where_author = ($role === "author") ? itv_get_user_created_tasks($user->ID) : [];
+    $posts_where_author = ($role === "customer") ? itv_get_user_created_tasks($user->ID) : [];
 
     $posts = array_merge($posts_where_doer, $posts_where_author);
 

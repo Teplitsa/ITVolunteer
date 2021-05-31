@@ -465,4 +465,50 @@ class ItvNotificator {
         }
     }
     
+    public function notif_no_review_from_author() {
+        $notif_days = ItvConfig::instance()->get( 'NO_REVIEW_FROM_AUTHOR_NOTIF_DAYS' );	
+
+        $close_date = new \DateTime('- ' . $notif_days . 'day');
+        $close_date_str = $close_date->format('Y-m-d');
+    
+        echo 'close_date_str: ' . $close_date_str . "\n";
+    
+        $args = array (
+            'post_type' => 'tasks',
+            'nopaging' => true,
+            'post_status' => 'closed',
+            'meta_query' => array (
+                array (
+                    'key' => 'closeDate',
+                    'value' => $close_date_str,
+                    'compare' => 'LIKE',
+                )
+            )
+        );
+    
+        $query = new WP_Query ( $args );
+    
+        foreach ( $query->posts as $task ) {
+            $task_author = get_user_by('id', $task->post_author);
+            $review = Review::where(['author_id' => $task_author->ID, 'task_id' => $task->ID])->first();
+
+            if($review) {
+                continue;
+            }
+
+            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
+
+            $doers = tst_get_task_doers($task->ID, true);
+            $doer = !empty($doers) ? $doers[0] : null;
+            ItvAtvetka::instance()->mail('no_review_from_author', [
+                'user_id' => $task_author->ID,
+                'mailto' => $task_author->user_email,
+                'user_first_name' => $task_author->first_name,
+                'doer_display_name' => $doer ? $doer->display_name : "",
+                'task_link' => itv_get_task_link($task),
+                'leave_review_url' => get_permalink($task),
+                'n_days' => sprintf(_n( '%s day', '%s days', $notif_days ), $notif_days),
+            ]);
+        }
+    }
 }

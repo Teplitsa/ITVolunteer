@@ -66,6 +66,11 @@ function member_api_register_fields($server) {
         'get_callback' => [ $member_manager, 'get_property' ], 
         'context' => [ 'view', MemberManager::$rest_context_view_card ] 
     ] );
+
+    register_rest_field( 'user', MemberManager::$FIELD_IS_PASEKA_MEMBER, [ 
+        'get_callback' => [ $member_manager, 'get_property' ], 
+        'context' => [ 'view', MemberManager::$rest_context_view_card ] 
+    ] );
     
     register_rest_field( 'user', MemberManager::$FIELD_ITV_ROLE_TITLE, [ 
         'get_callback' => [ $member_manager, 'get_property' ], 

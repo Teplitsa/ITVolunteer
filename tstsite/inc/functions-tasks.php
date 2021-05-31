@@ -5,6 +5,7 @@ use ITV\models\TimelineModel;
 use ITV\models\CommentsLikeModel;
 use ITV\models\UserNotifModel;
 use ITV\models\MemberRatingDoers;
+use \ITV\models\TaskManager;
 
 /**
  * Task related utilities and manipulations
@@ -204,9 +205,12 @@ function ajax_submit_task(){
         $tags_all = array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0);
 
         update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
-        wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
+        wp_set_post_terms($task_id, !empty($_POST['reward']) ? (int)$_POST['reward'] : null, 'reward');
         wp_set_post_terms($task_id, array_splice($tags_all, 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
+
+        $task_manager = new TaskManager();
+        $task_manager->setup_data_to_inform_about_task($task_id);
 
         $durationValue = @$_POST['preferredDuration'];
         $isDeadlineChanged = false;
@@ -1086,6 +1090,7 @@ add_action('wp_ajax_nopriv_reject-close-date', 'ajax_reject_close_date');
 
 function itv_close_task($task, $user_id) {
     wp_update_post(array('ID' => $task->ID, 'post_status' => 'closed'));
+    update_post_meta($task->ID, 'closeDate', current_time('mysql'));
     
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_CLOSE, $user_id);
     UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_MY_TASK_DONE);
@@ -1482,6 +1487,22 @@ function ajax_subscribe_task_list() {
 	
 	update_user_meta( $user_id, 'itv_subscribe_task_list', $filter );
 
+    $tasks = itv_get_new_tasks_for_email($filter);
+
+    $task_list = [];
+    foreach ($tasks as $task) {
+        // echo "task: {$task->ID} - {$task->post_title}\n";
+        $task_list[] = "<a href=\"" . get_permalink($task) . "\">{$task->post_title}</a><br /><br />";
+    }
+
+    $user = get_user_by('id', $user_id);
+    ItvAtvetka::instance()->mail('user_subscribed_on_tasks', [
+        'mailto' => $user->user_email,
+        'user_first_name' => $user->first_name,
+        'task_list_url' => site_url("/tasks"),
+        'task_list' => implode("\n", $task_list),
+    ]);
+
     wp_die(json_encode(array(
         'status' => 'ok',
     )));        
@@ -1729,11 +1750,10 @@ function itv_get_new_tasks_for_email($filter) {
         'post_type' => 'tasks',
         'post_status' => 'publish',
         'author__not_in' => array(ACCOUNT_DELETED_ID),
-        'paged' => 1,
-        'posts_per_page' => 5,
+        'posts_per_page' => -1,
         'date_query' => array(
-            'after' => date('Y-m-d', strtotime('-2 days')),
-            'before' => date('Y-m-d') 
+            'after' => date('Y-m-d H:i:s', strtotime('-6 hours')),
+            'before' => date('Y-m-d H:i:s') 
         )        
     );
 

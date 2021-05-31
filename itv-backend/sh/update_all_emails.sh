@@ -16,4 +16,9 @@
 # wp --allow-root itv_mail setup_mail you_have_been_unblocked
 # wp --allow-root itv_mail setup_mail task_status_closed_author
 # wp --allow-root itv_mail setup_mail task_status_closed_doer
-wp --allow-root itv_mail setup_mail doer_left_review
+# wp --allow-root itv_mail setup_mail doer_left_review
+# wp --allow-root itv_mail setup_mail no_review_from_author
+# wp --allow-root itv_mail setup_mail new_tasks_subscription
+# wp --allow-root itv_mail setup_mail user_subscribed_on_tasks
+# wp --allow-root itv_mail setup_mail inform_paseka_members_about_tasks
+wp --allow-root itv_mail setup_mail new_tasks_digest
