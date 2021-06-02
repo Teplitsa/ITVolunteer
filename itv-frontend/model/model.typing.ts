@@ -1744,6 +1744,10 @@ export interface IFormInputCheckboxProps {
   Explanation?: React.FunctionComponent;
 }
 
+export interface IFormInputRadioProps {
+  label?: string;
+}
+
 /**
  * Manage task
  */
@@ -1776,6 +1780,7 @@ export interface IManageTaskFormData {
     fileName: string;
   }>;
   preferredDuration?: string;
+  isPasekaChecked: "0" | "1";
 }
 
 export interface IManageTaskTag {
