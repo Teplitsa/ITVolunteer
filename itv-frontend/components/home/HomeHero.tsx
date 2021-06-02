@@ -137,7 +137,7 @@ const HomeHeroAuthor: React.FunctionComponent = (): ReactElement => {
 const HomeHero: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  return template === "author" ? <HomeHeroAuthor /> : <HomeHeroVolunteer />;
+  return template === "customer" ? <HomeHeroAuthor /> : <HomeHeroVolunteer />;
 };
 
 export default HomeHero;

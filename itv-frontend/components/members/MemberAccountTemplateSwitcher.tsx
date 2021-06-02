@@ -37,18 +37,18 @@ const MemberAccountTemplateSwitcher: React.FunctionComponent = (): ReactElement 
           Волонтер
         </button>
       )}
-      {(memberAccount.template === "author" || memberAccount.isHybrid) && (
+      {(memberAccount.template === "customer" || memberAccount.isHybrid) && (
         <button
           className={`member-account__template-switcher-btn ${
-            (memberAccount.template === "author" &&
+            (memberAccount.template === "customer" &&
               "member-account__template-switcher-btn_active") ||
             ""
           }`}
           type="button"
           onClick={event => {
             event.preventDefault();
-            (isAccountOwner && changeItvRoleRequest({ itvRole: "author" })) ||
-              setTemplate({ template: "author" });
+            (isAccountOwner && changeItvRoleRequest({ itvRole: "customer" })) ||
+              setTemplate({ template: "customer" });
           }}
         >
           Заказчик

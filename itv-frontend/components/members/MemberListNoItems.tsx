@@ -14,7 +14,7 @@ const MemberListNoItems: React.FunctionComponent = (): ReactElement => {
   const handleCtaBtnClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
 
-    if (isLoggedIn && itvRole === "author") {
+    if (isLoggedIn && itvRole === "customer") {
       router.push("/task-create");
     } else {
       router.push("/tasks");
@@ -29,13 +29,13 @@ const MemberListNoItems: React.FunctionComponent = (): ReactElement => {
       </div>
       <div className="members-list-no-items__cta">
         <a href="#" className="btn btn_primary-lg" onClick={handleCtaBtnClick}>
-          {isLoggedIn && itvRole === "author" ? "Создать задачу" : "Найти задачу"}
+          {isLoggedIn && itvRole === "customer" ? "Создать задачу" : "Найти задачу"}
         </a>
       </div>
       {withFadeIn({
         component: Image,
         mediaUrl:
-          isLoggedIn && itvRole === "author" ? NoItemsForAuthorImage : NoItemsForVolunteerImage,
+          isLoggedIn && itvRole === "customer" ? NoItemsForAuthorImage : NoItemsForVolunteerImage,
         mediaAlt: "",
         mediaHeight: 350,
         className: "members-list-no-items__image",

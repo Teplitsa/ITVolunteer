@@ -218,7 +218,7 @@ const sessionActions: ISessionActions = {
     (actions, storeActions) => storeActions.components.memberAccount.setTemplate,
     (state, { payload: { template } }) => {
       if (state.isAccountOwner) {
-        state.user.itvRole = template === "volunteer" ? "doer" : "author";
+        state.user.itvRole = template === "volunteer" ? "doer" : "customer";
       }
     }
   ),

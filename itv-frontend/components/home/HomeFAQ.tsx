@@ -65,7 +65,7 @@ const HomeFAQ: React.FunctionComponent = (): ReactElement => {
   faqs = isFullListShown ? faqs : faqs.slice(0, MAX_FAQ_COUNT_TO_PREVIEW);
 
   const HomeFAQAccordion: React.FunctionComponent = (): ReactElement =>
-    (template === "author" && <HomeFAQAccordionAuthor {...{ authorFaqs: faqs }} />) || (
+    (template === "customer" && <HomeFAQAccordionAuthor {...{ authorFaqs: faqs }} />) || (
       <HomeFAQAccordionVolunteer {...{ volunteerFaqs: faqs }} />
     );
 

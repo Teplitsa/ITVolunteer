@@ -5,7 +5,7 @@ import HomePasekaImage from "../../assets/img/home-paseka.svg";
 const HomePaseka: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  if (template === "author") return null;
+  if (template === "customer") return null;
 
   return (
     <section className="home-paseka">

@@ -25,9 +25,9 @@ const MemberRoleSelector: React.FunctionComponent<{
       <h2>Чем бы вы хотели заниматься на платформе помощи IT?</h2>
       <ul className="role-selector__options">
         <li
-          className={`role-selector__option ${activeRoles["author"] && "active"}`}
+          className={`role-selector__option ${activeRoles["customer"] && "active"}`}
           onClick={handleRoleClick}
-          data-role="author"
+          data-role="customer"
         >
           <div className="icon">
             <img src={roleAuthorIcon} />

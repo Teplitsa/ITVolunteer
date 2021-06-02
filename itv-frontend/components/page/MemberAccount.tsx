@@ -65,7 +65,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
 
   if (
     (memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
-    (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)
+    (memberAccountTemplate === "customer" && !isEmptyProfileAsAuthor)
   ) {
     if (memberAccountTemplate === "volunteer") {
       tabList.push({
@@ -179,17 +179,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             )} */}
             {tabList.length > 0 && <Tabs />}
             {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
-              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              (memberAccountTemplate === "customer" && isEmptyProfileAsAuthor)) &&
               isAccountOwner && (
                 <>
                   <MemberAccountNeedAttention />
                   {/* <MemberAccountEmptyServiceShow /> */}
-                  {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
+                  {memberAccountTemplate === "customer" && <MemberAccountEmptyTaskList />}
                   {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
                 </>
               )}
             {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
-              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              (memberAccountTemplate === "customer" && isEmptyProfileAsAuthor)) &&
               !isAccountOwner && <MemberAccountEmptySectionForGuest />}
           </div>
         </div>

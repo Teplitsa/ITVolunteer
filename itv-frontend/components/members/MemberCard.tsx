@@ -52,7 +52,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
         {isLoggedIn && <MemberCardBottom />}
         {(isAccountOwner ||
           (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
-            (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) &&
+            (memberAccountTemplate === "customer" && !isEmptyProfileAsAuthor)) &&
             (isLoggedIn || thankyouCount > 0))) && (
           <div className="member-card__action">
             {(isAccountOwner && (
@@ -62,7 +62,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
                     <a className="btn btn_primary btn_full-width cta">Найти задачу</a>
                   </Link>
                 )}
-                {memberAccountTemplate === "author" && (
+                {memberAccountTemplate === "customer" && (
                   <Link href="/task-create">
                     <a className="btn btn_primary btn_full-width cta">Создать задачу</a>
                   </Link>
@@ -73,7 +73,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
               </>
             )) ||
               (((memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
-                (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)) && (
+                (memberAccountTemplate === "customer" && !isEmptyProfileAsAuthor)) && (
                 <>
                   {isLoggedIn && (
                     <button

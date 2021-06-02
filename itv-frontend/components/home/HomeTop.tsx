@@ -90,7 +90,7 @@ const HomeTop: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => loadMembersRequest(), []);
 
-  return template === "author" ? <HomeUserTop /> : <HomeTaskTop />;
+  return template === "customer" ? <HomeUserTop /> : <HomeTaskTop />;
 };
 
 export default HomeTop;

@@ -69,9 +69,9 @@ const HomeBenefits: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
   const advantageList = useStoreState(state => state.components.homePage.advantageList);
 
-  return template === "author" ? (
+  return template === "customer" ? (
     <HomeBenefitsAuthor
-      authorBenefits={advantageList.filter(advantage => advantage.userRole === "author")}
+      authorBenefits={advantageList.filter(advantage => advantage.userRole === "customer")}
     />
   ) : (
     <HomeBenefitsVolunteer

@@ -71,7 +71,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
       event.preventDefault();
     }
 
-    const newItvRole = user.itvRole === "doer" ? "author" : "doer";
+    const newItvRole = user.itvRole === "doer" ? "customer" : "doer";
 
     setRole({
       itvRole: newItvRole,
@@ -142,7 +142,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
                   <a>Найти задачу</a>
                 </Link>
               )}
-              {user.itvRole === "author" && (
+              {user.itvRole === "customer" && (
                 <Link href="/task-create">
                   <a>Создать задачу</a>
                 </Link>
@@ -184,7 +184,7 @@ const ParticipantNav: React.FunctionComponent = (): ReactElement => {
               <a>Найти задачу</a>
             </Link>
           )}
-          {user.itvRole === "author" && (
+          {user.itvRole === "customer" && (
             <Link href="/task-create">
               <a>Создать задачу</a>
             </Link>

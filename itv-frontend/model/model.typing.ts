@@ -117,14 +117,14 @@ export interface ISessionUser {
   subscribeTaskList?: any | null;
   logoutUrl?: string;
   isAdmin?: boolean;
-  itvRole: "author" | "doer";
+  itvRole: "customer" | "doer";
 }
 
 export interface ISessionActions {
   setStateGuest: Action<ISessionModel>;
   setState: Action<ISessionModel, ISessionState>;
   setIsLoaded: Action<ISessionState, boolean>;
-  setUserItvRole: Action<ISessionState, "author" | "doer">;
+  setUserItvRole: Action<ISessionState, "customer" | "doer">;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
   onMemberAccountTemplateChange: ActionOn<ISessionModel, IStoreModel>;
@@ -172,7 +172,7 @@ export interface ISessionThunks {
   setRole: Thunk<
     ISessionActions,
     {
-      itvRole: "author" | "doer";
+      itvRole: "customer" | "doer";
       successCallbackFn: () => void;
       errorCallbackFn: (message: string) => void;
     },
@@ -364,7 +364,7 @@ export interface IMembersPageThunks {
  * Member Account
  */
 
-export type MemberAccountTemplate = "volunteer" | "author";
+export type MemberAccountTemplate = "volunteer" | "customer";
 
 export interface IMemberAccountPageModel
   extends IMemberAccountPageState,
@@ -554,7 +554,7 @@ export interface IMemberAccountPageThunks {
   profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
   loadIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
   storeIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
-  changeItvRoleRequest: Thunk<IMemberAccountPageActions, { itvRole: "doer" | "author" }>;
+  changeItvRoleRequest: Thunk<IMemberAccountPageActions, { itvRole: "doer" | "customer" }>;
 }
 
 /**
@@ -631,7 +631,7 @@ export interface IPortfolioItemAuthor {
   reviewsCount: number;
   rating: number;
   xp: number;
-  itvRole: "author" | "doer";
+  itvRole: "customer" | "doer";
   itvRoleTitle: "Заказчик" | "Волонтер";
   isPasekaMember?: boolean;
 }
