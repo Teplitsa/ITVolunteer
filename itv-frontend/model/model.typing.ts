@@ -310,6 +310,7 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   ratingSolvedTasksPosition?: number;
+  ratingSolvedTasksCount?: number;
   isPasekaMember?: boolean;
 }
 

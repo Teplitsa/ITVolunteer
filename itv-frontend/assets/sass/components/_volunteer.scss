@@ -24,6 +24,7 @@
     text-align: center;
     @include screen-from(md) {
       flex-flow: row nowrap;
+      align-items: flex-start;
       text-align: left;
     }
   }
@@ -126,5 +127,12 @@
       border-radius: 8px;
       box-sizing: border-box;
     }
+  }
+  &__task-count {
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
+    font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-lg;
   }
 }

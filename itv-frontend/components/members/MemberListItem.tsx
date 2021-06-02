@@ -77,7 +77,10 @@ const MemberListItem: React.FunctionComponent<{
       >
         {member.ratingSolvedTasksPosition}
       </div>
-      {isLoggedIn && (
+      <div className="volunteer__task-count">
+        Решено задач: {member.ratingSolvedTasksCount}
+      </div>
+      {/* {isLoggedIn && (
         <div className="volunteer__give-thanks">
           <button
             className="volunteer__give-thanks-btn"
@@ -87,7 +90,7 @@ const MemberListItem: React.FunctionComponent<{
             {isThanksGiven ? "Вы сказали «Спасибо»" : "Сказать «Спасибо»"}
           </button>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
