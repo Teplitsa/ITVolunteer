@@ -36,6 +36,7 @@ export const memberListItemQueriedFields: Array<keyof IMemberListItem> = [
   "xp",
   "itvAvatar",
   "ratingSolvedTasksPosition",
+  "isPasekaMember"
 ];
 
 const membersPageActions: IMembersPageActions = {
