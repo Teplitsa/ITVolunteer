@@ -35,7 +35,7 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
   return (
     <div className="member-account-null__need-attention">
       <h3>
-        Это ваш личный кабинет и он нуждается в вашем внимании!
+        Заполните профиль, чтобы получать больше внимания
         <a
           className="close"
           href="#"
@@ -56,9 +56,9 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
                 document.getElementById("member-avatar-upload-input").click();
               }}
             >
-              Добавьте аватарку
+              Загрузите фото.
             </a>
-            <p>Приятно общаться с человеком, когда видишь его лицо. Согласны?</p>
+            <p>Людям приятно видеть собеседника.</p>
           </li>
         )}
         {!profileFillStatus.isCoverExist && (
@@ -70,17 +70,17 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
                 document.getElementById("member-cover-upload-input").click();
               }}
             >
-              Добавьте обложку
+              Добавьте обложку профиля,
             </a>
-            <p>Хотите произвети максимальное впечатление? Украсьте личный кабинет обложкой!</p>
+            <p>чтобы задать настроение и запомниться.</p>
           </li>
         )}
         {!profileFillStatus.isProfileInfoEnough && (
           <li>
             <Link href={`/members/${slug}/profile`}>
-              <a>Отредактируйте профиль</a>
+              <a>Расскажите о себе.</a>
             </Link>
-            <p>Добавьте больше информации. Это позволит лучше с вами познакомиться.</p>
+            <p>Чем вы занимаетесь? Чем можете быть полезны?</p>
           </li>
         )}
       </ul>

@@ -76,13 +76,16 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
 
     if (
       Object.entries(taskStats).some(
-        (filters => ([filterName, filterValue]) => {
-          if (filters.includes(filterName)) {
-            return filterValue > 0;
-          }
+        (
+          filters =>
+          ([filterName, filterValue]) => {
+            if (filters.includes(filterName)) {
+              return filterValue > 0;
+            }
 
-          return false;
-        })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+            return false;
+          }
+        )(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
       )
     ) {
       tabList.push({ title: "Задачи", content: MemberTasks });
@@ -92,7 +95,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
       tabList.push({ title: "Отзывы", content: MemberReviews });
     }
   }
-  
+
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: tabList,
