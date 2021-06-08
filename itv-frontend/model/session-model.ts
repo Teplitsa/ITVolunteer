@@ -48,6 +48,7 @@ const sessionUserState: ISessionUser = {
   vk: "",
   instagram: "",
   itvRole: null,
+  hideTelegramChatBanner: false,
 };
 
 const sessionTokenState: ISessionToken = {
@@ -224,9 +225,10 @@ const sessionActions: ISessionActions = {
   ),
   loadSubscribeTaskList: thunk(actions => {
     const action = "get-task-list-subscription";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
-      method: "get",
-    })
+    utils
+      .tokenFetch(utils.getAjaxUrl(action), {
+        method: "get",
+      })
       .then(res => {
         try {
           return res.json();
@@ -259,6 +261,9 @@ const sessionActions: ISessionActions = {
   }),
   setUserCoverFile: action((state, payload) => {
     state.user.coverFile = payload;
+  }),
+  hideTelegramChatBanner: action((state, payload) => {
+    state.user.hideTelegramChatBanner = payload;
   }),
 };
 
@@ -363,12 +368,8 @@ const sessionThunks: ISessionThunks = {
         },
       });
 
-      if(result.ok) {
-
-        const {
-          token: authToken,
-          user: user,
-        } = await (<
+      if (result.ok) {
+        const { token: authToken, user: user } = await (<
           Promise<{
             token: string;
             user: any;
@@ -384,14 +385,8 @@ const sessionThunks: ISessionThunks = {
         });
 
         successCallbackFn();
-
-      }
-      else {
-
-        const {
-          code: errorCode,
-          message: errorMessage,
-        } = await (<
+      } else {
+        const { code: errorCode, message: errorMessage } = await (<
           Promise<{
             code: string;
             message: string;
@@ -404,7 +399,6 @@ const sessionThunks: ISessionThunks = {
 
         errorCallbackFn(stripTags(errorMessage));
       }
-
     } catch (error) {
       console.error(error);
       errorCallbackFn("Во время входа произашла ошибка.");
@@ -471,10 +465,13 @@ const sessionThunks: ISessionThunks = {
       formData.append("auth_token", String(token));
 
       try {
-        const result = await utils.tokenFetch(getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`), {
-          method: "POST",
-          body: formData,
-        });
+        const result = await utils.tokenFetch(
+          getRestApiUrl(`/itv/v1/member/${user.slug}/itv_role`),
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
 
         if (result.status !== 200) {
           const { message: responseMessage } = await result.json();
@@ -533,6 +530,41 @@ const sessionThunks: ISessionThunks = {
       console.error(error);
     }
   }),
+  saveTelegramChatBanner: thunk(
+    async ({ hideTelegramChatBanner }, { value }, { getStoreState }) => {
+      const { session } = getStoreState() as IStoreModel;
+
+      try {
+        const result = await utils.sessionFetch(
+          getRestApiUrl(`/itv/v1/member/${session.user.slug}/telegram-chat-banner`),
+          session,
+          {
+            method: "post",
+            body: JSON.stringify({ value }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (result.ok) {
+          hideTelegramChatBanner(true);
+        } else {
+          const { code: errorCode, message: errorMessage } = await (<
+            Promise<{
+              code: string;
+              message: string;
+            }>
+          >result.json());
+
+          console.error(`Error code: ${errorCode}`);
+          console.error(stripTags(errorMessage));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  ),
 };
 
 const sessionModel: ISessionModel = {

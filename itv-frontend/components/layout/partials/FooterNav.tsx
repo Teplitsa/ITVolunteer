@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { TelegramChatButton } from "../../TelegramChat";
 import { regEvent } from "../../../utilities/ga-events";
 import Logo from "../../../assets/img/pic-logo-itv.svg";
 
@@ -14,6 +15,7 @@ const FooterNav: React.FunctionComponent = (): ReactElement => {
           <img src={Logo} className="logo" alt="IT-волонтер" />
         </a>
       </Link>
+      <TelegramChatButton />
       <ul className="links-col">
         <li>
           <Link href="/tasks">

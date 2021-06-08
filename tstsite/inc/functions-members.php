@@ -1348,6 +1348,8 @@ function itv_get_user_in_gql_format($user) {
         'isHybrid' => $members->is_hybrid_profile($user->ID),
         'slug' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
         'nicename' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
+        'isHybrid' => $members->is_hybrid_profile($user->ID),
+        'hideTelegramChatBanner' => (bool) get_user_meta($user->ID, 'hide_telegram_chat_banner', true)
     ];
     
     return $user_data;
@@ -1366,7 +1368,7 @@ function itv_get_user_file($user_id, $file_meta_key) {
   return null;                    
 }
 
-function itv_append_user_private_data($user_data, $user) {
+function itv_append_user_private_data(&$user_data, $user) {
 
   $user_data['databaseId'] = intval($user->ID);
   $user_data['email'] = $user->user_email;
