@@ -1,9 +1,9 @@
-import { ReactElement } from "react";
+import React, { Children, ReactElement } from "react";
 import Link from "next/link";
 import * as utils from "../utilities/utilities";
 
 const MemberStats: React.FunctionComponent<{
-  useComponents?: Array<"rating" | "reviewsCount" | "xp" | "solvedProblems">;
+  useComponents?: Array<"rating" | "reviewsCount" | "xp" | "solvedProblems" | "customComponents">;
   memberSlug?: string;
   rating?: number;
   reviewsCount?: number;
@@ -14,6 +14,7 @@ const MemberStats: React.FunctionComponent<{
   withBottomdivider?: boolean;
   align?: "left" | "center";
 }> = ({
+  children,
   rating,
   memberSlug = "",
   reviewsCount = 0,
@@ -69,20 +70,28 @@ const MemberStats: React.FunctionComponent<{
         </div>
       )}
       {useComponents.includes("solvedProblems") && (
-        <>
-          <div className="member-stats__item member-stats__item_solved-problems">
-            <div className="member-stats__solved-problems">
-              {solvedProblems ?? 0}{" "}
-              {utils.getDeclension({
-                count: solvedProblems,
-                caseOneItem: "решенная задача",
-                caseTwoThreeFourItems: "решенные задачи",
-                restCases: "решенных задач",
-              })}
-            </div>
+        <div className="member-stats__item member-stats__item_solved-problems">
+          <div className="member-stats__solved-problems">
+            {solvedProblems ?? 0}{" "}
+            {utils.getDeclension({
+              count: solvedProblems,
+              caseOneItem: "решенная задача",
+              caseTwoThreeFourItems: "решенные задачи",
+              restCases: "решенных задач",
+            })}
           </div>
-        </>
+        </div>
       )}
+      {useComponents.includes("customComponents") &&
+        Children.count(children) > 0 &&
+        Children.map(children, (CustomComponent, i) => (
+          <div
+            key={`CustomComponents-${i}`}
+            className="member-stats__item member-stats__item_custom-components"
+          >
+            {CustomComponent}
+          </div>
+        ))}
     </div>
   );
 };

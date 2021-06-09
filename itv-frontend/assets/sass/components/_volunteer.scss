@@ -107,25 +107,17 @@
     }
   }
   &__give-thanks {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
-    visibility: hidden;
-    opacity: 0;
-    transition: all 0.3s ease-in-out;
-
-    .volunteer:hover & {
-      visibility: visible;
-      opacity: 1;
-    }
     &-btn {
-      background: $color-gray-light-xl;
-      border: 2px solid $color-gray-light-md;
-      padding: 6px 8px;
+      background: url(../../img/icon-heart_empty-gray.svg) 0 50% no-repeat transparent;
+      border-style: none;
+      padding: 0 0 0 18px;
       font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
-      color: $color-gray-dark-xl;
-      border-radius: 8px;
-      box-sizing: border-box;
+      color: $color-gray-dark-lg;
+
+      &:not([class*="_disabled"]) {
+        background: url(../../img/icon-heart_empty-green.svg) 0 50% no-repeat transparent;
+        color: $color-main;
+      }
     }
   }
   &__task-count {
