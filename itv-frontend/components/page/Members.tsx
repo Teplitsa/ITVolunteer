@@ -161,7 +161,12 @@ const Members: React.FunctionComponent = (): ReactElement => {
                   type="reset"
                   onClick={handleFilterReset}
                 >
-                  За всё время
+                  {isReset
+                    ? "За всё время"
+                    : `Дефолтный: за ${new Intl.DateTimeFormat("ru-RU", {
+                        month: "long",
+                        year: "numeric",
+                      }).format(now)}`}
                 </button>
               </div>
             </div>
