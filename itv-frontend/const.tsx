@@ -9,4 +9,4 @@ export const ITV_COOKIE = {
   },
 };
 
-export const VOLUNTEER_TELEGRAM_CHAT_URL = "https://t-do.ru/itvolunteer";
+export const VOLUNTEER_TELEGRAM_CHAT_URL = "https://t.me/itvolunteers";
