@@ -400,7 +400,7 @@ function itv_register_user_graphql_fields() {
                 'type' => 'Boolean',
                 'resolve' => function ($user) {
                     $members = new MemberManager();
-                    return $members->get_member_itv_role($user->userId);
+                    return $members->is_paseka_member($user->userId);
                 }
             ],
             'isPartner' => [

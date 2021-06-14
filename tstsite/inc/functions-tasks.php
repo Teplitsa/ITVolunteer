@@ -6,6 +6,7 @@ use ITV\models\CommentsLikeModel;
 use ITV\models\UserNotifModel;
 use ITV\models\MemberRatingDoers;
 use \ITV\models\TaskManager;
+use ITV\models\Telegram;
 
 /**
  * Task related utilities and manipulations
@@ -280,6 +281,9 @@ function ajax_submit_task(){
                 'task_url' => get_permalink($task->ID),
                 'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
             ]);
+
+            $telegram = new Telegram();
+            $telegram->publish_task($task);
         }
 
         $task = get_post($task_id);

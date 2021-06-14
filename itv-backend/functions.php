@@ -34,6 +34,7 @@ require_once(get_theme_file_path() . '/models/review/review.php');
 require_once(get_theme_file_path() . '/models/stats/stats.php');
 require_once(get_theme_file_path() . '/models/member/member-rating.php');
 require_once(get_theme_file_path() . '/models/taxonomy/reward.php');
+require_once(get_theme_file_path() . '/models/telegram.php');
 
 // post-types
 require_once(get_theme_file_path() . '/post-types/portfolio_work.php');
@@ -68,6 +69,8 @@ require_once(get_theme_file_path() . '/wp-cli/update_rewards_v2.php');
 require_once(get_theme_file_path() . '/wp-cli/setup_mail.php');
 require_once(get_theme_file_path() . '/wp-cli/setup_user_roles.php');
 require_once(get_theme_file_path() . '/wp-cli/inform_about_tasks.php');
+require_once(get_theme_file_path() . '/wp-cli/social_posting.php');
+require_once(get_theme_file_path() . '/wp-cli/import_paseka.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');

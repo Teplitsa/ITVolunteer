@@ -369,7 +369,7 @@ function tst_register_user($user_params) {
 					'user_pass' => $user_params['pass'],
 					'first_name' => $user_params['first_name'],
 					'last_name' => $user_params['last_name'],
-					'role' => 'customer',
+					'role' => 'author',
 			);
 			
 			// process extra params
