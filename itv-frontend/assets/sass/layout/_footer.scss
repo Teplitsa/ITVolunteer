@@ -12,15 +12,14 @@
 
   .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     border-bottom: 1px solid $color-gray-light-md;
     height: 36px;
     padding-bottom: 20px;
     align-items: center;
 
     .logo-col {
-      .logo {
-      }
+      margin-right: auto;
     }
 
     .links-col {

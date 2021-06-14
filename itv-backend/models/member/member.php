@@ -33,6 +33,7 @@ class Member {
 
 class MemberManager {
     public static $meta_role = 'itv_role';
+    public static $meta_telegram_chat_banner = 'hide_telegram_chat_banner';
 
     public static $rest_context_view_card = 'view_card';
 

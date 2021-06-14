@@ -30,6 +30,34 @@
       }
     }
   }
+  &__radio {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+
+    &-label {
+      display: flex;
+      font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-lg;
+      cursor: pointer;
+
+      &::before {
+        content: "";
+        display: block;
+        background: url(../../img/icon-wizard-radio-off.svg) 50% 50% no-repeat;
+        margin-right: 8px;
+        width: 24px;
+        height: 24px;
+        transition: all .15s linear;
+      }
+
+      :checked + & {
+        &::before {
+          background: url(../../img/icon-wizard-radio-on.svg) 50% 50% no-repeat;
+        }
+      }
+    }
+  }
   &__select {
     &-group {
       position: relative;

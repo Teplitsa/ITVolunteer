@@ -59,7 +59,8 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
       );
 
       member = Object.assign(member ?? {}, {
-        template: (await memberItvRoleResponse.json()).itvRole === "doer" ? "volunteer" : "customer",
+        template:
+          (await memberItvRoleResponse.json()).itvRole === "doer" ? "volunteer" : "customer",
       });
 
       const { user } = await request(process.env.GraphQLServer, graphqlQuery.member, {

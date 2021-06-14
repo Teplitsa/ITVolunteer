@@ -118,6 +118,7 @@ export interface ISessionUser {
   logoutUrl?: string;
   isAdmin?: boolean;
   itvRole: "customer" | "doer";
+  hideTelegramChatBanner: boolean;
 }
 
 export interface ISessionActions {
@@ -132,6 +133,7 @@ export interface ISessionActions {
   setUserAvatarFile: Action<ISessionState, any>;
   setUserCover: Action<ISessionState, any>;
   setUserCoverFile: Action<ISessionState, any>;
+  hideTelegramChatBanner: Action<ISessionState, boolean>;
 }
 
 export interface ISessionThunks {
@@ -179,6 +181,13 @@ export interface ISessionThunks {
     IStoreModel
   >;
   authorizeSession: Thunk<ISessionActions>;
+  saveTelegramChatBanner: Thunk<
+    ISessionActions,
+    {
+      value: 0 | 1;
+    },
+    IStoreModel
+  >;
 }
 
 /**
@@ -310,6 +319,7 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   ratingSolvedTasksPosition?: number;
+  ratingSolvedTasksCount?: number;
   isPasekaMember?: boolean;
 }
 
@@ -1744,6 +1754,10 @@ export interface IFormInputCheckboxProps {
   Explanation?: React.FunctionComponent;
 }
 
+export interface IFormInputRadioProps {
+  label?: string;
+}
+
 /**
  * Manage task
  */
@@ -1776,6 +1790,7 @@ export interface IManageTaskFormData {
     fileName: string;
   }>;
   preferredDuration?: string;
+  isPasekaChecked: "0" | "1";
 }
 
 export interface IManageTaskTag {

@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import WithGlobalScripts from "../hoc/withGlobalScripts";
 import Header from "./partials/Header";
 import Footer from "./partials/Footer";
@@ -11,11 +11,13 @@ import Socials from "../Socials";
 import Copyright from "../Copyright";
 import HeaderNav from "./partials/HeaderNav";
 import BreadCrumbs from "../../components/BreadCrumbs";
+import { TelegramChatBanner } from "../TelegramChat";
 
 const Main: React.FunctionComponent = ({ children }): ReactElement => {
   return (
     <WithGlobalScripts>
       <Header>
+        <TelegramChatBanner />
         <HeaderNav />
       </Header>
       <BreadCrumbs />

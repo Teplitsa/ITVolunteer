@@ -73,6 +73,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
             "itvRole",
             "itvRoleTitle",
             "itvAvatar",
+            "isPasekaMember",
           ]
             .map(paramValue => `_fields[]=${paramValue}`)
             .join("&");

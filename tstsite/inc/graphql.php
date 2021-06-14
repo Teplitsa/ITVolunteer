@@ -578,6 +578,13 @@ function itv_register_user_graphql_fields() {
                     return $members->is_hybrid_profile($user->userId);
                 }
             ],
+            'hideTelegramChatBanner' => [
+                'type' => 'Bool',
+                'description' => __( 'Telegram chat banner visibility', 'tst' ),
+                'resolve' => function ($user) {
+                    return (bool) get_user_meta($user->userId, 'hide_telegram_chat_banner', true);
+                }
+            ],
         ]
     );
 

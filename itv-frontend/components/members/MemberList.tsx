@@ -34,8 +34,8 @@ const MemberList: React.FunctionComponent<{
     <>
       {(!isLoading || isMoreLoading) && (
         <div className="members-list">
-          {members?.map((member, index) => (
-            <MemberListItem key={`Volunteer-${member.id}`} {...{ index: index + 1, member }} />
+          {members?.map((member) => (
+            <MemberListItem key={`Volunteer-${member.id}`} {...{ member }} />
           ))}
         </div>
       )}

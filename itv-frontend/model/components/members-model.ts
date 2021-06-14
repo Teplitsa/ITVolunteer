@@ -9,7 +9,7 @@ import {
   IFetchResult,
 } from "../model.typing";
 import { action, thunk } from "easy-peasy";
-import { getAjaxUrl, getRestApiUrl, stripTags } from "../../utilities/utilities";
+import { sessionFetch, getAjaxUrl, getRestApiUrl, stripTags } from "../../utilities/utilities";
 
 export const USER_RATING_START_YEAR = 2016;
 export const USER_PER_PAGE = 10;
@@ -36,6 +36,8 @@ export const memberListItemQueriedFields: Array<keyof IMemberListItem> = [
   "xp",
   "itvAvatar",
   "ratingSolvedTasksPosition",
+  "ratingSolvedTasksCount",
+  "isPasekaMember",
 ];
 
 const membersPageActions: IMembersPageActions = {
@@ -109,18 +111,15 @@ const membersPageThunks: IMembersPageThunks = {
     }
   ),
   giveThanksRequest: thunk(async (_, { toUserId, setIsThanksGiven }, { getStoreState }) => {
-    const {
-      session: { validToken: token },
-    } = getStoreState() as IStoreModel;
+    const { session } = getStoreState() as IStoreModel;
 
     const action = "thankyou";
     const formData = new FormData();
 
     formData.append("to-uid", String(toUserId));
-    formData.append("auth_token", String(token));
 
     try {
-      const result = await fetch(getAjaxUrl(action), {
+      const result = await sessionFetch(getAjaxUrl(action), session, {
         method: "post",
         body: formData,
       });

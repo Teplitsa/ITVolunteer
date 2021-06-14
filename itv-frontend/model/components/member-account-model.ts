@@ -14,7 +14,6 @@ import { action, thunk, actionOn } from "easy-peasy";
 import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 import * as utils from "../../utilities/utilities";
-import Slug from "pages/tasks/[slug]";
 
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
@@ -29,6 +28,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   fullName: "",
   itvAvatar: "",
   itvAvatarFile: null,
+  isPasekaMember: false,
   rating: 0,
   reviewsCount: 0,
   xp: 0,

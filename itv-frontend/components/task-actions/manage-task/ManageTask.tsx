@@ -15,6 +15,7 @@ import FormControlTextarea from "../../ui/form/FormControlTextarea";
 import FormControlSelect from "../../ui/form/FormControlSelect";
 import FormControlInputDate from "../../ui/form/FormControlInputDate";
 import FormControlInputCheckbox from "../../ui/form/FormControlInputCheckbox";
+import FormControlInputRadio from "../../ui/form/FormControlInputRadio";
 import UploadFileInput, { FileItem } from "../../UploadFileInput";
 import { IManageTaskFormData } from "../../../model/model.typing";
 import { ISnackbarMessage } from "../../../context/global-scripts";
@@ -138,6 +139,12 @@ const ManageTask: React.FunctionComponent<{
     }
   };
 
+  const radioChangeHandler = (event: SyntheticEvent<HTMLInputElement>) => {
+    taskRef.current[event.currentTarget.name] = event.currentTarget.value;
+
+    event.currentTarget.checked = Boolean(event.currentTarget.value);
+  };
+
   const controlChangeHandler = (event: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     taskRef.current[event.currentTarget.name] = event.currentTarget.value;
 
@@ -181,13 +188,13 @@ const ManageTask: React.FunctionComponent<{
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
-  const fileUploadHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+  const fileUploadHandler = (event: CustomEvent<{ files: Array<FileItem> }>) => {
     taskRef.current.files = event.detail.files;
 
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
-  const fileRemoveHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+  const fileRemoveHandler = (event: CustomEvent<{ files: Array<FileItem> }>) => {
     taskRef.current.files = event.detail.files;
 
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
@@ -481,6 +488,25 @@ const ManageTask: React.FunctionComponent<{
                 </div>
               </div>
             )}
+            <div className="form__group">
+              <div className="form__label form__label_small">Кто может откликнуться на задачу?</div>
+              <FormControlInputRadio
+                label="Любой волонтёр"
+                id="isPasekaCheckedFalse"
+                name="isPasekaChecked"
+                defaultValue="0"
+                defaultChecked={taskRef.current?.isPasekaChecked === "0"}
+                onChange={radioChangeHandler}
+              />
+              <FormControlInputRadio
+                label="Пасека"
+                id="isPasekaCheckedTrue"
+                name="isPasekaChecked"
+                defaultValue="1"
+                defaultChecked={taskRef.current?.isPasekaChecked === "1"}
+                onChange={radioChangeHandler}
+              />
+            </div>
           </ManageTaskForm>
         </ManageTaskStep>
       )}
