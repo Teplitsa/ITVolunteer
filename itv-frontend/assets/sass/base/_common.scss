@@ -3,11 +3,37 @@ body {
   overflow-x: hidden;
   @include text;
 
-  #itv-spa-container {
-  }
-
   a {
     @include a-hover-underline;
     color: $color-main;
+  }
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+
+  th,
+  td {
+    padding: 10px;
+    width: 100%;
+    vertical-align: top;
+  }
+
+  thead {
+    th {
+      border-bottom: 1px solid $color-gray-light-lg;
+      text-align: left;
+    }
+  }
+
+  tbody {
+    tr {
+      &:not(:last-child) {
+        td {
+          border-bottom: 1px solid $color-gray-light-lg;
+        }
+      }
+    }
   }
 }
