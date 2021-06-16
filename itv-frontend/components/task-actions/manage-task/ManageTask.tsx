@@ -495,7 +495,7 @@ const ManageTask: React.FunctionComponent<{
                 id="isPasekaCheckedFalse"
                 name="isPasekaChecked"
                 defaultValue="0"
-                defaultChecked={taskRef.current?.isPasekaChecked === "0"}
+                defaultChecked={!taskRef.current?.isPasekaChecked}
                 onChange={radioChangeHandler}
               />
               <FormControlInputRadio
@@ -503,7 +503,7 @@ const ManageTask: React.FunctionComponent<{
                 id="isPasekaCheckedTrue"
                 name="isPasekaChecked"
                 defaultValue="1"
-                defaultChecked={taskRef.current?.isPasekaChecked === "1"}
+                defaultChecked={taskRef.current?.isPasekaChecked}
                 onChange={radioChangeHandler}
               />
             </div>

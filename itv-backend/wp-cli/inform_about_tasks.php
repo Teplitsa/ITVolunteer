@@ -2,6 +2,7 @@
 
 namespace ITV\cli;
 
+use ITV\Config;
 use ITV\models\{TaskManager, MemberManager};
 
 if (!class_exists('\WP_CLI')) {
@@ -68,6 +69,11 @@ class MembersAboutTasksInformer
         $task_id_list = $task_manager->get_fresh_tasks_with_no_volunteers();
         \WP_CLI::line("tasks: " . implode(", ", $task_id_list));
 
+        if(empty($task_id_list)) {
+            \WP_CLI::line("not tasks to inform about");
+            return;
+        }
+
         $task_list = [];
         foreach ($task_id_list as $task_id) {
             $task = get_post($task_id);
@@ -82,7 +88,12 @@ class MembersAboutTasksInformer
         
         foreach ($user_id_list as $user_id) {
             $user = get_user_by('id', $user_id);
-            echo "user: {$user->ID} - {$user->user_login}\n";
+            \WP_CLI::line( "user: {$user->ID} - {$user->user_login}" );
+
+            if(in_array($user->user_email, Config::MAIL_ABOUT_TASKS_SKIP_LIST)) {
+                \WP_CLI::line("SKIP: user in SKIP LIST: " . $user->ID);
+                continue;
+            }
 
             \ItvAtvetka::instance()->mail('new_tasks_digest', [
                 'mailto' => $user->user_email,
@@ -90,6 +101,8 @@ class MembersAboutTasksInformer
                 'task_list_url' => site_url("/tasks"),
                 'task_list' => implode("\n", $task_list),
             ]);
+
+            \WP_CLI::line("email sent to: " . $user->ID);
         }
     }
 }

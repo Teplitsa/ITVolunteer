@@ -236,6 +236,12 @@ function itv_register_task_graphql_fields() {
                     return itv_get_task_deadline_date($task->ID, $task->date);
                 },
             ],
+            'isPasekaChecked' => [
+                'type'        => 'Bool',
+                'resolve'     => function( $task, $args, $context ) {
+                    return boolval(get_post_meta($task->ID, 'isPasekaChecked', true));
+                },
+            ],
         ]
     );
 }

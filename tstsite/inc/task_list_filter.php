@@ -84,18 +84,18 @@ class TaskListFilter {
                     'title' => 'Заказчик проверен',
                     'task_count' => $this->count_tasks_in_filter_option_author_checked(),
                 ],
-                // [
-                //     'id' => 'for-paseka-members',
-                //     'title' => 'Только для Пасеки',
-                //     'task_count' => $this->count_tasks_in_filter_option([
-                //         'meta_query' => [
-                //             [
-                //                 'key' => ITV_POST_META_FOR_PASEKA_ONLY,
-                //                 'value' => true,
-                //             ]
-                //         ]
-                //     ]),
-                // ],
+                [
+                    'id' => 'for-paseka-members',
+                    'title' => 'Только для Пасеки',
+                    'task_count' => $this->count_tasks_in_filter_option([
+                        'meta_query' => [
+                            [
+                                'key' => ITV_POST_META_FOR_PASEKA_ONLY,
+                                'value' => 1,
+                            ]
+                        ]
+                    ]),
+                ],
             ],
         ];
         

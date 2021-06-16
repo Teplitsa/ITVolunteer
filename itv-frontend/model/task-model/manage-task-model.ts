@@ -39,7 +39,7 @@ export const manageTaskState: IManageTaskState = {
     },
     files: null,
     preferredDuration: "",
-    isPasekaChecked: "0",
+    isPasekaChecked: false,
   },
   tags: null,
   ngoTags: null,

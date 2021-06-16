@@ -4,8 +4,8 @@ namespace ITV\models;
 
 class Telegram
 {
-    const CHAT_ID = "-1001064353411";   // teplobot_denisch_chan1
-    const BOT_TOKEN = "211692230:AAHzLETi85BrtyF3Q_ZlCsU83DJqCMkxABU";
+    const CHAT_ID = ITV_TELEGRAM_CHAT_ID;
+    const BOT_TOKEN = ITV_TELEGRAM_BOT_TOKEN;
     const ALLOWED_TAGS = '<b><i><u><s><a><code><pre>';
 
     public function publish_task($task) {

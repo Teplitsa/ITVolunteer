@@ -1790,7 +1790,7 @@ export interface IManageTaskFormData {
     fileName: string;
   }>;
   preferredDuration?: string;
-  isPasekaChecked: "0" | "1";
+  isPasekaChecked: boolean;
 }
 
 export interface IManageTaskTag {
