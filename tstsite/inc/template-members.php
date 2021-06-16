@@ -252,7 +252,7 @@ function itv_member_cover_url($member_id = null){
     $img_url = '';
     
     if($image_id) {
-        $res = wp_get_attachment_image_src( $image_id, 'large');
+        $res = wp_get_attachment_image_src( $image_id, 'member_account_cover');
         $img_url = $res ? $res[0] : '';
     }
 

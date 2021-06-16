@@ -72,7 +72,7 @@ const MemberAccountNeedAttention: React.FunctionComponent = (): ReactElement => 
             >
               Добавьте обложку профиля,
             </a>
-            <p>чтобы задать настроение и запомниться.</p>
+            <p>чтобы задать настроение и запомниться. Оптимальный размер — 1920x200 пикселей.</p>
           </li>
         )}
         {!profileFillStatus.isProfileInfoEnough && (
