@@ -1,0 +1,46 @@
+@import "../base/presets";
+@import "../helpers/mixins";
+
+.tooltip {
+  position: relative;
+
+  &__btn {
+    visibility: visible;
+  }
+  &__body {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: -10px;
+    background-color: $color-white;
+    padding: 4px 10px;
+    min-height: 0;
+    min-width: 328px;
+    border-radius: 6px;
+    opacity: 0;
+    visibility: hidden;
+    box-sizing: border-box;
+    box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+    transition: min-height 0.3s step-end, opacity 0.3s linear, visibility 0.3s linear;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -18px;
+      left: 10px;
+      display: block;
+      border: 9px solid transparent;
+      border-bottom-color: $color-white;
+      width: 18px;
+      height: 18px;
+      box-sizing: border-box;
+    }
+
+    &_active {
+      min-height: max-content;
+      opacity: 1;
+      visibility: visible;
+
+      transition: min-height 0.3s step-start, opacity 0.3s linear, visibility 0.3s linear;
+    }
+  }
+}

@@ -148,6 +148,24 @@
         }
       }
     }
+    &__checkbox-container {
+      margin-bottom: 30px;
+      [class*="checkbox-label-text"] {
+        margin-right: 4px;
+        color: $color-gray-dark-lg;
+      }
+    }
+    &__tooltip-btn {
+      display: block;
+      background: url(../../img/icon-question.svg) 50% 50% no-repeat;
+      border-style: none;
+      width: 20px;
+      height: 20px;
+    }
+    &__tooltip-body {
+      font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+    }
   }
   &__action {
     &-container {

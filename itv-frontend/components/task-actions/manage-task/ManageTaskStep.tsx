@@ -23,43 +23,85 @@ const ManageTaskStep: React.FunctionComponent<{
               title: "Как правильно дать название задачи?",
               // eslint-disable-next-line react/display-name
               header: ({ closeModal }) => {
-                return <div className={styles["manage-task__modal-header"]}>
-                  <ul className={styles["manage-task__modal-nav"]}>
-                    <li className={styles["manage-task__modal-nav-item"]}>
-                      <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">Справочный центр</a>
-                    </li>
-                    <li className={styles["manage-task__modal-nav-item"]}>Советы для организаций</li>
-                    <li className={styles["manage-task__modal-nav-item"]}>Как правильно дать название задачи?</li>
-                  </ul>
-                  <button type="button" className={styles["manage-task__modal-close"]} onClick={closeModal} />
-                </div>;
+                return (
+                  <div className={styles["manage-task__modal-header"]}>
+                    <ul className={styles["manage-task__modal-nav"]}>
+                      <li className={styles["manage-task__modal-nav-item"]}>
+                        <a href="/sovety-dlya-nko-uspeshnye-zadachi/" target="_blank">
+                          Справочный центр
+                        </a>
+                      </li>
+                      <li className={styles["manage-task__modal-nav-item"]}>
+                        Советы для организаций
+                      </li>
+                      <li className={styles["manage-task__modal-nav-item"]}>
+                        Составление задачи на ITV
+                      </li>
+                    </ul>
+                    <button
+                      type="button"
+                      className={styles["manage-task__modal-close"]}
+                      onClick={closeModal}
+                    />
+                  </div>
+                );
               },
               // eslint-disable-next-line react/display-name
               content: () => (
                 <div className={styles["manage-task__modal-content"]}>
                   <div className={styles["manage-task__modal-title"]}>
-                    Как правильно дать название задачи?
+                    Как правильно сформулировать задачу?
                   </div>
-                  <p>
-                    Хороший заголовок содержит в себе краткое и точное описание задачи, с учетом её
-                    специфики.
-                  </p>
-                  <p>Например: «сделать сайт благотворительной организации» — плохой заголовок.</p>
-                  <p>«Настроить сайт на WP для поиска пропавших граждан РФ» — лучше.</p>
-                  <p>В хорошем заголовке должны быть указана желаемая технология, например:</p>
+                  <p>Хорошее название содержит:</p>
                   <ul>
-                    <li>сайт на WP</li>
-                    <li>приложение под андроид</li>
-                    <li>макет в EPS</li>
-                    <li>и так далее.</li>
+                    <li>суть задачи — сделать сайт, нарисовать логотип, разработать приложение;</li>
+                    <li>
+                      название технологии, с которой будет работать волонтёр — WordPress, Android,
+                      EPS;
+                    </li>
+                    <li>
+                      пояснение, кому это поможет — гражданам, детям, редким животным, врачам.
+                    </li>
                   </ul>
-                  <p>Указание на то, для чего это всё (кратко, в два-три слова):</p>
-                  <ul>
-                    <li>поиск граждан,</li>
-                    <li>помощь детям,</li>
-                    <li>помощь домашним животным,</li>
-                    <li>помощь врачам.</li>
-                  </ul>
+                  <table className="table">
+                    <thead>
+                      <tr>
+                        <th>Нет</th>
+                        <th>Да</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Сделать сайт НКО</td>
+                        <td>Сделать сайт на WordPress для поиска пропавших граждан</td>
+                      </tr>
+                      <tr>
+                        <td>Настроить рекламу для дистанционного образования</td>
+                        <td>
+                          Настроить Yandex Direct и Google Adwords для лендинга курса
+                          дополнительного образования
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Настроить рекламу для дистанционного образования</td>
+                        <td>
+                          Настроить Yandex Direct и Google Adwords для лендинга курса
+                          дополнительного образования
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Сделать шаблоны постов</td>
+                        <td>Сделать шаблоны постов для экоактивистов в Facebook</td>
+                      </tr>
+                      <tr>
+                        <td>Доработать плагин</td>
+                        <td>
+                          Доработать плагин Лейка для приёма пожертвований через ApplePay в пользу
+                          детей с инвалидностью
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               ),
             },
@@ -91,7 +133,7 @@ const ManageTaskStep: React.FunctionComponent<{
                     openHelpModal();
                   }}
                 >
-                  Как правильно назвать задачу?
+                  Как правильно сформулировать задачу?
                 </a>
               </div>
             )}

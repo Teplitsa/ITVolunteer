@@ -8,6 +8,7 @@ import { regEvent } from "../../utilities/ga-events";
 import { UserSmallView } from "../UserView";
 import TaskMeta from "../task/task-header/TaskMeta";
 import TaskTags from "../task/task-header/TaskTags";
+import TaskListItemPasekaNotice from "./TaskListItemPasekaNotice";
 
 const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement => {
   const router = useRouter();
@@ -51,8 +52,9 @@ const TaskListItem: React.FunctionComponent<ITaskState> = (task): ReactElement =
           <a className="clickable-task-content">
             <div className="task-content" dangerouslySetInnerHTML={{ __html: task.content }} />
           </a>
-        </Link>        
+        </Link>
       )}
+      {task.isPasekaChecked && <TaskListItemPasekaNotice />}
       <TaskTags {...task} />
     </div>
   );
@@ -95,6 +97,7 @@ export const TaskListItemHome: React.FunctionComponent<ITaskState> = (task): Rea
           </a>
         </Link>
       )}
+      {task.isPasekaChecked && <TaskListItemPasekaNotice />}
       <TaskTags {...task} />
     </div>
   );

@@ -841,6 +841,7 @@ export interface ITaskState {
   cover: any;
   coverImgSrcLong: string;
   files: Array<any>;
+  isPasekaChecked?: boolean;
 }
 
 export interface ITaskReviewer {
