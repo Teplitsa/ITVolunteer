@@ -11,7 +11,7 @@ class Telegram
     public function publish_task($task) {
         $title = apply_filters( 'the_title', $task->post_title );
         $content = \strip_tags( get_the_excerpt( $task ), self::ALLOWED_TAGS);
-        $content = \preg_replace("/\&nbsp;.*?\&hellip;<\/a>$/", "...", $content);
+        $content = \preg_replace("/(\&nbsp;)?<a.*?\&hellip;<\/a>$/", "...", $content);
         $content = \preg_replace("/[.]+$/", "...", $content);
 
         $link = get_permalink( $task );
