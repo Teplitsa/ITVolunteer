@@ -14,7 +14,7 @@ class Telegram
         $content = \preg_replace("/(\&nbsp;)?<a.*?\&hellip;<\/a>$/", "...", $content);
         $content = \preg_replace("/&hellip;/", "...", $content);
         $content = \preg_replace("/[.]+$/", "...", $content);
-        $content = htmlspecialchars_decode($content);
+        $content = \htmlspecialchars_decode($content);
 
         $link = get_permalink( $task );
 

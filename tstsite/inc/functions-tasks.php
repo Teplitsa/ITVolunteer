@@ -97,6 +97,8 @@ function ajax_submit_task(){
     $isPasekaChecked = !empty($_POST['isPasekaChecked']) ? boolval($_POST['isPasekaChecked']) : false;
 
     if($task_id) {
+        $task = get_post($task_id);
+        
         $tags_all = array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0);
 
         update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
@@ -167,7 +169,6 @@ function ajax_submit_task(){
         if($is_new_task) {
             tst_send_admin_notif_new_task($task_id);
             
-            $task = get_post($task_id);
             $task_author = get_user_by('id', $task->post_author);
             ItvAtvetka::instance()->mail('task_successfully_published', [
                 'user_id' => $task_author->ID,
