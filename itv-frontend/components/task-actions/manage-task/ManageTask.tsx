@@ -15,6 +15,7 @@ import FormControlTextarea from "../../ui/form/FormControlTextarea";
 import FormControlSelect from "../../ui/form/FormControlSelect";
 import FormControlInputDate from "../../ui/form/FormControlInputDate";
 import FormControlInputCheckbox from "../../ui/form/FormControlInputCheckbox";
+import Tooltip from "../../global-scripts/Tooltip";
 import UploadFileInput, { FileItem } from "../../UploadFileInput";
 import { IManageTaskFormData } from "../../../model/model.typing";
 import { ISnackbarMessage } from "../../../context/global-scripts";
@@ -138,6 +139,10 @@ const ManageTask: React.FunctionComponent<{
     }
   };
 
+  const pasekaChangeHandler = (event: SyntheticEvent<HTMLInputElement>) => {
+    taskRef.current[event.currentTarget.name] = event.currentTarget.checked ? "1" : "0";
+  };
+
   const controlChangeHandler = (event: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     taskRef.current[event.currentTarget.name] = event.currentTarget.value;
 
@@ -181,13 +186,13 @@ const ManageTask: React.FunctionComponent<{
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
-  const fileUploadHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+  const fileUploadHandler = (event: CustomEvent<{ files: Array<FileItem> }>) => {
     taskRef.current.files = event.detail.files;
 
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
   };
 
-  const fileRemoveHandler = (event: CustomEvent<{ files: Array<FileItem>}>) => {
+  const fileRemoveHandler = (event: CustomEvent<{ files: Array<FileItem> }>) => {
     taskRef.current.files = event.detail.files;
 
     setInformativenessLevel(calculateInformativenessLevel(taskRef.current));
@@ -481,6 +486,32 @@ const ManageTask: React.FunctionComponent<{
                 </div>
               </div>
             )}
+            <div className={styles["manage-task-form__checkbox-container"]}>
+              <div className="form__label form__label_small">Кто может откликнуться на задачу?</div>
+              <FormControlInputCheckbox
+                label="Пасека"
+                name="isPasekaChecked"
+                defaultChecked={taskRef.current?.isPasekaChecked}
+                required
+                onChange={pasekaChangeHandler}
+              >
+                <Tooltip>
+                  <button
+                    className={styles["manage-task-form__tooltip-btn"]}
+                    type="button"
+                    data-tooltip-btn={true}
+                  />
+                  <div
+                    className={styles["manage-task-form__tooltip-body"]}
+                    data-tooltip-body={true}
+                  >
+                    На задачи с меткой «Пасека» откликаются опытные специалисты и веб-студии.
+                    Поставьте галочку, если у вас есть бюджет, а задача сложная и требует команды
+                    профессионалов.
+                  </div>
+                </Tooltip>
+              </FormControlInputCheckbox>
+            </div>
           </ManageTaskForm>
         </ManageTaskStep>
       )}

@@ -14,8 +14,10 @@ services:
     extra_hosts:
       - "v1.tep-itv.dench:127.0.0.1"
       - "tep-itv.dench:0.0.0.0"
+      - "tep-paseka.dench:0.0.0.0"
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+      - /mnt/disk1/share/tep-paseka/site:/site/tep-paseka
     networks:
       default:
         aliases:
@@ -40,6 +42,7 @@ services:
       - mongo
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+      - /mnt/disk1/share/tep-paseka/site:/site/tep-paseka
   frontend:
     build:
       context: frontend
@@ -66,6 +69,7 @@ services:
       - ./vsftpd/home:/home/vsftpd
       - ./vsftpd/logs:/var/log/vsftpd    
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
+      - /mnt/disk1/share/tep-paseka/site:/site/tep-paseka
 
 volumes:
   tep-itv-mongo-data:    

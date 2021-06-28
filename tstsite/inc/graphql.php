@@ -236,6 +236,12 @@ function itv_register_task_graphql_fields() {
                     return itv_get_task_deadline_date($task->ID, $task->date);
                 },
             ],
+            'isPasekaChecked' => [
+                'type'        => 'Bool',
+                'resolve'     => function( $task, $args, $context ) {
+                    return boolval(get_post_meta($task->ID, 'isPasekaChecked', true));
+                },
+            ],
         ]
     );
 }
@@ -399,7 +405,8 @@ function itv_register_user_graphql_fields() {
             'isPasekaMember' => [
                 'type' => 'Boolean',
                 'resolve' => function ($user) {
-                    return itv_is_user_paseka_member($user->userId);
+                    $members = new MemberManager();
+                    return $members->is_paseka_member($user->userId);
                 }
             ],
             'isPartner' => [
@@ -575,6 +582,13 @@ function itv_register_user_graphql_fields() {
                 'resolve' => function ($user) {
                     $members = new MemberManager();
                     return $members->is_hybrid_profile($user->userId);
+                }
+            ],
+            'hideTelegramChatBanner' => [
+                'type' => 'Bool',
+                'description' => __( 'Telegram chat banner visibility', 'tst' ),
+                'resolve' => function ($user) {
+                    return (bool) get_user_meta($user->userId, 'hide_telegram_chat_banner', true);
                 }
             ],
         ]
@@ -837,7 +851,7 @@ function itv_register_member_tasks_graphql_query() {
                     $posts_where_doer = [];
                 }
 
-                if($role === "author") {
+                if($role === "customer") {
                     $params = array(
                         'post_type' => 'tasks',
                         'author'        =>  $user->ID,

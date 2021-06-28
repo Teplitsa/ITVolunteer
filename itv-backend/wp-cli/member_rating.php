@@ -141,16 +141,16 @@ class MemberRating
 
         global $wpdb;
 
+        $role = MemberManager::$ROLE_DOER;
         $user_id_list = $current_user_id ? [$current_user_id] : $wpdb->get_col( $wpdb->prepare( 
             "SELECT users.ID
                 FROM        {$wpdb->users} users
                 INNER JOIN  {$wpdb->usermeta} key1 
                         ON  key1.user_id = users.ID
                         AND key1.meta_key = %s 
-                WHERE       key1.meta_value = %s
+                WHERE       key1.meta_value LIKE '%\"{$role}\"%'
                 ORDER BY    users.id",
-            MemberManager::$meta_role, 
-            MemberManager::$ROLE_DOER
+            $wpdb->prefix . "capabilities"
         ));
         // \WP_CLI::line(print_r(array_slice($user_id_list, 0, 10), true));
 

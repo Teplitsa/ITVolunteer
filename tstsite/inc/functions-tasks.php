@@ -5,13 +5,15 @@ use ITV\models\TimelineModel;
 use ITV\models\CommentsLikeModel;
 use ITV\models\UserNotifModel;
 use ITV\models\MemberRatingDoers;
+use \ITV\models\TaskManager;
+use ITV\models\Telegram;
 
 /**
  * Task related utilities and manipulations
  * (code wiil be modevd here from customizer.php and extras.php)
  **/
 define('ITV_TASK_FILTER_REWARD_EXIST_TERMS', ['from-grant', 'symbol']);
-define('ITV_POST_META_FOR_PASEKA_ONLY', 'itv_for_paseka_only');
+define('ITV_POST_META_FOR_PASEKA_ONLY', 'isPasekaChecked');
 
 /** Tasks custom status **/
 add_action('init', 'tst_custom_task_status');
@@ -66,104 +68,6 @@ function tst_preserve_task_author($data, $postarr) {
 
 
 /** AJAX on task edits **/
-function ajax_add_edit_task(){
-
-    $task_id = isset($_POST['id']) && (int)$_POST['id'] > 0 ? (int)$_POST['id'] : 0;
-    $itv_log = ItvLog::instance();
-    
-    $params = array(
-        'post_type' => 'tasks',
-        'post_title' => filter_var(trim($_POST['title']), FILTER_SANITIZE_STRING),
-        'post_content' => filter_var(trim($_POST['descr']), FILTER_SANITIZE_STRING),
-        'tags_input' => filter_var($_POST['tags'], FILTER_SANITIZE_STRING),
-    );
-	
-	$is_new_task = false;
-    if($task_id) { // Updating a task
-        $params['ID'] = $task_id;
-
-        if(isset($_POST['status']) && $_POST['status'] == 'trash') {
-
-            wp_trash_post((int)$task_id);
-            $itv_log->log_task_action($task_id, ItvLog::$ACTION_TASK_DELETE, get_current_user_id());            
-
-            wp_die(json_encode(array(
-                'status' => 'deleted',
-                'message' => __('The task was successfully deleted.', 'tst'),
-            )));
-        } else {
-            $params['post_status'] = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
-        }
-    }
-    // New task
-    else {
-        $is_new_task = true;
-        $params['post_status'] = isset($_POST['status']) ? filter_var($_POST['status'], FILTER_SANITIZE_STRING) : 'draft';		
-    }
-   
-	$task_id = wp_insert_post($params);
-	
-    if($task_id) {
-        $old_is_tst_consult_needed = get_field('is_tst_consult_needed', $task_id);
-        $new_is_tst_consult_needed = (int)$_POST['is_tst_consult_needed'] ? true : false;
-        
-		//update_field doesn't work for some reason - use native functions
-		update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
-		wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
-		wp_set_post_terms($task_id, explode(',', filter_var($_POST['nko_tags'], FILTER_SANITIZE_STRING)), 'nko_task_tag');
-		update_post_meta($task_id, 'is_tst_consult_needed', $new_is_tst_consult_needed);
-		
-		$timeline = ITV\models\TimelineModel::instance();
-		
-		if(!$timeline->get_first_item($task_id)) {
-            $timeline->create_task_timeline($task_id);		    
-		}
-		
-        if($is_new_task) {
-            tst_send_admin_notif_new_task($task_id);
-        }
-        
-        if($new_is_tst_consult_needed) {
-            if($is_new_task || !$old_is_tst_consult_needed) {
-                update_field('is_tst_consult_done', false, $task_id);
-                ItvConsult::create($task_id);
-            }
-        }
-				
-        if($params['post_status'] == 'draft') {
-            wp_die(json_encode(array(
-                'status' => 'saved',
-//            'message' =>  ?
-//                    __('The task was successfully saved.', 'tst') :
-//                    __('The task was successfully created.', 'tst'),
-                'id' => $task_id,
-            )));
-        } else {
-            $timeline->make_future_item_current($task_id, TimelineModel::$TYPE_SEARCH_DOER);
-            
-            wp_die(json_encode(array(
-                'status' => 'ok',
-//            'message' =>  ?
-//                    __('The task was successfully saved.', 'tst') :
-//                    __('The task was successfully created.', 'tst'),
-                'id' => $task_id
-            )));
-        }
-
-    } else {
-
-        wp_die(json_encode(array(
-            'status' => 'fail',
-            'message' => empty($params['ID']) ?
-                __('<strong>Error:</strong> something occured due to the task addition.', 'tst') :
-                __('<strong>Error:</strong> something occured due to task edition.', 'tst'),
-        )));
-    }
-}
-add_action('wp_ajax_add-edit-task', 'ajax_add_edit_task');
-add_action('wp_ajax_nopriv_add-edit-task', 'ajax_add_edit_task');
-
-
 function ajax_submit_task(){
 
     // error_log("task POST: " . print_r($_POST, true));
@@ -190,13 +94,21 @@ function ajax_submit_task(){
    
     $task_id = wp_insert_post($params);
 
+    $isPasekaChecked = !empty($_POST['isPasekaChecked']) ? boolval($_POST['isPasekaChecked']) : false;
+
     if($task_id) {
+        $task = get_post($task_id);
+        
         $tags_all = array_filter(array_map(fn ($item) => is_numeric($item) ? intval($item) : 0, explode(',', filter_var($_POST['ngoTags'], FILTER_SANITIZE_STRING))), fn ($item) => $item !== 0);
 
         update_post_meta($task_id, 'about-author-org', filter_var(trim(isset($_POST['about_author_org']) ? $_POST['about_author_org'] : ''), FILTER_SANITIZE_STRING));
-        wp_set_post_terms($task_id, (int)$_POST['reward'], 'reward');
+        wp_set_post_terms($task_id, !empty($_POST['reward']) ? (int)$_POST['reward'] : null, 'reward');
         wp_set_post_terms($task_id, array_splice($tags_all, 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
+        update_post_meta($task_id, 'isPasekaChecked', $isPasekaChecked);
+
+        $task_manager = new TaskManager();
+        $task_manager->setup_data_to_inform_about_task($task_id);
 
         $durationValue = @$_POST['preferredDuration'];
         $isDeadlineChanged = false;
@@ -256,6 +168,23 @@ function ajax_submit_task(){
     
         if($is_new_task) {
             tst_send_admin_notif_new_task($task_id);
+            
+            $task_author = get_user_by('id', $task->post_author);
+            ItvAtvetka::instance()->mail('task_successfully_published', [
+                'user_id' => $task_author->ID,
+                'user_first_name' => $task_author->first_name,        
+                'task_title' => $task->post_title,
+                'task_url' => get_permalink($task->ID),
+                'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            ]);
+        }
+
+        // publish in paseka telegram
+        $isPasekaTelegramPosted = boolval(get_post_meta($task_id, 'isPasekaTelegramPosted', true));
+        if($isPasekaChecked && !$isPasekaTelegramPosted) {
+            $telegram = new Telegram();
+            $telegram->publish_task($task);
+            update_post_meta($task_id, 'isPasekaTelegramPosted', true);
         }
 
         $task = get_post($task_id);
@@ -679,6 +608,20 @@ function ajax_suggest_close_date() {
     //
 	$timeline = ITV\models\TimelineModel::instance();
     $timeline->add_current_item($task_id, TimelineModel::$TYPE_DATE_SUGGEST, ['doer_id' => $doer_id, 'message' => $message, 'due_date' => $due_date]);
+
+    $task_author = get_user_by('id', $task->post_author);
+    $doer = get_user_by('id', $doer_id);
+    ItvAtvetka::instance()->mail('new_deadline_suggested', [
+        'user_id' => $task_author->ID,
+        'mailto' => $task_author->user_email,
+        'user_first_name' => $task_author->first_name,
+        'task_title' => $task->post_title,
+        'task_link' => itv_get_task_link($task),
+        'task_url' => get_permalink($task),
+        'doer_display_name' => $doer->display_name,
+        'task_edit_url' => site_url('/task-update/' . $task->post_name),
+        'deadline_date' => date('d.m.Y', strtotime($due_date)),
+    ]);
     
     //
     UserNotifModel::instance()->push_notif($task->post_author, UserNotifModel::$TYPE_SUGGEST_NEW_DEADLINE_TO_TASKAUTHOR, ['task_id' => $task_id, 'from_user_id' => $task_doer->ID]);
@@ -740,6 +683,7 @@ function itv_get_ajax_task_short($task) {
         'cover' => itv_get_task_cover($task->ID),
         'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'medium_large'),
         'deadline' => itv_get_task_deadline_date($task->ID, $task->post_date),
+        'isPasekaChecked' => boolval(get_post_meta($task->ID, 'isPasekaChecked', true)),
 //         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }
@@ -805,7 +749,7 @@ function add_task_list_filter_param($args, $section_id, $item_id, $value) {
             
             $args['meta_query'][] = [
                 'key' => ITV_POST_META_FOR_PASEKA_ONLY,
-                'value' => true,
+                'value' => 1,
             ];
             
         }
@@ -1052,6 +996,7 @@ add_action('wp_ajax_nopriv_reject-close-date', 'ajax_reject_close_date');
 
 function itv_close_task($task, $user_id) {
     wp_update_post(array('ID' => $task->ID, 'post_status' => 'closed'));
+    update_post_meta($task->ID, 'closeDate', current_time('mysql'));
     
     ItvLog::instance()->log_task_action($task->ID, ItvLog::$ACTION_TASK_CLOSE, $user_id);
     UserXPModel::instance()->register_activity_from_gui($user_id, UserXPModel::$ACTION_MY_TASK_DONE);
@@ -1448,6 +1393,22 @@ function ajax_subscribe_task_list() {
 	
 	update_user_meta( $user_id, 'itv_subscribe_task_list', $filter );
 
+    $tasks = itv_get_new_tasks_for_email($filter);
+
+    $task_list = [];
+    foreach ($tasks as $task) {
+        // echo "task: {$task->ID} - {$task->post_title}\n";
+        $task_list[] = "<a href=\"" . get_permalink($task) . "\">{$task->post_title}</a><br /><br />";
+    }
+
+    $user = get_user_by('id', $user_id);
+    ItvAtvetka::instance()->mail('user_subscribed_on_tasks', [
+        'mailto' => $user->user_email,
+        'user_first_name' => $user->first_name,
+        'task_list_url' => site_url("/tasks"),
+        'task_list' => implode("\n", $task_list),
+    ]);
+
     wp_die(json_encode(array(
         'status' => 'ok',
     )));        
@@ -1576,8 +1537,10 @@ function ajax_decline_task() {
     ItvAtvetka::instance()->mail('your_task_declined', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,        
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_url' => get_permalink($task->ID),
+        'task_edit_url' => site_url('/task-update/' . $task->post_name),
     ]);
 	
     wp_die(json_encode(array(
@@ -1685,4 +1648,59 @@ function itv_get_task_deadline_date($task_id, $post_date) {
     }
 
     return $deadline;
+}
+
+function itv_get_new_tasks_for_email($filter) {
+    $args = array(
+        'query_id' => "itv_filtered_task_list",
+        'post_type' => 'tasks',
+        'post_status' => 'publish',
+        'author__not_in' => array(ACCOUNT_DELETED_ID),
+        'posts_per_page' => -1,
+        'date_query' => array(
+            'after' => date('Y-m-d H:i:s', strtotime('-6 hours')),
+            'before' => date('Y-m-d H:i:s') 
+        )        
+    );
+
+    if(isset($filter['status'])) {
+        unset($filter['status']);
+    }
+
+    if(isset($filter['all_time'])) {
+        unset($args['date_query']);
+    }
+    
+    if(!empty($filter)) {
+        $tlf = new TaskListFilter();
+        $filter_options = $tlf->get_task_list_filter_options();
+        foreach($filter_options as $key => $section) {
+            if(!empty($section['items'])) {
+                foreach($section['items'] as $ik => $item) {
+                    foreach($filter as $fk => $fv) {
+                        if($fv && $fk === $section['id'] . "." . $item['id']) {
+                            $args = add_task_list_filter_param($args, $section['id'], $item['id'], $fv);
+                        }
+                    }
+                }
+            }
+            elseif(!empty($filter[$section['id']])) {
+                $args = add_task_list_filter_param($args, $section['id'], null, $filter[$section['id']]);                
+            }
+        }
+    }
+
+    $task_list = [];
+    $GLOBALS['wp_query'] = new WP_Query($args);
+    
+    while ( $GLOBALS['wp_query']->have_posts() ) {
+        $GLOBALS['wp_query']->the_post();
+        $post = get_post();
+        
+        if($post) {
+            $task_list[] = $post;
+        }
+    }
+
+    return  $task_list;
 }

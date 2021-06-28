@@ -26,8 +26,48 @@ add_filter('wp_mail_content_type', function(){
     return 'text/html';
 });
 
-add_filter('comment_notification_text', function($email_text, $comment){
-    return sprintf(ItvEmailTemplates::instance()->get_text('new_comment_task_author_notification'), get_comment_link($comment));
+add_filter('comment_notification_text', function($message, $comment_id){
+    $comment = get_comment($comment_id);
+    $task = get_post($comment->comment_post_ID);
+    $task_author = get_user_by('id', $task->post_author);
+    
+    $email_data = [
+        'email_placeholders' => [
+            '{mail_icon_url}' => get_template_directory_uri() . "/assets_email/img",
+            '{user_first_name}' => $task_author->first_name,
+            '{view_instruction_url}' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            '{task_url}' => get_permalink($task->ID),
+            '{task_link}' => itv_get_task_link($task),
+        ],
+        'user_id' => $task_author->ID,
+    ];
+
+    $atv = \ATV_Email_Core::get_instance();
+
+    $emails  = $atv->get_emails( 'new_comment_task_author_notification' );
+    if(empty($emails[0])) {
+        return $message;
+    }
+
+    $email = $emails[0];
+    $subject = $email->post_title;
+    $message = $atv->handle_placeholders( $email->post_content, $email_data );
+
+    return $message;
+}, 10, 2);
+
+add_filter( 'comment_notification_subject', function(string $subject, int $comment_id) {
+    $atv = \ATV_Email_Core::get_instance();
+
+    $emails  = $atv->get_emails( 'new_comment_task_author_notification' );
+    if(empty($emails[0])) {
+        return $subject;
+    }
+
+    $email = $emails[0];
+    $subject = $email->post_title;
+
+    return $subject;
 }, 10, 2);
 
 add_filter('get_comment_link', function($link, $comment, $args){
@@ -343,10 +383,12 @@ function ajax_approve_candidate() {
     ItvAtvetka::instance()->mail('approve_candidate_doer_notice', [
         'user_id' => $doer->ID,
         'username' => $doer->first_name,
+        'user_first_name' => $doer->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
         'author_email' => $task_author->user_email,
-        'author_profile_url' => home_url('members/'.$task_author->user_login.'/'),
+        'author_profile_url' => home_url('members/'.$task_author->user_nicename.'/'),
+        'author_display_name' => $task_author->display_name,
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_DOER, $doer->ID, $email_templates->get_title('approve_candidate_doer_notice'), $task ? $task->ID : 0);
 
@@ -354,10 +396,13 @@ function ajax_approve_candidate() {
     ItvAtvetka::instance()->mail('approve_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
+        'task_url' => get_permalink($task->ID),
         'task_link' => itv_get_task_link($task),
         'doer_email' => $doer->user_email,
-        'doer_profile_url' => home_url('members/'.$doer->user_login.'/'),
+        'doer_display_name' => $doer->display_name,
+        'doer_profile_url' => home_url('members/'.$doer->user_nicename.'/'),
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_APPROVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('approve_candidate_author_notice'), $task ? $task->ID : 0);
 
@@ -506,14 +551,20 @@ function ajax_add_candidate() {
 	
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
-
+    
+    
+    $task_doer = get_user_by('id', $task_doer_id);
     ItvAtvetka::instance()->mail('add_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
         'task_url' => get_permalink($task_id),
+        'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+        'doer_url' => site_url('/member/' . $task_doer->user_nicename),
+        'doer_display_name' => $task_doer->display_name,
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
     
@@ -597,11 +648,15 @@ function ajax_remove_candidate() {
     // Send email to the task doer:
     $email_templates = ItvEmailTemplates::instance();
 
+    $doer = get_user_by('id', $task_doer_id);
     ItvAtvetka::instance()->mail('refuse_candidate_author_notice', [
         'user_id' => $task_author->ID,
         'username' => $task_author->first_name,
+        'user_first_name' => $task_author->first_name,
         'task_title' => $task->post_title,
         'task_link' => itv_get_task_link($task),
+        'task_url' => get_permalink ( $task ),
+        'doer_display_name' => $doer->display_name,
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_REMOVE_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('refuse_candidate_author_notice'), $task ? $task->ID : 0);
@@ -980,13 +1035,6 @@ function ajax_add_message() {
 add_action('wp_ajax_add-message', 'ajax_add_message');
 add_action('wp_ajax_nopriv_add-message', 'ajax_add_message');
 
-add_filter('retrieve_password_message', function($message, $key){
-
-    return nl2br(str_replace(array('>', '<'), array('', ''), $message));
-
-}, 10, 2);
-
-
 function tst_get_days_until_deadline($deadline) {
 
     if(date_create($deadline) > date_create())
@@ -1081,7 +1129,7 @@ function on_all_status_transitions( $new_status, $old_status, $task ) {
             $doers = tst_get_task_doers ( $task->ID, true );
             foreach ( $doers as $doer ) {
                 $doers_id[] = $doer->ID;
-                $itv_notificator->notif_doer_about_task_closed( $doer, $task );
+                // $itv_notificator->notif_doer_about_task_closed( $doer, $task );
             }
         }
         else {

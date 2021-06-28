@@ -22,12 +22,10 @@ Error.getInitialProps = ({ res, err }: NextPageContext) => {
     entrypointModel = {
       title: "Сраница не найдена - it-волонтер",
       seo: {
-        // canonical: "https://itv.te-st.ru/",
         title: "Сраница не найдена - it-волонтер",
         metaRobotsNoindex: "noindex",
         metaRobotsNofollow: "nofollow",
         opengraphTitle: "Сраница не найдена - it-волонтер",
-        // opengraphUrl: "https://itv.te-st.ru/",
         opengraphSiteName: "it-волонтер",
       },
     };
@@ -35,12 +33,10 @@ Error.getInitialProps = ({ res, err }: NextPageContext) => {
     entrypointModel = {
       title: "Что-то пошло не так - it-волонтер",
       seo: {
-        // canonical: "https://itv.te-st.ru/",
         title: "Что-то пошло не так - it-волонтер",
         metaRobotsNoindex: "noindex",
         metaRobotsNofollow: "nofollow",
         opengraphTitle: "Что-то пошло не так - it-волонтер",
-        // opengraphUrl: "https://itv.te-st.ru/",
         opengraphSiteName: "it-волонтер",
       },
     };

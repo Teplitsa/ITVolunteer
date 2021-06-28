@@ -16,3 +16,18 @@ function itv_logout_without_confirmation($action, $result) {
     }
 }
 add_action('check_admin_referer', 'itv_logout_without_confirmation', 10, 2);
+
+function itv_setup_ajax_auth_user($param) {
+    if(!(defined('DOING_AJAX') && DOING_AJAX)) {
+        return;
+    }
+
+    global $current_user;
+
+    if ( is_object( $current_user ) && isset( $current_user->ID ) && $current_user->ID) {
+        return;
+    }
+
+    $current_user = null;
+}
+add_filter('admin_init', 'itv_setup_ajax_auth_user');

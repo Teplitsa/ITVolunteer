@@ -5,6 +5,7 @@ import Main from "../../components/layout/Main";
 import Members from "../../components/page/Members";
 import { getRestApiUrl } from "../../utilities/utilities";
 import { IRestApiResponse, IMemberListItem } from "../../model/model.typing";
+import { authorizeSessionSSRFromRequest } from "../../model/session-model";
 
 const MembersPage: React.FunctionComponent = (): ReactElement => {
   return (
@@ -20,10 +21,13 @@ const MembersPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
+
+  const session = await authorizeSessionSSRFromRequest(req, res);
+
   const model = await withAppAndEntrypointModel({
     isCustomPage: true,
     entrypointType: "page",
@@ -43,6 +47,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     ],
     componentModel: async () => {
+
       const { membersPageState, memberListItemQueriedFields } = await import(
         "../../model/components/members-model"
       );
@@ -88,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   });
 
   return {
-    props: { ...model },
+    props: { ...model, session },
   };
 };
 

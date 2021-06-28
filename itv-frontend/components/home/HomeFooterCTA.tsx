@@ -57,7 +57,7 @@ const HomeFooterCTAAuthor: React.FunctionComponent = (): ReactElement => {
 const HomeFooterCTA: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  return template === "author" ? <HomeFooterCTAAuthor /> : <HomeFooterCTAVolunteer />;
+  return template === "customer" ? <HomeFooterCTAAuthor /> : <HomeFooterCTAVolunteer />;
 };
 
 export default HomeFooterCTA;

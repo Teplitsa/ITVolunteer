@@ -65,7 +65,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
 
   if (
     (memberAccountTemplate === "volunteer" && !isEmptyProfileAsDoer) ||
-    (memberAccountTemplate === "author" && !isEmptyProfileAsAuthor)
+    (memberAccountTemplate === "customer" && !isEmptyProfileAsAuthor)
   ) {
     if (memberAccountTemplate === "volunteer") {
       tabList.push({
@@ -76,13 +76,16 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
 
     if (
       Object.entries(taskStats).some(
-        (filters => ([filterName, filterValue]) => {
-          if (filters.includes(filterName)) {
-            return filterValue > 0;
-          }
+        (
+          filters =>
+          ([filterName, filterValue]) => {
+            if (filters.includes(filterName)) {
+              return filterValue > 0;
+            }
 
-          return false;
-        })(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
+            return false;
+          }
+        )(["publish", "in_work", "closed"].concat(isAccountOwner ? ["draft"] : []))
       )
     ) {
       tabList.push({ title: "Задачи", content: MemberTasks });
@@ -92,7 +95,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
       tabList.push({ title: "Отзывы", content: MemberReviews });
     }
   }
-  
+
   const Tabs = withTabs({
     defaultActiveIndex: activeTabIndex,
     tabs: tabList,
@@ -179,17 +182,17 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
             )} */}
             {tabList.length > 0 && <Tabs />}
             {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
-              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              (memberAccountTemplate === "customer" && isEmptyProfileAsAuthor)) &&
               isAccountOwner && (
                 <>
                   <MemberAccountNeedAttention />
                   {/* <MemberAccountEmptyServiceShow /> */}
-                  {memberAccountTemplate === "author" && <MemberAccountEmptyTaskList />}
+                  {memberAccountTemplate === "customer" && <MemberAccountEmptyTaskList />}
                   {memberAccountTemplate === "volunteer" && <MemberPortfolioNoItems />}
                 </>
               )}
             {((memberAccountTemplate === "volunteer" && isEmptyProfileAsDoer) ||
-              (memberAccountTemplate === "author" && isEmptyProfileAsAuthor)) &&
+              (memberAccountTemplate === "customer" && isEmptyProfileAsAuthor)) &&
               !isAccountOwner && <MemberAccountEmptySectionForGuest />}
           </div>
         </div>

@@ -5,7 +5,7 @@ import HomePasekaImage from "../../assets/img/home-paseka.svg";
 const HomePaseka: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  if (template === "author") return null;
+  if (template === "customer") return null;
 
   return (
     <section className="home-paseka">
@@ -19,9 +19,9 @@ const HomePaseka: React.FunctionComponent = (): ReactElement => {
           Вступайте в «Пасеку»!
         </div>
         <div className="home-paseka__text">
-          Пасека — это сообщество более 150 специалистов из веб-студий, агентств, IT-компаний и
-          независимых профессионалов, которые умеют и любят работать с некоммерческими организациями
-          и социальными проектами.
+          Пасека — это сообщество из более 150 веб-студий, агентств, IT-компаний и независимых
+          профессионалов, которые умеют и любят работать с некоммерческими организациями и
+          социальными проектами.
         </div>
         <a
           href="https://paseka.te-st.ru/"

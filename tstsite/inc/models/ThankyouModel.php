@@ -43,15 +43,20 @@ class ThankyouModel extends ITVSingletonModel {
         
         UserXPModel::instance()->register_activity($to_uid, UserXPModel::$ACTION_THANKYOU);
         $to_user = User::find($to_uid);
+        $to_wp_user = get_user_by('id', $to_uid);
         \ItvLog::instance()->log_user_action(\ItvLog::$ACTION_USER_THANKYOU, $user_id, '', $to_user->user_login);
         
         $from_user = User::find($user_id);
+        $xp_points = UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU);
         
         \ItvAtvetka::instance()->mail('thankyou_notification', [
             'user_id' => $to_user->ID,
             'to_username' => $to_user->display_name,
-            'from_username' => $from_user->display_name,
-            'thankyou_xp' => UserXPModel::instance()->get_action_xp(UserXPModel::$ACTION_THANKYOU),
+            'to_user_first_name' => $to_wp_user->first_name,
+            'from_user_display_name' => $from_user->display_name,
+            'thankyou_xp' => $xp_points,
+            'thankyou_xp_points' => sprintf(_n("%s point", "%s points", $xp_points, 'tst'), $xp_points),
+            'task_list_url' => site_url('/tasks'),
         ]);
         
         if($thankyou->counter > $this->THANKYOU_CONFIG['TOO_MUCH'] && !$thankyou->is_too_much_sent && count($this->THANKYOU_CONFIG['TOO_MUCH_ALERT_TEAM'])) {

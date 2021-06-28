@@ -1,0 +1,4 @@
+{
+    "subject": "it-волонтер: [Требуется действие] свяжитесь с автором задачи",
+    "message": "<p><img src=\"{mail_icon_url}/mail-icon-check.png\" alt=\"Успех!\" /></p>\n<h1>Вас выбрали волонтёром!</h1>\n<h2>{user_first_name},</h2><p>{author_display_name} утвердил вас волонтёром для задачи: {task_link}</p><p>Это очень здорово и мы верим в вас!<br/>Вы можете связаться с автором задачи по email: <a href=\"mailto:{author_email}\">{author_email}</a> или другим удобным способом (посмотрите в <a href=\"{author_profile_url}\">профиле автора</a>).</p><h4><a href=\"mailto:{author_email}\">Связаться с автором</a></h4><h6>Мы с вами всегда на связи и готовы помочь</h6>"
+}

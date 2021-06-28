@@ -8,3 +8,5 @@ export const ITV_COOKIE = {
     name: "itv-token",
   },
 };
+
+export const VOLUNTEER_TELEGRAM_CHAT_URL = "https://t.me/itvolunteers";

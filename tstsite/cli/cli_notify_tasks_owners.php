@@ -26,8 +26,7 @@ try {
 	$notif_key = 'task_archive_soon_notif';
 	$task_status = 'publish';
 	$is_check_doers = true;
-	$task_notif_days = $itv_config->get ( 'TASK_ARCHIVE_DAYS' );
-	
+	$task_notif_days = $itv_config->get ( 'TASK_ARCHIVE_DAYS' );	
 	$itv_notificator->notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers);
 	
 	
@@ -36,10 +35,15 @@ try {
 	$notif_key = 'long_work_task_archive_soon';
 	$task_status = 'in_work';
 	$is_check_doers = false;
-	$task_notif_days = $itv_config->get ( 'TASK_LONG_WORK_NOTIF_DAYS' );
-	
+	$task_notif_days = $itv_config->get ( 'TASK_LONG_WORK_NOTIF_DAYS' );	
 	$itv_notificator->notif_tasks_soon_archive($notif_key, $task_status, $task_notif_days, $log_action, $is_check_doers);
+
+	echo "   notif_tasks_soon_deadline\n";
+	$itv_notificator->notif_tasks_soon_deadline();
 	
+	echo "   notif_no_review_from_author\n";
+	$itv_notificator->notif_no_review_from_author();
+
 	echo_end_text();
 }
 catch (ItvNotCLIRunException $ex) {

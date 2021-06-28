@@ -12,7 +12,7 @@ const HomeInterfaceSwitch: React.FunctionComponent<{ extraClasses?: string }> = 
     if (event.currentTarget.classList.contains("home-interface-switch__item_volunteer")) {
       setTemplate({ template: "volunteer" });
     } else if (event.currentTarget.classList.contains("home-interface-switch__item_author")) {
-      setTemplate({ template: "author" });
+      setTemplate({ template: "customer" });
     }
   };
 
@@ -29,7 +29,7 @@ const HomeInterfaceSwitch: React.FunctionComponent<{ extraClasses?: string }> = 
       </button>
       <button
         className={`home-interface-switch__item home-interface-switch__item_author ${
-          template === "author" ? "home-interface-switch__item_active" : ""
+          template === "customer" ? "home-interface-switch__item_active" : ""
         }`}
         type="button"
         onClick={onSwitchInterface}

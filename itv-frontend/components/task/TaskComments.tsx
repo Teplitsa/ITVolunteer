@@ -7,10 +7,8 @@ import Loader from "../Loader";
 
 const TaskComments: React.FunctionComponent = (): ReactElement => {
   const canUserReplyToComment = useStoreState(state => state.session.canUserReplyToComment);
-  const {
-    author: { fullName: authorName },
-    comments,
-  } = useStoreState(state => state.components.task);
+  const authorName = useStoreState(state => state.components.task.author?.fullName);
+  const comments = useStoreState(state => state.components.task.comments);
   const commentsRequest = useStoreActions(actions => actions.components.task.commentsRequest);
 
   useEffect(() => {
@@ -26,7 +24,8 @@ const TaskComments: React.FunctionComponent = (): ReactElement => {
           <>
             {canUserReplyToComment && (
               <TaskCommentsIntro>
-                {`${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
+                {authorName &&
+                  `${authorName} будет рад услышать ваш совет, вопрос или предложение.`}
               </TaskCommentsIntro>
             )}
             <TaskCommentList />

@@ -5,48 +5,58 @@ import roleDoerIcon from "../../assets/img/auth-role-doer.svg";
 
 const MemberRoleSelector: React.FunctionComponent<{
   role: string;
+  // eslint-disable-next-line no-unused-vars
   setRole: (role: string) => void;
-}> = ({
-  role,
-  setRole
-}): ReactElement => {
+}> = ({ role, setRole }): ReactElement => {
   const [activeRoles, setActiveRoles] = useState({});
 
   useEffect(() => {
-    setActiveRoles({[role]: true});
+    setActiveRoles({ [role]: true });
   }, []);
 
   function handleRoleClick(e) {
     const selectedRole = e.currentTarget.dataset.role;
-    setActiveRoles({[selectedRole]: true});
+    setActiveRoles({ [selectedRole]: true });
     setRole(selectedRole);
   }
-  
+
   return (
     <div className="role-selector">
       <h2>Чем бы вы хотели заниматься на платформе помощи IT?</h2>
       <ul className="role-selector__options">
-
-        <li className={`role-selector__option ${activeRoles["author"] && "active"}`} onClick={handleRoleClick} data-role="author">
+        <li
+          className={`role-selector__option ${activeRoles["customer"] && "active"}`}
+          onClick={handleRoleClick}
+          data-role="customer"
+        >
           <div className="icon">
             <img src={roleAuthorIcon} />
           </div>
           <div className="text">
-            <h3>Мне нужна помощь</h3>
-            <p>Я представляю НКО, соц.предприятие, гражданскую инициативу</p>
+            <h3>Я заказчик</h3>
+            <p>
+              Представляю НКО, социальное предприятие, гражданскую инициативу. Хочу ставить задачи и
+              искать волонтёров
+            </p>
           </div>
         </li>
 
-        <li className={`role-selector__option ${activeRoles["doer"] && "active"}`} onClick={handleRoleClick} data-role="doer">
+        <li
+          className={`role-selector__option ${activeRoles["doer"] && "active"}`}
+          onClick={handleRoleClick}
+          data-role="doer"
+        >
           <div className="icon">
             <img src={roleDoerIcon} />
           </div>
           <div className="text">
-            <h3>Хочу помочь</h3>
-            <p>Я разбираюсь в сферах, связанных с ИТ и хочу помогать делясь своим опытом</p>
+            <h3>Я IT-волонтёр</h3>
+            <p>
+              Могу помочь с программированием, дизайном, текстами, фотографиями или юридическими
+              вопросами
+            </p>
           </div>
         </li>
-
       </ul>
     </div>
   );

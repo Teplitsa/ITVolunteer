@@ -1,13 +1,16 @@
-import { ReactElement, useState, useEffect, useRef } from "react";
+import { ReactElement, useState, useEffect, useRef, MouseEvent } from "react";
 import { useRouter } from "next/router";
 import { useStoreActions } from "../../model/helpers/hooks";
-import { ISnackbarMessage } from "../../context/global-scripts";
+import GlobalScripts, { ISnackbarMessage } from "../../context/global-scripts";
 import MemberRoleSelector from "./MemberRoleSelector";
+import PrivacyPolicy from "../PrivacyPolicy";
 
 import { regEvent } from "../../utilities/ga-events";
 
 import checkboxOn from "../../assets/img/auth-form-check-on.svg";
 import checkboxOff from "../../assets/img/auth-form-check-off.svg";
+
+const { ModalContext } = GlobalScripts;
 
 const Registration: React.FunctionComponent<{
   addSnackbar: (message: ISnackbarMessage) => void;
@@ -139,137 +142,161 @@ const Registration: React.FunctionComponent<{
   }
 
   return (
-    <div className="auth-page__illustration-container auth-page-registration">
-      <div className="auth-page__content auth-page__registration">
-        <h1 className="auth-page__title">Регистрация</h1>
-        {(!registrationSuccessText || isRegistrationLoading) && (
-          <p className="auth-page__subtitle">
-            IT-волонтёр – решение простых социальных задач, которые дают вам дополнительный опыт и
-            хорошо смотрятся в портфолио! Вы можете помочь?
-          </p>
-        )}
-        <div className="auth-page__ornament-container">
-          {!!isRegistrationLoading && (
-            <div className="auth-page__loading">
-              <div className="spinner-border" role="status"></div>
+    <ModalContext.Consumer>
+      {({ dispatch }) => {
+        const openPrivacyPolicyModal = (event: MouseEvent<HTMLAnchorElement>) => {
+          event.preventDefault();
+
+          dispatch({
+            type: "template",
+            payload: {
+              title: "Политика обработки персональных данных",
+              // eslint-disable-next-line react/display-name
+              content: () => <PrivacyPolicy />,
+            },
+          });
+
+          dispatch({ type: "open" });
+        };
+
+        return (
+          <div className="auth-page__illustration-container auth-page-registration">
+            <div className="auth-page__content auth-page__registration">
+              <h1 className="auth-page__title">Регистрация</h1>
+              <div className="auth-page__ornament-container">
+                {!!isRegistrationLoading && (
+                  <div className="auth-page__loading">
+                    <div className="spinner-border" role="status"></div>
+                  </div>
+                )}
+                {!!registrationSuccessText && !isRegistrationLoading && (
+                  <div
+                    className="auth-page__success-text"
+                    dangerouslySetInnerHTML={{ __html: registrationSuccessText }}
+                  />
+                )}
+                {!registrationSuccessText && !isRegistrationLoading && (
+                  <MemberRoleSelector setRole={setRole} role={role} />
+                )}
+                {!registrationSuccessText && !isRegistrationLoading && !!role && (
+                  <form
+                    action=""
+                    method="post"
+                    className="auth-page-form"
+                    onSubmit={handleSubmit}
+                    ref={formRef}
+                  >
+                    <div className="auth-page-form__splitter">
+                      <div />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <label className="auth-page-form__label">Ваше имя</label>
+                      <input
+                        className="form__control_input form__control_full-width auth-page-form__control-input"
+                        type="text"
+                        name="first_name"
+                        maxLength={50}
+                        placeholder=""
+                        defaultValue={regFormData ? regFormData.get("first_name") : ""}
+                      />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <label className="auth-page-form__label">Фамилия</label>
+                      <input
+                        className="form__control_input form__control_full-width auth-page-form__control-input"
+                        type="text"
+                        name="last_name"
+                        maxLength={50}
+                        placeholder=""
+                        defaultValue={regFormData ? regFormData.get("last_name") : ""}
+                      />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <label className="auth-page-form__label">E-mail</label>
+                      <input
+                        className="form__control_input form__control_full-width auth-page-form__control-input"
+                        type="email"
+                        name="email"
+                        maxLength={50}
+                        placeholder=""
+                        autoComplete="email"
+                        defaultValue={regFormData ? regFormData.get("email") : ""}
+                      />
+                    </div>
+                    <div className="auth-page-form__splitter">
+                      <div />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <label className="auth-page-form__label">Пароль</label>
+                      <input
+                        className="form__control_input form__control_full-width auth-page-form__control-input"
+                        type="password"
+                        name="pass"
+                        maxLength={50}
+                        placeholder=""
+                        autoComplete="new-password"
+                        defaultValue={regFormData ? regFormData.get("pass") : ""}
+                      />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <label className="auth-page-form__label">Повторить пароль</label>
+                      <input
+                        className="form__control_input form__control_full-width auth-page-form__control-input"
+                        type="password"
+                        name="passRepeat"
+                        maxLength={50}
+                        placeholder=""
+                        autoComplete="new-password"
+                        defaultValue={regFormData ? regFormData.get("passRepeat") : ""}
+                      />
+                    </div>
+                    <div className="auth-page-form__splitter">
+                      <div />
+                    </div>
+                    <div className="auth-page-form__group">
+                      <div
+                        className="auth-page-form__control-checkbox"
+                        onClick={() => toggleAgree("mailing")}
+                      >
+                        <img src={isAgree["mailing"] ? checkboxOn : checkboxOff} />
+                        <label className="auth-page-form__label" htmlFor="agreeGetNews">
+                          Соглашаюсь получать новости сервиса раз в месяц
+                        </label>
+                      </div>
+                    </div>
+                    <div className="auth-page-form__group">
+                      <div
+                        className="auth-page-form__control-checkbox"
+                        onClick={() => toggleAgree("pd")}
+                      >
+                        <img src={isAgree["pd"] ? checkboxOn : checkboxOff} />
+                        <label className="auth-page-form__label" htmlFor="agreeGetNews">
+                          Соглашаюсь на{" "}
+                          <a href="#" onClick={openPrivacyPolicyModal}>
+                            обработку своих персональных данных
+                          </a>
+                        </label>
+                      </div>
+                    </div>
+                    <div className="auth-page-form__group">
+                      <button
+                        type="submit"
+                        className={`auth-page-form__control-submit ${
+                          isSubmitAllowed ? "" : "disabled"
+                        }`}
+                        onClick={handleSubmit}
+                      >
+                        Зарегистрироваться
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
             </div>
-          )}
-          {!!registrationSuccessText && !isRegistrationLoading && (
-            <div
-              className="auth-page__success-text"
-              dangerouslySetInnerHTML={{ __html: registrationSuccessText }}
-            />
-          )}
-          {!registrationSuccessText && !isRegistrationLoading && <MemberRoleSelector setRole={setRole} role={role} />}
-          {!registrationSuccessText && !isRegistrationLoading && !!role && (
-            <form
-              action=""
-              method="post"
-              className="auth-page-form"
-              onSubmit={handleSubmit}
-              ref={formRef}
-            >
-              <div className="auth-page-form__splitter">
-                <div />
-              </div>
-              <div className="auth-page-form__group">
-                <label className="auth-page-form__label">Ваше имя</label>
-                <input
-                  className="form__control_input form__control_full-width auth-page-form__control-input"
-                  type="text"
-                  name="first_name"
-                  maxLength={50}
-                  placeholder=""
-                  defaultValue={regFormData ? regFormData.get("first_name") : ""}
-                />
-              </div>
-              <div className="auth-page-form__group">
-                <label className="auth-page-form__label">Фамилия</label>
-                <input
-                  className="form__control_input form__control_full-width auth-page-form__control-input"
-                  type="text"
-                  name="last_name"
-                  maxLength={50}
-                  placeholder=""
-                  defaultValue={regFormData ? regFormData.get("last_name") : ""}
-                />
-              </div>
-              <div className="auth-page-form__group">
-                <label className="auth-page-form__label">E-mail</label>
-                <input
-                  className="form__control_input form__control_full-width auth-page-form__control-input"
-                  type="email"
-                  name="email"
-                  maxLength={50}
-                  placeholder=""
-                  autoComplete="email"
-                  defaultValue={regFormData ? regFormData.get("email") : ""}
-                />
-              </div>
-              <div className="auth-page-form__splitter">
-                <div />
-              </div>
-              <div className="auth-page-form__group">
-                <label className="auth-page-form__label">Пароль</label>
-                <input
-                  className="form__control_input form__control_full-width auth-page-form__control-input"
-                  type="password"
-                  name="pass"
-                  maxLength={50}
-                  placeholder=""
-                  autoComplete="new-password"
-                  defaultValue={regFormData ? regFormData.get("pass") : ""}
-                />
-              </div>
-              <div className="auth-page-form__group">
-                <label className="auth-page-form__label">Повторить пароль</label>
-                <input
-                  className="form__control_input form__control_full-width auth-page-form__control-input"
-                  type="password"
-                  name="passRepeat"
-                  maxLength={50}
-                  placeholder=""
-                  autoComplete="new-password"
-                  defaultValue={regFormData ? regFormData.get("passRepeat") : ""}
-                />
-              </div>
-              <div className="auth-page-form__splitter">
-                <div />
-              </div>
-              <div className="auth-page-form__group">
-                <div
-                  className="auth-page-form__control-checkbox"
-                  onClick={() => toggleAgree("mailing")}
-                >
-                  <img src={isAgree["mailing"] ? checkboxOn : checkboxOff} />
-                  <label className="auth-page-form__label" htmlFor="agreeGetNews">
-                    Вы согласны получать новости сервиса раз в месяц
-                  </label>
-                </div>
-              </div>
-              <div className="auth-page-form__group">
-                <div className="auth-page-form__control-checkbox" onClick={() => toggleAgree("pd")}>
-                  <img src={isAgree["pd"] ? checkboxOn : checkboxOff} />
-                  <label className="auth-page-form__label" htmlFor="agreeGetNews">
-                    Я даю свое <a href="#">согласие</a> OOО &quot;CПИРО&quot; на обработку, в том
-                    числе автоматизированную, своих персональных данных в соответствии ...
-                  </label>
-                </div>
-              </div>
-              <div className="auth-page-form__group">
-                <button
-                  type="submit"
-                  className={`auth-page-form__control-submit ${isSubmitAllowed ? "" : "disabled"}`}
-                  onClick={handleSubmit}
-                >
-                  Зарегистрироваться
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-      </div>
-    </div>
+          </div>
+        );
+      }}
+    </ModalContext.Consumer>
   );
 };
 

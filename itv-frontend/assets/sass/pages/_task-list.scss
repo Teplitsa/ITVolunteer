@@ -353,6 +353,32 @@
     word-break: break-word;
   }
 
+  .task-paseka-notice {
+    background: url(../../img/icon-paseka_32x32.svg) 50% 24px no-repeat $color-main;
+    margin: 10px 0;
+    padding: 72px 8px 8px 8px;
+    font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+    border-radius: 8px;
+
+    @include screen-from(sm) {
+      background: url(../../img/icon-paseka_32x32.svg) 24px 50% no-repeat $color-main;
+      padding: 8px 24px 8px 72px;
+    }
+
+    &,
+    & a {
+      color: $color-white;
+    }
+
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
   .meta-terms {
     margin-top: $base;
   }
@@ -368,14 +394,14 @@
       height: 100%;
       top: 0px;
       right: 0px;
-      position: absolute;        
+      position: absolute;
       background: linear-gradient(270deg, $color-gray-light-xl 30.88%, rgba(251, 248, 244, 0) 100%);
     }
 
     .itv-user-small-view {
       margin-right: $base * 3;
 
-      .name a, 
+      .name a,
       .name span {
         white-space: nowrap;
       }

@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ITV 2.0 0.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/itv-backend\n"
-"POT-Creation-Date: 2020-12-23T04:58:13+00:00\n"
-"PO-Revision-Date: 2020-12-23 06:59+0200\n"
+"POT-Creation-Date: 2021-05-31T15:21:24+00:00\n"
+"PO-Revision-Date: 2021-05-31 17:22+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -16,6 +16,8 @@ msgstr ""
 "X-Domain: itv-backend\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: .\n"
 
 #. Theme Name of the theme
 msgid "ITV 2.0"
@@ -37,21 +39,489 @@ msgstr ""
 msgid "https://te-st.ru/"
 msgstr ""
 
-#: models/member/member.php:53
+#: models/common/cacheable.php:34 models/common/cacheable.php:67
+msgid "No %s found to delete."
+msgstr ""
+
+#: models/common/cacheable.php:75
+msgid "A valid %s ID is required."
+msgstr ""
+
+#: models/common/cacheable.php:86
+msgid "No %s found for the given ID."
+msgstr ""
+
+#: models/common/cacheable.php:93
+msgid "The %s is not a public."
+msgstr ""
+
+#: models/mail.php:16 wp-cli/load_faqs.php:16
+#: wp-cli/load_platform_advantages.php:17 wp-cli/load_platform_partners.php:17
+#: wp-cli/load_reviews.php:17
+msgid "Failed to get the source file: %s."
+msgstr ""
+
+#: models/mail.php:22
+msgid "Failed to decode the %s mail data."
+msgstr ""
+
+#: models/member/member.php:56
 msgid "member_role_doer"
 msgstr "Волонтер"
 
-#: models/member/member.php:54
+#: models/member/member.php:57
 msgid "member_role_author"
 msgstr "Заказчик"
 
-#: models/member/member.php:139
+#: models/member/member.php:152
 msgid "member_role_"
 msgstr ""
 
 #: models/member/notif.php:99
 msgid "%s ago"
 msgstr "%s назад"
+
+#: models/news/news.php:12
+msgid "Материалы"
+msgstr ""
+
+#: models/partner/partner.php:35
+msgid "Website"
+msgstr ""
+
+#: models/partner/partner.php:52
+msgid "https://example.org"
+msgstr ""
+
+#: post-types/faq.php:9 post-types/faq.php:33
+msgid "FAQs"
+msgstr ""
+
+#: post-types/faq.php:10
+msgid "FAQ"
+msgstr ""
+
+#: post-types/faq.php:11
+msgid "All FAQs"
+msgstr ""
+
+#: post-types/faq.php:12
+msgid "FAQ Archives"
+msgstr ""
+
+#: post-types/faq.php:13
+msgid "FAQ Attributes"
+msgstr ""
+
+#: post-types/faq.php:14
+msgid "Insert into FAQ"
+msgstr ""
+
+#: post-types/faq.php:15
+msgid "Uploaded to this FAQ"
+msgstr ""
+
+#: post-types/faq.php:16
+msgctxt "faq"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/faq.php:17
+msgctxt "faq"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/faq.php:18
+msgctxt "faq"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/faq.php:19
+msgctxt "faq"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/faq.php:20
+msgid "Filter FAQs list"
+msgstr ""
+
+#: post-types/faq.php:21
+msgid "FAQs list navigation"
+msgstr ""
+
+#: post-types/faq.php:22
+msgid "FAQs list"
+msgstr ""
+
+#: post-types/faq.php:23
+msgid "New FAQ"
+msgstr ""
+
+#: post-types/faq.php:24 post-types/platform_advantage.php:24
+#: post-types/platform_partner.php:24 post-types/portfolio_work.php:28
+#: post-types/review.php:24
+msgid "Add New"
+msgstr ""
+
+#: post-types/faq.php:25
+msgid "Add New FAQ"
+msgstr ""
+
+#: post-types/faq.php:26
+msgid "Edit FAQ"
+msgstr ""
+
+#: post-types/faq.php:27
+msgid "View FAQ"
+msgstr ""
+
+#: post-types/faq.php:28
+msgid "View FAQs"
+msgstr ""
+
+#: post-types/faq.php:29
+msgid "Search FAQs"
+msgstr ""
+
+#: post-types/faq.php:30
+msgid "No FAQs found"
+msgstr ""
+
+#: post-types/faq.php:31
+msgid "No FAQs found in trash"
+msgstr ""
+
+#: post-types/faq.php:32
+msgid "Parent FAQ:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/faq.php:67
+msgid "FAQ updated. <a target=\"_blank\" href=\"%s\">View FAQ</a>"
+msgstr ""
+
+#: post-types/faq.php:68 post-types/platform_advantage.php:68
+#: post-types/platform_partner.php:68 post-types/portfolio_work.php:72
+#: post-types/review.php:68
+msgid "Custom field updated."
+msgstr ""
+
+#: post-types/faq.php:69 post-types/platform_advantage.php:69
+#: post-types/platform_partner.php:69 post-types/portfolio_work.php:73
+#: post-types/review.php:69
+msgid "Custom field deleted."
+msgstr ""
+
+#: post-types/faq.php:70
+msgid "FAQ updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/faq.php:72
+msgid "FAQ restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/faq.php:74
+msgid "FAQ published. <a href=\"%s\">View FAQ</a>"
+msgstr ""
+
+#: post-types/faq.php:75
+msgid "FAQ saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/faq.php:77
+msgid "FAQ submitted. <a target=\"_blank\" href=\"%s\">Preview FAQ</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/faq.php:79
+msgid ""
+"FAQ scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview FAQ</a>"
+msgstr ""
+
+#: post-types/faq.php:80 post-types/platform_advantage.php:80
+#: post-types/platform_partner.php:80 post-types/portfolio_work.php:84
+#: post-types/review.php:80
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/faq.php:82
+msgid "FAQ draft updated. <a target=\"_blank\" href=\"%s\">Preview FAQ</a>"
+msgstr ""
+
+#: post-types/platform_advantage.php:9 post-types/platform_advantage.php:33
+msgid "Advantages"
+msgstr ""
+
+#: post-types/platform_advantage.php:10
+msgid "Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:11
+msgid "All Advantages"
+msgstr ""
+
+#: post-types/platform_advantage.php:12
+msgid "Advantage Archives"
+msgstr ""
+
+#: post-types/platform_advantage.php:13
+msgid "Advantage Attributes"
+msgstr ""
+
+#: post-types/platform_advantage.php:14
+msgid "Insert into Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:15
+msgid "Uploaded to this Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:16
+msgctxt "platform_advantage"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/platform_advantage.php:17
+msgctxt "platform_advantage"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/platform_advantage.php:18
+msgctxt "platform_advantage"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/platform_advantage.php:19
+msgctxt "platform_advantage"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/platform_advantage.php:20
+msgid "Filter Advantages list"
+msgstr ""
+
+#: post-types/platform_advantage.php:21
+msgid "Advantages list navigation"
+msgstr ""
+
+#: post-types/platform_advantage.php:22
+msgid "Advantages list"
+msgstr ""
+
+#: post-types/platform_advantage.php:23
+msgid "New Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:25
+msgid "Add New Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:26
+msgid "Edit Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:27
+msgid "View Advantage"
+msgstr ""
+
+#: post-types/platform_advantage.php:28
+msgid "View Advantages"
+msgstr ""
+
+#: post-types/platform_advantage.php:29
+msgid "Search Advantages"
+msgstr ""
+
+#: post-types/platform_advantage.php:30
+msgid "No Advantages found"
+msgstr ""
+
+#: post-types/platform_advantage.php:31
+msgid "No Advantages found in trash"
+msgstr ""
+
+#: post-types/platform_advantage.php:32
+msgid "Parent Advantage:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_advantage.php:67
+msgid "Advantage updated. <a target=\"_blank\" href=\"%s\">View Advantage</a>"
+msgstr ""
+
+#: post-types/platform_advantage.php:70
+msgid "Advantage updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/platform_advantage.php:72
+msgid "Advantage restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_advantage.php:74
+msgid "Advantage published. <a href=\"%s\">View Advantage</a>"
+msgstr ""
+
+#: post-types/platform_advantage.php:75
+msgid "Advantage saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_advantage.php:77
+msgid ""
+"Advantage submitted. <a target=\"_blank\" href=\"%s\">Preview Advantage</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/platform_advantage.php:79
+msgid ""
+"Advantage scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href="
+"\"%2$s\">Preview Advantage</a>"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_advantage.php:82
+msgid ""
+"Advantage draft updated. <a target=\"_blank\" href=\"%s\">Preview Advantage</"
+"a>"
+msgstr ""
+
+#: post-types/platform_partner.php:9 post-types/platform_partner.php:10
+#: post-types/platform_partner.php:33
+msgid "Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:11
+msgid "All Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:12
+msgid "Partners Archives"
+msgstr ""
+
+#: post-types/platform_partner.php:13
+msgid "Partners Attributes"
+msgstr ""
+
+#: post-types/platform_partner.php:14
+msgid "Insert into Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:15
+msgid "Uploaded to this Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:16
+msgctxt "platform_partner"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/platform_partner.php:17
+msgctxt "platform_partner"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/platform_partner.php:18
+msgctxt "platform_partner"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/platform_partner.php:19
+msgctxt "platform_partner"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/platform_partner.php:20
+msgid "Filter Partners list"
+msgstr ""
+
+#: post-types/platform_partner.php:21
+msgid "Partners list navigation"
+msgstr ""
+
+#: post-types/platform_partner.php:22
+msgid "Partners list"
+msgstr ""
+
+#: post-types/platform_partner.php:23
+msgid "New Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:25
+msgid "Add New Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:26
+msgid "Edit Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:27 post-types/platform_partner.php:28
+msgid "View Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:29
+msgid "Search Partners"
+msgstr ""
+
+#: post-types/platform_partner.php:30
+msgid "No Partners found"
+msgstr ""
+
+#: post-types/platform_partner.php:31
+msgid "No Partners found in trash"
+msgstr ""
+
+#: post-types/platform_partner.php:32
+msgid "Parent Partners:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_partner.php:67
+msgid "Partners updated. <a target=\"_blank\" href=\"%s\">View Partners</a>"
+msgstr ""
+
+#: post-types/platform_partner.php:70
+msgid "Partners updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/platform_partner.php:72
+msgid "Partners restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_partner.php:74
+msgid "Partners published. <a href=\"%s\">View Partners</a>"
+msgstr ""
+
+#: post-types/platform_partner.php:75
+msgid "Partners saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_partner.php:77
+msgid ""
+"Partners submitted. <a target=\"_blank\" href=\"%s\">Preview Partners</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/platform_partner.php:79
+msgid ""
+"Partners scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href="
+"\"%2$s\">Preview Partners</a>"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/platform_partner.php:82
+msgid ""
+"Partners draft updated. <a target=\"_blank\" href=\"%s\">Preview Partners</a>"
+msgstr ""
 
 #: post-types/portfolio_work.php:13 post-types/portfolio_work.php:37
 msgid "Portfolio works"
@@ -117,10 +587,6 @@ msgstr ""
 msgid "New Portfolio work"
 msgstr ""
 
-#: post-types/portfolio_work.php:28
-msgid "Add New"
-msgstr ""
-
 #: post-types/portfolio_work.php:29
 msgid "Add New Portfolio work"
 msgstr ""
@@ -160,14 +626,6 @@ msgid ""
 "work</a>"
 msgstr ""
 
-#: post-types/portfolio_work.php:72
-msgid "Custom field updated."
-msgstr ""
-
-#: post-types/portfolio_work.php:73
-msgid "Custom field deleted."
-msgstr ""
-
 #: post-types/portfolio_work.php:74
 msgid "Portfolio work updated."
 msgstr ""
@@ -200,10 +658,6 @@ msgid ""
 "href=\"%2$s\">Preview portfolio work</a>"
 msgstr ""
 
-#: post-types/portfolio_work.php:84
-msgid "M j, Y @ G:i"
-msgstr ""
-
 #. translators: %s: post permalink
 #: post-types/portfolio_work.php:86
 msgid ""
@@ -211,11 +665,174 @@ msgid ""
 "portfolio work</a>"
 msgstr ""
 
-#: rest-api/member/notif.php:17 rest-api/member/notif.php:79
+#: post-types/review.php:9 post-types/review.php:33
+msgid "Reviews"
+msgstr ""
+
+#: post-types/review.php:10
+msgid "Review"
+msgstr ""
+
+#: post-types/review.php:11
+msgid "All Reviews"
+msgstr ""
+
+#: post-types/review.php:12
+msgid "Review Archives"
+msgstr ""
+
+#: post-types/review.php:13
+msgid "Review Attributes"
+msgstr ""
+
+#: post-types/review.php:14
+msgid "Insert into Review"
+msgstr ""
+
+#: post-types/review.php:15
+msgid "Uploaded to this Review"
+msgstr ""
+
+#: post-types/review.php:16
+msgctxt "review"
+msgid "Featured Image"
+msgstr ""
+
+#: post-types/review.php:17
+msgctxt "review"
+msgid "Set featured image"
+msgstr ""
+
+#: post-types/review.php:18
+msgctxt "review"
+msgid "Remove featured image"
+msgstr ""
+
+#: post-types/review.php:19
+msgctxt "review"
+msgid "Use as featured image"
+msgstr ""
+
+#: post-types/review.php:20
+msgid "Filter Reviews list"
+msgstr ""
+
+#: post-types/review.php:21
+msgid "Reviews list navigation"
+msgstr ""
+
+#: post-types/review.php:22
+msgid "Reviews list"
+msgstr ""
+
+#: post-types/review.php:23
+msgid "New Review"
+msgstr ""
+
+#: post-types/review.php:25
+msgid "Add New Review"
+msgstr ""
+
+#: post-types/review.php:26
+msgid "Edit Review"
+msgstr ""
+
+#: post-types/review.php:27
+msgid "View Review"
+msgstr ""
+
+#: post-types/review.php:28
+msgid "View Reviews"
+msgstr ""
+
+#: post-types/review.php:29
+msgid "Search Reviews"
+msgstr ""
+
+#: post-types/review.php:30
+msgid "No Reviews found"
+msgstr ""
+
+#: post-types/review.php:31
+msgid "No Reviews found in trash"
+msgstr ""
+
+#: post-types/review.php:32
+msgid "Parent Review:"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/review.php:67
+msgid "Review updated. <a target=\"_blank\" href=\"%s\">View Review</a>"
+msgstr ""
+
+#: post-types/review.php:70
+msgid "Review updated."
+msgstr ""
+
+#. translators: %s: date and time of the revision
+#: post-types/review.php:72
+msgid "Review restored to revision from %s"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/review.php:74
+msgid "Review published. <a href=\"%s\">View Review</a>"
+msgstr ""
+
+#: post-types/review.php:75
+msgid "Review saved."
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/review.php:77
+msgid "Review submitted. <a target=\"_blank\" href=\"%s\">Preview Review</a>"
+msgstr ""
+
+#. translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink
+#: post-types/review.php:79
+msgid ""
+"Review scheduled for: <strong>%1$s</strong>. <a target=\"_blank\" href=\"%2$s"
+"\">Preview Review</a>"
+msgstr ""
+
+#. translators: %s: post permalink
+#: post-types/review.php:82
+msgid ""
+"Review draft updated. <a target=\"_blank\" href=\"%s\">Preview Review</a>"
+msgstr ""
+
+#: rest-api/auth.php:17
+msgid "Invalid params"
+msgstr ""
+
+#: rest-api/auth.php:59
+msgid "No auth header"
+msgstr ""
+
+#: rest-api/auth.php:69
+msgid "Bad auth header"
+msgstr ""
+
+#: rest-api/auth.php:82
+msgid "Invalid auth token"
+msgstr ""
+
+#: rest-api/auth.php:91
+#, fuzzy
+#| msgid "Member not found"
+msgid "User not found"
+msgstr "Пользователь не найден"
+
+#: rest-api/member/notif.php:18 rest-api/member/notif.php:175
 msgid "Sorry, you are not allowed to view notifications."
 msgstr ""
 
-#: rest-api/member/review.php:14 rest-api/member/review.php:65
+#: rest-api/member/notif.php:93
+msgid "Database error."
+msgstr ""
+
+#: rest-api/member/review.php:14 rest-api/member/review.php:66
 #: rest-api/member/role.php:17 rest-api/member/role.php:39
 #: rest-api/task/task.php:16 rest-api/task/task.php:37
 msgid "Member not found"
@@ -224,3 +841,253 @@ msgstr "Пользователь не найден"
 #: rest-api/member/role.php:48
 msgid "Sorry, you are not allowed to set role for another member."
 msgstr ""
+
+#: taxonomies/platform_user_role.php:23 taxonomies/platform_user_role.php:40
+msgid "User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:24
+msgctxt "taxonomy general name"
+msgid "User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:25
+msgid "Search User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:26
+msgid "Popular User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:27
+msgid "All User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:28
+msgid "Parent User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:29
+msgid "Parent User role:"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:30
+msgid "Edit User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:31
+msgid "Update User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:32
+msgid "View User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:33
+msgid "Add New User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:34
+msgid "New User role"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:35
+msgid "Separate User roles with commas"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:36
+msgid "Add or remove User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:37
+msgid "Choose from the most used User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:38
+msgid "No User roles found."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:39
+msgid "No User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:41
+msgid "User roles list navigation"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:42
+msgid "User roles list"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:43
+msgctxt "platform_user_role"
+msgid "Most Used"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:44
+msgid "&larr; Back to User roles"
+msgstr ""
+
+#: taxonomies/platform_user_role.php:64
+msgid "User role added."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:65
+msgid "User role deleted."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:66
+msgid "User role updated."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:67
+msgid "User role not added."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:68
+msgid "User role not updated."
+msgstr ""
+
+#: taxonomies/platform_user_role.php:69
+msgid "User roles deleted."
+msgstr ""
+
+#: wp-cli/cache.php:23
+msgid "A valid task ID is required."
+msgstr ""
+
+#: wp-cli/cache.php:34
+msgid "No task found for the given ID."
+msgstr ""
+
+#: wp-cli/cache.php:41
+msgid "The task is not a public."
+msgstr ""
+
+#: wp-cli/cache.php:54
+msgid "No task found to update."
+msgstr ""
+
+#: wp-cli/cache.php:57
+msgid "The task is successfully updated."
+msgstr ""
+
+#: wp-cli/cache.php:67 wp-cli/cache.php:111 wp-cli/cache.php:133
+#: wp-cli/cache.php:155 wp-cli/cache.php:176 wp-cli/cache.php:197
+msgid "No %s found."
+msgstr ""
+
+#: wp-cli/cache.php:80 wp-cli/cache.php:124 wp-cli/cache.php:146
+#: wp-cli/cache.php:168 wp-cli/cache.php:189 wp-cli/cache.php:210
+msgid "%d %s(s) successfully updated."
+msgstr ""
+
+#: wp-cli/cache.php:89
+msgid "No filter sections found."
+msgstr ""
+
+#: wp-cli/cache.php:102
+msgid "%d filter section(s) successfully updated."
+msgstr ""
+
+#: wp-cli/cache.php:219
+msgid "No task stats items found."
+msgstr ""
+
+#: wp-cli/cache.php:228
+msgid "No task stats categories found."
+msgstr ""
+
+#: wp-cli/cache.php:237
+#, fuzzy
+#| msgid "Member not found"
+msgid "No members found."
+msgstr "Пользователь не найден"
+
+#: wp-cli/cache.php:262
+msgid "Failted to update stats."
+msgstr ""
+
+#: wp-cli/cache.php:265
+msgid "Stats successfully updated."
+msgstr ""
+
+#: wp-cli/insert_platform_user_role_terms.php:24
+msgid "The %s term has been inserted with the term_id: %d."
+msgstr ""
+
+#: wp-cli/insert_platform_user_role_terms.php:30
+msgid "Волонтёр"
+msgstr ""
+
+#: wp-cli/insert_platform_user_role_terms.php:31
+msgid "Заказчик"
+msgstr ""
+
+#: wp-cli/load_faqs.php:22 wp-cli/load_platform_advantages.php:23
+#: wp-cli/load_platform_partners.php:23 wp-cli/load_reviews.php:23
+msgid "Failed to decode the %s data."
+msgstr ""
+
+#: wp-cli/load_faqs.php:29 wp-cli/load_platform_advantages.php:30
+msgid "The term with the slug %s does not exist."
+msgstr ""
+
+#: wp-cli/load_faqs.php:47 wp-cli/load_platform_advantages.php:61
+msgid "Failed to assign a term to the %s with the ID #%d."
+msgstr ""
+
+#: wp-cli/load_faqs.php:54 wp-cli/load_platform_advantages.php:68
+#: wp-cli/load_platform_partners.php:65 wp-cli/load_reviews.php:59
+msgid "%d %s(s) has been successfully loaded."
+msgstr ""
+
+#: wp-cli/load_platform_advantages.php:52 wp-cli/load_platform_partners.php:48
+#: wp-cli/load_reviews.php:47
+msgid "Failed to upload an image from url: %s."
+msgstr ""
+
+#: wp-cli/load_platform_advantages.php:56 wp-cli/load_platform_partners.php:52
+#: wp-cli/load_reviews.php:51
+msgid "Failed to set a thumbnail to %s with the ID #%d."
+msgstr ""
+
+#: wp-cli/member_rating.php:55 wp-cli/member_rating.php:96
+msgid "Table created."
+msgstr ""
+
+#: wp-cli/member_rating.php:122
+msgid "Month must be a valid int."
+msgstr ""
+
+#: wp-cli/member_rating.php:129
+msgid "Year must be a valid int."
+msgstr ""
+
+#: wp-cli/member_rating.php:191
+msgid "Done."
+msgstr ""
+
+#: wp-cli/setup_mail.php:16
+msgid "Empty mail name."
+msgstr ""
+
+#: wp-cli/setup_mail.php:20
+msgid "Setup email: %s"
+msgstr ""
+
+#: wp-cli/setup_mail.php:25
+msgid "Email setup successfully completed."
+msgstr ""
+
+#: wp-hooks/general.php:23
+msgid "Volunteer"
+msgstr "Волонтер"
+
+#: wp-hooks/general.php:24
+msgid "Customer"
+msgstr "Заказчик"
+
+#: wp-hooks/general.php:25
+msgid "Paseka member"
+msgstr "Пасечник"

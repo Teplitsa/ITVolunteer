@@ -107,6 +107,7 @@ export const getServerSideProps: GetServerSideProps = async ({
                 "authorSlug",
                 "title",
                 "content",
+                "isPasekaChecked",
                 "tags",
                 "ngo-tags",
                 "rewards",
@@ -138,6 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           id,
           slug,
           title: { rendered: title },
+          isPasekaChecked,
           content: { rendered: description },
           tags,
           "ngo-tags": ngoTags,
@@ -150,6 +152,7 @@ export const getServerSideProps: GetServerSideProps = async ({
           slug: string;
           authorSlug: string;
           title: { rendered: string };
+          isPasekaChecked: boolean;
           content: { rendered: string };
           tags: Array<number>;
           "ngo-tags": Array<number>;
@@ -197,6 +200,7 @@ export const getServerSideProps: GetServerSideProps = async ({
                 personalDataSecurity: true,
               },
               title: stripTags(title).trim(),
+              isPasekaChecked: isPasekaChecked,
               description: stripTags(description).trim(),
               taskTags: { value: tags },
               ngoTags: {

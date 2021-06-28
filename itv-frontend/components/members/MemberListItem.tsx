@@ -7,9 +7,8 @@ import MemberAvatar from "../MemberAvatar";
 import { convertObjectToClassName } from "../../utilities/utilities";
 
 const MemberListItem: React.FunctionComponent<{
-  index: number;
   member: IMemberListItem;
-}> = ({ index, member }): ReactElement => {
+}> = ({ member }): ReactElement => {
   const [isThanksGiven, setIsThanksGiven] = useState<boolean>(false);
   const isLoggedIn = useStoreState(state => state.session.isLoggedIn);
   const giveThanksRequest = useStoreActions(
@@ -37,6 +36,7 @@ const MemberListItem: React.FunctionComponent<{
             {...{
               memberAvatar: member.itvAvatar,
               memberFullName: member.fullName,
+              isPasekaMember: member.isPasekaMember,
               size: "medium",
             }}
           />
@@ -55,14 +55,29 @@ const MemberListItem: React.FunctionComponent<{
             <MemberStats
               {...{
                 memberSlug: member.slug,
-                useComponents: ["rating", "reviewsCount", "xp"],
+                useComponents: ["rating", "reviewsCount", "xp", "customComponents"],
                 rating: member.rating,
                 reviewsCount: member.reviewsCount,
                 xp: member.xp,
                 noMargin: true,
                 align: "left",
               }}
-            />
+            >
+              {isLoggedIn && (
+                <div className="volunteer__give-thanks">
+                  <button
+                    className={convertObjectToClassName({
+                      "volunteer__give-thanks-btn": true,
+                      "volunteer__give-thanks-btn_disabled": isThanksGiven,
+                    })}
+                    type="button"
+                    onClick={handleGiveThanks}
+                  >
+                    {isThanksGiven ? "Вы сказали «Спасибо»" : "Сказать «Спасибо»"}
+                  </button>
+                </div>
+              )}
+            </MemberStats>
           </div>
         </div>
       </div>
@@ -76,17 +91,7 @@ const MemberListItem: React.FunctionComponent<{
       >
         {member.ratingSolvedTasksPosition}
       </div>
-      {isLoggedIn && (
-        <div className="volunteer__give-thanks">
-          <button
-            className="volunteer__give-thanks-btn"
-            type="button"
-            onClick={handleGiveThanks}
-          >
-            {isThanksGiven ? "Вы сказали «Спасибо»" : "Сказать «Спасибо»"}
-          </button>
-        </div>
-      )}
+      <div className="volunteer__task-count">Решено задач: {member.ratingSolvedTasksCount}</div>
     </div>
   );
 };

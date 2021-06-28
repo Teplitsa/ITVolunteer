@@ -1,0 +1,95 @@
+.telegram-chat {
+  &_banner {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    background-color: $color-main;
+    background-size: 25.7567% auto;
+
+    &::before {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      content: "";
+      display: none;
+      background: url(../../img/telegram-chat-teammates.svg) 50% 50% no-repeat;
+      width: 485px;
+      height: 120px;
+
+      @media (max-width: 1883px) {
+        & {
+          left: -127px;
+        }
+      }
+      @media (max-width: 1400px) {
+        & {
+          left: -207px;
+        }
+      }
+      @include screen-from(md) {
+        display: block;
+      }
+    }
+
+    &,
+    & a {
+      color: $color-white;
+    }
+  }
+  &_button {
+    margin-top: 16px;
+    @include screen-from(sm) {
+      margin: 0;
+    }
+  }
+
+  &__link {
+    display: block;
+    background: url(../../img/icon-telegram_green-bg_20x20.svg) 10px 50% no-repeat;
+    border: 1px solid $color-gray-light-md;
+    padding: 10px 10px 10px 40px;
+    font: 500 13px/1.54 "IBM Plex Sans", sans-serif;
+    color: $color-gray-dark-xl;
+    border-radius: 6px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+
+  &__notice {
+    display: flex;
+    align-items: center;
+    background: url(../../img/telegram-chat-ornament.svg) 50% calc(50% - 5px) no-repeat;
+    height: 120px;
+    font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
+    text-align: center;
+
+    @include screen-from(lg) {
+      background: url(../../img/telegram-chat-ornament.svg) 50% 50% no-repeat;
+      font: 500 22px/1.36 "IBM Plex Sans", sans-serif;
+    }
+
+    p {
+      display: flex;
+      flex-flow: column nowrap;
+
+      @include screen-from(lg) {
+        flex-flow: row nowrap;
+        justify-content: center;
+      }
+    }
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: url(../../img/icon-close_white.svg) 50% 50% no-repeat;
+    border-style: none;
+    width: 44px;
+    height: 44px;
+  }
+}

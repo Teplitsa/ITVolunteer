@@ -1,12 +1,15 @@
 <?php
 
+use \ITV\dao\Review;
+use \ITV\dao\ReviewAuthor;
+
 class ItvNotificator {
     protected $notif_to_send_count;
     protected $notif_sent_count;
     protected $tasks_to_check_count;
     protected $already_sent_count;
     protected $is_skip_sending = false;
-    protected $is_debug = false;
+    protected $is_debug = true;
     protected $stats_by_actions = [];
     
     public function __construct() {
@@ -190,7 +193,10 @@ class ItvNotificator {
                     ItvAtvetka::instance()->mail('task_no_doer_notif', [
                         'mailto' => $user_email,
                         'username' => $user_nicename,
-                        'task_link' => $task_permalink, 
+                        'user_first_name' => $user->first_name,
+                        'task_link' => itv_get_task_link($task),
+                        'task_edit_url' => site_url('/task-update/' . $task->post_name),
+                        'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
                     ]);
                     
                     $this->pring_debug ( "SENT\n" );
@@ -245,29 +251,56 @@ class ItvNotificator {
     function notif_author_about_task_closed($user, $task) {
         $task_permalink = get_permalink ( $task );
         $task_permalink .= '#leave_review_for_doer';
+        $doers = tst_get_task_doers($task->ID, true);
+        $doer = !empty($doers) ? $doers[0] : null;
     
         ItvAtvetka::instance()->mail('task_status_closed_author', [
             'mailto' => $user->user_email,
-            'username' => $user->user_nicename,
+            'user_first_name' => $user->first_name,
+            'doer_display_name' => $doer->display_name,
             'task_title' => $task->post_title,
-            'task_link' => $task_permalink
+            'task_link' => itv_get_task_link($task),
+            'leave_review_url' => $task_permalink,
+            'doer_display_name' => $doer ? $doer->display_name : "",
+            'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
         ]);
         ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_AUTHOR_ABOUT_TASK_CLOSED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_closed_author'), $task ? $task->ID : 0);
     }
     
     /* notify doer about task status change */
-    function notif_doer_about_task_closed($user, $task) {
+    function notif_doer_about_task_closed($doer, $task) {
         $task_permalink = get_permalink ( $task );
+        $author = get_user_by('id', $task->post_author);
         $task_permalink .= '#leave_review_for_author';
+        $review = Review::where(['author_id' => $author->ID, 'task_id' => $task->ID])->first();
         
         ItvAtvetka::instance()->mail('task_status_closed_doer', [
-            'mailto' => $user->user_email,
-            'username' => $user->user_nicename,
+            'mailto' => $doer->user_email,
+            'username' => $doer->user_nicename,
+            'user_first_name' => $doer->first_name,
             'task_title' => $task->post_title,
-            'task_link' => $task_permalink
+            'task_link' => itv_get_task_link($task),
+            'author_display_name' => $author->display_name,
+            'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
+            'leave_review_url' => $task_permalink,
+            'review_text' => $review ? $review->message : "",
         ]);
         
-        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $user->ID, ItvEmailTemplates::instance()->get_title('task_status_closed_doer'), $task ? $task->ID : 0);
+        ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_DOER_ABOUT_TASK_CLOSED, $doer->ID, ItvEmailTemplates::instance()->get_title('task_status_closed_doer'), $task ? $task->ID : 0);
+    }
+
+    function notif_author_about_doer_review($author, $doer, $task) {
+        $author = get_user_by('id', $task->post_author);
+        $review = ReviewAuthor::where(['author_id' => $author->ID, 'doer_id' => $doer->ID, 'task_id' => $task->ID])->first();
+        
+        ItvAtvetka::instance()->mail('doer_left_review', [
+            'mailto' => $author->user_email,
+            'user_first_name' => $author->first_name,
+            'task_link' => itv_get_task_link($task),
+            'doer_display_name' => $doer->display_name,
+            'contact_form_url' => site_url('/contacts'),
+            'review_text' => $review ? $review->message : "",
+        ]);
     }
     
     /**
@@ -368,8 +401,11 @@ class ItvNotificator {
                     ItvAtvetka::instance()->mail($notif_key, [
                         'mailto' => $user_email,
                         'username' => $user_nicename,
-                        'task_link' => $task_permalink,
+                        'user_first_name' => $user->first_name,
+                        'task_link' => itv_get_task_link($task),
+                        'task_edit_url' => site_url('/task-update/' . $task->post_name),
                         'days_in_status' => $task_notif_days,
+                        'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
                     ]);
                     
                     $this->pring_debug ( "SENT\n" );
@@ -389,5 +425,90 @@ class ItvNotificator {
             $this->stats_by_actions[$notif_key]['already_sent_count'] += 1;
         }
     }
+
+    public function notif_tasks_soon_deadline() {
+        $task_notif_days = ItvConfig::instance()->get( 'TASK_DEADLINE_SOON_NOTIF_DAYS' );	
+
+        $deadline_date = new \DateTime('+ ' . $task_notif_days . 'day');
+        $deadline_date_str = $deadline_date->format('Y-m-d');
     
+        echo 'deadline: ' . $deadline_date_str . "\n";
+    
+        $args = array (
+            'post_type' => 'tasks',
+            'nopaging' => true,
+            'post_status' => 'in_work',
+            'meta_query' => array (
+                array (
+                    'key' => 'preferredDurationDeadline',
+                    'value' => $deadline_date_str,
+                )
+            )
+        );
+    
+        $query = new WP_Query ( $args );
+    
+        foreach ( $query->posts as $task ) {
+            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
+
+            $task_author = get_user_by('id', $task->post_author);
+            ItvAtvetka::instance()->mail('deadline_coming_author_notification', [
+                'user_id' => $task_author->ID,
+                'mailto' => $task_author->user_email,
+                'user_first_name' => $task_author->first_name,
+                'task_title' => $task->post_title,
+                'task_link' => itv_get_task_link($task),
+                'task_url' => get_permalink($task),
+                'deadline_date' => $deadline_date->format('d.m.Y'),
+                'n_days' => sprintf(_n( '%s day', '%s days', $task_notif_days ), $task_notif_days),
+            ]);
+        }
+    }
+    
+    public function notif_no_review_from_author() {
+        $notif_days = ItvConfig::instance()->get( 'NO_REVIEW_FROM_AUTHOR_NOTIF_DAYS' );	
+
+        $close_date = new \DateTime('- ' . $notif_days . 'day');
+        $close_date_str = $close_date->format('Y-m-d');
+    
+        echo 'close_date_str: ' . $close_date_str . "\n";
+    
+        $args = array (
+            'post_type' => 'tasks',
+            'nopaging' => true,
+            'post_status' => 'closed',
+            'meta_query' => array (
+                array (
+                    'key' => 'closeDate',
+                    'value' => $close_date_str,
+                    'compare' => 'LIKE',
+                )
+            )
+        );
+    
+        $query = new WP_Query ( $args );
+    
+        foreach ( $query->posts as $task ) {
+            $task_author = get_user_by('id', $task->post_author);
+            $review = Review::where(['author_id' => $task_author->ID, 'task_id' => $task->ID])->first();
+
+            if($review) {
+                continue;
+            }
+
+            $this->pring_debug ( 'task_ID=' . $task->ID . " post_modified=" . $task->post_modified . "\n" );
+
+            $doers = tst_get_task_doers($task->ID, true);
+            $doer = !empty($doers) ? $doers[0] : null;
+            ItvAtvetka::instance()->mail('no_review_from_author', [
+                'user_id' => $task_author->ID,
+                'mailto' => $task_author->user_email,
+                'user_first_name' => $task_author->first_name,
+                'doer_display_name' => $doer ? $doer->display_name : "",
+                'task_link' => itv_get_task_link($task),
+                'leave_review_url' => get_permalink($task),
+                'n_days' => sprintf(_n( '%s day', '%s days', $notif_days ), $notif_days),
+            ]);
+        }
+    }
 }

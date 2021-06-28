@@ -6,14 +6,46 @@
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  overflow: hidden;
+  box-sizing: border-box;
+
+  &_paseka-member {
+    position: relative;
+    border: 5px solid $color-main;
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: url(../../img/icon-paseka.svg) 50% 50% no-repeat;
+      background-size: cover;
+      width: 40px;
+      height: 40px;
+    }
+  }
   &_medium-size-image {
     width: 70px;
     height: 70px;
+
+    &[class*="_paseka-member"] {
+      border: 3px solid $color-main;
+      &::after {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
   &_medium-plus-size-image {
     width: 80px;
     height: 80px;
+
+    &[class*="_paseka-member"] {
+      border: 3px solid $color-main;
+      &::after {
+        width: 20px;
+        height: 20px;
+      }
+    }
   }
   &_default-image {
     background-color: $color-gray-light-xl;
@@ -21,6 +53,8 @@
   &__image {
     width: 100%;
     height: auto;
+    border-radius: 50%;
+
     &_default {
       width: auto;
       height: 70%;

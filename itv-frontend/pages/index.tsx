@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       {
         slug: "home",
         seo: {
-          canonical: "https://itv.te-st.ru/",
+          canonical: "https://itv.te-st.ru",
           title: "it-волонтер. ИТ-помощь для благотворительных проектов",
           metaDesc:
             "Платформа помощи благотворительным организациям и активистам в области ИТ. Здесь вы можете попросить о помощи или предложить свои услуги.",

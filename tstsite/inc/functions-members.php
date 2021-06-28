@@ -445,6 +445,7 @@ function tst_send_activation_email($user) {
     ItvAtvetka::instance()->mail('activate_account_notice', [
         'mailto' => $user_email,
         'login' => $user_login,
+        'user_first_name' => $user->first_name,
         'complete_reg_url' => $link,
     ]);
 }
@@ -552,7 +553,11 @@ function ajax_leave_review() {
 			'message' => __('<strong>Error:</strong> review for the task already exists.', 'tst'),
 			)));
 		}
+
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
+
+        $itv_notificator = new ItvNotificator();
+        $itv_notificator->notif_doer_about_task_closed( $task_doer, $task );
 	}
 
 	//
@@ -647,6 +652,10 @@ function ajax_leave_review_author() {
 			)));
 		}
 		$itv_reviews->add_review($author_id, $task_doer->ID, $task->ID, $message, $rating, $communication_rating);
+
+        $itv_notificator = new ItvNotificator();
+        $task_author = get_user_by('id', $author_id);
+        $itv_notificator->notif_author_about_doer_review( $task_author, $task_doer, $task );
 	}
 	
 	//
@@ -1316,7 +1325,7 @@ function itv_get_user_in_gql_format($user) {
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'totalReviewsCount' => intval(ItvReviewsAuthor::instance()->count_author_reviews( $user->ID )) + intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
-        'isPasekaMember' => boolval(itv_is_user_paseka_member($user->ID)),
+        'isPasekaMember' => $members->is_paseka_member($user->ID),
         'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),
@@ -1339,6 +1348,8 @@ function itv_get_user_in_gql_format($user) {
         'isHybrid' => $members->is_hybrid_profile($user->ID),
         'slug' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
         'nicename' => !empty( $user->user_nicename ) ? $user->user_nicename : null,
+        'isHybrid' => $members->is_hybrid_profile($user->ID),
+        'hideTelegramChatBanner' => (bool) get_user_meta($user->ID, 'hide_telegram_chat_banner', true)
     ];
     
     return $user_data;
@@ -1357,7 +1368,7 @@ function itv_get_user_file($user_id, $file_meta_key) {
   return null;                    
 }
 
-function itv_append_user_private_data($user_data, $user) {
+function itv_append_user_private_data(&$user_data, $user) {
 
   $user_data['databaseId'] = intval($user->ID);
   $user_data['email'] = $user->user_email;
@@ -1666,7 +1677,7 @@ function ajax_get_member_task_stats() {
 
     $posts_where_doer = ($role === "doer") ? itv_get_user_approved_as_doer_tasks($user->ID) : [];
 
-    $posts_where_author = ($role === "author") ? itv_get_user_created_tasks($user->ID) : [];
+    $posts_where_author = ($role === "customer") ? itv_get_user_created_tasks($user->ID) : [];
 
     $posts = array_merge($posts_where_doer, $posts_where_author);
 

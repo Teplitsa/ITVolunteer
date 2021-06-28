@@ -117,14 +117,15 @@ export interface ISessionUser {
   subscribeTaskList?: any | null;
   logoutUrl?: string;
   isAdmin?: boolean;
-  itvRole: "author" | "doer";
+  itvRole: "customer" | "doer";
+  hideTelegramChatBanner: boolean;
 }
 
 export interface ISessionActions {
   setStateGuest: Action<ISessionModel>;
   setState: Action<ISessionModel, ISessionState>;
   setIsLoaded: Action<ISessionState, boolean>;
-  setUserItvRole: Action<ISessionState, "author" | "doer">;
+  setUserItvRole: Action<ISessionState, "customer" | "doer">;
   setSubscribeTaskList: Action<ISessionState, any>;
   loadSubscribeTaskList: Thunk<ISessionActions>;
   onMemberAccountTemplateChange: ActionOn<ISessionModel, IStoreModel>;
@@ -132,6 +133,7 @@ export interface ISessionActions {
   setUserAvatarFile: Action<ISessionState, any>;
   setUserCover: Action<ISessionState, any>;
   setUserCoverFile: Action<ISessionState, any>;
+  hideTelegramChatBanner: Action<ISessionState, boolean>;
 }
 
 export interface ISessionThunks {
@@ -172,13 +174,20 @@ export interface ISessionThunks {
   setRole: Thunk<
     ISessionActions,
     {
-      itvRole: "author" | "doer";
+      itvRole: "customer" | "doer";
       successCallbackFn: () => void;
       errorCallbackFn: (message: string) => void;
     },
     IStoreModel
   >;
   authorizeSession: Thunk<ISessionActions>;
+  saveTelegramChatBanner: Thunk<
+    ISessionActions,
+    {
+      value: 0 | 1;
+    },
+    IStoreModel
+  >;
 }
 
 /**
@@ -310,6 +319,8 @@ export interface IMemberListItem {
   xp: number;
   itvAvatar: string;
   ratingSolvedTasksPosition?: number;
+  ratingSolvedTasksCount?: number;
+  isPasekaMember?: boolean;
 }
 
 export interface IMemberListFilter {
@@ -363,7 +374,7 @@ export interface IMembersPageThunks {
  * Member Account
  */
 
-export type MemberAccountTemplate = "volunteer" | "author";
+export type MemberAccountTemplate = "volunteer" | "customer";
 
 export interface IMemberAccountPageModel
   extends IMemberAccountPageState,
@@ -478,6 +489,7 @@ export interface IMemberAccountPageState {
     isProfileInfoEnough: boolean;
   };
   isNeedAttentionPanelClosed?: boolean;
+  isPasekaMember?: boolean;
 }
 
 export interface IMemberAccountPageActions {
@@ -552,7 +564,7 @@ export interface IMemberAccountPageThunks {
   profileFillStatusRequest: Thunk<IMemberAccountPageActions>;
   loadIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
   storeIsNeedAttentionPanelClosed: Thunk<IMemberAccountPageActions>;
-  changeItvRoleRequest: Thunk<IMemberAccountPageActions, { itvRole: "doer" | "author" }>;
+  changeItvRoleRequest: Thunk<IMemberAccountPageActions, { itvRole: "doer" | "customer" }>;
 }
 
 /**
@@ -629,8 +641,9 @@ export interface IPortfolioItemAuthor {
   reviewsCount: number;
   rating: number;
   xp: number;
-  itvRole: "author" | "doer";
+  itvRole: "customer" | "doer";
   itvRoleTitle: "Заказчик" | "Волонтер";
+  isPasekaMember?: boolean;
 }
 
 export interface IPortfolioItemState {
@@ -828,6 +841,7 @@ export interface ITaskState {
   cover: any;
   coverImgSrcLong: string;
   files: Array<any>;
+  isPasekaChecked?: boolean;
 }
 
 export interface ITaskReviewer {
@@ -1741,6 +1755,10 @@ export interface IFormInputCheckboxProps {
   Explanation?: React.FunctionComponent;
 }
 
+export interface IFormInputRadioProps {
+  label?: string;
+}
+
 /**
  * Manage task
  */
@@ -1773,6 +1791,7 @@ export interface IManageTaskFormData {
     fileName: string;
   }>;
   preferredDuration?: string;
+  isPasekaChecked: boolean;
 }
 
 export interface IManageTaskTag {

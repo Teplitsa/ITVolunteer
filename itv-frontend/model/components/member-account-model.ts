@@ -14,7 +14,6 @@ import { action, thunk, actionOn } from "easy-peasy";
 import storeJsLocalStorage from "store";
 import { stripTags, getAjaxUrl, getRestApiUrl } from "../../utilities/utilities";
 import * as utils from "../../utilities/utilities";
-import Slug from "pages/tasks/[slug]";
 
 export const memberAccountPageState: IMemberAccountPageState = {
   id: "",
@@ -29,6 +28,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   fullName: "",
   itvAvatar: "",
   itvAvatarFile: null,
+  isPasekaMember: false,
   rating: 0,
   reviewsCount: 0,
   xp: 0,
@@ -236,7 +236,7 @@ const memberAccountPageActions: IMemberAccountPageActions = {
   onSessionUserItvRoleChange: actionOn(
     (actions, storeActions) => storeActions.session.setUserItvRole,
     (state, { payload: itvRole }) => {
-      state.template = itvRole === "doer" ? "volunteer" : "author";
+      state.template = itvRole === "doer" ? "volunteer" : "customer";
     }
   ),
 };
@@ -267,7 +267,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
         body: JSON.stringify(memberItvRoleRequestParams),
       });
       const response: IRestApiResponse & {
-        itvRole?: "doer" | "author";
+        itvRole?: "doer" | "customer";
       } = await memberItvRoleResponse.json();
 
       if (response.data?.status && response.data.status !== 200) {
@@ -510,7 +510,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
           {
             slug: slug,
             page: nextPage,
-            role: template === "volunteer" ? "doer" : "author",
+            role: template === "volunteer" ? "doer" : "customer",
           }
         );
 
@@ -540,7 +540,7 @@ const memberAccountPageThunks: IMemberAccountPageThunks = {
     try {
       const formData = new FormData();
       formData.append("slug", String(slug));
-      formData.append("role", template === "volunteer" ? "doer" : "author");
+      formData.append("role", template === "volunteer" ? "doer" : "customer");
 
       const action = "get-member-task-stats";
       const result = await utils.tokenFetch(getAjaxUrl(action), {

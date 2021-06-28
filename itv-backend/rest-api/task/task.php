@@ -269,6 +269,12 @@ function task_api_register_fields($server) {
                 return get_the_author_meta('nicename', $task->author);
             },
         ],
+        'isPasekaChecked' => [
+            'type'        => 'Bool',
+            'resolve'     => function( $task, $args, $context ) {
+                return boolval(get_post_meta($task->ID, 'isPasekaChecked', true));
+            },
+        ],
     ];
 
     foreach ($task_fields as $field_name => $field) {

@@ -39,6 +39,7 @@ export const manageTaskState: IManageTaskState = {
     },
     files: null,
     preferredDuration: "",
+    isPasekaChecked: false,
   },
   tags: null,
   ngoTags: null,
@@ -178,9 +179,11 @@ const manageTaskThunks: IManageTaskThunks = {
           body: submitFormData,
         });
 
-        const { status: responseStatus, message: responseMessage, taskSlug } = await (<
-          Promise<IFetchResult>
-        >result.json());
+        const {
+          status: responseStatus,
+          message: responseMessage,
+          taskSlug,
+        } = await (<Promise<IFetchResult>>result.json());
         if (responseStatus === "fail") {
           console.error(stripTags(responseMessage));
           addSnackbar({

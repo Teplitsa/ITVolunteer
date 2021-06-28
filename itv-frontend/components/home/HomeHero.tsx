@@ -43,7 +43,7 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
             })}{" "}
             помощи прямо&nbsp;сейчас
           </div>
-          <div className="home-hero__subtitle">Чем вы можете помочь сейчас?</div>
+          <div className="home-hero__subtitle">Чем вы можете помочь?</div>
           <div className="home-hero__link-list">
             {task.featuredCategories.map(({ categoryName, categorySlug, taskCount }, i) => {
               if (!isLinkListShown && i === 2) {
@@ -137,7 +137,7 @@ const HomeHeroAuthor: React.FunctionComponent = (): ReactElement => {
 const HomeHero: React.FunctionComponent = (): ReactElement => {
   const template = useStoreState(state => state.components.homePage.template);
 
-  return template === "author" ? <HomeHeroAuthor /> : <HomeHeroVolunteer />;
+  return template === "customer" ? <HomeHeroAuthor /> : <HomeHeroVolunteer />;
 };
 
 export default HomeHero;
