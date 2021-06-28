@@ -43,7 +43,7 @@ const HomeHeroVolunteer: React.FunctionComponent = (): ReactElement => {
             })}{" "}
             помощи прямо&nbsp;сейчас
           </div>
-          <div className="home-hero__subtitle">Чем вы можете помочь сейчас?</div>
+          <div className="home-hero__subtitle">Чем вы можете помочь?</div>
           <div className="home-hero__link-list">
             {task.featuredCategories.map(({ categoryName, categorySlug, taskCount }, i) => {
               if (!isLinkListShown && i === 2) {
