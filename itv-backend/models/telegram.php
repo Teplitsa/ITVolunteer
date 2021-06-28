@@ -18,7 +18,7 @@ class Telegram
 
         $link = get_permalink( $task );
 
-        $message = "<b>{$title}</b>\n\n{$content}\n\n{$link}";
+        $message = "<b>{$title}</b>\n{$content}\n{$link}";
 
         // print("message: " . $message);
 
