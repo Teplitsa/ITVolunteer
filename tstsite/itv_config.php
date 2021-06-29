@@ -14,7 +14,8 @@ class ItvConfig {
             
             'TASK_COMLETE_NOTIF_EMAILS' => array (
                 'vlad@te-st.ru',
-                'denis.cherniatev@gmail.com' 
+                'denis.cherniatev@gmail.com',
+                'zakirova@te-st.ru',
             ),
             
             // ITV consultants emails list (for automatic consultation choose)
