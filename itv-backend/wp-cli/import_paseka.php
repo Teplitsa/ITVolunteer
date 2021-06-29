@@ -27,7 +27,7 @@ class PasekaImport
             'posts_per_page' => -1,
             'fields' => 'ids',
             // 'connected_type' => 'user_member',
-            'name' => 'studiya-mozga',
+            // 'name' => 'studiya-mozga',
         ];
     
         $q = new \WP_Query($args);
