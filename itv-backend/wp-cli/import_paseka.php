@@ -84,7 +84,7 @@ class PasekaImport
             }
 
             if($is_new_user_created) {
-                \WP_CLI::line(sprintf( __('New user profile link: %s', 'itv-backend'), get_site_url(self::BLOG_ID_ITV, '/member/' . $user->user_nicename)) );
+                \WP_CLI::line(sprintf( __('New user profile link: %s', 'itv-backend'), get_site_url(self::BLOG_ID_ITV, '/members/' . $user->user_nicename)) );
                 \WP_CLI::line(sprintf( __('Edit new user account: %s', 'itv-backend'), get_site_url(self::BLOG_ID_ITV, "/wp-admin/user-edit.php?user_id=" . $user->ID)) );
             }
 
