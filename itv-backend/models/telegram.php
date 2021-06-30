@@ -9,6 +9,8 @@ class Telegram
     const ALLOWED_TAGS = '<b><i><u><s><a><code><pre>';
 
     public function publish_task($task) {
+        return
+        
         $title = apply_filters( 'the_title', $task->post_title );
         $content = \strip_tags( get_the_excerpt( $task ), self::ALLOWED_TAGS);
         $content = \preg_replace("/(\&nbsp;)?<a.*?\&hellip;<\/a>$/", "...", $content);
