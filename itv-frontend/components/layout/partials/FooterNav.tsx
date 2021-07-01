@@ -35,7 +35,7 @@ const FooterNav: React.FunctionComponent = (): ReactElement => {
                 regEvent("m_mb_list", router);
               }}
             >
-              Волонтеры
+              Волонтёры
             </a>
           </Link>
         </li>

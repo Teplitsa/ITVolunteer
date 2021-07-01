@@ -104,7 +104,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setCrumbs([{ title: "Рейтинг" }]);
+    setCrumbs([{ title: "Волонтёры" }]);
   }, []);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
     <div className="members">
       <div className="members__content">
         <div className="members__top">
-          <h1 className="members__title">Рейтинг</h1>
+          <h1 className="members__title">Волонтёры</h1>
           <div className="members__date-filter">
             <div className="date-filter">
               <div className="date-filter__item">

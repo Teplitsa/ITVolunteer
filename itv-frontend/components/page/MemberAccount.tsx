@@ -106,7 +106,7 @@ const MemberAccount: React.FunctionComponent = (): ReactElement => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setCrumbs([{ title: "Волонтеры", url: "/members" }, { title: fullName }]);
+    setCrumbs([{ title: "Волонтёры", url: "/members" }, { title: fullName }]);
   }, [fullName]);
 
   useEffect(() => {

@@ -11,7 +11,7 @@ export const TelegramChatButton: React.FunctionComponent = (): ReactElement => {
         target="_blank"
         rel="noreferrer"
       >
-        Присоединяйся к чату волонтеров
+        Присоединяйся к чату волонтёров
       </a>
     </div>
   );
