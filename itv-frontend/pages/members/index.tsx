@@ -21,7 +21,7 @@ const MembersPage: React.FunctionComponent = (): ReactElement => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ query, req, res }) => {
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const { default: withAppAndEntrypointModel } = await import(
     "../../model/helpers/with-app-and-entrypoint-model"
   );
