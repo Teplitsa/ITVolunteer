@@ -1738,6 +1738,7 @@ export interface IFormControlProps {
 }
 
 export interface IFormSelectProps {
+  isListBoxFixed?: boolean;
   selectExtraClassName?: string;
   selectPlaceholder?: string;
   maxSelectedOptions?: number;

@@ -12,6 +12,7 @@ import {
 import FormGroup from "./FormGroup";
 import Accordion from "../../global-scripts/Accordion";
 import { IFormControlProps, IFormSelectProps } from "../../../model/model.typing";
+import { convertObjectToClassName } from "../../../utilities/utilities";
 
 const checkOptionIsActive = ({
   nativeSelectProps,
@@ -33,15 +34,17 @@ const FormControlSelect: React.FunctionComponent<
   children,
   label,
   labelExtraClassName,
+  isListBoxFixed,
   selectExtraClassName,
   selectPlaceholder,
   maxSelectedOptions,
   useTags = true,
   ...nativeSelectProps
 }): ReactElement => {
-  const [optionList, setOptionList] = useState<
-    Array<DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>>
-  >(null);
+  const [optionList, setOptionList] =
+    useState<Array<DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>>>(
+      null
+    );
   const [selectedOptionList, setSelectedOptionList] = useState<Array<HTMLOptionElement>>(null);
   const selectRef = useRef<HTMLSelectElement>(null);
   const selectGroupRef = useRef<HTMLDivElement>(null);
@@ -197,9 +200,11 @@ const FormControlSelect: React.FunctionComponent<
     if (!(optionList instanceof Array)) return;
 
     setSelectedOptionList(
-      (optionList as Array<
-        DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
-      >)?.reduce((selectedOptionList, nativeOptionProps) => {
+      (
+        optionList as Array<
+          DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
+        >
+      )?.reduce((selectedOptionList, nativeOptionProps) => {
         if (!checkOptionIsActive({ nativeSelectProps, nativeOptionProps }))
           return selectedOptionList;
 
@@ -232,9 +237,11 @@ const FormControlSelect: React.FunctionComponent<
     <FormGroup {...{ label, labelExtraClassName, required: nativeSelectProps.required }}>
       <select style={{ display: "none" }} {...nativeSelectProps} ref={selectRef}>
         <option value="" label="" />
-        {(optionList as Array<
-          DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
-        >)?.map((nativeOptionProps, i) => (
+        {(
+          optionList as Array<
+            DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
+          >
+        )?.map((nativeOptionProps, i) => (
           <option
             key={`FormControlSelectOption-${i}`}
             {...nativeOptionProps}
@@ -282,10 +289,17 @@ const FormControlSelect: React.FunctionComponent<
               <button className="form__select-toggle form__select-toggle_small" type="button" />
             </div>
             <div className="form__select-list-wrapper" data-accordion-content>
-              <div className="form__select-list-box">
-                {(optionList as Array<
-                  DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
-                >).map((nativeOptionProps, i) => {
+              <div
+                className={convertObjectToClassName({
+                  "form__select-list-box": true,
+                  "form__select-list-box_fixed": Boolean(isListBoxFixed),
+                })}
+              >
+                {(
+                  optionList as Array<
+                    DetailedHTMLProps<OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>
+                  >
+                ).map((nativeOptionProps, i) => {
                   return (
                     <div
                       key={`FormControlQuasiSelectOption-${i}`}

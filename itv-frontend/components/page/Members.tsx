@@ -120,6 +120,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
             <div className="date-filter">
               <div className="date-filter__item">
                 <FormControlSelect
+                  isListBoxFixed={true}
                   selectExtraClassName="form__select-control_filter"
                   useTags={false}
                   name="month"
@@ -136,6 +137,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
               </div>
               <div className="date-filter__item">
                 <FormControlSelect
+                  isListBoxFixed={true}
                   selectExtraClassName="form__select-control_filter"
                   useTags={false}
                   name="year"
@@ -163,9 +165,9 @@ const Members: React.FunctionComponent = (): ReactElement => {
                 >
                   {isReset
                     ? `За ${new Intl.DateTimeFormat("ru-RU", {
-                      month: "long",
-                      year: "numeric",
-                    }).format(now)}`
+                        month: "long",
+                        year: "numeric",
+                      }).format(now)}`
                     : "За всё время"}
                 </button>
               </div>

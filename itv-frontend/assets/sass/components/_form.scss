@@ -98,6 +98,7 @@
         &[class*="__select"] {
           background-color: $color-gray-light-xl;
           border: 1px solid $color-gray-light-md;
+          margin: 0;
           padding: 8px 36px 8px 16px;
           font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
           color: $color-gray-dark-lg;
@@ -218,6 +219,10 @@
         }
         scrollbar-width: thin;
         scrollbar-color: $color-gray-dark-xl $color-gray-light-md;
+
+        &_fixed {
+          height: 144px;
+        }
       }
     }
     &-option {
@@ -375,7 +380,12 @@
       &-search[class*="_input"] {
         background: url("../../img/icon-search_20x20.svg") calc(100% - 12px) 50% no-repeat
           $color-white;
-        padding-right: 32px;
+        padding: 11px 32px 11px 12px;
+
+        &::placeholder {
+          font: 400 16px/1.5 "IBM Plex Sans", sans-serif;
+          color: $color-gray-dark-md-001;
+        }
       }
     }
     &_textarea {
