@@ -434,7 +434,7 @@ function FilterSection(props) {
   if (!sectionId || !sectionItems) {
     return null;
   }
-
+console.log(props);
   return (
     <div className="filter-section">
       <div className="filter-section-title">

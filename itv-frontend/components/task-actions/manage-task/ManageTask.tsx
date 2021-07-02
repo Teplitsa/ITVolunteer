@@ -21,6 +21,7 @@ import { IManageTaskFormData } from "../../../model/model.typing";
 import { ISnackbarMessage } from "../../../context/global-scripts";
 import { convertDateToLocalISOString } from "../../../utilities/utilities";
 import styles from "../../../assets/sass/modules/ManageTask.module.scss";
+import tooltipStyles from "../../../assets/sass/modules/Tooltip.module.scss";
 
 const stepCount = 2;
 const minPreferredDuration = convertDateToLocalISOString({
@@ -497,12 +498,12 @@ const ManageTask: React.FunctionComponent<{
               >
                 <Tooltip>
                   <button
-                    className={styles["manage-task-form__tooltip-btn"]}
+                    className={tooltipStyles["tooltip__component-btn"]}
                     type="button"
                     data-tooltip-btn={true}
                   />
                   <div
-                    className={styles["manage-task-form__tooltip-body"]}
+                    className={tooltipStyles["tooltip__component-body"]}
                     data-tooltip-body={true}
                   >
                     На задачи с меткой «Пасека» откликаются опытные специалисты и веб-студии.

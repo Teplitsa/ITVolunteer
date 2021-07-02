@@ -43,4 +43,17 @@
       transition: min-height 0.3s step-start, opacity 0.3s linear, visibility 0.3s linear;
     }
   }
+  &__component {
+    &-btn {
+      display: block;
+      background: url(../../img/icon-question.svg) 50% 50% no-repeat;
+      border-style: none;
+      width: 20px;
+      height: 20px;
+    }
+    &-body {
+      font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
+      color: $color-gray-dark-xl;
+    }
+  }
 }
