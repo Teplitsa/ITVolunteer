@@ -292,7 +292,7 @@ const FormControlSelect: React.FunctionComponent<
               <div
                 className={convertObjectToClassName({
                   "form__select-list-box": true,
-                  "form__select-list-box_fixed": Boolean(isListBoxFixed),
+                  "form__select-list-box_fixed-horizontally": Boolean(isListBoxFixed),
                 })}
               >
                 {(

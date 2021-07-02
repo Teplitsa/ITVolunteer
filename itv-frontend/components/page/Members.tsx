@@ -174,7 +174,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
             </div>
           </div>
           <div className="members__live-search">
-            <div className="form__group">
+            <div className="form__group form__group_closely">
               <input
                 className="form__control form__control_input form__control_input-small form__control_input-search form__control_full-width"
                 type="search"

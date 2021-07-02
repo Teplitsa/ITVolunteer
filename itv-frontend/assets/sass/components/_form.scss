@@ -3,6 +3,10 @@
     display: flex;
     flex-flow: column nowrap;
     margin: 0 0 32px;
+
+    &_closely {
+      margin: 0 0 20px;
+    }
     &-header,
     &-footer {
       font: 600 13px/1.54 "IBM Plex Sans", sans-serif;
@@ -221,7 +225,9 @@
         scrollbar-color: $color-gray-dark-xl $color-gray-light-md;
 
         &_fixed {
-          height: 144px;
+          &-horizontally {
+            width: 156px;
+          }
         }
       }
     }
