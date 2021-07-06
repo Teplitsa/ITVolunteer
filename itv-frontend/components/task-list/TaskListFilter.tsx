@@ -6,6 +6,8 @@ import * as utils from "../../utilities/utilities";
 import * as _ from "lodash";
 
 import TaskListFilterLoader from "../skeletons/partials/TaskListFilter";
+import Tooltip from "../global-scripts/Tooltip";
+import tooltipStyles from "../../assets/sass/modules/Tooltip.module.scss";
 
 import imgFilterMoodRock from "../../assets/img/icon-filter-mood-rock.svg";
 import imgFilterAward from "../../assets/img/icon-filter-award.svg";
@@ -80,18 +82,17 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
   function findCheckedItem(items, checkedSlug) {
     let foundItem = null;
-    for(const i in items) {
+    for (const i in items) {
       const itemData = items[i];
       // console.log("itemData.slug:", itemData.slug);
 
-      if(itemData.slug === checkedSlug) {
+      if (itemData.slug === checkedSlug) {
         foundItem = itemData;
-      }
-      else {
+      } else {
         foundItem = findCheckedItem(itemData.subterms, checkedSlug);
       }
 
-      if(foundItem) {
+      if (foundItem) {
         break;
       }
     }
@@ -253,10 +254,11 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     formData.append("filter", JSON.stringify(optionCheck));
 
     const action = "subscribe-task-list";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
-      method: "post",
-      body: formData,
-    })
+    utils
+      .tokenFetch(utils.getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      })
       .then(res => {
         try {
           return res.json();
@@ -285,10 +287,11 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
     const formData = new FormData();
 
     const action = "unsubscribe-task-list";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
-      method: "post",
-      body: formData,
-    })
+    utils
+      .tokenFetch(utils.getAjaxUrl(action), {
+        method: "post",
+        body: formData,
+      })
       .then(res => {
         try {
           return res.json();
@@ -434,7 +437,7 @@ function FilterSection(props) {
   if (!sectionId || !sectionItems) {
     return null;
   }
-console.log(props);
+
   return (
     <div className="filter-section">
       <div className="filter-section-title">
@@ -466,7 +469,7 @@ function FilterSectionItems(props) {
           const hasSubterms = !!item.subterms && item.subterms.length > 0;
           const subtermsSectionData = _.cloneDeep(_.get(props, "sectionData"));
           subtermsSectionData.items = hasSubterms ? _.cloneDeep(item.subterms) : [];
-          // console.log("optionId:", optionId)
+          // console.log("optionId:", optionId);
           // console.log("slug:", item.slug);
           // console.log("subterms:", item.subterms);
           // console.log("optionCheck:", optionCheck);
@@ -501,16 +504,37 @@ function FilterSectionItems(props) {
                       isChecked
                         ? imgFilterCheckOn
                         : isSemiChecked
-                          ? imgFilterCheckSemi
-                          : imgFilterCheckOff
+                        ? imgFilterCheckSemi
+                        : imgFilterCheckOff
                     }
                   />
                   <span
+                    style={
+                      (optionId.search("for-paseka-members") !== -1 && { display: "flex" }) || null
+                    }
                     onClick={e => {
                       optionOpenHandler(e, optionId);
                     }}
                   >
                     {item.title}
+                    {optionId.search("for-paseka-members") !== -1 && (
+                      <>
+                        <span style={{ marginLeft: "7px" }} />
+                        <Tooltip>
+                          <button
+                            className={tooltipStyles["tooltip__component-btn"]}
+                            type="button"
+                            data-tooltip-btn={true}
+                          />
+                          <div
+                            className={tooltipStyles["tooltip__component-body"]}
+                            data-tooltip-body={true}
+                          >
+                            Заказчик ищет опытного исполнителя или команду,<br />и у задачи есть бюджет
+                          </div>
+                        </Tooltip>
+                      </>
+                    )}
                   </span>
                 </span>
                 <span className="stats">{item.task_count}</span>

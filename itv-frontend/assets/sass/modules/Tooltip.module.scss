@@ -20,6 +20,7 @@
     visibility: hidden;
     box-sizing: border-box;
     box-shadow: 2px 2px 8px rgba(129, 118, 111, 0.12);
+    z-index: 1;
     transition: min-height 0.3s step-end, opacity 0.3s linear, visibility 0.3s linear;
 
     &::before {
