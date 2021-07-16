@@ -9,6 +9,7 @@ const ManageTaskForm: React.FunctionComponent<{
   submitHandler: (event: Event) => void;
   submitDisabled?: boolean;
   FormFooter?: ReactElement;
+  disabled?: boolean;
 }> = ({
   title,
   subtitle,
@@ -16,6 +17,7 @@ const ManageTaskForm: React.FunctionComponent<{
   submitHandler,
   submitDisabled = false,
   FormFooter,
+  disabled = false,
   children,
 }): ReactElement => {
   const formRef = useRef<HTMLFormElement>(null);
@@ -26,22 +28,24 @@ const ManageTaskForm: React.FunctionComponent<{
 
   return (
     <form ref={formRef} className={styles["manage-task-form"]}>
-      <div className={styles["manage-task-form__header"]}>
-        {subtitle && <div className={styles["manage-task-form__subtitle"]}>{subtitle}</div>}
-        <div className={styles["manage-task-form__title"]}>{title}</div>
-      </div>
-      <div className="manage-task-form__controls">{children}</div>
-      <button
-        className={`btn btn_primary btn_full-width btn_primary-extra ${
-          submitDisabled ? "btn_disabled" : ""
-        }`.trim()}
-        type="button"
-        disabled={submitDisabled}
-        onClick={() => formRef.current?.dispatchEvent(new Event("submit"))}
-      >
-        {submitTitle}
-      </button>
-      {FormFooter && <div className={styles["manage-task-form__footer"]}>{FormFooter}</div>}
+      <fieldset disabled={disabled}>
+        <div className={styles["manage-task-form__header"]}>
+          {subtitle && <div className={styles["manage-task-form__subtitle"]}>{subtitle}</div>}
+          <div className={styles["manage-task-form__title"]}>{title}</div>
+        </div>
+        <div className="manage-task-form__controls">{children}</div>
+        <button
+          className={`btn btn_primary btn_full-width btn_primary-extra ${
+            submitDisabled ? "btn_disabled" : ""
+          }`.trim()}
+          type="button"
+          disabled={submitDisabled}
+          onClick={() => formRef.current?.dispatchEvent(new Event("submit"))}
+        >
+          {submitTitle}
+        </button>
+        {FormFooter && <div className={styles["manage-task-form__footer"]}>{FormFooter}</div>}
+      </fieldset>
     </form>
   );
 };

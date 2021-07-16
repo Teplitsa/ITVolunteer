@@ -1,0 +1,67 @@
+@import "../base/presets";
+@import "../helpers/mixins";
+
+.screenloader {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba($color-gray-dark-xl, 0.3);
+  visibility: hidden;
+  opacity: 0;
+  z-index: 999;
+  transition: all 0.3s ease-in-out 0s;
+
+  &_active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  &__content {
+    width: 75px;
+    height: 75px;
+  }
+
+  &__spinner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    div {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border: 8px solid $color-gray-dark-lg;
+      border-radius: 50%;
+      animation: loader-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: $color-gray-dark-lg transparent transparent transparent;
+      box-sizing: border-box;
+
+      &:nth-child(1) {
+        animation-delay: -0.45s;
+      }
+      &:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+      &:nth-child(3) {
+        animation-delay: -0.15s;
+      }
+    }
+  }
+}
+
+@keyframes loader-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
