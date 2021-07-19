@@ -502,7 +502,7 @@ const ManageTask: React.FunctionComponent<{
               <FormControlInputCheckbox
                 label="Пасека"
                 name="isPasekaChecked"
-                defaultChecked={taskRef.current?.isPasekaChecked}
+                defaultChecked={["1", true].includes(formData.isPasekaChecked)}
                 required
                 onChange={pasekaChangeHandler}
               >

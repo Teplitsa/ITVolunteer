@@ -91,10 +91,12 @@ function ajax_submit_task(){
 
     // error_log("params: " . print_r($params, true));
     $params['post_status'] = 'publish';
+
+    $params['meta_input'] = [
+        'isPasekaChecked' => !empty($_POST['isPasekaChecked']) ? boolval($_POST['isPasekaChecked']) : false
+    ];
    
     $task_id = wp_insert_post($params);
-
-    $isPasekaChecked = !empty($_POST['isPasekaChecked']) ? boolval($_POST['isPasekaChecked']) : false;
 
     if($task_id) {
         $task = get_post($task_id);
@@ -105,7 +107,7 @@ function ajax_submit_task(){
         wp_set_post_terms($task_id, !empty($_POST['reward']) ? (int)$_POST['reward'] : null, 'reward');
         wp_set_post_terms($task_id, array_splice($tags_all, 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
-        update_post_meta($task_id, 'isPasekaChecked', $isPasekaChecked);
+        // update_post_meta($task_id, 'isPasekaChecked', $isPasekaChecked);
 
         $task_manager = new TaskManager();
         $task_manager->setup_data_to_inform_about_task($task_id);

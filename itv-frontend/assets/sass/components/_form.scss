@@ -52,7 +52,7 @@
         margin-right: 8px;
         width: 24px;
         height: 24px;
-        transition: all .15s linear;
+        transition: all 0.15s linear;
       }
 
       :checked + & {
@@ -317,10 +317,8 @@
         transition: all 0.15s linear;
       }
 
-      :checked + & {
-        &::before {
-          background: url(../../img/icon-checkbox-active.svg) 0 50% no-repeat;
-        }
+      [type="checkbox"]:checked + &::before {
+        background: url(../../img/icon-checkbox-active.svg) 0 50% no-repeat;
       }
     }
     &-explanation {
