@@ -18,7 +18,7 @@ const MemberListSkeleton: React.FunctionComponent = (): ReactElement => {
     <div className="member-list-skeleton">
       <div className="member-list-skeleton__inner">
         <div className="member-list-skeleton__top">
-          <h1 className="member-list-skeleton__title">Рейтинг</h1>
+          <h1 className="member-list-skeleton__title">Волонтёры</h1>
         </div>
         <div className="member-list-skeleton__filter">
           {Array(3)

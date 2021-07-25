@@ -1,10 +1,11 @@
 .members {
   margin: 0 auto;
-  max-width: 640px;
+  max-width: 738px;
 
   &__title {
-    margin: 0 0 10px;
-    font: 600 30px/1.33 "IBM Plex Sans", sans-serif;
+    margin: 0 0 20px;
+    font: 500 30px/1.33 "IBM Plex Sans", sans-serif;
+    letter-spacing: -0.01em;
     color: $color-gray-dark-xl;
   }
 }
@@ -21,6 +22,7 @@
     &:not(:last-child) {
       @include screen-from(md) {
         margin-right: 10px;
+        width: 156px;
       }
     }
 

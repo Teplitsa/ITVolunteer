@@ -104,7 +104,7 @@ const Members: React.FunctionComponent = (): ReactElement => {
   }, [router.pathname]);
 
   useEffect(() => {
-    setCrumbs([{ title: "Рейтинг" }]);
+    setCrumbs([{ title: "Волонтёры" }]);
   }, []);
 
   useEffect(() => {
@@ -115,12 +115,16 @@ const Members: React.FunctionComponent = (): ReactElement => {
     <div className="members">
       <div className="members__content">
         <div className="members__top">
-          <h1 className="members__title">Рейтинг</h1>
+          <h1 className="members__title">Волонтёры</h1>
           <div className="members__date-filter">
             <div className="date-filter">
               <div className="date-filter__item">
                 <FormControlSelect
-                  selectExtraClassName="form__select-control_filter"
+                  isListBoxFixed={true}
+                  selectExtraClassName={convertObjectToClassName({
+                    "form__select-control_filter": true,
+                    "form__select-control_active": month !== 0,
+                  })}
                   useTags={false}
                   name="month"
                   defaultValue={month}
@@ -136,7 +140,11 @@ const Members: React.FunctionComponent = (): ReactElement => {
               </div>
               <div className="date-filter__item">
                 <FormControlSelect
-                  selectExtraClassName="form__select-control_filter"
+                  isListBoxFixed={true}
+                  selectExtraClassName={convertObjectToClassName({
+                    "form__select-control_filter": true,
+                    "form__select-control_active": year !== 0,
+                  })}
                   useTags={false}
                   name="year"
                   defaultValue={year}
@@ -161,18 +169,13 @@ const Members: React.FunctionComponent = (): ReactElement => {
                   type="reset"
                   onClick={handleFilterReset}
                 >
-                  {isReset
-                    ? "За всё время"
-                    : `Дефолтный: за ${new Intl.DateTimeFormat("ru-RU", {
-                        month: "long",
-                        year: "numeric",
-                      }).format(now)}`}
+                  За всё время
                 </button>
               </div>
             </div>
           </div>
           <div className="members__live-search">
-            <div className="form__group">
+            <div className="form__group form__group_closely">
               <input
                 className="form__control form__control_input form__control_input-small form__control_input-search form__control_full-width"
                 type="search"

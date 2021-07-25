@@ -1738,6 +1738,7 @@ export interface IFormControlProps {
 }
 
 export interface IFormSelectProps {
+  isListBoxFixed?: boolean;
   selectExtraClassName?: string;
   selectPlaceholder?: string;
   maxSelectedOptions?: number;
@@ -1791,7 +1792,7 @@ export interface IManageTaskFormData {
     fileName: string;
   }>;
   preferredDuration?: string;
-  isPasekaChecked: boolean;
+  isPasekaChecked: "0" | "1";
 }
 
 export interface IManageTaskTag {

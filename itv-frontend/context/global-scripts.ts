@@ -3,7 +3,7 @@ import { createContext, Dispatch } from "react";
 export interface IModal {
   isShown?: boolean;
   hideBackdrop?: boolean;
-  hAlign?: "left" | "center" | "right",
+  hAlign?: "left" | "center" | "right";
   title?: string;
   header?: React.FunctionComponent<{ closeModal: () => void }>;
   content?: React.FunctionComponent<{ closeModal: () => void }>;
@@ -23,6 +23,15 @@ export interface ISnackbar {
   dispatch?: Dispatch<{
     type: string;
     payload?: ISnackbar;
+  }>;
+}
+
+export interface IScreenLoader {
+  isShown?: boolean;
+  title?: string;
+  dispatch?: Dispatch<{
+    type: string;
+    payload?: IScreenLoader;
   }>;
 }
 
@@ -47,4 +56,13 @@ const SnackbarContext = createContext(snackbarInitialState);
 
 SnackbarContext.displayName = "snackbarContext";
 
-export default { ModalContext, SnackbarContext };
+export const screenLoaderInitialState: IScreenLoader = {
+  isShown: false,
+  title: "",
+};
+
+const ScreenLoaderContext = createContext(screenLoaderInitialState);
+
+ScreenLoaderContext.displayName = "screenLoaderContext";
+
+export default { ModalContext, SnackbarContext, ScreenLoaderContext };

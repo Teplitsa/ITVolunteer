@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { ReactElement, useState, useEffect, useRef, SyntheticEvent } from "react";
+import { ReactElement, useState, useEffect, useContext, useRef, SyntheticEvent } from "react";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../../model/helpers/hooks";
 import ManageTaskStep from "./ManageTaskStep";
@@ -18,9 +18,12 @@ import FormControlInputCheckbox from "../../ui/form/FormControlInputCheckbox";
 import Tooltip from "../../global-scripts/Tooltip";
 import UploadFileInput, { FileItem } from "../../UploadFileInput";
 import { IManageTaskFormData } from "../../../model/model.typing";
-import { ISnackbarMessage } from "../../../context/global-scripts";
+import GlobalScripts, { ISnackbarMessage } from "../../../context/global-scripts";
 import { convertDateToLocalISOString } from "../../../utilities/utilities";
 import styles from "../../../assets/sass/modules/ManageTask.module.scss";
+import tooltipStyles from "../../../assets/sass/modules/Tooltip.module.scss";
+
+const { ScreenLoaderContext } = GlobalScripts;
 
 const stepCount = 2;
 const minPreferredDuration = convertDateToLocalISOString({
@@ -59,6 +62,7 @@ const ManageTask: React.FunctionComponent<{
   const formData = useStoreState(state => state.components.manageTask.formData);
   const taskId = useStoreState(state => state.components.manageTask.id);
   const taskSlug = useStoreState(state => state.components.manageTask.slug);
+  const [formDisabled, setFormDisabled] = useState<boolean>(false);
   const [step, setStep] = useState<number>(0);
   const [isPrinciplesAccepted, setIsPrinciplesAccepted] = useState<boolean>(false);
   const [isFileListShown, setIsFileListShown] = useState<boolean>(false);
@@ -66,6 +70,7 @@ const ManageTask: React.FunctionComponent<{
   const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
   const [isEditMode] = useState<boolean>(Boolean(taskId) && Boolean(taskSlug));
   const taskRef = useRef<IManageTaskFormData>(null);
+  const screenLoader = useContext(ScreenLoaderContext);
 
   const {
     initializeState,
@@ -122,12 +127,17 @@ const ManageTask: React.FunctionComponent<{
       router.push({ pathname: "/members/[username]", query: { username: userSlug } });
     }
 
+    setFormDisabled(true);
+    screenLoader.dispatch({ type: "open" });
     setFormData(taskRef.current);
     submitFormData({
       addSnackbar,
       setIsFormSubmitted,
-      callback: ({ taskSlug }) =>
-        router.push({ pathname: "/tasks/[slug]", query: { slug: taskSlug } }),
+      callback: ({ taskSlug }) => {
+        setFormDisabled(false);
+        screenLoader.dispatch({ type: "close" });
+        router.push({ pathname: "/tasks/[slug]", query: { slug: taskSlug } });
+      },
     });
   };
 
@@ -411,6 +421,7 @@ const ManageTask: React.FunctionComponent<{
               submitTitle: isEditMode ? "Сохранить изменения" : "Опубликовать",
               submitHandler: publishTask,
               FormFooter: <ManageTaskStep2Footer {...{ goPrevStep }} />,
+              disabled: formDisabled,
             }}
           >
             <FormControlSelect
@@ -491,18 +502,18 @@ const ManageTask: React.FunctionComponent<{
               <FormControlInputCheckbox
                 label="Пасека"
                 name="isPasekaChecked"
-                defaultChecked={taskRef.current?.isPasekaChecked}
+                defaultChecked={["1", true].includes(formData.isPasekaChecked)}
                 required
                 onChange={pasekaChangeHandler}
               >
                 <Tooltip>
                   <button
-                    className={styles["manage-task-form__tooltip-btn"]}
+                    className={tooltipStyles["tooltip__component-btn"]}
                     type="button"
                     data-tooltip-btn={true}
                   />
                   <div
-                    className={styles["manage-task-form__tooltip-body"]}
+                    className={tooltipStyles["tooltip__component-body"]}
                     data-tooltip-body={true}
                   >
                     На задачи с меткой «Пасека» откликаются опытные специалисты и веб-студии.

@@ -71,6 +71,7 @@ require_once(get_theme_file_path() . '/wp-cli/setup_user_roles.php');
 require_once(get_theme_file_path() . '/wp-cli/inform_about_tasks.php');
 require_once(get_theme_file_path() . '/wp-cli/social_posting.php');
 require_once(get_theme_file_path() . '/wp-cli/import_paseka.php');
+require_once(get_theme_file_path() . '/wp-cli/inactive_users.php');
 
 // register hooks
 require_once(get_theme_file_path() . '/wp-hooks/general.php');

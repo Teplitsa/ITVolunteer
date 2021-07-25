@@ -1,5 +1,7 @@
 import { ReactElement } from "react";
 import { convertObjectToClassName } from "../utilities/utilities";
+import Tooltip from "./global-scripts/Tooltip";
+import tooltipStyles from "../assets/sass/modules/Tooltip.module.scss";
 import MemberAvatarDefault from "../assets/img/member-default.svg";
 
 const MemberAvatar: React.FunctionComponent<{
@@ -11,7 +13,7 @@ const MemberAvatar: React.FunctionComponent<{
   const isDefaultAvatar = !memberAvatar || memberAvatar.search(/temp-avatar\.png/) !== -1;
 
   return (
-    <figure
+    <div
       className={convertObjectToClassName({
         "member-avatar": true,
         "member-avatar_default-image": isDefaultAvatar,
@@ -26,9 +28,25 @@ const MemberAvatar: React.FunctionComponent<{
           "member-avatar__image_default": isDefaultAvatar,
         })}
         src={isDefaultAvatar ? MemberAvatarDefault : memberAvatar}
-        alt={isDefaultAvatar ? "Фото участника" : memberFullName}
+        alt={
+          isDefaultAvatar
+            ? "Фото участника"
+            : isPasekaMember
+              ? `${memberFullName} — участник «Пасеки»`
+              : memberFullName
+        }
       />
-    </figure>
+      {isPasekaMember && (
+        <div className="member-avatar__tooltip">
+          <Tooltip>
+            <button className="member-avatar__tooltip-btn" type="button" data-tooltip-btn={true} />
+            <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>
+              Участник «Пасеки» — сообщества экспертов по работе с некоммерческими организациями
+            </div>
+          </Tooltip>
+        </div>
+      )}
+    </div>
   );
 };
 
