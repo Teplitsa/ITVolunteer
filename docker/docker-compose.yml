@@ -1,16 +1,16 @@
 version: '3'
 services:
-  nginx:
+  itv-nginx:
     build:
-      context: nginx
+      context: itv-nginx
       dockerfile: Dockerfile
     environment:
       - APP_ENV=dev
     ports:
       - "80:80"
     links:
-      - backend
-      - frontend
+      - itv-backend
+      - itv-frontend
     extra_hosts:
       - "v1.tep-itv.dench:127.0.0.1"
       - "tep-itv.dench:0.0.0.0"
@@ -22,42 +22,42 @@ services:
       default:
         aliases:
           - "tep-itv.dench"
-  mongo:
+  itv-mongo:
     build:
-      context: mongo
+      context: itv-mongo
       dockerfile: Dockerfile
     ports:
       - "27017:27017"
     volumes:
-      - tep-itv-mongo-data:/data/db
-  backend:
+      - itv-mongo-data:/data/db
+  itv-backend:
     build:
-      context: backend
+      context: itv-backend
       dockerfile: Dockerfile
     environment:
       - APP_ENV=dev
     ports:
       - "9000:9000"
     links:
-      - mongo
+      - itv-mongo
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
       - /mnt/disk1/share/tep-paseka/site:/site/tep-paseka
-  frontend:
+  itv-frontend:
     build:
-      context: frontend
+      context: itv-frontend
       dockerfile: Dockerfile
     environment:
       - APP_ENV=dev
     links:
-      - mongo
+      - itv-mongo
     volumes:
       - /mnt/disk1/share/tep-itv/site:/site/tep-itv
     stdin_open: true
     tty: true
-  vsftpd:
+  itv-vsftpd:
     build:
-      context: vsftpd
+      context: itv-vsftpd
       dockerfile: Dockerfile
     environment:
       - APP_ENV=dev
@@ -72,7 +72,7 @@ services:
       - /mnt/disk1/share/tep-paseka/site:/site/tep-paseka
 
 volumes:
-  tep-itv-mongo-data:    
+  itv-mongo-data:    
 
 networks:
   default:

@@ -7,7 +7,7 @@ const appConfig = {
   LoginUrl: `${BaseUrl}/itv-protected-99xkQ2bZJH5e-login`,
   RestApiUrl: `${BaseUrl}/wp-json`,
   AuthTokenLifeTimeMs: 600,
-  MongoConnection: "mongodb://mongo:27017",
+  MongoConnection: "mongodb://itv-mongo:27017",
 };
 
 module.exports = appConfig;
