@@ -11,6 +11,7 @@ require_once(get_theme_file_path() . '/config.php');
 
 // utils
 require_once(get_theme_file_path() . '/utils/upload_image.php');
+require_once(get_theme_file_path() . '/utils/date.php');
 
 // system models
 require_once(get_theme_file_path() . '/models/db/mongo.php');

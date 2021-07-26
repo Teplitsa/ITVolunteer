@@ -93,6 +93,10 @@ const Task: React.FunctionComponent = (): ReactElement => {
                     );
                   })}
                   {files.map((file, key) => {
+                    if(!file) {
+                      return null;
+                    }
+                    
                     return (
                       <div className="task-body-text__section-file-item" key={key}>
                         <a target="_blank" rel="noreferrer" href={file.mediaItemUrl}>
