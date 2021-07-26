@@ -21,7 +21,7 @@ class Telegram
         $rewardTags = wp_get_post_terms( $task->ID, 'reward');
         $reward = empty($rewardTags) ? null : $rewardTags[0];
         $rewardTitle = $reward ? $reward->name : "";
-        $$rewardText = $rewardTitle ? "Условия: {$rewardTitle}\n" : "";
+        $rewardText = $rewardTitle ? "Условия: {$rewardTitle}\n" : "";
 
         $tags = wp_get_post_terms( $task->ID, 'post_tag');
         $tagsListString = empty($tags) ? "" : implode(", ", array_map(function($tag) {return $tag->name;}, $tags));
