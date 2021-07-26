@@ -21,6 +21,7 @@ class Telegram
         $rewardTags = wp_get_post_terms( $task->ID, 'reward');
         $reward = empty($rewardTags) ? null : $rewardTags[0];
         $rewardTitle = $reward ? $reward->name : "";
+        $$rewardText = $rewardTitle ? "Условия: {$rewardTitle}\n" : "";
 
         $tags = wp_get_post_terms( $task->ID, 'post_tag');
         $tagsListString = empty($tags) ? "" : implode(", ", array_map(function($tag) {return $tag->name;}, $tags));
@@ -36,7 +37,7 @@ class Telegram
 
         $message = "<b>Дедлайн {$deadline} - {$title}</b>\n\nДорогие пасечники,\n\nУ нас новая задача от {$organizationName} {$tagsText}\n\n"
             . "Суть в следующем: {$content}\n\n"
-            . "Условия: {$rewardTitle}\n"
+            . $rewardText
             . "Если интересно, присоединяйтесь!\n";
 
         // print("message: " . $message);
