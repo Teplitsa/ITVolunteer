@@ -169,10 +169,13 @@
       text-decoration: none;
       transition: all 0.15s linear;
 
+      &:hover {
+        border-bottom: 1px dashed transparent;
+      }
+
       &:hover,
       &:active,
       &:focus {
-        border-bottom: 1px dashed transparent;
         text-decoration: none;
       }
 
@@ -184,6 +187,9 @@
         border-bottom-color: $color-gray-dark-lg;
         font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
         color: $color-gray-dark-lg;
+      }
+      &_size-md {
+        font-size: 13px;
       }
     }
   }

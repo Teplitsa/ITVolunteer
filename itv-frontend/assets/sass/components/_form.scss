@@ -320,6 +320,13 @@
       [type="checkbox"]:checked + &::before {
         background: url(../../img/icon-checkbox-active.svg) 0 50% no-repeat;
       }
+
+      :disabled + & {
+        &::before,
+        & > [class*="-text"] {
+          opacity: 0.5;
+        }
+      }
     }
     &-explanation {
       padding-left: 30px;
