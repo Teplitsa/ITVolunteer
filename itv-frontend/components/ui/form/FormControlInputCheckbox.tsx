@@ -4,7 +4,13 @@ import { IFormInputCheckboxProps } from "../../../model/model.typing";
 const FormControlInputCheckbox: React.FunctionComponent<
   IFormInputCheckboxProps &
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
-> = ({ children, label, Explanation, ...nativeCheckboxProps }): ReactElement => {
+> = ({
+  children,
+  label,
+  afterlabel = "btn",
+  Explanation,
+  ...nativeCheckboxProps
+}): ReactElement => {
   return (
     <div className="form__checkbox-group">
       <input
@@ -18,7 +24,11 @@ const FormControlInputCheckbox: React.FunctionComponent<
           htmlFor={nativeCheckboxProps.id ?? nativeCheckboxProps.name}
           className="form__checkbox-label"
         >
-          <span className="form__checkbox-label-text">{label}</span>
+          <span
+            className={`form__checkbox-label-text form__checkbox-label-text_${afterlabel}-after`}
+          >
+            {label}
+          </span>
           {children ?? ""}
         </label>
       )}

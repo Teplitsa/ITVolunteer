@@ -304,6 +304,13 @@
 
       &-text {
         flex-shrink: 10;
+
+        &_btn-after {
+          margin-right: 5px;
+        }
+        &_link-after {
+          margin-right: 10px;
+        }
       }
 
       &::before {

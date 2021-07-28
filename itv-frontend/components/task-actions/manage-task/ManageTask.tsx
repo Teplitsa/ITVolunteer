@@ -506,6 +506,7 @@ const ManageTask: React.FunctionComponent<{
               <div className="form__label form__label_small">Кто может откликнуться на задачу?</div>
               <FormControlInputCheckbox
                 label="Пасека"
+                afterlabel={organizationName ? "btn" : "link"}
                 name="isPasekaChecked"
                 defaultChecked={["1", true].includes(formData.isPasekaChecked)}
                 required
