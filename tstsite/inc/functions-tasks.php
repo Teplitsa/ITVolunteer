@@ -91,10 +91,14 @@ function ajax_submit_task(){
 
     // error_log("params: " . print_r($params, true));
     $params['post_status'] = 'publish';
+
+    $isPasekaChecked = !empty($_POST[ITV_POST_META_FOR_PASEKA_ONLY]) ? boolval($_POST[ITV_POST_META_FOR_PASEKA_ONLY]) : false;
+
+    $params['meta_input'] = [
+        ITV_POST_META_FOR_PASEKA_ONLY => $isPasekaChecked,
+    ];
    
     $task_id = wp_insert_post($params);
-
-    $isPasekaChecked = !empty($_POST['isPasekaChecked']) ? boolval($_POST['isPasekaChecked']) : false;
 
     if($task_id) {
         $task = get_post($task_id);
@@ -105,7 +109,6 @@ function ajax_submit_task(){
         wp_set_post_terms($task_id, !empty($_POST['reward']) ? (int)$_POST['reward'] : null, 'reward');
         wp_set_post_terms($task_id, array_splice($tags_all, 0, 1), 'nko_task_tag');
         update_post_meta($task_id, 'is_tst_consult_needed', false);
-        update_post_meta($task_id, 'isPasekaChecked', $isPasekaChecked);
 
         $task_manager = new TaskManager();
         $task_manager->setup_data_to_inform_about_task($task_id);
@@ -683,7 +686,7 @@ function itv_get_ajax_task_short($task) {
         'cover' => itv_get_task_cover($task->ID),
         'coverImgSrcLong' => itv_get_task_cover_image_src($task->ID, 'medium_large'),
         'deadline' => itv_get_task_deadline_date($task->ID, $task->post_date),
-        'isPasekaChecked' => boolval(get_post_meta($task->ID, 'isPasekaChecked', true)),
+        'isPasekaChecked' => boolval(get_post_meta($task->ID, ITV_POST_META_FOR_PASEKA_ONLY, true)),
 //         'nonceContactForm' => wp_create_nonce('we-are-receiving-a-letter-goshujin-sama'),
     ];
 }

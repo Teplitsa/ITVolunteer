@@ -151,20 +151,8 @@
     &__checkbox-container {
       margin-bottom: 30px;
       [class*="checkbox-label-text"] {
-        margin-right: 4px;
         color: $color-gray-dark-lg;
       }
-    }
-    &__tooltip-btn {
-      display: block;
-      background: url(../../img/icon-question.svg) 50% 50% no-repeat;
-      border-style: none;
-      width: 20px;
-      height: 20px;
-    }
-    &__tooltip-body {
-      font: 500 11px/1.45 "IBM Plex Sans", sans-serif;
-      color: $color-gray-dark-xl;
     }
   }
   &__action {
@@ -180,10 +168,13 @@
       text-decoration: none;
       transition: all 0.15s linear;
 
+      &:hover {
+        border-bottom: 1px dashed transparent;
+      }
+
       &:hover,
       &:active,
       &:focus {
-        border-bottom: 1px dashed transparent;
         text-decoration: none;
       }
 
@@ -195,6 +186,9 @@
         border-bottom-color: $color-gray-dark-lg;
         font: 600 16px/1.25 "IBM Plex Sans", sans-serif;
         color: $color-gray-dark-lg;
+      }
+      &_size-md {
+        font-size: 13px;
       }
     }
   }

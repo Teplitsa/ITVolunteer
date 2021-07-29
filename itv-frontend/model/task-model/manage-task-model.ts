@@ -39,7 +39,7 @@ export const manageTaskState: IManageTaskState = {
     },
     files: null,
     preferredDuration: "",
-    isPasekaChecked: false,
+    isPasekaChecked: "0",
   },
   tags: null,
   ngoTags: null,
@@ -143,7 +143,7 @@ const manageTaskThunks: IManageTaskThunks = {
   submitFormData: thunk(
     async (_, { addSnackbar, setIsFormSubmitted, callback }, { getStoreState }) => {
       const {
-        session: { validToken: token },
+        // session: { validToken: token },
         components: {
           manageTask: {
             id,
@@ -171,7 +171,7 @@ const manageTaskThunks: IManageTaskThunks = {
         }
       });
 
-      submitFormData.append("auth_token", String(token));
+      // submitFormData.append("auth_token", String(token));
 
       try {
         const result = await utils.tokenFetch(getAjaxUrl(action), {
