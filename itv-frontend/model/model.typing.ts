@@ -1753,6 +1753,7 @@ export interface IFormInputDateProps {
 
 export interface IFormInputCheckboxProps {
   label?: string;
+  afterlabel?: "btn" | "link";
   Explanation?: React.FunctionComponent;
 }
 
