@@ -29,9 +29,9 @@ const TaskMeta: React.FunctionComponent<{
 
   const withMetaIconCalendar: Array<string> = [
     utils.formatDate({ date: utils.itvWpDateTimeToDate(deadline), stringFormat: "d MMMM Y" }),
-    `Открыто ${dateGmt ? utils.getTheIntervalToNow({
+    dateGmt ? `Открыто ${utils.getTheIntervalToNow({
       fromDateString: dateGmt,
-    }) : ''}`,
+    })}` : '',
     `${doerCandidatesCount} откликов`,
     // `${viewsCount} просмотров`,
   ];
