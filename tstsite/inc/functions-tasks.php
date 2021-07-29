@@ -84,13 +84,19 @@ function ajax_submit_task(){
     );
 
     $is_new_task = true;
+    $exist_task = null;
     if($task_id) {
       $is_new_task = false;
       $params['ID'] = $task_id;
+    $exist_task = get_post($task_id);
     }
 
-    // error_log("params: " . print_r($params, true));
-    $params['post_status'] = 'publish';
+    if($exist_task) {
+        $params['post_status'] = $exist_task->post_status;
+    }
+    else {
+        $params['post_status'] = 'publish';        
+    }
 
     $isPasekaChecked = !empty($_POST[ITV_POST_META_FOR_PASEKA_ONLY]) ? boolval($_POST[ITV_POST_META_FOR_PASEKA_ONLY]) : false;
 
@@ -98,6 +104,7 @@ function ajax_submit_task(){
         ITV_POST_META_FOR_PASEKA_ONLY => $isPasekaChecked,
     ];
    
+    // error_log("params: " . print_r($params, true));
     $task_id = wp_insert_post($params);
 
     if($task_id) {
