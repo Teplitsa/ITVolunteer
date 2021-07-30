@@ -208,15 +208,16 @@ class MailInactiveUsers
                 ]);
 
                 if ($task_list_top->post_count > 0) {
-                    foreach ($task_list_top->posts as $task_id) {
-                        $template_props["task_list_top_{$i}_url"] = \get_home_url() . '/' . \get_post_field('post_name', $task_id);
-                        $template_props["task_list_top_{$i}_title"] = \get_the_title($task_id);
+                    foreach ($task_list_top->posts as $task_index => $task_id) {
+                        $task_index += 1;
+                        $template_props["task_list_top_{$task_index}_url"] = \get_home_url() . '/' . \get_post_field('post_name', $task_id);
+                        $template_props["task_list_top_{$task_index}_title"] = \get_the_title($task_id);
                     }
                 }
             }
 
             if ("{$become_earlier_in_months}_{$become_later_in_months}" === "_1") {
-                $template_props['published_task_count'] = TaskStats::get_list(['publish']);
+                $template_props['published_task_count'] = TaskStats::get_list(['publish'])['publish'];
             }
 
             foreach ($volunteers as $user_index => ['user_id' => $user_id, 'user_name' => $user_name, 'user_email' => $user_email, 'user_link' => $user_link]) {
