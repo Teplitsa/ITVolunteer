@@ -34,13 +34,13 @@
     @include screen-from(md) {
       flex-basis: 31.2056%;
       transform: translate(0, -140px);
+      z-index: 1;
     }
   }
   &__right-column {
     @include screen-from(md) {
       flex-basis: 68.7944%;
       margin: 0 0 0 40px;
-      z-index: -1;
     }
   }
   // &__create-task {
