@@ -15,30 +15,30 @@ class MailInactiveUsers
     private static $unsubscribe_url = 'mailto:zakirova@te-st.ru?subject=%D0%A3%D0%B4%D0%B0%D0%BB%D0%B8%D1%82%D0%B5 %D0%BC%D0%BE%D0%B9 %D0%B0%D0%BA%D0%BA%D0%B0%D1%83%D0%BD%D1%82'; // subject=Удалите мой аккаунт
 
     private static $dummy_users = [
-        // [
-        //     'user_id'    => 331,
-        //     'user_name'  => 'Влад Лавриченко',
-        //     'user_email' => 'vlad@te-st.ru',
-        //     'user_link'  => 'https://itv.te-st.ru/members/vladtest'
-        // ],
-        // [
-        //     'user_id'    => 7201,
-        //     'user_name'  => 'Мария Селявко',
-        //     'user_email' => 'maria.seliavko@gmail.com',
-        //     'user_link'  => 'https://itv.te-st.ru/members/selyavko'
-        // ],
+        [
+            'user_id'    => 331,
+            'user_name'  => 'Влад Лавриченко',
+            'user_email' => 'vlad@te-st.ru',
+            'user_link'  => 'https://itv.te-st.ru/members/vladtest'
+        ],
+        [
+            'user_id'    => 7201,
+            'user_name'  => 'Мария Селявко',
+            'user_email' => 'maria.seliavko@gmail.com',
+            'user_link'  => 'https://itv.te-st.ru/members/selyavko'
+        ],
         [
             'user_id'    => 7504,
             'user_name'  => 'Алексей Есев',
             'user_email' => 'alekseyesev@live.ru',
             'user_link'  => 'https://itv.te-st.ru/members/esev'
         ],
-        // [
-        //     'user_id'    => 7568,
-        //     'user_name'  => 'zakirovalena',
-        //     'user_email' => 'zakirova@te-st.ru', // ZakirovaET@gmail.com
-        //     'user_link'  => 'https://itv.te-st.ru/members/zakirovalena'
-        // ],
+        [
+            'user_id'    => 7568,
+            'user_name'  => 'zakirovalena',
+            'user_email' => 'zakirova@te-st.ru', // ZakirovaET@gmail.com
+            'user_link'  => 'https://itv.te-st.ru/members/zakirovalena'
+        ],
     ];
 
     /***
