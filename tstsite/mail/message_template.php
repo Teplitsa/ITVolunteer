@@ -12,7 +12,7 @@
 <div class="body-inner">
 
     <div class="header">
-    	<img class="itv-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-itv_redesigned.png";?>" />
+    	<img class="itv-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-itv_redesigned.png";?>" width="161" height="37" />
     </div>
     
     <div class="content">
