@@ -51,7 +51,7 @@ function portfolio_api_fix_seo_integration($server) {
 
     global $wp_rest_additional_fields;
 
-    // remove yoast fields for portfolio_action
+    // remove yoast fields
     $wp_rest_additional_fields[ PortfolioWorkManager::$post_type ][ 'yoast_head' ]['context'] = [ 'view', 'edit', 'embed' ];
 }
 add_action( 'rest_api_init', 'portfolio_api_fix_seo_integration', 11 );

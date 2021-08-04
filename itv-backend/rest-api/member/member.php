@@ -127,7 +127,7 @@ function member_api_fix_seo_integration($server)
 
     global $wp_rest_additional_fields;
 
-    // remove yoast fields for portfolio_action
+    // remove yoast fields
     $wp_rest_additional_fields['user']['yoast_head']['context'] = ['view', 'edit', 'embed'];
 }
 add_action('rest_api_init', 'member_api_fix_seo_integration', 11);

@@ -92,6 +92,20 @@ class PortfolioWorkManager {
 
         return $posts[0] ?? null;        
     }
+    
+    public function count_member_portfolio_works($user_id) {
+        $args = array(
+            'post_author'       => $user_id,
+            'post_type'         => PortfolioWorkManager::$post_type,
+            'suppress_filters'  => true,
+            'post_status'       => 'any',
+            'posts_per_page'    => 1,
+            'fields'            => 'ids',
+        );
+            
+        $query = new \WP_Query($args);
+        return $query->found_posts;    
+    }
 }
 
 

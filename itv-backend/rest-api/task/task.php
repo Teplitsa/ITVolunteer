@@ -295,7 +295,7 @@ function task_api_fix_seo_integration($server) {
 
     global $wp_rest_additional_fields;
 
-    // remove yoast fields for portfolio_action
+    // remove yoast fields
     $wp_rest_additional_fields[ TaskManager::$post_type ][ 'yoast_head' ]['context'] = [ 'edit', 'embed' ];
 }
 add_action( 'rest_api_init', 'task_api_fix_seo_integration', 11 );
