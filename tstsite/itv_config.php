@@ -49,8 +49,8 @@ class ItvConfig {
             'REACTIVATION_EMAILS_LIMIT' => 2,
             'WEEKLY_STATS_EMAIL' => array(
                 'PERIOD_DAYS' => 7,
-                'TO_EMAIL' => 'suvorov@te-st.ru',
-                'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'vlad@te-st.ru', 'sidorenko.a@gmail.com'),
+                'TO_EMAIL' => 'vlad@te-st.ru',
+                'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'sidorenko.a@gmail.com', 'zakirova@te-st.ru'),
             ),
             
             'USER_ACTION_XP' => [
