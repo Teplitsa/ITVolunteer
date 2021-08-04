@@ -17,6 +17,7 @@ use \ITV\dao\Review;
 // from itv-backend
 use \ITV\models\MemberManager;
 use \ITV\models\MemberTasks;
+use \ITV\models\PortfolioWorkManager;
 
 /** Only lat symbols in filenames **/
 add_action('sanitize_file_name', 'itv_translit_sanitize', 0);
@@ -1832,7 +1833,8 @@ function itv_get_user_approved_as_doer_tasks($user_id) {
 }
 
 function itv_is_empty_user_profile($user_id) {
-    return count(itv_get_user_created_tasks($user_id)) + count(itv_get_user_approved_as_doer_tasks($user_id)) === 0;
+    $portfolio = PortfolioWorkManager();
+    return (count(itv_get_user_created_tasks($user_id)) + count(itv_get_user_approved_as_doer_tasks($user_id)) === 0) && $portfolio->count_member_portfolio_works($user_id) === 0;
 }
 
 function itv_is_empty_user_profile_as_author($user_id) {
@@ -1840,7 +1842,7 @@ function itv_is_empty_user_profile_as_author($user_id) {
 }
 
 function itv_is_empty_user_profile_as_doer($user_id) {
-    return count(itv_get_user_approved_as_doer_tasks($user_id)) === 0;
+    return count(itv_get_user_approved_as_doer_tasks($user_id)) === 0 && $portfolio->count_member_portfolio_works($user_id) === 0;
 }
 
 function itv_is_profile_info_enough($user_id) {
