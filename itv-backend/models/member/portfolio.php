@@ -103,7 +103,7 @@ class PortfolioWorkManager {
             'fields'            => 'ids',
         );
             
-        $query = new WP_Query($args);
+        $query = new \WP_Query($args);
         return $query->found_posts;    
     }
 }
