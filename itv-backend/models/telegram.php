@@ -13,7 +13,7 @@ class Telegram
     public function publish_task($task)
     {
         $title = apply_filters( 'the_title', $task->post_title );
-        $organizationName = tst_get_member_field( 'user_workplace', $task->post_author );
+        $organizationName = str_replace("\"", "", tst_get_member_field( 'user_workplace', $task->post_author ));
 
         $deadline_mysql = itv_get_task_deadline_date($task->ID, $task->post_date);
         $deadline = Date::get_localized_date_dd_month_name($deadline_mysql);
@@ -25,7 +25,7 @@ class Telegram
 
         $tags = wp_get_post_terms( $task->ID, 'post_tag');
         $tagsListString = empty($tags) ? "" : implode(", ", array_map(function($tag) {return $tag->name;}, $tags));
-        $tagsText = count($tags) > 1 ? "по направленям {$tagsListString}" : "по направлению {$tagsListString}";
+        $tagsText = count($tags) > 1 ? "по направлениям {$tagsListString}" : "по направлению {$tagsListString}";
 
         $content = \strip_tags( get_the_excerpt( $task ), self::ALLOWED_TAGS);
         $content = \preg_replace("/(\&nbsp;)?<a.*?\&hellip;<\/a>$/", "...", $content);
@@ -35,7 +35,7 @@ class Telegram
 
         $link = get_permalink( $task );
 
-        $message = "<b>Дедлайн {$deadline} - {$title}</b>\n\nДорогие пасечники,\n\nУ нас новая задача от {$organizationName} {$tagsText}\n\n"
+        $message = "<b>Дедлайн {$deadline} - {$title}</b>\n\nДорогие пасечники,\n\nУ нас новая задача от \"{$organizationName}\" {$tagsText}\n\n"
             . "Суть в следующем: {$content}\n\n"
             . $rewardText
             . "Если интересно, присоединяйтесь!\n";
