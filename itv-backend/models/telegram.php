@@ -13,7 +13,7 @@ class Telegram
     public function publish_task($task)
     {
         $title = apply_filters( 'the_title', $task->post_title );
-        $organizationName = str_replace("\"", "", tst_get_member_field( 'user_workplace', $task->post_author ));
+        $organizationName = str_replace("\"", "", htmlspecialchars_decode(tst_get_member_field( 'user_workplace', $task->post_author )));
 
         $deadline_mysql = itv_get_task_deadline_date($task->ID, $task->post_date);
         $deadline = Date::get_localized_date_dd_month_name($deadline_mysql);
