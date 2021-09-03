@@ -97,7 +97,9 @@ const ManageTask: React.FunctionComponent<{
     setStep(step + 1);
   };
 
-  const goToStep1 = () => {
+  const goToStep1 = (event: Event): void => {
+    event.preventDefault();
+    
     goNextStep();
   };
 

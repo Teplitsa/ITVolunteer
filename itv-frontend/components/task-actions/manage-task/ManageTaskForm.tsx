@@ -40,7 +40,13 @@ const ManageTaskForm: React.FunctionComponent<{
           }`.trim()}
           type="button"
           disabled={submitDisabled}
-          onClick={() => formRef.current?.dispatchEvent(new Event("submit"))}
+          onClick={() =>
+            formRef.current?.dispatchEvent(
+              new Event("submit", {
+                cancelable: true,
+              })
+            )
+          }
         >
           {submitTitle}
         </button>
