@@ -13,7 +13,7 @@
     "@zeit/next-sass": "^1.0.1",
     "bootstrap": "^4.5.3",
     "date-fns": "^2.16.1",
-    "easy-peasy": "^3.3.0",
+    "easy-peasy": "^4.1.0",
     "graphql": "^15.4.0",
     "graphql-request": "^3.3.0",
     "html-entities": "^2.1.0",
