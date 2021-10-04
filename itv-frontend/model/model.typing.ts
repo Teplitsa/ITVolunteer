@@ -813,7 +813,7 @@ export interface ITaskState {
   isApproved: boolean;
   pemalinkPath: string;
   nonceContactForm?: string;
-  hasCloseSuggestion?: Computed<ITaskModel>;
+  hasCloseSuggestion?: Computed<ITaskModel, any>;
   tags?: {
     nodes: Array<ITaskTag>;
   };
