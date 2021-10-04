@@ -4,7 +4,7 @@ const TeplitsaProjectLinks: React.FunctionComponent = (): ReactElement => {
   const links: Map<string, { title: string; description: string }> = new Map([
     [
       "https://kurs.te-st.ru/",
-      { title: "Теплица.Курсы", description: "для активистов/к и НКО" },
+      { title: "Теплица.Курсы", description: "Для активистов/к и НКО" },
     ],
     ["https://leyka.te-st.ru", { title: "Лейка", description: "Сбор пожертвований на сайте" }],
     ["https://knd.te-st.ru", { title: "Кандинский", description: "Сайт-конструктор для НКО" }],
