@@ -65,15 +65,22 @@ class ItvReviews {
 	
 	public function get_review_for_doer_and_task($doer_id, $task_id) {
 		global $wpdb;
-		return $wpdb->get_row(
-				$wpdb->prepare(
+
+		$review = $wpdb->get_row(
+			$wpdb->prepare(
 				"
 				SELECT * FROM $this->db_table
 				WHERE doer_id = %d AND task_id = %d
 				",
 				$doer_id, $task_id
-				)
+			)
 		);
+
+		if (!empty($review->message)) {
+			$review->message = stripslashes($review->message);
+		}
+
+		return $review;
 	}
 	
 	public function count_reviews_for_doer($doer_id) {
@@ -191,7 +198,8 @@ class ItvReviewsAuthor {
 
 	public function get_review_for_author_and_task($author_id, $task_id) {
 		global $wpdb;
-		return $wpdb->get_row(
+
+		$review = $wpdb->get_row(
 			$wpdb->prepare(
 				"
 				SELECT * FROM $this->db_table
@@ -200,6 +208,12 @@ class ItvReviewsAuthor {
 				$author_id, $task_id
 			)
 		);
+
+		if (!empty($review->message)) {
+			$review->message = stripslashes($review->message);
+		}
+
+		return $review;
 	}
 	
 	public function count_reviews_for_author($author_id) {
