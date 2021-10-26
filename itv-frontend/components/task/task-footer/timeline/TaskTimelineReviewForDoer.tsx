@@ -15,6 +15,7 @@ const TaskTimelineReviewForDoer: React.FunctionComponent = (): ReactElement => {
       <UserCardSmall {...author} />
       <div className="comment">
         {reviewer.message}
+        {reviewer.message && <span dangerouslySetInnerHTML={{ __html: reviewer.message }} />}
         <div className="rating-bar">
           <div className="stars">
             {Object.entries(Array(5).fill("reviewForDoerRating")).map(([i, key]) => {
