@@ -5,22 +5,22 @@ class TaskListFilter {
 	public function __construct() {
 	}
 
-    public function get_terms_with_subterms($tax, $parent_id=0, $with_sub_terms=true) {
-        return array_map(function($term) use ($tax, $with_sub_terms) {
+    public function get_terms_with_subterms($tax, $parent_id=0, $with_sub_terms=true, $args=[]) {
+        return array_map(function($term) use ($tax, $with_sub_terms, $args) {
             return [
                 'id' => $term->term_id,
                 'title' => $term->name,
                 'slug' => $term->slug,
-                'task_count' => $this->count_tasks_in_filter_option([
+                'task_count' => $this->count_tasks_in_filter_option(array_merge([
                     'tax_query' => array(
                         array(
                             'taxonomy' => $tax,
                             'field'    => 'term_id',
                             'terms'    => $term->term_id,
                         ),
-                    ),                                
-                ]),
-                'subterms' => $with_sub_terms ? $this->get_terms_with_subterms($tax, $term->term_id, false) : [],
+                    ),
+                ], $args)),
+                'subterms' => $with_sub_terms ? $this->get_terms_with_subterms($tax, $term->term_id, false, $args) : [],
             ];
         }, array_values(get_terms([
             'taxonomy' => $tax,
@@ -29,20 +29,29 @@ class TaskListFilter {
             'parent' => $parent_id, 
         ])));        
     }
+
+    public function create_filter_with_stats_by_status() {
+        $filter_with_stats_by_status = [];
+        $in_filter_task_status_list = ['publish', 'in_work', 'closed'];
+        foreach($in_filter_task_status_list as $status) {
+            $filter_with_stats_by_status[$status] = $this->create_filter_with_stats($status);
+        }
+        return $filter_with_stats_by_status;
+    }
 	
-	public function create_filter_with_stats() {
+	public function create_filter_with_stats($status) {
         $sections = [];
         
         $sections[] = [
             'id' => 'tags',
             'title' => 'Категории',
-            'items' => $this->get_terms_with_subterms('post_tag'),
+            'items' => $this->get_terms_with_subterms('post_tag', 0, true, ['post_status' => [$status]]),
         ];
     
         $sections[] = [
             'id' => 'ngo_tags',
             'title' => 'Специализация',
-            'items' => $this->get_terms_with_subterms('nko_task_tag'),
+            'items' => $this->get_terms_with_subterms('nko_task_tag', 0, true, ['post_status' => [$status]]),
         ];
         
         $sections[] = [
@@ -52,12 +61,13 @@ class TaskListFilter {
                 [
                     'id' => 'no-responses',
                     'title' => 'Нет откликов на задачу',
-                    'task_count' => $this->count_tasks_in_filter_option_no_reponses(),
+                    'task_count' => $this->count_tasks_in_filter_option_no_reponses($status),
                 ],
                 [
                     'id' => 'reward-exist',
                     'title' => 'Есть вознаграждение',
                     'task_count' => $this->count_tasks_in_filter_option([
+                        'post_status' => [$status],
                         'tax_query' => array(
                             array(
                                 'taxonomy' => 'reward',
@@ -82,12 +92,13 @@ class TaskListFilter {
                 [
                     'id' => 'author-checked',
                     'title' => 'Заказчик проверен',
-                    'task_count' => $this->count_tasks_in_filter_option_author_checked(),
+                    'task_count' => $this->count_tasks_in_filter_option_author_checked($status),
                 ],
                 [
                     'id' => 'for-paseka-members',
                     'title' => 'Только для Пасеки',
                     'task_count' => $this->count_tasks_in_filter_option([
+                        'post_status' => [$status],
                         'meta_query' => [
                             [
                                 'key' => ITV_POST_META_FOR_PASEKA_ONLY,
@@ -102,18 +113,26 @@ class TaskListFilter {
         return $sections;
 	}
 	
-    protected function count_tasks_in_filter_option_no_reponses() {
+    protected function count_tasks_in_filter_option_no_reponses($status = "") {
         global $wpdb;
+
+        if($status) {
+            $status = "'{$status}'";
+        }
+        else {
+            $status = "'publish', 'in_work', 'closed'";
+        }
     
         $sql = "SELECT COUNT(posts.ID) 
-    FROM {$wpdb->posts} AS posts 
-    LEFT JOIN {$wpdb->prefix}p2p AS p2p 
-        ON p2p.p2p_from = posts.ID 
-            AND p2p.p2p_type = 'task-doers'
-    WHERE posts.post_type = 'tasks' 
-        AND posts.post_status IN ('publish', 'in_work', 'closed')
-        AND posts.post_author NOT IN (%s) 
-        AND p2p.p2p_id IS NULL";
+            FROM {$wpdb->posts} AS posts 
+            LEFT JOIN {$wpdb->prefix}p2p AS p2p 
+                ON p2p.p2p_from = posts.ID 
+                    AND p2p.p2p_type = 'task-doers'
+            WHERE posts.post_type = 'tasks' 
+                AND posts.post_status IN ({$status})
+                AND posts.post_author NOT IN (%s) 
+                AND p2p.p2p_id IS NULL
+        ";
         return $wpdb->get_var($wpdb->prepare($sql, ACCOUNT_DELETED_ID));
     }
 	
@@ -128,15 +147,25 @@ class TaskListFilter {
         return $query->found_posts;
     }
 
-    protected function count_tasks_in_filter_option_author_checked() {
+    protected function count_tasks_in_filter_option_author_checked($status = "") {
         global $wpdb;
     
+        if($status) {
+            $status = "'{$status}'";
+        }
+        else {
+            $status = "'publish', 'in_work', 'closed'";
+        }
+
         $sql = "SELECT COUNT(posts.ID) 
-    FROM {$wpdb->posts} AS posts 
-    LEFT JOIN {$wpdb->prefix}usermeta AS um 
-        ON um.user_id = posts.post_author 
-            AND um.meta_key = 'activation_code' 
-    WHERE (um.meta_value = '' OR um.meta_value IS NULL) AND posts.post_author NOT IN (%s) ";
+            FROM {$wpdb->posts} AS posts 
+            LEFT JOIN {$wpdb->prefix}usermeta AS um 
+                ON um.user_id = posts.post_author 
+                    AND um.meta_key = 'activation_code' 
+            WHERE posts.post_type = 'tasks' 
+                AND posts.post_status IN ({$status})    
+                AND (um.meta_value = '' OR um.meta_value IS NULL) AND posts.post_author NOT IN (%s)
+        ";
         return $wpdb->get_var($wpdb->prepare($sql, ACCOUNT_DELETED_ID));
     }
     

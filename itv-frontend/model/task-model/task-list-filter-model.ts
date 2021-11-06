@@ -121,9 +121,9 @@ const taskListFilterActions: ITaskListFilterActions = {
     state.filterData = payload ? payload : [];
     state.isFilterDataLoaded = true;
   }),
-  loadFilterData: thunk(async actions => {
+  loadFilterData: thunk(async (actions, {taskStatus}) => {
     try {
-      const { sections } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter`)).json();
+      const { sections } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter?status=${taskStatus}`)).json();
 
       actions.setFilterData(sections);
     } catch (error) {

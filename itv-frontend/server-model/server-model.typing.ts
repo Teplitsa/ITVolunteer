@@ -5,5 +5,6 @@ export interface ExtendedRequest {
   db: Db;
   query: {
     limit?: number;
+    status?: string;
   }
 }

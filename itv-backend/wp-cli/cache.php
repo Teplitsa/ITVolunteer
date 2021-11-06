@@ -82,9 +82,9 @@ class Cache
 
     public function update_task_list_filter()
     {
-        $filter_sections = Task::get_filter_sections();
+        $filter_sections_by_status = Task::get_filter_sections();
 
-        if (!$filter_sections) {
+        if (!$filter_sections_by_status) {
 
             \WP_CLI::warning(__('No filter sections found.', 'itv-backend'));
 
@@ -94,10 +94,15 @@ class Cache
         $mongo_client = MongoClient::getInstance();
 
         $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->task_list_filter;
-
         $collection->drop();
 
-        $updateCacheResult = $collection->insertMany($filter_sections);
+        foreach($filter_sections_by_status as $task_status => $filter_sections) {
+            $collection = $mongo_client->{\ITV\models\CacheManager::STORAGE_NAME}->{"task_list_filter_{$task_status}"};
+
+            $collection->drop();
+
+            $updateCacheResult = $collection->insertMany($filter_sections);
+        }
 
         \WP_CLI::success(sprintf(__('%d filter section(s) successfully updated.', 'itv-backend'), $updateCacheResult->getInsertedCount()));
     }

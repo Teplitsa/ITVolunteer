@@ -53,19 +53,23 @@ class Auth {
     }
 
     public static function determine_current_user( $user_id ) {
-        if(strpos($_SERVER['REQUEST_URI'], "wp-cron.php") !== false) {
+        // error_log("tps_determine_current_user...");
+        // error_log("input user_id=" . $user_id);
+        // error_log("is_admin:" . is_admin());
+    
+        if((strpos($_SERVER['REQUEST_URI'], "/tps/v1/auth/") !== false)
+            || strpos($_SERVER['REQUEST_URI'], "wp-cron.php") !== false 
+            || (defined('WP_CLI') && boolval(WP_CLI)) 
+            || (is_admin() && !wp_doing_ajax())
+            || (strpos($_SERVER['REQUEST_URI'], "/simsim") !== false)
+            || (strpos($_SERVER['REQUEST_URI'], "/wp-admin") !== false)
+        ) {
             return $user_id;
         }
-
-        error_log("input user_id=" . $user_id);
-
-        if((strpos($_SERVER['REQUEST_URI'], "/itv/v1/auth/") !== false) || (defined('WP_CLI') && boolval(WP_CLI))) {
-            return $user_id;
-        }
-
+	
         if($user_id !== false) {
             return $user_id;
-        }
+        }	
 
         $valid_token = null;
         try {

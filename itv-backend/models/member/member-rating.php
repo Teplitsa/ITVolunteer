@@ -2,6 +2,8 @@
 namespace ITV\models;
 
 use \ITV\models\MemberTasks;
+use \ITV\dao\Review;
+use \ITV\models\UserXPModel;
 
 class MemberRatingDoers {
     const START_YEAR = 2015;
@@ -35,22 +37,39 @@ class MemberRatingDoers {
         $result = $wpdb->get_results( $wpdb->prepare($sql, $this->user_id) );
         
         $now_year = intval(date('Y'));
+        $points = (int) UserXPModel::instance()->get_user_xp($this->user_id);
+
         $wpdb->query('START TRANSACTION');
         try {
             for($year = self::START_YEAR; $year <= $now_year; $year++) {
                 $year_count = 0;
-                for($month = 0; $month <= 12; $month++) {
+                for($month = 1; $month <= 12; $month++) {
                     $month_str = sprintf('%02d', $month);
     
                     foreach($result as $row) {
                         if($row->action_month === $year . "-" . $month_str) {
                             $year_count += $row->solved_tasks_count;
-                            $this->store_rating($year, $month, $row->solved_tasks_count);
+
+                            $reviews_data = $this->get_reviews_data($year, $month);
+                            $rating_data = [
+                                'solved_tasks_count' => $year_count,
+                                'points' => $points,
+                            ];
+                            $rating_data = array_merge($rating_data, $reviews_data);
+                    
+                            $this->store_rating($year, $month, $rating_data);
                             break;
                         }
                     }
                     // $this->store_month_rating($year, $month);
                 }
+
+                $reviews_data = $this->get_reviews_data($year, 0);
+                $rating_data = [
+                    'solved_tasks_count' => $year_count,
+                    'points' => $points,
+                ];
+                $rating_data = array_merge($rating_data, $reviews_data);
 
                 $this->store_rating($year, 0, $year_count);
             }
@@ -69,24 +88,42 @@ class MemberRatingDoers {
             $solved_tasks_count = $this->member_tasks_manager->calc_member_solved_tasks_in_year($year);
         }
 
-        $this->store_rating($year, $month, $solved_tasks_count);
+        $reviews_data = $this->get_reviews_data($year, $month);
+        $points = (int) UserXPModel::instance()->get_user_xp($this->user_id);
+        $rating_data = [
+            'solved_tasks_count' => $solved_tasks_count,
+            'points' => $points,
+        ];
+        $rating_data = array_merge($rating_data, $reviews_data);
+
+        $this->store_rating($year, $month, $rating_data);
     }
 
     public function store_all_time_rating() {
         $solved_tasks_count = $this->member_tasks_manager->calc_member_solved_tasks();
-        $this->store_rating(0, 0, $solved_tasks_count);
+
+        $reviews_data = $this->get_reviews_data();
+        $points = (int) UserXPModel::instance()->get_user_xp($this->user_id);
+        $rating_data = [
+            'solved_tasks_count' => $solved_tasks_count,
+            'points' => $points,
+        ];
+        $rating_data = array_merge($rating_data, $reviews_data);
+
+        $this->store_rating(0, 0, $rating_data);
     }
 
-    public function store_rating($year, $month, $solved_tasks_count) {
+    public function store_rating($year, $month, $rating_data) {
         global $wpdb;
 
-        $res = $wpdb->replace($wpdb->prefix . self::TABLE, [
+        $result_rating_data = array_merge($rating_data, [
             'user_id' => $this->user_id,
             'year' => $year,
             'month' => $month,
-            'solved_tasks_count' => $solved_tasks_count,
             'updated_at' => current_time('mysql'),
         ]);
+
+        $res = $wpdb->replace($wpdb->prefix . self::TABLE, $result_rating_data);
 
         if($res === false) {
             \WP_CLI::error($wpdb->last_error);
@@ -120,39 +157,82 @@ class MemberRatingDoers {
 
         $table = self::TABLE;
         $sql = "update `{$wpdb->prefix}{$table}` as t3 
-            join (
+            LEFT JOIN (
                 SELECT t1.*, count(t2.user_id) AS count_before
                 FROM `{$wpdb->prefix}{$table}` as t1 
                 join {$wpdb->prefix}{$table} as t2 
                     on t2.year = t1.year
-                        and t2.month = t1.month
-                        and (t2.solved_tasks_count > t1.solved_tasks_count
+                        AND t2.month = t1.month
+                        AND (t2.solved_tasks_count > t1.solved_tasks_count
                         OR (
                             t2.solved_tasks_count = t1.solved_tasks_count 
-                            AND t2.user_id > t1.user_id
+                            AND t2.reviews_count > t1.reviews_count
+                            OR (
+                                t2.reviews_count = t1.reviews_count
+                                AND t2.reviews_rating > t1.reviews_rating
+                                OR (
+                                    t2.reviews_rating = t1.reviews_rating
+                                    AND t2.points > t1.points
+                                    OR (
+                                        t2.points = t1.points
+                                        AND t2.user_id < t1.user_id
+                                    )
+                                )
+                            )                            
                         ))
                 WHERE t1.year = %d and t1.month = %d group by t1.user_id
             ) as tstats
                 on tstats.user_id = t3.user_id
                     and tstats.year = t3.year 
                     and tstats.month = t3.month
-            SET t3.position = tstats.count_before + 1
+            SET t3.position = IF(tstats.count_before IS NULL, 1, tstats.count_before + 1)
             WHERE t3.year = %d and t3.month = %d";
-
-        $sql_champion = "update `{$wpdb->prefix}{$table}` 
-            SET position = 1
-            WHERE year = %d 
-                AND month = %d
-                AND solved_tasks_count > 0
-                AND position = 0";
 
         foreach($years as $year) {
             foreach($months as $month) {
                 echo "positions for: {$year}-{$month}\n";
                 $wpdb->query( $wpdb->prepare($sql, $year, $month, $year, $month) );
-                // echo $wpdb->prepare($sql_champion, $year, $month) . "\n\n";
-                $wpdb->query( $wpdb->prepare($sql_champion, $year, $month) );
             }
         }
+    }
+
+    public function get_reviews_data($year = null, $month = null) {
+        $query = Review::where([
+            'doer_id' => $this->user_id,
+        ]);
+
+        $time_add = '';
+        if($year) {
+            $time_add .= $year . '-';
+
+            if($month) {
+                $time_add .= sprintf('%02d', $month) . '-';
+            }
+        }
+
+        if($time_add) {
+            $query->where('time_add', 'LIKE', $time_add . '%');
+        }
+
+        $ratings = [];
+        $reviews_count = 0;
+        $reviews_as_doer = $query->get();
+        foreach ($reviews_as_doer as $review) {
+            if ($review['rating']) {
+                $reviews_count += 1;
+                $ratings[] = $review['rating'];
+            }
+
+            if ($review['communication_rating']) {
+                $ratings[] = $review['communication_rating'];
+            }
+        }
+
+        $reviews_rating = !empty($ratings) ? array_sum($ratings) / count($ratings) : 0;
+
+        return [
+            'reviews_count' => $reviews_count,
+            'reviews_rating' => $reviews_rating,
+        ];
     }
 }

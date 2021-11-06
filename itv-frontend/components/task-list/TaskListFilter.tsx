@@ -102,11 +102,14 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     // console.log("task list FRONT running...");
-    loadFilterData();
     loadTipClose();
     loadOptionCheck();
     loadOptionOpen();
   }, []);
+
+  useEffect(() => {
+    loadFilterData({taskStatus: optionCheck ? optionCheck.status : "publish"});
+  }, [optionCheck]);  
 
   useEffect(() => {
     if (!isFilterDataLoaded) {

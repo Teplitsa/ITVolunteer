@@ -60,6 +60,42 @@ class MemberRating
         }        
     }
 
+    public function update_db_reviews_points()
+    {
+        global $wpdb;
+
+        try {
+            $time_start = microtime(true);
+            \WP_CLI::line('Memory before anything: ' . memory_get_usage(true));
+
+            $table = MemberRatingDoers::TABLE;
+            $sql = "ALTER TABLE {$wpdb->prefix}{$table}
+                ADD `reviews_count` INT NOT NULL DEFAULT '0' AFTER `solved_tasks_count`, 
+                ADD `reviews_rating` DECIMAL(10,4) NOT NULL DEFAULT '0.0000' AFTER `reviews_count`, 
+                ADD `points` INT NOT NULL DEFAULT '0' AFTER `reviews_rating`";
+
+            // \WP_CLI::line($sql);
+            
+            $res = $wpdb->query($sql);
+            
+            if($res === false) {
+                \WP_CLI::error($wpdb->last_error);
+            }
+
+            \WP_CLI::line('DONE');
+        
+            //Final
+            \WP_CLI::line('Memory ' . memory_get_usage(true));
+            \WP_CLI::line('Total execution time in sec: ' . (microtime(true) - $time_start));
+
+            \WP_CLI::success(__('Table created.', 'itv-backend'));
+            
+        }
+        catch (Exception $ex) {
+            \WP_CLI::error($ex);
+        }        
+    }
+
     public function reset()
     {
         global $wpdb;

@@ -15,7 +15,7 @@ class Task extends Cacheable
     public static function get_filter_sections(): array
     {
         $task_list_filter = new \TaskListFilter();
-        $sections = $task_list_filter->create_filter_with_stats();
+        $sections = $task_list_filter->create_filter_with_stats_by_status();
 
         return $sections;
     }

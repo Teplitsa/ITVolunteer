@@ -1187,7 +1187,7 @@ export interface ITaskListFilterActions {
   setOptionOpen: Action<ITaskListFilterState, any>;
   saveOptionOpen: Action<ITaskListFilterState>;
   loadOptionOpen: Thunk<ITaskListFilterActions>;
-  loadFilterData: Thunk<ITaskListFilterActions>;
+  loadFilterData: Thunk<ITaskListFilterActions, {taskStatus: TaskStatus,}>;
   setStatusStats: Action<ITaskListFilterState, any>;
   setFilterData: Action<ITaskListFilterState, any>;
 }
