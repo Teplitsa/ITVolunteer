@@ -1333,6 +1333,7 @@ function itv_get_user_in_gql_format($user) {
         'organizationLogoFile' => itv_get_user_file($user->ID, 'user_company_logo'),
         'cover' => itv_member_cover_url( $user->ID ),
         'coverFile' => itv_get_user_file($user->ID, 'user_cover'),
+        'cvURL' => get_user_meta($user->ID, 'cv_url', true),
         'profileURL' => tst_get_member_url($user),
         'isAdmin' => user_can($user, 'manage_options'),
         'thankyouCount' => ThankyouModel::instance()->get_user_thankyou_count($user->ID),
@@ -1542,6 +1543,7 @@ function ajax_update_profile_v2() {
             )));
         } else {
             // Update another fields...
+            update_user_meta($member->ID, 'cv_url', filter_var($_POST['cv_url'], FILTER_VALIDATE_URL));
             update_user_meta($member->ID, 'description', filter_var($_POST['bio'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'user_workplace', filter_var($_POST['user_workplace'], FILTER_SANITIZE_STRING));
             update_user_meta($member->ID, 'user_workplace_desc', filter_var($_POST['user_workplace_desc'], FILTER_SANITIZE_STRING));

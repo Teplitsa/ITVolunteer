@@ -29,6 +29,7 @@ const sessionUserState: ISessionUser = {
   itvAvatarFile: null,
   cover: "",
   coverFile: null,
+  cvURL: "",
   authorReviewsCount: 0,
   solvedTasksCount: 0,
   doerReviewsCount: 0,
