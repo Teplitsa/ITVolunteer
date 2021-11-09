@@ -16,9 +16,14 @@
     width: 70px;
     height: 70px;
 
-    & [class*="member-avatar__tooltip"] {
+    & button[class*="member-avatar__tooltip"] {
       width: 20px;
       height: 20px;
+    }
+
+    & img[class*="member-avatar__tooltip"] {
+      width: 16px;
+      height: 16px;
     }
 
     &[class*="_paseka-member"] {
@@ -29,9 +34,14 @@
     width: 80px;
     height: 80px;
 
-    & [class*="member-avatar__tooltip"] {
+    & button[class*="member-avatar__tooltip"] {
       width: 20px;
       height: 20px;
+    }
+
+    & img[class*="member-avatar__tooltip"] {
+      width: 16px;
+      height: 16px;
     }
 
     &[class*="_paseka-member"] {
@@ -68,6 +78,8 @@
 
     &-partner-icon-image {
       display: block;
+      width: 36px;
+      height: 36px;
     }
 
     &-btn {
