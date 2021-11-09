@@ -207,11 +207,12 @@ class MemberRating
 
             if($all) {
                 $rating_calculator->store_all_periods_rating();
-                $rating_calculator->store_all_time_rating();
             }
             else {
                 $rating_calculator->store_month_rating($year, $month);
             }
+            
+            $rating_calculator->store_all_time_rating();
         }
 
         \WP_CLI::line("recalc positions...");
