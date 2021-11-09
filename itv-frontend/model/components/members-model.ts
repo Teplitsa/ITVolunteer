@@ -38,6 +38,7 @@ export const memberListItemQueriedFields: Array<keyof IMemberListItem> = [
   "ratingSolvedTasksPosition",
   "ratingSolvedTasksCount",
   "isPasekaMember",
+  "partnerIcon",
 ];
 
 const membersPageActions: IMembersPageActions = {

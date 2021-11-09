@@ -415,6 +415,12 @@ function itv_register_user_graphql_fields() {
                     return itv_is_user_partner($user->userId);
                 }
             ],
+            'partnerIcon' => [
+                'type' => 'PartnerIcon',
+                'resolve' => function ($user) {
+                    return \ITV\models\PartnerIcon::get_icon($user->userId, \ITV\models\MemberManager::$META_PARTNER_ICON);
+                }
+            ],
             'isAdmin' => [
                 'type' => 'Bool',
                 'resolve' => function ($user) {
@@ -595,6 +601,29 @@ function itv_register_user_graphql_fields() {
     );
 
 }
+
+add_action('graphql_register_types', 'itv_register_partner_icon_type');
+function itv_register_partner_icon_type()
+{
+    register_graphql_object_type('PartnerIcon', [
+        'description' => __('Partner Icon', 'tst'),
+        'fields' => [
+            'title' => [
+                'type' => 'String',
+                'description' => __('Title', 'tst'),
+            ],
+            'description' => [
+                'type' => 'String',
+                'description' => __('Description', 'tst'),
+            ],
+            'url' => [
+                'type' => 'String',
+                'description' => __('Icon URL', 'tst'),
+            ],
+        ],
+    ]);
+}
+
 
 add_filter('graphql_data_is_private', "itv_graphql_user_private_filter", 10, 6);
 function itv_graphql_user_private_filter($is_private, $model_name, $data, $visibility, $owner, $current_user) {

@@ -29,6 +29,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   itvAvatar: "",
   itvAvatarFile: null,
   isPasekaMember: false,
+  partnerIcon: null,
   rating: 0,
   reviewsCount: 0,
   xp: 0,
@@ -91,23 +92,22 @@ export const graphqlQuery: {
 } = {
   member: `query getMember($slug: ID!) {
     user(id: $slug, idType: SLUG) {
-      ${Object.keys(memberAccountPageState)
-    .filter(
-      key =>
-        ![
-          "template",
-          "notificationStats",
-          "notifications",
-          "taskStats",
-          "tasks",
-          "reviews",
-          "portfolio",
-          "profileFillStatus",
-          "itvAvatarFile",
-          "coverFile",
-        ].includes(key)
-    )
-    .join("\n")}
+      ${
+  utils.customizeGraphQLQueryFields(memberAccountPageState, {
+    partnerIcon: "{url title description}"
+  }, [
+    "template",
+    "notificationStats",
+    "notifications",
+    "taskStats",
+    "tasks",
+    "reviews",
+    "portfolio",
+    "profileFillStatus",
+    "itvAvatarFile",
+    "coverFile",
+    "partnerIcon",
+  ]).join("\n")}
     }
   }`,
   memberTasks: `query getMemberTasks($slug: String!, $role: String = "", $page: Int!) {

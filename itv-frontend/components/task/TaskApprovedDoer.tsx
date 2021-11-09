@@ -27,6 +27,7 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
     solvedTasksCount,
     doerReviewsCount,
     isPasekaMember,
+    partnerIcon,
   } = approvedDoer;
 
   const declineFn = manageDoer.bind(null, {
@@ -54,7 +55,10 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
                   backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
                 }}
               >
-                {isPasekaMember && <img src={IconPaseka} className="itv-approved" />}
+                {partnerIcon 
+                  ? <img src={partnerIcon.url} className="itv-approved" />
+                  : isPasekaMember && <img src={IconPaseka} className="itv-approved" />
+                }
               </div>
               <div className="details">
                 <a className="name" href={toProfile}>

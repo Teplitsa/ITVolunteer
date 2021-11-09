@@ -321,3 +321,13 @@ export async function sessionFetch(url, session: ISessionState, options = {}) {
   }
   return await fetch(url, options);
 }
+
+export function customizeGraphQLQueryFields(anyState: any, customFields: any, filterexFields?: Array<string>): Array<string> {
+  return [
+    ...Object.keys(anyState).filter(
+      key =>
+        !Object.keys(customFields).includes(key) && (!filterexFields || !filterexFields.includes(key))
+    ),
+    ...Object.keys(customFields).map(fieldName => `${fieldName} ${customFields[fieldName] ?? ""}`)
+  ];
+}

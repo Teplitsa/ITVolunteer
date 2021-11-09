@@ -34,6 +34,7 @@ const sessionUserState: ISessionUser = {
   solvedTasksCount: 0,
   doerReviewsCount: 0,
   isPasekaMember: false,
+  partnerIcon: null,
   isPartner: false,
   organizationName: "",
   organizationLogo: "",

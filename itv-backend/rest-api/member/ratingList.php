@@ -8,7 +8,7 @@ class RatingLIst {
     private static $query_id = 'ratingList';
 
     public static function add_routes($server) {
-        error_log('register_rest_route...');
+        // error_log('register_rest_route...');
 
         register_rest_route( 'itv/v1', '/member/' . self::$query_id . '/(?P<role>[a-z]+)', [
             'methods' => \WP_REST_Server::READABLE,
@@ -38,11 +38,11 @@ class RatingLIst {
         $name = $request->get_param('name');
 
         $query_id = $request->get_param('query_id');
-        error_log("query_id: " . $query_id );
-        error_log("role: " . $role );
-        error_log("month: " . $month );
-        error_log("year: " . $year );
-        error_log("name: " . $name );
+        // error_log("query_id: " . $query_id );
+        // error_log("role: " . $role );
+        // error_log("month: " . $month );
+        // error_log("year: " . $year );
+        // error_log("name: " . $name );
 
         if($query_id !== self::$query_id) {
             return $args;

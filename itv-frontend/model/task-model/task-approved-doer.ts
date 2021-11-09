@@ -1,4 +1,5 @@
 import { ITaskApprovedDoer } from "../model.typing";
+import * as utils from "../../utilities/utilities";
 
 const taskApprovedDoer: ITaskApprovedDoer = {
   id: "",
@@ -10,6 +11,9 @@ const taskApprovedDoer: ITaskApprovedDoer = {
   solvedTasksCount: 0,
   doerReviewsCount: 0,
   isPasekaMember: false,
+  partnerIcon: null,
 };
 
-export const queriedFields = Object.keys(taskApprovedDoer) as Array<keyof ITaskApprovedDoer>;
+export const queriedFields = utils.customizeGraphQLQueryFields(taskApprovedDoer, {
+  partnerIcon: "{url title description}"
+}) as Array<keyof ITaskApprovedDoer>;

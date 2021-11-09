@@ -1,4 +1,5 @@
 import { ITaskAuthor } from "../model.typing";
+import * as utils from "../../utilities/utilities";
 
 const taskAuthor: ITaskAuthor = {
   id: "",
@@ -20,4 +21,4 @@ const taskAuthor: ITaskAuthor = {
   registrationDate: 0,
 };
 
-export const queriedFields = Object.keys(taskAuthor) as Array<keyof ITaskAuthor>;
+export const queriedFields = utils.customizeGraphQLQueryFields(taskAuthor, {partnerIcon: "{url title description}"}) as Array<keyof ITaskAuthor>;

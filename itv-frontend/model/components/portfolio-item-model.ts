@@ -25,7 +25,8 @@ export const portfolioItemState: IPortfolioItemState = {
     xp: 0,
     itvRole: "doer",
     itvRoleTitle: "Волонтер",
-    isPasekaMember: false
+    isPasekaMember: false,
+    partnerIcon: null,
   },
   item: portfolioItemFormState,
 };

@@ -56,14 +56,19 @@ class Auth {
         // error_log("tps_determine_current_user...");
         // error_log("input user_id=" . $user_id);
         // error_log("is_admin:" . is_admin());
+        // error_log("wp_doing_ajax:" . wp_doing_ajax());        
     
         if((strpos($_SERVER['REQUEST_URI'], "/tps/v1/auth/") !== false)
             || strpos($_SERVER['REQUEST_URI'], "wp-cron.php") !== false 
             || (defined('WP_CLI') && boolval(WP_CLI)) 
-            || (is_admin() && !wp_doing_ajax())
-            || (strpos($_SERVER['REQUEST_URI'], "/simsim") !== false)
-            || (strpos($_SERVER['REQUEST_URI'], "/wp-admin") !== false)
+            || (
+                (is_admin()
+                    || (strpos($_SERVER['REQUEST_URI'], "/simsim") !== false)
+                    || (strpos($_SERVER['REQUEST_URI'], "/wp-admin") !== false)
+                ) && !wp_doing_ajax()
+            )
         ) {
+            // error_log("return original user_id...");
             return $user_id;
         }
 	
@@ -83,7 +88,7 @@ class Auth {
         }
         catch(\Exception $ex) {}
 
-        error_log("result user_id=" . $user_id);
+        // error_log("result user_id=" . $user_id);
         return $user_id;
     }
     

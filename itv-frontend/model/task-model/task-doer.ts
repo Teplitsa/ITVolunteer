@@ -1,4 +1,5 @@
 import { ITaskDoer } from "../model.typing";
+import * as utils from "../../utilities/utilities";
 
 const taskDoer: ITaskDoer = {
   id: "",
@@ -10,9 +11,12 @@ const taskDoer: ITaskDoer = {
   solvedTasksCount: 0,
   doerReviewsCount: 0,
   isPasekaMember: false,
+  partnerIcon: null,
 };
 
-export const queriedFields = Object.keys(taskDoer) as Array<keyof ITaskDoer>;
+export const queriedFields = utils.customizeGraphQLQueryFields(taskDoer, {
+  partnerIcon: "{url title description}"
+}) as Array<keyof ITaskDoer>;
 
 export const graphqlQuery = {
   doersRequest: `

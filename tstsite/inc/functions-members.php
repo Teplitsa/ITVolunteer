@@ -1327,6 +1327,7 @@ function itv_get_user_in_gql_format($user) {
         'totalReviewsCount' => intval(ItvReviewsAuthor::instance()->count_author_reviews( $user->ID )) + intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
         'isPasekaMember' => $members->is_paseka_member($user->ID),
+        'partnerIcon' => \ITV\models\PartnerIcon::get_icon($user->ID, \ITV\models\MemberManager::$META_PARTNER_ICON),
         'organizationName' => tst_get_member_field( 'user_workplace', $user->ID ),
         'organizationDescription' => tst_get_member_field( 'user_workplace_desc', $user->ID ),
         'organizationLogo' => tst_get_member_user_company_logo_src( $user->ID ),

@@ -24,6 +24,7 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     solvedTasksCount,
     doerReviewsCount,
     isPasekaMember,
+    partnerIcon,
   } = doer;
   const approveFn = manageDoer.bind(null, {
     action: "approve-candidate",
@@ -73,7 +74,10 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
               : `url(${MemberAvatarDefault})`,
           }}
         >
-          {isPasekaMember && <img src={IconPaseka} className="itv-approved" />}
+          {partnerIcon 
+            ? <img src={partnerIcon.url} className="itv-approved" />
+            : isPasekaMember && <img src={IconPaseka} className="itv-approved" />
+          }
         </div>
         <div className="details">
           <a className="name" href={toProfile}>

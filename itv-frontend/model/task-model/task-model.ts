@@ -1028,6 +1028,7 @@ const taskThunks: ITaskThunks = {
           solvedTasksCount,
           doerReviewsCount,
           isPasekaMember,
+          partnerIcon,
         },
       },
       components: {
@@ -1044,6 +1045,7 @@ const taskThunks: ITaskThunks = {
       solvedTasksCount,
       doerReviewsCount,
       isPasekaMember,
+      partnerIcon,
     };
     const action = "add-candidate";
     const formData = new FormData();

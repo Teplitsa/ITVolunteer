@@ -42,14 +42,14 @@ const MemberAvatar: React.FunctionComponent<{
       />
       {partnerIcon ? (
           <div className="member-avatar__tooltip member-avatar__tooltip-partner-icon">
-            <img
-              className={"member-avatar__tooltip-partner-icon-image"}
-              src={partnerIcon.url}
-              alt={partnerIcon.title}
-            />
             <Tooltip>
-              <button className="member-avatar__tooltip-btn" type="button" data-tooltip-btn={true} />
-              <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>{partnerIcon.title}</div>
+              <img
+                className={"member-avatar__tooltip-btn member-avatar__tooltip-partner-icon-image"}
+                src={partnerIcon.url}
+                alt={partnerIcon.title}
+                data-tooltip-btn={true}
+              />
+              <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>{partnerIcon.description}</div>
             </Tooltip>
           </div>
         ) : isPasekaMember && (

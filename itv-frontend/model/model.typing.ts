@@ -309,6 +309,7 @@ export interface IComponentsState {
 
 export type IPartnerIconState = {
   title: string;
+  description: string;
   url: string;
 };
 
