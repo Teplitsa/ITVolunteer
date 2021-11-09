@@ -7,33 +7,35 @@
   height: 160px;
   border-radius: 50%;
   box-sizing: border-box;
+  position: relative;
 
   &_paseka-member {
-    position: relative;
     border: 5px solid $color-main;
   }
   &_medium-size-image {
     width: 70px;
     height: 70px;
 
+    & [class*="member-avatar__tooltip"] {
+      width: 20px;
+      height: 20px;
+    }
+
     &[class*="_paseka-member"] {
       border: 3px solid $color-main;
-      & [class*="__tooltip"] {
-        width: 20px;
-        height: 20px;
-      }
     }
   }
   &_medium-plus-size-image {
     width: 80px;
     height: 80px;
 
+    & [class*="member-avatar__tooltip"] {
+      width: 20px;
+      height: 20px;
+    }
+
     &[class*="_paseka-member"] {
       border: 3px solid $color-main;
-      & [class*="__tooltip"] {
-        width: 20px;
-        height: 20px;
-      }
     }
   }
   &_default-image {
