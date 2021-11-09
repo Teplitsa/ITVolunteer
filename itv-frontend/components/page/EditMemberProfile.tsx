@@ -33,6 +33,7 @@ const EditMemberProfile: React.FunctionComponent<{
 
     profile.append("first_name", user.firstName);
     profile.append("last_name", user.lastName);
+    profile.append("cv_url", user.cvURL);
     profile.append("user_workplace", user.organizationName);
     profile.append("user_workplace_desc", user.organizationDescription);
     profile.append("user_website", user.organizationSite);
@@ -83,6 +84,18 @@ const EditMemberProfile: React.FunctionComponent<{
         context: "error",
         text: "Введите фамилию",
       });
+    }
+
+    if (formData.get("cv_url").trim()) {
+      try {
+        new URL(formData.get("cv_url"));
+      } catch (error) {
+        isValid = false;
+        addSnackbar({
+          context: "error",
+          text: "Ссылка на резюме невалидна.",
+        });
+      }
     }
 
     if (formData.get("user_website").trim()) {
@@ -209,6 +222,17 @@ const EditMemberProfile: React.FunctionComponent<{
                   />
                 </div>
               )}
+
+              <div className="auth-page-form__group">
+                <label className="auth-page-form__label">Ссылка на резюме</label>
+                <input
+                  className="form__control_input form__control_full-width auth-page-form__control-input"
+                  type="text"
+                  name="cv_url"
+                  maxLength={500}
+                  defaultValue={stateFormData?.get("cv_url") ?? ""}
+                />
+              </div>
 
               <div className="auth-page-form__splitter">
                 <div />

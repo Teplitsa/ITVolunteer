@@ -96,6 +96,7 @@ export interface ISessionUser {
   itvAvatarFile: any;
   cover: string;
   coverFile: any;
+  cvURL: string;
   authorReviewsCount: number;
   solvedTasksCount: number;
   doerReviewsCount: number;
