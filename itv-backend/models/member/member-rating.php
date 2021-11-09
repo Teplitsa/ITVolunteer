@@ -163,23 +163,31 @@ class MemberRatingDoers {
                 join {$wpdb->prefix}{$table} as t2 
                     on t2.year = t1.year
                         AND t2.month = t1.month
-                        AND (t2.solved_tasks_count > t1.solved_tasks_count
-                        OR (
-                            t2.solved_tasks_count = t1.solved_tasks_count 
-                            AND t2.reviews_count > t1.reviews_count
+                        AND (
+                            t2.solved_tasks_count > t1.solved_tasks_count
                             OR (
-                                t2.reviews_count = t1.reviews_count
-                                AND t2.reviews_rating > t1.reviews_rating
-                                OR (
-                                    t2.reviews_rating = t1.reviews_rating
-                                    AND t2.points > t1.points
+                                t2.solved_tasks_count = t1.solved_tasks_count 
+                                AND (
+                                    t2.reviews_count > t1.reviews_count
                                     OR (
-                                        t2.points = t1.points
-                                        AND t2.user_id < t1.user_id
+                                        t2.reviews_count = t1.reviews_count
+                                        AND (
+                                            t2.reviews_rating > t1.reviews_rating
+                                            OR (
+                                                t2.reviews_rating = t1.reviews_rating
+                                                AND (
+                                                    t2.points > t1.points
+                                                    OR (
+                                                        t2.points = t1.points
+                                                        AND t2.user_id < t1.user_id
+                                                    )
+                                                )
+                                            )
+                                        )
                                     )
                                 )
-                            )                            
-                        ))
+                            )
+                        )
                 WHERE t1.year = %d and t1.month = %d group by t1.user_id
             ) as tstats
                 on tstats.user_id = t3.user_id
