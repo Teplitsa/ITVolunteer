@@ -23,6 +23,7 @@ export const memberAccountPageState: IMemberAccountPageState = {
   template: "volunteer",
   cover: "",
   coverFile: null,
+  cvURL: "",
   name: "",
   username: "",
   fullName: "",
