@@ -1,4 +1,7 @@
 import { ReactElement } from "react";
+import {
+  IPartnerIconState,
+} from "../model/model.typing";
 import { convertObjectToClassName } from "../utilities/utilities";
 import Tooltip from "./global-scripts/Tooltip";
 import tooltipStyles from "../assets/sass/modules/Tooltip.module.scss";
@@ -9,7 +12,8 @@ const MemberAvatar: React.FunctionComponent<{
   memberFullName?: string;
   size?: "large" | "medium" | "medium-plus" | "small";
   isPasekaMember?: boolean;
-}> = ({ memberAvatar, memberFullName = "", size = "", isPasekaMember = false }): ReactElement => {
+  partnerIcon?: IPartnerIconState;
+}> = ({ memberAvatar, memberFullName = "", size = "", isPasekaMember = false, partnerIcon = null }): ReactElement => {
   const isDefaultAvatar = !memberAvatar || memberAvatar.search(/temp-avatar\.png/) !== -1;
 
   return (
@@ -36,16 +40,29 @@ const MemberAvatar: React.FunctionComponent<{
               : memberFullName
         }
       />
-      {isPasekaMember && (
-        <div className="member-avatar__tooltip">
-          <Tooltip>
-            <button className="member-avatar__tooltip-btn" type="button" data-tooltip-btn={true} />
-            <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>
-              Участник «Пасеки» — сообщества экспертов по работе с некоммерческими организациями
-            </div>
-          </Tooltip>
-        </div>
-      )}
+      {partnerIcon ? (
+          <div className="member-avatar__tooltip member-avatar__tooltip-partner-icon">
+            <img
+              className={"member-avatar__tooltip-partner-icon-image"}
+              src={partnerIcon.url}
+              alt={partnerIcon.title}
+            />
+            <Tooltip>
+              <button className="member-avatar__tooltip-btn" type="button" data-tooltip-btn={true} />
+              <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>{partnerIcon.title}</div>
+            </Tooltip>
+          </div>
+        ) : isPasekaMember && (
+          <div className="member-avatar__tooltip">
+            <Tooltip>
+              <button className="member-avatar__tooltip-btn" type="button" data-tooltip-btn={true} />
+              <div className={tooltipStyles["tooltip__component-body"]} data-tooltip-body={true}>
+                Участник «Пасеки» — сообщества экспертов по работе с некоммерческими организациями
+              </div>
+            </Tooltip>
+          </div>
+        )
+      }
     </div>
   );
 };

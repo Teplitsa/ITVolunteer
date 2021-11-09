@@ -1,0 +1,17 @@
+[
+  {
+    "title": "SkillFactory",
+    "content": "Онлайн-школа Data Science, программирования и аналитики данных",
+    "thumbnail": "/init/partner_icons/assets/img/skillfactory.png"
+  },
+  {
+    "title": "Skillbox",
+    "content": "Студент образовательной платформы Skillbox",
+    "thumbnail": "/init/partner_icons/assets/img/skillbox.png"
+  },
+  {
+    "title": "Contented",
+    "content": "Онлайн-школа дизайна",
+    "thumbnail": "/init/partner_icons/assets/img/contented.png"
+  }
+]

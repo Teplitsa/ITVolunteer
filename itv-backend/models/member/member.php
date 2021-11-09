@@ -6,6 +6,7 @@ use \ITV\dao\ReviewAuthor;
 use \ITV\dao\Review;
 
 use \ITV\models\MemberTasks;
+use \ITV\models\PartnerIcon;
 
 class Member
 {
@@ -35,6 +36,7 @@ class MemberManager
 {
     public static $meta_role = 'itv_role';
     public static $meta_telegram_chat_banner = 'hide_telegram_chat_banner';
+    public static $META_PARTNER_ICON = 'partner_icon';
 
     public static $rest_context_view_card = 'view_card';
 
@@ -56,6 +58,7 @@ class MemberManager
     public static $FIELD_IS_HYBRID = 'isHybrid';
     public static $FIELD_RATING_SOLVED_TASKS_COUNT = 'ratingSolvedTasksCount';
     public static $FIELD_RATING_SOLVED_TASKS_POSITION = 'ratingSolvedTasksPosition';
+    public static $FIELD_PARTNER_ICON = 'partnerIcon';
 
     private function __lang()
     {
@@ -193,6 +196,10 @@ class MemberManager
 
             case self::$FIELD_RATING_SOLVED_TASKS_POSITION:
                 $value = 0;
+                break;
+
+            case self::$FIELD_PARTNER_ICON:
+                $value = PartnerIcon::get_icon($user_id, self::$META_PARTNER_ICON);
                 break;
         }
 

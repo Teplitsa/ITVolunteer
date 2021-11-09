@@ -100,6 +100,7 @@ export interface ISessionUser {
   solvedTasksCount: number;
   doerReviewsCount: number;
   isPasekaMember: boolean;
+  partnerIcon: IPartnerIconState;
   isPartner: boolean;
   organizationName: string;
   organizationLogo: string;
@@ -305,6 +306,11 @@ export interface IComponentsState {
  * Members
  */
 
+export type IPartnerIconState = {
+  title: string;
+  url: string;
+};
+
 export interface IMembersPageModel
   extends IMembersPageState,
     IMembersPageActions,
@@ -321,6 +327,7 @@ export interface IMemberListItem {
   ratingSolvedTasksPosition?: number;
   ratingSolvedTasksCount?: number;
   isPasekaMember?: boolean;
+  partnerIcon?: IPartnerIconState;
 }
 
 export interface IMemberListFilter {
@@ -490,6 +497,7 @@ export interface IMemberAccountPageState {
   };
   isNeedAttentionPanelClosed?: boolean;
   isPasekaMember?: boolean;
+  partnerIcon?: IPartnerIconState;
 }
 
 export interface IMemberAccountPageActions {
@@ -644,6 +652,7 @@ export interface IPortfolioItemAuthor {
   itvRole: "customer" | "doer";
   itvRoleTitle: "Заказчик" | "Волонтер";
   isPasekaMember?: boolean;
+  partnerIcon?: IPartnerIconState;
 }
 
 export interface IPortfolioItemState {
@@ -864,6 +873,7 @@ export interface ITaskApprovedDoer {
   solvedTasksCount: number;
   doerReviewsCount: number;
   isPasekaMember: boolean;
+  partnerIcon: IPartnerIconState;
 }
 
 export interface ITaskAuthor {
@@ -896,6 +906,7 @@ export interface ITaskDoer {
   solvedTasksCount: number;
   doerReviewsCount: number;
   isPasekaMember: boolean;
+  partnerIcon: IPartnerIconState;
 }
 
 export interface ITaskComment {
@@ -956,6 +967,7 @@ export interface ITaskTimelineItemDoer {
   doerReviewsCount: string;
   isPartner: string;
   isPasekaMember: boolean;
+  partnerIcon: IPartnerIconState;
   organizationName: string;
   organizationDescription: string;
   organizationLogo: string;

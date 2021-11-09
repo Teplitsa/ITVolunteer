@@ -37,6 +37,7 @@ const MemberListItem: React.FunctionComponent<{
               memberAvatar: member.itvAvatar,
               memberFullName: member.fullName,
               isPasekaMember: member.isPasekaMember,
+              partnerIcon: member.partnerIcon,
               size: "medium",
             }}
           />

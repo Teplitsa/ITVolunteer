@@ -31,6 +31,7 @@ require_once(get_theme_file_path() . '/models/news/news.php');
 require_once(get_theme_file_path() . '/models/advantage/advantage.php');
 require_once(get_theme_file_path() . '/models/faq/faq.php');
 require_once(get_theme_file_path() . '/models/partner/partner.php');
+require_once(get_theme_file_path() . '/models/partner/partner-icon.php');
 require_once(get_theme_file_path() . '/models/review/review.php');
 require_once(get_theme_file_path() . '/models/stats/stats.php');
 require_once(get_theme_file_path() . '/models/member/member-rating.php');
@@ -43,6 +44,7 @@ require_once(get_theme_file_path() . '/post-types/platform_advantage.php');
 require_once(get_theme_file_path() . '/post-types/faq.php');
 require_once(get_theme_file_path() . '/post-types/review.php');
 require_once(get_theme_file_path() . '/post-types/platform_partner.php');
+require_once(get_theme_file_path() . '/post-types/partner_icon.php');
 
 // taxonomies
 require_once(get_theme_file_path() . '/taxonomies/platform_user_role.php');
@@ -64,6 +66,7 @@ require_once(get_theme_file_path() . '/wp-cli/insert_platform_user_role_terms.ph
 require_once(get_theme_file_path() . '/wp-cli/load_platform_advantages.php');
 require_once(get_theme_file_path() . '/wp-cli/load_faqs.php');
 require_once(get_theme_file_path() . '/wp-cli/load_platform_partners.php');
+require_once(get_theme_file_path() . '/wp-cli/load_partner_icons.php');
 require_once(get_theme_file_path() . '/wp-cli/load_reviews.php');
 require_once(get_theme_file_path() . '/wp-cli/member_rating.php');
 require_once(get_theme_file_path() . '/wp-cli/update_rewards_v2.php');

@@ -10,12 +10,13 @@ const MemberCardSmallBage: React.FunctionComponent = (): ReactElement => {
     fullName: memberFullName,
     itvRoleTitle: memberRole,
     isPasekaMember,
+    partnerIcon,
   } = useStoreState(store => store.components.portfolioItem.author);
 
   return (
     <div className="member-card-small__bage">
       <div className="member-card-small__avatar">
-        <MemberAvatar {...{ memberAvatar, memberFullName, size: "medium-plus", isPasekaMember }} />
+        <MemberAvatar {...{ memberAvatar, memberFullName, size: "medium-plus", isPasekaMember, partnerIcon, }} />
       </div>
       <div className="member-card-small__name">
         <Link href="/members/[username]" as={`/members/${memberSlug}`}>

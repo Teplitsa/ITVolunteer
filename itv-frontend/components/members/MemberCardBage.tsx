@@ -12,6 +12,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
     fullName: memberFullName,
     organizationName,
     isPasekaMember,
+    partnerIcon,
   } = useStoreState(store => store.components.memberAccount);
   const uploadUserAvatarRequest = useStoreActions(
     actions => actions.components.memberAccount.uploadUserAvatarRequest
@@ -31,7 +32,7 @@ const MemberCardBage: React.FunctionComponent = (): ReactElement => {
   return (
     <div className="member-card__bage">
       <div className="member-card__avatar">
-        <MemberAvatar {...{ memberAvatar, memberFullName, size: "large", isPasekaMember }} />
+        <MemberAvatar {...{ memberAvatar, memberFullName, size: "large", isPasekaMember, partnerIcon }} />
         {isAccountOwner && (
           <>
             <button
