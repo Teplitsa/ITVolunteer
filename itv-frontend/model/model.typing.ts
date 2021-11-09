@@ -437,6 +437,7 @@ export interface IMemberAccountPageState {
   template: MemberAccountTemplate;
   cover?: string;
   coverFile?: any;
+  cvURL: string;
   name: string;
   username: string;
   fullName: string;

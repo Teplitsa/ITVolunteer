@@ -333,6 +333,13 @@ function itv_register_user_graphql_fields() {
                     return null;                    
                 },
             ],
+            'cvURL' => [
+                'type'        => 'String',
+                'description' => __( 'User CV URL', 'tst' ),
+                'resolve'     => function($user) {
+                    return get_user_meta($user->userId, 'cv_url', true);                    
+                },
+            ],
             'memberRole' => [
                 'type' => 'String',
                 'description' => __( 'User role (hero, volunteer, donee or activist)', 'tst' ),
