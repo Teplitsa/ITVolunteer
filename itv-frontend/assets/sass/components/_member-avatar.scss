@@ -73,13 +73,15 @@
     text-align: left;
 
     &-partner-icon {
+      width: 36px;
+      height: 36px;
       background: none;
+      right: 4px;
+      bottom: 4px;
     }
 
     &-partner-icon-image {
       display: block;
-      width: 36px;
-      height: 36px;
     }
 
     &-btn {
