@@ -123,7 +123,7 @@ const taskListFilterActions: ITaskListFilterActions = {
   }),
   loadFilterData: thunk(async (actions, {taskStatus}) => {
     try {
-      const { sections } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter?status=${taskStatus}`)).json();
+      const { sections } = await (await utils.tokenFetch(`${process.env.BaseUrl}/api/v1/cache/tasks/filter?status=${taskStatus ?? "publish"}`)).json();
 
       actions.setFilterData(sections);
     } catch (error) {
