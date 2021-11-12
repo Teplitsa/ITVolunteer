@@ -8,18 +8,17 @@ const Stats: React.FunctionComponent = (): ReactElement => {
     try {
       fetch(`${process.env.BaseUrl}/api/v1/cache/stats`)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           response.json()
             .then((statsData) => {
-              console.log(statsData);
-              setStats(statsData);
+              // console.log(statsData);
+              setStats(statsData.stats);
             });
         });
 
     } catch (error) {
       console.error("Failed to fetch the stats.");
     }
-
   }, []);
 
   return (
