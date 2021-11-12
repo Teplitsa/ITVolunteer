@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import Link from "next/link";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import MemberCardBage from "components/members/MemberCardBage";
+import MemberCvLink from "components/members/MemberCvLink";
 import MemberStats from "components/MemberStats";
 import MemberCardOrganization from "components/members/MemberCardOrganization";
 import MemberCardBottom from "components/members/MemberCardBottom";
@@ -20,6 +21,7 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
     template: memberAccountTemplate,
     isEmptyProfileAsDoer,
     isEmptyProfileAsAuthor,
+    cvURL,
   } = useStoreState(state => state.components.memberAccount);
   const giveThanksRequest = useStoreActions(
     actions => actions.components.memberAccount.giveThanksRequest
@@ -36,11 +38,12 @@ const MemberCard: React.FunctionComponent = (): ReactElement => {
               rating,
               reviewsCount,
               xp,
-              withBottomdivider: true,
+              withBottomdivider: cvURL ? false : true,
               align: "center",
             }}
           />
         )}
+        <MemberCvLink />
         {organizationName && <MemberCardOrganization />}
         {isAccountOwner && profileFillStatus?.isProfileInfoEnough === false && (
           <div className="member-card__null-add-information">

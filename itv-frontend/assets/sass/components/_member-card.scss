@@ -49,6 +49,23 @@
     font: 500 13px/20px "IBM Plex Sans", sans-serif;
     color: $color-gray-dark-lg;
   }
+  &__cv {
+    border-bottom: 1px solid $color-gray-light-lg;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    text-align: center;
+
+    &-link {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      background: url(../../img/icon-arrow-out.svg) 100% 50% no-repeat;
+      padding-right: 20px;
+      height: 20px;
+      font: 500 13px/1.54 "IBM Plex Sans";
+    }
+  }
   &__organization {
     text-align: center;
     @include screen-from(md) {
