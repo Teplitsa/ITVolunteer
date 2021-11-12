@@ -1,62 +1,37 @@
 import { ReactElement, useEffect, useState } from "react";
-import { IFetchResult } from "../model/model.typing";
-import * as utils from "../utilities/utilities";
 
-const basicStats: {
-  activeMemebersCount: number;
-  closedTasksCount: number;
-  workTasksCount: number;
-  newTasksCount: number;
-} = {
-  activeMemebersCount: null,
-  closedTasksCount: null,
-  workTasksCount: null,
-  newTasksCount: null,
-};
 
 const Stats: React.FunctionComponent = (): ReactElement => {
-  const [stats, setStats] = useState(basicStats);
+  const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    const formData = new FormData();
+    try {
+      fetch(`${process.env.BaseUrl}/api/v1/cache/stats`)
+        .then((response) => {
+          console.log(response);
+          response.json()
+            .then((statsData) => {
+              console.log(statsData);
+              setStats(statsData);
+            });
+        });
 
-    const action = "get_general_stats";
-    utils.tokenFetch(utils.getAjaxUrl(action), {
-      method: "post",
-      body: formData,
-    })
-      .then(res => {
-        try {
-          return res.json();
-        } catch (ex) {
-          utils.showAjaxError({ action, error: ex });
-          return {};
-        }
-      })
-      .then(
-        (result: IFetchResult) => {
-          if (result.status == "fail") {
-            return utils.showAjaxError({ message: result.message });
-          }
+    } catch (error) {
+      console.error("Failed to fetch the stats.");
+    }
 
-          setStats(result.stats);
-        },
-        error => {
-          utils.showAjaxError({ action, error });
-        }
-      );
   }, []);
 
   return (
     <div className="col-stats">
       <h3>Статистика проекта</h3>
-      <div className="stats">
-        <p>{`Всего участников: ${stats.activeMemebersCount}`}</p>
-        <p>{`Всего задач: ${
-          stats.closedTasksCount + stats.workTasksCount + stats.newTasksCount
-        }`}</p>
-        <p>{`Задач решено: ${stats.closedTasksCount}`}</p>
-      </div>
+      {!!stats &&
+        <div className="stats">
+          <p>{`Всего участников: ${stats?.member.total}`}</p>
+          <p>{`Задач решено: ${stats?.task.total.closed}`}</p>
+          <p>{`Ожидают решения: ${stats?.task.total.publish}`}</p>
+        </div>
+      }
     </div>
   );
 };
