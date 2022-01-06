@@ -1,14 +1,11 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { ITaskDoer } from "../../model/model.typing";
-import * as utils from "../../utilities/utilities";
 import TaskAuthorActionsOnDoer from "./TaskAuthorActionsOnDoer";
-
-import IconPaseka from "../../assets/img/icon-paseka.svg";
-import MemberAvatarDefault from "../../assets/img/member-default.svg";
+import MemberAvatar from "../MemberAvatar";
+import TaskDoerStats from "./TaskDoerStats";
 
 const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
-  const [isAvatarImageValid, setAvatarImageValid] = useState<boolean>(false);
   const { id: taskId, doers } = useStoreState(state => state.components.task);
   const {
     manageDoerRequest: manageDoer,
@@ -21,8 +18,6 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     fullName,
     profileURL: toProfile,
     itvAvatar: avatarImage,
-    solvedTasksCount,
-    doerReviewsCount,
     isPasekaMember,
     partnerIcon,
   } = doer;
@@ -46,47 +41,19 @@ const TaskDoer: React.FunctionComponent<ITaskDoer> = (doer): ReactElement => {
     ),
   });
 
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    try {
-      avatarImage &&
-        avatarImage.search(/temp-avatar\.png/) === -1 &&
-        utils.tokenFetch(avatarImage, {
-          signal: abortController.signal,
-          mode: "no-cors",
-        }).then(response => setAvatarImageValid(response.ok));
-    } catch (error) {
-      console.error(error);
-    }
-
-    return () => abortController.abort();
-  }, []);
-
   return (
     <div className="user-card">
       <div className="user-card-inner">
-        <div
-          className={`avatar-wrapper ${isAvatarImageValid ? "" : "avatar-wrapper_medium-image"}`}
-          style={{
-            backgroundImage: isAvatarImageValid
-              ? `url(${avatarImage})`
-              : `url(${MemberAvatarDefault})`,
-          }}
-        >
-          {partnerIcon 
-            ? <img src={partnerIcon.url} className="itv-approved" />
-            : isPasekaMember && <img src={IconPaseka} className="itv-approved" />
-          }
+
+        <div className={`avatar-wrapper-box-only`} >
+          <MemberAvatar {...{ memberAvatar: avatarImage, memberFullName: fullName, size: "medium", isPasekaMember, partnerIcon }} />
         </div>
+
         <div className="details">
           <a className="name" href={toProfile}>
             {fullName}
           </a>
-          <span className="reviews">{`${doerReviewsCount}  ${utils.getReviewsCountString(
-            doerReviewsCount
-          )}`}</span>
-          <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
+          <TaskDoerStats {...{doer}} />
         </div>
       </div>
       <TaskAuthorActionsOnDoer approve={approveFn} decline={declineFn} />

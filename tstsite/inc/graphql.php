@@ -15,6 +15,7 @@ use \ITV\dao\Review;
 // from itv-backend
 use \ITV\models\MemberManager;
 use \ITV\models\MemberTasks;
+use \ITV\models\PortfolioWorkManager;
 
 add_filter('graphql_app_context_config', 'itv_graphql_app_context_config');
 function itv_graphql_app_context_config($config) {
@@ -375,6 +376,16 @@ function itv_register_user_graphql_fields() {
                 'description' => __( 'Total user reviews count', 'tst' ),
                 'resolve' => function ($user) {
                     return ItvReviews::instance()->count_doer_reviews( $user->userId ) + ItvReviewsAuthor::instance()->count_author_reviews( $user->userId );
+                }
+            ],
+            'portfolioItemsCount' => [
+                'type' => 'Int',
+                'description' => __( 'Total user portfolio items count', 'tst' ),
+                'resolve' => function ($user) {
+                    $portfolio = new PortfolioWorkManager();
+                    $count = $portfolio->count_member_portfolio_works($user->userId);
+                    // error_log("portfolioItemsCount: " . $count);
+                    return $count;
                 }
             ],
             'organizationName' => [

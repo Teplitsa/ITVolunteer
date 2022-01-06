@@ -1309,6 +1309,7 @@ function itv_get_user_in_gql_format($user) {
     
     $members = new MemberManager();
     $member_tasks = new MemberTasks($user->ID);
+    $portfolio = new PortfolioWorkManager();
     
     $user_data = [
         'id' => \GraphQLRelay\Relay::toGlobalId( 'user', $user->ID ),
@@ -1325,6 +1326,7 @@ function itv_get_user_in_gql_format($user) {
         'solvedTasksCount' => intval($activity[$solved_key]),
         'doerReviewsCount' => intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
         'totalReviewsCount' => intval(ItvReviewsAuthor::instance()->count_author_reviews( $user->ID )) + intval(ItvReviews::instance()->count_doer_reviews( $user->ID )),
+        'portfolioItemsCount' => intval($portfolio->count_member_portfolio_works($user->ID)),
         'isPartner' => boolval(itv_is_user_partner($user->ID)),
         'isPasekaMember' => $members->is_paseka_member($user->ID),
         'partnerIcon' => \ITV\models\PartnerIcon::get_icon($user->ID, \ITV\models\MemberManager::$META_PARTNER_ICON),

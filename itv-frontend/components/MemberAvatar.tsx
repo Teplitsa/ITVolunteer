@@ -23,7 +23,7 @@ const MemberAvatar: React.FunctionComponent<{
         "member-avatar_default-image": isDefaultAvatar,
         "member-avatar_medium-size-image": size === "medium",
         "member-avatar_medium-plus-size-image": size === "medium-plus",
-        "member-avatar_paseka-member": isPasekaMember,
+        "member-avatar_paseka-member": isPasekaMember && !partnerIcon,
       })}
     >
       <img

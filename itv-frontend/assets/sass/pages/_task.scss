@@ -296,6 +296,25 @@
         @include text-xs-line-lg;
         color: $color-main;
       }
+
+      .item-label {
+        @include text-xs-line-lg;
+        padding: 0px 8px 1px 8px;
+        border-radius: 4px;
+        display: inline-block;
+        box-shadow: none;
+        margin-top: 6px;
+
+        &.item-label-paseka {
+          background-color: $color-main;
+          color: $color-white;
+        }
+
+        &.item-label-newbie {
+          background-color: $color-gray-light-lg;
+          color: $color-gray-dark-lg;
+        }
+      }
     }
 
     &-footer {
@@ -383,7 +402,9 @@
         }
       }
 
-      .avatar-wrapper {
+      .avatar-wrapper-box-only {
+        display: inline-block;
+        margin-right: $base * 2;
       }
 
       .details {
@@ -392,7 +413,8 @@
         }
 
         .name {
-          margin-top: 12px;
+          margin-top: 4px;
+          font-weight: 600;
         }
 
         .reviews {

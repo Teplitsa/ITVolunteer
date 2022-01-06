@@ -10,6 +10,7 @@ const taskDoer: ITaskDoer = {
   itvAvatar: "",
   solvedTasksCount: 0,
   doerReviewsCount: 0,
+  portfolioItemsCount: 0,
   isPasekaMember: false,
   partnerIcon: null,
 };

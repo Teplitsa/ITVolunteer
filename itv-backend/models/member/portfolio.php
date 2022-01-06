@@ -94,8 +94,10 @@ class PortfolioWorkManager {
     }
     
     public function count_member_portfolio_works($user_id) {
+        // error_log("count_member_portfolio_works user_id: " . $user_id);
+
         $args = array(
-            'post_author'       => $user_id,
+            'author'       => $user_id,
             'post_type'         => PortfolioWorkManager::$post_type,
             'suppress_filters'  => true,
             'post_status'       => 'any',
@@ -104,7 +106,9 @@ class PortfolioWorkManager {
         );
             
         $query = new \WP_Query($args);
-        return $query->found_posts;    
+        $count = $query->found_posts;
+        // error_log("count: " . $count);
+        return $count;
     }
 }
 

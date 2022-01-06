@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import * as utils from "../../utilities/utilities";
-
-import IconPaseka from "../../assets/img/icon-paseka.svg";
+import MemberAvatar from "../MemberAvatar";
+import TaskDoerStats from "./TaskDoerStats";
 
 const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
   const { isTaskAuthorLoggedIn } = useStoreState(state => state.session);
@@ -49,25 +49,16 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
         <div className="user-cards-list">
           <div className="user-card">
             <div className="user-card-inner">
-              <div
-                className="avatar-wrapper"
-                style={{
-                  backgroundImage: avatarImage ? `url(${avatarImage})` : "none",
-                }}
-              >
-                {partnerIcon 
-                  ? <img src={partnerIcon.url} className="itv-approved" />
-                  : isPasekaMember && <img src={IconPaseka} className="itv-approved" />
-                }
+
+              <div className={`avatar-wrapper-box-only`} >
+                <MemberAvatar {...{ memberAvatar: avatarImage, memberFullName: fullName, size: "medium", isPasekaMember, partnerIcon }} />
               </div>
+
               <div className="details">
                 <a className="name" href={toProfile}>
                   {fullName}
                 </a>
-                <span className="reviews">{`${doerReviewsCount} ${utils.getReviewsCountString(
-                  doerReviewsCount
-                )}`}</span>
-                <span className="status">{`Выполнено ${solvedTasksCount} задач`}</span>
+                <TaskDoerStats {...{doer: approvedDoer, isApproved: true}} />
               </div>
             </div>
 
