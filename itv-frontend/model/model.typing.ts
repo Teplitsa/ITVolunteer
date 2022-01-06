@@ -875,7 +875,7 @@ export interface ITaskApprovedDoer {
   profileURL: string;
   solvedTasksCount: number;
   doerReviewsCount: number;
-  portfolioItemsCount: number;
+  portfolioItemsCount?: number;
   isPasekaMember: boolean;
   partnerIcon: IPartnerIconState;
 }
@@ -909,7 +909,7 @@ export interface ITaskDoer {
   itvAvatar: string;
   solvedTasksCount: number;
   doerReviewsCount: number;
-  portfolioItemsCount: number;
+  portfolioItemsCount?: number;
   isPasekaMember: boolean;
   partnerIcon: IPartnerIconState;
 }
