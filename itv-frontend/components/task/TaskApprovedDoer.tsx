@@ -1,6 +1,5 @@
 import { ReactElement } from "react";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
-import * as utils from "../../utilities/utilities";
 import MemberAvatar from "../MemberAvatar";
 import TaskDoerStats from "./TaskDoerStats";
 
@@ -24,8 +23,6 @@ const TaskApprovedDoer: React.FunctionComponent = (): ReactElement => {
     fullName,
     profileURL: toProfile,
     itvAvatar: avatarImage,
-    solvedTasksCount,
-    doerReviewsCount,
     isPasekaMember,
     partnerIcon,
   } = approvedDoer;

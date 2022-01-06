@@ -389,6 +389,10 @@
     }
 
     .user-card {
+      .user-card-inner {
+        align-items: center;
+      }
+
       &:not(:last-child) {
         .author-actions-on-doer {
           padding-bottom: 25px;
@@ -404,7 +408,7 @@
 
       .avatar-wrapper-box-only {
         display: inline-block;
-        margin-right: $base * 2;
+        margin-right: 20px;
       }
 
       .details {
@@ -413,7 +417,7 @@
         }
 
         .name {
-          margin-top: 4px;
+          margin-top: 0px;
           font-weight: 600;
         }
 
