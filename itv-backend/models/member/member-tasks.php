@@ -52,7 +52,7 @@ class MemberTasks {
 
         $month_str = sprintf('%02d', $month);
         
-        $sql = "SELECT COUNT(posts.ID) FROM {$wpdb->posts} AS posts 
+        $sql = "SELECT COUNT(DISTINCT posts.ID) FROM {$wpdb->posts} AS posts 
             INNER JOIN {$wpdb->prefix}p2p AS p2p 
                 ON p2p.p2p_from = posts.ID 
             INNER JOIN {$wpdb->prefix}p2pmeta AS p2pmeta
