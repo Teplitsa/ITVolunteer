@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 
 const Socials: React.FunctionComponent = (): ReactElement => {
   const links: Array<{ title: string; url: string }> = [
-    { title: "Facebook", url: "https://www.facebook.com/TeplitsaST" },
     { title: "Телеграм", url: "https://t.me/itvolunteers" },
     { title: "Вконтакте", url: "https://vk.com/teplitsast" },
     { title: "RSS-канал", url: "https://itv.te-st.ru/feed/" },
