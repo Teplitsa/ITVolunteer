@@ -2,7 +2,7 @@
 
 namespace ITV\models;
 
-use ITV\models\{TaskManager, MemberManager, PartnerIcon};
+use ITV\models\{Task, TaskManager, MemberManager, PartnerIcon};
 
 class TaskExportExtraData
 {
@@ -22,6 +22,11 @@ class TaskExportExtraData
 
     public static function check_is_closed_by_paseka_member($task_id)
     {
+        $task = get_post($task_id);
+        if($task->post_status !== 'closed') {
+            return false;
+        }
+
         $doers = \tst_get_task_doers($task_id, true);
         $doer = null;
         if(count($doers)) {
@@ -33,6 +38,11 @@ class TaskExportExtraData
     }
 
     public static function get_paseka_partner_title($task_id) {
+        $task = get_post($task_id);
+        if($task->post_status !== 'closed') {
+            return '';
+        }
+
         $doers = \tst_get_task_doers($task_id, true);
         $doer = null;
         if(count($doers)) {
