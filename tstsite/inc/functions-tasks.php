@@ -1203,7 +1203,7 @@ function get_likers(int $comment_id): array
                 (SELECT
                     users.ID AS userId,
                     users.display_name AS userName,
-                    users.nice_name AS userSlug,
+                    users.user_nicename AS userSlug,
                     usermeta.userFullName,
                     likes.comment_id AS commentId
                 FROM
