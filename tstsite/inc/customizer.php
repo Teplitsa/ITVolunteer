@@ -563,7 +563,7 @@ function ajax_add_candidate() {
         'message' => !empty($_POST['candidate-message']) ? filter_var($_POST['candidate-message'], FILTER_SANITIZE_STRING) : "",
         'task_url' => get_permalink($task_id),
         'view_instruction_url' => site_url('/sovety-dlya-nko-uspeshnye-zadachi'),
-        'doer_url' => site_url('/member/' . $task_doer->user_nicename),
+        'doer_url' => site_url('/members/' . $task_doer->user_nicename),
         'doer_display_name' => $task_doer->display_name,
     ]);
     ItvLog::instance()->log_email_action(ItvLog::$ACTION_EMAIL_ADD_CANDIDATE_AUTHOR, $task_author->ID, $email_templates->get_title('add_candidate_author_notice'), $task ? $task->ID : 0);
