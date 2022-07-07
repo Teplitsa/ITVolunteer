@@ -25,7 +25,7 @@
     "store": "^2.0.12",
     "react-share": "^4.2.0",
     "bootstrap": "^4.5.0",
-    "moment": "^2.25.3"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@svgr/webpack": "^5.4.0",
