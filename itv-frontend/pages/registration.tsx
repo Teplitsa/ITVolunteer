@@ -62,12 +62,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
     slug: "registration",
     title: "Добро пожаловать - it-волонтер",
     seo: {
-      canonical: "https://itivist.org/registration",
+      canonical: "https://itvist.org/registration",
       title: "Добро пожаловать - it-волонтер",
       metaRobotsNoindex: "noindex",
       metaRobotsNofollow: "nofollow",
       opengraphTitle: "Добро пожаловать - it-волонтер",
-      opengraphUrl: "https://itivist.org/registration",
+      opengraphUrl: "https://itvist.org/registration",
       opengraphSiteName: "it-волонтер",
     },
   };

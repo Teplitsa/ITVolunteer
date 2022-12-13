@@ -32,7 +32,7 @@ class ItvConfig {
                 'sidorenko.a@gmail.com',
             ),
             
-            'EMAIL_FROM' => 'info@itivist.org',
+            'EMAIL_FROM' => 'info@itvist.org',
             'CONSULT_EMAIL_FROM' => 'help@te-st.org',
             'TASK_ARCHIVE_DAYS' => 40,
             'TASK_NO_DOER_NOTIF_DAYS' => 9,

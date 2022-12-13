@@ -77,7 +77,7 @@ function SiteFooter(props) {
                         <a href="https://www.facebook.com/TeplitsaST" target="_blank">Facebook</a>
                         <a href="https://t.me/itvolunteers" target="_blank">Телеграм</a>
                         <a href="https://vk.com/teplitsast" target="_blank">Вконтакте</a>
-                        <a href="https://itivist.org/feed/" target="_blank">RSS-канал</a>
+                        <a href="https://itvist.org/feed/" target="_blank">RSS-канал</a>
                     </div>
                 </div>
             </div>

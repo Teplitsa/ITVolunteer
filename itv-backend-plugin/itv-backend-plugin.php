@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: ITV Backend
-Plugin URI: https://itivist.org
+Plugin URI: https://itvist.org
 Description: ITV Backend
 Author: Teplitsa
 Author URI: https://te-st.org/

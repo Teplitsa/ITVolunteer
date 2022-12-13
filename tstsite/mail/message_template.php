@@ -27,13 +27,13 @@
     		<div>Включитесь вместе в решение интересных кейсов, получайте больший эффект от помощи.</div>
     	</div>
     	<div class="build-team">
-    		<a href="https://itivist.org" class="btn danger btn-build-team">Собрать команду</a>
+    		<a href="https://itvist.org" class="btn danger btn-build-team">Собрать команду</a>
     	</div>
     	<a href="https://te-st.org">
     		<img class="teplitsa-logo" src="<?php echo get_template_directory_uri() . "/assets_email/img/pic-logo-teplitsa.png";?>" />
     	</a>
     	<div class="owner-info">
-    		<a href="https://itivist.org">Платформа IT-Волонтер — проект Теплицы социальных технологий</a>
+    		<a href="https://itvist.org">Платформа IT-Волонтер — проект Теплицы социальных технологий</a>
     	</div>
     </div>
 

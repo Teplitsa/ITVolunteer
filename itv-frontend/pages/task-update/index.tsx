@@ -30,12 +30,12 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
         page: {
           title: "Доступ запрещен - it-волонтер",
           seo: {
-            canonical: "https://itivist.org/task-update",
+            canonical: "https://itvist.org/task-update",
             title: "Доступ запрещен - it-волонтер",
             metaRobotsNoindex: "noindex",
             metaRobotsNofollow: "nofollow",
             opengraphTitle: "Доступ запрещен - it-волонтер",
-            opengraphUrl: "https://itivist.org/task-update",
+            opengraphUrl: "https://itvist.org/task-update",
             opengraphSiteName: "it-волонтер",
           },
         },

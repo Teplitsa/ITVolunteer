@@ -19,25 +19,25 @@ class MailInactiveUsers
             'user_id'    => 331,
             'user_name'  => 'Влад Лавриченко',
             'user_email' => 'vlad@te-st.org',
-            'user_link'  => 'https://itivist.org/members/vladtest'
+            'user_link'  => 'https://itvist.org/members/vladtest'
         ],
         [
             'user_id'    => 7201,
             'user_name'  => 'Мария Селявко',
             'user_email' => 'maria.seliavko@gmail.com',
-            'user_link'  => 'https://itivist.org/members/selyavko'
+            'user_link'  => 'https://itvist.org/members/selyavko'
         ],
         [
             'user_id'    => 7504,
             'user_name'  => 'Алексей Есев',
             'user_email' => 'alekseyesev@live.ru',
-            'user_link'  => 'https://itivist.org/members/esev'
+            'user_link'  => 'https://itvist.org/members/esev'
         ],
         [
             'user_id'    => 7568,
             'user_name'  => 'zakirovalena',
             'user_email' => 'zakirova@te-st.org', // ZakirovaET@gmail.com
-            'user_link'  => 'https://itivist.org/members/zakirovalena'
+            'user_link'  => 'https://itvist.org/members/zakirovalena'
         ],
     ];
 

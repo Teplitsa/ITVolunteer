@@ -1,5 +1,5 @@
 const BaseUrl =
-  process.env.NODE_ENV === "development" ? "http://localhost:9000" : "https://itivist.org";
+  process.env.NODE_ENV === "development" ? "http://localhost:9000" : "https://itvist.org";
 
 const appConfig = {
   BaseUrl,

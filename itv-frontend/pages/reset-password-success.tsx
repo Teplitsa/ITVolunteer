@@ -34,12 +34,12 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const entrypointModel = {
     title: "Сброс пароля - it-волонтер",
     seo: {
-      canonical: "https://itivist.org/reset-password",
+      canonical: "https://itvist.org/reset-password",
       title: "Сброс пароля - it-волонтер",
       metaRobotsNoindex: "noindex",
       metaRobotsNofollow: "nofollow",
       opengraphTitle: "Сброс пароля - it-волонтер",
-      opengraphUrl: "https://itivist.org/reset-password",
+      opengraphUrl: "https://itvist.org/reset-password",
       opengraphSiteName: "it-волонтер",
     },
   };

@@ -36,23 +36,23 @@ const archiveModel = async (request, postType, archiveQueryVars) => {
       Object.assign(archive, {
         seo: {
           canonical: encodeURI(
-            `https://itivist.org/search?s=${archiveQueryVars.searchPhrase}`
+            `https://itvist.org/search?s=${archiveQueryVars.searchPhrase}`
           ),
           title: `Результаты поиска по запросу '${archiveQueryVars.searchPhrase}' - it-волонтер`,
           metaRobotsNoindex: "noindex",
           metaRobotsNofollow: "nofollow",
           opengraphTitle: `Результаты поиска по запросу '${archiveQueryVars.searchPhrase}' - it-волонтер`,
-          opengraphUrl: `https://itivist.org/search?s=${archiveQueryVars.searchPhrase}`,
+          opengraphUrl: `https://itvist.org/search?s=${archiveQueryVars.searchPhrase}`,
           opengraphSiteName: "it-волонтер",
         },
       });
     } else {
       Object.assign(archive, {
         seo: {
-          canonical: "https://itivist.org/tasks",
+          canonical: "https://itvist.org/tasks",
           title: "Задачи - it-волонтер",
           opengraphTitle: "Задачи - it-волонтер",
-          opengraphUrl: "https://itivist.org/tasks",
+          opengraphUrl: "https://itvist.org/tasks",
           opengraphSiteName: "it-волонтер",
         },
       });

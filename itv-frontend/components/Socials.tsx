@@ -4,7 +4,7 @@ const Socials: React.FunctionComponent = (): ReactElement => {
   const links: Array<{ title: string; url: string }> = [
     { title: "Телеграм", url: "https://t.me/itvolunteers" },
     { title: "Вконтакте", url: "https://vk.com/teplitsast" },
-    { title: "RSS-канал", url: "https://itivist.org/feed/" },
+    { title: "RSS-канал", url: "https://itvist.org/feed/" },
   ];
 
   return (
