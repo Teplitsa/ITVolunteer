@@ -1,15 +1,15 @@
 # ITV
-*/30 * * * *    cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_calc_task_list_filter_stats.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/cron-calc_task_list_filter_stats.log 2>&1
-0 * * * *       cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_refresh_users_stats.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/cli_refresh_users_stats.log 2>&1
-30 * * * *      cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_refresh_tasks_stats_by_tags.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/cli_refresh_tasks_stats_by_tags.log 2>&1
-0 10 * * 3      cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_send_weekly_stats_report.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/cli_send_weekly_stats_report.log 1>&1
-10 02 * * 3     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_users_recalc_xp.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.users_recalc_xp.log 2>&1
-00 02 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_unblock_users.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.unblock_users.log 2>&1
+*/30 * * * *    cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_calc_task_list_filter_stats.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/cron-calc_task_list_filter_stats.log 2>&1
+0 * * * *       cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_refresh_users_stats.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/cli_refresh_users_stats.log 2>&1
+30 * * * *      cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_refresh_tasks_stats_by_tags.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/cli_refresh_tasks_stats_by_tags.log 2>&1
+0 10 * * 3      cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_send_weekly_stats_report.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/cli_send_weekly_stats_report.log 1>&1
+10 02 * * 3     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_users_recalc_xp.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.users_recalc_xp.log 2>&1
+00 02 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_unblock_users.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.unblock_users.log 2>&1
 
-45 22 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_archive_old_undone_tasks.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.archive_old_undone_tasks.log 2>&1
-15 23 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_notify_tasks_owners.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.notify_tasks_owners.log 2>&1
+45 22 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_archive_old_undone_tasks.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.archive_old_undone_tasks.log 2>&1
+15 23 * * *     cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/cli_notify_tasks_owners.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/itv.cron.notify_tasks_owners.log 2>&1
 
-*/10 * * * *    cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/create_push_notif_for_all.php --host=itv.te-st.ru >> /home/itv/web/itv.te-st.ru/private/log/create_push_notif_for_all.log 2>&1
+*/10 * * * *    cd /home/itv/web/itv.te-st.ru/public_html/wp-content/itv/tstsite/; php ./cli/create_push_notif_for_all.php --host=itivist.org >> /home/itv/web/itv.te-st.ru/private/log/create_push_notif_for_all.log 2>&1
 
 30 0 * * *      cd /home/itv/web/itv.te-st.ru/public_html/; date >> /tmp/itv_member_rating-build_month_doers_cron.log; /usr/local/bin/wp itv_member_rating build_month_doers >> /tmp/itv_member_rating-build_month_doers_cron.log 2>&1; date >> /tmp/itv_member_rating-build_month_doers_cron.log;
 

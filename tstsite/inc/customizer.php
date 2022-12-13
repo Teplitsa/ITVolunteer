@@ -20,7 +20,7 @@ add_filter('wp_mail_from_name', function($original_email_from){
     return __('ITVounteer', 'tst');
 });
 add_filter('wp_mail_from', function($email){
-    return 'support@te-st.ru';
+    return 'support@te-st.org';
 });
 add_filter('wp_mail_content_type', function(){
     return 'text/html';

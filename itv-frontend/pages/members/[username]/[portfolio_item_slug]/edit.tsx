@@ -45,14 +45,14 @@ export const getServerSideProps: GetServerSideProps = async ({ query, req, res }
     customPageModel: async () => [
       "page",
       {
-        slug: `https://itv.te-st.ru/members/${query.username}/${query.portfolio_item_slug}/edit`,
+        slug: `https://itivist.org/members/${query.username}/${query.portfolio_item_slug}/edit`,
         seo: {
-          canonical: `https://itv.te-st.ru/members/${query.username}/${query.portfolio_item_slug}/edit`,
+          canonical: `https://itivist.org/members/${query.username}/${query.portfolio_item_slug}/edit`,
           title: `Редактирование работы в портфолио - it-волонтер`,
           metaRobotsNoindex: "noindex",
           metaRobotsNofollow: "nofollow",
           opengraphTitle: `Редактирование работы в портфолио - it-волонтер`,
-          opengraphUrl: `https://itv.te-st.ru/members/${query.username}/${query.portfolio_item_slug}/edit`,
+          opengraphUrl: `https://itivist.org/members/${query.username}/${query.portfolio_item_slug}/edit`,
           opengraphSiteName: "it-волонтер",
         },
       },

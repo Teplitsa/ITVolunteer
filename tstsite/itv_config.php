@@ -8,35 +8,32 @@ class ItvConfig {
         // change ITV settings here:
         $this->_config = array (
             'ADMIN_EMAILS' => array (
-                'support@te-st.ru',
-                'denis.cherniatev@gmail.com' 
+                'help@te-st.org',
             ),
             
             'TASK_COMLETE_NOTIF_EMAILS' => array (
-                'vlad@te-st.ru',
-                'denis.cherniatev@gmail.com',
-                'zakirova@te-st.ru',
+                'vlad@te-st.org',
+                'zakirova@te-st.org',
             ),
             
             // ITV consultants emails list (for automatic consultation choose)
             'CONSULT_EMAILS' => array (
-                'support@te-st.ru',
+                'help@te-st.org',
             ),
             'CONSULT_EMAILS_GROUPS' => array (
-                'audit' => array('support@te-st.ru'),
-                'itv' => array('support@te-st.ru'),
+                'audit' => array('help@te-st.org'),
+                'itv' => array('help@te-st.org'),
             ),
             'CONSULTANT_CONFIG' => array(
                 'default' => array('time' => '12:00'),
-                'support@te-st.ru' => array('time' => '21:00'),
+                'help@te-st.org' => array('time' => '21:00'),
             ),
             'CONSULT_BCC_EMAILS' => array (
-                'denis.cherniatev@gmail.com',
                 'sidorenko.a@gmail.com',
             ),
             
-            'EMAIL_FROM' => 'info@itv.te-st.ru',
-            'CONSULT_EMAIL_FROM' => 'support@te-st.ru',
+            'EMAIL_FROM' => 'info@itivist.org',
+            'CONSULT_EMAIL_FROM' => 'help@te-st.org',
             'TASK_ARCHIVE_DAYS' => 40,
             'TASK_NO_DOER_NOTIF_DAYS' => 9,
             'TASK_LONG_WORK_NOTIF_DAYS' => 90,
@@ -49,8 +46,8 @@ class ItvConfig {
             'REACTIVATION_EMAILS_LIMIT' => 2,
             'WEEKLY_STATS_EMAIL' => array(
                 'PERIOD_DAYS' => 7,
-                'TO_EMAIL' => 'vlad@te-st.ru',
-                'CC_EMAILS' => array('denis.cherniatev@gmail.com', 'sidorenko.a@gmail.com', 'zakirova@te-st.ru'),
+                'TO_EMAIL' => 'vlad@te-st.org',
+                'CC_EMAILS' => array('sidorenko.a@gmail.com', 'zakirova@te-st.org'),
             ),
             
             'USER_ACTION_XP' => [
@@ -82,8 +79,7 @@ class ItvConfig {
                 ]
             ],
             'ALERT_TEAM' => array (
-                'vlad@te-st.ru',
-                'denis.cherniatev@gmail.com'
+                'vlad@te-st.org',
             ),
             'RESULT_SCREENSHOTS' => [
                 'limit' => 6,

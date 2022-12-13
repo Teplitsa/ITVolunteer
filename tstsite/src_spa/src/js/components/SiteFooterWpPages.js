@@ -13,11 +13,11 @@ function SiteFooter(props) {
         { title: "Теплосеть", description: "Платформа непрерывного образования" },
       ],
       [
-        "https://leyka.te-st.ru",
+        "https://leyka.org",
         { title: "Лейка", description: "Сбор пожертвований на сайте" },
       ],
       [
-        "https://knd.te-st.ru",
+        "https://kndwp.org",
         { title: "Кандинский", description: "Сайт-конструктор для НКО" },
       ],
     ];
@@ -77,18 +77,18 @@ function SiteFooter(props) {
                         <a href="https://www.facebook.com/TeplitsaST" target="_blank">Facebook</a>
                         <a href="https://t.me/itvolunteers" target="_blank">Телеграм</a>
                         <a href="https://vk.com/teplitsast" target="_blank">Вконтакте</a>
-                        <a href="https://itv.te-st.ru/feed/" target="_blank">RSS-канал</a>
+                        <a href="https://itivist.org/feed/" target="_blank">RSS-канал</a>
                     </div>
                 </div>
             </div>
             <div className="owner">
                 <div className="col-text">
-                    <p>Платформа «IT-волонтер» – проект <a href="https://te-st.ru" target="_blank">Теплицы социальных технологий</a></p>
+                    <p>Платформа «IT-волонтер» – проект <a href="https://te-st.org" target="_blank">Теплицы социальных технологий</a></p>
                     <p>
                       Материалы сайта доступны по лицензии <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ru" target="_blank">Creative Commons СС-BY-SA. 4.0</a>
                     </p>
                 </div>
-                <a className="col-logo" href="https://te-st.ru">
+                <a className="col-logo" href="https://te-st.org">
                     <img src={logoTeplitsa} className="logo" alt="Теплица социальных технологий" />
                 </a>
             </div>

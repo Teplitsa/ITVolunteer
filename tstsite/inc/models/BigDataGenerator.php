@@ -128,7 +128,7 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
             $user->user_pass = '';
             $user->user_nicename = $name;
             $user->user_email = $name . '@ngo2.ru';
-            $user->user_url = "http://te-st.ru/";
+            $user->user_url = "http://te-st.org/";
             $user->user_registered = current_time('mysql');
             $user->user_activation_key = '';
             $user->user_status = 0;
@@ -197,7 +197,7 @@ Ut rhoncus orci eu lorem efficitur rhoncus. Nulla sed rhoncus neque. Vivamus por
             'comment_post_ID' => $post->ID,
             'comment_author' => $user->display_name,
             'comment_author_email' => $user->user_email,
-            'comment_author_url' => 'http://te-st.ru/',
+            'comment_author_url' => 'http://te-st.org/',
             'comment_content' => static::$SHORT_TEXT,
             'comment_type' => '',
             'comment_parent' => 0,

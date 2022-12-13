@@ -24,7 +24,7 @@ const HomePaseka: React.FunctionComponent = (): ReactElement => {
           социальными проектами.
         </div>
         <a
-          href="https://paseka.te-st.ru/"
+          href="https://paseka.org/"
           className="home-paseka__cta-btn btn btn_primary"
           target="_blank"
           rel="noreferrer"

@@ -85,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
           metaRobotsNoindex: "index",
           metaRobotsNofollow: "follow",
           opengraphTitle: "Задачи - it-волонтер",
-          opengraphUrl: "https://itv.te-st.ru/tasks",
+          opengraphUrl: "https://itivist.org/tasks",
           opengraphSiteName: "it-волонтер",
         },
       },

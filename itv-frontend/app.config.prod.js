@@ -1,4 +1,4 @@
-const BaseUrl = "https://itv.te-st.ru";
+const BaseUrl = "https://itivist.org";
 
 const appConfig = {
   BaseUrl,

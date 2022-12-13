@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       {
         slug: "home",
         seo: {
-          canonical: "https://itv.te-st.ru",
+          canonical: "https://itivist.org",
           title: "it-волонтер. ИТ-помощь для благотворительных проектов",
           metaDesc:
             "Платформа помощи благотворительным организациям и активистам в области ИТ. Здесь вы можете попросить о помощи или предложить свои услуги.",
@@ -43,12 +43,12 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
             "Платформа помощи благотворительным организациям и активистам в области ИТ. Здесь вы можете попросить о помощи или предложить свои услуги.",
           opengraphTitle: "it-волонтер. ИТ-помощь для некоммерческих проектов",
           opengraphImage: {
-            sourceUrl: "https://itv.te-st.ru/wp-content/uploads/2020/05/itv-export.png",
+            sourceUrl: "https://itivist.org/wp-content/uploads/2020/05/itv-export.png",
             srcSet:
-              "https://itv.te-st.ru/wp-content/uploads/2020/05/itv-export.png 500w, https://itv.te-st.ru/wp-content/uploads/2020/05/itv-export-150x150.png 150w, https://itv.te-st.ru/wp-content/uploads/2020/05/itv-export-180x180.png 180w",
+              "https://itivist.org/wp-content/uploads/2020/05/itv-export.png 500w, https://itivist.org/wp-content/uploads/2020/05/itv-export-150x150.png 150w, https://itivist.org/wp-content/uploads/2020/05/itv-export-180x180.png 180w",
             altText: "",
           },
-          opengraphUrl: "https://itv.te-st.ru/",
+          opengraphUrl: "https://itivist.org/",
           opengraphSiteName: "it-волонтер",
         },
       },

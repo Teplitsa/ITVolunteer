@@ -1,10 +1,10 @@
 <?php
 /*
 Plugin Name: ITV Backend
-Plugin URI: https://itv.te-st.ru
+Plugin URI: https://itivist.org
 Description: ITV Backend
 Author: Teplitsa
-Author URI: https://te-st.ru/
+Author URI: https://te-st.org/
 Version: 0.1.0
 Requires at least: 4.7.0
 Tested up to: 5.7.3

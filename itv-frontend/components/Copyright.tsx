@@ -7,7 +7,7 @@ const Copyright: React.FunctionComponent = (): ReactElement => {
       <div className="col-text">
         <p>
           Платформа «IT-волонтер» – проект{" "}
-          <a href="https://te-st.ru" target="_blank" rel="noreferrer">
+          <a href="https://te-st.org" target="_blank" rel="noreferrer">
             Теплицы социальных технологий
           </a>
         </p>
@@ -22,7 +22,7 @@ const Copyright: React.FunctionComponent = (): ReactElement => {
           </a>
         </p>
       </div>
-      <a href="https://te-st.ru" className="col-logo">
+      <a href="https://te-st.org" className="col-logo">
         <img src={LogoTeplitsa} className="logo" alt="Теплица социальных технологий" />
       </a>
     </div>

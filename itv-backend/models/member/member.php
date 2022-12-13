@@ -261,7 +261,7 @@ class MemberManager
                     users.display_name AS user_name,
                     DATE_FORMAT(users.user_registered,'%d.%m.%Y') AS user_registered_at,
                     users.user_email,
-                    CONCAT('https://itv.te-st.ru/members/',users.user_nicename) AS user_link
+                    CONCAT('https://itivist.org/members/',users.user_nicename) AS user_link
                 FROM
                     {$wpdb->usermeta} AS user_meta,
                     {$wpdb->users} AS users
@@ -314,7 +314,7 @@ class MemberManager
                     users.display_name AS user_name,
                     DATE_FORMAT(users.user_registered,'%d.%m.%Y') AS user_registered_at,
                     users.user_email,
-                    CONCAT('https://itv.te-st.ru/members/',users.user_nicename) AS user_link
+                    CONCAT('https://itivist.org/members/',users.user_nicename) AS user_link
                 FROM
                     {$wpdb->usermeta} AS user_meta,
                     {$wpdb->users} AS users
@@ -367,7 +367,7 @@ class MemberManager
                     users.display_name AS user_name,
                     DATE_FORMAT(users.user_registered,'%d.%m.%Y') AS user_registered_at,
                     users.user_email,
-                    CONCAT('https://itv.te-st.ru/members/',users.user_nicename) AS user_link
+                    CONCAT('https://itivist.org/members/',users.user_nicename) AS user_link
                 FROM
                     {$wpdb->prefix}itv_task_actions_log AS user_actions,
                     {$wpdb->posts} AS posts,
@@ -425,7 +425,7 @@ class MemberManager
                     users.display_name AS user_name,
                     DATE_FORMAT(users.user_registered,'%d.%m.%Y') AS user_registered_at,
                     users.user_email,
-                    CONCAT('https://itv.te-st.ru/members/',users.user_nicename) AS user_link
+                    CONCAT('https://itivist.org/members/',users.user_nicename) AS user_link
                 FROM
                     {$wpdb->prefix}itv_task_actions_log AS user_actions,
                     {$wpdb->users} AS users

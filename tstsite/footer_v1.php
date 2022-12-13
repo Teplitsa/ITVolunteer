@@ -14,7 +14,7 @@ $cc_link = '<a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Co
 function tst_brand_banner() {
 ?>
 	<div class="te-st">
-		<a href="http://te-st.ru" target="_blank">			
+		<a href="http://te-st.org" target="_blank">
 			Теплица социальных технологий
 		</a>
 	</div>
