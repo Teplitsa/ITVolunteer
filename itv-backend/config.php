@@ -7,5 +7,5 @@ class Config {
 
     const AUTH_EXPIRE_DAYS = 30;
 
-    const MAIL_ABOUT_TASKS_SKIP_LIST = ['sidorenko.a@te-st.org'];
+    const MAIL_ABOUT_TASKS_SKIP_LIST = [/*'some@mail.org',*/];
 }
