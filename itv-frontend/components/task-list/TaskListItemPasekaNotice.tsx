@@ -9,7 +9,7 @@ const TaskListItemPasekaNotice: React.FunctionComponent = (): ReactElement => {
         задачи.
       </p>
       <p>
-        <a href="https://paseka.org/" target="_blank" rel="noreferrer">
+        <a href="https://paseka.te-st.org/apply/" target="_blank" rel="noreferrer">
           Вступить в Пасеку
         </a>
       </p>
