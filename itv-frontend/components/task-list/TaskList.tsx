@@ -26,7 +26,6 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
   const setTaskList = useStoreActions(actions => actions.components.taskList.setTaskList);
 
   async function loadFilteredTaskList(optionCheck, page) {
-    console.log("loadFilteredTaskList...");
     const isLoadMore = page > 1;
 
     if (!isLoadMore) {
@@ -52,6 +51,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
       })
       .then(
         (result: IFetchResult) => {
+
           if (result.status == "fail") {
             return utils.showAjaxError({ message: result.message });
           }
@@ -63,6 +63,7 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
           } else {
             setTaskList(result.taskList);
           }
+
         },
         error => {
           utils.showAjaxError({ action, error });
@@ -70,24 +71,23 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
       );
   }
 
+    useEffect(() => {
+    }, [optionCheck]);
+
   useEffect(() => {
     if (optionCheck === null) {
       return;
     }
 
     if(!needReload) {
-      // console.log("NO NEED RELOAD TASK LIST");
       setIsTaskListLoaded(true);
       return;
     }
-
-    // console.log("RELOAD TASK LIST");
 
     loadFilteredTaskList(optionCheck, page);
   }, [page, optionCheck, needReload]);
 
   useEffect(() => {
-    // console.log("optionCheck changed");
     
     if (optionCheck === null) {
       return;
@@ -122,8 +122,6 @@ const TaskList: React.FunctionComponent = (): ReactElement => {
     e.preventDefault();
     setPage(page + 1);
   }
-
-  // console.log("isTaskListLoaded:", isTaskListLoaded);
 
   return (
     (isTaskListLoaded && (
