@@ -82,7 +82,7 @@ const taskListFilterActions: ITaskListFilterActions = {
     storeJsLocalStorage.set("taskFilter.setSectionClose", state.sectionClose);
   }),
   setOptionCheck: action((state, payload) => {
-    state.optionCheck = payload;
+      state.optionCheck = payload;
   }),
   loadOptionCheck: thunk(async (actions) => {
     const {checkedOptions, checkedOptionsFromCookie} = await loadFilterCheckedOptions();

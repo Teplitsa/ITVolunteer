@@ -44,7 +44,7 @@ const Paseka: React.FunctionComponent = (): ReactElement => {
           />
           <a
             className="paseka-participation-btn"
-            href="https://paseka.org"
+            href="https://paseka.te-st.org/apply/"
             target="_blank"
             rel="noreferrer"
           >

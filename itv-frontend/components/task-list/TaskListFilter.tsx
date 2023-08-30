@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useStoreState, useStoreActions } from "../../model/helpers/hooks";
 import { IFetchResult } from "../../model/model.typing";
@@ -109,10 +109,11 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
 
   useEffect(() => {
     loadFilterData({taskStatus: optionCheck ? optionCheck.status : "publish"});
-  }, [optionCheck]);  
+  }, [optionCheck?.status]);
 
+  const tasks_by_tag_handled = useRef(false);
   useEffect(() => {
-    if (!isFilterDataLoaded) {
+    if ( !isFilterDataLoaded || tasks_by_tag_handled.current ) {
       return;
     }
 
@@ -137,15 +138,14 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
         return false;
       });
 
-      // console.log("foundCheckId:", foundCheckId);
-
       setOptionCheck({ [foundCheckId]: true });
+        tasks_by_tag_handled.current = true;
       saveOptionCheck();
     }
-  }, [filterData, isFilterDataLoaded]);
+  }, [filterData, isFilterDataLoaded, tasks_by_tag_handled]);
 
   useEffect(() => {
-    if (!isFilterDataLoaded) {
+    if ( !isFilterDataLoaded || tasks_by_tag_handled.current ) {
       return;
     }
 
@@ -173,9 +173,10 @@ const TaskListFilter: React.FunctionComponent = (): ReactElement => {
       // console.log("foundCheckId:", foundCheckId);
 
       setOptionCheck({ [foundCheckId]: true });
+        tasks_by_tag_handled.current = true;
       saveOptionCheck();
     }
-  }, [filterData, isFilterDataLoaded]);
+  }, [filterData, isFilterDataLoaded, tasks_by_tag_handled]);
 
   useEffect(() => {
     if (!isSessionLoaded) {
