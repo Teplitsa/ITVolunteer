@@ -465,9 +465,9 @@ function get_user_last_login_time($user) {
 add_filter('show_admin_bar', 'tst_remove_admin_bar');
 function tst_remove_admin_bar($show){
 	
-	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-		return;
-	}
+//	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//		return;
+//	}
 	
 	if(!current_user_can('edit_others_posts'))
 		return false;
@@ -762,9 +762,9 @@ function itv_xp_field ( $user ) {
 }
 
 function itv_extra_user_profile_fields( $user ) {
-	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-		return;
-	}
+//	if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//		return;
+//	}
 	
     itv_is_activated_field( $user );
     itv_xp_field( $user );
@@ -852,9 +852,9 @@ function itv_user_reg_date($user_id) {
 function admin_users_filter( $query ){
     global $pagenow, $wpdb;
     
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return;
+//    }
 
     if(is_admin() && $pagenow=='users.php') {
         if ( isset($_GET['users_activation_status']) && $_GET['users_activation_status'] != '') {
@@ -911,9 +911,9 @@ function admin_users_filter( $query ){
 add_filter( 'pre_user_query', 'admin_users_filter' );
 
 function show_users_filter_by_activation() {
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return;
+//    }
     
     $ret = "";
     
@@ -936,9 +936,9 @@ function itv_filter_users_by_activation() {
 add_action('restrict_manage_users', 'itv_filter_users_by_activation');
 
 function itv_add_user_custom_columns($columns) {
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return $columns;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return $columns;
+//    }
     
     $columns['itv_user_role'] = __('ITV role', 'tst');
     $columns['is_activated'] = __('Is activated', 'tst');
@@ -953,9 +953,9 @@ function itv_add_user_custom_columns($columns) {
 add_filter('manage_users_columns', 'itv_add_user_custom_columns');
 
 function itv_add_user_custom_sortable_columns($columns) {
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return $columns;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return $columns;
+//    }
         
     $columns['user_xp'] = 'user_xp';
     return $columns;
@@ -963,9 +963,9 @@ function itv_add_user_custom_sortable_columns($columns) {
 add_filter( 'manage_users_sortable_columns', 'itv_add_user_custom_sortable_columns' );
 
 function itv_show_user_custom_columns_content($value, $column_name, $user_id) {
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return;
+//    }
         
     if('is_activated' == $column_name) {
         $user = get_user_by('id', $user_id);
@@ -1062,9 +1062,9 @@ function itv_get_users_to_resend_activation($limit = 0, $count = false) {
 }
 
 function itv_show_users_bulk_actions() {
-    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
-        return;
-    }
+//    if(get_current_blog_id() != SITE_ID_CURRENT_SITE){
+//        return;
+//    }
     
     $remain_to_resend = itv_get_users_to_resend_activation(0, true);
     $itv_config = ItvConfig::instance();

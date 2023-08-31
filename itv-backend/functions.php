@@ -90,3 +90,48 @@ require_once(get_theme_file_path() . '/wp-hooks/stats.php');
 require_once(get_theme_file_path() . '/wp-hooks/task.php');
 require_once(get_theme_file_path() . '/wp-hooks/auth.php');
 require_once(get_theme_file_path() . '/wp-hooks/mail.php');
+
+//function itv_anonymize_users() {
+//
+//    global $wpdb;
+//
+//    $users = get_users([
+//        'fields' => ['ID', 'user_email', 'display_name'],
+//        'role__not_in' => ['administrator'],
+//        'orderby' => 'ID',
+//        'order' => 'ASC',
+////        'exclude' => [10848, 9807, 7568, ],
+//    ]);
+//
+//    foreach($users as $user) {
+//
+//        $user_email_parts = explode('@', $user->user_email);
+//        $user->user_email = count($user_email_parts) > 1 ?
+//            $user->ID.'@'.$user_email_parts[1] : $user->ID.'@email.com';
+//        $user->display_name = 'Пользователь #'.$user->ID;
+//
+//        $res = $wpdb->update(
+//            $wpdb->prefix.'users',
+//            ['user_email' => $user->user_email, 'display_name' => $user->display_name],
+//            ['ID' => $user->ID]
+//        );
+//
+////        $res = wp_update_user([
+////            'ID' => $user_data->ID, 'user_email' => $user_data->user_email, 'display_name' => $user_data->display_name,
+////        ]);
+//
+//        if( !is_int($res) ) {
+//            echo '<pre>ERROR on user ID '.$user->ID.': '.print_r($res, 1).'</pre>';
+//        } else {
+//            set_transient('tmp_last_user_id_anonymized', $user->ID, 60*60*24*7);
+//        }
+//
+//
+//
+//    }
+//
+////    echo '<pre>'.count($users).' - '.print_r($users, 1).'</pre>';
+//
+//}
+//add_action('wp_ajax_itv_anonymize_users', 'itv_anonymize_users');
+//add_action('wp_ajax_nopriv_itv_anonymize_users', 'itv_anonymize_users');
