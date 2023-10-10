@@ -142,7 +142,7 @@ const MemberSocials: React.FunctionComponent<{
               size,
               bg,
             })}
-            href={`tg://resolve?domain=${telegram}`}
+            href={`https://t.me/${telegram}`}
             title="Telegram"
             target="_blank"
             rel="noreferrer"
