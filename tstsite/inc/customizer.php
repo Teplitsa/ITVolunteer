@@ -425,7 +425,7 @@ function ajax_approve_candidate() {
         if($doer->ID === $candidate->ID) {
             continue;
         }
-        UserNotifModel::instance()->push_notif($candidate->ID, UserNotifModel::$TYPE_CHOOSE_OTHER_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $doer->ID]);
+        UserNotifModel::instance()->push_notif($candidate->ID, UserNotifModel::$TYPE_CHOOSE_OTHER_TASKDOER, ['task_id' => $task_id, 'from_user_id' => $task_author->ID]);
     }
     
     wp_die(json_encode(array(
